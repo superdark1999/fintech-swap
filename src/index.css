@@ -1,0 +1,140 @@
+.custom button {
+  background-color: #f3a558 !important;
+}
+
+.style-color a div,
+.style-color div,
+.style-color + div div
+{
+  color: #f88520;
+}
+/* 
+.style-color svg,
+.style-color a svg {
+  fill: #f88520 !important;
+}
+
+svg {
+  fill: #F88521 !important;
+} */
+
+button div,
+button + div button,
+a div
+{
+  color:#F88521 !important;
+}
+
+.bg-nav {
+  background: #fdc99c;
+}
+
+.nav-swap > div {
+  background: #fdc99c;
+}
+
+.style-color  h2 {
+  color:#F88521;
+}
+/* 
+#swap-page button {
+  color:#fff;
+} */
+
+/* .nav-swap #swap-nav-link {
+  background-color: #f88520;
+  box-shadow: 0px -1px 0px 0px rgb(248 133 32) inset;
+} */
+
+.custom-btn a,
+#swap-page .bot-btn button,
+.custom-btn button {
+  background-color: #f88520;
+}
+
+.nav-swap .dMJnFj {
+  background-color: #f88520;
+}
+
+.custom-bt .etICQo {
+  background-color: #f88520;
+}
+
+.custom-bt>div {
+  background: #f7d2a6;
+}
+
+.custom-bt>div a {
+  color: #fff;
+}
+
+.list li {
+  color: #f88520;
+}
+
+.custom-cl button {
+  color: #f88520;
+}
+
+.color-orange,
+a.style-color {
+  color: #f88520 !important;
+}
+
+
+
+.color-orange span svg {
+  fill: #f88520 !important;
+}
+
+
+.custome-line a {
+  border: 1px solid #f88520;
+  color: #f88520;
+}
+
+.block-pool div,
+.block-pool a,
+.block-pool span {
+  color: #f88520 !important;
+}
+
+div.line {
+  border-color: #f88520;
+}
+
+
+.table-color div,
+.table-color + tr span,
+.table-color + tr div {
+  color: #f88520 !important;
+}
+
+input::placeholder {
+  color: #f88520 !important;
+}
+
+input:focus {
+  box-shadow: none !important;
+}
+
+.style-color div {
+  color: #f88520 !important;
+}
+
+.style-color svg{
+  fill: #f88520 !important;
+}
+
+a svg {
+  color: #f88520 !important;
+}
+
+svg{
+  fill: #f88520;
+}
+
+
+.column-sl div span div{
+  color: #fff;
+}
