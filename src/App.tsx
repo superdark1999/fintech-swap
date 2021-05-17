@@ -22,6 +22,7 @@ import RemoveLiquidity from './views/RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './views/RemoveLiquidity/redirects'
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './views/AddLiquidity/redirects'
 import './index.css'
+import 'antd/dist/antd.css'
 
 import { LanguageContext } from './hooks/LanguageContext'
 import { TranslationsContext } from './hooks/TranslationsContext'
