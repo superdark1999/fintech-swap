@@ -4,8 +4,7 @@
 
 .style-color a div,
 .style-color div,
-.style-color + div div
-{
+.style-color + div div {
   color: #f88520;
 }
 /* 
@@ -20,9 +19,8 @@ svg {
 
 button div,
 button + div button,
-a div
-{
-  color:#F88521 !important;
+a div {
+  color: #f88521 !important;
 }
 
 .bg-nav {
@@ -33,8 +31,8 @@ a div
   background: #fdc99c;
 }
 
-.style-color  h2 {
-  color:#F88521;
+.style-color h2 {
+  color: #f88521;
 }
 /* 
 #swap-page button {
@@ -60,11 +58,11 @@ a div
   background-color: #f88520;
 }
 
-.custom-bt>div {
+.custom-bt > div {
   background: #f7d2a6;
 }
 
-.custom-bt>div a {
+.custom-bt > div a {
   color: #fff;
 }
 
@@ -81,12 +79,9 @@ a.style-color {
   color: #f88520 !important;
 }
 
-
-
 .color-orange span svg {
   fill: #f88520 !important;
 }
-
 
 .custome-line a {
   border: 1px solid #f88520;
@@ -102,7 +97,6 @@ a.style-color {
 div.line {
   border-color: #f88520;
 }
-
 
 .table-color div,
 .table-color + tr span,
@@ -122,7 +116,7 @@ input:focus {
   color: #f88520 !important;
 }
 
-.style-color svg{
+.style-color svg {
   fill: #f88520 !important;
 }
 
@@ -130,11 +124,10 @@ a svg {
   color: #f88520 !important;
 }
 
-svg{
+svg {
   fill: #f88520;
 }
 
-
-.column-sl div span div{
+.column-sl div span div {
   color: #fff;
 }
