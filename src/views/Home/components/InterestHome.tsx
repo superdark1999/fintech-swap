@@ -5,15 +5,18 @@ import { Row, Col } from 'antd'
 const InterestHomeContainer = styled.div`
   height: 280px;
   width: 100%;
-  background: yellow;
   margin-top: 30px;
+  span {
+    font-weight: normal;
+    font-size: 21px;
+  }
 `
 
 function InterestHome() {
   return (
     <InterestHomeContainer>
-      What is interesting
-      <Row gutter={[8, 8]}>
+      <span>What is interesting</span>
+      <Row gutter={[8, 8]} style={{ marginTop: '24px' }}>
         <Col span={12} md={8}>
           <InterestItem />
         </Col>
