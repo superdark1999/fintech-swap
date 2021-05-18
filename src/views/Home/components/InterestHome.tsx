@@ -3,16 +3,20 @@ import styled from 'styled-components'
 import { Row, Col } from 'antd'
 
 const InterestHomeContainer = styled.div`
-  height: 280px;
   width: 100%;
-  background: yellow;
   margin-top: 30px;
+
+  .label {
+    font-size: 21px;
+    line-height: 24px;
+    color: white;
+  }
 `
 
 function InterestHome() {
   return (
     <InterestHomeContainer>
-      What is interesting
+      <div className="label">What is interesting</div>
       <Row gutter={[8, 8]}>
         <Col span={12} md={8}>
           <InterestItem />
