@@ -15,7 +15,7 @@ const Home: React.FC = () => {
   return (
     <Page>
       <BannerHome />
-      {/* <BalanceHome /> */}
+      <BalanceHome />
       <ProfitHome />
       <InterestHome />
       <ListArtHome />
