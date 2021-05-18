@@ -73,7 +73,7 @@ function BalanceHome() {
         <div className="left-balance-total-balance">$ 12 329</div>
         <div className="left-balance-estimate">+ $ 256.23 (12.3%)</div>
         <div className="left-balance-currency">
-          <span>In USD</span>
+          <span>In USD </span>
           <Dropdown overlay={menu} trigger={['click']}>
             <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()} onKeyPress={(e) => e.preventDefault()}>
               <DownOutlined />
