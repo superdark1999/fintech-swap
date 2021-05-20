@@ -71,15 +71,15 @@ export default function Pool() {
           <CardBody>
             <AutoColumn gap="12px" style={{ width: '100%' }}>
               <RowBetween padding="0 8px">
-                <Text  style={{ color:'#F88521' }}>
+                <Text  style={{ color:'#fff' }}>
                   <TranslatedText translationId={102}>Your Liquidity</TranslatedText>
                 </Text>
-                <Question
+                {/* <Question
                   text={TranslateString(
                     130,
                     'When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below.'
                   )}
-                />
+                /> */}
               </RowBetween>
 
               {!account ? (
@@ -101,7 +101,7 @@ export default function Pool() {
                   ))}
                 </>
               ) : (
-                <LightCard padding="40px">
+                <LightCard padding="40px" className="custom-bg">
                   <Text color="textDisabled" textAlign="center">
                     <TranslatedText translationId={104}>No liquidity found.</TranslatedText>
                   </Text>
@@ -109,13 +109,13 @@ export default function Pool() {
               )}
 
               <div>
-                <Text fontSize="14px" style={{ padding: '.5rem 0 .5rem 0' }} color="#000">
+                <Text fontSize="14px" style={{ padding: '.5rem 0 .5rem 0' }} color="#fff">
                   {TranslateString(106, "Don't see a pool you joined?")}{' '}
                   <StyledInternalLink id="import-pool-link" to="/find">
                     {TranslateString(108, 'Import it.')}
                   </StyledInternalLink>
                 </Text>
-                <Text fontSize="14px" style={{ padding: '.5rem 0 .5rem 0', color: 'rgb(248, 133, 33)' }}>
+                <Text fontSize="14px" style={{ padding: '.5rem 0 .5rem 0', color: '#fff' }}>
                   Or, if you staked your FLIP tokens in a farm, unstake them to see them here.
                 </Text>
               </div>
