@@ -103,6 +103,7 @@ const SwapCallbackErrorInner = styled.div`
   margin-top: -2rem;
   color: ${({ theme }) => theme.colors.failure};
   z-index: -1;
+  
   p {
     padding: 0;
     margin: 0;

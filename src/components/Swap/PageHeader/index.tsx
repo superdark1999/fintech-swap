@@ -42,9 +42,13 @@ const PageHeader = ({ title, description, children }: PageHeaderProps) => {
             </Text>
           )}
         </Details>
-        <IconButton variant="text" onClick={onPresentSettings} title="Settings">
-          <CogIcon width="24px" color="currentColor" />
-        </IconButton>
+       <div className="line-icon">
+        <div className="custome-icon">
+          <IconButton variant="text" onClick={onPresentSettings} title="Settings">
+              <CogIcon width="24px" color="currentColor" />
+            </IconButton>
+        </div>
+       </div>
         {/* <IconButton variant="text" onClick={onPresentRecentTransactions} title="Recent transactions">
           <HistoryIcon />
         </IconButton> */}

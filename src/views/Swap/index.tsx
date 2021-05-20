@@ -286,7 +286,7 @@ const Swap = () => {
             swapErrorMessage={swapErrorMessage}
             onDismiss={handleConfirmDismiss}
           />
-          <CardBody>
+          <CardBody className="padding-0">
             <AutoColumn gap="md">
               <CurrencyInputPanel
                 label={
@@ -305,7 +305,7 @@ const Swap = () => {
               />
               <AutoColumn justify="space-between">
                 <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
-                  <ArrowWrapper clickable>
+                  <ArrowWrapper className="style-position" clickable>
                     <IconButton
                       variant="tertiary"
                       onClick={() => {
@@ -367,7 +367,7 @@ const Swap = () => {
                     )}
                     {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                       <RowBetween align="center">
-                        <Text fontSize="14px">Slippage Tolerance</Text>
+                        <Text fontSize="14px">Slippage Tolerancefdfdfd</Text>
                         <Text fontSize="14px">{allowedSlippage / 100}%</Text>
                       </RowBetween>
                     )}

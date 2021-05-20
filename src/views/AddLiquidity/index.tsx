@@ -285,8 +285,10 @@ export default function AddLiquidity({
   }, [onFieldAInput, txHash])
   return (
     <>
-      <CardNav activeIndex={1} />
+      
       <AppBody>
+        {/* <CardNav activeIndex={1} /> */}
+
         <AddRemoveTabs adding />
         <Wrapper>
           <TransactionConfirmationModal
