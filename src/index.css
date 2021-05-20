@@ -149,7 +149,7 @@ svg {
 
 a#swap-nav-link,
 a#pool-nav-link {
-  height: auto !important;
+  height: 48px !important;
   background: transparent;
 }
 
