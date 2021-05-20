@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react'
-import { ThemeContext } from 'styled-components'
+import styled,{ ThemeContext } from 'styled-components'
 import { Pair } from '@beswap/sdk'
 import { Button, CardBody, Text } from '@beswap/uikit'
 import { Link } from 'react-router-dom'
@@ -56,15 +56,17 @@ export default function Pool() {
 
   return (
     <>
-      <CardNav activeIndex={1} />
       <AppBody>
-        <PageHeader title="Liquidity" description="Add liquidity to receive LP tokens">
-          <div className="custom-btn">
-            <Button id="join-pool-button" as={Link} to="/add/ETH">
-              <TranslatedText translationId={100}>Add Liquidity</TranslatedText>
-            </Button>
-          </div>
-        </PageHeader>
+        <FlexBox>
+          <CardNav activeIndex={1} />
+          <PageHeader title="" description="" />
+        </FlexBox>
+
+        <div className="custom-btn">
+          <Button id="join-pool-button" as={Link} to="/add/ETH">
+            <TranslatedText translationId={100}>Add Liquidity</TranslatedText>
+          </Button>
+        </div>
         <AutoColumn gap="lg" justify="center">
           <CardBody>
             <AutoColumn gap="12px" style={{ width: '100%' }}>
@@ -124,3 +126,8 @@ export default function Pool() {
     </>
   )
 }
+
+const FlexBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`

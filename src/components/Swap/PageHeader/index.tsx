@@ -20,8 +20,7 @@ const HistoryIcon = () => (
 )
 
 const StyledPageHeader = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.borderColor};
-  padding: 24px;
+  padding: 5px;
 `
 
 const Details = styled.div`
@@ -46,9 +45,9 @@ const PageHeader = ({ title, description, children }: PageHeaderProps) => {
         <IconButton variant="text" onClick={onPresentSettings} title="Settings">
           <CogIcon width="24px" color="currentColor" />
         </IconButton>
-        <IconButton variant="text" onClick={onPresentRecentTransactions} title="Recent transactions">
+        {/* <IconButton variant="text" onClick={onPresentRecentTransactions} title="Recent transactions">
           <HistoryIcon />
-        </IconButton>
+        </IconButton> */}
       </Flex>
       {children && <Text mt="16px">{children}</Text>}
     </StyledPageHeader>
