@@ -1,12 +1,16 @@
+body {
+  background-color: #2B2C3A !important;
+}
+
 .custom button {
   background-color: #f3a558 !important;
 }
 
-.style-color a div,
+/* .style-color a div,
 .style-color div,
 .style-color + div div {
   color: #f88520;
-}
+} */
 /* 
 .style-color svg,
 .style-color a svg {
@@ -17,22 +21,22 @@ svg {
   fill: #F88521 !important;
 } */
 
-button div,
+/* button div,
 button + div button,
 a div {
   color: #f88521 !important;
-}
+} */
 
 .bg-nav {
   background: #fdc99c;
 }
 
-.nav-swap > div {
+/* .nav-swap > div {
   background: #fdc99c;
-}
+} */
 
 .style-color h2 {
-  color: #f88521;
+  color: rgb(0 0 0 / 85%);
 }
 /* 
 #swap-page button {
@@ -45,9 +49,15 @@ a div {
 } */
 
 .custom-btn a,
-#swap-page .bot-btn button,
 .custom-btn button {
   background-color: #f88520;
+}
+
+#swap-page .bot-btn button {
+  background: #00a7e166;
+  color: #ACAFC0;
+  border-radius: 4px;
+  width: 100%;
 }
 
 .nav-swap .dMJnFj {
@@ -112,21 +122,21 @@ input:focus {
   box-shadow: none !important;
 }
 
-.style-color div {
+/* .style-color div {
   color: #f88520 !important;
-}
+} */
 
-.style-color svg {
+/* .style-color svg {
   fill: #f88520 !important;
-}
+} */
 
-a svg {
+/* a svg {
   color: #f88520 !important;
 }
 
 svg {
   fill: #f88520;
-}
+} */
 
 .column-sl div span div {
   color: #fff;

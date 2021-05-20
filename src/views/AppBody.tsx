@@ -4,10 +4,14 @@ import { Card } from '@beswap/uikit'
 
 export const BodyWrapper = styled(Card)`
   position: relative;
-  max-width: 436px;
+  max-width: 664px;
   width: 100%;
   z-index: 5;
   margin: 0 auto;
+  background-color: #333442;
+  border-radius: 0;
+  padding: 45px;
+  margin-top: 183px;
 `
 
 /**

@@ -3,20 +3,20 @@ import styled from 'styled-components'
 import { escapeRegExp } from 'utils/'
 
 const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
-  color: ${({ error, theme }) => (error ? theme.colors.failure : theme.colors.text)};
+  color: #fff;
   width: 0;
   position: relative;
   font-weight: 500;
   outline: none;
   border: none;
   flex: 1 1 auto;
-  background-color: transparent;
+  background-color: #20212B;
   font-size: 16px;
   text-align: ${({ align }) => align && align};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 0px;
+  padding: 10px;
   -webkit-appearance: textfield;
 
   ::-webkit-search-decoration {

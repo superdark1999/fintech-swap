@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import { CardBody, ArrowDownIcon, Button, IconButton, Text } from '@beswap/uikit'
-import { ThemeContext } from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants/index'
 import { TranslateString } from '../../utils/translateTextHelpers'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -266,8 +266,12 @@ const Swap = () => {
         transactionType={syrupTransactionType}
         onConfirm={handleConfirmSyrupWarning}
       />
-      <CardNav/>
+      
       <AppBody>
+        <FlexBox>
+          <CardNav/>
+          <PageHeader title="" description="" />
+        </FlexBox>
         <Wrapper id="swap-page" className="style-color">
           <ConfirmSwapModal
             isOpen={showConfirm}
@@ -282,7 +286,6 @@ const Swap = () => {
             swapErrorMessage={swapErrorMessage}
             onDismiss={handleConfirmDismiss}
           />
-          <PageHeader title="Exchange" description="Trade tokens in an instant" />
           <CardBody>
             <AutoColumn gap="md">
               <CurrencyInputPanel
@@ -465,3 +468,8 @@ const Swap = () => {
 }
 
 export default Swap
+
+const FlexBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
