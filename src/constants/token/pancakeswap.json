@@ -11,22 +11,6 @@
   "keywords": ["BSCD", "default"],
   "tokens": [
     {
-      "name": "BEDEX",
-      "symbol": "BEDEX",
-      "address": "0xb45299B023a6F1E0Da134Aa4D886A548BE0B662f",
-      "chainId": 97,
-      "decimals": 18,
-      "logoURI": "/images/coins/bedex.png"
-    },
-    {
-      "name": "BEDEX Token",
-      "symbol": "BES-DEMO",
-      "address": "0x0099fe22b580d45a585d412aceb029135b1a0bd6",
-      "chainId": 97,
-      "decimals": 18,
-      "logoURI": "/images/coins/BEDEX2.png"
-    },
-    {
       "name": "WBNB Token",
       "symbol": "WBNB",
       "address": "0xae13d989dac2f0debff460ac112a837c89baa7cd",
