@@ -22,6 +22,31 @@ const ListArtHomeContainer = styled.div`
   }
 `
 
+const artHomeData = [
+{
+  title:'Master Of Magic',
+  subtitle:'Wizard card for Master Of Magic.',
+  imageSrc:'https://cdnb.artstation.com/p/assets/images/images/037/876/569/large/iwo-widulinski-iwo-widulinski-mom-rjakjpg.jpg?1621538176',
+  cost:'300'
+},
+{
+  title:'Castlevania Season 4',
+  subtitle:'Some shots for Castlevania Season 4',
+  imageSrc:'https://cdna.artstation.com/p/assets/images/images/037/869/922/large/jose-vega-csv4-bg-dracscastle-ext-d-dawn-color-v01.jpg?1621526197',
+  cost:'400'
+},
+{
+  title:'Optic Adventure',
+  subtitle:'I had this dream last week... ',
+  imageSrc:'https://cdna.artstation.com/p/assets/images/images/037/867/130/large/ismail-inceoglu-optic-adventure.jpg?1621521374',
+  cost:'250'
+},
+{
+  title:'Tribute to Miura-Sensei',
+  subtitle:'We will miss you...',
+  imageSrc:'https://cdna.artstation.com/p/assets/images/images/037/872/892/large/anato-finnstark-anato-finnstark-berserk.jpg?1621531306',
+  cost:'500'
+}]
 function ListArtHome() {
   return (
     <ListArtHomeContainer>
@@ -30,18 +55,11 @@ function ListArtHome() {
         <div className="label">Hottest Artworks in 2 weeks</div>
       </div>
       <Row gutter={[8, 8]}>
-        <Col span={12} md={6}>
-          <ArtItem />
-        </Col>
-        <Col span={12} md={6}>
-          <ArtItem />
-        </Col>{' '}
-        <Col span={12} md={6}>
-          <ArtItem />
-        </Col>{' '}
-        <Col span={12} md={6}>
-          <ArtItem />
-        </Col>
+        {artHomeData.map(item=>{return(
+          <Col span={12} md={6}>
+            <ArtItem data={item} />
+          </Col>
+        )})}
       </Row>
     </ListArtHomeContainer>
   )
@@ -106,20 +124,26 @@ const ArtItemStyled = styled.div`
   }
 `
 
-const ArtItem = (props) => {
+const ArtItem = ({data}) => {
+  const {
+    title,
+    subtitle,
+    imageSrc,
+    cost
+  } = data;
   return (
     <ArtItemStyled className="art-item">
       <div className="thumb-container">
-        <img src="/images/banner-home.png" alt="thumb" className="thumb" />
+        <img src={imageSrc} alt={`art-${title}`} className="thumb" />
       </div>
       <div className="content">
-        <p className="label">PUBG Mobile</p>
-        <div className="description">Deal 5000 damage to enemies with grenades.</div>
+        <p className="label">{title}</p>
+        <div className="description">{subtitle}</div>
       </div>
       <div className="footer">
         <div>
           <img src="/images/lucky-logo.png" alt="lucky-coin" className="lucky-coin" />
-          <span className="coin-value">+100</span>
+          <span className="coin-value">+ {cost}</span>
         </div>
         <Button type="primary">Connect</Button>
       </div>
