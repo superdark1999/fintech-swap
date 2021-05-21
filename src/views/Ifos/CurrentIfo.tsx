@@ -8,7 +8,7 @@ import Title from './components/Title'
 import IfoCards from './components/IfoCards'
 
 const LaunchIfoCallout = styled(BaseLayout)`
-  border-top: 2px solid #f88520;
+  border-top: 2px solid #2b2c3a;
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 32px;
@@ -35,7 +35,7 @@ const Titletop = styled.h2`
   font-weight: 600;
   line-height: 1.1;
   margin-bottom: 16px;
-  color: #F88521;
+  color: #2b2c3a;
 `
 
 const SubTitle = styled.h3`

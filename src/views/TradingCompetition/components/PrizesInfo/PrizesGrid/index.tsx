@@ -78,7 +78,7 @@ const tierStyleMap = {
 }
 
 const Td = styled.td`
-  border-bottom: 2px solid #f88520;
+  border-bottom: 2px solid #2b2c3a;
   padding: 4px;
 
   ${({ theme }) => theme.mediaQueries.sm} {

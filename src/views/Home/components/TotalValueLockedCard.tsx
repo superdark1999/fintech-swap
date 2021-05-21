@@ -15,7 +15,7 @@ const Title = styled.h3`
   font-weight: 600;
   line-height: 1.1;
   margin-bottom: 24px;
-  color: #F88521;
+  color: #2b2c3a;
 `
 
 const TotalValueLockedCard = () => {
@@ -33,7 +33,7 @@ const TotalValueLockedCard = () => {
         {data ? (
           <>
             <Heading size="xl" color="#fe5f10">{`$${tvl}`}</Heading>
-            <Text color="#F88521">{TranslateString(764, 'Across all LPs and Syrup Pools')}</Text>
+            <Text color="#2b2c3a">{TranslateString(764, 'Across all LPs and Syrup Pools')}</Text>
           </>
         ) : (
           <>

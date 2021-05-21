@@ -34,8 +34,8 @@ interface PodiumIconProps {
 
 const TeamPodiumIcon: React.FC<PodiumIconProps> = ({ teamId, teamPosition }) => {
   const teamData = {
-    1: { imgSrc: 'syrup-storm-lg.png', stickerCol: '#F88521' },
-    2: { imgSrc: 'fearsome-flippers-lg.png', stickerCol: '#F88521' },
+    1: { imgSrc: 'syrup-storm-lg.png', stickerCol: '#2b2c3a' },
+    2: { imgSrc: 'fearsome-flippers-lg.png', stickerCol: '#2b2c3a' },
     3: { imgSrc: 'chaotic-cakers-lg.png', stickerCol: '#FFB237' },
   }
 

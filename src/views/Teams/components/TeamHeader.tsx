@@ -17,7 +17,7 @@ const TeamHeader = () => {
         <Heading as="h1" size="xxl" color="secondary">
           {TranslateString(1082, 'Teams & Profiles')}
         </Heading>
-        <Text bold color="#f88520">
+        <Text bold color="#2b2c3a">
           {TranslateString(
             999,
             'Show off your stats and collectibles with your unique profile. Team features will be revealed soon!',

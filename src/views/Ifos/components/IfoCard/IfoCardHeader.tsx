@@ -17,11 +17,11 @@ const StyledIfoCardHeader = styled(Flex)`
 const Name = styled(Heading).attrs({ as: 'h3', size: 'lg' })`
   margin-bottom: 4px;
   text-align: right;
-  color: #f88520;
+  color: #2b2c3a;
 `
 
 const Description = styled(Text)`
-  color: #f88520;
+  color: #2b2c3a;
   font-size: 14px;
   text-align: right;
 `

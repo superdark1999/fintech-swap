@@ -6,7 +6,7 @@ import Page from 'components/layout/Page'
 import NftList from './components/NftList'
 
 const StyledHero = styled.div`
-  border-bottom: 2px solid #f88520;
+  border-bottom: 2px solid #2b2c3a;
   margin-bottom: 24px;
   padding-bottom: 32px;
 `
