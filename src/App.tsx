@@ -29,7 +29,7 @@ import { TranslationsContext } from './hooks/TranslationsContext'
 import { EN, allLanguages } from './constants/localisation/languageCodes'
 
 // Route-based code splitting
-// Only pool is included in the main bundle because of it's the most visited page
+// Only pool is included in the main bundle because of it's the most visited page .
 const Home = lazy(() => import('./views/Home'))
 const Farms = lazy(() => import('./views/Farms'))
 const Lottery = lazy(() => import('./views/Lottery'))
