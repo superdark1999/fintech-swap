@@ -2,6 +2,10 @@ body {
   background-color: #2B2C3A !important;
 }
 
+* {
+  font-family: 'Roboto', sans-serif !important;
+}
+
 .custom button {
   background-color: #f3a558 !important;
 }
@@ -208,4 +212,27 @@ a#swap-nav-link {
 
 .nav-swap + div {
   padding: 0;
+}
+
+#token-search-input {
+  border-radius: 6px !important;
+  border-width: 1px !important;
+  border-color: transparent !important;
+  background: linear-gradient(90deg,#161522,#161522),linear-gradient(90deg,#01A8E1,#29F4C4)!important;
+  background-clip: padding-box,border-box!important;
+  background-origin: padding-box,border-box!important;
+}
+
+.title-select {
+  font-size: 21px !important;
+  font-weight: 700 !important;
+}
+
+.box-list-token div div div div:hover {
+  background-color: #000;
+}
+
+.list-menu {
+  height: 100vh;
+  align-items: center;
 }

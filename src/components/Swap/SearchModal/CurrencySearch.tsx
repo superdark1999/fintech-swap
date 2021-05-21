@@ -142,14 +142,14 @@ export function CurrencySearch({
     <Column style={{ width: '100%', flex: '1 1' }} className="column-sl">
       <PaddedColumn gap="14px">
         <RowBetween>
-          <Text>
+          <Text className="title-select">
             <TranslatedText translationId={82}>Select a token</TranslatedText>
-            {/* <QuestionHelper
+            <QuestionHelper
               text={TranslateString(
                 130,
                 'Find a token by searching for its name or symbol or by pasting its address below.'
               )}
-            /> */}
+            />
           </Text>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
@@ -172,10 +172,9 @@ export function CurrencySearch({
           <SortButton ascending={invertSearchOrder} toggleSortOrder={() => setInvertSearchOrder((iso) => !iso)} />
         </RowBetween>
       </PaddedColumn>
-
       <Separator />
 
-      <div style={{ flex: '1' }}>
+      <div style={{ flex: '1' }} className="box-list-token">
         <AutoSizer disableWidth>
           {({ height }) => (
             <CurrencyList
