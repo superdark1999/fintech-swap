@@ -3,7 +3,7 @@ import { Route, useRouteMatch, useLocation } from 'react-router-dom'
 import { orderBy } from 'lodash'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Image, Heading, RowType, Toggle, Text } from '@beswap/uikit'
+import { Image, Heading, RowType, Text } from '@beswap/uikit'
 import styled from 'styled-components'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
@@ -291,10 +291,10 @@ const Farms: React.FC = () => {
   return (
     <>
       <Header>
-        <Heading as="h1" size="xxl" color="#F88521" mb="24px">
+        <Heading as="h1" size="xxl" color="#2b2c3a" mb="24px">
           {TranslateString(674, 'Farms')}
         </Heading>
-        <Heading size="lg" color="#F88521">
+        <Heading size="lg" color="#2b2c3a">
           {TranslateString(999, 'Stake Liquidity Pool (LP) tokens to earn.')}
         </Heading>
       </Header>
@@ -304,13 +304,13 @@ const Farms: React.FC = () => {
               <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
               <ToggleWrapper>
                 <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
-                <Text color="#F88521"> {TranslateString(1116, 'Staked only')}</Text>
+                <Text color="#2b2c3a"> {TranslateString(1116, 'Staked only')}</Text>
               </ToggleWrapper>
             <FarmTabButtons />
           </ViewControls> */}
           <FilterContainer>
             <LabelWrapper>
-              <Text color="#F88521">SORT BY</Text>
+              <Text color="#2b2c3a">SORT BY</Text>
               <Select
                 options={[
                   {
@@ -338,7 +338,7 @@ const Farms: React.FC = () => {
               />
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text color="#F88521">SEARCH</Text>
+              <Text color="#2b2c3a">SEARCH</Text>
               <SearchInput onChange={handleChangeQuery} value={query} />
             </LabelWrapper>
           </FilterContainer>

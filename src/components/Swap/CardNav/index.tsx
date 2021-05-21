@@ -12,15 +12,21 @@ const StyledNav = styled.div`
 
 const Nav = ({ activeIndex = 0 } : { activeIndex?: number }) => (
   <StyledNav className="nav-swap">
-    <ButtonMenu activeIndex={activeIndex} variant="subtle">
-      <ButtonMenuItem id="swap-nav-link" to="/swap" as={Link}>
-        <TranslatedText translationId={8}>Swap</TranslatedText>
-      </ButtonMenuItem>
-      <ButtonMenuItem id="pool-nav-link" to="/pool" as={Link} className='txt-dark'>
-        <TranslatedText translationId={74}>Liquidity</TranslatedText>
-      </ButtonMenuItem>
-    </ButtonMenu>
+    <BoxNav>
+      <ButtonMenu activeIndex={activeIndex} variant="subtle">
+        <ButtonMenuItem id="swap-nav-link" to="/swap" as={Link}>
+          <TranslatedText translationId={8}>Swap</TranslatedText>
+        </ButtonMenuItem>
+        <ButtonMenuItem id="pool-nav-link" to="/pool" as={Link} className='txt-dark'>
+          <TranslatedText translationId={74}>Liquidity</TranslatedText>
+        </ButtonMenuItem>
+      </ButtonMenu>
+    </BoxNav>
   </StyledNav>
 )
 
 export default Nav
+
+const BoxNav = styled.div`
+  height: 48px;
+`

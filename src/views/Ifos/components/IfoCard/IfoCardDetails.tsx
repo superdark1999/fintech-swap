@@ -52,13 +52,13 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ ifo, publicIfoData }) =
       </div>
       {isOpen && (
         <>
-          <Text as="p" color="#f88520" my="24px">
+          <Text as="p" color="#2b2c3a" my="24px">
             {description}
           </Text>
           <Box mb="24px">
             <Item>
-              <Display color="#f88520">{TranslateString(582, 'Launch Time')}</Display>
-              <Text color="#f88520">
+              <Display color="#2b2c3a">{TranslateString(582, 'Launch Time')}</Display>
+              <Text color="#2b2c3a">
                 {launchDate},
                 <Link
                   href="https://www.timeanddate.com/worldclock/singapore/singapore"
@@ -66,27 +66,27 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ ifo, publicIfoData }) =
                   rel="noopener noreferrer"
                   ml="4px"
                   style={{ display: 'inline' }}
-                  color="#f88520"
+                  color="#2b2c3a"
                 >
                   {launchTime}
                 </Link>
               </Text>
             </Item>
             <Item>
-              <Display color="#f88520">{TranslateString(584, 'For Sale')}</Display>
-              <Text color="#f88520">{saleAmount}</Text>
+              <Display color="#2b2c3a">{TranslateString(584, 'For Sale')}</Display>
+              <Text color="#2b2c3a">{saleAmount}</Text>
             </Item>
             <Item>
-              <Display color="#f88520">{TranslateString(999, 'To raise (USD)')}</Display>
-              <Text color="#f88520">{raiseAmount}</Text>
+              <Display color="#2b2c3a">{TranslateString(999, 'To raise (USD)')}</Display>
+              <Text color="#2b2c3a">{raiseAmount}</Text>
             </Item>
             <Item>
-              <Display color="#f88520">{TranslateString(586, 'CAKE to burn (USD)')}</Display>
-              <Text color="#f88520">{cakeToBurn}</Text>
+              <Display color="#2b2c3a">{TranslateString(586, 'CAKE to burn (USD)')}</Display>
+              <Text color="#2b2c3a">{cakeToBurn}</Text>
             </Item>
             <Item>
-              <Display color="#f88520">{TranslateString(999, 'Total raised (% of target)')}</Display>
-              <Text color="#f88520">{`${totalAmount.div(raisingAmount).times(100).toFixed(2)}%`}</Text>
+              <Display color="#2b2c3a">{TranslateString(999, 'Total raised (% of target)')}</Display>
+              <Text color="#2b2c3a">{`${totalAmount.div(raisingAmount).times(100).toFixed(2)}%`}</Text>
             </Item>
           </Box>
           <LinkExternal href={projectSiteUrl} style={{ margin: 'auto' }}>

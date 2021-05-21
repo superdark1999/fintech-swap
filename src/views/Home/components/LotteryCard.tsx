@@ -34,7 +34,7 @@ const CardImage = styled.img`
 
 const Label = styled.div`
   // color: ${({ theme }) => theme.colors.textSubtle};
-  color: #F88521;
+  color: #2b2c3a;
   font-size: 14px;
 `
 
@@ -51,7 +51,7 @@ const Title = styled.h2`
   font-weight: 600;
   line-height: 1.1;
   margin-bottom: 24px;
-  color: #F88521;
+  color: #2b2c3a;
 `
 
 const LotteryCard = () => {
@@ -120,7 +120,7 @@ const LotteryCard = () => {
               id="dashboard-collect-winnings"
               disabled={getBalanceNumber(claimAmount) === 0 || requestClaim}
               onClick={handleClaim}
-              style={{ marginRight: '8px', color: '#F88521'  }}
+              style={{ marginRight: '8px', color: '#2b2c3a'  }}
             >
               {TranslateString(556, 'Collect Winnings')}
             </Button>

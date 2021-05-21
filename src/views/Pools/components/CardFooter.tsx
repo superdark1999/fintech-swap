@@ -41,7 +41,7 @@ const StyledDetailsButton = styled.button`
   align-items: center;
   background-color: transparent;
   border: 0;
-  color: #f88520;
+  color: #2b2c3a;
   cursor: pointer;
   display: inline-flex;
   font-size: 16px;

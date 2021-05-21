@@ -26,7 +26,7 @@ const CardImage = styled.img`
 
 const Label = styled.div`
   // color: ${({ theme }) => theme.colors.textSubtle};
-  color: #F88521;
+  color: #2b2c3a;
   font-size: 14px;
 `
 
@@ -39,7 +39,7 @@ const Title = styled.h2`
   font-weight: 600;
   line-height: 1.1;
   margin-bottom: 24px;
-  color: #F88521;
+  color: #2b2c3a;
 `
 
 const FarmedStakingCard = () => {
