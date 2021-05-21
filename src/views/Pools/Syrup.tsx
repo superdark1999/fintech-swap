@@ -36,7 +36,7 @@ const Farm: React.FC = () => {
     <Page>
       <Hero>
         <div>
-          <Heading as="h1" size="xxl" mb="16px" color="#f88520">
+          <Heading as="h1" size="xxl" mb="16px" color="#2b2c3a">
             {TranslateString(738, 'Syrup Pool')}
           </Heading>
           <ul className="list">

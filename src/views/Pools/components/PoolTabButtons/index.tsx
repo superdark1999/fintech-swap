@@ -12,7 +12,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly }) => {
     <Wrapper>
       {/* <ToggleWrapper>
         <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />
-        <Text color="#F88521"> {TranslateString(999, 'Staked only')}</Text>
+        <Text color="#2b2c3a"> {TranslateString(999, 'Staked only')}</Text>
       </ToggleWrapper> */}
       <div className="custom-bt">
         <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">

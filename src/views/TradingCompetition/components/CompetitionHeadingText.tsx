@@ -23,7 +23,7 @@ const H2SizeStyles = (theme: DefaultTheme) => `
 
 const sharedStyles = (props: HeadingProps) => `
   color: ${props.textColor ? props.textColor : '#ffffff'};
-  background:  ${props.background ? props.background : 'linear-gradient(#f88520 0%, #F88521 100%)'};
+  background:  ${props.background ? props.background : 'linear-gradient(#2b2c3a 0%, #2b2c3a 100%)'};
   background-clip: text;
   -webkit-background-clip: text;
   ${

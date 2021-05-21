@@ -25,7 +25,7 @@ const Title = styled.h3`
   font-weight: 600;
   line-height: 1.1;
   margin-bottom: 24px;
-  color: #F88521;
+  color: #2b2c3a;
 `
 
 const BgIMG = styled.div`
@@ -48,16 +48,16 @@ const CakeStats = () => {
         </Heading> */}
         <Title>Candy Stats</Title>
         <Row>
-          <Text fontSize="14px" color="#F88521">{TranslateString(536, 'Total BESWAP Supply')}</Text>
-          {cakeSupply && <CardValue fontSize="14px" color="#F88521" value={cakeSupply} />}
+          <Text fontSize="14px" color="#2b2c3a">{TranslateString(536, 'Total BESWAP Supply')}</Text>
+          {cakeSupply && <CardValue fontSize="14px" color="#2b2c3a" value={cakeSupply} />}
         </Row>
         <Row>
-          <Text fontSize="14px" color="#F88521">{TranslateString(538, 'Total BESWAP  Burned')}</Text>
-          <CardValue fontSize="14px" color="#F88521" decimals={0} value={burnedBalance} />
+          <Text fontSize="14px" color="#2b2c3a">{TranslateString(538, 'Total BESWAP  Burned')}</Text>
+          <CardValue fontSize="14px" color="#2b2c3a" decimals={0} value={burnedBalance} />
         </Row>
         <Row>
-          <Text fontSize="14px" color="#F88521">{TranslateString(540, 'New BESWAP/block')}</Text>
-          <CardValue fontSize="14px" color="#F88521" decimals={0} value={22} />
+          <Text fontSize="14px" color="#2b2c3a">{TranslateString(540, 'New BESWAP/block')}</Text>
+          <CardValue fontSize="14px" color="#2b2c3a" decimals={0} value={22} />
         </Row>
 
         <BgIMG>

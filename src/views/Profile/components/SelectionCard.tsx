@@ -27,7 +27,7 @@ const Label = styled.label<{ isDisabled: boolean }>`
 
 const Body = styled.div`
   align-items: center;
-  border: 2px solid #f88520;
+  border: 2px solid #2b2c3a;
   border-radius: 16px 0 0 16px;
   display: flex;
   flex-grow: 1;
