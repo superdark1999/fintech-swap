@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Carousel } from 'antd'
 
 const BannerContainer = styled.div`
   height: 280px;
@@ -11,9 +12,11 @@ const BannerContainer = styled.div`
 `
 function BannerHome() {
   return (
-    <BannerContainer>
+    <Carousel autoplay infinite draggable>
       <img src="/images/banner-home.png" alt="banner-home" />
-    </BannerContainer>
+      <img src="/images/banner-home.png" alt="banner-home" />
+      <img src="/images/banner-home.png" alt="banner-home" />
+    </Carousel>
   )
 }
 
