@@ -262,3 +262,8 @@ a#swap-nav-link {
 .style-color:focus {
   background-color: #2d2e3e !important;
 }
+
+
+.color-orange .pancake-button--disabled {
+  background-color: #3b3d40 !important;
+}
