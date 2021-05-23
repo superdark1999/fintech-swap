@@ -176,7 +176,6 @@ a#swap-nav-link {
   position: relative;
 } */
 
-
 .style-position:hover {
   opacity: 1 !important;
 }
@@ -191,7 +190,7 @@ a#swap-nav-link {
 }
 
 .style-position button:hover {
-  border: 2px solid #47495A;
+  border: 2px solid #47495a;
   position: absolute;
   left: 20px;
   top: 98px;
@@ -261,9 +260,4 @@ a#swap-nav-link {
 .style-color:hover,
 .style-color:focus {
   background-color: #2d2e3e !important;
-}
-
-
-.color-orange .pancake-button--disabled {
-  background-color: #3b3d40 !important;
 }
