@@ -3,13 +3,13 @@ import { MenuEntry, menuStatus } from '@beswap/uikit'
 const config: MenuEntry[] = [
   {
     label: 'Home',
-    icon: 'HomeIcon',
+    // icon: 'HomeIcon',
     href: '/',
     calloutClass: 'style-color',
   },
   {
     label: 'Trade',
-    icon: 'TradeIcon',
+    // icon: 'TradeIcon',
     calloutClass: 'style-color',
     items: [
       {
@@ -26,19 +26,19 @@ const config: MenuEntry[] = [
   },
   {
     label: 'Farms',
-    icon: 'FarmIcon',
+    // icon: 'FarmIcon',
     href: '/farms',
     calloutClass: 'style-color',
   },
   {
     label: 'Pools',
-    icon: 'PoolIcon',
+    // icon: 'PoolIcon',
     href: '/pools',
     calloutClass: 'style-color',
   },
   {
     label: 'Info',
-    icon: 'InfoIcon',
+    // icon: 'InfoIcon',
     calloutClass: 'style-color',
     items: [
       {
@@ -65,7 +65,7 @@ const config: MenuEntry[] = [
   },
   {
     label: 'IFO',
-    icon: 'IfoIcon',
+    // icon: 'IfoIcon',
     href: '#',
     calloutClass: 'style-color',
   },
