@@ -172,12 +172,27 @@ a#swap-nav-link {
   position: relative;
 } */
 
+
+.style-position:hover {
+  opacity: 1 !important;
+}
+
 .style-position button {
   background: #292a36;
   border: 2px solid #47495a;
   position: absolute;
   left: 20px;
   top: 98px;
+  z-index: 99;
+}
+
+.style-position button:hover {
+  border: 2px solid #47495A;
+  position: absolute;
+  left: 20px;
+  top: 98px;
+  opacity: 1 !important;
+  background: #333442;
   z-index: 99;
 }
 
