@@ -272,7 +272,7 @@ const Swap = () => {
           <CardNav/>
           <PageHeader title="" description="" />
         </FlexBox>
-        <Wrapper id="swap-page" className="style-color">
+        <Wrapper id="swap-page">
           <ConfirmSwapModal
             isOpen={showConfirm}
             trade={trade}

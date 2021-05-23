@@ -61,6 +61,10 @@ a div {
   margin-top: 40px;
 }
 
+.custom-btn a:hover {
+  color: #fff;
+}
+
 #swap-page .bot-btn button {
   background: #10607b66;
   color: #acafc0;
@@ -251,4 +255,10 @@ a#swap-nav-link {
 
 .sc-dlnjwi.ekZheJ {
   background: #00a7e1;
+}
+
+.style-color + div div div:hover,
+.style-color:hover,
+.style-color:focus {
+  background-color: #2d2e3e !important;
 }
