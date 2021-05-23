@@ -48,7 +48,7 @@ const coinsInfo = [
   {
     name: 'Binance',
     shortened: 'BNB',
-    logoSrc: 'https://bin.bnbstatic.com/image/admin_mgs_image_upload/20201110/550eda20-1b9a-4bc7-9a65-e4a329e8bb57.png',
+    logoSrc: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
     isIncrease: true,
     changePercent: '16.14',
   },
