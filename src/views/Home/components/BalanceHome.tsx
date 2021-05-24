@@ -13,33 +13,41 @@ const BalanceContainer = styled.div`
   display: flex;
   background-color: #232627;
   color: #9a9eb1;
+  border-radius: 6px;
+
   .left-balance {
     width: 300px;
     margin-left: 75px;
+
     .left-balance-label {
       font-size: 14px;
       margin-bottom: 12px;
     }
+
     .left-balance-total-balance {
       font-size: 51px;
       color: 51px;
       letter-spacing: 0.196154px;
       margin-bottom: 17px;
     }
+
     .left-balance-estimate {
       color: #84ce95;
       font-weight: bold;
       font-size: 18px;
       margin-bottom: 46px;
     }
+
     .left-balance-currency {
       font-weight: 900;
       font-size: 14px;
       letter-spacing: 0.5px;
       margin-bottom: 38px;
+
       span {
       }
     }
+
     .left-balance-filter-date {
       span {
         margin-right: 30px;
@@ -50,6 +58,7 @@ const BalanceContainer = styled.div`
       }
     }
   }
+
   .right-balance {
     flex: 1;
   }
@@ -72,19 +81,19 @@ function BalanceHome() {
         <div className="left-balance-label">Balance</div>
         <div className="left-balance-total-balance">$ 12 329</div>
         <div className="left-balance-estimate">+ $ 256.23 (12.3%)</div>
-        <div className="left-balance-currency">
+        {/* <div className="left-balance-currency">
           <span>In USD </span>
           <Dropdown overlay={menu} trigger={['click']}>
             <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()} onKeyPress={(e) => e.preventDefault()}>
               <DownOutlined />
             </a>
           </Dropdown>
-        </div>
-        <div className="left-balance-filter-date">
+        </div> */}
+        {/* <div className="left-balance-filter-date">
           {listTime.map((item) => (
             <span key={item}>{item}</span>
           ))}
-        </div>
+        </div> */}
       </div>
       <div className="right-balance"> </div>
     </BalanceContainer>
