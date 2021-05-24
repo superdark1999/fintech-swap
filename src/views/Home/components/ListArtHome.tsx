@@ -5,7 +5,7 @@ import { Row, Col, Button, Select } from 'antd'
 const ListArtHomeContainer = styled.div`
   margin-top: 30px;
   color: white;
-
+  border-radius: 6px;
   .header {
     margin-bottom: 25px;
   }
@@ -75,8 +75,25 @@ const ArtItemStyled = styled.div`
 
   .thumb-container {
     position: relative;
-    height: 0;
     padding-top: 56.47%;
+    width: 100%;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+
+    &:hover {
+      img{
+        -webkit-transform: scale3d(1, 1, 1);
+                transform: scale3d(1, 1, 1);
+      }
+    }
+
+    img{
+      -webkit-transition: all 0.5s linear;
+              transition: all 0.5s linear;
+      -webkit-transform: scale3d(1.2, 1.2, 1);
+              transform: scale3d(1.2, 1.2, 1);
+    }
 
     .thumb {
       position: absolute;

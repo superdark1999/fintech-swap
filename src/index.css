@@ -259,5 +259,10 @@ a#swap-nav-link {
 .style-color + div div div:hover,
 .style-color:hover,
 .style-color:focus {
-  background-color: #2d2e3e !important;
+  background-color: #1b1c2d !important;
+}
+
+.button-h {
+  background-color: #00A7E1 !important;
+  border-radius: 6px !important;
 }

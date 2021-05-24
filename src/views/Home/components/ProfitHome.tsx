@@ -18,6 +18,7 @@ const CardProfitStyled = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 50px;
+  border-radius: 6px;
   .top-profit {
     flex: 1;
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);

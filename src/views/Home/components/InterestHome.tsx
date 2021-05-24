@@ -5,11 +5,12 @@ import { Row, Col } from 'antd'
 const InterestHomeContainer = styled.div`
   width: 100%;
   margin-top: 30px;
-
+  border-radius: 6px;
   .label {
     font-size: 21px;
     line-height: 24px;
     color: white;
+    margin-bottom: 15px;
   }
 `
 const coinsInfo = [
@@ -87,6 +88,7 @@ const InterestItemStyled = styled.div`
   color: #acafc0;
   font-size: 14px;
   line-height: 20px;
+  border-radius: 6px;
 
   .left {
     display: flex;
