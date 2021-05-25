@@ -9,7 +9,7 @@ import getNodeUrl from './getRpcUrl'
 
 const POLLING_INTERVAL = 12000
 const rpcUrl = getNodeUrl()
-const chainId = 97
+const chainId = parseInt(process.env.REACT_APP_CHAIN_ID) || 56
 
 const injected = new InjectedConnector({ supportedChainIds: [chainId] })
 
@@ -33,4 +33,3 @@ export default function getLibrary(provider: any): Web3Provider {
   library.pollingInterval = 15000
   return library
 }
-
