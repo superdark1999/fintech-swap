@@ -6,6 +6,7 @@ import ApplicationUpdater from './state/application/updater'
 import ListsUpdater from './state/lists/updater'
 import MulticallUpdater from './state/multicall/updater'
 import TransactionUpdater from './state/transactions/updater'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 if ('ethereum' in window) {
   (window.ethereum as any).autoRefreshOnNetworkChange = false

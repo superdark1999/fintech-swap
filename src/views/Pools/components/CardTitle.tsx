@@ -5,7 +5,7 @@ interface StyledTitleProps {
 }
 
 const CardTitle = styled.div<StyledTitleProps>`
-  color: #2b2c3a;
+  color:#ffffff;
   font-weight: 600;
   font-size: 24px;
   line-height: 1.1;

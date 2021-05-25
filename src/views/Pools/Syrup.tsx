@@ -14,6 +14,7 @@ import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
 import PoolTabButtons from './components/PoolTabButtons'
 import Divider from './components/Divider'
+import PoolItem from './components/PoolCards'
 
 const Farm: React.FC = () => {
   const { path } = useRouteMatch()
@@ -47,22 +48,24 @@ const Farm: React.FC = () => {
         </div>
         <img src="/images/syrup.png" alt="SYRUP POOL icon" width={410} height={191} />
       </Hero> */}
-      <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} />
-      <Divider />
+      {/* <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} /> */}
+      {/* <Divider /> */}
+      <PoolItem />
       <FlexLayout>
-        <Route exact path={`${path}`}>
+        {/* <Route exact path={`${path}`}>
           <>
             {stakedOnly
               ? orderBy(stakedOnlyPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
               : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
             <Coming />
           </>
-        </Route>
-        <Route path={`${path}/history`}>
+        </Route> */}
+        {/* <Route path={`${path}/history`}>
           {orderBy(finishedPools, ['sortOrder']).map((pool) => (
             <PoolCard key={pool.sousId} pool={pool} />
           ))}
-        </Route>
+        </Route> */}
+        
       </FlexLayout>
     </Page>
   )

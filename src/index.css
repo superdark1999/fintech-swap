@@ -266,3 +266,28 @@ a#swap-nav-link {
   background-color: #00A7E1 !important;
   border-radius: 6px !important;
 }
+
+.nav-tabs {
+  border-bottom: 0 !important;
+  margin-bottom: 40px !important;
+}
+
+.nav-tabs .nav-link {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.nav-link {
+  color: #979797 !important;
+
+}
+
+.nav-tabs .nav-link:hover {
+  border-color: transparent !important;
+}
+
+.nav-tabs .nav-link.active {
+  color: #fff !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
