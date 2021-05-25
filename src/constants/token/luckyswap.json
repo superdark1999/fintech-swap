@@ -8,8 +8,16 @@
   },
   "tags": {},
   "logoURI": "/images/coins/lucky.png",
-  "keywords": ["BSCD", "default"],
+  "keywords": ["LUCKY", "default"],
   "tokens": [
+    {
+      "name": "LUCKY Token",
+      "symbol": "XLUCKY",
+      "address": "0x82dbc381a54554532b738e2bb11cf337b5e78e80",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/coins/lucky.png"
+    },
     {
       "name": "WBNB Token",
       "symbol": "WBNB",
@@ -40,16 +48,6 @@
       "chainId": 97,
       "decimals": 18,
       "logoURI": "/images/coins/BTC.png"
-    },
-    {
-      "name": "LUCKY Token",
-      "symbol": "XLUCKY",
-      "address": "0x82dbc381a54554532b738e2bb11cf337b5e78e80",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "/images/coins/lucky.png"
     }
-
-    
   ]
 }
