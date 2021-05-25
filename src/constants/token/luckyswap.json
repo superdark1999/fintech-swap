@@ -1,5 +1,5 @@
 {
-  "name": "Bscsswap",
+  "name": "LUCKY",
   "timestamp": "2021-03-09T15:41:29.665Z",
   "version": {
     "major": 1,
@@ -7,7 +7,7 @@
     "patch": 1
   },
   "tags": {},
-  "logoURI": "/images/coins/BSCS.png",
+  "logoURI": "/images/coins/lucky.png",
   "keywords": ["BSCD", "default"],
   "tokens": [
     {
@@ -40,6 +40,16 @@
       "chainId": 97,
       "decimals": 18,
       "logoURI": "/images/coins/BTC.png"
+    },
+    {
+      "name": "LUCKY Token",
+      "symbol": "XLUCKY",
+      "address": "0x82dbc381a54554532b738e2bb11cf337b5e78e80",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/coins/lucky.png"
     }
+
+    
   ]
 }
