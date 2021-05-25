@@ -42,7 +42,7 @@ const Collectibles = () => {
       <Text as="p">
         {TranslateString(
           999,
-          'Pancake Collectibles are special ERC-721 NFTs that can be used on the BeSwap platform.',
+          'Pancake Collectibles are special ERC-721 NFTs that can be used on the Luckyswap platform.',
         )}
       </Text>
       <Text as="p">

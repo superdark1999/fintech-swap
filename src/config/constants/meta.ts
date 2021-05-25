@@ -1,16 +1,16 @@
 import { PageMeta } from './types'
 
 export const DEFAULT_META: PageMeta = {
-  title: 'BeSwap',
+  title: 'Luckyswap',
   description:
     'The most popular AMM on BSC by user count!',
-  image: 'https://BeSwap.finance/images/easter-battle.png',
+  image: 'https://Luckyswap.finance/images/easter-battle.png',
 }
 
 export const customMeta: { [key: string]: PageMeta } = {
   '/competition': {
-    title: 'BeSwap Easter Battle',
-    description: 'Register now for the BeSwap Easter battle!',
-    image: 'https://BeSwap.finance/images/easter-battle.png',
+    title: 'Luckyswap Easter Battle',
+    description: 'Register now for the Luckyswap Easter battle!',
+    image: 'https://Luckyswap.finance/images/easter-battle.png',
   },
 }
