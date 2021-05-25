@@ -34,7 +34,7 @@ const Farm: React.FC = () => {
 
   return (
     <Page>
-      <Hero>
+      {/* <Hero>
         <div>
           <Heading as="h1" size="xxl" mb="16px" color="#2b2c3a">
             {TranslateString(738, 'Syrup Pool')}
@@ -46,7 +46,7 @@ const Farm: React.FC = () => {
           </ul>
         </div>
         <img src="/images/syrup.png" alt="SYRUP POOL icon" width={410} height={191} />
-      </Hero>
+      </Hero> */}
       <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} />
       <Divider />
       <FlexLayout>
