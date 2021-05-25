@@ -406,6 +406,7 @@ export default function AddLiquidity({
                       </RowBetween>
                     )}
                   <Button
+                    className="btn-supply"
                     onClick={() => {
                       if (expertMode) {
                         onAdd()
