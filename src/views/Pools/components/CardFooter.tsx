@@ -76,7 +76,7 @@ const Label = styled.div`
 const TokenLink = styled.a`
   font-size: 14px;
   text-decoration: none;
-  color: ${(props) => props.theme.colors.primary};
+  color: #ffffff;
   cursor: pointer;
 `
 
