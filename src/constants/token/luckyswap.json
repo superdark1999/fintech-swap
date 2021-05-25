@@ -19,6 +19,14 @@
       "logoURI": "/images/coins/lucky.png"
     },
     {
+      "name": "LUCKY Token",
+      "symbol": "XLUCKY",
+      "address": "0x5C2AaAdD1FcE223baaEFB1cF41ce872e9d8B986A",
+      "chainId": 97,
+      "decimals": 18,
+      "logoURI": "/images/coins/lucky.png"
+    },
+    {
       "name": "WBNB Token",
       "symbol": "WBNB",
       "address": "0xae13d989dac2f0debff460ac112a837c89baa7cd",
