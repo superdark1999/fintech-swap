@@ -7,9 +7,9 @@ import { BscConnector } from './bsc/bscConnector'
 import { PortisConnector } from '@web3-react/portis-connector'
 
 import { NetworkConnector } from './NetworkConnector'
-let CHAIN_ID_TEMP ="56";
+let CHAIN_ID_TEMP ="97";
 const PORTIS_ID = process.env.REACT_APP_PORTIS_ID
-const NETWORK_URL = process.env.REACT_APP_NETWORK_URL
+const NETWORK_URL = 'https://data-seed-prebsc-1-s1.binance.org:8545'
 CHAIN_ID_TEMP = process.env.REACT_APP_CHAIN_ID  || CHAIN_ID_TEMP;
 export const NETWORK_CHAIN_ID: number = parseInt(CHAIN_ID_TEMP)
 if (typeof NETWORK_URL === 'undefined') {

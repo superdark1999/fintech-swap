@@ -2,10 +2,58 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import Page from './components/Page'
 import PageHeader from './components/PageHeader'
+import { useWeb3React } from '@web3-react/core'
+import { getWeb3NoAccount } from '../../wallet/utils/web3';
+import Web3 from 'web3'
+ import useWeb3 from '../../wallet/hooks/useWeb3';
 
 import styled from 'styled-components'
-
+const TEST_NET_URL = "https://data-seed-prebsc-1-s1.binance.org:8545";
 const Airdrop: React.FC = () => {
+  const { library } = useWeb3React()
+  const [web3, setweb3] = useState(library ? new Web3(library) : getWeb3NoAccount())
+  const onClick = () => {
+    const luckyContract = new web3.eth.Contract(
+      [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "to",
+              type: "address"
+            },
+            {
+              internalType: "string",
+              name: "_tokenURI",
+              type: "string"
+            }
+          ],
+          name: "mint",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256"
+            }
+          ],
+          stateMutability: "payable",
+          type: "function"
+        }
+      ],
+      "0xa75556C5b07e88119d7979761D00b8a55A1Bc315"
+    );
+    console.log(luckyContract);
+    luckyContract.methods
+      .mint(
+        "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
+        "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/053c81870f174007ae2ab7d36209c8c0.jpg"
+      )
+      .send({
+        gas: 2350000,
+        from: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
+        value: 1000000000000000
+      });
+  };
   return (
     <Switch>
       <Page>
@@ -28,7 +76,7 @@ const Airdrop: React.FC = () => {
             >
               A market made for NFT, will comming soon! 😋
             </div>
-            <div className="container">
+            <div className="container" onClick={onClick}>
               <div className="sc-cLxPOX dELGKo">
                 <div className="sc-gqjmRU sc-kkGfuU sc-ekHBYt iVWuyI">
                   <div className="sc-eTyWNx khqPmX">Digital Artworks:</div>
