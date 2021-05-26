@@ -285,3 +285,7 @@ a#swap-nav-link {
   background-color: transparent !important;
   border-color: transparent !important;
 }
+
+button.btn-blue {
+  background-color: #00a7e1;
+}

@@ -377,7 +377,7 @@ export default function RemoveLiquidity({
             </RowBetween>
           </>
         )}
-        <Button disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)} onClick={onRemove}>
+        <Button className="btn-supply" disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)} onClick={onRemove}>
           Confirm
         </Button>
       </>
@@ -622,6 +622,7 @@ export default function RemoveLiquidity({
                 ) : (
                   <RowBetween>
                     <Button
+                      className="btn-blue"
                       onClick={onAttemptToApprove}
                       variant={approval === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
                       disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
@@ -636,6 +637,7 @@ export default function RemoveLiquidity({
                       )}
                     </Button>
                     <Button
+                      className="btn-blue"
                       onClick={() => {
                         setShowConfirm(true)
                       }}
