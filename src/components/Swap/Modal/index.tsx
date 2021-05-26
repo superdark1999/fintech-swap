@@ -52,7 +52,7 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
         min-height: ${minHeight}vh;
       `}
     @media (max-width: 768px) {
-      min-height: (100vh - 100px);
+      min-height: calc(100vh - 150px);
     }
 
     display: flex;
