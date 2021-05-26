@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Text, LogoIcon } from '@beswap/uikit'
+import { Button, Heading, Text } from '@beswap/uikit'
 import Page from 'components/layout/Page'
 import useI18n from 'hooks/useI18n'
 
@@ -18,12 +18,12 @@ const NotFound = () => {
   return (
     <Page>
       <StyledNotFound>
-        <LogoIcon width="64px" mb="8px" />
+        <img src="../images/lucky-logo.png" width="64px" alt=""/>
         <Heading size="xxl">404</Heading>
         <Text mb="16px" color="#00A7E1">
           {TranslateString(1122, 'Oops, page not found.')}
         </Text>
-        <Button as="a" href="/" scale="sm">
+        <Button as="a" href="/" scale="sm" className="btn-supply">
           {TranslateString(1124, 'Back Home')}
         </Button>
       </StyledNotFound>

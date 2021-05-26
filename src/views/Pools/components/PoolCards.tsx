@@ -1445,7 +1445,7 @@ const BoxPool = styled.div`
   margin-bottom: 20px;
   position: relative;
   overflow: hidden;
-  box-shadow: rgb(249 249 249 / 19%) -2px 2px 0px 0px, rgb(255 255 255 / 23%) -2px 5px 11px 1px;
+  box-shadow: rgb(43 44 58) -2px 2px 0px 0px, rgb(38 39 47) -2px 5px 11px 1px;
 
   figure {
     background-color: #212628;

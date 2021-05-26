@@ -296,4 +296,8 @@ button.btn-blue {
     margin-left: -16px !important;
     margin-right: -16px !important;
   }
+
+  .list-menu {
+    z-index: 99;
+  }
 }
