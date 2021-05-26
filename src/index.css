@@ -154,19 +154,19 @@ svg {
   color: #fff;
 }
 
-a#swap-nav-link,
+/* a#swap-nav-link,
 a#pool-nav-link {
   height: 48px !important;
   background: transparent;
-}
+} */
 
-a#swap-nav-link {
+/* a#swap-nav-link {
   border: 1px double transparent !important;
   border-radius: 0.375rem !important;
   background-image: linear-gradient(#202231, #202231), linear-gradient(90deg, #00a7e1, #29f4c3) !important;
   background-origin: border-box !important;
   background-clip: padding-box, border-box !important;
-}
+} */
 
 .padding-0 {
   padding: 24px 0 !important;
@@ -284,8 +284,16 @@ a#swap-nav-link {
   color: #fff !important;
   background-color: transparent !important;
   border-color: transparent !important;
+  border-bottom: 2px solid #fff !important;
 }
 
 button.btn-blue {
   background-color: #00a7e1;
+}
+
+@media (max-width: 768px) {
+  .ant-carousel {
+    margin-left: -16px !important;
+    margin-right: -16px !important;
+  }
 }
