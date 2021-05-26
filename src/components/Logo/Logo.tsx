@@ -6,7 +6,7 @@ import logo from '../../assets/img/logo.png'
 const Logo: React.FC = () => {
   return (
     <StyledLogo to="/">
-      <img src={logo} height="55" className="logo-h" />
+      <img src={logo} width="100%" className="logo-h" />
     </StyledLogo>
   )
 }
