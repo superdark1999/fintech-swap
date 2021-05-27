@@ -13,13 +13,15 @@ const Home: React.FC = () => {
   const TranslateString = useI18n()
 
   return (
-    <Page>
+    <>
       <BannerHome />
-      <BalanceHome />
-      <ProfitHome />
-      <InterestHome />
-      <ListArtHome />
-    </Page>
+      <Page>
+        <BalanceHome />
+        <ProfitHome />
+        <InterestHome />
+        <ListArtHome />
+      </Page>
+    </>
   )
 }
 

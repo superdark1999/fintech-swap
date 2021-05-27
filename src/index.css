@@ -300,4 +300,9 @@ button.btn-blue {
   .list-menu {
     z-index: 99;
   }
+
+  .ant-carousel .slick-slide img {
+    min-height: 150px;
+    object-fit: cover;
+  }
 }
