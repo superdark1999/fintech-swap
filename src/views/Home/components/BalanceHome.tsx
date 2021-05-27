@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
 import styled from 'styled-components'
+import { BnbBalance } from 'hooks/useTokenBalance'
 import { Menu, Dropdown, message } from 'antd'
 import Chart from './Chart'
 
@@ -75,11 +76,12 @@ const menu = (
 )
 const listTime = ['1d', '5d', '1m', '1y']
 function BalanceHome() {
+  const balance = BnbBalance()
   return (
     <BalanceContainer>
       <div className="left-balance">
         <div className="left-balance-label">Balance</div>
-        <div className="left-balance-total-balance">$ 0</div>
+        <div className="left-balance-total-balance">{(balance.toNumber() / 1e18).toFixed(2)} BNB </div>
         <div className="left-balance-estimate">+ $ 0 (0.00%)</div>
         {/* <div className="left-balance-currency">
           <span>In USD </span>
@@ -95,7 +97,7 @@ function BalanceHome() {
           ))}
         </div> */}
       </div>
-      <div style={{height:"100%"}} className="right-balance">
+      <div style={{ height: '100%' }} className="right-balance">
         <Chart />
       </div>
     </BalanceContainer>
