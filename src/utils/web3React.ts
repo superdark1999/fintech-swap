@@ -1,7 +1,7 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { BscConnector } from '@binance-chain/bsc-connector'
-import { ConnectorNames } from '@beswap/uikit'
+import { ConnectorNames } from '@luckyswap/uikit'
 import { Web3Provider } from '@ethersproject/providers'
 
 import Web3 from 'web3'

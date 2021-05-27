@@ -1,5 +1,5 @@
 import React from 'react'
-import { ArrowForwardIcon, Button, ButtonProps } from '@beswap/uikit'
+import { ArrowForwardIcon, Button, ButtonProps } from '@luckyswap/uikit'
 
 const NextStepButton: React.FC<ButtonProps> = (props) => {
   return <Button endIcon={<ArrowForwardIcon color="currentColor" />} {...props} />

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, BoxProps, Text } from '@beswap/uikit'
+import { Box, BoxProps, Text } from '@luckyswap/uikit'
 
 const MetaLabel: React.FC<BoxProps> = ({ children, ...props }) => {
   return (

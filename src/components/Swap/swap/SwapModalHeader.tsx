@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { Trade, TradeType } from '@beswap/sdk'
-import { Button, Text } from '@beswap/uikit'
+import { Button, Text } from '@luckyswap/uikit'
 import { ArrowDown, AlertTriangle } from 'react-feather'
 import { Field } from 'state/swap/actions'
 import { isAddress, shortenAddress } from 'utils/'

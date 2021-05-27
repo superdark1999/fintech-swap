@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody } from '@beswap/uikit'
+import { Heading, Card, CardBody } from '@luckyswap/uikit'
 
 interface HowToCardProps {
   number?: number

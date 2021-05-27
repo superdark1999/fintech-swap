@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Skeleton, PocketWatchIcon, Text } from '@beswap/uikit'
+import { Flex, Skeleton, PocketWatchIcon, Text } from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
 import getTimePeriods from 'utils/getTimePeriods'
 import { Heading2Text } from '../CompetitionHeadingText'

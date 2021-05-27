@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Progress } from '@beswap/uikit'
+import { Box, Progress } from '@luckyswap/uikit'
 
 interface IfoCardProgressProps {
   progress: number

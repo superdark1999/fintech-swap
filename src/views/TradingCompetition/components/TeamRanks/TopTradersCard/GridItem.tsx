@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Text, Flex } from '@beswap/uikit'
+import { Heading, Text, Flex } from '@luckyswap/uikit'
 import styled from 'styled-components'
 import { LeaderboardDataItem } from '../../../types'
 import { localiseTradingVolume, accountEllipsis } from '../../../helpers'

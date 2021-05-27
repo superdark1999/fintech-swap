@@ -7,7 +7,7 @@ import {
   ChevronDownIcon,
   Box,
   Flex,
-} from '@beswap/uikit'
+} from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
 
 interface ApproveConfirmButtonsProps {

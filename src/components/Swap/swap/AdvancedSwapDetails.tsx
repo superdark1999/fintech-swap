@@ -1,6 +1,6 @@
 import React from 'react'
 import { Trade, TradeType } from '@beswap/sdk'
-import { Card, CardBody, Text } from '@beswap/uikit'
+import { Card, CardBody, Text } from '@luckyswap/uikit'
 import { Field } from 'state/swap/actions'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils//prices'

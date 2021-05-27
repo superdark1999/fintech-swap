@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronDownIcon, ChevronUpIcon, Text } from '@beswap/uikit'
+import { ChevronDownIcon, ChevronUpIcon, Text } from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
 
 export interface ExpandableSectionButtonProps {

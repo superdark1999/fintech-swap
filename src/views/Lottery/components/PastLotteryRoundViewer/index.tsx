@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Card, CardBody } from '@beswap/uikit'
+import { Card, CardBody } from '@luckyswap/uikit'
 import getLotteryRoundData from 'utils/getLotteryRoundData'
 import useI18n from 'hooks/useI18n'
 import useGetRecentLotteryRoundData from 'hooks/useGetRecentLotteryRoundData'

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Modal, Button, NoProfileAvatarIcon, Flex } from '@beswap/uikit'
+import { Modal, Button, NoProfileAvatarIcon, Flex } from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
 import { CompetitionProps } from '../../types'
 import MakeProfile from './MakeProfile'

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Button, useModal, IconButton, AddIcon, MinusIcon } from '@beswap/uikit'
+import { Button, useModal, IconButton, AddIcon, MinusIcon } from '@luckyswap/uikit'
 import UnlockButton from 'components/UnlockButton'
 import { useWeb3React } from '@web3-react/core'
 import { useFarmUser } from 'state/hooks'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Button, Text } from '@beswap/uikit'
+import { Heading, Button, Text } from '@luckyswap/uikit'
 import history from 'routerHistory'
 import useI18n from 'hooks/useI18n'
 import { CompetitionProps } from 'views/TradingCompetition/types'

@@ -12,7 +12,7 @@ import {
   BlockIcon,
   Button,
   useModal,
-} from '@beswap/uikit'
+} from '@luckyswap/uikit'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import { YourScoreProps } from '../../types'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Card, CardBody, Flex, Heading, Text } from '@beswap/uikit'
+import { Button, Card, CardBody, Flex, Heading, Text } from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
 import { Link } from 'react-router-dom'
 

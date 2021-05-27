@@ -1,6 +1,6 @@
 import { Currency, CurrencyAmount, Fraction, Percent } from '@beswap/sdk'
 import React from 'react'
-import { Button, Text } from '@beswap/uikit'
+import { Button, Text } from '@luckyswap/uikit'
 import { RowBetween, RowFixed } from '../../components/Swap/Row'
 import CurrencyLogo from '../../components/Swap/CurrencyLogo'
 import { Field } from '../../state/mint/actions'

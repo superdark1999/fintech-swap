@@ -9,7 +9,7 @@ import {
   Button,
   ChevronDownIcon,
   ChevronUpIcon,
-} from '@beswap/uikit'
+} from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
 import { PublicIfoState } from 'hooks/useGetPublicIfoData'
 import { Ifo } from 'config/constants/types'

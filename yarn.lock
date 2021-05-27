@@ -1387,18 +1387,6 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@beswap/uikit@0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@beswap/uikit/-/uikit-0.0.9.tgz#42bd5fe374420cda8d7000971c7a01377b1074a4"
-  integrity sha512-+97cwLbPXKL0oqQggg/E7W8+YOUlroPq4Db1KQpwYa6X59qM+tOOIpzK1mORAB2JkAUfVfUdFbD+fBkVadp5yA==
-  dependencies:
-    "@rollup/plugin-url" "^6.0.0"
-    "@types/lodash" "^4.14.162"
-    "@types/styled-system" "^5.1.10"
-    lodash "^4.17.20"
-    react-transition-group "^4.4.1"
-    styled-system "^5.1.5"
-
 "@binance-chain/bsc-connector@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@binance-chain/bsc-connector/-/bsc-connector-1.0.0.tgz#5ce6b02af0921c5fb52c10861b7a0b4a958ca57a"
@@ -2671,6 +2659,18 @@
   version "5.50.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.50.0.tgz#29c6419e8379d496ab6d0426eadf3c4d100cd186"
   integrity sha512-swKHYCOZUGyVt4ge0u8a7AwNcA//h4nx5wIi0sruGye1IJ5Cva0GyK9L2/WdX+kWVTKp92ZiEo1df31lrWGPgA==
+
+"@luckyswap/uikit@^0.12.1":
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/@luckyswap/uikit/-/uikit-0.12.1.tgz#db33d565cdc4817f8cfb823dc3f67c83221f005b"
+  integrity sha512-h/LFMz1hoChle/yG/cmfhdiNUdO3fMPcA4dJQr63a64LaJ8x4CR2iifcmFH7hbSZM6YssDiYcl0N4eb4QMlxfg==
+  dependencies:
+    "@rollup/plugin-url" "^6.0.0"
+    "@types/lodash" "^4.14.162"
+    "@types/styled-system" "^5.1.10"
+    lodash "^4.17.20"
+    react-transition-group "^4.4.1"
+    styled-system "^5.1.5"
 
 "@metamask/safe-event-emitter@2.0.0", "@metamask/safe-event-emitter@^2.0.0":
   version "2.0.0"

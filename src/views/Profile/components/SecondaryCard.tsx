@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Text } from '@beswap/uikit'
+import { Text } from '@luckyswap/uikit'
 
 const SecondaryCard = styled(Text)`
   border: 2px solid #2b2c3a;

@@ -1,4 +1,4 @@
-import { Heading } from '@beswap/uikit'
+import { Heading } from '@luckyswap/uikit'
 import styled, { DefaultTheme } from 'styled-components'
 
 const H1SizeStyles = (theme: DefaultTheme) => `

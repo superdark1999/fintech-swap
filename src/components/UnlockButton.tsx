@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, useWalletModal } from '@beswap/uikit'
+import { Button, useWalletModal } from '@luckyswap/uikit'
 import useAuth from 'hooks/useAuth'
 import useI18n from 'hooks/useI18n'
 

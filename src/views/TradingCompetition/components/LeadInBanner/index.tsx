@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowForwardIcon, Box, Flex, LaurelLeftIcon, LaurelRightIcon } from '@beswap/uikit'
+import { ArrowForwardIcon, Box, Flex, LaurelLeftIcon, LaurelRightIcon } from '@luckyswap/uikit'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import PageContainer from 'components/layout/Container'

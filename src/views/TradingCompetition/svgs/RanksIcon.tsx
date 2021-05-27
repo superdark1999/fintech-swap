@@ -1,5 +1,5 @@
 import React from 'react'
-import { Svg, SvgProps } from '@beswap/uikit'
+import { Svg, SvgProps } from '@luckyswap/uikit'
 
 const Ranks: React.FC<SvgProps> = (props) => {
   return (

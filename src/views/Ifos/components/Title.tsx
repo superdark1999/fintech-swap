@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Heading } from '@beswap/uikit'
+import { Heading } from '@luckyswap/uikit'
 
 const Title = styled(Heading).attrs({ size: 'lg' })`
   color: ${({ theme }) => theme.colors.secondary};

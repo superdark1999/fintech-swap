@@ -10,7 +10,7 @@ import {
   CheckmarkCircleIcon,
   useWalletModal,
   useModal,
-} from '@beswap/uikit'
+} from '@luckyswap/uikit'
 import useAuth from 'hooks/useAuth'
 import useI18n from 'hooks/useI18n'
 import RegisterModal from '../RegisterModal'

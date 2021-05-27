@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react'
 import styled,{ ThemeContext } from 'styled-components'
 import { Pair } from '@beswap/sdk'
-import { Button, CardBody, Text } from '@beswap/uikit'
+import { Button, CardBody, Text } from '@luckyswap/uikit'
 import { Link } from 'react-router-dom'
 import { useActiveWeb3React } from 'hooks'
 import { usePairs } from 'data/Reserves'

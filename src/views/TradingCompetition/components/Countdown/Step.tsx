@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { LogoIcon, CheckmarkCircleIcon, Flex, Text } from '@beswap/uikit'
+import { LogoIcon, CheckmarkCircleIcon, Flex, Text } from '@luckyswap/uikit'
 import { CountdownProps } from '../../types'
 
 const sharedFlexStyles = `

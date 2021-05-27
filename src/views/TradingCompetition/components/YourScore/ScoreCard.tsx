@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, Flex, Skeleton } from '@beswap/uikit'
+import { Card, CardBody, Flex, Skeleton } from '@luckyswap/uikit'
 import UnlockButton from 'components/UnlockButton'
 import { YourScoreProps } from '../../types'
 import CardUserInfo from './CardUserInfo'

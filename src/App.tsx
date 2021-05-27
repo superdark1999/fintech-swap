@@ -1,7 +1,7 @@
 import React, { useState, useEffect, lazy } from 'react'
 import { HashRouter, Redirect, BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Credentials, StringTranslations } from '@crowdin/crowdin-api-client'
-import { ResetCSS } from '@beswap/uikit'
+import { ResetCSS } from '@luckyswap/uikit'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { useFetchPriceList, useFetchProfile, useFetchPublicData } from 'state/hooks'

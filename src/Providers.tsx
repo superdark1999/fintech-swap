@@ -1,5 +1,5 @@
 import React from 'react'
-import { ModalProvider } from '@beswap/uikit'
+import { ModalProvider } from '@luckyswap/uikit'
 import { Web3ReactProvider,createWeb3ReactRoot } from '@web3-react/core'
 import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'

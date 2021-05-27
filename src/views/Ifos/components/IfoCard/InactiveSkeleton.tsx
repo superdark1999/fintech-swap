@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex, Skeleton } from '@beswap/uikit'
+import { Box, Flex, Skeleton } from '@luckyswap/uikit'
 
 const InactiveSkeleton = () => (
   <>
