@@ -23,6 +23,7 @@ import { RedirectOldRemoveLiquidityPathStructure } from './views/RemoveLiquidity
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './views/AddLiquidity/redirects'
 import './index.css'
 import 'antd/dist/antd.css'
+import Poolls from './views/Pools/components/PoolCardsDetail'
 
 import { LanguageContext } from './hooks/LanguageContext'
 import { TranslationsContext } from './hooks/TranslationsContext'
@@ -40,6 +41,7 @@ const Teams = lazy(() => import('./views/Teams'))
 const Team = lazy(() => import('./views/Teams/Team'))
 const Profile = lazy(() => import('./views/Profile'))
 const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
+
 
 // This config is required for number formating
 BigNumber.config({
@@ -172,6 +174,9 @@ const App: React.FC = () => {
                 </Route>
                 <Route path="/nft">
                   <Redirect to="/collectibles" />
+                </Route>
+                <Route path="/PoolCardsDetail">
+                  <Poolls />
                 </Route>
                 {/* 404 */}
                 <Route component={NotFound} />
