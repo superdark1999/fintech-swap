@@ -30,6 +30,7 @@ const SearchInput: React.FC<Props> = ({ value, onChange }) => {
     <Container toggled={toggled}>
       <InputWrapper>
         <StyledInput
+          className="input-search"
           ref={inputEl}
           value={value}
           onChange={onChange}

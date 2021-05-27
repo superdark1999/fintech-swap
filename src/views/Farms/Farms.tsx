@@ -310,7 +310,7 @@ const Farms: React.FC = () => {
           </ViewControls> */}
           <FilterContainer>
             <LabelWrapper>
-              <Text color="#2b2c3a">SORT BY</Text>
+              <Text color="#fff">SORT BY</Text>
               <Select
                 options={[
                   {
@@ -338,7 +338,7 @@ const Farms: React.FC = () => {
               />
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text color="#2b2c3a">SEARCH</Text>
+              <Text color="#fff">SEARCH</Text>
               <SearchInput onChange={handleChangeQuery} value={query} />
             </LabelWrapper>
           </FilterContainer>
