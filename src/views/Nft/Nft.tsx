@@ -3,11 +3,16 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import Page from './components/Page'
 import PageHeader from './components/PageHeader'
 import { useWeb3React } from '@web3-react/core'
+import { useActiveWeb3React } from '../../wallet/hooks'
 import { getWeb3NoAccount } from '../../wallet/utils/web3'
 import Web3 from 'web3'
 import { useContract } from '../../wallet/hooks/useContract'
 import useWeb3 from '../../wallet/hooks/useWeb3'
 import styled from 'styled-components'
+import {useMintNFT} from '../../services/NFTServices'
+import { useWalletModalToggle } from '../../wallet/state/application/hooks'
+
+
 const TEST_NET_URL = 'https://data-seed-prebsc-1-s1.binance.org:8545'
 const Airdrop: React.FC = () => {
   const abiNFT = [
@@ -37,21 +42,11 @@ const Airdrop: React.FC = () => {
     },
   ]
 
-  const luckyswapContract = useContract(
-    '0xa75556C5b07e88119d7979761D00b8a55A1Bc315',
-    abiNFT
-  )
+
+  const onMintNFT = useMintNFT('https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/053c81870f174007ae2ab7d36209c8c0.jpg',undefined,0)
 
   const onClick = () => {
-    luckyswapContract.mint(
-      '0x09D0A2963D27B27C234b3637C528eCB9356B8867',
-      'https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/053c81870f174007ae2ab7d36209c8c0.jpg',
-      {
-        gasLimit: 235000,
-        from: '0x2b2512B318785aE77e014ab413855fA60F805fFA',
-        value: 1000000000000000,
-      },
-    )
+    return onMintNFT()
   }
   return (
     <Switch>
@@ -61,7 +56,6 @@ const Airdrop: React.FC = () => {
             <PageHeader
               icon={<img src={''} height="140" />}
               subtitle=""
-              title="NFT Supermarket"
             />
             {/* <CountDown timeCountDown={'2021-04-10 10:00:01'} /> */}
             <div

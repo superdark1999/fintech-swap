@@ -76,17 +76,19 @@ const App: React.FC = () => {
       <Updaters />
 
       <Router>
-        <TopBar onPresentMobileMenu={handlePresentMobileMenu} />
 
         <Web3ReactManager>
+          <>
+          <TopBar onPresentMobileMenu={handlePresentMobileMenu} />
           <Switch>
-            <Route path="/" exact>
+            {/* <Route path="/" exact>
               <Nft />
             </Route>
             <Route path="/nfts">
               <Nft />
-            </Route>
+            </Route> */}
           </Switch>
+          </>
         </Web3ReactManager>
       </Router>
     </Providers>

@@ -126,16 +126,17 @@ export const ButtonSecondary = styled(Base)`
   border-radius: 12px;
   padding: ${({ padding }) => (padding ? padding : '10px')};
   transition: .5s;
+  align-items: center;
 
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.primary4};
     border: 1px solid ${({ theme }) => theme.primary3};
   }
 
-  &:hover {
+  /* &:hover {
     border: 1px solid ${({ theme }) => theme.primary3};
     background: radial-gradient(76.02% 75.41% at 1.84% 0%, #77fff9 0%, #37A5F5 100%);
-  }
+  } */
   
   &:active {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.primary4};

@@ -37,7 +37,6 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
           <Logo />
         </StyledLogoWrapper>
         <Nav />
-        {isMobile ? <Web3Status /> : ''}
       </StyledTopBarInner>
     </StyledTopBar>
   )
@@ -56,10 +55,10 @@ const StyledTopBar = styled.div`
   position: fixed;
   width: 100vw;
   top: 0;
-  background: linear-gradient(
-    rgb(14, 19, 29),
-    rgb(6, 10, 16) 30.65%
-  ) !important;
+  align-items:center;
+  justify-content:center;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 16px -4px rgba(35, 35, 35, 0.06);
 
   &.fixed {
     background: linear-gradient(

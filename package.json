@@ -22,6 +22,7 @@
     "@types/rebass": "^4.0.8",
     "@uniswap/token-lists": "^1.0.0-beta.21",
     "@web3-react/fortmatic-connector": "^6.1.6",
+    "antd": "^4.16.0",
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.1",
     "bootstrap": "^4.5.3",
