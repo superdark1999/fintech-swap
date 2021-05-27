@@ -3,7 +3,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Menu, Dropdown, message } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
+import Chart from './Chart'
 
 const BalanceContainer = styled.div`
   height: 350px;
@@ -79,8 +79,8 @@ function BalanceHome() {
     <BalanceContainer>
       <div className="left-balance">
         <div className="left-balance-label">Balance</div>
-        <div className="left-balance-total-balance">$ 12 329</div>
-        <div className="left-balance-estimate">+ $ 256.23 (12.3%)</div>
+        <div className="left-balance-total-balance">$ 0</div>
+        <div className="left-balance-estimate">+ $ 0 (0.00%)</div>
         {/* <div className="left-balance-currency">
           <span>In USD </span>
           <Dropdown overlay={menu} trigger={['click']}>
@@ -95,7 +95,9 @@ function BalanceHome() {
           ))}
         </div> */}
       </div>
-      <div className="right-balance"> </div>
+      <div style={{height:"100%"}} className="right-balance">
+        <Chart />
+      </div>
     </BalanceContainer>
   )
 }
