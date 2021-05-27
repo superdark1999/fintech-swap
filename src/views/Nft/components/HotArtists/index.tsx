@@ -1,11 +1,35 @@
 import React from 'react'
-
-function index() {
+import {HotArtistsStyled} from './styled'
+function HotArtists() {
     return (
-        <div>
-            
-        </div>
+        <HotArtistsStyled>
+            <div className="header-artists">
+                <div className="title-artists">HOT ARTISTS 🔥</div>
+                <div className="more-artists">View more</div>
+            </div>
+            <div className="content-artists">
+                <div className="card-artists">
+
+                </div>
+                <div className="card-artists">
+                    
+                </div>
+                <div className="card-artists">
+                    
+                </div>
+                <div className="card-artists">
+                    
+                </div>
+                <div className="card-artists">
+                    
+                </div>
+
+                <div className="card-artists">
+                    
+                </div>
+            </div>
+        </HotArtistsStyled>
     )
 }
 
-export default index
+export default HotArtists

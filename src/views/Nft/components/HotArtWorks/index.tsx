@@ -1,11 +1,17 @@
 import React from 'react'
-
-function index() {
+import { HotArtWorksStyled } from './styled'
+function HotArtWorks() {
     return (
-        <div>
-            
-        </div>
+        <HotArtWorksStyled>
+            <div className="header-artists">
+                <div className="title-artists">HOT ARTWORK 🔥</div>
+                <div className="more-artists">View more</div>
+            </div>
+            <div className="content-artists">
+                A
+            </div>
+        </HotArtWorksStyled>
     )
 }
 
-export default index
+export default HotArtWorks

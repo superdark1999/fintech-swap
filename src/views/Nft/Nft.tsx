@@ -23,7 +23,7 @@ const NFTContainer: React.FC = () => {
               <div className="trending-nft">
                 <TrendingBar />
               </div>
-              <ModalLucky/>
+              {/* <ModalLucky/> */}
               <div className="banner-nft">
                 <BannerBar/>
               </div>
@@ -48,7 +48,7 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
   height: 100%;
   max-width:2200px;
   margin:auto;
-  border:1px solid rgba(0,0,0,0.2);
+  border:1px solid rgba(0,0,0,0.2);  
   .left-sidebar{
     width: ${(props:any) => props.onShowsidebar ? '320px':'80px'};
     height: 100%;
@@ -66,22 +66,21 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
     .banner-nft{
       height:240px;
       width:100%;
-      margin: 40px 0;
+      margin: 40px auto;
       padding: 0 30px;
+      max-width:1280px;
     }
     .space-collection{
-      height:1000px;
+      height:600px;
       width:100%;
       margin-bottom:60px;
+      padding: 0 30px;
     }
     .hot-artists-nft{
-      background:green;
     }
     .hot-artworks-nft{
-      background:violet;
     }
     .collection-nft{
-      background:yellow;
     }
   }
 `

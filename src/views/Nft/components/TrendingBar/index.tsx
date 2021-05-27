@@ -1,8 +1,20 @@
 import React from 'react'
-
+import {TrendingBarStyled} from './styled'
 const TrendingBar: React.FC = () => {
     return (
-        <div></div>
+        <TrendingBarStyled>
+            <div className="title-bar">Trending now</div>
+            <div className="filter-bar">
+                <div className="filter-bar-item">#luckyswap</div>
+                <div className="filter-bar-item">#luckyswapluckyswap</div>
+                <div className="filter-bar-item">#luckyswapluckyswap</div>
+                <div className="filter-bar-item">#luckyswapluckyswap</div>
+                <div className="filter-bar-item">#luckyswapluckyswap</div>
+                <div className="filter-bar-item">#luckyswap</div>
+                <div className="filter-bar-item">#luckyswap</div>
+            </div>
+            <div className="filter-bar-more">More</div>
+        </TrendingBarStyled>
     )
 }
 
