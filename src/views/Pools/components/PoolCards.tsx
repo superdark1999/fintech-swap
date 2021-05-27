@@ -1,7 +1,8 @@
 import React, { useState }  from 'react'
 import styled from 'styled-components'
-import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink, Card, CardTitle, CardText } from 'reactstrap';
+import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom'
 // import { Row, Col } from 'antd'
 
 
@@ -112,7 +113,9 @@ function PoolCards() {
                   </CardContent>
 
                   <Boxbtn>
-                    <Button color="primary">Select</Button>
+                    <Button color="primary">
+                      <Link to="/PoolCardsDetail">Select</Link>
+                    </Button>
                   </Boxbtn>
                 </BoxPool>
               </Col>
@@ -147,7 +150,9 @@ function PoolCards() {
                   </CardContent>
 
                   <Boxbtn>
-                    <Button color="primary">Select</Button>
+                    <Button color="primary">
+                      <Link to="/PoolCardsDetail">Select</Link>
+                    </Button>
                   </Boxbtn>
                 </BoxPool>
               </Col>
@@ -181,7 +186,9 @@ function PoolCards() {
                   </CardContent>
 
                   <Boxbtn>
-                    <Button color="primary">Select</Button>
+                    <Button color="primary">
+                      <Link to="/PoolCardsDetail">Select</Link>
+                    </Button>
                   </Boxbtn>
                 </BoxPool>
               </Col>
@@ -215,7 +222,9 @@ function PoolCards() {
                   </CardContent>
 
                   <Boxbtn>
-                    <Button color="primary">Select</Button>
+                    <Button color="primary">
+                      <Link to="/PoolCardsDetail">Select</Link>
+                    </Button>
                   </Boxbtn>
                 </BoxPool>
               </Col>
@@ -249,7 +258,9 @@ function PoolCards() {
                   </CardContent>
 
                   <Boxbtn>
-                    <Button color="primary">Select</Button>
+                    <Button color="primary">
+                      <Link to="/PoolCardsDetail">Select</Link>
+                    </Button>
                   </Boxbtn>
                 </BoxPool>
               </Col>
@@ -283,7 +294,9 @@ function PoolCards() {
                   </CardContent>
 
                   <Boxbtn>
-                    <Button color="primary">Select</Button>
+                    <Button color="primary">
+                      <Link to="/PoolCardsDetail">Select</Link>
+                    </Button>
                   </Boxbtn>
                 </BoxPool>
               </Col>
@@ -317,7 +330,9 @@ function PoolCards() {
                   </CardContent>
 
                   <Boxbtn>
-                    <Button color="primary">Select</Button>
+                    <Button color="primary">
+                      <Link to="/PoolCardsDetail">Select</Link>
+                    </Button>
                   </Boxbtn>
                 </BoxPool>
               </Col>
@@ -351,7 +366,9 @@ function PoolCards() {
                   </CardContent>
 
                   <Boxbtn>
-                    <Button color="primary">Select</Button>
+                    <Button color="primary">
+                      <Link to="/PoolCardsDetail">Select</Link>
+                    </Button>
                   </Boxbtn>
                 </BoxPool>
               </Col>
@@ -385,7 +402,9 @@ function PoolCards() {
                   </CardContent>
 
                   <Boxbtn>
-                    <Button color="primary">Select</Button>
+                    <Button color="primary">
+                      <Link to="/PoolCardsDetail">Select</Link>
+                    </Button>
                   </Boxbtn>
                 </BoxPool>
               </Col>
@@ -419,7 +438,9 @@ function PoolCards() {
                   </CardContent>
 
                   <Boxbtn>
-                    <Button color="primary">Select</Button>
+                    <Button color="primary">
+                      <Link to="/PoolCardsDetail">Select</Link>
+                    </Button>
                   </Boxbtn>
                 </BoxPool>
               </Col>
@@ -459,7 +480,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -493,7 +516,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -527,7 +552,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -561,7 +588,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -595,7 +624,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -629,7 +660,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -669,7 +702,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -703,7 +738,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -737,7 +774,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -771,7 +810,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -805,7 +846,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -845,7 +888,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -879,7 +924,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -913,7 +960,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -947,7 +996,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -987,7 +1038,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -1021,7 +1074,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
@@ -1055,7 +1110,9 @@ function PoolCards() {
                     </CardContent>
 
                     <Boxbtn>
-                      <Button color="primary">Select</Button>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Select</Link>
+                      </Button>
                     </Boxbtn>
                   </BoxPool>
                 </Col>
