@@ -292,11 +292,6 @@ button.btn-blue {
 }
 
 @media (max-width: 768px) {
-  .ant-carousel {
-    margin-left: -16px !important;
-    margin-right: -16px !important;
-  }
-
   .list-menu {
     z-index: 99;
   }

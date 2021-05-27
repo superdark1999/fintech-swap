@@ -14,14 +14,17 @@ const ProfitHomeContainer = styled.div`
 const CardProfitStyled = styled.div`
   background-color: ${(props: any) => props.bgColor};
   color: white;
-  height: 233px;
+  height: 165px;
   display: flex;
   flex-direction: column;
   padding: 0 10px;
   border-radius: 6px;
+  margin-bottom: 30px;
 
   @media (min-width: 768px) {
+    height: 233px;
     padding-left: 50px;
+    margin-bottom: 0;
   }
 
   .top-profit {
@@ -31,8 +34,12 @@ const CardProfitStyled = styled.div`
     display: flex;
     
     span {
-      margin-top: 20px;
+      margin-top: 0;
       color: #245288;
+
+      @media (min-width: 768px) {
+        margin-top: 20px;
+      }
     }
 
     .dropdown-profit {
