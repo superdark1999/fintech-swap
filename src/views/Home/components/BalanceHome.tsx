@@ -7,7 +7,7 @@ import { Menu, Dropdown, message } from 'antd'
 import Chart from './Chart'
 
 const BalanceContainer = styled.div`
-  height: 350px;
+  height: 200px;
   width: 100%;
   margin-top: 30px;
   align-items: center;
@@ -15,6 +15,10 @@ const BalanceContainer = styled.div`
   background-color: #232627;
   color: #9a9eb1;
   border-radius: 6px;
+
+  @media (min-width: 768px) {
+    height: 350px;
+  }
 
   .left-balance {
     width: 300px;
@@ -36,7 +40,11 @@ const BalanceContainer = styled.div`
       color: #84ce95;
       font-weight: bold;
       font-size: 18px;
-      margin-bottom: 46px;
+      margin-bottom: 0;
+
+      @media (min-width: 768px) {
+        margin-bottom: 46px;
+      }
     }
 
     .left-balance-currency {
