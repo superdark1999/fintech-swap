@@ -30,6 +30,7 @@ const Container = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
     padding: 16px 32px;
+    background-color: transparent !important;
   }
 `
 
@@ -127,7 +128,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
             </StyledLinkExternal>
           </StakeContainer>
         )}
-        <StyledLinkExternal href={bsc} color="#fff">{TranslateString(999, 'View Contract')}</StyledLinkExternal>
+        <StyledLinkExternal href={bsc} color="#2b2c3a">{TranslateString(999, 'View Contract')}</StyledLinkExternal>
         <StyledLinkExternal href={info}>{TranslateString(999, 'See Pair Info')}</StyledLinkExternal>
         <TagsContainer>
           {isCommunityFarm ? <CommunityTag /> : <CoreTag />}

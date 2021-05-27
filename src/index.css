@@ -301,3 +301,7 @@ button.btn-blue {
     object-fit: cover;
   }
 }
+
+input.input-search {
+  background-color: #686a6b;
+}
