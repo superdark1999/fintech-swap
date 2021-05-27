@@ -19,7 +19,9 @@ import UserUpdater from './wallet/state/user/updater'
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import Nft from './views/Nft'
 import getLibrary from './wallet/utils/getLibrary'
-
+import { Layout, Menu, Breadcrumb } from 'antd';
+import 'antd/dist/antd.css';
+const { Header, Content, Footer } = Layout;
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if ('ethereum' in window) {
@@ -74,10 +76,8 @@ const App: React.FC = () => {
   return (
     <Providers>
       <Updaters />
-
       <Router>
         <TopBar onPresentMobileMenu={handlePresentMobileMenu} />
-
         <Web3ReactManager>
           <Switch>
             <Route path="/" exact>
