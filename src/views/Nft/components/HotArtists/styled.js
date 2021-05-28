@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 export const HotArtistsStyled = styled.div`
+position: relative;
   .header-artists{
     height:48px;
     width:100%;
@@ -19,6 +20,16 @@ export const HotArtistsStyled = styled.div`
         cursor: pointer;
     }
   }
+    .scroll-left {
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      color: #E7EBEF;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #ffffff;
+      z-index: 1;
+    }
   .content-artists{
       width: 100%;
       max-width: 100%;
@@ -27,7 +38,9 @@ export const HotArtistsStyled = styled.div`
       ::-webkit-scrollbar {
         display: none;
       }
-
+      position: relative;
+      scroll-behavior: smooth;
+      
       .card-artists{
         margin:24px 0px;
         min-width:248px;
@@ -38,7 +51,7 @@ export const HotArtistsStyled = styled.div`
         margin-right: 20px;
         padding: 24px;
         :hover{ 
-          box-shadow: 1px 4px 8px #ececec;
+          box-shadow: 1px 10px 10px grey;
           -webkit-transition:  box-shadow .3s ease-in;
         }
         .avatar-artists{
