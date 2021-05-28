@@ -24,9 +24,9 @@ const StyledPage = styled.div`
 
 const StyledMain = styled.div`
   align-items: center;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 80px);
   min-height: calc(100vh - ${(props) => props.theme.topBarSize * 1.1}px);
-  margin-top:100px;
+  margin-top:80px;
 `
 
 export default Page

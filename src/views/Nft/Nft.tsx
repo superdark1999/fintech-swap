@@ -49,6 +49,7 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
   max-width:2200px;
   margin:auto;
   border:1px solid rgba(0,0,0,0.2);  
+  border-top:none;
   .left-sidebar{
     width: ${(props:any) => props.onShowsidebar ? '320px':'80px'};
     height: 100%;
@@ -61,7 +62,8 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
     .trending-nft{
       width:100%;
       height:80px;
-      border-bottom: 1px solid rgba(0,0,0,0.2);
+      box-shadow: 0px 4px 16px -4px rgba(35, 35, 35, 0.06);
+      border-bottom: 1px solid rgba(0,0,0,.06);
     }
     .banner-nft{
       height:240px;
@@ -71,7 +73,7 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
       max-width:1280px;
     }
     .space-collection{
-      height:600px;
+      /* height:600px; */
       width:100%;
       margin-bottom:60px;
       padding: 0 30px;

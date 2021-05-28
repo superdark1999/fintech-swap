@@ -33,33 +33,29 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   return (
     <StyledTopBar className={classtSicky}>
       <StyledTopBarInner>
-        <StyledLogoWrapper>
+        <div className="header-wrapper">
           <Logo />
-        </StyledLogoWrapper>
-        <Nav />
+          <Nav />
+        </div>
       </StyledTopBarInner>
     </StyledTopBar>
   )
 }
 
-const StyledLogoWrapper = styled.div`
-  width: 260px;
-
-  @media (max-width: 400px) {
-    width: auto;
-  }
-`
-
 const StyledTopBar = styled.div`
+  .header-wrapper{
+    width:100vw;
+    background: #FFFFFF;
+    max-width:2200px;
+    margin: auto;
+  }
   z-index: 20;
-  position: fixed;
   width: 100vw;
+  height:80px;
   top: 0;
-  align-items:center;
-  justify-content:center;
   background: #FFFFFF;
   box-shadow: 0px 4px 16px -4px rgba(35, 35, 35, 0.06);
-
+  border-bottom: 1px solid rgba(0,0,0,.06);
   &.fixed {
     background: linear-gradient(
       rgb(14, 19, 29),
@@ -82,7 +78,7 @@ const StyledTopBar = styled.div`
 const StyledTopBarInner = styled.div`
   align-items: center;
   display: flex;
-  min-height: ${(props) => props.theme.topBarSize}px;
+  min-height: 80px;
   justify-content: space-between;
   max-width: ${(props) => props.theme.siteWidth}px;
   width: 100%;
