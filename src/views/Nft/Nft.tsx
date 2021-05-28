@@ -11,7 +11,7 @@ import HotArtWorks from './components/HotArtWorks/index'
 import Collection from './components/Collection/index'
 import ModalLucky from '../../components-v2/Modal'
 const NFTContainer: React.FC = () => {
-  const [onShowSidebar, setShowSidebar] = useState(true)
+  const [onShowSidebar, setShowSidebar] = useState(false)
   return (
     <Switch>
       <Page>
