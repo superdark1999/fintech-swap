@@ -7,14 +7,14 @@ interface Props {
 }
 
 const Title = styled.div`
-  color: #ed4b9e;
+  color: #fff;
   font-size: 24px;
   font-weight: 600;
   text-transform: uppercase;
 `
 
 const ActionLink = styled.a`
-  color: #ed4b9e;
+  color: #fff;
   font-size: 14px;
 `
 

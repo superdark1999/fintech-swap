@@ -9,7 +9,6 @@ import Chart from './Chart'
 const BalanceContainer = styled.div`
   height: 200px;
   width: 100%;
-  margin-top: 30px;
   align-items: center;
   display: flex;
   background-color: #232627;
