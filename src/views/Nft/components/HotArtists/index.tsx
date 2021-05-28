@@ -1,12 +1,12 @@
 import React from 'react'
 import {HotArtistsStyled} from './styled'
-import Crown from '../../../../assets/images/crown.svg'
-import Checkmark from '../../../../assets/images/checkmark.svg'
+import Crown from 'assets/images/crown.svg'
+import Checkmark from 'assets/images/checkmark.svg'
 
 
 const dataMock = [
   {
-    avt: "https://www.35express.org/wp-content/uploads/2021/05/su-nghiep-cua-doanh-nhan-hang-canada-35express.jpg",
+    avt: "https://lh3.googleusercontent.com/proxy/SKse1B9axvgGHaQt4Lq3Jz1wdajppcGyXAl0EqweKikhKtM0X5TRyOZCalKm29AdLECT_vIbPk3amROJaQFPC57ANPTY03CQ9_oMIQbnoZA",
     name: "Airframe",
     rank: "GOLD ARTIST",
     images: [
@@ -16,7 +16,7 @@ const dataMock = [
     ]
   },
   {
-    avt: "https://www.35express.org/wp-content/uploads/2021/05/su-nghiep-cua-doanh-nhan-hang-canada-35express.jpg",
+    avt: "https://lh3.googleusercontent.com/proxy/SKse1B9axvgGHaQt4Lq3Jz1wdajppcGyXAl0EqweKikhKtM0X5TRyOZCalKm29AdLECT_vIbPk3amROJaQFPC57ANPTY03CQ9_oMIQbnoZA",
     name: "Airframe",
     rank: "GOLD ARTIST",
     images: [
@@ -26,7 +26,7 @@ const dataMock = [
     ]
   },
   {
-    avt: "https://lh3.googleusercontent.com/proxy/tLtX2NEAdKYmj7PwslQ5M1cqC1krdd0-uep5ijBPA0Vb7SPvl47m-n5UTPSr9m_1usp0rjwHqPCV8cHA8D9FfAuiG1Bt2b-td6m4ueytul8",
+    avt: "https://lh3.googleusercontent.com/proxy/SKse1B9axvgGHaQt4Lq3Jz1wdajppcGyXAl0EqweKikhKtM0X5TRyOZCalKm29AdLECT_vIbPk3amROJaQFPC57ANPTY03CQ9_oMIQbnoZA",
     name: "Airframe",
     rank: "GOLD ARTIST",
     images: [
@@ -36,7 +36,7 @@ const dataMock = [
     ]
   },
   {
-    avt: "https://lh3.googleusercontent.com/proxy/tLtX2NEAdKYmj7PwslQ5M1cqC1krdd0-uep5ijBPA0Vb7SPvl47m-n5UTPSr9m_1usp0rjwHqPCV8cHA8D9FfAuiG1Bt2b-td6m4ueytul8",
+    avt: "https://lh3.googleusercontent.com/proxy/SKse1B9axvgGHaQt4Lq3Jz1wdajppcGyXAl0EqweKikhKtM0X5TRyOZCalKm29AdLECT_vIbPk3amROJaQFPC57ANPTY03CQ9_oMIQbnoZA",
     name: "Airframe",
     rank: "GOLD ARTIST",
     images: [
@@ -46,7 +46,7 @@ const dataMock = [
     ]
   },
   {
-    avt: "https://lh3.googleusercontent.com/proxy/tLtX2NEAdKYmj7PwslQ5M1cqC1krdd0-uep5ijBPA0Vb7SPvl47m-n5UTPSr9m_1usp0rjwHqPCV8cHA8D9FfAuiG1Bt2b-td6m4ueytul8",
+    avt: "https://lh3.googleusercontent.com/proxy/SKse1B9axvgGHaQt4Lq3Jz1wdajppcGyXAl0EqweKikhKtM0X5TRyOZCalKm29AdLECT_vIbPk3amROJaQFPC57ANPTY03CQ9_oMIQbnoZA",
     name: "Airframe",
     rank: "GOLD ARTIST",
     images: [
@@ -54,7 +54,7 @@ const dataMock = [
       "https://yt3.ggpht.com/ytc/AAUvwnhRTK4GvGPzEpGvqPOtiSXkDcx0WCF8AXIo0qArww=s900-c-k-c0x00ffffff-no-rj",
       "https://static.game24h.vn/upload/2018/2018-4/game/2018-12-21/pubg-minecraft.png",
     ]
-  }
+  },
 ]
 function HotArtists() {
     return (

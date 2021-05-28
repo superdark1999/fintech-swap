@@ -27,8 +27,9 @@ export const HotArtistsStyled = styled.div`
       ::-webkit-scrollbar {
         display: none;
       }
+
       .card-artists{
-        margin-top:24px;
+        margin:24px 0px;
         min-width:248px;
         height:408px;
         border: 1px solid #E7EBEF;
@@ -36,6 +37,10 @@ export const HotArtistsStyled = styled.div`
         border-radius: 24px;
         margin-right: 20px;
         padding: 24px;
+        :hover{ 
+          box-shadow: 1px 10px 10px grey;
+          -webkit-transition:  box-shadow .3s ease-in;
+        }
         .avatar-artists{
           width: 200px;
           height: 200px;
@@ -49,6 +54,7 @@ export const HotArtistsStyled = styled.div`
           line-height: 24px;
           color: #333435;
           text-align: center;
+          cursor: pointer;
         }
         .rank-artists {
           font-weight: 600;
@@ -73,6 +79,7 @@ export const HotArtistsStyled = styled.div`
             width: 60px; 
             height: 60px;
             border-radius: 4px;
+            cursor: pointer;
           }
         }
       }

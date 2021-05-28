@@ -19,7 +19,8 @@
     "noEmit": true,
     "jsx": "react",
     "strictNullChecks": false,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "baseUrl": "src"
   },
   "include": [
     "src"
