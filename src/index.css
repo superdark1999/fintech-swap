@@ -1,5 +1,10 @@
 body {
   background-color: #2b2c3a !important;
+  /* background: url('https://luckyswap.exchange/images/bg-main.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100vh; */
 }
 
 * {
