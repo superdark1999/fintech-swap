@@ -44,7 +44,7 @@ export const HotArtWorksStyled = styled.div`
       overflow-x: auto;
       display: flex;
       display: grid;
-      grid-gap: 24px;
+      grid-gap: 50px;
       grid-template-columns: repeat(100000,248px);
       grid-template-rows: minmax(150px,1fr);
       ::-webkit-scrollbar {

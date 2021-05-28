@@ -354,7 +354,7 @@ const StyledNav = styled(Navbar)`
     }
 
     @media (min-width: 991px) {
-      top: 33px;
+      top: 20px;
       right: -354px;
     }
 

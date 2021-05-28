@@ -33,10 +33,8 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   return (
     <StyledTopBar className={classtSicky}>
       <StyledTopBarInner>
-        <div className="header-wrapper">
           <Logo />
           <Nav />
-        </div>
       </StyledTopBarInner>
     </StyledTopBar>
   )

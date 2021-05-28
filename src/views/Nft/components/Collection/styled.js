@@ -34,8 +34,8 @@ export const CollectionStyled = styled.div`
     }
     .content-collect{
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
-      grid-gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-gap: 45px;
       align-items: stretch;
       padding: 24px 0px;
     }

@@ -25,7 +25,7 @@ const StyledLogo = styled(Link)`
   }
 
   .logo-h {
-    margin-left: 30px;
+    margin-left: 50px;
     transform: scale(0.7);
     transition: 0.5s;
     display: flex;
