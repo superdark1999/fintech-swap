@@ -14,7 +14,7 @@ export const StyledCart = styled.div`
     /* margin-right: 24px; */
     /* display: flex; */
     :hover{ 
-      box-shadow: 1px 10px 10px grey;
+      box-shadow: 1px 4px 8px #ececec;
       -webkit-transition:  box-shadow .3s ease-in;
     }
     .header-card-art-work {

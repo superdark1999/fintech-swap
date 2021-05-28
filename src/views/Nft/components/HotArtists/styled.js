@@ -51,7 +51,7 @@ position: relative;
         margin-right: 20px;
         padding: 24px;
         :hover{ 
-          box-shadow: 1px 10px 10px grey;
+        box-shadow: 1px 4px 8px #ececec;
           -webkit-transition:  box-shadow .3s ease-in;
         }
         .avatar-artists{

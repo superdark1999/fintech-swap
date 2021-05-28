@@ -77,7 +77,6 @@ const App: React.FC = () => {
     <Providers>
       <Updaters />
       <Router>
-        <TopBar onPresentMobileMenu={handlePresentMobileMenu} />
         <Web3ReactManager>
           <>
           <TopBar onPresentMobileMenu={handlePresentMobileMenu} />
