@@ -1,12 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import logo from '../../assets/img/logo.png'
+import logo from '../../assets/img/logo.svg'
 
 const Logo: React.FC = () => {
   return (
     <StyledLogo to="/">
-      <img src={logo} width="100%" className="logo-h" />
+      <img src={logo} height="60px" className="logo-h" />
     </StyledLogo>
   )
 }
@@ -15,17 +15,21 @@ const StyledLogo = styled(Link)`
   // position: fixed;
   // top: 3px;
   // left: 17px;
-
+  display: flex;
+  align-items: center;
   @media (min-width: 768px) {
     top: 20px;
     left: 75px;
+    display: flex;
+    align-items: center;
   }
 
   .logo-h {
-    margin-left: 10px;
+    margin-left: 30px;
     transform: scale(0.7);
     transition: 0.5s;
-
+    display: flex;
+  align-items: center;
     @media (min-width: 991px) {
       transform: unset;
     }
