@@ -46,12 +46,13 @@ const UpperSection = styled.div`
 
 const InfoCard = styled.div`
   padding: 1rem;
-  border: 1px solid ${({ theme }) => theme.bg3};
+  border: 1px solid #2eb0e7;
   border-radius: 20px;
   position: relative;
   display: grid;
   grid-row-gap: 12px;
   margin-bottom: 20px;
+  color:#000;
 `
 
 const AccountGroupingRow = styled.div`
@@ -59,7 +60,7 @@ const AccountGroupingRow = styled.div`
   justify-content: space-between;
   align-items: center;
   font-weight: 400;
-  color: ${({ theme }) => theme.text1};
+  color: #000;
 
   div {
     ${({ theme }) => theme.flexRowNoWrap}
@@ -332,7 +333,7 @@ export default function AccountDetails({
                       <div>
                         {account && (
                           <Copy toCopy={account}>
-                            <span style={{ marginLeft: '4px', color:"white" }}>Copy Address</span>
+                            <span style={{ marginLeft: '4px', color:"black" }}>Copy Address</span>
                           </Copy>
                         )}
                       </div>
@@ -344,7 +345,7 @@ export default function AccountDetails({
                       <div>
                         {account && (
                           <Copy toCopy={account}>
-                            <span style={{ marginLeft: '4px' }}>Copy Address</span>
+                            <span style={{ marginLeft: '4px', color:"black" }}>Copy Address</span>
                           </Copy>
                         )}
                       </div>

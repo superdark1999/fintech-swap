@@ -362,11 +362,11 @@ export default function WalletModal({
           ) : (
             <OptionGrid>{getOptions()}</OptionGrid>
           )}
-          {walletView !== WALLET_VIEWS.PENDING && (
+          {/* {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>
               <span>New to Ethereum? &nbsp;</span>{" "}
             </Blurb>
-          )}
+          )} */}
         </ContentWrapper>
       </UpperSection>
     );

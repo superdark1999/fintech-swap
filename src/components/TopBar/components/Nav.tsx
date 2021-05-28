@@ -278,8 +278,9 @@ const StyledNav = styled(Navbar)`
   position: absolute;
   top: 32px;
   left: 7px;
-
+  z-index:1050;
   @media (min-width: 768px) {
+    z-index:1066;
     width: 18px;
     top: 0;
     left: 60%;
