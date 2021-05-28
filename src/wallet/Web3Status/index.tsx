@@ -30,8 +30,8 @@ import Loader from '../Loader'
 import WalletModal from '../WalletModal'
 
 const IconWrapper = styled.div<{ size?: number }>`
-  align-items: center;
-  justify-content: center;
+  width:size;
+  height:size;
 `
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
@@ -47,7 +47,6 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
 `
 const Web3StatusError = styled(Web3StatusGeneric)`
   font-weight: 500;
-  :hover ;
 `
 
 const ButtonWallets = styled.button`
@@ -65,10 +64,30 @@ const ButtonWallets = styled.button`
   height: 38px;
 `
 
-const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
-  background-color: #1c2d4a;
+const Web3StatusConnected = styled(Web3StatusGeneric)`
+  background-color:white;
   font-weight: 500;
-  height:38px;
+  align-items: center;
+  justify-content: center;
+  height:40px;
+  position: relative;
+  :before {
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    border-radius:30px; 
+    padding:3px; 
+    background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%); 
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out; 
+    mask-composite: exclude; 
+  }
+
 `
 
 const Text = styled.p`
@@ -80,12 +99,12 @@ const Text = styled.p`
   font-size: 1rem;
   width: fit-content;
   font-weight: 500;
-  color: #fffff;
+  background: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `
 
 const NetworkIcon = styled(Activity)`
-  margin-left: 0.25rem;
-  margin-right: 0.5rem;
   width: 16px;
   height: 16px;
 `
@@ -102,25 +121,25 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
     return <Identicon />
   } else if (connector === walletconnect) {
     return (
-      <IconWrapper size={16}>
+      <IconWrapper size={25}>
         <img width="25px" src={`${path}/walletConnectIcon.svg`} alt={''} />
       </IconWrapper>
     )
   } else if (connector === walletlink) {
     return (
-      <IconWrapper size={16}>
+      <IconWrapper size={25}>
         <img width="25px" src={`${path}/walletConnectIcon.svg`}  alt={''} />
       </IconWrapper>
     )
   } else if (connector === portis) {
     return (
-      <IconWrapper size={16}>
+      <IconWrapper size={25}>
         <img width="25px" src={`${path}/portisIcon.png`}  alt={''} />
       </IconWrapper>
     )
   } else if (connector === binanceconnect) {
     return (
-      <IconWrapper size={16}>
+      <IconWrapper size={25}>
         <img width="25px" src={`${path}/binance.png`}  alt={''} />
       </IconWrapper>
     )
@@ -152,8 +171,8 @@ function Web3StatusInner() {
       <Web3StatusConnected
         id="web3-status-connected"
         onClick={toggleWalletModal}
-        pending={hasPendingTransactions}
       >
+        <>
         {hasPendingTransactions ? (
           <React.Fragment>
             <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
@@ -166,6 +185,7 @@ function Web3StatusInner() {
         {!hasPendingTransactions && connector && (
           <StatusIcon connector={connector} />
         )}
+        </>
       </Web3StatusConnected>
     )
   } else if (error) {

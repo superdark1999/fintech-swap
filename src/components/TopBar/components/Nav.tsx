@@ -47,17 +47,6 @@ const Nav1: React.FC = () => {
 
       <Collapse isOpen={isOpen} navbar>
         <Nav className="mr-auto" navbar>
-          <StyledLink exact activeClassName="active" to="/">
-            Home
-          </StyledLink>
-          <StyledLink to="/nfts" className="no-line">
-            NFTs marketplace
-            <img
-              src="/images/icon_hot_light.svg"
-              width="24"
-              className="sc-gZMcBi hpaIsh"
-            ></img>
-          </StyledLink>
           {!isMobile ? <Web3Status /> : ''}
         </Nav>
         <div className="btn-hides" onClick={handleToggle}></div>

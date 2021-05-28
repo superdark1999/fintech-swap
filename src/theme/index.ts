@@ -41,7 +41,7 @@ const theme = {
     9: 96,
   },
   footerHeight: 72,
-  topBarSize: 100,
+  topBarSize: 80,
   topBarMobile: 200,
 }
 

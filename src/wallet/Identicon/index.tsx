@@ -6,9 +6,10 @@ import { useActiveWeb3React } from '../hooks'
 import Jazzicon from 'jazzicon'
 
 const StyledIdenticonContainer = styled.div`
-  height: 1rem;
-  width: 1rem;
-  border-radius: 1.125rem;
+  height: 25px;
+  width: 25px;
+  margin-top: 4px;
+  border-radius: 30px;
   background-color: ${({ theme }) => theme.bg4};
 `
 

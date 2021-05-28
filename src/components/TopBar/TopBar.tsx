@@ -34,10 +34,9 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
     <StyledTopBar className={classtSicky}>
       <StyledTopBarInner>
         <div className="header-wrapper">
-        <Logo />
-        <Nav />
+          <Logo />
+          <Nav />
         </div>
-        {isMobile ? <Web3Status /> : ''}
       </StyledTopBarInner>
     </StyledTopBar>
   )

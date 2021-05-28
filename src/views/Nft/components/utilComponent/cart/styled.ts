@@ -1,44 +1,47 @@
 import styled from 'styled-components'
 
 export const StyledCart = styled.div`
-.card-art-work{
-  margin: 24px 0px;
-  padding: 24px;
-  width: 300px;
-  height: 540px;
-  border: 1px solid #E7EBEF;
-  box-sizing: border-box;
-  border-radius: 24px;
-  margin-right: 20px;
-  :hover{ 
-    box-shadow: 1px 4px 8px #ececec;
-    -webkit-transition:  box-shadow .3s ease-in;
-  }
-  .header-card-art-work {
-    display: flex;
-    justify-content: space-between;
-    .date-time {
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 20px;
-      color: #FC636B;
-      border: 2px solid #FC636B;
-      border-radius: 30px;
-      padding-left: 10px;
-      padding-right: 10px;
-      width: max-content;
-      height: 24px;
+  .card-art-work{
+  /* margin: 24px 0px; */
+    padding: 24px;
+    width: 270px;
+    height: 540px;
+    border: 1px solid #E7EBEF;
+    box-sizing: border-box;
+    border-radius: 24px;
+    overflow: hidden;
+    box-sizing: border-box;
+    margin-right: 24px;
+    /* display: flex; */
+    :hover{ 
+      box-shadow: 1px 4px 8px #ececec;
+      -webkit-transition:  box-shadow .3s ease-in;
     }
-    >img {
-      width: 36px;
-      height: 36px;
-      margin-top: -6px;
-      cursor: pointer;
+    .header-card-art-work {
+      display: flex;
+      justify-content: space-between;
+      .date-time {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 20px;
+        color: #FC636B;
+        border: 2px solid #FC636B;
+        border-radius: 30px;
+        padding-left: 10px;
+        padding-right: 10px;
+        width: max-content;
+        height: 24px;
+      }
+      >img {
+        width: 36px;
+        height: 36px;
+        margin-top: -6px;
+        cursor: pointer;
+      }
     }
-  }
   .avatar {
-    width: 250px;
-    height: 230px;
+    width: auto;
+    height: auto;
     border-radius: 8px;
     margin: 14px 0px;
   }
@@ -63,6 +66,7 @@ export const StyledCart = styled.div`
     margin: 3px 0px;
     >img {
       margin-top: -3px;
+      margin-right: 5px;
     }
   }
   .rating {
@@ -84,7 +88,9 @@ export const StyledCart = styled.div`
     display: flex;
     justify-content: space-between;
     margin-top: 8px;
-    
+    >img {
+      margin-right: 5px;
+    }
     &.justify-center {
       display: flex;
       justify-content: center;
@@ -104,6 +110,9 @@ export const ButtonStyle = styled.div`
   line-height: 24px;
   color: #ffffff;
   cursor: pointer;
+  >img, span {
+    margin-right: 5px;
+  }
 `;
 
 export const ButtonBuyStyle = styled.div`

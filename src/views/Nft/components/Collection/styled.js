@@ -33,12 +33,31 @@ export const CollectionStyled = styled.div`
         }
     }
     .content-collect{
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      ::-webkit-scrollbar {
-        display: none;
-      }
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+      grid-gap: 20px;
+      align-items: stretch;
+      padding: 24px 0px;
     }
+
+    .footer-section {
+      width: 100%;
+      background: #AFBAC5;
+      margin-top: 16px;
+      height: 1px;
+      position: relative;
+      .wrapper-button {
+        width: 120px;
+        height:34px;
+        background: #ffffff;
+        position: absolute;
+        left: 50%;
+        top: -16px;
+        display: flex;
+        justify-content: center;
+        >button {      
+        }
+      }
+  }
 
 `

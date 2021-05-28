@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select } from 'antd';
+import { Select, Button } from 'antd';
 import { CollectionStyled } from './styled'
 import Cart from '../utilComponent/cart'
 const OptionData = ['Hangzhou', 'Ningbo', 'All items']
@@ -32,10 +32,18 @@ function Collection() {
             </div>
             <div className="content-collect">
                 {
-                    [1,2,3,4,5,6,7,8,9,10].map(item => (
-                        <Cart />
-                    ))
+                  [1,2,3,4,5,6,7,8,9,10].map(item => (
+                      <Cart />
+                  ))
                 }
+            </div>
+            <div className="footer-section"> 
+              <div className="wrapper-button">
+                <Button shape="round">
+                  Load more
+                </Button>
+              </div>           
+              
             </div>
         </CollectionStyled>
     )
