@@ -37,6 +37,16 @@ export const HotArtWorksStyled = styled.div`
       background: #ffffff;
       z-index: 1;
     }
+    .scroll-right {
+      position: absolute;
+      left: -8px;
+      top: 50%;
+      color: #E7EBEF;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #ffffff;
+      z-index: 1;
+    }
     .content-artwork{
       padding: 24px 0px;
       width: 100%;
@@ -44,9 +54,9 @@ export const HotArtWorksStyled = styled.div`
       overflow-x: auto;
       display: flex;
       display: grid;
-      grid-gap: 50px;
+      grid-gap: 24px;
       grid-template-columns: repeat(100000,248px);
-      grid-template-rows: minmax(150px,1fr);
+      grid-template-rows: minmax(248px,1fr);
       ::-webkit-scrollbar {
         display: none;
       }

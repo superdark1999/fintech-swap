@@ -4,14 +4,14 @@ export const StyledCart = styled.div`
   .card-art-work{
   /* margin: 24px 0px; */
     padding: 24px;
-    width: 270px;
-    height: 540px;
+    /* width: 270px; */
+    /* height: 540px; */
     border: 1px solid #E7EBEF;
     box-sizing: border-box;
     border-radius: 24px;
     overflow: hidden;
     box-sizing: border-box;
-    margin-right: 24px;
+    /* margin-right: 24px; */
     /* display: flex; */
     :hover{ 
       box-shadow: 1px 4px 8px #ececec;

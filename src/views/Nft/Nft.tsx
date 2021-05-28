@@ -51,9 +51,15 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
   border:1px solid rgba(0,0,0,0.2);  
   border-top:none;
   .left-sidebar{
-    width: ${(props:any) => props.onShowsidebar ? '320px':'80px'};
+    min-width: ${(props:any) => props.onShowsidebar ? '320px':'80px'};
+    transition: 200ms;
     height: 100%;
     border-right: 1px solid rgba(0,0,0,0.2);
+    max-height: 100vh;
+    overflow-y: auto;
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
   .main-nft{
     flex: ${(props:any) => props.onShowsidebar ? 1:'1 240px'};

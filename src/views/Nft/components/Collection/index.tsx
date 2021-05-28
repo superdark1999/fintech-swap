@@ -16,19 +16,19 @@ function Collection() {
     return (
         <CollectionStyled>
             <div className="header-artists">
-                <div className="title-artists">Collection 🌏</div>
-                <div className="more-action">
-                  <Select style={{ width: 120, borderRadius: 30 }} onChange={setSelect} defaultValue={select}>
-                  {OptionData.map((item) => (
-                      <Option  key={item} value={item}>{item}</Option>
-                  ))}
-                  </Select>
-                  <Select style={{ width: 120, borderRadius: 30 }} onChange={setSelectSort} defaultValue={selectSort}>
-                  {OptionSort.map((item) => (
-                      <Option  key={item} value={item}>{item}</Option>
-                  ))}
-                  </Select>
-                </div>
+              <div className="title-artists">Collection 🌏</div>
+              <div className="more-action">
+                <Select style={{ width: 120, borderRadius: 30 }} onChange={setSelect} defaultValue={select}>
+                {OptionData.map((item) => (
+                    <Option  key={item} value={item}>{item}</Option>
+                ))}
+                </Select>
+                <Select style={{ width: 120, borderRadius: 30 }} onChange={setSelectSort} defaultValue={selectSort}>
+                {OptionSort.map((item) => (
+                    <Option  key={item} value={item}>{item}</Option>
+                ))}
+                </Select>
+              </div>
             </div>
             <div className="content-collect">
                 {

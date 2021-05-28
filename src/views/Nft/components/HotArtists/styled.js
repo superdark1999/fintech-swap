@@ -30,6 +30,16 @@ position: relative;
       background: #ffffff;
       z-index: 1;
     }
+    .scroll-right {
+      position: absolute;
+      left: -8px;
+      top: 50%;
+      color: #E7EBEF;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #ffffff;
+      z-index: 1;
+    }
   .content-artists{
       width: 100%;
       max-width: 100%;
