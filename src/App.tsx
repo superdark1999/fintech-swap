@@ -82,12 +82,12 @@ const App: React.FC = () => {
           <>
           <TopBar onPresentMobileMenu={handlePresentMobileMenu} />
           <Switch>
-            {/* <Route path="/" exact>
+            <Route path="/" exact>
               <Nft />
             </Route>
             <Route path="/nfts">
               <Nft />
-            </Route> */}
+            </Route>
           </Switch>
           </>
         </Web3ReactManager>
