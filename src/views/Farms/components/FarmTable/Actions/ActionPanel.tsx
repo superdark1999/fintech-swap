@@ -21,7 +21,7 @@ export interface ActionPanelProps {
 }
 
 const Container = styled.div`
-  background: ${({ theme }) => theme.colors.background};
+  background-color: transparent !important;
   display: flex;
   width: 100%;
   flex-direction: column-reverse;
@@ -129,7 +129,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
           </StakeContainer>
         )}
         <StyledLinkExternal href={bsc} color="#2b2c3a">{TranslateString(999, 'View Contract')}</StyledLinkExternal>
-        <StyledLinkExternal href={info}>{TranslateString(999, 'See Pair Info')}</StyledLinkExternal>
+        <StyledLinkExternal href="#">{TranslateString(999, 'See Pair Info')}</StyledLinkExternal>
         <TagsContainer>
           {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
           {dual ? <DualTag /> : null}

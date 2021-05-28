@@ -7,10 +7,10 @@ export interface TooltipProps {
 }
 
 const TooltipContent = styled.div`
-  background: ${({ theme }) => theme.tooltip.background};
+  background:#FAF9FA;
   padding: 16px;
   border-radius: 16px;
-  color: ${({ theme }) => theme.tooltip.text};
+  color: #fff;
   width: max-content;
   display: none;
   max-height: 500px;
@@ -28,7 +28,7 @@ const TooltipContent = styled.div`
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 10px solid ${({ theme }) => theme.tooltip.background};
+    border-top: 10px solid #FAF9FA;
     bottom: 0;
     position: absolute;
     transform: translate(-34px, 9px);

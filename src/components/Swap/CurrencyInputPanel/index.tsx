@@ -7,7 +7,7 @@ import { useCurrencyBalance } from 'state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
-// import { RowBetween } from '../Row'
+import { RowBetween } from '../Row'
 import { Input as NumericalInput } from '../NumericalInput'
 import { useActiveWeb3React } from '../../../hooks'
 import TranslatedText from "../TranslatedText"
@@ -112,7 +112,7 @@ export default function CurrencyInputPanel({
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-
+  const translatedLabel = label || TranslateString(132, 'Input')
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
   }, [setModalOpen])
@@ -120,8 +120,30 @@ export default function CurrencyInputPanel({
   return (
     <InputPanel id={id}>
       <Container hideInput={hideInput}>
+      {!hideInput && (
+          <LabelRow>
+            <RowBetween>
+              <Text fontSize="14px">{translatedLabel}</Text>
+              {account && (
+                <Text onClick={onMax} fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
+                  {!hideBalance && !!currency && selectedCurrencyBalance
+                    ? `Balance: ${selectedCurrencyBalance?.toSignificant(6)}`
+                    : ' -'}
+                </Text>
+              )}
+            </RowBetween>
+          </LabelRow>
+        )}
         <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
-        
+        {!hideInput && (
+            <>
+              {account && currency && showMaxButton && label !== 'To' && (
+                <Button onClick={onMax} scale="sm" variant="text" className="btn-max">
+                  MAX
+                </Button>
+              )}
+            </>
+          )}
         <CurrencySelect
             selected={!!currency}
             className="open-currency-select-button"

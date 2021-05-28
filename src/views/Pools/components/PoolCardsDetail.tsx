@@ -1,11 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'
 import { Row, Col } from 'antd'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 // import { Row, Col } from 'antd'
 
 
-function PoolCardsDetail() {
+function PoolCardsDetail(this: any) {
+  const [modal, setModal] = useState(false);
+
+  const toggle = () => setModal(!modal);
+
   return (
     <>
       <Page>
@@ -20,7 +25,7 @@ function PoolCardsDetail() {
 
           <Row gutter={[24, 16]}>
             <Col span={24} sm={12} md={12}>
-            <div className="box__item">
+              <div className="box__item">
                 <figure>
                   <img src="../images/icon-love.png" alt=""/>
                 </figure>
@@ -31,7 +36,7 @@ function PoolCardsDetail() {
                 </div>
 
                 <div className="box__footer">
-                  <button type="button" className="ant-btn ant-btn-primary">Harvest</button>
+                  <Button color="danger" onClick={toggle}>Harvest</Button>
                 </div>
               </div>
             </Col>
@@ -48,7 +53,7 @@ function PoolCardsDetail() {
                 </div>
 
                 <div className="box__footer">
-                  <button type="button" className="ant-btn ant-btn-primary">Harvest</button>
+                  <Button color="danger" onClick={toggle}>Harvest</Button>
                 </div>
               </div>
             </Col>
@@ -57,10 +62,112 @@ function PoolCardsDetail() {
           <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>Every time you stake and unstake EL tokens, the contract will automatically harvest ABC rewards for you!</p>
         </BoxDetail>
       </Page>
+
+      <div>
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}></ModalHeader>
+
+        <ModalBody>
+          <Title>Deposit LuckySwap Tokens</Title>
+          <Available>0 Lucky Available</Available>
+
+          <BoxInput>
+            <input type="text" id="fname" name="fname" placeholder="0.000"/>
+            <BoxLink>
+              <span className="text-lucky">lucky</span>
+              <BoxButton>
+                <Button>Max</Button>
+              </BoxButton>
+            </BoxLink>
+          </BoxInput>
+        </ModalBody>
+
+        <ModalFooter>
+          <Button color="primary" onClick={toggle}>Cancel</Button>
+          <Button color="secondary" onClick={toggle} disabled>Confirm</Button>
+        </ModalFooter>
+      </Modal>
+    </div>
     </>
   )
 }
 
+
+const Title = styled.h5`
+  color: #01A8E1;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 25px;
+`
+
+const BoxInput = styled.div`
+  display: flex;
+  align-items: center;
+  background: #22232E;
+  border-radius: 10px;
+  height: 72px;
+  padding: 0px 16px;
+  margin: 16px 0px 48px;
+
+  input {
+    flex: 1 1 0%;
+    width: 0px;
+    background: none;
+    border: 0px;
+    color: rgb(114, 47, 13);
+    font-size: 18px;
+    height: 56px;
+    margin: 0px;
+    padding: 0px;
+    outline: none;
+  }
+`
+
+const BoxLink = styled.div`
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+`
+
+const BoxButton = styled.div`
+  margin-left: 12px;
+
+  button {
+    width: 100%;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid transparent;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    background-color: #01A8E1;
+    color: rgb(255, 253, 250);
+    font-family: "Baloo Da";
+    padding: 0px 10px;
+    height: 40px;
+  }
+`
+
+const Available = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+`
 
 const BoxHead = styled.div`
   display: flex;

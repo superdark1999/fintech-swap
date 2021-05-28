@@ -63,7 +63,7 @@ export const StyledBalanceMaxMini = styled.button`
   float: right;
 
   :hover {
-    background-color: red;
+    background-color: #888882;
   }
   :focus {
     background-color: ${({ theme }) => theme.colors.tertiary};

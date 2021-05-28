@@ -27,7 +27,7 @@ const StyledTokenInput = styled.div<InputProps>`
   flex-direction: column;
   background-color: ${({ theme }) => theme.colors.input};
   border-radius: 16px;
-  box-shadow: ${getBoxShadow};
+  box-shadow: none;
   color: ${({ theme }) => theme.colors.text};
   padding: 8px 16px 8px 0;
   width: 100%;
@@ -51,8 +51,10 @@ const StyledInput = styled(Input)`
 const StyledErrorMessage = styled(Text)`
   position: absolute;
   bottom: -22px;
+  color: #fff;
   a {
     display: inline;
+    color: #fff;
   }
 `
 
@@ -81,7 +83,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
         </Flex>
         <Flex alignItems="flex-end" justifyContent="space-around">
           <StyledInput onChange={onChange} placeholder="0" value={value} />
-          <Button scale="sm" onClick={onSelectMax} mr="8px">
+          <Button scale="sm" onClick={onSelectMax} mr="8px" className="btn-supply">
             {TranslateString(452, 'Max')}
           </Button>
           <Text fontSize="16px">{symbol}</Text>
