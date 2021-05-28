@@ -19,7 +19,8 @@ import UserUpdater from './wallet/state/user/updater'
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import Nft from './views/Nft'
 import getLibrary from './wallet/utils/getLibrary'
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout} from 'antd';
+import CreateArtWork from './views/Nft/components/CreateArtWork/index'
 import 'antd/dist/antd.css';
 const { Header, Content, Footer } = Layout;
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
@@ -86,6 +87,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/nfts">
               <Nft />
+            </Route>
+            <Route path="/create/artwork">
+              <CreateArtWork />
             </Route>
           </Switch>
           </>

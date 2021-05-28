@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import Logo from '../Logo'
-import Nav from './components/Nav'
 import Web3Status from '../../wallet/Web3Status'
-import { isMobile } from 'react-device-detect'
-
+import logo from '../../assets/img/logo.svg'
+import { Input } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import {Link} from 'react-router-dom'
 interface TopBarProps {
   onPresentMobileMenu: () => void
 }
@@ -32,21 +32,79 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
 
   return (
     <StyledTopBar className={classtSicky}>
-      <StyledTopBarInner>
-          <Logo />
-          <Nav />
-      </StyledTopBarInner>
+          <a href="/">
+            <img src={logo} height="60px" className="logo-h" />
+          </a>
+          <div className="nav-bar-wrapper">
+            <Input placeholder="Search items, collections, and accounts" prefix={<SearchOutlined/>} className="search-nav"></Input>
+            <Link to="/" className="home-nav">Home</Link>
+            <Link to="/create/artwork" className="create-nav">Create</Link>
+            <div className="connect-wallet">
+              <Web3Status />
+            </div>
+          </div>
     </StyledTopBar>
   )
 }
 
 const StyledTopBar = styled.div`
+    display: flex;
+    align-items: center;
+    .logo-h{
+      margin-left:30px;
+    }
+    .nav-bar-wrapper{
+      flex:1;
+      display: flex;
+      z-index: 5;
+      align-items: center;     
+      .search-nav{
+        flex:1;
+        border: 1px solid #E7EBEF;
+        box-sizing: border-box;
+        border-radius: 100px;
+        height:40px;
+        margin:0 40px;
+      }
+      .home-nav{
+        flex:1;
+        background: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 16px;
+        font-weight: 600;
+        @media (max-width:756px){
+          display: none;
+        }
+        }
+      .create-nav{
+        background: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+        border-radius: 100px;
+        width: 100px;
+        width: 100px;
+        color: #FFFFFF;
+        text-align: center;
+        padding: 8px 24px 8px 20px;
+        margin: 0px 16px;
+        font-size: 16px;
+        @media (max-width:756px){
+          display: none;
+        }
+      }
+      .connect-wallet{
+        margin-right:10px;
+        @media (max-width:756px){
+          display: none;
+        }
+      }
+    }
   .header-wrapper{
     width:100vw;
     background: #FFFFFF;
     max-width:2200px;
     margin: auto;
   }
+  display:flex;
   z-index: 20;
   width: 100vw;
   height:80px;
@@ -70,19 +128,6 @@ const StyledTopBar = styled.div`
     @media (min-width: 767px) {
       padding-bottom: 5px;
     }
-  }
-`
-
-const StyledTopBarInner = styled.div`
-  align-items: center;
-  display: flex;
-  min-height: 80px;
-  justify-content: space-between;
-  max-width: ${(props) => props.theme.siteWidth}px;
-  width: 100%;
-
-  @media (max-width: 768px) {
-    min-height: 77px;
   }
 `
 

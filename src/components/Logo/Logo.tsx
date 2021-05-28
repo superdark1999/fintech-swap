@@ -17,6 +17,7 @@ const StyledLogo = styled(Link)`
   // left: 17px;
   display: flex;
   align-items: center;
+  width:150px;
   @media (min-width: 768px) {
     top: 20px;
     left: 75px;

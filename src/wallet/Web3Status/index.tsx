@@ -51,8 +51,8 @@ const Web3StatusError = styled(Web3StatusGeneric)`
 
 const ButtonWallets = styled.button`
   z-index:99;
-  background: #1c2d4a;
-  border-radius: 12px;
+  background: #fff;
+  border-radius: 100px;
   border: none;
   color: #fff;
   display: flex;
@@ -62,8 +62,23 @@ const ButtonWallets = styled.button`
   font-weight: 500;
   width: unset;
   height: 38px;
-`
-
+  position: relative;
+  :before {
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    border-radius:30px; 
+    padding:3px; 
+    background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%); 
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out; 
+    mask-composite: exclude; 
+  }`
 const Web3StatusConnected = styled(Web3StatusGeneric)`
   background-color:white;
   font-weight: 500;

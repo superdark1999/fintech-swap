@@ -92,7 +92,7 @@ const BoxContent = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  border-ratius: 20px;
+  border-radius: 20px;
   padding: 15px;
 
   h2 {

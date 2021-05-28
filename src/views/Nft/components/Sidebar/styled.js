@@ -10,9 +10,9 @@ export const SidebarStyled = styled.div`
     >img, span {
       margin-top: 20px;
       border-bottom: 1px solid #E7EBEF;
-      width: 40px;
-      height: 40px;
-      font-size: 40px;
+      width: 30px;
+      height: 30px;
+      font-size: 30px;
     }
   }
   
