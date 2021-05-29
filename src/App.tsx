@@ -20,7 +20,7 @@ import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import Nft from './views/Nft'
 import getLibrary from './wallet/utils/getLibrary'
 import { Layout} from 'antd';
-import CreateArtWork from './views/Nft/components/CreateArtWork/index'
+import CreateArtWork from 'views/Nft/components/CreateArtWork/index'
 import 'antd/dist/antd.css';
 const { Header, Content, Footer } = Layout;
 
