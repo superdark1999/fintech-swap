@@ -13,7 +13,7 @@ const BannerContainer = styled.div`
 function BannerHome() {
   return (
     <Carousel autoplay infinite draggable>
-      <img src="/images/coming soon.jpg" alt="coming-soon" />
+      <img src="/images/coinbann.jpg" alt="coming-soon" />
       <img src="/images/banner-home.png" alt="banner-home" />
     </Carousel>
   )

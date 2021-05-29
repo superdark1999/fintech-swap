@@ -66,7 +66,7 @@ const config: MenuEntry[] = [
   {
     label: 'IFO',
     icon: 'IfoIcon',
-    href: '#',
+    href: '/ifo',
     calloutClass: 'style-color',
   },
 ]
