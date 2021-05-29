@@ -108,7 +108,7 @@ function HotArtists() {
               {
                 dataMock.map((item, i) => (
                   <div className="card-artists" key={i}>
-                    <img className="avatar-artists" src={item.avt} alt=""/>
+                    <img className="avatar-artists" src={`https://i.pravatar.cc/150?img=${i+1}`} alt=""/>
                     <div className="name-artists">
                       {item.name} {" "}
                       <img src={Checkmark} />
