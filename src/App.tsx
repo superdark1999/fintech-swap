@@ -29,6 +29,7 @@ import IfoDetail from './views/Ifos/IfoDetail'
 import { LanguageContext } from './hooks/LanguageContext'
 import { TranslationsContext } from './hooks/TranslationsContext'
 import { EN, allLanguages } from './constants/localisation/languageCodes'
+import Popups from './components/Popups'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page .
@@ -42,7 +43,6 @@ const Teams = lazy(() => import('./views/Teams'))
 const Team = lazy(() => import('./views/Teams/Team'))
 const Profile = lazy(() => import('./views/Profile'))
 const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
-
 
 // This config is required for number formating
 BigNumber.config({
@@ -125,6 +125,7 @@ const App: React.FC = () => {
           <ResetCSS />
           <GlobalStyle />
           <Menu>
+            <Popups />
             <SuspenseWithChunkError fallback={<PageLoader />}>
               <Switch>
                 <Route path="/swap" exact strict>
@@ -180,7 +181,7 @@ const App: React.FC = () => {
                   <Poolls />
                 </Route>
                 <Route path="/IfoDetail">
-                  <IfoDetail/>
+                  <IfoDetail />
                 </Route>
 
                 {/* 404 */}
