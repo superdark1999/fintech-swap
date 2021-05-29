@@ -8,6 +8,25 @@ const OptionSort = ['Hangzhou', 'Ningbo', 'Sort by']
 // export const option: React.ReactElement<OptionProps> = Select.Option
 
 const { Option } = Select;
+const data = [
+  "https://cdna.artstation.com/p/assets/images/images/037/877/182/large/valerie-frenzel-mermay-preview.jpg?1621539045",
+  "https://cdnb.artstation.com/p/assets/images/images/037/632/131/large/creative-castel-mermaid013.jpg?1620891195",
+  "https://cdna.artstation.com/p/assets/images/images/037/773/218/large/paulette-arochena-asset.jpg?1621285527",
+  "https://cdnb.artstation.com/p/assets/images/images/037/438/875/large/vasilisa-grishina-.jpg?1620372379",
+  "https://cdnb.artstation.com/p/assets/images/images/037/989/679/large/joshua-brian-smith-lycan-rider-final.jpg?1621876402",
+  "https://cdnb.artstation.com/p/assets/images/images/038/107/499/large/maciej-janaszek-template-4k.jpg?1622187915",
+  "https://cdna.artstation.com/p/assets/images/images/037/877/182/large/valerie-frenzel-mermay-preview.jpg?1621539045",
+  "https://cdnb.artstation.com/p/assets/images/images/037/632/131/large/creative-castel-mermaid013.jpg?1620891195",
+  "https://cdna.artstation.com/p/assets/images/images/037/773/218/large/paulette-arochena-asset.jpg?1621285527",
+  "https://cdnb.artstation.com/p/assets/images/images/037/438/875/large/vasilisa-grishina-.jpg?1620372379",
+  "https://cdnb.artstation.com/p/assets/images/images/037/989/679/large/joshua-brian-smith-lycan-rider-final.jpg?1621876402",
+  "https://cdnb.artstation.com/p/assets/images/images/038/107/499/large/maciej-janaszek-template-4k.jpg?1622187915",
+  "https://cdna.artstation.com/p/assets/images/images/037/877/182/large/valerie-frenzel-mermay-preview.jpg?1621539045",
+  "https://cdnb.artstation.com/p/assets/images/images/037/632/131/large/creative-castel-mermaid013.jpg?1620891195",
+  "https://cdna.artstation.com/p/assets/images/images/037/773/218/large/paulette-arochena-asset.jpg?1621285527",
+
+
+]
 
 function Collection() {
   const [select, setSelect] = React.useState<string | null>('All items');
@@ -32,8 +51,8 @@ function Collection() {
             </div>
             <div className="content-collect">
                 {
-                  [1,2,3,4,5,6,7,8,9,10].map(item => (
-                      <Cart />
+                  data.map((item) => (
+                      <Cart url={item}/>
                   ))
                 }
             </div>

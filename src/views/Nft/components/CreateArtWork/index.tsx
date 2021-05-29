@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Form, Input, InputNumber, Button,Radio,Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Form, Input, InputNumber, Button,Radio, Modal } from 'antd';
+import UploadFile from 'components-v2/Upload'
+import { UploadOutlined, EditOutlined} from '@ant-design/icons';
 const CreateArtWork: React.FC = () => {
+    const [showModalCreateArtist, setShowModalCreateArtist] = React.useState<boolean | null>(false)
     const layout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
@@ -19,16 +21,23 @@ const CreateArtWork: React.FC = () => {
       };
       /* eslint-enable no-template-curly-in-string */
       
-        const onFinish = (values: any) => {
-          console.log(values);
-        };
-        const normFile = (e: any) => {
-            console.log('Upload event:', e);
-            if (Array.isArray(e)) {
-              return e;
-            }
-            return e && e.fileList;
-          };
+    const onFinish = (values: any) => {
+      console.log(values);
+    };
+
+    const createArtist = (values: object) => {
+      console.log(values);
+    };
+
+    const normFile = (e: any) => {
+      console.log('Upload event:', e);
+      if (Array.isArray(e)) {
+        return e;
+      }
+      return e && e.fileList;
+    };
+    
+          
     return (
         <CreateArtWorkStyled>
             <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
@@ -62,12 +71,18 @@ const CreateArtWork: React.FC = () => {
                 >
                     <Input />
                 </Form.Item>
+                <Form.Item>
+                  <Button style={{ transform: 'translateX(175px)'}} shape='round' onClick={() => setShowModalCreateArtist(true)}>
+                    <EditOutlined /> Create artists
+                  </Button>               
+                </Form.Item>
                 <Form.Item 
                     name={['user', 'artistsName']} 
                     label="Artists name"
                     rules={[{ required: true, message: 'This Field is required!' }]}
                 >
                     <Input />
+                    
                 </Form.Item>
                 <Form.Item 
                   name={['user', 'introduction']} 
@@ -85,24 +100,69 @@ const CreateArtWork: React.FC = () => {
                     getValueFromEvent={normFile}
                     extra="Support: png / jpg / gif, Ratio: 1:1, Size: ≤ 10MB"
                 >
-                    <Upload name="logo" action="/upload.do" listType="picture">
-                    <Button icon={<UploadOutlined />}>Click to upload</Button>
-                    </Upload>
+                    <UploadFile />
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                     <Button type="primary" htmlType="submit">
                     Submit
                     </Button>
                 </Form.Item>
-                </Form>
+            </Form>
+            <Modal
+              title="Create Artist"
+              visible={showModalCreateArtist}
+              onCancel={() => setShowModalCreateArtist(false)}
+              footer={false}
+              destroyOnClose
+              maskClosable={false}
+              style={{ borderRadius: '10px'}}
+              width={800}
+            >
+              <Form  labelCol={{span: 6}} name="nest-messages" onFinish={createArtist}>
+                <Form.Item
+                  name="upload-artwork"
+                  label="Upload"
+                  valuePropName="fileList"
+                  getValueFromEvent={normFile}
+                  extra="Support: png / jpg / gif, Ratio: 1:1, Size: ≤ 10MB"
+                >
+                    <UploadFile />
+                </Form.Item>
+                <Form.Item 
+                  name={['user', 'artistsName']} 
+                  label="Name"
+                  rules={[{ required: true, message: 'This Field is required!' }]}
+                >
+                    <Input />                  
+                </Form.Item>
+                <Form.Item 
+                  name={['link', 'link']} 
+                  label="Social media/Portfolio link "
+                  rules={[{ required: true, message: 'This Field is required!' }]}
+                >
+                    <Input />                  
+                </Form.Item>
+                <Form.Item 
+                  name={['user', 'artistsName']} 
+                  label="Artists name"
+                  rules={[{ required: true, message: 'This Field is required!' }]}
+                >
+                    <Input.TextArea />                 
+                </Form.Item>
+                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+                    <Button type="primary" htmlType="submit">
+                    Submit
+                    </Button>
+                </Form.Item>
+              </Form>
+            </Modal>
         </CreateArtWorkStyled>
     )
 }
 const CreateArtWorkStyled = styled.div`
-    width: 1000px;
-    height: 78vh;
-    margin: auto;
-    margin-top: 40px;
+    width: 900px;
+    /* height: 78vh; */
+    margin: 40px auto;
     background: #F9FAFB;
     padding: 40px;
     display: flex;

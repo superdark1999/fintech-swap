@@ -40,8 +40,8 @@ export const StyledCart = styled.div`
       }
     }
   .avatar {
-    width: auto;
-    height: auto;
+    width: 100%;
+    height: 100%;
     border-radius: 8px;
     margin: 14px 0px;
   }
