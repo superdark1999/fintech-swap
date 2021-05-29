@@ -24,7 +24,7 @@ import CreateArtWork from './views/Nft/components/CreateArtWork/index'
 import 'antd/dist/antd.css';
 const { Header, Content, Footer } = Layout;
 
-// f
+// 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if ('ethereum' in window) {
