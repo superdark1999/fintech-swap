@@ -32,7 +32,11 @@ const CreateArtWork: React.FC = () => {
     return (
         <CreateArtWorkStyled>
             <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
-                <Form.Item name="radio-artwork-type" label="Select artwork type*">
+                <Form.Item 
+                    name="radio-artwork-type" 
+                    label="Select artwork type"
+                    rules={[{ required: true, message: 'This Field is required!' }]}
+                >
                     <Radio.Group>
                         <Radio value="picture">picture</Radio>
                         <Radio value="gif">gif</Radio>
@@ -41,20 +45,35 @@ const CreateArtWork: React.FC = () => {
                         <Radio value="special">special</Radio>
                     </Radio.Group>
                 </Form.Item>
-                <Form.Item name="radio-group-standard" label="Select artwork standard*">
+                <Form.Item 
+                    name="radio-group-standard" 
+                    label="Select artwork standard"
+                    rules={[{ required: true, message: 'This Field is required!' }]}
+                >
                     <Radio.Group>
                         <Radio value="bep721">bep721</Radio>
                         <Radio value="bep1155">bep1155</Radio>
                     </Radio.Group>
                 </Form.Item>
-                <Form.Item name={['user', 'artworkName']} label="Artwork name*">
+                <Form.Item 
+                    name={['user', 'artworkName']} 
+                    label="Artwork name"
+                    rules={[{ required: true, message: 'This Field is required!' }]}
+                >
                     <Input />
                 </Form.Item>
-                <Form.Item name={['user', 'artistsName']} label="Artists name*">
+                <Form.Item 
+                    name={['user', 'artistsName']} 
+                    label="Artists name"
+                    rules={[{ required: true, message: 'This Field is required!' }]}
+                >
                     <Input />
                 </Form.Item>
-                <Form.Item name={['user', 'introduction']} label="Introduction">
-                    <Input.TextArea />
+                <Form.Item 
+                  name={['user', 'introduction']} 
+                  label="Introduction"
+                >
+                  <Input.TextArea />
                 </Form.Item>
                 <Form.Item name={['user', 'portfolio']} label="Social media/Portfolio link">
                     <Input />
