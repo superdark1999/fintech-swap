@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Row, Col, Menu, Dropdown, message } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
+import axios from 'axios'
 
 const ProfitHomeContainer = styled.div`
   /* max-height: 280px; */
@@ -32,7 +33,7 @@ const CardProfitStyled = styled.div`
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     align-items: center;
     display: flex;
-    
+
     span {
       margin-top: 0;
       color: #245288;
@@ -56,12 +57,12 @@ const CardProfitStyled = styled.div`
       overflow-x: scroll;
 
       &::-webkit-scrollbar-track {
-        background-color: #F5F5F5;
+        background-color: #f5f5f5;
       }
 
       &::-webkit-scrollbar {
         height: 6px;
-        background-color: #F5F5F5;
+        background-color: #f5f5f5;
       }
 
       &::-webkit-scrollbar-thumb {
@@ -116,15 +117,30 @@ const menu = (
 )
 
 function ProfitHome() {
+  const [data, setData] = useState([])
+  useEffect(() => {
+    let coins: any = ['btc', 'eth']
+    coins = coins.map((item) => {
+      return axios(`https://data.messari.io/api/v1/assets/${item}/metrics/market-data`)
+    })
+    Promise.all(coins).then((res) => {
+      const dataTemp = []
+      res.forEach((item: any) => {
+        dataTemp.push(item.data.data)
+      })
+      setData(dataTemp)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return (
     <ProfitHomeContainer>
       <Col md={24}>
         <Row gutter={30}>
           <Col md={12}>
-            <CardProfit bgColor="#00A7E1" />
+            <CardProfit data={data[0]} bgColor="#00A7E1" />
           </Col>
           <Col md={12}>
-            <CardProfit bgColor="#232627" />
+            <CardProfit data={data[1]} bgColor="#232627" />
           </Col>
         </Row>
       </Col>
@@ -133,15 +149,17 @@ function ProfitHome() {
 }
 
 const CardProfit = (props) => {
+  const {data} =props
+  console.log('data>>',data)
   return (
     <CardProfitStyled {...props}>
       <div className="top-profit">
         <span>
-          <b>The most profitable</b> month
+          <b>The most profitable</b> 24h
         </span>
         <Dropdown className="dropdown-profit" overlay={menu} trigger={['click']}>
           <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()} onKeyPress={(e) => e.preventDefault()}>
-            <DownOutlined />
+            {/* <DownOutlined /> */}
           </a>
         </Dropdown>
       </div>
@@ -153,11 +171,11 @@ const CardProfit = (props) => {
             alt="logo-BTC"
           />
         </div>
-        <span>BTC</span>
-        <span className="bold">1.235223</span>
-        <span>41.92%</span>
-        <span>$7 110.66</span>
-        <span className="bold green-text">+ 15.58%</span>
+        <span>{data && data.symbol}</span>
+        <span className="bold">{data && data.market_data && data.market_data.volume_last_24_hours.toFixed(3)}</span>
+        {/* <span>{data && data.market_data && data.market_data.percent_change_usd_last_24_hours.toFixed(2)}%</span> */}
+        <span>${data && data.market_data && data.market_data.price_usd.toFixed(3)}</span>
+        <span className={`bold ${data && data.market_data && data.market_data.percent_change_usd_last_24_hours.toFixed(2)>0?'green':'red'}-text`}>{data && data.market_data && data.market_data.percent_change_usd_last_24_hours.toFixed(2)}%</span>
       </div>
     </CardProfitStyled>
   )
