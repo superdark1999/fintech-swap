@@ -4,7 +4,7 @@ const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
   background: #333442;
   border-radius: 32px;
   display: flex;
-  color: #ffffff;
+  color: #333442;
   box-shadow: ${({ isActive }) =>
     isActive
       ? '0px 0px 0px 1px #0098A1, 0px 0px 4px 8px rgba(31, 199, 212, 0.4);'

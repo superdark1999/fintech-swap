@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import styled from 'styled-components'
 import { Row, Col } from 'antd'
 
@@ -63,6 +64,21 @@ const coinsInfo = [
 ]
 
 function InterestHome() {
+  const [data, setData] = useState([])
+  useEffect(() => {
+    let coins: any = []
+    coins = coinsInfo.map((item) => {
+      return axios(`https://data.messari.io/api/v1/assets/${item.shortened}/metrics/market-data`)
+    })
+    Promise.all(coins).then((res) => {
+      const dataTemp = []
+      res.forEach((item: any) => {
+        dataTemp.push(item.data.data)
+      })
+      setData(dataTemp)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return (
     <InterestHomeContainer>
       <div className="label">What is interesting</div>
@@ -70,7 +86,7 @@ function InterestHome() {
         {coinsInfo.map((item, index) => {
           return (
             <Col key={index} span={24} sm={12} md={8}>
-              <InterestItem data={item} />
+              <InterestItem coin={data[index]} data={item} />
             </Col>
           )
         })}
@@ -121,7 +137,7 @@ const InterestItemStyled = styled.div`
     font-weight: 900;
   }
 `
-const InterestItem = ({ data }) => {
+const InterestItem = ({ coin, data }) => {
   const { name, shortened, logoSrc, isIncrease, changePercent } = data
   return (
     <InterestItemStyled>
@@ -134,9 +150,15 @@ const InterestItem = ({ data }) => {
       </div>
       <div className="right">
         <div>per days</div>
-        <div className="percent-value" style={{ color: isIncrease ? '#84ce95' : '#f6465d' }}>{`${
-          isIncrease ? '+' : '-'
-        } ${changePercent}%`}</div>
+        <div
+          className="percent-value"
+          style={{
+            color:
+              coin && coin.market_data && coin.market_data.percent_change_usd_last_24_hours.toFixed(2) > 0
+                ? '#84ce95'
+                : '#f6465d',
+          }}
+        >{`${coin && coin.market_data && coin.market_data.percent_change_usd_last_24_hours.toFixed(2)}%`}</div>
       </div>
     </InterestItemStyled>
   )
