@@ -19,12 +19,10 @@ const options = ["United States Dollar (USD)"]
 const Sidebar: React.FC<SidebarProps> = ({setShowSidebar,onShowSidebar}) => {
   const [select, setSelect] = React.useState<string | null>('United States Dollar (USD)');
   const [configMenu, setConfigMenu] = React.useState<any| null>(['collection']);
-  console.log('configMenu: ', configMenu)
   const [ checkedList, setCheckedList] = React.useState<[string] | null>(['']);
 
 
   const onTogleMenu = (value : string) => {
-    console.log('value: ', value)
     if (!configMenu.find(( menu : string) => value ===  menu))  setConfigMenu(configMenu.concat(value))
     else setConfigMenu(configMenu.filter((item: string)=> item !== value))
   };
