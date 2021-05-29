@@ -15,7 +15,7 @@ const Container = styled.div`
   filter: ${({ theme }) => theme.card.dropShadow};
   width: 100%;
   /* background: ${({ theme }) => theme.card.background}; */
-  background-color: #ffffff63;
+  background-color: rgb(27, 28, 45);
   border-radius: 16px;
   margin: 16px 0px;
 `
