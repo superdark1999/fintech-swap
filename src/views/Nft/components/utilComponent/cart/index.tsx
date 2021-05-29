@@ -4,6 +4,7 @@ import Copy from 'assets/images/copy.svg'
 import Checkmark from 'assets/images/checkmark.svg'
 import Token from 'assets/images/token.svg'
 import Hammer from 'assets/images/hammer.svg'
+import {Link} from 'react-router-dom'
 
 import { Rate } from 'antd';
 import { SwapOutlined } from '@ant-design/icons'
@@ -18,7 +19,8 @@ export default function index(props: any) {
           <div className="date-time">02h 31m 04s left 🔥 </div>
           <img src={Copy} alt=""/>
         </div>
-        <img className="avatar"  src={props.url}/>
+        
+        <Link to="/artwork/detail" className="create-nav"><img className="avatar"  src={props.url}/></Link>
         <div className="title">
           LuckySwapStudio {' '}
           <img src={Checkmark} alt=""/>
