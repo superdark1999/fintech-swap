@@ -10,7 +10,8 @@ import { ApplicationModal } from "../wallet/state/application/actions"
 import { useCallback, useMemo } from 'react'
 
 const NFT_ADDRESS = '0xa75556C5b07e88119d7979761D00b8a55A1Bc315';
-const BID_ADDRESS = '0x5C2AaAdD1FcE223baaEFB1cF41ce872e9d8B986A'
+const BID_ADDRESS = '0x5C2AaAdD1FcE223baaEFB1cF41ce872e9d8B986A';
+const LUCKY_TOKEN_ADDRESS = '0x5C2AaAdD1FcE223baaEFB1cF41ce872e9d8B986A';
 const payableAmountDefault = 1000000000000000
 
 export default function NFTService(){
