@@ -1554,16 +1554,17 @@ const Boxbtn = styled.div`
   padding-top: 15px;
 
   button {
-    background: #01A8E1;
+    background: #1890ff;
     font-weight: 600;
 
     &:hover {
-      background-color: #4ac0ea;
+      background-color: #40a9ff;
+      transition: 0.5s;
     }
 
     a {
       &:hover {
-        color: #2b2c3a;
+        color: rgb(255, 253, 250);
       }
     }
   }

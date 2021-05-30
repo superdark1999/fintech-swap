@@ -313,7 +313,7 @@ button.btn-blue {
 }
 
 input.input-search {
-  /* background-color: #686a6b; */
+  box-shadow: none;
   border: 1px solid #d7caec;
 }
 
@@ -353,4 +353,8 @@ input.input-search {
 
 .modal-dialog .modal-footer .btn-secondar {
   background-color: #2E3F52;
+}
+
+.border-none {
+  box-shadow: none !important;
 }

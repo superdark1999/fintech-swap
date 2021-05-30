@@ -386,13 +386,14 @@ const BoxLink = styled.div`
     font-size: 14px;
     color: rgb(255, 253, 250);
     text-align: center;
-    background: rgb(0 167 225);
+    background: #1890ff;
     border-radius: 10px;
     text-decoration: none;
 
     &:hover {
-      opacity: 0.7;
-      transition: 1s;
+      background-color: #40a9ff;
+      transition: 0.5s;
+      color: rgb(255, 253, 250);
     }
   }
 `

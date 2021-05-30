@@ -122,7 +122,7 @@ const SlippageToleranceSettings = () => {
         </Flex>
       </Options>
       {error && (
-        <Text mt="8px" color="failure">
+        <Text mt="8px" color="#ea9e2b">
           {error}
         </Text>
       )}
