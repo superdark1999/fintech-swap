@@ -1,10 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Form, Input, InputNumber, Button,Radio, Modal } from 'antd';
-import UploadFile from 'components-v2/Upload'
-import { UploadOutlined, EditOutlined} from '@ant-design/icons';
+import { Form, Input, InputNumber, Button,Radio, Modal, Row, Col, Checkbox} from 'antd';
+import UploadFile from 'components-v2/Upload/index'
+import { UploadOutlined, EditOutlined, PictureOutlined} from '@ant-design/icons';
+import { ButtonStyle } from '../utilComponent/cart/styled'
+
+import {GroupButton, RadioButton} from './styled'
+
 const CreateArtWork: React.FC = () => {
     const [showModalCreateArtist, setShowModalCreateArtist] = React.useState<boolean | null>(false)
+    const formRef = React.useRef() as React.MutableRefObject<any>;
+
     const layout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
@@ -19,11 +25,6 @@ const CreateArtWork: React.FC = () => {
           range: '${label} must be between ${min} and ${max}',
         },
       };
-      /* eslint-enable no-template-curly-in-string */
-      
-    const onFinish = (values: any) => {
-      console.log(values);
-    };
 
     const createArtist = (values: object) => {
       console.log(values);
@@ -37,77 +38,96 @@ const CreateArtWork: React.FC = () => {
       return e && e.fileList;
     };
     
+    const handleSubmit = async () => {
+      formRef.current
+      .validateFields()
+      .then((values: any) => {
+        console.log('values: ', values)
+      })
+    }
           
     return (
         <CreateArtWorkStyled>
-            <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+            <Form  ref={formRef} style={{width: '100%'}} layout="vertical" name="nest-messages" validateMessages={validateMessages} >
                 <Form.Item 
                     name="radio-artwork-type" 
                     label="Select artwork type"
                     rules={[{ required: true, message: 'This Field is required!' }]}
                 >
-                    <Radio.Group>
-                        <Radio value="picture">picture</Radio>
-                        <Radio value="gif">gif</Radio>
-                        <Radio value="video">video</Radio>
-                        <Radio value="audio">audio</Radio>
-                        <Radio value="special">special</Radio>
-                    </Radio.Group>
+                  <GroupButton>
+                      <RadioButton style={{height: 100}} value="picture"> Picture</RadioButton>
+                      <RadioButton style={{height: 100}} value="gif">Gif</RadioButton>
+                      <RadioButton style={{height: 100}} value="video">Video</RadioButton>
+                      <RadioButton style={{height: 100}} value="audio">Audio</RadioButton>
+                      <RadioButton style={{height: 100}} value="special">Special</RadioButton>
+                   </GroupButton>
+                        
                 </Form.Item>
                 <Form.Item 
                     name="radio-group-standard" 
                     label="Select artwork standard"
                     rules={[{ required: true, message: 'This Field is required!' }]}
                 >
-                    <Radio.Group>
-                        <Radio value="bep721">bep721</Radio>
-                        <Radio value="bep1155">bep1155</Radio>
-                    </Radio.Group>
+                     <GroupButton>
+                      <RadioButton style={{height: 60}} value="audio">Audio</RadioButton>
+                      <RadioButton style={{height: 60}} value="special">Special</RadioButton>
+                   </GroupButton>
                 </Form.Item>
-                <Form.Item 
-                    name={['user', 'artworkName']} 
-                    label="Artwork name"
-                    rules={[{ required: true, message: 'This Field is required!' }]}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item>
-                  <Button style={{ transform: 'translateX(175px)'}} shape='round' onClick={() => setShowModalCreateArtist(true)}>
-                    <EditOutlined /> Create artists
-                  </Button>               
-                </Form.Item>
-                <Form.Item 
-                    name={['user', 'artistsName']} 
-                    label="Artists name"
-                    rules={[{ required: true, message: 'This Field is required!' }]}
-                >
-                    <Input />
-                    
-                </Form.Item>
-                <Form.Item 
-                  name={['user', 'introduction']} 
-                  label="Introduction"
-                >
-                  <Input.TextArea />
-                </Form.Item>
-                <Form.Item name={['user', 'portfolio']} label="Social media/Portfolio link">
-                    <Input />
-                </Form.Item>
-                <Form.Item
-                    name="upload-artwork"
-                    label="Upload"
-                    valuePropName="fileList"
-                    getValueFromEvent={normFile}
-                    extra="Support: png / jpg / gif, Ratio: 1:1, Size: ≤ 10MB"
-                >
-                    <UploadFile />
-                </Form.Item>
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    <Button type="primary" htmlType="submit">
-                    Submit
-                    </Button>
-                </Form.Item>
+                
+                <Row gutter={24}>
+                    <Col  xl={{ span: 12}} md={{ span: 24 }}>
+                      <Form.Item
+                        name="upload-artwork"
+                        label="Upload cover"
+                        valuePropName="fileList"
+                        getValueFromEvent={normFile}
+                        extra="Support: png / jpg / gif, Ratio: 1:1, Size: ≤ 10MB"
+                        rules={[{ required: true, message: 'This Field is required!' }]}
+                      >
+                        <UploadFile  />
+                      </Form.Item>
+                    </Col>
+
+                    <Col xl={{ span: 12}} md={{ span: 24 }}>
+                    <Form.Item 
+                      name='artworkName'
+                      label="Artwork name"
+                      rules={[{ required: true, message: 'This Field is required!' }]}
+                    >
+                        <Input style={{borderRadius: '100px'}} placeholder="Enter the artwork name"/>
+                    </Form.Item>
+                    <Form.Item>
+                      <Button  shape='round' onClick={() => setShowModalCreateArtist(true)}>
+                        <EditOutlined /> Create artists
+                      </Button>               
+                    </Form.Item>
+                    <Form.Item 
+                        name='artistsName'
+                        label="Artists name"
+                        rules={[{ required: true, message: 'This Field is required!' }]}
+                    >
+                        <Input style={{borderRadius: '100px'}} placeholder="Enter the artist name"/>
+                        
+                    </Form.Item>
+                    <Form.Item 
+                      name={'introduction'} 
+                      label="Introduction"
+                    >
+                      <Input.TextArea style={{borderRadius: '16px'}} placeholder="Enter the brief introduction"/>
+                    </Form.Item>
+                    <Form.Item name={['user', 'portfolio']} label="Social media/Portfolio link">
+                        <Input style={{borderRadius: '100px'}} placeholder="Personal website, Instagram, Twitter, ect."/>
+                    </Form.Item>
+        
+                  </Col>
+                </Row>
+                  <Checkbox style={{textAlign: 'center', padding: '10px 100px'}}>I declare that this is an original artwork. I understand that no plagiarism is allowed, and that the artwork can be removed anytime if detected.</Checkbox>
+                  <ButtonStyle onClick={handleSubmit} style={{width: 300, margin: '20px auto'}}>Create</ButtonStyle>
+                  <p style={{textAlign: 'center', padding: '10px 35%'}}>Mint an NFT charges 0.01BNB Please do not upload any sensitive content</p>
             </Form>
+
+
+{/* MODAL CREATE ARTIST */}
             <Modal
               title="Create Artist"
               visible={showModalCreateArtist}
@@ -118,49 +138,62 @@ const CreateArtWork: React.FC = () => {
               style={{ borderRadius: '10px'}}
               width={800}
             >
-              <Form  labelCol={{span: 6}} name="nest-messages" onFinish={createArtist}>
+              <Form  labelCol={{span: 24}} name="nest-messages" onFinish={createArtist} layout="vertical">
                 <Form.Item
-                  name="upload-artwork"
-                  label="Upload"
+                  name="cover"
+                  label="Upload cover"
                   valuePropName="fileList"
                   getValueFromEvent={normFile}
-                  extra="Support: png / jpg / gif, Ratio: 1:1, Size: ≤ 10MB"
-                >
-                    <UploadFile />
-                </Form.Item>
-                <Form.Item 
-                  name={['user', 'artistsName']} 
-                  label="Name"
                   rules={[{ required: true, message: 'This Field is required!' }]}
                 >
-                    <Input />                  
+                  <UploadFile  />
                 </Form.Item>
-                <Form.Item 
-                  name={['link', 'link']} 
-                  label="Social media/Portfolio link "
-                  rules={[{ required: true, message: 'This Field is required!' }]}
-                >
-                    <Input />                  
-                </Form.Item>
-                <Form.Item 
-                  name={['user', 'artistsName']} 
-                  label="Artists name"
-                  rules={[{ required: true, message: 'This Field is required!' }]}
-                >
-                    <Input.TextArea />                 
-                </Form.Item>
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    <Button type="primary" htmlType="submit">
-                    Submit
-                    </Button>
-                </Form.Item>
+                <Row gutter={24}>
+                  <Col  xl={{ span: 12}} md={{ span: 24 }}>
+                    <Form.Item
+                      name="avatar"
+                      label="Upload Avatar"
+                      valuePropName="fileList"
+                      getValueFromEvent={normFile}
+                      rules={[{ required: true, message: 'This Field is required!' }]}
+                    >
+                      <UploadFile  />
+                    </Form.Item>
+                  </Col>
+                  <Col  xl={{ span: 12}} md={{ span: 24 }}>
+                    <Form.Item 
+                      name='name' 
+                      label="Name"
+                      rules={[{ required: true, message: 'This Field is required!' }]}
+                    >
+                        <Input style={{borderRadius: '100px'}} placeholder="Your full name or nickname or bussiness name"/>                  
+                    </Form.Item>
+                    <Form.Item 
+                      name='link'
+                      label="Social media/Portfolio link "
+                      rules={[{ required: true, message: 'This Field is required!' }]}
+                    >
+                        <Input style={{borderRadius: '100px'}} placeholder="Persional website, Instagram, Twitter, etc"/>                  
+                    </Form.Item>
+                    <Form.Item 
+                      name={'bio'} 
+                      label="bio"
+                      rules={[{ required: true, message: 'This Field is required!' }]}
+                    >
+                        <Input.TextArea style={{borderRadius: '16px'}} placeholder="Please write something about yourself"/>                 
+                    </Form.Item>
+                    
+                    <ButtonStyle onClick={()=>{}} style={{width: 200, margin: '20px auto'}}>Create</ButtonStyle>
+                  </Col>             
+                </Row>
               </Form>
+
             </Modal>
         </CreateArtWorkStyled>
     )
 }
 const CreateArtWorkStyled = styled.div`
-    width: 900px;
+    width: 60%;
     /* height: 78vh; */
     margin: 40px auto;
     background: #F9FAFB;
