@@ -33,6 +33,7 @@ const BalanceContainer = styled.div`
       color: 51px;
       letter-spacing: 0.196154px;
       margin-bottom: 17px;
+      color: #fff;
     }
 
     .left-balance-estimate {

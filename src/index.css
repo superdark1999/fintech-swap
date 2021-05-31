@@ -358,3 +358,8 @@ input.input-search {
 .border-none {
   box-shadow: none !important;
 }
+
+.ant-carousel .slick-slide img {
+  height: 510px;
+  object-fit: cover;
+}
