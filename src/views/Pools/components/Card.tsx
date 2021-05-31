@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
   background: #333442;
-  border-radius: 32px;
+  border-radius: 10px;
   display: flex;
   color: #333442;
   box-shadow: ${({ isActive }) =>
