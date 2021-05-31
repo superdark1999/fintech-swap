@@ -18,7 +18,6 @@ const BalanceContainer = styled.div`
 
   @media (min-width: 768px) {
     height: 350px;
-    height: 200px;
     flex-direction: row;
   }
 
