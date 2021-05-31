@@ -72,8 +72,30 @@ const config: MenuEntry[] = [
   {
     label: 'NFT',
     icon: 'NftIcon',
-    href: 'http://marketplace.luckyswap.center',
+    href: 'https://marketplace.luckyswap.center',
     calloutClass: 'style-color',
+  },
+  {
+    label: 'More',
+    icon: 'MoreIcon',
+    calloutClass: 'style-color',
+    items: [
+      {
+        label: 'Twitter',
+        href: '#',
+        calloutClass: 'style-color',
+      },
+      {
+        label: 'Medium',
+        href: '#',
+        calloutClass: 'style-color',
+      },
+      {
+        label: 'Telegram',
+        href: '#',
+        calloutClass: 'style-color',
+      },
+    ],
   },
 ]
 

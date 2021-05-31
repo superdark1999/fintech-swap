@@ -4,7 +4,7 @@ const SecondaryCard = styled.div`
   align-items: start;
   background-color: transparent;
   border: 2px solid #2b2c3a;
-  border-radius: 32px;
+  border-radius: 10px;
   display: flex;
   padding: 24px;
 `
