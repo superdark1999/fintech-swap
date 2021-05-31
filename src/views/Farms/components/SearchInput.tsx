@@ -3,7 +3,7 @@ import { Input } from '@luckyswap/uikit'
 import styled from 'styled-components'
 
 const StyledInput = styled(Input)`
-  border-radius: 16px;
+  border-radius: 10px;
   margin-left: auto;
 `
 
