@@ -189,6 +189,7 @@ section {
     margin: 0px;
     min-width: 0px;
     font-size: 12px;
+    font-weight: 600;
   }
 }
 `
@@ -225,7 +226,7 @@ h4 {
   margin: 0px;
   min-width: 0px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 24px;
   color:  rgb(37 37 53);
   line-height: 28px;
 }

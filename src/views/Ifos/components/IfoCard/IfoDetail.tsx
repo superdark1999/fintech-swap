@@ -22,8 +22,8 @@ const IfoTitle = () => {
       <BoxContent>
         <div className="two-column">
           <div className="two-column-left">
-            <h3>Hyfi</h3>
-            <a href="/">Website</a>
+            <h3>Hcats</h3>
+            <a href="https://coin.happycats.com/" target="_blank" rel="noreferrer">Website</a>
           </div>
 
           <div className="two-column-right">
@@ -72,7 +72,7 @@ const IfoTitle = () => {
             </div>
           </div>
 
-          <Button className="finished" color="primary" disabled>Finished</Button>
+          <Button className="finished" color="primary" disabled>Coming soon</Button>
         </div>
 
         <TextBot>
@@ -165,8 +165,9 @@ const BoxContent = styled.div`
         margin: 0px;
         min-width: 0px;
         font-weight: normal;
-        font-size: 24px;
+        font-size: 26px;
         color: rgb(48 48 65);
+        font-weight: 600;
       }
 
       a {
@@ -178,7 +179,12 @@ const BoxContent = styled.div`
         text-align: center;
         background: rgb(0 167 225);
         color: #fff;
-        font-weight: 600;
+        font-weight: 00;
+
+        &:hover {
+          opacity: 0.7;
+          transition: 1s;
+        }
       }
     }
 
