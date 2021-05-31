@@ -20,7 +20,7 @@ function PoolCardsDetail(this: any) {
               <img src="../images/icon-logo.png" alt=""/>
             </figure>
             <h2>Lucky Swap</h2>
-            <span>Deposit LuckySwap Tokens and earn ABC</span>
+            <span>Deposit LuckySwap Tokens and earn LUCKY</span>
           </BoxHead>
 
           <Row gutter={[24, 16]}>
@@ -32,7 +32,7 @@ function PoolCardsDetail(this: any) {
 
                 <div className="content">
                   <h3 className="content__title">0.000</h3>
-                  <span className="content__des">ABC earned</span>
+                  <span className="content__des">LUCKY earned</span>
                 </div>
 
                 <div className="box__footer">
@@ -59,7 +59,7 @@ function PoolCardsDetail(this: any) {
             </Col>
           </Row>
 
-          <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>Every time you stake and unstake EL tokens, the contract will automatically harvest ABC rewards for you!</p>
+          <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>Every time you stake and unstake EL tokens, the contract will automatically harvest HCATS rewards for you!</p>
         </BoxDetail>
       </Page>
 

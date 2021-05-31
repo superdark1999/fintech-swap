@@ -98,17 +98,17 @@ function PoolCards() {
 
                     <FlexSpace>
                       <ContentLeft>Deposit:</ContentLeft>
-                      <ContentRight>LuckySwap</ContentRight>
+                      <ContentRight>LUCKY</ContentRight>
                     </FlexSpace>
 
                     <FlexSpace>
                       <ContentLeft>Earn:</ContentLeft>
-                      <ContentRight>TLM</ContentRight>
+                      <ContentRight>LUCKY</ContentRight>
                     </FlexSpace>
 
                     <FlexSpace>
-                      <ContentLeft>ROI:</ContentLeft>
-                      <ContentRight>2.38%</ContentRight>
+                      <ContentLeft>APR:</ContentLeft>
+                      <ContentRight>0%</ContentRight>
                     </FlexSpace>
                   </CardContent>
 
@@ -122,30 +122,27 @@ function PoolCards() {
 
               <Col>
                 <BoxPool>
-                  <HeadLine>
-                    <span>Premium</span>
-                  </HeadLine>
 
                   <figure>
-                    <img src="../images/lucky-logo.png" alt=""/>
+                    <img src="../images/hcats.jpg" alt=""/>
                   </figure>
 
                   <CardContent>
-                    <Title>LuckySwap</Title>
+                    <Title>HCATS</Title>
 
                     <FlexSpace>
                       <ContentLeft>Deposit:</ContentLeft>
-                      <ContentRight>LuckySwap</ContentRight>
+                      <ContentRight>LUCKY</ContentRight>
                     </FlexSpace>
 
                     <FlexSpace>
                       <ContentLeft>Earn:</ContentLeft>
-                      <ContentRight>TLM</ContentRight>
+                      <ContentRight>HCATS</ContentRight>
                     </FlexSpace>
 
                     <FlexSpace>
-                      <ContentLeft>ROI:</ContentLeft>
-                      <ContentRight>2.38%</ContentRight>
+                      <ContentLeft>APR:</ContentLeft>
+                      <ContentRight>0%</ContentRight>
                     </FlexSpace>
                   </CardContent>
 
@@ -157,43 +154,7 @@ function PoolCards() {
                 </BoxPool>
               </Col>
 
-              <Col>
-                <BoxPool>
-                  <HeadLine>
-                    <span>Premium</span>
-                  </HeadLine>
-                  <figure>
-                    <img src="../images/lucky-logo.png" alt=""/>
-                  </figure>
-
-                  <CardContent>
-                    <Title>LuckySwap</Title>
-
-                    <FlexSpace>
-                      <ContentLeft>Deposit:</ContentLeft>
-                      <ContentRight>LuckySwap</ContentRight>
-                    </FlexSpace>
-
-                    <FlexSpace>
-                      <ContentLeft>Earn:</ContentLeft>
-                      <ContentRight>TLM</ContentRight>
-                    </FlexSpace>
-
-                    <FlexSpace>
-                      <ContentLeft>ROI:</ContentLeft>
-                      <ContentRight>2.38%</ContentRight>
-                    </FlexSpace>
-                  </CardContent>
-
-                  <Boxbtn>
-                    <Button color="primary">
-                      <Link to="/PoolCardsDetail">Select</Link>
-                    </Button>
-                  </Boxbtn>
-                </BoxPool>
-              </Col>
-
-              <Col>
+              {/* <Col>
                 <BoxPool>
                   <HeadLine>
                     <span>Premium</span>
@@ -444,11 +405,48 @@ function PoolCards() {
                   </Boxbtn>
                 </BoxPool>
               </Col>
+
+              <Col>
+                <BoxPool>
+                  <HeadLine>
+                    <span>Premium</span>
+                  </HeadLine>
+                  <figure>
+                    <img src="../images/lucky-logo.png" alt=""/>
+                  </figure>
+
+                  <CardContent>
+                    <Title>LuckySwap</Title>
+
+                    <FlexSpace>
+                      <ContentLeft>Deposit:</ContentLeft>
+                      <ContentRight>LuckySwap</ContentRight>
+                    </FlexSpace>
+
+                    <FlexSpace>
+                      <ContentLeft>Earn:</ContentLeft>
+                      <ContentRight>TLM</ContentRight>
+                    </FlexSpace>
+
+                    <FlexSpace>
+                      <ContentLeft>ROI:</ContentLeft>
+                      <ContentRight>2.38%</ContentRight>
+                    </FlexSpace>
+                  </CardContent>
+
+                  <Boxbtn>
+                    <Button color="primary">
+                      <Link to="/PoolCardsDetail">Select</Link>
+                    </Button>
+                  </Boxbtn>
+                </BoxPool>
+              </Col>
+            */}
             </Row>
           </PoolCard>
           </TabPane>
 
-          <TabPane tabId="2">
+          {/* <TabPane tabId="2">
             <PoolCard>
               <Row xs="1" sm="2" md="4">
                 <Col>
@@ -1471,7 +1469,7 @@ function PoolCards() {
               </Row>
             </PoolCard>
           </TabPane>
-        
+         */}
         </TabContent>
     </div>
   </>
