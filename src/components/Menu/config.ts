@@ -69,6 +69,12 @@ const config: MenuEntry[] = [
     href: '/ifo',
     calloutClass: 'style-color',
   },
+  {
+    label: 'NFT',
+    icon: 'NftIcon',
+    href: 'http://marketplace.luckyswap.center',
+    calloutClass: 'style-color',
+  },
 ]
 
 export default config

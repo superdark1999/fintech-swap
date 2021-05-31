@@ -162,7 +162,7 @@ const ArtItem = ({data}) => {
           <img src="/images/lucky-logo.png" alt="lucky-coin" className="lucky-coin" />
           <span className="coin-value">+ {cost}</span>
         </div>
-        <Button type="primary">Connect</Button>
+        <Button type="primary" href="https://marketplace.luckyswap.center" target="_blank">Connect</Button>
       </div>
     </ArtItemStyled>
   )
