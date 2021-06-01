@@ -51,223 +51,34 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     //   <IfoCardDetails ifo={ifo} publicIfoData={publicIfoData} />
     // </StyledIfoCard>
     <BoxIfoCard>
-    <Item>
-      <ItemHead>
-        <section>
-          <span>Ended</span>
-        </section>
-      </ItemHead>
+      <Item>
+        <ItemHead>
+          <section>
+            <span>Coming soon</span>
+          </section>
+        </ItemHead>
 
-      <ItemContent>
-        <h4>HyFi</h4>
-        <p>The Intelligent, High-frequency Yield Farming aggregator.</p>
+        <ItemContent>
+          <h4>Hcats</h4>
+          <p>The Intelligent, High-frequency Yield Farming aggregator.</p>
 
-        <Dflex>
-          <div>IDO Amount:</div>
-          <div>4,000,000 HYFI</div>
-        </Dflex>
+          <Dflex>
+            <div>IDO Amount:</div>
+            <div>0,000 HYFI</div>
+          </Dflex>
 
-        <Dflex className="flex-bot">
-          <div>Time:</div>
-          <div>6213225 (04.02 9:00 UTC)</div>
-        </Dflex>
+          <Dflex className="flex-bot">
+            <div>Time:</div>
+            <div>Coming soon</div>
+          </Dflex>
 
-        <BoxLink>
-          <Link to="/IfoDetail">Participate</Link>
-        </BoxLink>
-      </ItemContent>
-    </Item>
+          <BoxLink>
+            <Link to="/IfoDetail">Participate</Link>
+          </BoxLink>
+        </ItemContent>
+      </Item>
 
-    <Item>
-      <ItemHead>
-        <section>
-          <span>Ended</span>
-        </section>
-      </ItemHead>
-
-      <ItemContent>
-        <h4>HyFi</h4>
-        <p>The Intelligent, High-frequency Yield Farming aggregator.</p>
-
-        <Dflex>
-          <div>IDO Amount:</div>
-          <div>4,000,000 HYFI</div>
-        </Dflex>
-
-        <Dflex className="flex-bot">
-          <div>Time:</div>
-          <div>6213225 (04.02 9:00 UTC)</div>
-        </Dflex>
-
-        <BoxLink>
-          <Link to="/IfoDetail">Participate</Link>
-        </BoxLink>
-      </ItemContent>
-    </Item>
-
-    <Item>
-      <ItemHead>
-        <section>
-          <span>Ended</span>
-        </section>
-      </ItemHead>
-
-      <ItemContent>
-        <h4>HyFi</h4>
-        <p>The Intelligent, High-frequency Yield Farming aggregator.</p>
-
-        <Dflex>
-          <div>IDO Amount:</div>
-          <div>4,000,000 HYFI</div>
-        </Dflex>
-
-        <Dflex className="flex-bot">
-          <div>Time:</div>
-          <div>6213225 (04.02 9:00 UTC)</div>
-        </Dflex>
-
-        <BoxLink>
-          <Link to="/IfoDetail">Participate</Link>
-        </BoxLink>
-      </ItemContent>
-    </Item>
-
-    <Item>
-      <ItemHead>
-        <section>
-          <span>Ended</span>
-        </section>
-      </ItemHead>
-
-      <ItemContent>
-        <h4>HyFi</h4>
-        <p>The Intelligent, High-frequency Yield Farming aggregator.</p>
-
-        <Dflex>
-          <div>IDO Amount:</div>
-          <div>4,000,000 HYFI</div>
-        </Dflex>
-
-        <Dflex className="flex-bot">
-          <div>Time:</div>
-          <div>6213225 (04.02 9:00 UTC)</div>
-        </Dflex>
-
-        <BoxLink>
-          <Link to="/IfoDetail">Participate</Link>
-        </BoxLink>
-      </ItemContent>
-    </Item>
-
-    <Item>
-      <ItemHead>
-        <section>
-          <span>Ended</span>
-        </section>
-      </ItemHead>
-
-      <ItemContent>
-        <h4>HyFi</h4>
-        <p>The Intelligent, High-frequency Yield Farming aggregator.</p>
-
-        <Dflex>
-          <div>IDO Amount:</div>
-          <div>4,000,000 HYFI</div>
-        </Dflex>
-
-        <Dflex className="flex-bot">
-          <div>Time:</div>
-          <div>6213225 (04.02 9:00 UTC)</div>
-        </Dflex>
-
-        <BoxLink>
-          <Link to="/IfoDetail">Participate</Link>
-        </BoxLink>
-      </ItemContent>
-    </Item>
-
-    <Item>
-      <ItemHead>
-        <section>
-          <span>Ended</span>
-        </section>
-      </ItemHead>
-
-      <ItemContent>
-        <h4>HyFi</h4>
-        <p>The Intelligent, High-frequency Yield Farming aggregator.</p>
-
-        <Dflex>
-          <div>IDO Amount:</div>
-          <div>4,000,000 HYFI</div>
-        </Dflex>
-
-        <Dflex className="flex-bot">
-          <div>Time:</div>
-          <div>6213225 (04.02 9:00 UTC)</div>
-        </Dflex>
-
-        <BoxLink>
-          <Link to="/IfoDetail">Participate</Link>
-        </BoxLink>
-      </ItemContent>
-    </Item>
-
-    <Item>
-      <ItemHead>
-        <section>
-          <span>Ended</span>
-        </section>
-      </ItemHead>
-
-      <ItemContent>
-        <h4>HyFi</h4>
-        <p>The Intelligent, High-frequency Yield Farming aggregator.</p>
-
-        <Dflex>
-          <div>IDO Amount:</div>
-          <div>4,000,000 HYFI</div>
-        </Dflex>
-
-        <Dflex className="flex-bot">
-          <div>Time:</div>
-          <div>6213225 (04.02 9:00 UTC)</div>
-        </Dflex>
-
-        <BoxLink>
-          <Link to="/IfoDetail">Participate</Link>
-        </BoxLink>
-      </ItemContent>
-    </Item>
-
-    <Item>
-      <ItemHead>
-        <section>
-          <span>Ended</span>
-        </section>
-      </ItemHead>
-
-      <ItemContent>
-        <h4>HyFi</h4>
-        <p>The Intelligent, High-frequency Yield Farming aggregator.</p>
-
-        <Dflex>
-          <div>IDO Amount:</div>
-          <div>4,000,000 HYFI</div>
-        </Dflex>
-
-        <Dflex className="flex-bot">
-          <div>Time:</div>
-          <div>6213225 (04.02 9:00 UTC)</div>
-        </Dflex>
-
-        <BoxLink>
-          <Link to="/IfoDetail">Participate</Link>
-        </BoxLink>
-      </ItemContent>
-    </Item>
-
-    <Item className="item-coming">
+      <Item className="item-coming">
         <div className="item-coming-title">
           Upcoming Project !
         </div>
@@ -277,21 +88,21 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
           <p>Something exciting is coming your way!</p>
         </div>
       </Item>
-  </BoxIfoCard>
-)
+    </BoxIfoCard>
+  )
 }
 
 const BoxIfoCard = styled.div`
-box-sizing: border-box;
-min-width: 0px;
-width: 100%;
-display: flex;
-padding: 0px;
-align-items: center;
-flex-wrap: wrap;
-max-width: 874px;
-justify-content: flex-start;
-margin: auto;
+  box-sizing: border-box;
+  min-width: 0px;
+  width: 100%;
+  display: flex;
+  padding: 0px;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 874px;
+  justify-content: flex-start;
+  margin: auto;
 `
 
 const Item = styled.div`
@@ -302,7 +113,7 @@ const Item = styled.div`
   width: 100%;
   min-height: 335px;
   border-radius: 26px;
-  background: rgb(255, 253, 250);
+  background: rgb(234 234 234);
   overflow: hidden;
   box-shadow: rgb(171 133 115 / 16%) 0px 2px 10px;
 
@@ -378,6 +189,7 @@ section {
     margin: 0px;
     min-width: 0px;
     font-size: 12px;
+    font-weight: 600;
   }
 }
 `
@@ -414,7 +226,7 @@ h4 {
   margin: 0px;
   min-width: 0px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 24px;
   color:  rgb(37 37 53);
   line-height: 28px;
 }

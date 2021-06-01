@@ -211,7 +211,7 @@ const BoxDetail = styled.div`
   .box {
     &__item {
       background-color: #333442;
-      border-radius: 6px;
+      border-radius: 10px;
       padding: 46px 18px 18px;
       display: flex;
       flex-direction: column;

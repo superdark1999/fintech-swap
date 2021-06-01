@@ -7,21 +7,32 @@ import { Menu, Dropdown, message } from 'antd'
 import Chart from './Chart'
 
 const BalanceContainer = styled.div`
-  height: 200px;
+  height: auto;
   width: 100%;
   align-items: center;
   display: flex;
   background-color: #232627;
   color: #9a9eb1;
   border-radius: 6px;
+  flex-direction: column;
 
   @media (min-width: 768px) {
     height: 350px;
+    flex-direction: row;
   }
 
   .left-balance {
-    width: 300px;
-    margin-left: 75px;
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 15px;
+    padding: 10px;
+
+    @media (min-width: 768px) {
+      width: 300px;
+      margin-bottom: 0;
+      margin-left: 75px;
+      padding: 0;
+    }
 
     .left-balance-label {
       font-size: 14px;
@@ -70,6 +81,10 @@ const BalanceContainer = styled.div`
 
   .right-balance {
     flex: 1;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    } 
   }
 `
 const onClick = ({ key }) => {

@@ -24,7 +24,7 @@ import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from 
 import './index.css'
 import 'antd/dist/antd.css'
 import Poolls from './views/Pools/components/PoolCardsDetail'
-// import IfoDetail from './views/Ifos/IfoDetail'
+import IfoDetail from './views/Ifos/components/IfoCard/IfoDetail'
 
 import { LanguageContext } from './hooks/LanguageContext'
 import { TranslationsContext } from './hooks/TranslationsContext'
@@ -180,9 +180,9 @@ const App: React.FC = () => {
                 <Route path="/PoolCardsDetail">
                   <Poolls />
                 </Route>
-                {/* <Route path="/IfoDetail">
+                <Route path="/IfoDetail">
                   <IfoDetail />
-                </Route> */}
+                </Route>
 
                 {/* 404 */}
                 <Route component={NotFound} />

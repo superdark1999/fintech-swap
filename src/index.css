@@ -319,12 +319,14 @@ input.input-search {
 
 .btn-max {
   position: absolute;
-  right: 0;
+  right: 10px;
   z-index: 9;
-  background-color: #434450 !important;
   border-radius: 6px !important;
   padding: 0 10px !important;
   min-height: 37px;
+  background: -webkit-linear-gradient(#01A8E1,#29F4C4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .modal-dialog .modal-content {
@@ -360,6 +362,5 @@ input.input-search {
 }
 
 .ant-carousel .slick-slide img {
-  height: 510px;
-  object-fit: cover;
+  height: 350px;
 }
