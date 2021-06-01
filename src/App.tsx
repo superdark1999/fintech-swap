@@ -22,7 +22,10 @@ import getLibrary from './wallet/utils/getLibrary'
 import { Layout} from 'antd';
 import CreateArtWork from 'views/Nft/components/CreateArtWork/index'
 import DetailArtWork from 'views/Nft/components/HotArtists/DetailArtWork'
+<<<<<<< HEAD
 
+=======
+>>>>>>> c305635 (fix conflict)
 import 'antd/dist/antd.css';
 const { Header, Content, Footer } = Layout;
 
