@@ -1,10 +1,7 @@
+// eslint-disable-next-line no-restricted-globals
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-<<<<<<< HEAD:build/precache-manifest.d4b85527b16229b87555945f7611e903.js
     "revision": "1c1cba840f2ba6427a88cabf60bc638d",
-=======
-    "revision": "59644cb44123392885df8790c9f47f4a",
->>>>>>> 4582f5d (build):build/precache-manifest.7536f202cc461d863677fde0c920b145.js
     "url": "/index.html"
   },
   {
