@@ -11,7 +11,7 @@ const IfoTitle = () => {
   return (
     <>
     <TitleDetail>
-      <h2>HyFi</h2>
+      <h2>Hcats</h2>
     </TitleDetail>
     <BoxIfoDetail>
       <img src="../images/hyfi-detail.png" alt=""/>

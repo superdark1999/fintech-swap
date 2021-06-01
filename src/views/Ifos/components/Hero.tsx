@@ -35,8 +35,8 @@ const Hero = () => {
   return (
     <StyledHero>
       <Container>
-        <Titletop>IFO: Initial Farm Offerings</Titletop>
-        <Blurb>{TranslateString(502, 'Buy new tokens with a brand new token sale model.')}</Blurb>
+        <Titletop>Luckyswap Launchpad</Titletop>
+        <Blurb>{TranslateString(502, 'Finding the best investment opportunities for you')}</Blurb>
       </Container>
     </StyledHero>
   )
