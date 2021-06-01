@@ -47,7 +47,9 @@ const CreateArtWork: React.FC = () => {
     }
           
     return (
-        <CreateArtWorkStyled>
+      <Row gutter={24} style={{justifyContent: 'center'}}>
+        <Col xl={{ span: 18}} md={{ span: 18 }} xs={{span: 24}}>
+          <CreateArtWorkStyled>       
             <Form  ref={formRef} style={{width: '100%'}} layout="vertical" name="nest-messages" validateMessages={validateMessages} >
                 <Form.Item 
                     name="radio-artwork-type" 
@@ -69,13 +71,13 @@ const CreateArtWork: React.FC = () => {
                     rules={[{ required: true, message: 'This Field is required!' }]}
                 >
                      <GroupButton>
-                      <RadioButton style={{height: 60}} value="audio">Audio</RadioButton>
-                      <RadioButton style={{height: 60}} value="special">Special</RadioButton>
+                      <RadioButton style={{height: 60}} value="Bep721 ">Bep721 </RadioButton>
+                      <RadioButton style={{height: 60}} value="Bep1155">Bep1155</RadioButton>
                    </GroupButton>
                 </Form.Item>
                 
                 <Row gutter={24}>
-                    <Col  xl={{ span: 12}} md={{ span: 24 }}>
+                    <Col  xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24}}>
                       <Form.Item
                         name="upload-artwork"
                         label="Upload cover"
@@ -88,44 +90,53 @@ const CreateArtWork: React.FC = () => {
                       </Form.Item>
                     </Col>
 
-                    <Col xl={{ span: 12}} md={{ span: 24 }}>
-                    <Form.Item 
-                      name='artworkName'
-                      label="Artwork name"
-                      rules={[{ required: true, message: 'This Field is required!' }]}
-                    >
-                        <Input style={{borderRadius: '100px'}} placeholder="Enter the artwork name"/>
-                    </Form.Item>
-                    <Form.Item>
-                      <Button  shape='round' onClick={() => setShowModalCreateArtist(true)}>
-                        <EditOutlined /> Create artists
-                      </Button>               
-                    </Form.Item>
-                    <Form.Item 
-                        name='artistsName'
-                        label="Artists name"
+                    <Col xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24}}>
+                      <Form.Item 
+                        name='artworkName'
+                        label="Artwork name"
                         rules={[{ required: true, message: 'This Field is required!' }]}
-                    >
-                        <Input style={{borderRadius: '100px'}} placeholder="Enter the artist name"/>
-                        
-                    </Form.Item>
-                    <Form.Item 
-                      name={'introduction'} 
-                      label="Introduction"
-                    >
-                      <Input.TextArea style={{borderRadius: '16px'}} placeholder="Enter the brief introduction"/>
-                    </Form.Item>
-                    <Form.Item name={['user', 'portfolio']} label="Social media/Portfolio link">
-                        <Input style={{borderRadius: '100px'}} placeholder="Personal website, Instagram, Twitter, ect."/>
-                    </Form.Item>
-        
+                      >
+                          <Input style={{borderRadius: '100px'}} placeholder="Enter the artwork name"/>
+                      </Form.Item>
+                      <Form.Item>
+                        <Button  shape='round' onClick={() => setShowModalCreateArtist(true)}>
+                          <EditOutlined /> Create artists
+                        </Button>               
+                      </Form.Item>
+                      <Form.Item 
+                          name='artistsName'
+                          label="Artists name"
+                          rules={[{ required: true, message: 'This Field is required!' }]}
+                      >
+                          <Input style={{borderRadius: '100px'}} placeholder="Enter the artist name"/>
+                          
+                      </Form.Item>
+                      <Form.Item 
+                        name={'introduction'} 
+                        label="Introduction"
+                      >
+                        <Input.TextArea style={{borderRadius: '16px'}} placeholder="Enter the brief introduction"/>
+                      </Form.Item>
+                      <Form.Item name={['user', 'portfolio']} label="Social media/Portfolio link">
+                          <Input style={{borderRadius: '100px'}} placeholder="Personal website, Instagram, Twitter, ect."/>
+                      </Form.Item>      
                   </Col>
                 </Row>
-                  <Checkbox style={{textAlign: 'center', padding: '10px 100px'}}>I declare that this is an original artwork. I understand that no plagiarism is allowed, and that the artwork can be removed anytime if detected.</Checkbox>
-                  <ButtonStyle onClick={handleSubmit} style={{width: 300, margin: '20px auto'}}>Create</ButtonStyle>
-                  <p style={{textAlign: 'center', padding: '10px 35%'}}>Mint an NFT charges 0.01BNB Please do not upload any sensitive content</p>
-            </Form>
 
+                 <Row style={{justifyContent: 'center'}}>
+                   <Col xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24}}> 
+                    <Checkbox style={{textAlign: 'center'}}>I declare that this is an original artwork. I understand that no plagiarism is allowed, and that the artwork can be removed anytime if detected.</Checkbox>
+                  </Col>
+                </Row>
+
+                  <ButtonStyle onClick={handleSubmit} style={{width: 300, margin: '20px auto'}}>Create</ButtonStyle>
+                <Row style={{justifyContent: 'center'}}>
+                  <Col xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24}}> 
+                  <p style={{textAlign: 'center'}}>Mint an NFT charges 0.01BNB Please do not upload any sensitive content</p>
+                  </Col>
+                </Row>
+            </Form>
+              
 
 {/* MODAL CREATE ARTIST */}
             <Modal
@@ -135,8 +146,8 @@ const CreateArtWork: React.FC = () => {
               footer={false}
               destroyOnClose
               maskClosable={false}
-              style={{ borderRadius: '10px'}}
-              width={800}
+              style={{ borderRadius: '16px', overflow: 'hidden'}}
+              width={"80%"}
             >
               <Form  labelCol={{span: 24}} name="nest-messages" onFinish={createArtist} layout="vertical">
                 <Form.Item
@@ -146,10 +157,10 @@ const CreateArtWork: React.FC = () => {
                   getValueFromEvent={normFile}
                   rules={[{ required: true, message: 'This Field is required!' }]}
                 >
-                  <UploadFile  />
+                  <UploadFile/>
                 </Form.Item>
                 <Row gutter={24}>
-                  <Col  xl={{ span: 12}} md={{ span: 24 }}>
+                  <Col  xl={{ span: 12}} md={{ span: 24 }}  xs={{ span: 24 }}>
                     <Form.Item
                       name="avatar"
                       label="Upload Avatar"
@@ -157,10 +168,10 @@ const CreateArtWork: React.FC = () => {
                       getValueFromEvent={normFile}
                       rules={[{ required: true, message: 'This Field is required!' }]}
                     >
-                      <UploadFile  />
+                      <UploadFile/>
                     </Form.Item>
                   </Col>
-                  <Col  xl={{ span: 12}} md={{ span: 24 }}>
+                  <Col  xl={{ span: 12}} md={{ span: 24 }} xs={{ span: 24 }}>
                     <Form.Item 
                       name='name' 
                       label="Name"
@@ -190,10 +201,12 @@ const CreateArtWork: React.FC = () => {
 
             </Modal>
         </CreateArtWorkStyled>
+      </Col>
+    </Row>    
     )
 }
 const CreateArtWorkStyled = styled.div`
-    width: 60%;
+    /* width: 60; */
     /* height: 78vh; */
     margin: 40px auto;
     background: #F9FAFB;
@@ -203,5 +216,15 @@ const CreateArtWorkStyled = styled.div`
     align-items: center;
     border: 2px solid #E7EBEF;
     border-radius: 32px;
+    .ant-modal {
+      border-radius: 16px;
+      /* overflow: hidden; */
+      padding-bottom:0;
+
+      margin-bottom: 40px;
+      .ant-modal-content{
+        border-radius: 16px !important;
+      }
+    }
 `
 export default CreateArtWork
