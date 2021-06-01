@@ -71,8 +71,8 @@ const CreateArtWork: React.FC = () => {
                     rules={[{ required: true, message: 'This Field is required!' }]}
                 >
                      <GroupButton>
-                      <RadioButton style={{height: 60}} value="audio">Audio</RadioButton>
-                      <RadioButton style={{height: 60}} value="special">Special</RadioButton>
+                      <RadioButton style={{height: 60}} value="Bep721 ">Bep721 </RadioButton>
+                      <RadioButton style={{height: 60}} value="Bep1155">Bep1155</RadioButton>
                    </GroupButton>
                 </Form.Item>
                 
