@@ -64,7 +64,7 @@ const config: MenuEntry[] = [
     ],
   },
   {
-    label: 'IFO',
+    label: 'Launchpad',
     icon: 'IfoIcon',
     href: '/ifo',
     calloutClass: 'style-color',

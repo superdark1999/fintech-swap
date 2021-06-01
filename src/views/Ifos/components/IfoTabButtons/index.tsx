@@ -18,10 +18,10 @@ const IfoTabButtons = () => {
       <div className="custom-bt">
         <ButtonMenu activeIndex={!isExact ? 1 : 0} scale="sm" variant="subtle">
           <ButtonMenuItem as={Link} to={`${url}`}>
-            Next IFO
+            Launchpad BEP-20
           </ButtonMenuItem>
           <ButtonMenuItem as={Link} to={`${url}/history`}>
-            Past IFOs
+            Launchpad NFT
           </ButtonMenuItem>
         </ButtonMenu>
       </div>
