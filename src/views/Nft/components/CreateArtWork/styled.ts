@@ -9,7 +9,7 @@ export const GroupButton = styled(Radio.Group)`
 
 export const RadioButton= styled(Radio.Button)`
 &.ant-radio-button-wrapper-checked ::before {
-    width: 172px;
+    min-width: 172px;
     /* height: 100px; */
     content:"";
     position:absolute;
