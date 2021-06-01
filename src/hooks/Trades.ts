@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Pair, Token, Trade } from '@beswap/sdk'
+import { Currency, CurrencyAmount, Pair, Token, Trade } from '@luckyswap/v2-sdk'
 import flatMap from 'lodash.flatmap'
 import { useMemo } from 'react'
 import { useActiveWeb3React } from 'hooks'

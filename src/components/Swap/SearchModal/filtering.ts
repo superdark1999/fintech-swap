@@ -1,4 +1,4 @@
-import { Token } from '@beswap/sdk'
+import { Token } from '@luckyswap/v2-sdk'
 import { isAddress } from 'utils/'
 
 export function filterTokens(tokens: Token[], search: string): Token[] {

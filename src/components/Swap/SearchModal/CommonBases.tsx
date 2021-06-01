@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from '@luckyswap/uikit'
-import { ChainId, Currency, currencyEquals, ETHER, Token } from '@beswap/sdk'
+import { ChainId, Currency, currencyEquals, ETHER, Token } from '@luckyswap/v2-sdk'
 import styled from 'styled-components'
 
 import { SUGGESTED_BASES } from '../../../constants'

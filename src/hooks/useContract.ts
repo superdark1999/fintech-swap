@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import useWeb3 from 'hooks/useWeb3'
 import { Contract } from '@ethersproject/contracts'
-import { ChainId, WETH } from '@beswap/sdk'
+import { ChainId, WETH } from '@luckyswap/v2-sdk'
 import { useActiveWeb3React } from 'hooks'
 import addresss from 'config/constants/contracts'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'

@@ -1,4 +1,4 @@
-import { Trade } from '@beswap/sdk'
+import { Trade } from '@luckyswap/v2-sdk'
 import React, { Fragment, memo, useContext } from 'react'
 import { ChevronRight } from 'react-feather'
 import { Flex, Text } from '@luckyswap/uikit'

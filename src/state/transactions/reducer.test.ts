@@ -1,4 +1,4 @@
-import { ChainId } from '@beswap/sdk'
+import { ChainId } from '@luckyswap/v2-sdk'
 import { createStore, Store } from 'redux'
 import { addTransaction, checkedTransaction, clearAllTransactions, finalizeTransaction } from './actions'
 import reducer, { initialState, TransactionState } from './reducer'

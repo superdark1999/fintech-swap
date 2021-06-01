@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@beswap/sdk'
+import { ChainId, Token } from '@luckyswap/v2-sdk'
 import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'

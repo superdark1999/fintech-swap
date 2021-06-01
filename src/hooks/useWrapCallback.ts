@@ -1,4 +1,4 @@
-import { Currency, currencyEquals, ETHER, WETH } from '@beswap/sdk'
+import { Currency, currencyEquals, ETHER, WETH } from '@luckyswap/v2-sdk'
 import { useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { tryParseAmount } from '../state/swap/hooks'

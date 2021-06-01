@@ -1,4 +1,4 @@
-import { Token, TokenAmount } from '@beswap/sdk'
+import { Token, TokenAmount } from '@luckyswap/v2-sdk'
 import { useMemo } from 'react'
 import { useAllTokenBalances } from 'state/wallet/hooks'
 
