@@ -48,7 +48,7 @@ const IfoTitle = () => {
           <div className="two-column-right">
             <Dflex>
               <div>IDO Amount:</div>
-              <div className="font-bold">0,000 HYFI</div>
+              <div className="font-bold">0,000 HCATS</div>
             </Dflex>
 
             <Dflex>
@@ -80,7 +80,7 @@ const IfoTitle = () => {
         <div className="box-input">
           <div className="d-flex">
             <div className="box-max">
-              <div className="balance">Balance: 2.486307288626942103 BNB</div>
+              <div className="balance">Balance: 0 BNB</div>
               <input className="input-max" type="text" pattern="^[0-9]*[.,]?[0-9]*$" placeholder="0.0" />
               <button className="max-btn" type="submit">Max</button>
               <div className="line"></div>

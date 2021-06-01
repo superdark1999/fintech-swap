@@ -59,12 +59,12 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
         </ItemHead>
 
         <ItemContent>
-          <h4>Hcats</h4>
-          <p>The Intelligent, High-frequency Yield Farming aggregator.</p>
+          <h4>HCATS</h4>
+          <p>Support animals conservation, helping pet and cat organizations Solutions on Binance Smart Chain</p>
 
           <Dflex>
             <div>IDO Amount:</div>
-            <div>0,000 HYFI</div>
+            <div>0,000 HCATS</div>
           </Dflex>
 
           <Dflex className="flex-bot">

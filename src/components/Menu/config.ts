@@ -76,23 +76,23 @@ const config: MenuEntry[] = [
     calloutClass: 'style-color',
   },
   {
-    label: 'More',
+    label: 'Contact',
     icon: 'MoreIcon',
     calloutClass: 'style-color',
     items: [
       {
         label: 'Twitter',
-        href: '#',
+        href: 'https://twitter.com/LuckySwap_DeFi',
         calloutClass: 'style-color',
       },
       {
         label: 'Medium',
-        href: '#',
+        href: 'https://luckyswap.medium.com',
         calloutClass: 'style-color',
       },
       {
         label: 'Telegram',
-        href: '#',
+        href: 'https://t.me/luckyswap_official_ENG',
         calloutClass: 'style-color',
       },
     ],
