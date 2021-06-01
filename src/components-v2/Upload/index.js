@@ -6,8 +6,10 @@ import _ from 'lodash'
 import { CloseCircleFilled } from '@ant-design/icons'
 
 const UploadStyled = styled.div`
-  min-width: 250px;
-  min-height: 350px;
+  /* min-width: 480px; */
+  max-height: ${props => props.maxHeight || '350px'};
+  min-height:  350px;
+  max-width: ${props => props.maxWidth || '480px'};
   /* background: ${props => props.url ? `url('${props.url})`: '#fff'}; */
   background-color: #fff;
   border: 1px dashed #E7EBEF;
@@ -20,13 +22,16 @@ const UploadStyled = styled.div`
 
   >img {
     /* position: absolute; */
-    width: 100%;
-    height: 100%;
-    bottom: 0;
+    display: block;
+    max-height: ${props => props.maxHeight || '350px'};
+    max-width: ${props => props.maxWidth || '480px'};
+    width: auto;
+    height: auto;
+    /* bottom: 0;
     top: 0;
     left: 0;
-    right: 0;
-    border-radius: 20px;
+    right: 0; */
+    /* border-radius: 20px; */
   }
   >.remove-image {
     position: absolute;
@@ -56,6 +61,7 @@ const UploadStyled = styled.div`
 `
 
 export function Upload(props) {
+  console.log('props: ', props)
   const [images, setImages] = React.useState();
   const maxNumber = 69;
 
@@ -85,7 +91,7 @@ export function Upload(props) {
           dragProps
         }) => (
           // write your building UI
-          <UploadStyled >
+          <UploadStyled maxWidth={props.maxWidth} maxHeight={props.maxHeight}>
             {_.get(imageList, '[0].data_url') && <CloseCircleFilled className="remove-image" onClick={onImageRemove}/>}
             {_.get(imageList, '[0].data_url') && <img src={_.get(imageList, '[0].data_url')} alt="" width="100" />}
             { !_.get(imageList, '[0].data_url') && (
