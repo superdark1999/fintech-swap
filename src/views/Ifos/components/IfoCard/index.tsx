@@ -117,6 +117,11 @@ const Item = styled.div`
   overflow: hidden;
   box-shadow: rgb(171 133 115 / 16%) 0px 2px 10px;
 
+  &:hover {
+    box-shadow: 1px 2px 20px #fff0c1;
+    transition: 0.5s;
+  }
+
   @media (min-width: 768px) {
     width: 280px;
   }

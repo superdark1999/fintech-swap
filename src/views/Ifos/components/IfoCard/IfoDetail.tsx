@@ -23,7 +23,26 @@ const IfoTitle = () => {
         <div className="two-column">
           <div className="two-column-left">
             <h3>Hcats</h3>
-            <a href="https://coin.happycats.com/" target="_blank" rel="noreferrer">Website</a>
+            
+            <BoxSocial>
+              <a href="/">
+              <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xmlSpace="preserve">
+                    <path style={{fill: '#03A9F4'}} d="M512,97.248c-19.04,8.352-39.328,13.888-60.48,16.576c21.76-12.992,38.368-33.408,46.176-58.016
+              c-20.288,12.096-42.688,20.64-66.56,25.408C411.872,60.704,384.416,48,354.464,48c-58.112,0-104.896,47.168-104.896,104.992
+              c0,8.32,0.704,16.32,2.432,23.936c-87.264-4.256-164.48-46.08-216.352-109.792c-9.056,15.712-14.368,33.696-14.368,53.056
+              c0,36.352,18.72,68.576,46.624,87.232c-16.864-0.32-33.408-5.216-47.424-12.928c0,0.32,0,0.736,0,1.152
+              c0,51.008,36.384,93.376,84.096,103.136c-8.544,2.336-17.856,3.456-27.52,3.456c-6.72,0-13.504-0.384-19.872-1.792
+              c13.6,41.568,52.192,72.128,98.08,73.12c-35.712,27.936-81.056,44.768-130.144,44.768c-8.608,0-16.864-0.384-25.12-1.44
+              C46.496,446.88,101.6,464,161.024,464c193.152,0,298.752-160,298.752-298.688c0-4.64-0.16-9.12-0.384-13.568
+              C480.224,136.96,497.728,118.496,512,97.248z" /></svg>
+              </a>
+              <a href="/">
+                <svg id="Bold" enableBackground="new 0 0 24 24" height={512} viewBox="0 0 24 24" width={512} xmlns="http://www.w3.org/2000/svg"><path d="m22.085 4.733 1.915-1.832v-.401h-6.634l-4.728 11.768-5.379-11.768h-6.956v.401l2.237 2.693c.218.199.332.49.303.783v10.583c.069.381-.055.773-.323 1.05l-2.52 3.054v.396h7.145v-.401l-2.52-3.049c-.273-.278-.402-.663-.347-1.05v-9.154l6.272 13.659h.729l5.393-13.659v10.881c0 .287 0 .346-.188.534l-1.94 1.877v.402h9.412v-.401l-1.87-1.831c-.164-.124-.249-.332-.214-.534v-13.467c-.035-.203.049-.411.213-.534z" /></svg>
+              </a>
+              <a href="/">
+                <svg enableBackground="new 0 0 24 24" height={512} viewBox="0 0 24 24" width={512} xmlns="http://www.w3.org/2000/svg"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z" fill="#039be5" /></svg>
+              </a>
+            </BoxSocial>
           </div>
 
           <div className="two-column-right">
@@ -168,23 +187,6 @@ const BoxContent = styled.div`
         font-size: 26px;
         color: rgb(48 48 65);
         font-weight: 600;
-      }
-
-      a {
-        margin-top: 24px;
-        width: 136px;
-        line-height: 40px;
-        border-radius: 10px;
-        text-decoration: none;
-        text-align: center;
-        background: rgb(0 167 225);
-        color: #fff;
-        font-weight: 00;
-
-        &:hover {
-          opacity: 0.7;
-          transition: 1s;
-        }
       }
     }
 
@@ -378,6 +380,33 @@ const TextBot = styled.div`
   color: rgb(48 48 65);
   line-height: 136%;
   letter-spacing: 0.01em;
+`
+
+const BoxSocial = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+
+  a {
+    border: 1px dashed #2b2c3a;
+    width: 40px;
+    height: 40px;
+    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+
+    &:hover {
+      background: #d9f5ff;
+      transition: 0.5s;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 `
 
 export default IfoTitle
