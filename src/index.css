@@ -137,7 +137,7 @@ div.line {
 }
 
 /* input::placeholder {
-  color: #ffffff !important;
+  color: #ffffff !important; // 
 } */
 
 input:focus {
