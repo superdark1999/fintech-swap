@@ -118,7 +118,7 @@ export default function RemoveLiquidity({
       { name: 'verifyingContract', type: 'address' },
     ]
     const domain = {
-      name: 'LUCKY-LPs',
+      name: 'LUCKY LPs',
       version: '1',
       chainId,
       verifyingContract: pair.liquidityToken.address,
