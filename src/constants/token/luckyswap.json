@@ -11,6 +11,14 @@
   "keywords": ["LUCKY", "default"],
   "tokens": [
     {
+      "name": "HCATS Token",
+      "symbol": "HCATS",
+      "address": "0x3fd371e44a242ea8ad0d4f2e6d5aedb44230a215",
+      "chainId": 97,
+      "decimals": 18,
+      "logoURI": "/images/coins/lucky.png"
+    },
+    {
       "name": "LUCKY Token",
       "symbol": "XLUCKY",
       "address": "0x82dbc381a54554532b738e2bb11cf337b5e78e80",
