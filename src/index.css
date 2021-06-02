@@ -127,12 +127,11 @@ a.style-color {
 }
 
 div.line {
-  border-color: #2b2c3a;
+  border-color: #fff;
 }
 
-.table-color div,
 .table-color + tr span,
-.table-color + tr div {
+.table-color + tr div .line {
   color: #fff !important;
 }
 
@@ -205,7 +204,7 @@ a#pool-nav-link {
   left: 20px;
   top: 123px;
   opacity: 1 !important;
-  background: #333442;
+  background: rgb(41 41 41);
   z-index: 99;
 }
 
@@ -237,7 +236,7 @@ a#pool-nav-link {
   border-radius: 6px !important;
   border-width: 1px !important;
   border-color: transparent !important;
-  background: linear-gradient(90deg, #161522, #161522), linear-gradient(90deg, #01a8e1, #29f4c4) !important;
+  background: linear-gradient(90deg, #161522, #161522), linear-gradient(90deg, #1890ff, #29f4c4) !important;
   background-clip: padding-box, border-box !important;
   background-origin: padding-box, border-box !important;
 }
@@ -251,6 +250,14 @@ a#pool-nav-link {
   background-color: #1890ff;
 }
 
+.box-list-token svg {
+  color: #fff;
+}
+
+.box-list-token svg path {
+  color: #fff;
+}
+
 .sc-dlnjwi.ekZheJ {
   background: #00a7e1;
 }
@@ -258,7 +265,7 @@ a#pool-nav-link {
 .style-color + div div div:hover,
 .style-color:hover,
 .style-color:focus {
-  background-color: #1b1c2d !important;
+  background-color: #444444 !important;
 }
 
 .button-h {
@@ -267,7 +274,7 @@ a#pool-nav-link {
 }
 
 .btn-supply {
-  background-color: #00A7E1 !important;
+  background-color: #1c90ff !important;
   border-radius: 6px !important;
 }
 
@@ -314,7 +321,7 @@ button.btn-blue {
 
 input.input-search {
   box-shadow: none;
-  border: 1px solid #d7caec;
+  border: 1px solid #444444;
 }
 
 .btn-max {
@@ -324,13 +331,14 @@ input.input-search {
   border-radius: 6px !important;
   padding: 0 10px !important;
   min-height: 37px;
-  background: -webkit-linear-gradient(#01A8E1,#29F4C4);
+  background: -webkit-linear-gradient(#1890ff,#29F4C4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .modal-dialog .modal-content {
-  background-color: #333442;
+  background: rgb(41 41 41);
+  box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
 }
 
 .modal-dialog .modal-content .modal-header {
@@ -350,7 +358,7 @@ input.input-search {
 }
 
 .modal-dialog .modal-footer .btn-primary {
-  background-color: #01A8E1;
+  background-color: #1890ff;
 }
 
 .modal-dialog .modal-footer .btn-secondar {

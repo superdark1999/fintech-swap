@@ -74,7 +74,8 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
 const Container = styled.div<{ hideInput: boolean }>`
   border-radius: 16px;
   background: rgb(41 41 41);
-  box-shadow: ${({ theme }) => theme.shadows.inset};
+  box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
+  /* box-shadow: ${({ theme }) => theme.shadows.inset}; */
   /* border:none; */
 `
 

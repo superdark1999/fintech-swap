@@ -2,8 +2,9 @@ import styled from 'styled-components'
 
 export const ActionContainer = styled.div`
   padding: 16px;
-  border: 2px solid #2b2c3a;
-  border-radius: 16px;
+  background: rgb(41 41 41);
+  box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
+  border-radius: 20px;
   flex-grow: 1;
   flex-basis: 0;
   margin-bottom: 16px;

@@ -34,23 +34,15 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
     margin: 0 0 2rem 0;
     background: linear-gradient(45deg,rgb(35 35 35) 30%,rgb(45 45 45) 100%);
     box-shadow: 0 4px 8px 0 ${transparentize(0.95, '#191326')};
-    padding: 0px;
+    padding: 10px;
     width: 80%;
     overflow: hidden;
-
     align-self: ${({ mobile }) => (mobile ? 'flex-end' : 'center')};
-
     max-width: 420px;
-    ${({ maxHeight }) =>
-      maxHeight &&
-      css`
-        max-height: ${maxHeight}vh;
-      `}
-    ${({ minHeight }) =>
-      minHeight &&
-      css`
-        min-height: ${minHeight}vh;
-      `}
+
+    max-height: 80vh;
+    min-height: 70vh;
+      
     @media (max-width: 768px) {
       min-height: 65vh;
     }

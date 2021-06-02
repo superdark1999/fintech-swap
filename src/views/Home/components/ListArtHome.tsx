@@ -66,11 +66,11 @@ function ListArtHome() {
 }
 
 const ArtItemStyled = styled.div`
-  background: #333441;
+  background: #444444;
   color: white;
   font-size: 14px;
   font-family: Source Sans Pro;
-  border-radius: 6px;
+  border-radius: 20px;
   overflow: hidden;
 
   .thumb-container {
