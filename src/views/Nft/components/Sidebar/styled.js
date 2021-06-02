@@ -9,7 +9,7 @@ export const SidebarStyled = styled.div`
     flex-direction: column;
     >img, span {
       margin-top: 20px;
-      border-bottom: 1px solid #E7EBEF;
+      /* border-bottom: 1px solid #E7EBEF; */
       width: 25px;
       height: 25px;
       font-size: 25px;

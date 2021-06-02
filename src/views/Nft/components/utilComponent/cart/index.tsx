@@ -42,7 +42,7 @@ export default function index(props: any) {
         </div>
         <div className="or-text">OR</div>
         <div className="action-button justify-center">
-          <ButtonStyle style={{ width: '100%' }}>
+          <ButtonStyle className="btn-donate">
             <img src={Hammer} /> 
               Enter auction 
           </ButtonStyle>

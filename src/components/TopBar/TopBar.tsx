@@ -3,8 +3,10 @@ import styled from 'styled-components'
 import Web3Status from '../../wallet/Web3Status'
 import logo from '../../assets/img/logo.svg'
 import { Input } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, MoreOutlined} from '@ant-design/icons';
 import {Link} from 'react-router-dom'
+import {ButtonBuy} from 'components-v2/Button'
+import ViewMore from 'assets/images/view-more.svg'
 interface TopBarProps {
   onPresentMobileMenu: () => void
 }
@@ -42,6 +44,11 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
             <div className="connect-wallet">
               <Web3Status />
             </div>
+            <Link to="/user-profile">
+              <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" className="connect-wallet">
+                <img src={ViewMore} />
+              </ButtonBuy>
+            </Link> 
           </div>
     </StyledTopBar>
   )
@@ -113,10 +120,10 @@ const StyledTopBar = styled.div`
   box-shadow: 0px 4px 16px -4px rgba(35, 35, 35, 0.06);
   border-bottom: 1px solid rgba(0,0,0,.06);
   &.fixed {
-    background: linear-gradient(
+    /* background: linear-gradient(
       rgb(14, 19, 29),
       rgb(6, 10, 16) 30.65%
-    ) !important;
+    ) !important; */
     position: fixed;
     padding-bottom: 5px;
     left: 0;

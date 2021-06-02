@@ -75,7 +75,7 @@ const CreateArtWork: React.FC = () => {
                           <GroupButton>
                             <RadioButton style={{height: 60}} value="Bep721 ">Bep721 </RadioButton>
                             <RadioButton style={{height: 60}} value="Bep1155">Bep1155</RadioButton>
-                        </GroupButton>
+                          </GroupButton>
                       </Form.Item>
                     </Col>
                   </Row>
@@ -87,7 +87,6 @@ const CreateArtWork: React.FC = () => {
                         label="Upload cover"
                         valuePropName="fileList"
                         getValueFromEvent={normFile}
-                        extra="Support: png / jpg / gif, Ratio: 1:1, Size: ≤ 10MB"
                         rules={[{ required: true, message: 'This Field is required!' }]}
                       >
                         <UploadFile  />
@@ -119,7 +118,7 @@ const CreateArtWork: React.FC = () => {
                         name={'introduction'} 
                         label="Introduction"
                       >
-                        <Input.TextArea style={{borderRadius: '16px'}} placeholder="Enter the brief introduction"/>
+                        <Input.TextArea style={{borderRadius: '16px', resize: 'none'}} placeholder="Enter the brief introduction" maxLength={1000} showCount={true}  autoSize={false}/>
                       </Form.Item>
                       <Form.Item name={['user', 'portfolio']} label="Social media/Portfolio link">
                           <Input style={{borderRadius: '100px'}} placeholder="Personal website, Instagram, Twitter, ect."/>
@@ -136,7 +135,7 @@ const CreateArtWork: React.FC = () => {
                   <ButtonStyle onClick={handleSubmit} style={{width: 300, margin: '20px auto'}}>Create</ButtonStyle>
                 <Row style={{justifyContent: 'center'}}>
                   <Col xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24} } xxl={{span: 12}}> 
-                  <p style={{textAlign: 'center'}}>Mint an NFT charges 0.01BNB Please do not upload any sensitive content</p>
+                  <p style={{textAlign: 'center', fontWeight: 500}}>*Mint an NFT charges 0.01BNB Please do not upload any sensitive content</p>
                   </Col>
                 </Row>
             </Form>

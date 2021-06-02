@@ -11,7 +11,7 @@ import HotArtWorks from './components/HotArtWorks/index'
 import Collection from './components/Collection/index'
 import ModalLucky from '../../components-v2/Modal'
 const NFTContainer: React.FC = () => {
-  const [onShowSidebar, setShowSidebar] = useState(false)
+  const [onShowSidebar, setShowSidebar] = useState(true)
   return (
     <Switch>
       <Page>
@@ -46,7 +46,7 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
   display: flex;
   width: 100%;
   height: 100%;
-  max-width:2200px;
+  /* max-width:2200px; */
   margin:auto;
   border:1px solid rgba(0,0,0,0.2);  
   border-top:none;
@@ -65,6 +65,8 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
     flex: ${(props:any) => props.onShowsidebar ? 1:'1 240px'};
     height: 100%;
     overflow-y: auto;
+    max-width: 1320px;
+        margin: 0 auto;
     .trending-nft{
       width:100%;
       height:80px;
