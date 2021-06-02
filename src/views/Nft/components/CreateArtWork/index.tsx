@@ -1,15 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Form, Input, InputNumber, Button,Radio, Modal, Row, Col, Checkbox} from 'antd';
 import UploadFile from 'components-v2/Upload/index'
 import { UploadOutlined, EditOutlined, PictureOutlined} from '@ant-design/icons';
 import { ButtonStyle } from '../utilComponent/cart/styled'
+import useArtworkServices from '../../../../services/ArtworkServices';
+import useNFTServices,{NFT_ADDRESS,BID_ADDRESS} from '../../../../services/NFTServices'
+import { useActiveWeb3React } from '../../../../wallet/hooks'
 
 import {GroupButton, RadioButton} from './styled'
 
 const CreateArtWork: React.FC = () => {
     const [showModalCreateArtist, setShowModalCreateArtist] = React.useState<boolean | null>(false)
     const formRef = React.useRef() as React.MutableRefObject<any>;
+    const {createNFT, getNFT} = useArtworkServices()
+    const { account } = useActiveWeb3React()
+    const {approveLevelAmount} = useNFTServices()
+
+    useEffect(()=>{
+      getNFT()
+    },[])
 
     const layout = {
         labelCol: { span: 8 },
@@ -37,14 +47,30 @@ const CreateArtWork: React.FC = () => {
       }
       return e && e.fileList;
     };
-    
-    const handleSubmit = async () => {
-      formRef.current
-      .validateFields()
-      .then((values: any) => {
-        console.log('values: ', values)
+
+    const onCreateNFT = (values:any)=>{
+      const mintData =  {
+        title: values?.artistsName||'',
+        description: values?.introduction||'',
+        type:values?.[`radio-artwork-type`]||'image',
+        ownerId:account||'',
+        content:values?.[`upload-artwork`]?.[0]?.content?.[`data_url`]||''
+      }
+      createNFT(mintData).then((data)=>{
+        console.log(data)
       })
     }
+    
+    const handleSubmit = async () => {
+      onCreateNFT({})
+      // formRef.current
+      // .validateFields()
+      // .then((values: any) => {
+      //   onCreateNFT(values)
+      // })
+    }
+
+    
           
     return (
       <Row gutter={24} style={{justifyContent: 'center'}}>

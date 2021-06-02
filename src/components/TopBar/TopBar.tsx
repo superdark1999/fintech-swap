@@ -5,13 +5,14 @@ import logo from '../../assets/img/logo.svg'
 import { Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import {Link} from 'react-router-dom'
+import { useActiveWeb3React } from '../../wallet/hooks'
 interface TopBarProps {
   onPresentMobileMenu: () => void
 }
 
 const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
-
+  const { account } = useActiveWeb3React()
   const handleScroll = () => {
     const position = window.pageYOffset
 
@@ -24,11 +25,11 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
-
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
+
 
   return (
     <StyledTopBar className={classtSicky}>
@@ -38,7 +39,11 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
           <div className="nav-bar-wrapper">
             <Input placeholder="Search items, collections, and accounts" prefix={<SearchOutlined/>} className="search-nav"></Input>
             <Link to="/" className="home-nav">Home</Link>
-            <Link to="/create/artwork" className="create-nav">Create</Link>
+            {!!true?(
+               <Link to={"/create/artwork"} className="create-nav">Create</Link>
+            ):(
+              <a onClick={()=>{alert("Unblock your wallet before create NFT")}} className="create-nav" >Create</a>
+            )}
             <div className="connect-wallet">
               <Web3Status />
             </div>
@@ -78,7 +83,7 @@ const StyledTopBar = styled.div`
         }
         }
       .create-nav{
-        background: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+        background:  linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
         border-radius: 100px;
         width: 100px;
         width: 100px;

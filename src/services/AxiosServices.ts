@@ -2,17 +2,10 @@ import axios,{Method} from 'axios';
 import { useCallback } from 'react';
 
 const qs = require('qs');
-axios.interceptors.request.use(async (config) => {
-    if (config && config.headers) {
-        config.headers['Accept-Language'] = 'en-EN';
-    }
-    return config;
-}, (error) => {
-    return Promise.reject(error);
-});
 
 export default function AxiosServices(baseUrl:string=''){
     const headers = {
+        'Access-Control-Allow-Origin': '*',
         'Accept': 'application/json',
         'Content-Type': 'application/json; charset=UTF-8'
     };
@@ -29,8 +22,19 @@ export default function AxiosServices(baseUrl:string=''){
             method,
             url: route,
             headers: headers,
-            timeout: 30 * 1000
+            timeout: 30 * 1000,
+            credentials: 'same-origin',
+            origin: "*",
+
         };
+
+        if (data) {
+            if (data instanceof FormData) {
+                Object.assign(options, {data: data});
+            } else {
+                Object.assign(options, {data: JSON.stringify(data)});
+            }
+        }
 
         if (showLoading) {
             //Show loading full screen
@@ -45,7 +49,7 @@ export default function AxiosServices(baseUrl:string=''){
     },[])
 
     const POST = useCallback((route, body, showLoading = false, showError = false)=>{
-        return fetch(route, 'POST', body, false, showLoading, showError);
+        return fetch(route, 'GET', body, false, showLoading, showError);
     },[])
 
     const PUT = useCallback((route, body, showLoading = false, showError = false)=>{
