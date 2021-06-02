@@ -385,3 +385,16 @@ input.input-search {
 .modal-header button.close span {
   font-size: 27px;
 }
+
+button.button-connect:hover {
+  border: 1px dashed #f5f5f5;
+  transition: 1s;
+}
+
+button.button-connect svg {
+  transition: transform .7s ease-in-out;
+}
+
+button.button-connect:hover svg {
+  transform: rotate(360deg);
+}
