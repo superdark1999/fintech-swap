@@ -11,6 +11,14 @@
   "keywords": ["LUCKY", "default"],
   "tokens": [
     {
+      "name": "HCATS Token",
+      "symbol": "HCATS",
+      "address": "0xfb2Fc7E8e8E154C0227c7CbdE1b49b005a527E5A",
+      "chainId": 97,
+      "decimals": 18,
+      "logoURI": "https://img.btdmp.com/files/10201263/2021/05/31/162245337164390966f0.png"
+    },
+    {
       "name": "LUCKY Token",
       "symbol": "XLUCKY",
       "address": "0x82dbc381a54554532b738e2bb11cf337b5e78e80",

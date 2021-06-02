@@ -91,7 +91,7 @@ a div {
 }
 
 .custom-bt > div {
-  background: #f7d2a6;
+  background: #9f9fa7;
 }
 
 .custom-bt > div a {
@@ -137,7 +137,7 @@ div.line {
 }
 
 /* input::placeholder {
-  color: #ffffff !important;
+  color: #ffffff !important; // 
 } */
 
 input:focus {
@@ -313,18 +313,20 @@ button.btn-blue {
 }
 
 input.input-search {
-  /* background-color: #686a6b; */
+  box-shadow: none;
   border: 1px solid #d7caec;
 }
 
 .btn-max {
   position: absolute;
-  right: 0;
+  right: 10px;
   z-index: 9;
-  background-color: #434450 !important;
   border-radius: 6px !important;
   padding: 0 10px !important;
   min-height: 37px;
+  background: -webkit-linear-gradient(#01A8E1,#29F4C4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .modal-dialog .modal-content {
@@ -353,4 +355,12 @@ input.input-search {
 
 .modal-dialog .modal-footer .btn-secondar {
   background-color: #2E3F52;
+}
+
+.border-none {
+  box-shadow: none !important;
+}
+
+.ant-carousel .slick-slide img {
+  height: 350px;
 }

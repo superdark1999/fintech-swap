@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from '@beswap/sdk'
+import { Currency, ETHER, Token } from '@luckyswap/v2-sdk'
 import React, { KeyboardEvent, RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Text, CloseIcon } from '@luckyswap/uikit'
 import { useSelector } from 'react-redux'

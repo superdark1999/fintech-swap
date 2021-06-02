@@ -1,4 +1,4 @@
-import { Token } from '@beswap/sdk'
+import { Token } from '@luckyswap/v2-sdk'
 import { transparentize } from 'polished'
 import { Button, Text } from '@luckyswap/uikit'
 import React, { useCallback, useMemo, useState } from 'react'

@@ -3,8 +3,8 @@ import styled, { ThemeContext } from 'styled-components'
 import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, ETHER, Percent, WETH } from '@beswap/sdk'
-import { Button, Flex, Text } from '@bscsswap/uikit'
+import { Currency, currencyEquals, ETHER, Percent, WETH } from '@luckyswap/v2-sdk'
+import { Button, Flex, Text } from '@luckyswap/uikit'
 import { ArrowDown, Plus } from 'react-feather'
 import { RouteComponentProps } from 'react-router'
 import { BigNumber } from '@ethersproject/bignumber'
@@ -118,7 +118,7 @@ export default function RemoveLiquidity({
       { name: 'verifyingContract', type: 'address' },
     ]
     const domain = {
-      name: 'BEDEX-LPs',
+      name: 'LUCKY LPs',
       version: '1',
       chainId,
       verifyingContract: pair.liquidityToken.address,

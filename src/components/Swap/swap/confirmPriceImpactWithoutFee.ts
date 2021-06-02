@@ -1,4 +1,4 @@
-import { Percent } from '@beswap/sdk'
+import { Percent } from '@luckyswap/v2-sdk'
 import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from '../../../constants'
 
 /**

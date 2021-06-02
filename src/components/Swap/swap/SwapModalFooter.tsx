@@ -1,4 +1,4 @@
-import { Trade, TradeType } from '@beswap/sdk'
+import { Trade, TradeType } from '@luckyswap/v2-sdk'
 import React, { useMemo, useState } from 'react'
 import { Text , Button } from '@luckyswap/uikit'
 import { Repeat } from 'react-feather'

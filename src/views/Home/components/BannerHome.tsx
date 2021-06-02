@@ -14,7 +14,7 @@ function BannerHome() {
   return (
     <Carousel autoplay infinite draggable>
       <img src="/images/coinbann.jpg" alt="coming-soon" />
-      <img src="/images/banner-home.png" alt="banner-home" />
+      <img src="/images/banner-home.jpeg" alt="banner-home" />
     </Carousel>
   )
 }

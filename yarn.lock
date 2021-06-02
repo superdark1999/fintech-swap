@@ -1363,28 +1363,6 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@beswap/core@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@beswap/core/-/core-0.0.5.tgz#838998d36c3c3c7c12a81d7bcea3371ef9f19c61"
-  integrity sha512-fyoa/P8IFKkQVZwzfqHJdTR8af7MMdHusxRSww8aUW047fQNXI7zcD+kjyIChU6kiSAngC+WgXatRI8O+mZs4w==
-  dependencies:
-    truffle "^5.1.41"
-    truffle-flattener "^1.4.4"
-    truffle-hdwallet-provider "^1.0.17"
-
-"@beswap/sdk@0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@beswap/sdk/-/sdk-0.0.9.tgz#2069c325ddc187e7742ad39f9245c379256283c8"
-  integrity sha512-Xtlz5ty/0I6eG86rVgoYLo5Sx6ix9e6IrpGzMsk20t+gR+ZlseOnHyfTIHdl2ef6usOBPouk+bJqpxLQeIRUsg==
-  dependencies:
-    "@beswap/core" "0.0.5"
-    big.js "^5.2.2"
-    decimal.js-light "^2.5.0"
-    jsbi "^3.1.1"
-    tiny-invariant "^1.1.0"
-    tiny-warning "^1.0.3"
-    toformat "^2.0.0"
-
 "@binance-chain/bsc-connector@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@binance-chain/bsc-connector/-/bsc-connector-1.0.0.tgz#5ce6b02af0921c5fb52c10861b7a0b4a958ca57a"
@@ -1394,10 +1372,10 @@
     "@web3-react/types" "^6.0.7"
     tiny-warning "^1.0.3"
 
-"@bscsswap/uikit@^0.14.4":
-  version "0.14.15"
-  resolved "https://registry.yarnpkg.com/@bscsswap/uikit/-/uikit-0.14.15.tgz#47bb7b8b711d207f846aeefa7e6410ce2101e52a"
-  integrity sha512-R+8ughjvYvJCWmljnhsIccRHadoW+AJIo8naMMoH9p3RMC3HT2zRaMc6mxE38rmIIflfVuJodQDp7hOe0wuETw==
+"@bscsswap/uikit@0.14.4":
+  version "0.14.4"
+  resolved "https://registry.yarnpkg.com/@bscsswap/uikit/-/uikit-0.14.4.tgz#33e8c017a917c01aa0367b9ad6f02e011146bea6"
+  integrity sha512-tYoxxYKg5qogJDPn90B8mKSxm2/wYNgnk6HK35zglD4hkjWt+3Sxxz/G3rfpt4OqvrlAWflbPJE3KwkPnpymkg==
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"
@@ -2658,10 +2636,10 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.50.0.tgz#29c6419e8379d496ab6d0426eadf3c4d100cd186"
   integrity sha512-swKHYCOZUGyVt4ge0u8a7AwNcA//h4nx5wIi0sruGye1IJ5Cva0GyK9L2/WdX+kWVTKp92ZiEo1df31lrWGPgA==
 
-"@luckyswap/uikit@^0.12.1":
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/@luckyswap/uikit/-/uikit-0.12.1.tgz#db33d565cdc4817f8cfb823dc3f67c83221f005b"
-  integrity sha512-h/LFMz1hoChle/yG/cmfhdiNUdO3fMPcA4dJQr63a64LaJ8x4CR2iifcmFH7hbSZM6YssDiYcl0N4eb4QMlxfg==
+"@luckyswap/uikit@0.12.6":
+  version "0.12.6"
+  resolved "https://registry.yarnpkg.com/@luckyswap/uikit/-/uikit-0.12.6.tgz#16086eaf22692b532f33d38d5b7b2f07bce7b8c5"
+  integrity sha512-5Ky7xoibDQ7ELgdyRnod5ifxD9qv4KUg9G/SOFmmCegDQu+wwTWa4ovCBqC5prly3L7EYbL2N+5fcHB3iEOpWg==
   dependencies:
     "@rollup/plugin-url" "^6.0.0"
     "@types/lodash" "^4.14.162"
@@ -2669,6 +2647,28 @@
     lodash "^4.17.20"
     react-transition-group "^4.4.1"
     styled-system "^5.1.5"
+
+"@luckyswap/v2-core@^0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@luckyswap/v2-core/-/v2-core-0.2.4.tgz#df194646d66f3a3c9bb37ec2c3d26ec64ae31c41"
+  integrity sha512-V7Fejr7/V2jTYdUbdCHcJURylTcvAQ6B+fa/M0A1VKUxN3tSmejb0Btpm+1fB/yA0423fdE4zAZmkbRa0guwHA==
+  dependencies:
+    truffle "^5.1.41"
+    truffle-flattener "^1.4.4"
+    truffle-hdwallet-provider "^1.0.17"
+
+"@luckyswap/v2-sdk@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@luckyswap/v2-sdk/-/v2-sdk-1.1.2.tgz#dea908462525943a2b38261c930fd95108db2781"
+  integrity sha512-uxF2VyBqrK/GZnaiWxwbZQdzsl3OImH/0geD4NXHVMZrUoH5mD7VanO9QI4GRs/vqI1tY1tQkheoUT0iu7Fl1w==
+  dependencies:
+    "@luckyswap/v2-core" "^0.2.4"
+    big.js "^5.2.2"
+    decimal.js-light "^2.5.0"
+    jsbi "^3.1.1"
+    tiny-invariant "^1.1.0"
+    tiny-warning "^1.0.3"
+    toformat "^2.0.0"
 
 "@metamask/safe-event-emitter@2.0.0", "@metamask/safe-event-emitter@^2.0.0":
   version "2.0.0"

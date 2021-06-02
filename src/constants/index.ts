@@ -1,6 +1,6 @@
-import { ChainId, JSBI, Percent, Token, WETH } from '@beswap/sdk'
+import { ChainId, JSBI, Percent, Token, WETH } from '@luckyswap/v2-sdk'
 
-export const ROUTER_ADDRESS = '0x35e455f4C6d53461fb741982bFF37b17b22CF5e9'
+export const ROUTER_ADDRESS = '0x4eED75a231D8A1d265B283A67b5b37D1Ec80d379'
 
 // a list of tokens by chain
 type ChainTokenList = {

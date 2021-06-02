@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from '@beswap/sdk'
+import { Currency, ETHER, Token } from '@luckyswap/v2-sdk'
 
 export function currencyId(currency: Currency): string {
   if (currency === ETHER) return 'ETH'

@@ -64,10 +64,38 @@ const config: MenuEntry[] = [
     ],
   },
   {
-    label: 'IFO',
+    label: 'Launchpad',
     icon: 'IfoIcon',
     href: '/ifo',
     calloutClass: 'style-color',
+  },
+  {
+    label: 'NFT',
+    icon: 'NftIcon',
+    href: 'https://marketplace.luckyswap.center',
+    calloutClass: 'style-color',
+  },
+  {
+    label: 'Contact',
+    icon: 'MoreIcon',
+    calloutClass: 'style-color',
+    items: [
+      {
+        label: 'Twitter',
+        href: 'https://twitter.com/LuckySwap_DeFi',
+        calloutClass: 'style-color',
+      },
+      {
+        label: 'Medium',
+        href: 'https://luckyswap.medium.com',
+        calloutClass: 'style-color',
+      },
+      {
+        label: 'Telegram',
+        href: 'https://t.me/luckyswap_official_ENG',
+        calloutClass: 'style-color',
+      },
+    ],
   },
 ]
 

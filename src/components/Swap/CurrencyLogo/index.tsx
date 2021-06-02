@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from '@beswap/sdk'
+import { Currency, ETHER, Token } from '@luckyswap/v2-sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import useHttpLocations from 'hooks/useHttpLocations'

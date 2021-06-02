@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI, Token, Trade } from '@beswap/sdk'
+import { CurrencyAmount, JSBI, Token, Trade } from '@luckyswap/v2-sdk'
 import { useWeb3React } from '@web3-react/core'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ArrowDown } from 'react-feather'
