@@ -20,7 +20,7 @@ export default function index(props: any) {
           <img src={Copy} alt=""/>
         </div>
         
-        <Link to="/artwork/detail" className="create-nav"><img className="avatar"  src={props.url}/></Link>
+        <img className="avatar"  src={props.url}/>
         <div className="title">
           LuckySwapStudio {' '}
           <img src={Checkmark} alt=""/>
@@ -38,7 +38,7 @@ export default function index(props: any) {
             <SwapOutlined />
             {' '} Trade
           </ButtonStyle>
-          <ButtonBuyStyle>Buy</ButtonBuyStyle>
+          <Link to="/artwork/detail" className="create-nav"><ButtonBuyStyle>Buy</ButtonBuyStyle></Link>
         </div>
         <div className="or-text">OR</div>
         <div className="action-button justify-center">
