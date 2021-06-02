@@ -10,7 +10,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   outline: none;
   border: none;
   flex: 1 1 auto;
-  background-color: #20212B;
+  background-color: #444444;
   font-size: 16px;
   text-align: ${({ align }) => align && align};
   white-space: nowrap;
@@ -18,6 +18,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   text-overflow: ellipsis;
   padding: 10px;
   -webkit-appearance: textfield;
+  border-radius: 20px;
 
   ::-webkit-search-decoration {
     -webkit-appearance: none;
