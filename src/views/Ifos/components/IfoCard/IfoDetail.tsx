@@ -91,7 +91,7 @@ const IfoTitle = () => {
             </div>
           </div>
 
-          <Button className="finished" color="primary" disabled>Coming soon</Button>
+          <Button type="submit" className="finished" color="primary" disabled>Coming soon</Button>
         </div>
 
         <TextBot>
@@ -358,7 +358,7 @@ const BoxForm = styled.div`
     cursor: pointer;
     position: relative;
     z-index: 1;
-    background-color: rgb(135 210 236);
+    background: #1890ff4d;
     color: rgb(255, 253, 250);
     cursor: auto;
     box-shadow: none;
@@ -368,6 +368,7 @@ const BoxForm = styled.div`
     width: 240px;
     height: 48px;
     margin: 32px auto 0px;
+    cursor: not-allowed;
   }
 `
 

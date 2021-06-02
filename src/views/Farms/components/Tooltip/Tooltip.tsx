@@ -10,7 +10,7 @@ const TooltipContent = styled.div`
   background:#FAF9FA;
   padding: 16px;
   border-radius: 16px;
-  color: #fff;
+  color: #000 !important;
   width: max-content;
   display: none;
   max-height: 500px;
