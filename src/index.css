@@ -364,3 +364,16 @@ input.input-search {
 .ant-carousel .slick-slide img {
   height: 350px;
 }
+
+.modal-header button.close {
+  background: #cecece;
+  outline: none;
+  border: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.modal-header button.close span {
+  font-size: 27px;
+}

@@ -263,9 +263,15 @@ const BoxDetail = styled.div`
         width: 100%;
         max-width: 200px;
         min-height: 40px;
+        border-color: transparent;
 
         &:hover {
           opacity: 0.7;
+        }
+
+        &:focus {
+          border-color: transparent;
+          box-shadow: none;
         }
       }
     }
