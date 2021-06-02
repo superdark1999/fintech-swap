@@ -9,7 +9,7 @@ body {
 }
 
 * {
-  font-family: 'Roboto', sans-serif !important;
+  font-family: 'Prompt', sans-serif !important;
 }
 
 .custom button {
@@ -76,9 +76,9 @@ a div {
 }
 
 #swap-page .bot-btn button {
-  background: #10607b66;
+  background: #1890ff4d;
   color: #fff;
-  border-radius: 4px;
+  border-radius: 20px;
   width: 100%;
 }
 
@@ -210,7 +210,7 @@ a#pool-nav-link {
 }
 
 .custome-icon {
-  background-color: #292a36;
+  background-color: #444444;
   border-radius: 5px;
 }
 
@@ -319,7 +319,7 @@ input.input-search {
 
 .btn-max {
   position: absolute;
-  right: 10px;
+  right: 15px;
   z-index: 9;
   border-radius: 6px !important;
   padding: 0 10px !important;
@@ -363,4 +363,17 @@ input.input-search {
 
 .ant-carousel .slick-slide img {
   height: 350px;
+}
+
+.modal-header button.close {
+  background: #cecece;
+  outline: none;
+  border: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.modal-header button.close span {
+  font-size: 27px;
 }

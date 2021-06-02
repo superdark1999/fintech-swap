@@ -34,10 +34,11 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   user-select: none;
   border: none;
   padding: 0 0.5rem;
-
+  font-weight: 700;
   :focus,
   :hover {
-    background-color: ${({ theme }) => darken(0.05, theme.colors.input)};
+    /* background-color: ${({ theme }) => darken(0.05, theme.colors.input)}; */
+    color:#1890ff ;
   }
 `
 
@@ -71,9 +72,10 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
 `
 
 const Container = styled.div<{ hideInput: boolean }>`
-  border-radius: 4px;
-  background-color: #292A36;
+  border-radius: 16px;
+  background: rgb(41 41 41);
   box-shadow: ${({ theme }) => theme.shadows.inset};
+  /* border:none; */
 `
 
 interface CurrencyInputPanelProps {
@@ -125,7 +127,7 @@ export default function CurrencyInputPanel({
             <RowBetween>
               <Text fontSize="14px">{translatedLabel}</Text>
               {account && (
-                <Text onClick={onMax} fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
+                <Text onClick={onMax} fontSize="16px" fontWeight="700" style={{ display: 'inline', cursor: 'pointer', letterSpacing: '1px'}}>
                   {!hideBalance && !!currency && selectedCurrencyBalance
                     ? `Balance: ${selectedCurrencyBalance?.toSignificant(6)}`
                     : ' -'}
