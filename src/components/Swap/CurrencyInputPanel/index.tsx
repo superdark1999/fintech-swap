@@ -34,10 +34,11 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   user-select: none;
   border: none;
   padding: 0 0.5rem;
-
+  font-weight: 700;
   :focus,
   :hover {
-    background-color: ${({ theme }) => darken(0.05, theme.colors.input)};
+    /* background-color: ${({ theme }) => darken(0.05, theme.colors.input)}; */
+    color:#1890ff ;
   }
 `
 
@@ -71,9 +72,10 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
 `
 
 const Container = styled.div<{ hideInput: boolean }>`
-  border-radius: 4px;
-  background-color: #292A36;
+  border-radius: 16px;
+  background: rgb(41 41 41);
   box-shadow: ${({ theme }) => theme.shadows.inset};
+  /* border:none; */
 `
 
 interface CurrencyInputPanelProps {

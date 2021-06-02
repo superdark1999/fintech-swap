@@ -18,7 +18,7 @@ const UnlockButton: React.FC<ButtonProps> = (props) => {
   const { onPresentConnectModal } = useWalletModal(handleLogin, deactivate, account as string)
 
   return (
-    <Button onClick={onPresentConnectModal} style={{ background: '#10607b66' }} {...props}>
+    <Button onClick={onPresentConnectModal} style={{ background: '#8a8a8a66' }} {...props}>
       {TranslateString(292, 'Unlock Wallet')}
     </Button>
   )
