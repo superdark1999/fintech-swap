@@ -101,8 +101,8 @@ const CreateArtWork: React.FC = () => {
     return (
       <Row gutter={24} style={{justifyContent: 'center'}}>
         <Col xl={{ span: 18}} md={{ span: 18 }} xs={{span: 24}}>
-          <CreateArtWorkStyled>       
-            <Form  ref={formRef} style={{width: '100%'}} layout="vertical" name="nest-messages" validateMessages={validateMessages}>
+          <CreateArtWorkStyled> 
+            <Form  ref={formRef} style={{width: '100%'}} layout="vertical" name="nest-messages" validateMessages={validateMessages} >
                 <Form.Item 
                     name="radio-artwork-type" 
                     label="Select artwork type"
@@ -117,32 +117,35 @@ const CreateArtWork: React.FC = () => {
                    </GroupButton>
                         
                 </Form.Item>
-                <Form.Item 
-                    name="radio-group-standard" 
-                    label="Select artwork standard"
-                    rules={[{ required: true, message: 'This Field is required!' }]}
-                >
-                     <GroupButton>
-                      <RadioButton style={{height: 60}} value="Bep721 ">Bep721 </RadioButton>
-                      <RadioButton style={{height: 60}} value="Bep1155">Bep1155</RadioButton>
-                   </GroupButton>
-                </Form.Item>
+                <Row gutter={24}>
+                    <Col  xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24}} xxl={{span: 12}}> 
+                      <Form.Item 
+                          name="radio-group-standard" 
+                          label="Select artwork standard"
+                          rules={[{ required: true, message: 'This Field is required!' }]}
+                      >
+                          <GroupButton>
+                            <RadioButton style={{height: 60}} value="Bep721 ">Bep721 </RadioButton>
+                            <RadioButton style={{height: 60}} value="Bep1155">Bep1155</RadioButton>
+                        </GroupButton>
+                      </Form.Item>
+                    </Col>
+                  </Row>
                 
                 <Row gutter={24}>
-                    <Col  xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24}}>
+                    <Col  xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24}} xxl={{span: 12}}> 
                       <Form.Item
                         name="upload-artwork"
                         label="Upload cover"
                         valuePropName="fileList"
                         getValueFromEvent={normFile}
-                        extra="Support: png / jpg / gif, Ratio: 1:1, Size: ≤ 10MB"
                         rules={[{ required: true, message: 'This Field is required!' }]}
                       >
                         <UploadFile  />
                       </Form.Item>
                     </Col>
 
-                    <Col xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24}}>
+                    <Col xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24}} xxl={{span: 12}}>
                       <Form.Item 
                         name='artworkName'
                         label="Artwork name"
@@ -167,7 +170,7 @@ const CreateArtWork: React.FC = () => {
                         name={'introduction'} 
                         label="Introduction"
                       >
-                        <Input.TextArea style={{borderRadius: '16px'}} placeholder="Enter the brief introduction"/>
+                        <Input.TextArea style={{borderRadius: '16px', resize: 'none'}} placeholder="Enter the brief introduction" maxLength={1000} showCount={true}  autoSize={false}/>
                       </Form.Item>
                       <Form.Item name={['user', 'portfolio']} label="Social media/Portfolio link">
                           <Input style={{borderRadius: '100px'}} placeholder="Personal website, Instagram, Twitter, ect."/>
@@ -176,15 +179,15 @@ const CreateArtWork: React.FC = () => {
                 </Row>
 
                  <Row style={{justifyContent: 'center'}}>
-                   <Col xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24}}> 
+                   <Col xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24}} xxl={{span: 12}}> 
                     <Checkbox style={{textAlign: 'center'}}>I declare that this is an original artwork. I understand that no plagiarism is allowed, and that the artwork can be removed anytime if detected.</Checkbox>
                   </Col>
                 </Row>
 
                   <ButtonStyle onClick={handleSubmit} style={{width: 300, margin: '20px auto'}}>{isProccessing?`Proccessing ...`:`Create`}</ButtonStyle>
                 <Row style={{justifyContent: 'center'}}>
-                  <Col xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24}}> 
-                  <p style={{textAlign: 'center'}}>Mint an NFT charges 0.01BNB Please do not upload any sensitive content</p>
+                  <Col xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24} } xxl={{span: 12}}> 
+                  <p style={{textAlign: 'center', fontWeight: 500}}>*Mint an NFT charges 0.01BNB Please do not upload any sensitive content</p>
                   </Col>
                 </Row>
             </Form>
@@ -198,19 +201,23 @@ const CreateArtWork: React.FC = () => {
               footer={false}
               destroyOnClose
               maskClosable={false}
-              style={{ borderRadius: '16px', overflow: 'hidden'}}
-              width={"80%"}
+              style={{ borderRadius: '16px', overflow: "hidden", paddingBottom: 0}}
+              width={1000}
             >
-              <Form ref={formArtistRef}  labelCol={{span: 24}} name="nest-messages"  layout="vertical">
-                <Form.Item
-                  name="cover"
-                  label="Upload cover"
-                  valuePropName="fileList"
-                  getValueFromEvent={normFile}
-                  rules={[{ required: true, message: 'This Field is required!' }]}
-                >
-                  <UploadFile/>
-                </Form.Item>
+              <Form  labelCol={{span: 24}} name="nest-messages" onFinish={createArtist} layout="vertical">
+                <Row gutter={24}> 
+                  <Col xl={{ span: 24}} md={{ span: 24 }}  xs={{ span: 24 }}>
+                    <Form.Item
+                      name="cover"
+                      label="Upload cover"
+                      valuePropName="fileList"
+                      getValueFromEvent={normFile}
+                      rules={[{ required: true, message: 'This Field is required!' }]}
+                    >
+                      <UploadFile maxWidth="1000px" maxHeight="250px"/>
+                    </Form.Item>
+                  </Col>
+                </Row>
                 <Row gutter={24}>
                   <Col  xl={{ span: 12}} md={{ span: 24 }}  xs={{ span: 24 }}>
                     <Form.Item
@@ -220,7 +227,7 @@ const CreateArtWork: React.FC = () => {
                       getValueFromEvent={normFile}
                       rules={[{ required: true, message: 'This Field is required!' }]}
                     >
-                      <UploadFile/>
+                      <UploadFile maxWidth="400px"/>
                     </Form.Item>
                   </Col>
                   <Col  xl={{ span: 12}} md={{ span: 24 }} xs={{ span: 24 }}>
@@ -258,9 +265,8 @@ const CreateArtWork: React.FC = () => {
     )
 }
 const CreateArtWorkStyled = styled.div`
-    /* width: 60; */
-    /* height: 78vh; */
     margin: 40px auto;
+    max-width: 1100px;
     background: #F9FAFB;
     padding: 40px;
     display: flex;
@@ -268,15 +274,9 @@ const CreateArtWorkStyled = styled.div`
     align-items: center;
     border: 2px solid #E7EBEF;
     border-radius: 32px;
-    .ant-modal {
-      border-radius: 16px;
-      /* overflow: hidden; */
-      padding-bottom:0;
-
-      margin-bottom: 40px;
-      .ant-modal-content{
-        border-radius: 16px !important;
-      }
+    .ant-modal-content {
+      overflow: auto;
+      border-radius: 24px
     }
 `
 export default CreateArtWork

@@ -62,7 +62,6 @@ function Collection() {
                   Load more
                 </Button>
               </div>           
-              
             </div>
         </CollectionStyled>
     )

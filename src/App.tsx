@@ -23,6 +23,7 @@ import { Layout} from 'antd';
 import CreateArtWork from 'views/Nft/components/CreateArtWork/index'
 import DetailArtWork from 'views/Nft/components/HotArtists/DetailArtWork'
 import 'antd/dist/antd.css';
+import UserProfile from 'views/Nft/components/UserProfile'
 const { Header, Content, Footer } = Layout;
 
 // 
@@ -99,6 +100,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/artwork/detail">
               <DetailArtWork />
+            </Route>
+            <Route path="/user-profile">
+              <UserProfile />
             </Route>
           </Switch>
           </>
