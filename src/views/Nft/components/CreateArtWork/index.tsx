@@ -75,11 +75,7 @@ const CreateArtWork: React.FC = () => {
                           <GroupButton>
                             <RadioButton style={{height: 60}} value="Bep721 ">Bep721 </RadioButton>
                             <RadioButton style={{height: 60}} value="Bep1155">Bep1155</RadioButton>
-<<<<<<< HEAD
                         </GroupButton>
-=======
-                          </GroupButton>
->>>>>>> phatDev
                       </Form.Item>
                     </Col>
                   </Row>
