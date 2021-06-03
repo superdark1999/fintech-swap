@@ -24,57 +24,57 @@ const config: MenuEntry[] = [
       },
     ],
   },
-  {
-    label: 'Farms',
-    icon: 'FarmIcon',
-    href: '/farms',
-    calloutClass: 'style-color',
-  },
-  {
-    label: 'Pools',
-    icon: 'PoolIcon',
-    href: '/pools',
-    calloutClass: 'style-color',
-  },
-  {
-    label: 'Info',
-    icon: 'InfoIcon',
-    calloutClass: 'style-color',
-    items: [
-      {
-        label: 'Overview',
-        href: '#',
-        calloutClass: 'style-color',
-      },
-      {
-        label: 'Tokens',
-        href: '#',
-        calloutClass: 'style-color',
-      },
-      {
-        label: 'Pairs',
-        href: '#',
-        calloutClass: 'style-color',
-      },
-      {
-        label: 'Accounts',
-        href: '#',
-        calloutClass: 'style-color',
-      },
-    ],
-  },
+  // {
+  //   label: 'Farms',
+  //   icon: 'FarmIcon',
+  //   href: '/farms',
+  //   calloutClass: 'style-color',
+  // },
+  // {
+  //   label: 'Pools',
+  //   icon: 'PoolIcon',
+  //   href: '/pools',
+  //   calloutClass: 'style-color',
+  // },
+  // {
+  //   label: 'Info',
+  //   icon: 'InfoIcon',
+  //   calloutClass: 'style-color',
+  //   items: [
+  //     {
+  //       label: 'Overview',
+  //       href: '#',
+  //       calloutClass: 'style-color',
+  //     },
+  //     {
+  //       label: 'Tokens',
+  //       href: '#',
+  //       calloutClass: 'style-color',
+  //     },
+  //     {
+  //       label: 'Pairs',
+  //       href: '#',
+  //       calloutClass: 'style-color',
+  //     },
+  //     {
+  //       label: 'Accounts',
+  //       href: '#',
+  //       calloutClass: 'style-color',
+  //     },
+  //   ],
+  // },
   {
     label: 'Launchpad',
     icon: 'IfoIcon',
     href: '/ifo',
     calloutClass: 'style-color',
   },
-  {
-    label: 'NFT',
-    icon: 'NftIcon',
-    href: 'https://marketplace.luckyswap.center',
-    calloutClass: 'style-color',
-  },
+  // {
+  //   label: 'NFT',
+  //   icon: 'NftIcon',
+  //   href: 'https://marketplace.luckyswap.center',
+  //   calloutClass: 'style-color',
+  // },
   {
     label: 'More',
     icon: 'MoreIcon',
@@ -94,22 +94,7 @@ const config: MenuEntry[] = [
         label: 'Telegram',
         href: 'https://t.me/luckyswap_official_ENG',
         calloutClass: 'style-color',
-      },
-      {
-        label: 'FAQ',
-        href: '#',
-        calloutClass: 'style-color',
-      },
-      {
-        label: 'About',
-        href: '#',
-        calloutClass: 'style-color',
-      },
-      {
-        label: 'Support',
-        href: '#',
-        calloutClass: 'style-color',
-      },
+      }
     ],
   },
 ]

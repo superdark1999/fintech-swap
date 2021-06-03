@@ -50,7 +50,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     // <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={publicIfoData.status === 'live'}>
     //   <IfoCardDetails ifo={ifo} publicIfoData={publicIfoData} />
     // </StyledIfoCard>
-    <BoxIfoCard>
+    <>
       <Item>
         <ItemHead>
           <section>
@@ -88,22 +88,11 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
           <p>Something exciting is coming your way!</p>
         </div>
       </Item>
-    </BoxIfoCard>
+    </>
   )
 }
 
-const BoxIfoCard = styled.div`
-  box-sizing: border-box;
-  min-width: 0px;
-  width: 100%;
-  display: flex;
-  padding: 0px;
-  align-items: center;
-  flex-wrap: wrap;
-  max-width: 874px;
-  justify-content: flex-start;
-  margin: auto;
-`
+
 
 const Item = styled.div`
   box-sizing: border-box;
@@ -249,25 +238,28 @@ p {
 `
 
 const BoxLink = styled.div`
-a {
-  display: block;
-  width: 232px;
-  height: 40px;
-  line-height: 40px;
-  font-weight: bold;
-  font-size: 14px;
-  color: rgb(255, 253, 250);
-  text-align: center;
-  background: #1890ff;
-  border-radius: 10px;
-  text-decoration: none;
-
-  &:hover {
-    background-color: #40a9ff;
-    transition: 0.5s;
+  display: flex;
+  justify-content: center;
+  
+  a {
+    display: block;
+    width: 232px;
+    height: 40px;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 14px;
     color: rgb(255, 253, 250);
+    text-align: center;
+    background: #1890ff;
+    border-radius: 10px;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #40a9ff;
+      transition: 0.5s;
+      color: rgb(255, 253, 250);
+    }
   }
-}
 `
 
 export default IfoCard
