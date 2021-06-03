@@ -204,7 +204,7 @@ const CreateArtWork: React.FC = () => {
               style={{ borderRadius: '16px', overflow: "hidden", paddingBottom: 0}}
               width={1000}
             >
-              <Form  labelCol={{span: 24}} name="nest-messages" onFinish={createArtist} layout="vertical">
+              <Form  ref={formArtistRef}  labelCol={{span: 24}} name="nest-messages" onFinish={createArtist} layout="vertical">
                 <Row gutter={24}> 
                   <Col xl={{ span: 24}} md={{ span: 24 }}  xs={{ span: 24 }}>
                     <Form.Item
@@ -212,7 +212,6 @@ const CreateArtWork: React.FC = () => {
                       label="Upload cover"
                       valuePropName="fileList"
                       getValueFromEvent={normFile}
-                      rules={[{ required: true, message: 'This Field is required!' }]}
                     >
                       <UploadFile maxWidth="1000px" maxHeight="250px"/>
                     </Form.Item>
@@ -225,7 +224,6 @@ const CreateArtWork: React.FC = () => {
                       label="Upload Avatar"
                       valuePropName="fileList"
                       getValueFromEvent={normFile}
-                      rules={[{ required: true, message: 'This Field is required!' }]}
                     >
                       <UploadFile maxWidth="400px"/>
                     </Form.Item>
