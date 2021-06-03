@@ -98,12 +98,13 @@ export const StyledCart = styled.div`
   }
 }`
 
-export const ButtonStyle = styled.div`
+export const ButtonStyle = styled.button`
   background: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
   border-radius: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border:none;
   padding: 8px 24px;
   font-weight: 600;
   font-size: 16px;
