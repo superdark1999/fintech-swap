@@ -287,3 +287,8 @@ button.button-connect:hover {
     opacity: 0;
   }
 }
+
+.custom-btn a#join-pool-button{
+  background-color: #1890ff;
+  margin-top: 15px;
+}

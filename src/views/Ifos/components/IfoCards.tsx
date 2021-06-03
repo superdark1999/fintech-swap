@@ -13,8 +13,12 @@ const IfoCardWrapper = styled.div<IfoCardWrapperProps>`
   padding-bottom: 40px;
   padding-top: 40px;
   display: grid;
-  grid-template-columns: repeat(4,1fr);
+  grid-template-columns: 1fr;
   grid-gap: 20px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4,1fr);
+  }
 `
 
 IfoCardWrapper.defaultProps = {
