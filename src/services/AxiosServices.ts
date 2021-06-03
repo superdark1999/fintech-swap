@@ -1,6 +1,6 @@
 import axios,{Method} from 'axios';
 import { useCallback } from 'react';
-
+import _ from 'lodash'
 const qs = require('qs');
 
 export default function AxiosServices(baseUrl:string=''){
@@ -12,7 +12,7 @@ export default function AxiosServices(baseUrl:string=''){
 
     function fetch(url:string, method:Method, data:object, isQuery:boolean, showLoading:boolean, showError:boolean){
         let route = `${baseUrl}${url}`;
-        if (isQuery && data) {
+        if (isQuery && !_.isEmpty(data)) {
             const query = qs.stringify(data);
             route = `${route}?${query}`;
             data = undefined;
@@ -42,6 +42,7 @@ export default function AxiosServices(baseUrl:string=''){
         if (showError) {
             //Show error
         }
+        console.log(options)
         return axios(options);
     }
     const GET = useCallback((route, query, showLoading = false, showError = false)=>{
@@ -49,16 +50,20 @@ export default function AxiosServices(baseUrl:string=''){
     },[])
 
     const POST = useCallback((route, body, showLoading = false, showError = false)=>{
-        return fetch(route, 'GET', body, false, showLoading, showError);
+        return fetch(route, 'POST', body, false, showLoading, showError);
     },[])
 
     const PUT = useCallback((route, body, showLoading = false, showError = false)=>{
         return fetch(route, 'PUT', body, false, showLoading, showError);
     },[])
 
+    const PATCH = useCallback((route, body, showLoading = false, showError = false)=>{
+        return fetch(route, 'PATCH', body, false, showLoading, showError);
+    },[])
+
     const DELETE = useCallback((route, query, showLoading = false, showError = false)=>{
         return fetch(route, 'DELETE', query, true, showLoading, showError);
     },[])
 
-    return {GET, POST, PUT, DELETE}
+    return {GET, POST, PUT, DELETE,PATCH}
 }
