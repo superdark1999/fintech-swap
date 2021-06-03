@@ -292,3 +292,17 @@ button.button-connect:hover {
   background-color: #1890ff;
   margin-top: 15px;
 }
+
+.bot-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.bot-btn button {
+  max-width: 340px;
+  width: 100%;
+}
+
+.bot-btn #swap-button{
+  background-color: #1890ff;
+}
