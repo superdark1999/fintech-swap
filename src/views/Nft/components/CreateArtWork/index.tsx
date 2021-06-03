@@ -37,8 +37,7 @@ const CreateArtWork: React.FC = () => {
       };
 
 
-    const createArtist = (values:any) => {
-      console.log('values createArtist: ', values);
+    const createArtist = () => {
       formArtistRef.current
       .validateFields()
       .then((values: any) => {
@@ -81,6 +80,7 @@ const CreateArtWork: React.FC = () => {
         }).catch((err:any)=>{
         })
 
+
       }).finally(()=>{
         setIsProcessing(false)
       })
@@ -102,7 +102,7 @@ const CreateArtWork: React.FC = () => {
       <Row gutter={24} style={{justifyContent: 'center'}}>
         <Col xl={{ span: 18}} md={{ span: 18 }} xs={{span: 24}}>
           <CreateArtWorkStyled> 
-            <Form onFinish={handleSubmit} ref={formRef} style={{width: '100%'}} layout="vertical" name="nest-messages" validateMessages={validateMessages} >
+            <Form  ref={formRef} style={{width: '100%'}} layout="vertical" name="nest-messages" validateMessages={validateMessages} >
                 <Form.Item 
                     name="radio-artwork-type" 
                     label="Select artwork type"
@@ -184,7 +184,7 @@ const CreateArtWork: React.FC = () => {
                   </Col>
                 </Row>
 
-                  <ButtonStyle style={{width: 300, margin: '20px auto'}}>{isProccessing?`Proccessing ...`:`Create`}</ButtonStyle>
+                  <ButtonStyle onClick={handleSubmit} style={{width: 300, margin: '20px auto'}}>{isProccessing?`Proccessing ...`:`Create`}</ButtonStyle>
                 <Row style={{justifyContent: 'center'}}>
                   <Col xl={{ span: 12}} md={{ span: 24 }} xs={{span: 24} } xxl={{span: 12}}> 
                   <p style={{textAlign: 'center', fontWeight: 500}}>*Mint an NFT charges 0.01BNB Please do not upload any sensitive content</p>
@@ -234,14 +234,14 @@ const CreateArtWork: React.FC = () => {
                     <Form.Item 
                       name='name' 
                       label="Name"
-                      rules={[{ required: true, message: 'This Field is required' }]}
+                      rules={[{ required: true, message: 'This Field is required!' }]}
                     >
                         <Input style={{borderRadius: '100px'}} placeholder="Your full name or nickname or bussiness name"/>                  
                     </Form.Item>
                     <Form.Item 
                       name='socialLink'
                       label="Social media/Portfolio link "
-                      rules={[{ required: true, message: 'This Field is required' }]}
+                      rules={[{ required: true, message: 'This Field is required!' }]}
                     >
                         <Input style={{borderRadius: '100px'}} placeholder="Persional website, Instagram, Twitter, etc"/>                  
                     </Form.Item>
@@ -252,7 +252,8 @@ const CreateArtWork: React.FC = () => {
                     >
                         <Input.TextArea style={{borderRadius: '16px'}} placeholder="Please write something about yourself"/>                 
                     </Form.Item>
-                    <ButtonStyle type="submit" style={{width: 200, margin: '20px auto'}}>Create</ButtonStyle>
+                    
+                    <ButtonStyle onClick={createArtist} style={{width: 200, margin: '20px auto'}}>Create</ButtonStyle>
                   </Col>             
                 </Row>
               </Form>
