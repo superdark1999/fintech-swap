@@ -123,7 +123,7 @@ const Item = styled.div`
   }
 
   @media (min-width: 768px) {
-    width: 280px;
+    width: 100%;
   }
 
   &:not(:nth-child(3n)) {
@@ -174,7 +174,7 @@ background-size: cover;
 color: rgb(255, 255, 255);
 
 @media (min-width: 768px) {
-  width: 280px;
+  width: 100%;
 }
 
 section {

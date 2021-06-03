@@ -76,7 +76,7 @@ const config: MenuEntry[] = [
     calloutClass: 'style-color',
   },
   {
-    label: 'Contact',
+    label: 'More',
     icon: 'MoreIcon',
     calloutClass: 'style-color',
     items: [
@@ -93,6 +93,21 @@ const config: MenuEntry[] = [
       {
         label: 'Telegram',
         href: 'https://t.me/luckyswap_official_ENG',
+        calloutClass: 'style-color',
+      },
+      {
+        label: 'FAQ',
+        href: '#',
+        calloutClass: 'style-color',
+      },
+      {
+        label: 'About',
+        href: '#',
+        calloutClass: 'style-color',
+      },
+      {
+        label: 'Support',
+        href: '#',
         calloutClass: 'style-color',
       },
     ],
