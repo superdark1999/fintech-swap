@@ -311,3 +311,7 @@ button.button-connect:hover {
 .bot-btn #swap-button{
   background-color: #1890ff;
 }
+
+.custom-btn-farm button {
+  background-color: #1c90ff;
+}
