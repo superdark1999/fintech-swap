@@ -1,6 +1,7 @@
-import React, {useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Cart from '../utilComponent/cart/'
 import { HotArtWorksStyled } from './styled'
+import useArtworkServices from '../../../../services/ArtworkServices'; 
 import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
 const data = [
   "https://cdna.artstation.com/p/assets/images/images/037/877/182/large/valerie-frenzel-mermay-preview.jpg?1621539045",

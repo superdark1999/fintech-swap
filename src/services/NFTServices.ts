@@ -12,7 +12,7 @@ import { useCallback, useMemo } from 'react'
 import { ethers } from 'ethers'
 
 export const NFT_ADDRESS = '0xa75556C5b07e88119d7979761D00b8a55A1Bc315';
-export const MARKET_ADDRESS = '0x113f1E1542b9ff5C1bA156601A94A8409f6c835E';
+export const MARKET_ADDRESS = '0x172D30072817afBcaebF39B75b6eCd1E0B8Ec90F';
 export const LUCKY_TOKEN_ADDRESS = '0x5C2AaAdD1FcE223baaEFB1cF41ce872e9d8B986A';
 const payableAmountDefault = '10000000000000000'
 
@@ -68,14 +68,26 @@ export default function NFTService(){
         //sell NFT
 
         const approveNFTToMarket = useCallback(async(tokenId:string|undefined)=>{
-            const estimatedGas = await nftContract.estimateGas.approve(tokenId);
+            const estimatedGas = await nftContract.estimateGas.approve(MARKET_ADDRESS,tokenId);
             return nftContract.approve(MARKET_ADDRESS,tokenId, {
                 gasLimit: estimatedGas,
               })
         },[nftContract])
 
-        const setPriceForNFT = useCallback(async(tokenId:string|undefined,price:string|undefined)=>{
-            const estimatedGas = await nftContract.estimateGas.readyToSellToken(tokenId,price);
+        const isNFTReadyToSell = useCallback(async(tokenId:string|undefined)=>{
+            const approvedAddress = await nftContract.getApproved(tokenId)
+            if(approvedAddress===MARKET_ADDRESS){
+                return true
+            }
+            return false
+        },[])
+
+        const setPriceForNFT = useCallback(async(tokenId:string|undefined,price:number|undefined)=>{
+            const unitPrice = price + '000000000000000000'
+            const estimatedGas = await marketContract.estimateGas.readyToSellToken(tokenId,unitPrice);
+            return marketContract.readyToSellToken(tokenId,unitPrice,{
+                gasLimit: estimatedGas,
+            })
         },[])
 
         const cancelSellNFT = useCallback(async(tokenId:string|undefined)=>{
@@ -89,5 +101,5 @@ export default function NFTService(){
 
 
 
-        return {mintNFT,getNFTUrl,cancelSellNFT,approveLevelAmount, checkApproveLevelAmount}
+        return {mintNFT,getNFTUrl,cancelSellNFT, approveNFTToMarket,setPriceForNFT, approveLevelAmount, checkApproveLevelAmount, isNFTReadyToSell}
 }
