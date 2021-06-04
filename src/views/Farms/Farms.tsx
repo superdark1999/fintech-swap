@@ -98,14 +98,23 @@ const StyledImage = styled(Image)`
 
 const Header = styled.div`
   padding: 32px 0px;
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
+  background: url('../images/bg-farm-mobile.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-left: 50px;
 
-  padding-left: 16px;
-  padding-right: 16px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding-left: 24px;
-    padding-right: 24px;
+  @media (min-width: 768px) {
+    background: url('../images/bg-farm.png');
+    background-repeat: no-repeat;
+    background-position: unset;
+    background-size: cover;
+    padding-left: 120px;
   }
 `
 
@@ -291,10 +300,10 @@ const Farms: React.FC = () => {
   return (
     <>
       <Header>
-        <Heading as="h1" size="xxl" color="#2b2c3a" mb="24px">
+        <Heading as="h1" size="xxl" color="#fff" mb="24px">
           {TranslateString(674, 'Farms')}
         </Heading>
-        <Heading size="lg" color="#2b2c3a">
+        <Heading size="lg" color="#fff">
           {TranslateString(999, 'Stake Liquidity Pool (LP) tokens to earn.')}
         </Heading>
       </Header>

@@ -16,10 +16,28 @@ const Blurb = styled(Text)`
 `
 
 const StyledHero = styled.div`
-  background-image: linear-gradient(180deg,#616161 0%,#2b2c3a 100%);
+  display: flex;
+  align-items: center;
+  background: url('../images/banner-mobile.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 350px;
   padding-bottom: 40px;
   padding-top: 40px;
   margin-bottom: 32px;
+
+  @media (min-width: 768px) {
+    background: url('../images/banner-tablet.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+ }
+
+ @media (min-width: 991px) {
+    background: url('../images/large-pc.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 `
 
 const Titletop = styled.h1`
@@ -29,16 +47,29 @@ const Titletop = styled.h1`
   font-size: 40px;
   margin-bottom: 24px;
 `
+
+const BoxTitle = styled.div`
+  padding-left: 50px;
+
+  @media (min-width: 768px) {
+    padding-left: 100px;
+  }
+
+  @media (min-width: 991px) {
+    padding-left: 120px;
+  }
+`
+
 const Hero = () => {
   const TranslateString = useI18n()
 
   return (
     <StyledHero>
-      <Container>
+      <BoxTitle>
         <Titletop>Luckyswap Launchpad</Titletop>
         <Blurb>{TranslateString(502, 'Finding the best investment opportunities for you')}</Blurb>
-      </Container>
-    </StyledHero>
+      </BoxTitle>
+  </StyledHero>
   )
 }
 

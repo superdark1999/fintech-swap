@@ -8,12 +8,12 @@ const config: MenuEntry[] = [
     calloutClass: 'style-color',
   },
   {
-    label: 'Trade',
+    label: 'Exchange',
     icon: 'TradeIcon',
     calloutClass: 'style-color',
     items: [
       {
-        label: 'Exchange',
+        label: 'Swap',
         href: '/swap',
         calloutClass: 'style-color',
       },
@@ -24,12 +24,12 @@ const config: MenuEntry[] = [
       },
     ],
   },
-  // {
-  //   label: 'Farms',
-  //   icon: 'FarmIcon',
-  //   href: '/farms',
-  //   calloutClass: 'style-color',
-  // },
+  {
+    label: 'Farms',
+    icon: 'FarmIcon',
+    href: '/farms',
+    calloutClass: 'style-color',
+  },
   // {
   //   label: 'Pools',
   //   icon: 'PoolIcon',
@@ -37,7 +37,7 @@ const config: MenuEntry[] = [
   //   calloutClass: 'style-color',
   // },
   // {
-  //   label: 'Info',
+  //   label: 'Analytics',
   //   icon: 'InfoIcon',
   //   calloutClass: 'style-color',
   //   items: [
