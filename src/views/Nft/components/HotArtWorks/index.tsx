@@ -34,7 +34,7 @@ function HotArtWorks() {
             <div className="content-artwork" ref={divRef}> 
             {
               NFTs.map( item => (
-                <Cart data={item}/>
+                <Cart width="320px" height="480px" data={item}/>
               ))
             } 
             </div>
