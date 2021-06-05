@@ -21,7 +21,7 @@ const IfoCardWrapper = styled.div<IfoCardWrapperProps>`
   }
 
   @media (min-width: 991px) {
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(3,1fr);
   }
 `
 
