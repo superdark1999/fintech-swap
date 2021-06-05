@@ -9,6 +9,11 @@ import {ButtonBuy} from 'components-v2/Button'
 import ViewMore from 'assets/images/view-more.svg'
 import Token from 'assets/images/token.svg'
 import { isMobile } from 'react-device-detect'
+import { useActiveWeb3React } from '../../wallet/hooks'
+import useNFTServices,{MARKET_ADDRESS} from '../../services/NFTServices'; 
+import useUserServices from '../../services/UserServices'
+import useUserStore from '../../store/userStore'
+
 interface TopBarProps {
   onPresentMobileMenu: () => void,
 }
@@ -16,9 +21,12 @@ interface TopBarProps {
 const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
   const [showMenuMobile, setShowMenuMobile] = useState(false)
+  const { account } = useActiveWeb3React()
+  const {checkApproveLevelAmount} = useNFTServices()
+  const {login} = useUserServices()
+  const [userState, userActions] = useUserStore()
   const handleScroll = () => {
     const position = window.pageYOffset
-
     if (position > 10) {
       setClassSticky('fixed')
     } else {
@@ -28,11 +36,29 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
-
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
+
+  useEffect(()=>{
+    const getAccountInfo = async()=>{
+      if(account){
+        login({walletAddress:account}).then(data=>{
+          checkApproveLevelAmount(MARKET_ADDRESS).then((data:any)=>{
+            const walletAddress = data?.walletAddress
+            userActions.updateUserInfo({walletAddress})
+          })
+        })
+        const isCanBuy = await checkApproveLevelAmount(MARKET_ADDRESS)
+        userActions.updateUserInfo({isCanBuy})
+      }else{
+        userActions.clearUserInfo()
+      }
+    }
+    getAccountInfo()
+  },[account])
+
 
   return (
     <StyledTopBar className={classtSicky}>
@@ -58,10 +84,14 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
           <div className="nav-bar-wrapper">
             <Input placeholder="Search items, collections, and accounts" prefix={<SearchOutlined/>} className="search-nav"></Input>
             <Link to="/" className="home-nav">Home</Link>
-            <Link to="/create/artwork" className="create-nav">Create</Link>
-            <div className="connect-wallet">
+            {!!account?(
+               <Link to={"/create/artwork"} className="create-nav">Create</Link>
+            ):(
+              <a onClick={()=>{alert("Unblock your wallet before create NFT")}} className="create-nav" >Create</a>
+            )}
+            {account&&(<div className="connect-wallet">
               <Web3Status />
-            </div>
+            </div>)}
             <Link to="/user-profile">
               <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" className="connect-wallet">
                 <img src={ViewMore} />
@@ -104,7 +134,7 @@ const StyledTopBar = styled.div`
         }
         }
       .create-nav{
-        background: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+        background:  linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
         border-radius: 100px;
         width: 100px;
         width: 100px;

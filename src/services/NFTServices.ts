@@ -3,66 +3,120 @@ import { Contract } from '@ethersproject/contracts'
 import { AddressZero } from '@ethersproject/constants'
 import  abiNFT from './AbiNFT'
 import  abiBid from './AbiBid'
+import  abiLucky from './AbiLucky'
 import { useActiveWeb3React } from '../wallet/hooks'
 import { useContract } from '../wallet/hooks/useContract'
 import { useModalOpen, useWalletModalToggle } from '../wallet/state/application/hooks'
 import { ApplicationModal } from "../wallet/state/application/actions" 
 import { useCallback, useMemo } from 'react'
+import { ethers } from 'ethers'
+import _ from 'lodash'
 
-const NFT_ADDRESS = '0xa75556C5b07e88119d7979761D00b8a55A1Bc315';
-const BID_ADDRESS = '0x5C2AaAdD1FcE223baaEFB1cF41ce872e9d8B986A'
-const payableAmountDefault = 1000000000000000
+export const NFT_ADDRESS = '0xa75556C5b07e88119d7979761D00b8a55A1Bc315';
+export const MARKET_ADDRESS = '0x172D30072817afBcaebF39B75b6eCd1E0B8Ec90F';
+export const LUCKY_TOKEN_ADDRESS = '0x5C2AaAdD1FcE223baaEFB1cF41ce872e9d8B986A';
+const payableAmountDefault = '10000000000000000'
+
+
 
 export default function NFTService(){
         const { account } = useActiveWeb3React()
         const nftContract = useContract(NFT_ADDRESS,abiNFT)
-        const bidContract = useContract(BID_ADDRESS,abiBid)
+        const marketContract = useContract(MARKET_ADDRESS,abiBid)
+        const LuckyTokenContract = useContract(LUCKY_TOKEN_ADDRESS,abiLucky)
 
-        const grantNFT = useCallback((URI: string, receiverAddress:string|undefined,  payableAmount:number) =>{
-            receiverAddress = receiverAddress||account
+        const mintNFT = useCallback(async(URI: string)=>{
             if(!isAddress(account) || account === AddressZero){
-                window.alert('Please login your wallet to mint NFT')
+                window.alert('Please login your wallet to create NFT')
                 return 
             }
-            nftContract.mint(receiverAddress,URI,{
-                gasLimit: 235000,
+            const estimatedGas = await nftContract.estimateGas.mint(account,URI,{
                 from: account,
-                value: payableAmount||payableAmountDefault,
+                value: payableAmountDefault,
+            });
+            return nftContract.mint(account,URI,{
+                gasLimit: estimatedGas,
+                from: account,
+                value: payableAmountDefault,
             })
         },[account,nftContract])
 
-        const transferNFT = useCallback(async(receiverAddress:string|undefined,tokenId:string|undefined)=>{
-            const estimatedGas = await nftContract.estimateGas.transferFrom(account,receiverAddress,tokenId)
+
+        const approveLevelAmount = useCallback((address)=>{
             if(!isAddress(account) || account === AddressZero){
-                window.alert('Please login your wallet to transfer NFT')
+                window.alert('Your spender address was wrong')
                 return 
             }
-            nftContract.transferFrom(account,receiverAddress,tokenId, {
+           return LuckyTokenContract.approve(address,ethers.constants.MaxUint256)
+        },[LuckyTokenContract])
+
+        const checkApproveLevelAmount = useCallback(async(contractAddress)=>{
+            if(!isAddress(account) || account === AddressZero){
+                window.alert('Please login your wallet to create NFT')
+                return 
+            }
+            if(!isAddress(contractAddress) || contractAddress === AddressZero){
+                window.alert('Please login your wallet to create NFT')
+                return 
+            }
+            const allowanceObject = await LuckyTokenContract.allowance(account,contractAddress)
+            const allowance = Number(allowanceObject?._hex);
+            if(allowance>0){
+                return true
+            }
+            return false
+        },[LuckyTokenContract])
+
+        const getNFTUrl = useCallback((tokenId)=>{
+            return nftContract.tokenURI(tokenId)
+        },[nftContract])
+
+        //sell NFT
+
+        const approveNFTToMarket = useCallback(async(tokenId:string|undefined)=>{
+            const estimatedGas = await nftContract.estimateGas.approve(MARKET_ADDRESS,tokenId);
+            return nftContract.approve(MARKET_ADDRESS,tokenId, {
                 gasLimit: estimatedGas,
               })
-        },[account,nftContract])
+        },[nftContract])
 
-        const sellNFT  = useCallback(async(tokenId:number|undefined,price:number)=>{
-            //const estimatedGas = await bidContract.estimateGas.bidToken(tokenId,price)
-            console.log(bidContract)
-            // return bidContract.bidToken(tokenId,price, {
-            //   gasLimit: estimatedGas,
-            // })
-        },[bidContract])
+        const isNFTReadyToSell = useCallback(async(tokenId:string|undefined)=>{
+            const approvedAddress = await nftContract.getApproved(tokenId)
+            if(approvedAddress===MARKET_ADDRESS){
+                return true
+            }
+            return false
+        },[nftContract])
 
-        const cancelSellNFT = useCallback(async(tokenId:number|undefined)=>{
-            const estimatedGas = await bidContract.estimateGas.cancelBidToken(tokenId)
-            return bidContract.cancelBidToken(tokenId, {
+        const setPriceForNFT = useCallback(async(tokenId:string|undefined,price:number|undefined)=>{
+            const unitPrice = price + '000000000000000000'
+            const estimatedGas = await marketContract.estimateGas.readyToSellToken(tokenId,unitPrice);
+            return marketContract.readyToSellToken(tokenId,unitPrice,{
+                gasLimit: estimatedGas,
+            })
+        },[marketContract])
+
+        const getPriceNFT = useCallback(async(tokenId:string|undefined)=>{
+            return marketContract.getPriceByTokenId(tokenId)      
+        },[marketContract])
+
+        const cancelSellNFT = useCallback(async(tokenId:string|undefined)=>{
+            const estimatedGas = await marketContract.estimateGas.cancelBidToken(tokenId)
+            return marketContract.cancelBidToken(tokenId, {
               gasLimit: estimatedGas,
             })
-        },[bidContract])
+        },[marketContract])
 
-        const getOwnerNFT = useCallback(()=>{
-            console.log(account)
-            return nftContract.ownerOf(account)
-        },[account])
+        const buyNFT = useCallback(async(tokenId:string|undefined)=>{
+            const estimatedGas = await marketContract.estimateGas.buyToken(tokenId)
+            return marketContract.buyToken(tokenId, {
+              gasLimit: estimatedGas,
+            })
+        },[marketContract])
+
+        //buy NFT 
 
 
 
-        return {grantNFT,transferNFT,cancelSellNFT,sellNFT,getOwnerNFT}
+        return {mintNFT,getNFTUrl,cancelSellNFT,getPriceNFT,approveNFTToMarket,setPriceForNFT, approveLevelAmount, checkApproveLevelAmount, isNFTReadyToSell, buyNFT}
 }

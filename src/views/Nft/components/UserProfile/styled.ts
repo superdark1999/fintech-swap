@@ -107,13 +107,11 @@ export const CartStyled = styled.div`
       .status {
         display: flex;
         align-items: center;
-        width: 75px;
-        height: 24px;
-        border: 1px solid #F0B90B;
+        border: 1px solid #19A3DD;
         box-sizing: border-box;
         border-radius: 100px;
         padding: 2px 8px;
-        color:  #F0B90B;
+        color:  #19A3DD;
       }
       .cancel {
         width: 98px;
