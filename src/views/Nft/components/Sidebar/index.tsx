@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react'
-import {SidebarStyled} from './styled.js'
+import {SidebarStyled} from './styled'
 import NotifyIcon from 'assets/images/notify.svg'
 import Collection from 'assets/images/collection.svg'
 import MoneyIcon from 'assets/images/money.svg'
@@ -44,12 +44,12 @@ const Sidebar: React.FC<SidebarProps> = ({setShowSidebar,onShowSidebar}) => {
         <div className="collapse-menu button-collapse" onClick={()=>setShowSidebar(!onShowSidebar)}> 
           <MenuUnfoldOutlined />
         </div>
-        <div className="collapse-menu">
+        {/* <div className="collapse-menu">
           <img src={NotifyIcon} alt=""/>
           <img src={Collection} alt=""/>
           <img src={MoneyIcon} alt=""/>
           <TagFilled />
-        </div>
+        </div> */}
       </SidebarStyled>
     )
   }

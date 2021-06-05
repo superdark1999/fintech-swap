@@ -97,12 +97,28 @@ position: relative;
         .list-image {
           display: flex;
           justify-content: space-between;
-          .image {
-            background-color: gray;
-            width: 60px; 
+          .wrapper-image{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            overflow: hidden;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            width: 60px;
             height: 60px;
-            border-radius: 4px;
-            cursor: pointer;
+            /* padding-top: 100%; */
+            >img {
+              width: 100%;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 0;
+              bottom: 0;
+              right: 0;
+              object-fit: contain;
+            }
           }
         }
       }

@@ -47,14 +47,15 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
   width: 100%;
   height: 100%;
   /* max-width:2200px; */
-  margin:auto;
-  border:1px solid rgba(0,0,0,0.2);  
-  border-top:none;
+  margin: auto;
+  border: 1px solid rgba(0,0,0,0.2);  
+  border-top: none;
+
   .left-sidebar{
-    min-width: ${(props:any) => props.onShowsidebar ? '320px':'80px'};
+    min-width: ${(props) => props.onShowsidebar ? '320px':'80px'};
     transition: 200ms;
-    height: 100%;
-    border-right: 1px solid rgba(0,0,0,0.2);
+    height: ${(props) => props.onShowsidebar ? '100%':'80px'};
+    border-right: ${(props) => props.onShowsidebar && '1px solid rgba(0,0,0,0.2)'};
     max-height: 100vh;
     overflow-y: auto;
     ::-webkit-scrollbar {
@@ -83,7 +84,7 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
     .space-collection{
       /* height:600px; */
       width:100%;
-      margin-bottom:60px;
+      /* margin-bottom:60px; */
       padding: 0 30px;
     }
     .hot-artists-nft{

@@ -1,16 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import { Form, Input, InputNumber, Button,Radio, Modal, Row, Col, Checkbox} from 'antd';
 import UploadFile from 'components-v2/Upload/index'
 import { UploadOutlined, EditOutlined, PictureOutlined} from '@ant-design/icons';
-import { ButtonStyle } from '../utilComponent/cart/styled'
+import { ButtonStyle } from 'components-v2/cart/styled'
 
 import {GroupButton, RadioButton} from './styled'
 
 const CreateArtWork: React.FC = () => {
     const [showModalCreateArtist, setShowModalCreateArtist] = React.useState<boolean | null>(false)
     const formRef = React.useRef() as React.MutableRefObject<any>;
-
+    const [artwork, setArtWork] =  useState<any>()
     const layout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
@@ -43,14 +43,15 @@ const CreateArtWork: React.FC = () => {
       .validateFields()
       .then((values: any) => {
         console.log('values: ', values)
+        setArtWork(values)    
       })
     }
-          
+    console.log(artwork)
     return (
       <Row gutter={24} style={{justifyContent: 'center'}}>
         <Col xl={{ span: 18}} md={{ span: 18 }} xs={{span: 24}}>
           <CreateArtWorkStyled> 
-            <Form  ref={formRef} style={{width: '100%'}} layout="vertical" name="nest-messages" validateMessages={validateMessages} >
+            <Form  ref={formRef} style={{width: '100%'}} layout="vertical" name="nest-messages" validateMessages={validateMessages} initialValues={{artistsName: "phat"}} >
                 <Form.Item 
                     name="radio-artwork-type" 
                     label="Select artwork type"
@@ -109,9 +110,9 @@ const CreateArtWork: React.FC = () => {
                       <Form.Item 
                           name='artistsName'
                           label="Artists name"
-                          rules={[{ required: true, message: 'This Field is required!' }]}
+                          // rules={[{ required: true, message: 'This Field is required!' }]}
                       >
-                          <Input style={{borderRadius: '100px'}} placeholder="Enter the artist name"/>
+                          <Input style={{borderRadius: '100px'}}  placeholder="Enter the artist name"/>
                           
                       </Form.Item>
                       <Form.Item 

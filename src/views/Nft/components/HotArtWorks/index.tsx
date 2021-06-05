@@ -1,23 +1,21 @@
 import React, {useRef} from 'react'
-import Cart from '../utilComponent/cart/'
+import Cart from 'components-v2/CardItem'
 import { HotArtWorksStyled } from './styled'
 import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
 const data = [
-  "https://cdna.artstation.com/p/assets/images/images/037/877/182/large/valerie-frenzel-mermay-preview.jpg?1621539045",
-  "https://cdnb.artstation.com/p/assets/images/images/037/632/131/large/creative-castel-mermaid013.jpg?1620891195",
-  "https://cdnb.artstation.com/p/assets/images/images/037/438/875/large/vasilisa-grishina-.jpg?1620372379",
-  "https://cdnb.artstation.com/p/assets/images/images/037/989/679/large/joshua-brian-smith-lycan-rider-final.jpg?1621876402",
-  "https://cdnb.artstation.com/p/assets/images/images/038/107/499/large/maciej-janaszek-template-4k.jpg?1622187915",
-  "https://cdna.artstation.com/p/assets/images/images/037/877/182/large/valerie-frenzel-mermay-preview.jpg?1621539045",
-  "https://cdnb.artstation.com/p/assets/images/images/037/632/131/large/creative-castel-mermaid013.jpg?1620891195",
-  "https://cdna.artstation.com/p/assets/images/images/037/773/218/large/paulette-arochena-asset.jpg?1621285527",
-  "https://cdna.artstation.com/p/assets/images/images/037/773/218/large/paulette-arochena-asset.jpg?1621285527",
-  "https://cdnb.artstation.com/p/assets/images/images/037/438/875/large/vasilisa-grishina-.jpg?1620372379",
-  "https://cdnb.artstation.com/p/assets/images/images/037/989/679/large/joshua-brian-smith-lycan-rider-final.jpg?1621876402",
-  "https://cdnb.artstation.com/p/assets/images/images/038/107/499/large/maciej-janaszek-template-4k.jpg?1622187915",
-  "https://cdna.artstation.com/p/assets/images/images/037/877/182/large/valerie-frenzel-mermay-preview.jpg?1621539045",
-  "https://cdnb.artstation.com/p/assets/images/images/037/632/131/large/creative-castel-mermaid013.jpg?1620891195",
-  "https://cdna.artstation.com/p/assets/images/images/037/773/218/large/paulette-arochena-asset.jpg?1621285527",
+  "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif",
+  "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/f8695348b9064cae934ea91aca485a17.gif",
+  "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/9f90c1dcec8a4316a13343db0c45136c.gif",
+  "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/cfe06a402ff54798b0285eceffdc6a2a.gif",
+  "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/2b061704f09e4bd485ebd66cf8b5f4fa.gif",
+  "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/689d6bf2d7cd4866b5e521fd6fdf851b.gif",
+  "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/cfe06a402ff54798b0285eceffdc6a2a.gif",
+  "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/2b061704f09e4bd485ebd66cf8b5f4fa.gif",
+  "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/689d6bf2d7cd4866b5e521fd6fdf851b.gif",
+  "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/a0c90da902454397994995a3fcf50b8d.gif",
+  "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif",
+  "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/9f90c1dcec8a4316a13343db0c45136c.gif",
+
 
 ]
 

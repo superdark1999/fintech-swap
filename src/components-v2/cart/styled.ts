@@ -1,25 +1,34 @@
 import styled from 'styled-components'
 
-export const StyledCart = styled.div`
+interface PropsStyled {
+  width?: string;
+  height?: string;
+}
+
+export const StyledCart = styled.div<PropsStyled>`
   .card-art-work{
-  /* margin: 24px 0px; */
     padding: 24px;
-    /* width: 270px; */
-    /* height: 540px; */
+    width: ${props => props.width || '300px'};
+    /* height: ${props => props.height || '450px'}; */
     border: 1px solid #E7EBEF;
     box-sizing: border-box;
     border-radius: 24px;
     overflow: hidden;
     box-sizing: border-box;
-    /* margin-right: 24px; */
-    /* display: flex; */
     :hover{ 
       box-shadow: 1px 4px 8px #ececec;
       -webkit-transition:  box-shadow .3s ease-in;
     }
+    /* position: relative; */
     .header-card-art-work {
+      /* position: absolute; */
+      width: 100%;
+      padding: 12px;
       display: flex;
       justify-content: space-between;
+      /* top: 12px;
+      right: 0px;
+      left: 0px; */
       .date-time {
         font-weight: 600;
         font-size: 14px;
@@ -33,18 +42,54 @@ export const StyledCart = styled.div`
         height: 24px;
       }
       >img {
-        width: 36px;
-        height: 36px;
-        margin-top: -6px;
-        cursor: pointer;
+      width: 36px;
+      height: 36px;
+      margin-top: -6px;
+      cursor: pointer;
       }
     }
-  .avatar {
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-    margin: 14px 0px;
-  }
+    .wrapper-image{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 14px auto;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      /* display: flex; */
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      overflow: hidden;
+      margin: 14px auto;
+      /* width: 300px; */
+      position: relative;
+      width: 100%;
+      height: 0px;
+      padding-top: 100%;
+      .avatar {
+        /* max-width: 200px;
+        max-height: 200px; */
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        object-fit: contain;
+      }
+    }
+  
   .name {
     font-weight: 600;
     font-size: 16px;
@@ -64,6 +109,8 @@ export const StyledCart = styled.div`
     font-size: 14px;
     line-height: 20px;
     margin: 3px 0px;
+    display: flex;
+    justify-content: space-between;
     >img {
       margin-top: -3px;
       margin-right: 5px;

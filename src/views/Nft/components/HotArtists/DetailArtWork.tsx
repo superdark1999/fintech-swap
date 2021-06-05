@@ -9,7 +9,7 @@ import Luckyswap from 'assets/images/luckyswap.svg'
 import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css';
 import { Tabs } from 'antd';
-import {ButtonStyle, ButtonBuyStyle} from '../utilComponent/cart/styled'
+import {ButtonStyle, ButtonBuyStyle} from 'components-v2/cart/styled'
 import { SwapOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
@@ -23,8 +23,8 @@ const ImageStyled = styled.div`
   overflow: hidden;
   .bg-image {
     /* The image used */
-    background-image: url("https://cdnb.artstation.com/p/assets/images/images/037/438/875/large/vasilisa-grishina-.jpg?1620372379");
-    
+    background-image: url("https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif");
+    animation-play-state: paused;
     /* Add the blur effect */
     filter: blur(8px);
     -webkit-filter: blur(70px);
@@ -43,7 +43,7 @@ const ImageStyled = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-    width: 60%;
+    width: 400px;
     border-radius: 16px;
   }
 `
@@ -178,7 +178,7 @@ const  DetaiArtWork = () => {
         >
         <ImageStyled>
           <div className="bg-image"></div>
-          <img src="https://cdnb.artstation.com/p/assets/images/images/037/438/875/large/vasilisa-grishina-.jpg?1620372379" />
+          <img src="https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif" />
         </ImageStyled>     
       </Col>
       <Col 

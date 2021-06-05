@@ -11,9 +11,9 @@ const dataMock = [
     name: "LuckySwapStudio",
     rank: "GOLD ARTIST",
     images: [
-      "https://cdnb.artstation.com/p/assets/images/images/037/808/085/large/ibrahem-swaid-mermay2021-1-5s.jpg?1621369149",
-      "https://cdna.artstation.com/p/assets/images/images/038/130/982/large/jonas-braga-27-predator.jpg?1622247805",
-      "https://cdna.artstation.com/p/assets/images/images/038/135/308/large/jose-angeles-mermay.jpg?1622268628",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/cfe06a402ff54798b0285eceffdc6a2a.gif",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/2b061704f09e4bd485ebd66cf8b5f4fa.gif",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/689d6bf2d7cd4866b5e521fd6fdf851b.gif",
     ]
   },
   {
@@ -21,9 +21,9 @@ const dataMock = [
     name: "LuckySwapStudio",
     rank: "GOLD ARTIST",
     images: [
-      "https://cdna.artstation.com/p/assets/images/images/027/042/796/large/patrick-evrard-mermay-croplighsetup5k.jpg?1590431793",
-      "https://cdnb.artstation.com/p/assets/images/images/037/915/549/large/rayanne-santos-vathy-kitrino-05-14-21.jpg?1621648750",
-      "https://cdna.artstation.com/p/assets/images/images/037/261/410/large/pengold-beta-dragon.jpg?1619921000",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/a0c90da902454397994995a3fcf50b8d.gif",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/f8695348b9064cae934ea91aca485a17.gif",
     ]
   },
   {
@@ -31,9 +31,9 @@ const dataMock = [
     name: "Airframe",
     rank: "GOLD ARTIST",
     images: [
-      "https://cdna.artstation.com/p/assets/images/images/037/960/840/large/savannah-tschirgi-main.jpg?1621795362",
-      "https://cdna.artstation.com/p/assets/images/images/037/589/550/large/delaney-greaves-mermay-8.jpg?1620773706",
-      "https://cdna.artstation.com/p/assets/images/images/038/135/308/large/jose-angeles-mermay.jpg?1622268628",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/f8695348b9064cae934ea91aca485a17.gif",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/9f90c1dcec8a4316a13343db0c45136c.gif",
     ]
   },
   {
@@ -41,9 +41,9 @@ const dataMock = [
     name: "LuckySwapStudio",
     rank: "GOLD ARTIST",
     images: [
-      "https://cdna.artstation.com/p/assets/images/images/038/117/108/large/sabrina-russell-0ec96b02-a0ae-4a5e-9cac-eb221a0f41c1.jpg?1622210985",
-      "https://cdnb.artstation.com/p/assets/images/images/038/056/951/large/ranald-groves-mermay4.jpg?1622049806",
-      "https://static.game24h.vn/upload/2018/2018-4/game/2018-12-21/pubg-minecraft.png",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/f8695348b9064cae934ea91aca485a17.gif",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/9f90c1dcec8a4316a13343db0c45136c.gif",
     ]
   },
   {
@@ -61,9 +61,9 @@ const dataMock = [
     name: "LuckySwapStudio",
     rank: "GOLD ARTIST",
     images: [
-      "https://cdna.artstation.com/p/assets/images/images/027/042/796/large/patrick-evrard-mermay-croplighsetup5k.jpg?1590431793",
-      "https://cdnb.artstation.com/p/assets/images/images/037/915/549/large/rayanne-santos-vathy-kitrino-05-14-21.jpg?1621648750",
-      "https://cdna.artstation.com/p/assets/images/images/037/261/410/large/pengold-beta-dragon.jpg?1619921000",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/f8695348b9064cae934ea91aca485a17.gif",
+      "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/9f90c1dcec8a4316a13343db0c45136c.gif",
     ]
   },
   {
@@ -120,7 +120,7 @@ function HotArtists() {
                     <div className="line" />
                     <div className="list-image">
                       { item.images.map((img) => (
-                          <img src={img} className="image" />
+                         <div className="wrapper-image"> <img src={img} className="image" /></div>
                       ))
                       }
                     </div>

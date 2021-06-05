@@ -22,8 +22,9 @@ import getLibrary from './wallet/utils/getLibrary'
 import { Layout} from 'antd';
 import CreateArtWork from 'views/Nft/components/CreateArtWork/index'
 import DetailArtWork from 'views/Nft/components/HotArtists/DetailArtWork'
-import 'antd/dist/antd.css';
+import TradeArtWork from 'views/Nft/components/TradeArtwork'
 import UserProfile from 'views/Nft/components/UserProfile'
+import 'antd/dist/antd.css';
 const { Header, Content, Footer } = Layout;
 
 // 
@@ -103,6 +104,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/user-profile">
               <UserProfile />
+            </Route>
+            <Route path="/trade-artwork">
+              <TradeArtWork />
             </Route>
           </Switch>
           </>

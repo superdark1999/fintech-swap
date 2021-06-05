@@ -7,7 +7,7 @@ import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import Loadmore from 'components-v2/Loadmore'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import SearchInput from 'components-v2/SearchInput'
-import { ButtonStyle } from '../utilComponent/cart/styled'
+import { ButtonStyle } from 'components-v2/cart/styled'
 import  Copy from 'assets/images/copy.svg'
 import Token from 'assets/images/token.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
@@ -164,8 +164,11 @@ const CardPedding: React.FC = () => {
             </div>
             <div>
               <div className="group-button">
-                <ButtonTrade height="45px">Send</ButtonTrade>
-                <ButtonBuy height="45px">Buy</ButtonBuy>
+                {/* <ButtonTrade height="45px">Sell</ButtonTrade> */}
+                <ButtonBuy height="45px">Sell</ButtonBuy>
+                <ButtonBuy height="45px">Auction</ButtonBuy>
+                <ButtonBuy height="45px">Swap</ButtonBuy>
+                <ButtonBuy height="45px">Public swap</ButtonBuy>
                 <ButtonBuy borderRadius="100px" width="40px" height="45px"><img src={QRCode} /></ButtonBuy>
               </div>   
             </div> 
