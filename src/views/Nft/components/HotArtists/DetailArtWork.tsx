@@ -1,6 +1,5 @@
 import React from 'react'
-import { Row, Col, Rate } from 'antd';
-import styled from 'styled-components' 
+import { Row, Col, Rate, Table } from 'antd';
 import Copy from 'assets/images/copy.svg'
 import Facebook from 'assets/images/facebook.svg'
 import Telegram from 'assets/images/telegram.svg'
@@ -11,164 +10,11 @@ import 'antd/dist/antd.css';
 import { Tabs } from 'antd';
 import {ButtonStyle, ButtonBuyStyle} from 'components-v2/cart/styled'
 import { SwapOutlined } from '@ant-design/icons';
+import { DetailStyled, ReviewStyled, ScrollReview, FooterStyled, ImageStyled, DetailTabpane} from './styled'
+import { dataHistory, columnHistory, dataBidding, columnBidding } from './Mock'
 
 const { TabPane } = Tabs;
-
-
-
-const ImageStyled = styled.div`
-  position: relative;
-  height: calc(100vh - 80px); 
-  width: 100%;
-  overflow: hidden;
-  .bg-image {
-    /* The image used */
-    background-image: url("https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif");
-    animation-play-state: paused;
-    /* Add the blur effect */
-    filter: blur(8px);
-    -webkit-filter: blur(70px);
-    
-    /* Full height */
-    height: 100%; 
-    
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-  >img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    width: 400px;
-    border-radius: 16px;
-  }
-`
-const DetailStyled = styled.div`
-  padding: 42px 32px;
-  height: calc(100vh - 200px);
-  /* overflow: auto; */
-  .header-detail {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    .date-time {
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 20px;
-      color: #FC636B;
-      border: 2px solid #FC636B;
-      border-radius: 30px;
-      padding-left: 10px;
-      padding-right: 10px;
-      width: max-content;
-      height: 24px;
-    }
-  .social-icon  {
-    img {
-      width: 23px;
-      height: 23px;
-      padding: 1px;
-      border-radius: 50%;
-      border: 1px solid #000000;
-      margin: 5px;
-    }
-  }
-  }
-  
-  
-  .title {
-    font-weight: bold;
-    font-size: 28px;
-    line-height: 40px;
-  }
-  .description {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 24px;
-    margin-top: 16px;
-  }
-  .token{
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    background: linear-gradient(270deg,#19A3DD -16.5%,#BADEB7 117.25%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 16px;
-    font-weight: 600;
-    >img {
-      margin-top: -3px;
-      margin-left: 5px;
-    }
-  }
-  .organize {
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-    color: #333435;
-    >.name {
-      margin: 0px 6px;
-    }
-  }
-  
-`
-
-const ReviewStyled = styled.div`
-  border-bottom: 1px solid #E7EBEF;
-  padding: 16px 0px;
-  .review-item {
-    display: flex;
-    justify-content: space-between;   
-  }
-  .comment {
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    color: #333435;
-    margin: 6px 0px;
-  }
-  .time {
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 16px;
-    color: #AFBAC5;
-    margin: 6px 0px;
-  }
-`
-const ScrollReview = styled.div`
-  max-height: calc(100vh - 500px); 
-  overflow: auto; 
-  padding-bottom: 120px;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const FooterStyled = styled.div`
-  /* position: absolute; */
-  width: 100%;
-  height: 120px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  box-shadow: 0px -4px 16px -4px rgba(35, 35, 35, 0.06);
-  background-color: #ffffff;
-  border-top: 2px solid #E7EBEF;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 42px 32px;
-  >div {
-    width: 48%;
-  }
-`
-
 const  DetaiArtWork = () => {
-
   return (
     <Row>
       <Col className="gutter-row" style={{width: '100%'}}
@@ -223,6 +69,51 @@ const  DetaiArtWork = () => {
           </p> 
 
           <Tabs defaultActiveKey="1" >
+            <TabPane tab="Detail" key="4">
+              <DetailTabpane >
+                <div className="group-info">
+                  <div className="info">
+                    <div className="title">NFT Contract ID:</div>
+                    <div className="value">0xBA16...9069</div>
+                  </div>
+                  <div className="info">
+                    <div className="title">Token ID:</div>
+                    <div className="value">15748</div>
+                  </div>                 
+                </div>
+                <div className="group-info">
+                  <div className="info">
+                    <div className="title">Creator's Adress:</div>
+                    <div className="value">0xBA16...9069</div>
+                  </div>
+                  <div className="info">
+                    <div className="title">Owner Adress:</div>
+                    <div className="value">0xBA16...9069</div>
+                  </div>                 
+                </div>
+                <div className="group-info">
+                  <div className="info">
+                    <div className="title">Scan Link:</div>
+                    <div className="value">https://abc.com</div>
+                  </div>              
+                </div>
+              </DetailTabpane>
+            </TabPane>
+            
+            <TabPane tab="History" key="2">
+              <Table 
+                columns={columnHistory} 
+                dataSource={dataHistory} 
+                size="middle"
+                scroll={{ x: 'calc(300px + 50%)', y: 240 }}/>
+            </TabPane>
+            <TabPane tab="Bidding" key="3">
+              <Table 
+                columns={columnBidding} 
+                dataSource={dataBidding} 
+                size="middle"
+                scroll={{ x: 300, y: 300 }}/>
+            </TabPane>
             <TabPane tab="Reviews" key="1">
               <ScrollReview className="list-review">
                 <ReviewStyled>
@@ -273,12 +164,10 @@ const  DetaiArtWork = () => {
                   <div className="time">30 minutes ago</div>
                 </ReviewStyled>
               </ScrollReview>
-             
-            </TabPane>
-            <TabPane tab="History" key="2">
-              Content of Tab Pane 2
-            </TabPane>
-          </Tabs>
+              </TabPane>b
+            </Tabs>
+
+
           <Row gutter={24}
             style={{
               position: 'fixed', 
