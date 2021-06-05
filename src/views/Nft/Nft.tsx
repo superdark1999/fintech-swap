@@ -10,15 +10,19 @@ import HotArtists from './components/HotArtists/index'
 import HotArtWorks from './components/HotArtWorks/index'
 import Collection from './components/Collection/index'
 import ModalLucky from '../../components-v2/Modal'
+import {isMobile} from 'react-device-detect'
 const NFTContainer: React.FC = () => {
   const [onShowSidebar, setShowSidebar] = useState(true)
   return (
     <Switch>
       <Page>
           <NFTContainerStyled onShowsidebar={onShowSidebar}>
-            <div className="left-sidebar">
-              <Sidebar setShowSidebar={setShowSidebar} onShowSidebar={onShowSidebar}/>
-            </div>
+            {
+              !isMobile && (
+                <div className="left-sidebar">
+                  <Sidebar setShowSidebar={setShowSidebar} onShowSidebar={onShowSidebar}/>
+                </div>
+              )}
             <div className="main-nft">
               <div className="trending-nft">
                 <TrendingBar />
@@ -64,6 +68,9 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
   }
   .main-nft{
     flex: ${(props:any) => props.onShowsidebar ? 1:'1 240px'};
+    ::-webkit-scrollbar {
+        display: none;
+      }
     height: 100%;
     overflow-y: auto;
     max-width: 1320px;

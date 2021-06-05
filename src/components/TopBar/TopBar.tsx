@@ -3,17 +3,19 @@ import styled from 'styled-components'
 import Web3Status from '../../wallet/Web3Status'
 import logo from '../../assets/img/logo.svg'
 import { Input } from 'antd';
-import { SearchOutlined, MoreOutlined} from '@ant-design/icons';
+import { SearchOutlined, MoreOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
 import {Link} from 'react-router-dom'
 import {ButtonBuy} from 'components-v2/Button'
 import ViewMore from 'assets/images/view-more.svg'
+import Token from 'assets/images/token.svg'
+import { isMobile } from 'react-device-detect'
 interface TopBarProps {
-  onPresentMobileMenu: () => void
+  onPresentMobileMenu: () => void,
 }
 
 const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
-
+  const [showMenuMobile, setShowMenuMobile] = useState(false)
   const handleScroll = () => {
     const position = window.pageYOffset
 
@@ -34,9 +36,25 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
 
   return (
     <StyledTopBar className={classtSicky}>
-          <a href="/">
-            <img src={logo} height="60px" className="logo-h" />
-          </a>
+         
+         { isMobile ? 
+          (
+            <div onClick={()=>setShowMenuMobile(true)} style={{display: 'flex', alignItems: 'center'}}> 
+              <MenuUnfoldOutlined style={{ marginLeft: 12, fontSize: 24, marginRight: 8}}/>
+              <Link to="/">
+                <img src={Token} width="30px" />
+              </Link>
+            </div>
+              
+            )
+              :
+            (
+              <a href="/">
+                <img src={logo} height="60px" className="logo-h" />
+              </a>
+            )
+          }
+
           <div className="nav-bar-wrapper">
             <Input placeholder="Search items, collections, and accounts" prefix={<SearchOutlined/>} className="search-nav"></Input>
             <Link to="/" className="home-nav">Home</Link>
@@ -72,6 +90,7 @@ const StyledTopBar = styled.div`
         border-radius: 100px;
         height:40px;
         margin:0 40px;
+        max-width: 250px;
       }
       .home-nav{
         flex:1;

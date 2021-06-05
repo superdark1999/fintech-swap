@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import {isMobile} from 'react-device-detect'
+
 
 export const HotArtWorksStyled = styled.div`
     position: relative;
@@ -8,16 +10,17 @@ export const HotArtWorksStyled = styled.div`
         display:flex;    
         align-items: center;
         .title-artists{
-            font-weight: bold;
-            flex:1;
-            font-size: 32px;
+          font-weight: bold;
+          flex:1;
+          font-size: ${isMobile ? '20px' : '32px'};
         }    
         .more-artists{
-            font-weight: 700;
-            font-size: 20px;
-            width: 108px;
-            text-decoration: underline;
-            cursor: pointer;
+          font-weight: ${isMobile ? '500' : '700'};
+          font-size: ${isMobile ? '16px' : '20px'};
+          text-align: ${isMobile && 'right'};
+          width: 108px;
+          text-decoration: underline;
+          cursor: pointer;
         }
     }
     .more-artists{

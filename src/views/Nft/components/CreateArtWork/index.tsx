@@ -4,6 +4,7 @@ import { Form, Input, InputNumber, Button,Radio, Modal, Row, Col, Checkbox} from
 import UploadFile from 'components-v2/Upload/index'
 import { UploadOutlined, EditOutlined, PictureOutlined} from '@ant-design/icons';
 import { ButtonStyle } from 'components-v2/cart/styled'
+import { CreateArtWorkStyled } from './styled'
 
 import {GroupButton, RadioButton} from './styled'
 
@@ -213,19 +214,4 @@ const CreateArtWork: React.FC = () => {
     </Row>    
     )
 }
-const CreateArtWorkStyled = styled.div`
-    margin: 40px auto;
-    max-width: 1100px;
-    background: #F9FAFB;
-    padding: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid #E7EBEF;
-    border-radius: 32px;
-    .ant-modal-content {
-      overflow: auto;
-      border-radius: 24px
-    }
-`
 export default CreateArtWork

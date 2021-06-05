@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import {isMobile} from 'react-device-detect'
+
 
 export const CollectionStyled = styled.div`
     .header-artists{
@@ -7,30 +9,31 @@ export const CollectionStyled = styled.div`
       display:flex;    
       align-items: center;
       .title-artists{
-          font-weight: bold;
-          flex:1;
-          font-size: 32px;
+        font-weight: bold;
+        flex:1;
+        font-size: ${isMobile ? '20px' : '32px'};
       }    
       .more-action{
-          font-weight: 700;
-          font-size: 20px;
-          width: 108px;
-          /* text-decoration: underline; */
-          cursor: pointer;
-          display: flex;
-          margin-right: 112px;
-          .ant-select {
-            margin-right: 16px;
-            .ant-select-selector {
-              border-radius: 30px;
-              .ant-select-selection-item {
-                font-weight: 500;
-                font-size: 14px;
-                text-decoration: unset;
-              }
+        font-weight: ${isMobile ? '500' : '700'};
+        font-size: ${isMobile ? '16px' : '20px'};
+        text-align: ${isMobile && 'right'};
+        width: 108px;
+        /* text-decoration: underline; */
+        cursor: pointer;
+        display: flex;
+        margin-right: 112px;
+        .ant-select {
+          margin-right: 16px;
+          .ant-select-selector {
+            border-radius: 30px;
+            .ant-select-selection-item {
+              font-weight: 500;
+              font-size: 14px;
+              text-decoration: unset;
             }
           }
         }
+      }
     }
     .content-collect{
       display: grid;
@@ -52,6 +55,8 @@ export const CollectionStyled = styled.div`
         background: #ffffff;
         position: absolute;
         left: 50%;
+
+        transform: translate(-50%, 0);
         top: -16px;
         display: flex;
         justify-content: center;

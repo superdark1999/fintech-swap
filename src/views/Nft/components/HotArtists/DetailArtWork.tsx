@@ -69,7 +69,7 @@ const  DetaiArtWork = () => {
           </p> 
 
           <Tabs defaultActiveKey="1" >
-            <TabPane tab="Detail" key="4">
+            <TabPane tab="Detail" key="1">
               <DetailTabpane >
                 <div className="group-info">
                   <div className="info">
@@ -114,7 +114,7 @@ const  DetaiArtWork = () => {
                 size="middle"
                 scroll={{ x: 300, y: 300 }}/>
             </TabPane>
-            <TabPane tab="Reviews" key="1">
+            <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">
                 <ReviewStyled>
                   <div className="review-item">
@@ -164,7 +164,7 @@ const  DetaiArtWork = () => {
                   <div className="time">30 minutes ago</div>
                 </ReviewStyled>
               </ScrollReview>
-              </TabPane>b
+              </TabPane>
             </Tabs>
 
 

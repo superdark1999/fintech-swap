@@ -39,6 +39,6 @@ export const TrendingBarStyled = styled.div`
         align-items: center;
         height:100%;
         cursor: pointer;
-        margin:0 20px;
+        margin: 0 20px;
     }
 `

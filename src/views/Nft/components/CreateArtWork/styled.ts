@@ -1,12 +1,27 @@
 import styled from 'styled-components'
-
+import { isMobile } from 'react-device-detect'
+ 
 import { Radio } from 'antd';
 export const GroupButton = styled(Radio.Group)`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
  `
-
+export const CreateArtWorkStyled = styled.div`
+  margin: 40px auto;
+  max-width: 1100px;
+  background: ${!isMobile && '#F9FAFB'};
+  padding: ${isMobile ? "10px" : "40px"};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: ${!isMobile && '2px solid #E7EBEF'};
+  border-radius: 32px;
+  .ant-modal-content {
+    overflow: auto;
+    border-radius: 24px
+  }
+`
 export const RadioButton= styled(Radio.Button)`
 &.ant-radio-button-wrapper-checked ::before {
     min-width: 172px;

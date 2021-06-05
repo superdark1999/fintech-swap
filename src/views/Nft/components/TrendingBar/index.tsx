@@ -1,6 +1,7 @@
 import React from 'react'
 import {TrendingBarStyled} from './styled'
 import NFTServices from '../../../../services/NFTServices'
+import {isMobile} from 'react-device-detect'
 const TrendingBar: React.FC = () => {
     const {sellNFT,getOwnerNFT} = NFTServices()
     const sellNFTTest= ()=>{
@@ -8,7 +9,7 @@ const TrendingBar: React.FC = () => {
     }
     return (
         <TrendingBarStyled>
-            <div className="title-bar">Trending now</div>
+            {!isMobile && <div className="title-bar">Trending now</div>}
             <div className="filter-bar">
                 <div className="filter-bar-item"
                 onClick={sellNFTTest}
