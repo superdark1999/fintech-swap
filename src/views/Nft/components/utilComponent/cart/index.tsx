@@ -25,17 +25,15 @@ export default function Cart({data}: any) {
   const [price,setPrice] = useState(0)
   const {getPriceNFT,approveLevelAmount,buyNFT} = useNFTServices()
   useEffect(()=>{
-    const checkNFTInfo = async()=>{
     if(data?.tokenId){
-    getPriceNFT(data?.tokenId).then(data=>{
-      const price = getPrice(Number(data?._hex))
-      if(price!=-1){
-        setLoading(false)
-        setPrice(price)
-      }
-    }).catch(err=>{})
-    }}
-    checkNFTInfo()
+      getPriceNFT(data?.tokenId).then(data=>{
+        const price = getPrice(Number(data?._hex))
+        if(price!=-1){
+          setLoading(false)
+          setPrice(price)
+        }
+      }).catch(err=>{})
+    }
   },[data?.tokenId])
 
   const onApproveBuyOnMarket = ()=>{
@@ -56,6 +54,7 @@ export default function Cart({data}: any) {
   }
   return (
     <StyledCart>
+       <Link to={`/artwork/detail/${data?.id}`} className="create-nav">
       <div className="card-art-work">               
         <div className="header-card-art-work">
           <div className="date-time">02h 31m 04s left 🔥 </div>
@@ -95,6 +94,7 @@ export default function Cart({data}: any) {
           </ButtonStyle>
         </div>
       </div>
+      </Link>
     </StyledCart>
   )
 }

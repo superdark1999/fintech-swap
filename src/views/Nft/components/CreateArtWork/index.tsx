@@ -55,7 +55,6 @@ const CreateArtWork: React.FC = () => {
   }
 
   const createArtist = (values: any) => {
-    console.log('values22: ', values)
 
     const artistData = {
       walletAddress: account,

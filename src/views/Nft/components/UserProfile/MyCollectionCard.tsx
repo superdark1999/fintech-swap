@@ -24,7 +24,8 @@ import _ from 'lodash'
 export default function MyCollectionCard({data,}:any){
     const [isNFTCanSell,setIsNFTCanSell] = useState(false)
     const [isProcessing, setIsPrcessing] = useState(true)
-    const {isNFTReadyToSell, approveNFTToMarket,setPriceForNFT} = useNFTServices()
+    const {isNFTReadyToSell, approveNFTToMarket,setPriceForNFT,} = useNFTServices()
+    const {updateNFTStatus} = useArtworkServices()
     useEffect(()=>{
       const checkNFTInfo = async()=>{
       if(data?.tokenId){
@@ -34,16 +35,19 @@ export default function MyCollectionCard({data,}:any){
       }}
       checkNFTInfo()
     },[data?.tokenId])
-  
+
     const onSellItem = ()=>{
       const tokenId = data?.tokenId;
       setIsPrcessing(true)
-      if(isNFTCanSell){
-        setPriceForNFT(tokenId,10).then(data=>{
-          console.log(data)
-        })
+      if(true){
+        console.log( data?.id)
+        updateNFTStatus({id:data?.id,status:'readyToSell'})
+        // setPriceForNFT(tokenId,10).then(dt=>{
+        //     console.log(dt, data?.id)
+        //     updateNFTStatus({id:data?.id,status:'readyToSell'})
+        // })
       }else{
-        approveNFTToMarket(tokenId).then(data=>{
+        approveNFTToMarket(tokenId).then(dt=>{
           setTimeout(async()=>{
             const tempIsNFTCanSell = await isNFTReadyToSell(tokenId)
             setIsNFTCanSell(tempIsNFTCanSell)

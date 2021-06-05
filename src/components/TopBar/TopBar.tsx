@@ -9,6 +9,7 @@ import {ButtonBuy} from 'components-v2/Button'
 import ViewMore from 'assets/images/view-more.svg'
 import { useActiveWeb3React } from '../../wallet/hooks'
 import useNFTServices,{MARKET_ADDRESS} from '../../services/NFTServices'; 
+import useUserServices from '../../services/UserServices'
 import useUserStore from '../../store/userStore'
 
 interface TopBarProps {
@@ -19,10 +20,10 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
   const { account } = useActiveWeb3React()
   const {checkApproveLevelAmount} = useNFTServices()
+  const {login} = useUserServices()
   const [userState, userActions] = useUserStore()
   const handleScroll = () => {
     const position = window.pageYOffset
-
     if (position > 10) {
       setClassSticky('fixed')
     } else {
@@ -40,13 +41,17 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   useEffect(()=>{
     const getAccountInfo = async()=>{
       if(account){
+        login({walletAddress:account}).then(data=>{
+          checkApproveLevelAmount(MARKET_ADDRESS).then((data:any)=>{
+            const walletAddress = data?.walletAddress
+            userActions.updateUserInfo({walletAddress})
+          })
+        })
         const isCanBuy = await checkApproveLevelAmount(MARKET_ADDRESS)
         userActions.updateUserInfo({isCanBuy})
-        getAccountInfo()
       }else{
         userActions.clearUserInfo()
       }
-      //call API to get info
     }
     getAccountInfo()
   },[account])

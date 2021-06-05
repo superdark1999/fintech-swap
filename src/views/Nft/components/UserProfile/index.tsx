@@ -118,7 +118,10 @@ const TabMyCollection: React.FC = ()=>{
   const { account } = useActiveWeb3React()
   useEffect(()=>{
     const query = {
-      ownerWalletAddress: account
+      ownerWalletAddress: account,
+      filter:{
+        status:'approved'
+      }
     }
     getNFT(query).then(({status, data})=>{
       if(status==200){

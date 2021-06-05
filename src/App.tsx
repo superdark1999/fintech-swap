@@ -70,9 +70,6 @@ function Updaters() {
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
-  const { account } = useActiveWeb3React()
-
-  console.log(account)
 
   const handleDismissMobileMenu = useCallback(() => {
     setMobileMenu(false)
@@ -102,7 +99,7 @@ const App: React.FC = () => {
             <Route path="/create/artwork">
               <CreateArtWork />
             </Route>
-            <Route path="/artwork/detail">
+            <Route path="/artwork/detail/:id">
               <DetailArtWork />
             </Route>
             <Route path="/user-profile">

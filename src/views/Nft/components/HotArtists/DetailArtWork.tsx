@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Row, Col, Rate } from 'antd';
 import styled from 'styled-components' 
 import Copy from 'assets/images/copy.svg'
@@ -11,6 +11,11 @@ import 'antd/dist/antd.css';
 import { Tabs } from 'antd';
 import {ButtonStyle, ButtonBuyStyle} from '../utilComponent/cart/styled'
 import { SwapOutlined } from '@ant-design/icons';
+import useArtworkServices from '../../../../services/ArtworkServices'
+import useNFTServices,{MARKET_ADDRESS} from '../../../../services/NFTServices'; 
+import useUserStore from '../../../../store/userStore'
+import {useParams} from "react-router-dom";
+import _ from 'lodash'
 
 const { TabPane } = Tabs;
 
@@ -167,8 +172,50 @@ const FooterStyled = styled.div`
   }
 `
 
+const getPrice = (price:number)=>{
+  if(price?.toString()?.length<24){
+    const priceString = _.replace(price?.toString(),'000000000000000000','')
+    return Number(priceString)
+  }
+  return -1
+}
 const  DetaiArtWork = () => {
+  const {getDetailNFT} = useArtworkServices()
+  const { id } = useParams();
+  const [NFTDetail, setNFTDetail] = useState<any>({});
+  const [loading, setLoading] = useState(true)
+  const [price, setPrice] = useState(0)
+  const [userState, userActions] = useUserStore()
+  const {getPriceNFT,approveLevelAmount,buyNFT} = useNFTServices()
+  useEffect(()=>{
+    getDetailNFT({id}).then(({status, data})=>{
+     if(status==200){
+      if(data?.data?.tokenId){
+        getPriceNFT(data?.tokenId).then(data=>{
+          const price = getPrice(Number(data?._hex))
+          if(price!=-1){
+            setLoading(false)
+            setPrice(price)
+          }
+        }).catch(err=>{})
+        }
+       setNFTDetail(data?.data)
+       setLoading(false)
+     }
+    })
+  },[])
+  const onApproveBuyOnMarket = ()=>{
+    approveLevelAmount(MARKET_ADDRESS).then((data:any)=>{
+      console.log(data)
+    }).catch(console.log)
+  }
 
+  const onBuyItem = ()=>{
+    const tokenId = "41"
+    buyNFT(tokenId).then(data=>{
+      console.log(data)
+    })
+  }
   return (
     <Row>
       <Col className="gutter-row" style={{width: '100%'}}
@@ -178,7 +225,7 @@ const  DetaiArtWork = () => {
         >
         <ImageStyled>
           <div className="bg-image"></div>
-          <img src="https://cdnb.artstation.com/p/assets/images/images/037/438/875/large/vasilisa-grishina-.jpg?1620372379" />
+          <img src={NFTDetail?.contentUrl} />
         </ImageStyled>     
       </Col>
       <Col 
@@ -199,11 +246,11 @@ const  DetaiArtWork = () => {
           </div>
 
           <p className="title">
-            CRYPTOCARD 001 - THE ETHEREUM GOLD
+            {NFTDetail?.title}
           </p>
 
           <div className="token">
-            102 LUCKY 
+            {price} LUCKY 
             <img src={Token} alt=""/>
           </div>
 
@@ -213,7 +260,7 @@ const  DetaiArtWork = () => {
           </div>
           
           <p className="description">
-            A few years ago, the crypto world was for chosen one. And now cryptocurrency is everywhere! 
+            {}
           </p>
 
           <p className="organize">
@@ -298,11 +345,17 @@ const  DetaiArtWork = () => {
               style={{position: 'unset', width: '100%', bottom: 0, padding: 0}}
             >
               <FooterStyled>
+              {userState?.isCanBuy?
+              <>
                 <ButtonStyle>
                   <SwapOutlined />
                   {' '} Trade
                 </ButtonStyle>
-                <ButtonBuyStyle>Buy</ButtonBuyStyle>
+                <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
+                {/* <Link to="/artwork/detail" className="create-nav"><ButtonBuyStyle>Buy</ButtonBuyStyle></Link> */}
+              </>:
+              <ButtonBuyStyle onClick={onApproveBuyOnMarket}>Allow to buy</ButtonBuyStyle>
+              }
               </FooterStyled>
             </Col>       
           </Row>

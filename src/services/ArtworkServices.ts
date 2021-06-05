@@ -9,13 +9,22 @@ export default function useArtworkService(){
         return POST('/artwork',body,false, false)
     },[])
 
-    const updateHashInfoNFT = useCallback(({NFTid, txHash})=>{
-        return PUT(`/artwork/${NFTid}/hash`,{TXHash:txHash},false, false)
+    const updateHashInfoNFT = useCallback(({id, txHash})=>{
+        return PUT(`/artwork/${id}/hash`,{TXHash:txHash},false, false)
     },[])
 
     const getNFT = useCallback((query)=>{
         return GET('/artwork',query,false, false)
     },[])
 
-    return {createNFT,getNFT,updateHashInfoNFT}
+    const getDetailNFT = (query:any)=>{
+        const id = query?.id
+        return GET(`/artwork/${id}`,{},false, false)
+    }
+
+    const updateNFTStatus = ({id,status}:any)=>{
+        return PATCH(`/artwork/${id}`,{status},false, false)
+    }
+
+    return {createNFT,getNFT,updateHashInfoNFT,getDetailNFT,updateNFTStatus}
 }
