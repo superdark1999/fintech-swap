@@ -53,10 +53,13 @@ export const HotArtWorksStyled = styled.div`
       max-width: 100%;
       overflow-x: auto;
       display: flex;
-      display: grid;
+      .card-art-work {
+        margin-right: 24px;
+      }
+      /* display: grid;
       grid-gap: 24px;
       grid-template-columns: repeat(100000,248px);
-      grid-template-rows: minmax(248px,1fr);
+      grid-template-rows: minmax(248px,1fr); */
       ::-webkit-scrollbar {
         display: none;
       }

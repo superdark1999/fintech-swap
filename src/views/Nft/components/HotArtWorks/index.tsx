@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import Cart from '../utilComponent/cart/'
+import Cart from 'components-v2/CardItem'
 import { HotArtWorksStyled } from './styled'
 import useArtworkServices from '../../../../services/ArtworkServices'; 
 import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons';

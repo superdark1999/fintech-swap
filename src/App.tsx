@@ -22,10 +22,9 @@ import getLibrary from './wallet/utils/getLibrary'
 import { Layout} from 'antd';
 import CreateArtWork from 'views/Nft/components/CreateArtWork/index'
 import DetailArtWork from 'views/Nft/components/HotArtists/DetailArtWork'
+import TradeArtWork from 'views/Nft/components/TradeArtwork'
+import UserProfile from 'views/Nft/components/UserProfile'
 import 'antd/dist/antd.css';
-import UserProfile from 'views/Nft/components/UserProfile';
-import { useActiveWeb3React } from './wallet/hooks'
-const { Header, Content, Footer } = Layout;
 
 // 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
@@ -104,6 +103,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/user-profile">
               <UserProfile />
+            </Route>
+            <Route path="/trade-artwork">
+              <TradeArtWork />
             </Route>
           </Switch>
           </>

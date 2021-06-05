@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 
-export const SidebarStyled = styled.div`
+interface PropsStyled {
+  isMobile?: boolean
+}
+
+export const SidebarStyled = styled.div<PropsStyled>`
   .collapse-menu {
     display: flex;
     justify-content: center;
