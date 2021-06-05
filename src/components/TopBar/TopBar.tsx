@@ -8,6 +8,9 @@ import {Link} from 'react-router-dom'
 import {ButtonBuy} from 'components-v2/Button'
 import ViewMore from 'assets/images/view-more.svg'
 import { useActiveWeb3React } from '../../wallet/hooks'
+import useNFTServices,{MARKET_ADDRESS} from '../../services/NFTServices'; 
+import useUserStore from '../../store/userStore'
+
 interface TopBarProps {
   onPresentMobileMenu: () => void
 }
@@ -15,6 +18,8 @@ interface TopBarProps {
 const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
   const { account } = useActiveWeb3React()
+  const {checkApproveLevelAmount} = useNFTServices()
+  const [userState, userActions] = useUserStore()
   const handleScroll = () => {
     const position = window.pageYOffset
 
@@ -32,6 +37,20 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
     }
   }, [])
 
+  useEffect(()=>{
+    const getAccountInfo = async()=>{
+      if(account){
+        const isCanBuy = await checkApproveLevelAmount(MARKET_ADDRESS)
+        userActions.updateUserInfo({isCanBuy})
+        getAccountInfo()
+      }else{
+        userActions.clearUserInfo()
+      }
+      //call API to get info
+    }
+    getAccountInfo()
+  },[account])
+
 
   return (
     <StyledTopBar className={classtSicky}>
@@ -46,9 +65,9 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
             ):(
               <a onClick={()=>{alert("Unblock your wallet before create NFT")}} className="create-nav" >Create</a>
             )}
-            <div className="connect-wallet">
+            {account&&(<div className="connect-wallet">
               <Web3Status />
-            </div>
+            </div>)}
             <Link to="/user-profile">
               <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" className="connect-wallet">
                 <img src={ViewMore} />

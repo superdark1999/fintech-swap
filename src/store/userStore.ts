@@ -9,13 +9,14 @@ const userStore = createStore({
     avatarImage:'',
     name:'',
     socialMediaLink:'',
-    biography:''
+    biography:'',
+    isCanBuy:false
   },
   
   actions: {
     updateUserInfo: (userInfo)=>({getState, setState})=>{
-        console.log('call',userInfo)
-        setState(userInfo)
+      const userInfoState = getState()
+        setState({...userInfoState,...userInfo})
     },
     updateUserName : (name)=>({getState, setState})=>{
         const userInfo = getState()
@@ -28,7 +29,18 @@ const userStore = createStore({
     updateBiography : (biography)=>({getState, setState})=>{
         const userInfo = getState()
         setState({...userInfo,biography})
-    }
+    },
+    clearUserInfo: ()=>({getState, setState})=>{
+        setState({
+          walletAddress:'',
+          coverImage:'',
+          avatarImage:'',
+          name:'',
+          socialMediaLink:'',
+          biography:'',
+          isCanBuy:false
+        })
+    },
   },
 
   name: 'user'

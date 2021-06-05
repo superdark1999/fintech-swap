@@ -23,7 +23,8 @@ import { Layout} from 'antd';
 import CreateArtWork from 'views/Nft/components/CreateArtWork/index'
 import DetailArtWork from 'views/Nft/components/HotArtists/DetailArtWork'
 import 'antd/dist/antd.css';
-import UserProfile from 'views/Nft/components/UserProfile'
+import UserProfile from 'views/Nft/components/UserProfile';
+import { useActiveWeb3React } from './wallet/hooks'
 const { Header, Content, Footer } = Layout;
 
 // 
@@ -69,6 +70,9 @@ function Updaters() {
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
+  const { account } = useActiveWeb3React()
+
+  console.log(account)
 
   const handleDismissMobileMenu = useCallback(() => {
     setMobileMenu(false)

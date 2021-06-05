@@ -10,6 +10,7 @@ import { useModalOpen, useWalletModalToggle } from '../wallet/state/application/
 import { ApplicationModal } from "../wallet/state/application/actions" 
 import { useCallback, useMemo } from 'react'
 import { ethers } from 'ethers'
+import _ from 'lodash'
 
 export const NFT_ADDRESS = '0xa75556C5b07e88119d7979761D00b8a55A1Bc315';
 export const MARKET_ADDRESS = '0x172D30072817afBcaebF39B75b6eCd1E0B8Ec90F';
@@ -49,7 +50,7 @@ export default function NFTService(){
            return LuckyTokenContract.approve(address,ethers.constants.MaxUint256)
         },[LuckyTokenContract])
 
-        const checkApproveLevelAmount = useCallback((contractAddress)=>{
+        const checkApproveLevelAmount = useCallback(async(contractAddress)=>{
             if(!isAddress(account) || account === AddressZero){
                 window.alert('Please login your wallet to create NFT')
                 return 
@@ -58,7 +59,12 @@ export default function NFTService(){
                 window.alert('Please login your wallet to create NFT')
                 return 
             }
-            return LuckyTokenContract.allowance(account,contractAddress)
+            const allowanceObject = await LuckyTokenContract.allowance(account,contractAddress)
+            const allowance = Number(allowanceObject?._hex);
+            if(allowance>0){
+                return true
+            }
+            return false
         },[LuckyTokenContract])
 
         const getNFTUrl = useCallback((tokenId)=>{
@@ -80,7 +86,7 @@ export default function NFTService(){
                 return true
             }
             return false
-        },[])
+        },[nftContract])
 
         const setPriceForNFT = useCallback(async(tokenId:string|undefined,price:number|undefined)=>{
             const unitPrice = price + '000000000000000000'
@@ -88,7 +94,11 @@ export default function NFTService(){
             return marketContract.readyToSellToken(tokenId,unitPrice,{
                 gasLimit: estimatedGas,
             })
-        },[])
+        },[marketContract])
+
+        const getPriceNFT = useCallback(async(tokenId:string|undefined)=>{
+            return marketContract.getPriceByTokenId(tokenId)      
+        },[marketContract])
 
         const cancelSellNFT = useCallback(async(tokenId:string|undefined)=>{
             const estimatedGas = await marketContract.estimateGas.cancelBidToken(tokenId)
@@ -97,9 +107,16 @@ export default function NFTService(){
             })
         },[marketContract])
 
+        const buyNFT = useCallback(async(tokenId:string|undefined)=>{
+            const estimatedGas = await marketContract.estimateGas.buyToken(tokenId)
+            return marketContract.buyToken(tokenId, {
+              gasLimit: estimatedGas,
+            })
+        },[marketContract])
+
         //buy NFT 
 
 
 
-        return {mintNFT,getNFTUrl,cancelSellNFT, approveNFTToMarket,setPriceForNFT, approveLevelAmount, checkApproveLevelAmount, isNFTReadyToSell}
+        return {mintNFT,getNFTUrl,cancelSellNFT,getPriceNFT,approveNFTToMarket,setPriceForNFT, approveLevelAmount, checkApproveLevelAmount, isNFTReadyToSell, buyNFT}
 }
