@@ -5,9 +5,9 @@ import CheckMark from 'assets/images/checkmark.svg'
 import TextGradient from 'components-v2/ID'
 import Token from 'assets/images/token.svg'
 import Plus from 'assets/images/plus.svg'
-
 import Swap from 'assets/images/swap.svg'
 import { ButtonTrade } from 'components-v2/Button'
+import { isMobile } from 'react-device-detect'
 const OptionData = [
   {
    label: 'Lucky',
@@ -37,7 +37,7 @@ const Card: React.FC = () => {
 const Trade: React.FC = () => {
   return (
     <Row justify="space-around">
-      <img src={Plus} style={{paddingLeft: 40}}/>
+      <img src={Plus} style={{margin: 'auto 40px'}}/>
       <CardStyled >
         <div className="name">Your offer</div>
         <Input className="input" placeholder='Enter price' bordered/>
@@ -46,7 +46,7 @@ const Trade: React.FC = () => {
           {' '}<img src={Token} />
         </Row>
       </CardStyled>
-      <img src={Swap}/>
+      <img src={Swap} style={isMobile && {transform: 'rotate(90deg)', margin: 'auto 40px'}}/>
     </Row>
     
     
@@ -67,17 +67,13 @@ const TradeArtWork: React.FC = () => {
             </Select>
             <Row align="middle">
               <Col xl={{ span: 6}} md={{ span:  24}} xs={{span: 24}}>
-                <Card>
-                    a
-                </Card>
+                <Card/>
               </Col>
               <Col xl={{ span: 12}} md={{ span:  24}} xs={{span: 24}}>
                 <Trade/>
               </Col>
               <Col xl={{ span: 6}} md={{ span:  24}} xs={{span: 24}}>
-                <Card>
-                    a
-                </Card>
+                <Card/>
               </Col>
             </Row>
             <Row className="footer">

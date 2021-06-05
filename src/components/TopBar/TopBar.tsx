@@ -34,30 +34,30 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
     }
   }
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll, { passive: true })
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll)
+  //   }
+  // }, [])
 
-  useEffect(()=>{
-    const getAccountInfo = async()=>{
-      if(account){
-        login({walletAddress:account}).then(data=>{
-          checkApproveLevelAmount(MARKET_ADDRESS).then((data:any)=>{
-            const walletAddress = data?.walletAddress
-            userActions.updateUserInfo({walletAddress})
-          })
-        })
-        const isCanBuy = await checkApproveLevelAmount(MARKET_ADDRESS)
-        userActions.updateUserInfo({isCanBuy})
-      }else{
-        userActions.clearUserInfo()
-      }
-    }
-    getAccountInfo()
-  },[account])
+  // useEffect(()=>{
+  //   const getAccountInfo = async()=>{
+  //     if(account){
+  //       login({walletAddress:account}).then(data=>{
+  //         checkApproveLevelAmount(MARKET_ADDRESS).then((data:any)=>{
+  //           const walletAddress = data?.walletAddress
+  //           userActions.updateUserInfo({walletAddress})
+  //         })
+  //       })
+  //       const isCanBuy = await checkApproveLevelAmount(MARKET_ADDRESS)
+  //       userActions.updateUserInfo({isCanBuy})
+  //     }else{
+  //       userActions.clearUserInfo()
+  //     }
+  //   }
+  //   getAccountInfo()
+  // },[account])
 
 
   return (

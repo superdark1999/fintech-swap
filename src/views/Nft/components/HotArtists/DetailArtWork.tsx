@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Rate,Table } from 'antd';
-import styled from 'styled-components' 
 import Copy from 'assets/images/copy.svg'
 import Facebook from 'assets/images/facebook.svg'
 import Telegram from 'assets/images/telegram.svg'
@@ -18,6 +17,7 @@ import useNFTServices,{MARKET_ADDRESS} from '../../../../services/NFTServices';
 import useUserStore from '../../../../store/userStore'
 import {useParams} from "react-router-dom";
 import _ from 'lodash'
+import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
@@ -72,7 +72,7 @@ const  DetaiArtWork = () => {
         md={{ span: 24 }}
         sm={{ span: 24 }}
         >
-        <ImageStyled>
+        <ImageStyled bgImage={NFTDetail?.contentUrl}>
           <div className="bg-image"></div>
           <img src={NFTDetail?.contentUrl} />
         </ImageStyled>     
@@ -239,10 +239,12 @@ const  DetaiArtWork = () => {
               <FooterStyled>
               {userState?.isCanBuy?
               <>
-                <ButtonStyle>
-                  <SwapOutlined />
-                  {' '} Trade
-                </ButtonStyle>
+                <Link to="/trade-artwork">
+                  <ButtonStyle>
+                    <SwapOutlined />
+                    {' '} Trade
+                  </ButtonStyle>
+                </Link>
                 <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
                 {/* <Link to="/artwork/detail" className="create-nav"><ButtonBuyStyle>Buy</ButtonBuyStyle></Link> */}
               </>:

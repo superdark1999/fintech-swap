@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import {isMobile} from 'react-device-detect'
+import { Interface } from 'ethers/lib/utils'
 
 
 export const HotArtistsStyled = styled.div`
@@ -128,15 +129,18 @@ position: relative;
     }
 `
 
+interface Props {
+  bgImage?: boolean
+}
 
-export const ImageStyled = styled.div`
+export const ImageStyled = styled.div<Props>`
   position: relative;
   height: ${isMobile ? 'calc(100vh - 200px)' : 'calc(100vh - 80px)'};
   width: 100%;
   overflow: hidden;
   .bg-image {
     /* The image used */
-    background-image: url("https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif");
+    background-image: ${ props => `url(${props.bgImage}`};
     animation-play-state: paused;
     /* Add the blur effect */
     filter: blur(8px);
