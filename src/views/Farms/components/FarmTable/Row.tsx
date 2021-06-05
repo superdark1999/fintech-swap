@@ -46,7 +46,7 @@ const CellInner = styled.div`
 
 const StyledTr = styled.tr`
   cursor: pointer;
-  border-bottom: 2px solid #2b2c3a;
+  border-bottom: 1px solid #444444;
 `
 
 const EarnedMobileCell = styled.td`

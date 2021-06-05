@@ -22,7 +22,7 @@ export const FixedHeightRow = styled(RowBetween)`
 `
 
 export const HoverCard = styled(Card)`
-background: rgb(41 41 41);
+  background: rgb(41 41 41);
   box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
   /* :hover {
     border: 1px solid ${({ theme }) => darken(0.06, theme.colors.invertedContrast)};

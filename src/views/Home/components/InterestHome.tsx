@@ -99,12 +99,12 @@ const InterestItemStyled = styled.div`
   display: flex;
   justify-content: space-between;
 
-  background-color: #232627;
+  background-color: #444444;
   padding: 20px 35px;
   color: #acafc0;
   font-size: 14px;
   line-height: 20px;
-  border-radius: 6px;
+  border-radius: 20px;
 
   .left {
     display: flex;

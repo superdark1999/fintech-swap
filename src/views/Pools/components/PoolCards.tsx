@@ -124,7 +124,7 @@ function PoolCards() {
                 <BoxPool>
 
                   <figure>
-                    <img src="../images/hcats.jpg" alt=""/>
+                    <img src="../images/hcats.png" alt=""/>
                   </figure>
 
                   <CardContent>
@@ -1494,17 +1494,15 @@ const HeadLine = styled.div`
 `
 
 const BoxPool = styled.div`
-  background-color: #333442;
-  border-radius: 6px;
+  background: rgb(41 41 41);
+  box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
+  border-radius: 20px;
   padding: 24px 15px 15px;
   margin-bottom: 20px;
   position: relative;
   overflow: hidden;
-  box-shadow: rgb(43 44 58) -2px 2px 0px 0px, rgb(38 39 47) -2px 5px 11px 1px;
 
   figure {
-    background-color: #212628;
-    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     width: 78px;
     height: 78px;

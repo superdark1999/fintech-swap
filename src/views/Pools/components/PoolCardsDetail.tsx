@@ -94,7 +94,7 @@ function PoolCardsDetail(this: any) {
 
 
 const Title = styled.h5`
-  color: #01A8E1;
+  color: #fff;
   font-size: 24px;
   font-weight: 600;
   text-align: center;
@@ -104,7 +104,7 @@ const Title = styled.h5`
 const BoxInput = styled.div`
   display: flex;
   align-items: center;
-  background: #22232E;
+  background: #4d4d50;
   border-radius: 10px;
   height: 72px;
   padding: 0px 16px;
@@ -152,7 +152,7 @@ const BoxButton = styled.div`
     cursor: pointer;
     position: relative;
     z-index: 1;
-    background-color: #01A8E1;
+    background-color: #1890ff;
     color: rgb(255, 253, 250);
     font-family: "Baloo Da";
     padding: 0px 10px;
@@ -194,7 +194,7 @@ const BoxHead = styled.div`
   }
 
   h2 {
-    color: #01A8E1;
+    color: #1890ff;
     font-size: 36px;
     font-weight: 600;
     margin-bottom: 10px;
@@ -210,7 +210,8 @@ const BoxHead = styled.div`
 const BoxDetail = styled.div`
   .box {
     &__item {
-      background-color: #333442;
+      background: rgb(41 41 41);
+      box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
       border-radius: 10px;
       padding: 46px 18px 18px;
       display: flex;
@@ -257,7 +258,7 @@ const BoxDetail = styled.div`
       text-align: center;
 
       button {
-        background: #01A8E1;
+        background: #1890ff;
         border-radius: 4px;
         font-weight: 600;
         width: 100%;

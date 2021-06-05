@@ -50,7 +50,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     // <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={publicIfoData.status === 'live'}>
     //   <IfoCardDetails ifo={ifo} publicIfoData={publicIfoData} />
     // </StyledIfoCard>
-    <BoxIfoCard>
+    <>
       <Item>
         <ItemHead>
           <section>
@@ -59,18 +59,44 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
         </ItemHead>
 
         <ItemContent>
-          <h4>HCATS</h4>
-          <p>Support animals conservation, helping pet and cat organizations Solutions on Binance Smart Chain</p>
+          <BoxHead>
+            <h2>HCATS</h2>
+            <p>1 BNB = ? HCATS</p>
+          </BoxHead>
 
-          <Dflex>
-            <div>IDO Amount:</div>
-            <div>0,000 HCATS</div>
-          </Dflex>
+          <Total>
+            <span>Total Raise:</span>
+            <h2>0 BNB</h2>
+          </Total>
 
-          <Dflex className="flex-bot">
-            <div>Time:</div>
-            <div>Coming soon</div>
-          </Dflex>
+          <BoxProgress>
+            <TitleProgress>Progress</TitleProgress>
+            <BoxProgressBar>
+              <ProgressBar></ProgressBar>
+            </BoxProgressBar>
+            <ProgressFooter>
+              <ProgressPercentage>100%</ProgressPercentage>
+              <FeaturedCardMinimum>(Min.0%)</FeaturedCardMinimum>
+              <FeaturedCardAmount>0/100</FeaturedCardAmount>
+            </ProgressFooter>
+          </BoxProgress>
+
+          <FeaturedCardFooter>
+            <CardColumn>
+              <p>Participants</p>
+              <h3>0</h3>
+            </CardColumn>
+
+            <CardColumn>
+              <p>Max<span>BNB</span></p>
+              <h3>0.0</h3>
+            </CardColumn>
+
+            <CardColumn>
+              <p>Access</p>
+              <h3>Private</h3>
+            </CardColumn>
+          </FeaturedCardFooter>
 
           <BoxLink>
             <Link to="/IfoDetail">Participate</Link>
@@ -84,25 +110,88 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
         </div>
 
         <div className="item-coming-content">
-          <h4>Stay tuned !</h4>
-          <p>Something exciting is coming your way!</p>
+          <div>
+            <h2>Stay tuned !</h2>
+            <p>Something exciting is coming your way!</p>
+          </div>
         </div>
       </Item>
-    </BoxIfoCard>
+    </>
   )
 }
 
-const BoxIfoCard = styled.div`
-  box-sizing: border-box;
-  min-width: 0px;
-  width: 100%;
+
+
+const BoxProgress = styled.div`
+  margin-bottom: 16px;
+`
+
+const TitleProgress = styled.p`
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  margin-bottom: 4px;
+`
+
+const ProgressFooter = styled.p`
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 600;
+  display: grid;
+  grid-template-columns: 30px auto auto;
+`
+
+const ProgressPercentage = styled.div`
+  color: #f90943;
+`
+
+const FeaturedCardMinimum = styled.div``
+
+const FeaturedCardAmount = styled.div`
+  margin-left: auto;
+`
+
+const BoxProgressBar = styled.div`
   display: flex;
-  padding: 0px;
-  align-items: center;
-  flex-wrap: wrap;
-  max-width: 874px;
-  justify-content: flex-start;
-  margin: auto;
+  overflow: hidden;
+  height: 8px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+`
+
+const ProgressBar = styled.div`
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  background-color: #4ea7a5;
+  transition: width .6s ease;
+`
+
+const FeaturedCardFooter = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-gap: 16px;
+  margin-bottom: 16px;
+`
+
+const CardColumn = styled.div`
+  p {
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #212121;
+  }
+
+  h3 {
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 600;
+    margin-bottom: 0;
+    color: #0c8fb6;
+  }
 `
 
 const Item = styled.div`
@@ -111,11 +200,14 @@ const Item = styled.div`
   min-width: 0px;
   padding: 0px;
   width: 100%;
-  min-height: 335px;
   border-radius: 26px;
   background: rgb(234 234 234);
   overflow: hidden;
   box-shadow: rgb(171 133 115 / 16%) 0px 2px 10px;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   &:hover {
     box-shadow: 1px 2px 20px #fff0c1;
@@ -123,7 +215,7 @@ const Item = styled.div`
   }
 
   @media (min-width: 768px) {
-    width: 280px;
+    width: 100%;
   }
 
   &:not(:nth-child(3n)) {
@@ -147,21 +239,35 @@ const Item = styled.div`
     }
 
     .item-coming-content {
-      box-sizing: border-box;
       margin: 0px;
-      min-width: 0px;
       width: 100%;
       display: flex;
       align-items: center;
-      flex-direction: column;
+      height: 100%;
       text-align: center;
-      padding: 67px 24px 0px;
 
-      h4 {
+      div {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      h2 {
         font-size: 20px;
         margin-bottom: 10px;
       }
     }
+  }
+`
+
+const BoxHead = styled.div`
+  margin-bottom: 16px;
+
+  h2 {
+    font-size: 28px;
+    line-height: 34px;
+    font-weight: 600;
+    margin-bottom: 0;
   }
 `
 
@@ -174,7 +280,7 @@ background-size: cover;
 color: rgb(255, 255, 255);
 
 @media (min-width: 768px) {
-  width: 280px;
+  width: 100%;
 }
 
 section {
@@ -199,75 +305,62 @@ section {
 }
 `
 
-const Dflex = styled.div`
-  box-sizing: border-box;
-  margin: 0px;
-  min-width: 0px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  padding: 12px 0px 0px;
-  justify-content: space-between;
-
-  &.flex-bot {
-    padding: 4px 0px 15px;
+const Total = styled.div`
+  span {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: block;
   }
 
-div {
-  box-sizing: border-box;
-  margin: 0px;
-  min-width: 0px;
-  font-weight: bold;
-  font-size: 15px;
-  color:  rgb(37 37 53);
-}
+  h2 {
+    font-size: 28px;
+    line-height: 34px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    color: #0c8fb6;
+  }
 `
 
 const ItemContent = styled.div`
-padding: 20px 24px 8px;
+  padding: 20px 24px 8px;
 
-h4 {
-  box-sizing: border-box;
-  margin: 0px;
-  min-width: 0px;
-  font-weight: bold;
-  font-size: 24px;
-  color:  rgb(37 37 53);
-  line-height: 28px;
-}
-
-p {
-  box-sizing: border-box;
-  margin: 0px;
-  min-width: 0px;
-  font-weight: 400;
-  font-size: 14px;
-  padding: 8px 0px 0px;
-  min-height: 69px;
-  color: rgb(37 37 53);
-}
+  h4 {
+    box-sizing: border-box;
+    margin: 0px;
+    min-width: 0px;
+    font-weight: bold;
+    font-size: 24px;
+    color:  rgb(37 37 53);
+    line-height: 28px;
+  }
 `
 
 const BoxLink = styled.div`
-a {
-  display: block;
-  width: 232px;
-  height: 40px;
-  line-height: 40px;
-  font-weight: bold;
-  font-size: 14px;
-  color: rgb(255, 253, 250);
-  text-align: center;
-  background: #1890ff;
-  border-radius: 10px;
-  text-decoration: none;
-
-  &:hover {
-    background-color: #40a9ff;
-    transition: 0.5s;
+  display: flex;
+  justify-content: center;
+  
+  a {
+    display: block;
+    width: 232px;
+    height: 40px;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 14px;
     color: rgb(255, 253, 250);
+    text-align: center;
+    background: #1890ff;
+    border-radius: 10px;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #40a9ff;
+      transition: 0.5s;
+      color: rgb(255, 253, 250);
+    }
   }
-}
 `
 
 export default IfoCard

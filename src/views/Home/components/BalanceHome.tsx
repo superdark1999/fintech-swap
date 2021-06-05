@@ -11,9 +11,9 @@ const BalanceContainer = styled.div`
   width: 100%;
   align-items: center;
   display: flex;
-  background-color: #232627;
+  background-color: #444444;
   color: #9a9eb1;
-  border-radius: 6px;
+  border-radius: 20px;
   flex-direction: column;
 
   @media (min-width: 768px) {

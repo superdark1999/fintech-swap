@@ -18,7 +18,7 @@ const Ifos = () => {
           <CurrentIfo />
         </Route>
         <Route path={`${path}/history`}>
-          <PastIfo />
+        <CurrentIfo />
         </Route>
       </Container>
     </>

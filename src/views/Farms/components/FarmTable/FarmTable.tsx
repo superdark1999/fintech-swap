@@ -15,7 +15,8 @@ const Container = styled.div`
   filter: ${({ theme }) => theme.card.dropShadow};
   width: 100%;
   /* background: ${({ theme }) => theme.card.background}; */
-  background-color: rgb(27, 28, 45);
+  background: linear-gradient(45deg,rgb(35 35 35) 30%,rgb(45 45 45) 100%);
+  box-shadow: 0px 0px 11px 0px rgb(16 16 16 / 57%);
   border-radius: 16px;
   margin: 16px 0px;
 `

@@ -9,12 +9,19 @@ const IfoCardWrapper = styled.div<IfoCardWrapperProps>`
   border-top: 2px solid #2b2c3a;
   display: grid;
   grid-template-columns: 1fr;
-  grid-gap: 32px;
+  grid-gap: 20px;
   padding-bottom: 40px;
   padding-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: ${({ isSingle }) => `repeat(${isSingle ? 1 : 2}, 1fr)`};
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3,1fr);
+  }
+
+  @media (min-width: 991px) {
+    grid-template-columns: repeat(3,1fr);
   }
 `
 
