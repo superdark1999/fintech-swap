@@ -10,8 +10,8 @@ import {Link} from 'react-router-dom'
 
 import { Rate } from 'antd';
 import { SwapOutlined } from '@ant-design/icons';
-import useNFTServices,{MARKET_ADDRESS} from '../../../../../services/NFTServices'; 
-import useUserStore from '../../../../store/userStore'
+import useNFTServices,{MARKET_ADDRESS} from '../../services/NFTServices'; 
+import useUserStore from '../../store/userStore'
 import _ from 'lodash'
 
 const getPrice = (price:number)=>{
@@ -63,7 +63,7 @@ export default function Cart({data}: any) {
           <img src={Copy} alt=""/>
         </div>
         <div className="wrapper-image">
-          <img className="avatar"  src={data.contentUrl}/>
+          <img className="avatar"  src={data.contentUrl} alt=""/>
         </div>
         <div className="title">
           LuckySwapStudio {' '}
@@ -71,7 +71,7 @@ export default function Cart({data}: any) {
         </div>
         <div className="number">
           <div>
-            {price} LUCKY {' '}
+          {price} LUCKY {' '}
             <img src={Token} alt=""/></div>  
           <img src={Hammer2} alt=""/>
         </div> 

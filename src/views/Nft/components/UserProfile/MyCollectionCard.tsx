@@ -6,11 +6,6 @@ import { Row, Col, Tabs} from 'antd';
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import Loadmore from 'components-v2/Loadmore'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
-import SearchInput from 'components-v2/SearchInput'
-import { ButtonStyle } from '../utilComponent/cart/styled'
-import  Copy from 'assets/images/copy.svg'
-import Token from 'assets/images/token.svg'
-import Luckyswap from 'assets/images/luckyswap.svg'
 import QRCode from 'assets/images/qr-code.svg'
 import useArtworkServices from '../../../../services/ArtworkServices'; 
 import useNFTServices from '../../../../services/NFTServices'; 
@@ -37,27 +32,34 @@ export default function MyCollectionCard({data,}:any){
     },[data?.tokenId])
 
     const onSellItem = ()=>{
-      const tokenId = data?.tokenId;
-      setIsPrcessing(true)
-      if(true){
-        console.log( data?.id)
-        updateNFTStatus({id:data?.id,status:'readyToSell'})
-        // setPriceForNFT(tokenId,10).then(dt=>{
-        //     console.log(dt, data?.id)
-        //     updateNFTStatus({id:data?.id,status:'readyToSell'})
-        // })
-      }else{
+    const tokenId = data?.tokenId;
+    setIsPrcessing(true)
+        setPriceForNFT(tokenId,10).then(dt=>{
+        if(dt?.hash){
+            updateNFTStatus({id:data?.id,status:'readyToSell'}).then(({status})=>{
+                if(status==200){
+                    setIsPrcessing(false)
+                }
+            })
+        }
+    })
+    }
+
+    const onAllowSellItem = ()=>{
+        const tokenId = data?.tokenId;
+        setIsPrcessing(true)
         approveNFTToMarket(tokenId).then(dt=>{
-          setTimeout(async()=>{
-            const tempIsNFTCanSell = await isNFTReadyToSell(tokenId)
-            setIsNFTCanSell(tempIsNFTCanSell)
+            setTimeout(async(dt)=>{
+                if(dt.hash){
+                    const tempIsNFTCanSell = await isNFTReadyToSell(tokenId)
+                    setIsNFTCanSell(tempIsNFTCanSell)
+                    setIsPrcessing(false)   
+                }
+            },20000)
+          }).catch(err=>{
+            alert('Something wrong, please try again later.')
             setIsPrcessing(false)
-          },20000)
-        }).catch(err=>{
-          alert('Something wrong, please try again later.')
-          setIsPrcessing(false)
-        })
-      }
+          })
     }
   
     return (
@@ -82,10 +84,15 @@ export default function MyCollectionCard({data,}:any){
                   <ButtonTrade height="45px">Send</ButtonTrade>
                   {isProcessing?(
                     <ButtonBuy height="45px" >Processing...</ButtonBuy>
+                  ):isNFTCanSell?(
+                    <ButtonBuy height="45px" onClick={onSellItem}>{'Sell'}</ButtonBuy>
                   ):(
-                    <ButtonBuy height="45px" onClick={onSellItem}>{isNFTCanSell?'Sell':'Allow to Sell'}</ButtonBuy>
-                  )}
-                  {/* Thêm input set giá cho thằng NFT nha a  */}
+                    <ButtonBuy height="45px" onClick={onAllowSellItem}>{'Allow to Sell'}</ButtonBuy>
+                  )
+                  }
+                    <ButtonBuy height="45px">Auction</ButtonBuy>
+                    <ButtonBuy height="45px">Swap</ButtonBuy>
+                    <ButtonBuy height="45px">Public swap</ButtonBuy>
                   <ButtonBuy borderRadius="100px" width="40px" height="45px"><img src={QRCode} /></ButtonBuy>
                 </div>   
               </div> 

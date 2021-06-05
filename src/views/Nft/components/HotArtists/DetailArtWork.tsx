@@ -65,7 +65,6 @@ const  DetaiArtWork = () => {
       console.log(data)
     })
   }
-const  DetaiArtWork = () => {
   return (
     <Row>
       <Col className="gutter-row" style={{width: '100%'}}

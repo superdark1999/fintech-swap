@@ -12,12 +12,7 @@ import {
   Checkbox,
 } from 'antd'
 import UploadFile from 'components-v2/Upload/index'
-import {
-  UploadOutlined,
-  EditOutlined,
-  PictureOutlined,
-} from '@ant-design/icons'
-import { ButtonStyle } from '../utilComponent/cart/styled'
+import { ButtonStyle } from 'components-v2/cart/styled'
 import useArtworkServices from '../../../../services/ArtworkServices'
 import useNFTServices, { NFT_ADDRESS } from '../../../../services/NFTServices'
 import { useActiveWeb3React } from '../../../../wallet/hooks'
