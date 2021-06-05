@@ -5,50 +5,6 @@ import { ifosConfig } from 'config/constants'
 import IfoCard from './components/IfoCard'
 import IfoCards from './components/IfoCards'
 
-const LaunchIfoCallout = styled(BaseLayout)`
-  border-top: 2px solid #2b2c3a;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 32px;
-  margin: 0 auto;
-  padding: 32px 0;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    grid-template-columns: 1fr 1fr;
-  }
-`
-
-const List = styled.ul`
-  color: ${({ theme }) => theme.colors.text};
-  margin-bottom: 16px;
-
-  & > li {
-    line-height: 1.4;
-    margin-bottom: 8px;
-  }
-`
-
-const Titletop = styled.h2`
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 1.1;
-  margin-bottom: 16px;
-  color: #2b2c3a;
-`
-
-const SubTitle = styled.h3`
-  font-weight: 600;
-  line-height: 1.1;
-  margin-bottom: 16px;
-  font-size: 20px;
-  color: #ef994d;
-`
-
-const TextC = styled.p`
-  font-size: 16px;
-  color: #ef994d;
-  margin-bottom: 16px;
-`
 
 /**
  * Note: currently there should be only 1 active IFO at a time
@@ -62,8 +18,62 @@ const Ifo = () => {
       <IfoCards isSingle>
         <IfoCard ifo={activeIfo} />
       </IfoCards>
+
+      <BoxIDO>
+        <div className="content">
+          <h4>How to launch your own IDO ?</h4>
+          <p>Launch your project with LuckySwap, LuckySwap is a decentralized trading platform that uses the automatic market maker (AMM) model. At the same time LuckySwap is the 1st AMM+NFT exchange on Binance Smart Chain.Various data indicate the rapid growth of BakerySwap in the DEFI ecosystem</p>
+          <a href="/">Apply Now</a>
+        </div>
+      </BoxIDO>
     </div>
   )
 }
+
+const BoxIDO = styled.div`
+  background: linear-gradient(90deg, rgba(0,167,225,1) 0%, rgba(41,244,195,1) 100%);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 40px;
+
+  .content {
+    width: 920px;
+    padding: 20px 125px 10px 211px;
+
+  }
+
+  h4 {
+    box-sizing: border-box;
+    margin: 0px;
+    min-width: 0px;
+    font-size: 28px;
+    font-weight: 700;
+    padding-bottom: 10px;
+  }
+
+  p {
+    font-size: 16px;
+    margin-bottom: 16px;
+    line-height: 22px;
+  }
+
+  a {
+    display: inline-block;
+    width: 152px;
+    height: 40px;
+    line-height: 40px;
+    background: linear-gradient(180.24deg,rgb(114 186 255) 0.21%,rgb(28 144 255) 63.19%);
+    border-radius: 8px;
+    color: #fff;
+    text-align: center;
+    font-weight: 500;
+    margin-top: 18px;
+
+    &:hover {
+      opacity: 0.7;
+      transition: 0.5s;
+    }
+  }
+`
 
 export default Ifo
