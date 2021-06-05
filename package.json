@@ -31,7 +31,7 @@
     "@bscsswap/uikit": "0.14.4",
     "@crowdin/crowdin-api-client": "^1.10.4",
     "@ethersproject/abi": "^5.0.7",
-    "@luckyswap/uikit": "0.13.0",
+    "@luckyswap/uikit": "0.13.1",
     "@luckyswap/v2-sdk": "1.1.2",
     "@popperjs/core": "^2.9.2",
     "@reach/dialog": "^0.15.0",
