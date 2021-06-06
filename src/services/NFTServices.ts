@@ -59,12 +59,7 @@ export default function NFTService(){
                 window.alert('Please login your wallet to create NFT')
                 return 
             }
-            const allowanceObject = await LuckyTokenContract.allowance(account,contractAddress)
-            const allowance = Number(allowanceObject?._hex);
-            if(allowance>0){
-                return true
-            }
-            return false
+            return LuckyTokenContract.allowance(account,contractAddress)
         },[LuckyTokenContract])
 
         const getNFTUrl = useCallback((tokenId)=>{
