@@ -41,23 +41,30 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   //   }
   // }, [])
 
-  // useEffect(()=>{
-  //   const getAccountInfo = async()=>{
-  //     if(account){
-  //       login({walletAddress:account}).then(data=>{
-  //         checkApproveLevelAmount(MARKET_ADDRESS).then((data:any)=>{
-  //           const walletAddress = data?.walletAddress
-  //           userActions.updateUserInfo({walletAddress})
-  //         })
-  //       })
-  //       const isCanBuy = await checkApproveLevelAmount(MARKET_ADDRESS)
-  //       userActions.updateUserInfo({isCanBuy})
-  //     }else{
-  //       userActions.clearUserInfo()
-  //     }
-  //   }
-  //   getAccountInfo()
-  // },[account])
+  useEffect(()=>{
+    console.log('runnnnn')
+    if(account){
+      login({walletAddress:account}).then(({data, status})=>{
+        const artistData = {
+          walletAddress: account,
+          coverImage: data?.data?.coverImage,
+          avatarImage: data?.data?.avatarImage,
+          name: data?.data?.name,
+          socialMediaLink: data?.data?.socialLink,
+          biography: data?.data?.biography,
+        }
+        console.log(artistData)
+          if(status===200){
+            userActions.updateUserInfo(artistData)
+          }
+        checkApproveLevelAmount(MARKET_ADDRESS).then((dt:any)=>{
+             userActions.updateUserInfo({isCanBuy:dt})
+        })
+      })
+    }else{
+      userActions.clearUserInfo()
+    }
+  },[account])
 
 
   return (
@@ -89,14 +96,16 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
             ):(
               <a onClick={()=>{alert("Unblock your wallet before create NFT")}} className="create-nav" >Create</a>
             )}
-            {account&&(<div className="connect-wallet">
+            <div className="connect-wallet">
               <Web3Status />
-            </div>)}
-            <Link to="/user-profile">
-              <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" className="connect-wallet">
-                <img src={ViewMore} />
-              </ButtonBuy>
-            </Link> 
+            </div>
+            {account&&(
+              <Link to="/user-profile">
+                <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" className="connect-wallet">
+                  <img src={ViewMore} />
+                </ButtonBuy>
+              </Link>
+            )}
           </div>
     </StyledTopBar>
   )

@@ -45,7 +45,7 @@ export default function OnSaleCard({data,}:any){
           <Col className="description" xl={{ span: 16 }} md={{ span: 24 }} xs={{span: 24}} xxl={{span: 16}}>
               <div className="header-card" style={{marginTop:10}}>
                 <div className="status">
-                    Approved
+                   Ready to Sell
                 </div>
                 {/* <div className="cancel">
                   Cancel
@@ -61,7 +61,7 @@ export default function OnSaleCard({data,}:any){
               </div> 
               <div style={{display: "flex"}}>
                 <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
-                <div className="number">0x2433bE070fAeE3F9608154 </div>
+                <div className="number">{data?.TXHash} </div>
               </div> 
               
               <div className="content">

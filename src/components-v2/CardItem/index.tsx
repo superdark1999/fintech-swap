@@ -22,7 +22,6 @@ const getPrice = (price:number)=>{
 }
 
 export default function CardItem({data}: any) {
-  console.log(data)
   const [price,setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
   const {getPriceNFT,approveLevelAmount,buyNFT} = useNFTServices()

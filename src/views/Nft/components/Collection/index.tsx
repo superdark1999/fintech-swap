@@ -23,8 +23,6 @@ const data = [
   "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif",
   "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/f8695348b9064cae934ea91aca485a17.gif",
   "https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/9f90c1dcec8a4316a13343db0c45136c.gif",
-
-
 ]
 
 function Collection() {
@@ -50,8 +48,8 @@ function Collection() {
             </div>
             <div className="content-collect">
                 {
-                  data.map((item) => (
-                      <Cart width="320px" height="480px" data={{contentUrl:item}}/>
+                  data.map((item,index) => (
+                      <Cart width="320px" height="480px" data={{contentUrl:item,id:`tempId${index}`}}/>
                   ))
                 }
             </div>

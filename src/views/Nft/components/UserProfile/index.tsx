@@ -4,32 +4,29 @@ import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
 import { Row, Col, Tabs} from 'antd';
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
-import Loadmore from 'components-v2/Loadmore'
-import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import SearchInput from 'components-v2/SearchInput'
 import { ButtonStyle } from 'components-v2/cart/styled'
 import  Copy from 'assets/images/copy.svg'
-import Token from 'assets/images/token.svg'
-import Luckyswap from 'assets/images/luckyswap.svg'
-import QRCode from 'assets/images/qr-code.svg'
 import useArtworkServices from '../../../../services/ArtworkServices'; 
-import useNFTServices from '../../../../services/NFTServices'; 
 import { useActiveWeb3React } from '../../../../wallet/hooks'
+import useUserStore from '../../../../store/userStore'
 import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
 
 import { HeartOutlined } from '@ant-design/icons';
 import { margin } from 'polished';
 import _ from 'lodash'
+import userStore from '../../../../store/userStore';
 const { TabPane } = Tabs;
 
 
 const UserProfile: React.FC = () => {
+  const [userState, userActions] = useUserStore()
   return (
     <UserProfileStyled>
       <Row className="section header-profile">
           <Col className="header-profile-col" xxl={{ span: 24}}  xl={{ span: 20}} md={{ span: 20 }} xs={{span: 20}}>
-             <img className="avatar" src="https://cdnb.artstation.com/p/assets/images/images/038/107/499/large/maciej-janaszek-template-4k.jpg?1622187915"/>
+             <img className="avatar" src={userState?.avatarImage}/>
           </Col>
       </Row>
       <Row className="section content-profile">
@@ -37,7 +34,7 @@ const UserProfile: React.FC = () => {
             <div className="info-detail">
               <div>
                 <div className="name">
-                  <span>gerbilpetroleum</span>
+                  <span>{userState?.name}</span>
                   <img src={Checkmark} />
                 </div>
                 <div className="rank">
@@ -54,7 +51,7 @@ const UserProfile: React.FC = () => {
               </div> 
             </div>
             <p className="description">
-                gerbilpetroleum is an award winning illustrator with over 25 years experience in the industry. His eclectic art style is influenced by comic books, fantasy art, cartoons, film and all things pop culture.
+                {userState?.biography}
             </p>  
           <Tabs defaultActiveKey="1" >
             <TabPane tab="On sale" key="1"> 
@@ -81,6 +78,7 @@ const TabOnSale: React.FC = ()=>{
   const { account } = useActiveWeb3React()
   useEffect(()=>{
     const query = {
+      status:'readyToSell',
       ownerWalletAddress: account
     }
     getNFT(query).then(({status, data})=>{
@@ -91,7 +89,7 @@ const TabOnSale: React.FC = ()=>{
   },[])
   return(
     <>
-      <Row align="middle" justify="space-between">     
+      {/* <Row align="middle" justify="space-between">     
         <GroupButton>
           <RadioButton width="auto" borderRadius="10px" value="All">All </RadioButton>
           <RadioButton width="auto" borderRadius="10px" value="Pending" disabled>Pending</RadioButton>
@@ -99,7 +97,7 @@ const TabOnSale: React.FC = ()=>{
           <RadioButton width="auto" borderRadius="10px" value="Cancelled" disabled>Cancelled</RadioButton>
         </GroupButton>
         <SearchInput maxWidth="300px" placeholder="Search items"/>
-      </Row> 
+      </Row>  */}
         <ListCart className="list-artwork">
             {NFTs.map(item=>{
                   return(
@@ -119,9 +117,7 @@ const TabMyCollection: React.FC = ()=>{
   useEffect(()=>{
     const query = {
       ownerWalletAddress: account,
-      filter:{
-        status:'approved'
-      }
+      status:'approved'
     }
     getNFT(query).then(({status, data})=>{
       if(status==200){
@@ -133,12 +129,12 @@ const TabMyCollection: React.FC = ()=>{
   return(
     <>
           <Row align="middle" justify="space-between">
-                <GroupButton>
+                {/* <GroupButton>
                   <RadioButton width="auto" borderRadius="10px" value="All">All  </RadioButton>
                   <RadioButton width="auto" borderRadius="10px" value="Pending" disabled>Game </RadioButton>
                   <RadioButton width="auto" borderRadius="10px" value="Approved">Art </RadioButton>
                   <RadioButton width="auto" borderRadius="10px" value="Cancelled" disabled>Music </RadioButton>
-                </GroupButton> 
+                </GroupButton>  */}
                 <SearchInput maxWidth="300px" placeholder="Search items"/>
               </Row>
               <ListCart className="list-artwork">
