@@ -33,33 +33,45 @@ export default function MyCollectionCard({data,}:any){
 
     const onSellItem = ()=>{
     const tokenId = data?.tokenId;
-    setIsPrcessing(true)
-        setPriceForNFT(tokenId,10).then(dt=>{
-        if(dt?.hash){
-          updateNFTInfo({id:data?.id,status:'readyToSell'}).then(({status})=>{
-                if(status==200){
-                    setIsPrcessing(false)
-                }
-            })
-        }
+    updateNFTInfo({id:data?.id,status:'readyToSell'}).then(({status})=>{
+          if(status==200){
+              setIsPrcessing(false)
+          }
     })
+    // setIsPrcessing(true)
+    //     setPriceForNFT(tokenId,100).then(dt=>{
+    //     if(dt?.hash){
+    //       updateNFTInfo({id:data?.id,status:'readyToSell'}).then(({status})=>{
+    //             if(status==200){
+    //                 setIsPrcessing(false)
+    //             }
+    //       })
+    //     }
+    // }).finally(()=>{
+    //   setIsPrcessing(false)
+    // })
     }
 
     const onAllowSellItem = ()=>{
-        const tokenId = data?.tokenId;
-        setIsPrcessing(true)
-        approveNFTToMarket(tokenId).then(dt=>{
-            setTimeout(async(dt)=>{
-                if(dt.hash){
-                    const tempIsNFTCanSell = await isNFTReadyToSell(tokenId)
-                    setIsNFTCanSell(tempIsNFTCanSell)
-                    setIsPrcessing(false)   
-                }
-            },20000)
-          }).catch(err=>{
-            alert('Something wrong, please try again later.')
-            setIsPrcessing(false)
-          })
+      updateNFTInfo({id:data?.id,status:'readyToSell'}).then(({status})=>{
+            if(status==200){
+                setIsPrcessing(false)
+            }
+      })
+        // const tokenId = data?.tokenId;
+        // setIsPrcessing(true)
+        // approveNFTToMarket(tokenId).then(dt=>{
+        //     setTimeout(async()=>{
+        //         if(dt.hash){
+        //             const tempIsNFTCanSell = await isNFTReadyToSell(tokenId)
+        //             setIsNFTCanSell(tempIsNFTCanSell)
+        //             setIsPrcessing(false)   
+        //         }
+        //     },20000)
+        //   }).catch(err=>{
+        //     alert('Something wrong, please try again later.')
+        //     setIsPrcessing(false)
+        //   })
     }
   
     return (

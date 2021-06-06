@@ -74,8 +74,9 @@ const CreateArtWork: React.FC = () => {
   }
 
   useEffect(()=>{
+    console.log(userState)
     form.setFieldsValue({ artistName: userState.name })
-  },[])
+  },[userState.name])
 
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -94,7 +95,8 @@ const CreateArtWork: React.FC = () => {
     }
 
     createNFT(mintData)
-      .then(async ({ data }) => {
+      .then(({data,status}) => {
+        if(status===200){
         const url = data?.data?.contentUrl || ''
         const NFTid = data?.data?._id || ''
         mintNFT(url)
@@ -103,6 +105,7 @@ const CreateArtWork: React.FC = () => {
             updateHashInfoNFT({ NFTid, txHash })
           })
           .catch((err: any) => {})
+        }
       })
       .finally(() => {
         setIsProcessing(false)
@@ -111,8 +114,8 @@ const CreateArtWork: React.FC = () => {
 
   const handleSubmit = async () => {
     if (!isProccessing) {
-      setIsProcessing(true)
       formRef.current.validateFields().then((values: any) => {
+        setIsProcessing(true)
         onCreateNFT(values)
       })
     }

@@ -9,8 +9,9 @@ export default function useArtworkService(){
         return POST('/artwork',body,false, false)
     },[])
 
-    const updateHashInfoNFT = useCallback(({id, txHash})=>{
-        return PUT(`/artwork/${id}/hash`,{TXHash:txHash},false, false)
+    const updateHashInfoNFT = useCallback(({NFTid, txHash})=>{
+        console.log()
+        return PUT(`/artwork/${NFTid}/hash`,{TXHash:txHash},false, false)
     },[])
 
     const getNFT = useCallback((query)=>{

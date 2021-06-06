@@ -42,10 +42,20 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   // }, [])
 
   useEffect(()=>{
+    console.log('runnnnn')
     if(account){
       login({walletAddress:account}).then(({data, status})=>{
+        const artistData = {
+          walletAddress: account,
+          coverImage: data?.data?.coverImage,
+          avatarImage: data?.data?.avatarImage,
+          name: data?.data?.name,
+          socialMediaLink: data?.data?.socialLink,
+          biography: data?.data?.biography,
+        }
+        console.log(artistData)
           if(status===200){
-            userActions.updateUserInfo(data?.data)
+            userActions.updateUserInfo(artistData)
           }
         checkApproveLevelAmount(MARKET_ADDRESS).then((dt:any)=>{
              userActions.updateUserInfo({isCanBuy:dt})
