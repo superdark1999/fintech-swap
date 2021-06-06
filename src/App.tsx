@@ -25,7 +25,6 @@ import DetailArtWork from 'views/Nft/components/HotArtists/DetailArtWork'
 import TradeArtWork from 'views/Nft/components/TradeArtwork'
 import UserProfile from 'views/Nft/components/UserProfile'
 import 'antd/dist/antd.css';
-const { Header, Content, Footer } = Layout;
 
 // 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
@@ -99,7 +98,7 @@ const App: React.FC = () => {
             <Route path="/create/artwork">
               <CreateArtWork />
             </Route>
-            <Route path="/artwork/detail">
+            <Route path="/artwork/detail/:id">
               <DetailArtWork />
             </Route>
             <Route path="/user-profile">

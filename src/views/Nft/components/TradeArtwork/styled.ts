@@ -1,11 +1,12 @@
 import styled from 'styled-components'
+import { isMobile } from 'react-device-detect'
 export const TradeArtWorkStyled = styled.div`
   max-width: 1320px;
   /* width: 1100px; */
-  margin: 60px auto;
+  margin: ${!isMobile ? '60px auto' : '10px auto'};
   padding: 0px 40px;
-  background: #F9FAFB;
-  border: 2px solid #E7EBEF;
+  background: ${!isMobile ? 'F9FAFB' : '2px solid #E7EBEF'};
+  border: ${!isMobile && '2px solid #E7EBEF'};
   box-sizing: border-box;
   border-radius: 32px;
   justify-content: center;

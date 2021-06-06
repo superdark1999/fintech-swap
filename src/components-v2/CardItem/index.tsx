@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import { StyledCart, ButtonBuyStyle, ButtonStyle } from './styled'
 import Copy from 'assets/images/copy.svg'
 import Checkmark from 'assets/images/checkmark.svg'
@@ -10,21 +10,44 @@ import {Link} from 'react-router-dom'
 
 import { Rate } from 'antd';
 import { SwapOutlined, StarFilled } from '@ant-design/icons'
+import useNFTServices from '../../services/NFTServices';
+import _ from 'lodash' 
 
+const getPrice = (price:number)=>{
+  if(price?.toString()?.length<24){
+    const priceString = _.replace(price?.toString(),'000000000000000000','')
+    return Number(priceString)
+  }
+  return -1
+}
 
-
-export default function index(props: any) {
+export default function CardItem({data}: any) {
+  console.log(data)
+  const [price,setPrice] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const {getPriceNFT,approveLevelAmount,buyNFT} = useNFTServices()
+  useEffect(()=>{
+    if(data?.tokenId){
+      getPriceNFT(data?.tokenId).then((dt:any)=>{
+        const price = getPrice(Number(dt?._hex))
+        if(price!=-1){
+          setLoading(false)
+          setPrice(price)
+        }
+      }).catch((err:any)=>{})
+    }
+  },[data?.tokenId])
   return (
     <StyledCart>
       <div className="header-card-art-work">
         <div className="date-time">02h 31m 04s left 🔥 </div>
         <img src={Copy} alt=""/>
       </div>
-     <Link to="/artwork/detail" className="create-nav">
+     <Link to={`/artwork/detail/${data?.id}`} className="create-nav">
       <div className="card-art-work">               
         
         <div className="wrapper-image">
-          <img className="avatar"  src={props.url} alt="" loading="lazy"/>
+          <img className="avatar"  src={data?.contentUrl} alt="" loading="lazy"/>
         </div>
       </div>
       

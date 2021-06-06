@@ -1,5 +1,5 @@
-import React from 'react'
-import { Row, Col, Rate, Table } from 'antd';
+import React, { useEffect, useState } from 'react'
+import { Row, Col, Rate,Table } from 'antd';
 import Copy from 'assets/images/copy.svg'
 import Facebook from 'assets/images/facebook.svg'
 import Telegram from 'assets/images/telegram.svg'
@@ -12,9 +12,59 @@ import {ButtonStyle, ButtonBuyStyle} from 'components-v2/cart/styled'
 import { SwapOutlined } from '@ant-design/icons';
 import { DetailStyled, ReviewStyled, ScrollReview, FooterStyled, ImageStyled, DetailTabpane} from './styled'
 import { dataHistory, columnHistory, dataBidding, columnBidding } from './Mock'
+import useArtworkServices from '../../../../services/ArtworkServices'
+import useNFTServices,{MARKET_ADDRESS} from '../../../../services/NFTServices'; 
+import useUserStore from '../../../../store/userStore'
+import {useParams} from "react-router-dom";
+import _ from 'lodash'
+import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
+
+const getPrice = (price:number)=>{
+  if(price?.toString()?.length<24){
+    const priceString = _.replace(price?.toString(),'000000000000000000','')
+    return Number(priceString)
+  }
+  return -1
+}
 const  DetaiArtWork = () => {
+  const {getDetailNFT} = useArtworkServices()
+  const { id } = useParams();
+  const [NFTDetail, setNFTDetail] = useState<any>({});
+  const [loading, setLoading] = useState(true)
+  const [price, setPrice] = useState(0)
+  const [userState, userActions] = useUserStore()
+  const {getPriceNFT,approveLevelAmount,buyNFT} = useNFTServices()
+  useEffect(()=>{
+    getDetailNFT({id}).then(({status, data})=>{
+     if(status==200){
+      if(data?.data?.tokenId){
+        getPriceNFT(data?.tokenId).then(data=>{
+          const price = getPrice(Number(data?._hex))
+          if(price!=-1){
+            setLoading(false)
+            setPrice(price)
+          }
+        }).catch(err=>{})
+        }
+       setNFTDetail(data?.data)
+       setLoading(false)
+     }
+    })
+  },[])
+  const onApproveBuyOnMarket = ()=>{
+    approveLevelAmount(MARKET_ADDRESS).then((data:any)=>{
+      console.log(data)
+    }).catch(console.log)
+  }
+
+  const onBuyItem = ()=>{
+    const tokenId = "41"
+    buyNFT(tokenId).then(data=>{
+      console.log(data)
+    })
+  }
   return (
     <Row>
       <Col className="gutter-row" style={{width: '100%'}}
@@ -22,9 +72,9 @@ const  DetaiArtWork = () => {
         md={{ span: 24 }}
         sm={{ span: 24 }}
         >
-        <ImageStyled>
+        <ImageStyled bgImage={NFTDetail?.contentUrl}>
           <div className="bg-image"></div>
-          <img src="https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif" />
+          <img src={NFTDetail?.contentUrl} />
         </ImageStyled>     
       </Col>
       <Col 
@@ -45,11 +95,11 @@ const  DetaiArtWork = () => {
           </div>
 
           <p className="title">
-            CRYPTOCARD 001 - THE ETHEREUM GOLD
+            {NFTDetail?.title}
           </p>
 
           <div className="token">
-            102 LUCKY 
+            {price} LUCKY 
             <img src={Token} alt=""/>
           </div>
 
@@ -59,7 +109,7 @@ const  DetaiArtWork = () => {
           </div>
           
           <p className="description">
-            A few years ago, the crypto world was for chosen one. And now cryptocurrency is everywhere! 
+            {}
           </p>
 
           <p className="organize">
@@ -69,7 +119,7 @@ const  DetaiArtWork = () => {
           </p> 
 
           <Tabs defaultActiveKey="1" >
-            <TabPane tab="Detail" key="4">
+            <TabPane tab="Detail" key="1">
               <DetailTabpane >
                 <div className="group-info">
                   <div className="info">
@@ -114,7 +164,7 @@ const  DetaiArtWork = () => {
                 size="middle"
                 scroll={{ x: 300, y: 300 }}/>
             </TabPane>
-            <TabPane tab="Reviews" key="1">
+            <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">
                 <ReviewStyled>
                   <div className="review-item">
@@ -164,7 +214,7 @@ const  DetaiArtWork = () => {
                   <div className="time">30 minutes ago</div>
                 </ReviewStyled>
               </ScrollReview>
-              </TabPane>b
+              </TabPane>
             </Tabs>
 
 
@@ -187,11 +237,19 @@ const  DetaiArtWork = () => {
               style={{position: 'unset', width: '100%', bottom: 0, padding: 0}}
             >
               <FooterStyled>
-                <ButtonStyle>
-                  <SwapOutlined />
-                  {' '} Trade
-                </ButtonStyle>
-                <ButtonBuyStyle>Buy</ButtonBuyStyle>
+              {userState?.isCanBuy?
+              <>
+                <Link to="/trade-artwork">
+                  <ButtonStyle>
+                    <SwapOutlined />
+                    {' '} Trade
+                  </ButtonStyle>
+                </Link>
+                <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
+                {/* <Link to="/artwork/detail" className="create-nav"><ButtonBuyStyle>Buy</ButtonBuyStyle></Link> */}
+              </>:
+              <ButtonBuyStyle onClick={onApproveBuyOnMarket}>Allow to buy</ButtonBuyStyle>
+              }
               </FooterStyled>
             </Col>       
           </Row>

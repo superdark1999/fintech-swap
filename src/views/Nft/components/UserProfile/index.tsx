@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
@@ -12,8 +12,15 @@ import  Copy from 'assets/images/copy.svg'
 import Token from 'assets/images/token.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
 import QRCode from 'assets/images/qr-code.svg'
+import useArtworkServices from '../../../../services/ArtworkServices'; 
+import useNFTServices from '../../../../services/NFTServices'; 
+import { useActiveWeb3React } from '../../../../wallet/hooks'
+import OnsSaleCard from './OnSaleCard'
+import MyCollectionCard from './MyCollectionCard'
 
 import { HeartOutlined } from '@ant-design/icons';
+import { margin } from 'polished';
+import _ from 'lodash'
 const { TabPane } = Tabs;
 
 
@@ -51,42 +58,10 @@ const UserProfile: React.FC = () => {
             </p>  
           <Tabs defaultActiveKey="1" >
             <TabPane tab="On sale" key="1"> 
-              <Row align="middle" justify="space-between">     
-                <GroupButton>
-                  <RadioButton width="auto" borderRadius="10px" value="All">All </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="Pending">Pending</RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="Approved">Approved</RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="Cancelled">Cancelled</RadioButton>
-                </GroupButton>
-                <SearchInput maxWidth="300px" placeholder="Search items"/>
-              </Row> 
-              <ListCart className="list-artwork">
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-              </ListCart> 
-              <Loadmore/>     
+              <TabOnSale/>    
             </TabPane>
-            <TabPane tab="Collection" key="2">
-              <Row align="middle" justify="space-between">
-                <GroupButton>
-                  <RadioButton width="auto" borderRadius="10px" value="All">All  </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="Pending">Game </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="Approved">Art </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="Cancelled">Music </RadioButton>
-                </GroupButton> 
-                <SearchInput maxWidth="300px" placeholder="Search items"/>
-              </Row>
-              <ListCart className="list-artwork">
-                <CardPedding />
-                <CardPedding />
-                <CardPedding />
-                <CardPedding />
-                <CardPedding />
-              </ListCart> 
-              <Loadmore/> 
+            <TabPane tab="My Collection" key="2">
+              <TabMyCollection/>
             </TabPane>
             <TabPane tab="Settings"></TabPane>
           </Tabs>
@@ -99,82 +74,81 @@ const UserProfile: React.FC = () => {
 }
 export default UserProfile
 
-
-const Card: React.FC = () => {
-  return (
-    <CartStyled>
-      <Row gutter={24}>
-        <Col xl={{ span: 8}} md={{ span: 24 }} xs={{span: 24}} xxl={{span: 8}}>
-          <img className="avatar" src="https://cdnb.artstation.com/p/assets/images/images/038/107/499/large/maciej-janaszek-template-4k.jpg?1622187915"/>
-        </Col>
-        <Col className="description" xl={{ span: 16 }} md={{ span: 24 }} xs={{span: 24}} xxl={{span: 16}}>
-            <div className="header-card">
-              <div className="status">
-                Pending
-              </div>
-              <div className="cancel">
-                Cancel
-              </div>
-            </div>
-              
-            <div className="name">
-              CRYPTOCARD 001 - THE ETHEREUM GOLD
-            </div>
-            <div className="number">
-              69 LUCKY {' '}
-              <img src={Token} alt=""/>
-            </div> 
-            <div style={{display: "flex"}}>
-              <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
-              <div className="number">0x2433bE070fAeE3F9608154 </div>
-            </div> 
-            
-            <div className="content">
-            A few years ago, the crypto world was for chosen one. And now cryptocurrency is everywhere! 
-            </div>  
-
-            <div className="organize">
-              <img src={Luckyswap} /> 
-                <span className="name">LuckySwapStudio</span>
-              <img src={Checkmark} />
-            </div>               
-        </Col>
-      </Row>                
-    </CartStyled>
+const TabOnSale: React.FC = ()=>{
+  const [loading, setLoading] = useState(true)
+  const [NFTs,setNFTs] = useState([])
+  const {getNFT} = useArtworkServices()
+  const { account } = useActiveWeb3React()
+  useEffect(()=>{
+    const query = {
+      ownerWalletAddress: account
+    }
+    getNFT(query).then(({status, data})=>{
+      if(status==200){
+        setNFTs(data?.data||[])
+      }
+    })
+  },[])
+  return(
+    <>
+      <Row align="middle" justify="space-between">     
+        <GroupButton>
+          <RadioButton width="auto" borderRadius="10px" value="All">All </RadioButton>
+          <RadioButton width="auto" borderRadius="10px" value="Pending" disabled>Pending</RadioButton>
+          <RadioButton width="auto" borderRadius="10px" value="Approved" >Approved</RadioButton>
+          <RadioButton width="auto" borderRadius="10px" value="Cancelled" disabled>Cancelled</RadioButton>
+        </GroupButton>
+        <SearchInput maxWidth="300px" placeholder="Search items"/>
+      </Row> 
+        <ListCart className="list-artwork">
+            {NFTs.map(item=>{
+                  return(
+                    <OnsSaleCard key={item?.id} data={item}/>
+                  )
+            })}
+        </ListCart> 
+      {/* <Loadmore/>  */}
+    </>
   )
 }
 
+const TabMyCollection: React.FC = ()=>{
+  const [renderData,setRenderData] = useState([])
+  const {getNFT} = useArtworkServices()
+  const { account } = useActiveWeb3React()
+  useEffect(()=>{
+    const query = {
+      ownerWalletAddress: account,
+      filter:{
+        status:'approved'
+      }
+    }
+    getNFT(query).then(({status, data})=>{
+      if(status==200){
+        setRenderData(data?.data||[])
+      }
+    })
+  },[])
 
-const CardPedding: React.FC = () => {
-  return (
-    <CartStyled>
-      <Row gutter={24}>
-        <Col xl={{ span: 8}} md={{ span: 24 }} xs={{span: 24}} xxl={{span: 8}}>
-          <img className="avatar" src="https://cdnb.artstation.com/p/assets/images/images/038/107/499/large/maciej-janaszek-template-4k.jpg?1622187915"/>
-        </Col>
-        <Col className="description space-vehicle" xl={{ span: 16 }} md={{ span: 24 }} xs={{span: 24}} xxl={{span: 16}}>
-            <div>
-              <div className="name">
-                    CRYPTOCARD 001 - THE ETHEREUM GOLD
-              </div>
-              <div style={{display: "flex"}}>
-                <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
-                <div className="number">0x2433bE070fAeE3F9608154 </div>
-              </div> 
-            </div>
-            <div>
-              <div className="group-button">
-                {/* <ButtonTrade height="45px">Sell</ButtonTrade> */}
-                <ButtonBuy height="45px">Sell</ButtonBuy>
-                <ButtonBuy height="45px">Auction</ButtonBuy>
-                <ButtonBuy height="45px">Swap</ButtonBuy>
-                <ButtonBuy height="45px">Public swap</ButtonBuy>
-                <ButtonBuy borderRadius="100px" width="40px" height="45px"><img src={QRCode} /></ButtonBuy>
-              </div>   
-            </div> 
-               
-        </Col>
-      </Row>                
-    </CartStyled>
+  return(
+    <>
+          <Row align="middle" justify="space-between">
+                <GroupButton>
+                  <RadioButton width="auto" borderRadius="10px" value="All">All  </RadioButton>
+                  <RadioButton width="auto" borderRadius="10px" value="Pending" disabled>Game </RadioButton>
+                  <RadioButton width="auto" borderRadius="10px" value="Approved">Art </RadioButton>
+                  <RadioButton width="auto" borderRadius="10px" value="Cancelled" disabled>Music </RadioButton>
+                </GroupButton> 
+                <SearchInput maxWidth="300px" placeholder="Search items"/>
+              </Row>
+              <ListCart className="list-artwork">
+                {renderData.map(item=>{
+                  return(
+                    <MyCollectionCard key={item?.id} data={item}/>
+                  )
+                })}
+              </ListCart> 
+              {/* <Loadmore/>  */}
+    </>
   )
 }

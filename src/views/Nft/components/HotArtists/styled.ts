@@ -1,4 +1,7 @@
 import styled from 'styled-components'
+import {isMobile} from 'react-device-detect'
+import { Interface } from 'ethers/lib/utils'
+
 
 export const HotArtistsStyled = styled.div`
 position: relative;
@@ -10,11 +13,12 @@ position: relative;
     .title-artists{
         font-weight: bold;
         flex:1;
-        font-size: 32px;
+        font-size: ${isMobile ? '20px' : '32px'};
     }    
     .more-artists{
-        font-weight: 700;
-        font-size: 20px;
+        font-weight: ${isMobile ? '500' : '700'};
+        font-size: ${isMobile ? '16px' : '20px'};
+        text-align: ${isMobile && 'right'};
         width: 108px;
         text-decoration: underline;
         cursor: pointer;
@@ -125,15 +129,18 @@ position: relative;
     }
 `
 
+interface Props {
+  bgImage?: boolean
+}
 
-export const ImageStyled = styled.div`
+export const ImageStyled = styled.div<Props>`
   position: relative;
-  height: calc(100vh - 80px); 
+  height: ${isMobile ? 'calc(100vh - 200px)' : 'calc(100vh - 80px)'};
   width: 100%;
   overflow: hidden;
   .bg-image {
     /* The image used */
-    background-image: url("https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif");
+    background-image: ${ props => `url(${props.bgImage}`};
     animation-play-state: paused;
     /* Add the blur effect */
     filter: blur(8px);
@@ -153,7 +160,7 @@ export const ImageStyled = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-    width: 400px;
+    width: ${isMobile ? '300px' : '400px'};
     border-radius: 16px;
   }
 `
@@ -252,7 +259,7 @@ export const ReviewStyled = styled.div`
 export const ScrollReview = styled.div`
   max-height: calc(100vh - 500px); 
   overflow: auto; 
-  padding-bottom: 120px;
+  padding-bottom: 80px;
   ::-webkit-scrollbar {
     display: none;
   }
@@ -261,7 +268,7 @@ export const ScrollReview = styled.div`
 export const FooterStyled = styled.div`
   /* position: absolute; */
   width: 100%;
-  height: 120px;
+  height: 80px;
   left: 0px;
   right: 0px;
   bottom: 0px;

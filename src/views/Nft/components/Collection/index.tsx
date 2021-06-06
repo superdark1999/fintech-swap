@@ -51,7 +51,7 @@ function Collection() {
             <div className="content-collect">
                 {
                   data.map((item) => (
-                      <Cart width="320px" height="480px" url={item}/>
+                      <Cart width="320px" height="480px" data={{contentUrl:item}}/>
                   ))
                 }
             </div>
