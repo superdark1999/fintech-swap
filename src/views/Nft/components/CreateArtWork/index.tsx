@@ -66,12 +66,11 @@ const CreateArtWork: React.FC = () => {
       socialMediaLink: values?.socialLink,
       biography: values?.biography,
     }
-    updateProfile(artistData).then((dt)=>{
-      console.log(dt)
+    updateProfile(artistData).then(({data, status})=>{
+      form.setFieldsValue({ artistName: artistData.name })
+      userActions.updateUserInfo(data?.data)
+      setShowModalCreateArtist(false)
     })
-    // form.setFieldsValue({ artistName: artistData.name })
-    // setShowModalCreateArtist(false)
-    // userActions.updateUserInfo(artistData)
   }
 
   useEffect(()=>{

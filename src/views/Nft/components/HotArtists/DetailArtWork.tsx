@@ -48,7 +48,6 @@ const  DetaiArtWork = () => {
         if(status==200){
          if(data?.data?.tokenId){
            getPriceNFT(data?.data?.tokenId).then(data=>{
-             console.log(data)
              const price = getPrice(Number(data?._hex))
              if(price!=-1){
                setLoading(false)
@@ -74,9 +73,9 @@ const  DetaiArtWork = () => {
       return alert('Unblock your wallet to buy this item')
     }
     const tokenId = NFTDetail?.tokenId
-    buyNFT(tokenId).then(data=>{
-      if(data?.hash){
-        updateNFTInfo({id:data?.id,status:'readyToSell',ownerWalletAddress:account}).then(({status})=>{
+    buyNFT(tokenId).then(dt=>{
+      if(dt?.hash){
+        updateNFTInfo({id:id,status:'approved',ownerWalletAddress:account}).then(({status})=>{
           if(status==200){
             setIsSelled(true)
           }

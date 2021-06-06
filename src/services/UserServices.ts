@@ -10,7 +10,7 @@ export default function useArtworkService(){
     }
 
     const updateProfile = (body:any)=>{
-        return PUT('/updateProfile',body, false, false)
+        return POST('/updateProfile',body, false, false)
     } 
 
 

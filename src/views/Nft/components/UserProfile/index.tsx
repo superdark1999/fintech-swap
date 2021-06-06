@@ -34,7 +34,7 @@ const UserProfile: React.FC = () => {
             <div className="info-detail">
               <div>
                 <div className="name">
-                  <span>{userStore?.name}</span>
+                  <span>{userState?.name}</span>
                   <img src={Checkmark} />
                 </div>
                 <div className="rank">
