@@ -17,7 +17,9 @@ function HotArtWorks() {
   const {getNFT} = useArtworkServices()
   const { account } = useActiveWeb3React()
   useEffect(()=>{
-    getNFT({}).then(({status, data})=>{
+    getNFT({
+      status:'readyToSell'
+    }).then(({status, data})=>{
       if(status==200){
         setNFTs(data?.data||[])
       }

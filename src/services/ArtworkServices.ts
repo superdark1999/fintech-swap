@@ -22,9 +22,11 @@ export default function useArtworkService(){
         return GET(`/artwork/${id}`,{},false, false)
     }
 
-    const updateNFTStatus = ({id,status}:any)=>{
-        return PATCH(`/artwork/${id}`,{status},false, false)
+    const updateNFTInfo = (data:any)=>{
+        const id = data?.id;
+        delete data.id
+        return PATCH(`/artwork/${id}`,data,false, false)
     }
 
-    return {createNFT,getNFT,updateHashInfoNFT,getDetailNFT,updateNFTStatus}
+    return {createNFT,getNFT,updateHashInfoNFT,getDetailNFT,updateNFTInfo}
 }

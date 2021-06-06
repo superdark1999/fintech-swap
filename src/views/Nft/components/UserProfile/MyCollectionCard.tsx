@@ -20,7 +20,7 @@ export default function MyCollectionCard({data,}:any){
     const [isNFTCanSell,setIsNFTCanSell] = useState(false)
     const [isProcessing, setIsPrcessing] = useState(true)
     const {isNFTReadyToSell, approveNFTToMarket,setPriceForNFT,} = useNFTServices()
-    const {updateNFTStatus} = useArtworkServices()
+    const {updateNFTInfo} = useArtworkServices()
     useEffect(()=>{
       const checkNFTInfo = async()=>{
       if(data?.tokenId){
@@ -36,7 +36,7 @@ export default function MyCollectionCard({data,}:any){
     setIsPrcessing(true)
         setPriceForNFT(tokenId,10).then(dt=>{
         if(dt?.hash){
-            updateNFTStatus({id:data?.id,status:'readyToSell'}).then(({status})=>{
+          updateNFTInfo({id:data?.id,status:'readyToSell'}).then(({status})=>{
                 if(status==200){
                     setIsPrcessing(false)
                 }

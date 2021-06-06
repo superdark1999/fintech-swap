@@ -19,6 +19,7 @@ import {
 } from '@ant-design/icons'
 import { ButtonStyle } from 'components-v2/cart/styled'
 import useArtworkServices from '../../../../services/ArtworkServices'
+import useUserServices from '../../../../services/UserServices'
 import useNFTServices, { NFT_ADDRESS } from '../../../../services/NFTServices'
 import { useActiveWeb3React } from '../../../../wallet/hooks'
 import useUserStore from '../../../../store/userStore'
@@ -33,7 +34,8 @@ const CreateArtWork: React.FC = () => {
     React.useState<boolean | null>(false)
   const formRef = React.useRef() as React.MutableRefObject<any>
   const formArtistRef = React.useRef() as React.MutableRefObject<any>
-  const { createNFT, getNFT, updateHashInfoNFT } = useArtworkServices()
+  const { createNFT, getNFT, updateHashInfoNFT } = useArtworkServices();
+  const {updateProfile} = useUserServices()
   const { account } = useActiveWeb3React()
   const { approveLevelAmount, mintNFT } = useNFTServices()
   const [isProccessing, setIsProcessing] = useState(false)
@@ -56,25 +58,25 @@ const CreateArtWork: React.FC = () => {
   }
 
   const createArtist = (values: any) => {
-
     const artistData = {
       walletAddress: account,
-      coverImage: values?.cover?.[0]?.[`data-url`],
-      avatarImage: values?.avatar?.[0]?.[`data-url`],
+      coverImage: values?.cover?.[0]?.['data_url'],
+      avatarImage: values?.avatar?.[0]?.['data_url'],
       name: values?.name,
       socialMediaLink: values?.socialLink,
       biography: values?.biography,
     }
-    //callAPI create then update store
-    form.setFieldsValue({ artistName: artistData.name })
-    setShowModalCreateArtist(false)
-
-    userActions.updateUserInfo(artistData)
+    updateProfile(artistData).then((dt)=>{
+      console.log(dt)
+    })
+    // form.setFieldsValue({ artistName: artistData.name })
+    // setShowModalCreateArtist(false)
+    // userActions.updateUserInfo(artistData)
   }
 
-  useEffect(() => {
-    console.log('form.getFieldsValue(): ', form.getFieldsValue())
-  })
+  useEffect(()=>{
+    form.setFieldsValue({ artistName: userState.name })
+  },[])
 
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -215,11 +217,6 @@ const CreateArtWork: React.FC = () => {
                     style={{ borderRadius: '100px' }}
                     placeholder="Enter the artwork name"
                   />
-                </Form.Item>
-                <Form.Item shouldUpdate>
-                  {(form) => {
-                    console.log('form data', form.getFieldsValue())
-                  }}
                 </Form.Item>
                 <Form.Item
                   name="artistName"

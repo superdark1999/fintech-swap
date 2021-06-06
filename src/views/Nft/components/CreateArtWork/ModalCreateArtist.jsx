@@ -52,30 +52,6 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
     return e && e.fileList
   }
 
-  const onCreateNFT = async (values) => {
-    const mintData = {
-      title: values?.artworkName || '',
-      description: values?.introduction || '',
-      type: values?.[`radio-artwork-type`] || 'image',
-      content: values?.[`upload-artwork`]?.[0]?.[`data_url`] || '',
-      ownerWalletAddress: account || '',
-    }
-
-    createNFT(mintData)
-      .then(async ({ data }) => {
-        const url = data?.data?.contentUrl || ''
-        const NFTid = data?.data?._id || ''
-        mintNFT(url)
-          .then((mintData) => {
-            const txHash = mintData?.hash
-            updateHashInfoNFT({ NFTid, txHash })
-          })
-          .catch((err) => {})
-      })
-      .finally(() => {
-        setIsProcessing(false)
-      })
-  }
 
   return (
     <Modal

@@ -43,6 +43,7 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
 
   useEffect(()=>{
     const getAccountInfo = async()=>{
+      console.log('check',account)
       if(account){
         login({walletAddress:account}).then(data=>{
           checkApproveLevelAmount(MARKET_ADDRESS).then((data:any)=>{
@@ -89,14 +90,16 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
             ):(
               <a onClick={()=>{alert("Unblock your wallet before create NFT")}} className="create-nav" >Create</a>
             )}
-            {account&&(<div className="connect-wallet">
+            <div className="connect-wallet">
               <Web3Status />
-            </div>)}
-            <Link to="/user-profile">
-              <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" className="connect-wallet">
-                <img src={ViewMore} />
-              </ButtonBuy>
-            </Link> 
+            </div>
+            {account&&(
+              <Link to="/user-profile">
+                <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" className="connect-wallet">
+                  <img src={ViewMore} />
+                </ButtonBuy>
+              </Link>
+            )}
           </div>
     </StyledTopBar>
   )
