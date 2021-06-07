@@ -2636,10 +2636,10 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.50.0.tgz#29c6419e8379d496ab6d0426eadf3c4d100cd186"
   integrity sha512-swKHYCOZUGyVt4ge0u8a7AwNcA//h4nx5wIi0sruGye1IJ5Cva0GyK9L2/WdX+kWVTKp92ZiEo1df31lrWGPgA==
 
-"@luckyswap/uikit@0.13.2":
-  version "0.13.2"
-  resolved "https://registry.yarnpkg.com/@luckyswap/uikit/-/uikit-0.13.2.tgz#791773dcb258767682f0540f2e96366d810d9561"
-  integrity sha512-ZwszCzX4DxywOQk5Fc3LmbGhzjUW+oLz6kojly8r8+Yep6JWoX/bDwFUJcregN584ljbbSBdr21xG1Q1tHFrPQ==
+"@luckyswap/uikit@^0.13.3":
+  version "0.13.3"
+  resolved "https://registry.yarnpkg.com/@luckyswap/uikit/-/uikit-0.13.3.tgz#27544c77a86d8fc72dda5bd8f4a58b7e6921a077"
+  integrity sha512-P0NM4sm2fUuhkI4tKxMpxBfp1fg3SkAa9q8rQq+BYb0r1nbbaAyi4CCsJUXfYQo75AKqGMyTalVFikT6CXKKiw==
   dependencies:
     "@rollup/plugin-url" "^6.0.0"
     "@types/lodash" "^4.14.162"
