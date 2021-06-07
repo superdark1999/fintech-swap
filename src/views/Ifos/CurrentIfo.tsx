@@ -31,15 +31,19 @@ const Ifo = () => {
 }
 
 const BoxIDO = styled.div`
-  background: linear-gradient(90deg, rgba(0,167,225,1) 0%, rgba(41,244,195,1) 100%);
-  border-radius: 20px;
-  padding: 20px;
+  background: url('../images/bg-ido.png');
+  background-size: cover;
+  background-position: right;
+  background-repeat: no-repeat;
+  height: 277px;
   margin-bottom: 40px;
+  position: relative;
+  border-radius: 20px;
 
   .content {
-    width: 920px;
-    padding: 20px 125px 10px 211px;
-
+    position: relative;
+    padding: 20px 200px 10px 211px;
+    color: #fff;
   }
 
   h4 {
@@ -49,12 +53,14 @@ const BoxIDO = styled.div`
     font-size: 28px;
     font-weight: 700;
     padding-bottom: 10px;
+    color: #fff;
   }
 
   p {
     font-size: 16px;
     margin-bottom: 16px;
     line-height: 22px;
+    font-weight: 500;
   }
 
   a {
