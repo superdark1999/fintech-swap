@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { isMobile } from 'react-device-detect'
+import { Table } from 'antd'
 export const TradeArtWorkStyled = styled.div`
   max-width: 1320px;
   /* width: 1100px; */
@@ -89,5 +90,29 @@ export const CardStyled = styled.div<PropsStyled>`
     color: #333435;
     margin-top: 2px;
   }
-
 `
+
+export const TableStyled = styled(Table)`
+  .ant-table {
+    border-radius: 32px;
+    overflow: hidden;
+    border: 1px solid #E7EBEF;
+    .ant-table-thead > tr > th {
+      text-align: left;
+      background: #FFFFFF;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 12px 20px !important;
+      color: #AFBAC5;
+      ::before{
+        width: 0 !important;
+      }
+    }
+    .ant-table-tbody > tr > td {
+      text-align: left;
+      background: #FFFFFF;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 12px 20px !important;
+    }
+  }
+`
+

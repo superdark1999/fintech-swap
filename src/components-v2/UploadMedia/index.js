@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button,  Upload } from "antd";
+import { Button,  Upload, Image } from "antd";
 import { CloseCircleFilled } from '@ant-design/icons'
 import styled from 'styled-components'
 
@@ -50,7 +50,7 @@ const UploadForm = (props) => {
             Your browser does not support HTML5 video.
           </video>
           :
-          <img src={imageUrl} />
+          <Image className="image" src={imageUrl} />
         }
        
       <Upload
@@ -98,7 +98,7 @@ const UploadStyled = styled.div`
     display: none;
   }
 
-  > video, > img {
+  > video, > .ant-image > .ant-image-img {
     display: block;
     max-height: ${props => props.maxHeight || '350px'};
     max-width: ${props => props.maxWidth || '480px'};
