@@ -40,10 +40,20 @@ const BoxIDO = styled.div`
   position: relative;
   border-radius: 20px;
 
+  @media (max-width: 768px) {
+    height: auto;
+    background: unset;
+    padding: 20px;
+  }
+
   .content {
     position: relative;
     padding: 20px 200px 10px 211px;
     color: #fff;
+
+    @media (max-width: 768px) {
+      padding: 0;
+    }
   }
 
   h4 {
