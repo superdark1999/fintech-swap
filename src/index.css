@@ -315,3 +315,7 @@ button.button-connect:hover {
 .custom-btn-farm button {
   background-color: #1c90ff;
 }
+
+.menu-button:hover {
+  color: #08a7da !important;
+}
