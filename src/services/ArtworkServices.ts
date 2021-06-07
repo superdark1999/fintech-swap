@@ -29,5 +29,9 @@ export default function useArtworkService(){
         return PATCH(`/artwork/${id}`,data,false, false)
     }
 
-    return {createNFT,getNFT,updateHashInfoNFT,getDetailNFT,updateNFTInfo}
+    const setPrice = (body:any)=>{
+        return POST(`/artwork/set-price`,body,false, false)
+    }
+
+    return {createNFT,getNFT,updateHashInfoNFT,getDetailNFT,updateNFTInfo,setPrice}
 }

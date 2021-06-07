@@ -20,7 +20,7 @@ export default function MyCollectionCard({data,}:any){
     const [isNFTCanSell,setIsNFTCanSell] = useState(false)
     const [isProcessing, setIsPrcessing] = useState(true)
     const {isNFTReadyToSell, approveNFTToMarket,setPriceForNFT,} = useNFTServices()
-    const {updateNFTInfo} = useArtworkServices()
+    const {updateNFTInfo,setPrice} = useArtworkServices()
     useEffect(()=>{
       const checkNFTInfo = async()=>{
       if(data?.tokenId){
@@ -32,46 +32,44 @@ export default function MyCollectionCard({data,}:any){
     },[data?.tokenId])
 
     const onSellItem = ()=>{
+    setIsPrcessing(true)
     const tokenId = data?.tokenId;
-    updateNFTInfo({id:data?.id,status:'readyToSell'}).then(({status})=>{
-          if(status==200){
-              setIsPrcessing(false)
-          }
-    })
-    // setIsPrcessing(true)
-    //     setPriceForNFT(tokenId,100).then(dt=>{
-    //     if(dt?.hash){
-    //       updateNFTInfo({id:data?.id,status:'readyToSell'}).then(({status})=>{
-    //             if(status==200){
-    //                 setIsPrcessing(false)
-    //             }
-    //       })
-    //     }
-    // }).finally(()=>{
-    //   setIsPrcessing(false)
-    // })
-    }
 
-    const onAllowSellItem = ()=>{
-      updateNFTInfo({id:data?.id,status:'readyToSell'}).then(({status})=>{
+    setIsPrcessing(true)
+        setPriceForNFT(tokenId,100).then(dt=>{
+        if(dt?.hash){
+          setPrice({id:data?.id}).then(({status})=>{
             if(status==200){
                 setIsPrcessing(false)
             }
+          })
+        }
+    }).finally(()=>{
+      setIsPrcessing(false)
+    })
+    }
+
+    const onAllowSellItem = ()=>{
+      setIsPrcessing(true)
+      setPrice({id:data?.id}).then(({status})=>{
+        if(status==200){
+            setIsPrcessing(false)
+        }
       })
-        // const tokenId = data?.tokenId;
-        // setIsPrcessing(true)
-        // approveNFTToMarket(tokenId).then(dt=>{
-        //     setTimeout(async()=>{
-        //         if(dt.hash){
-        //             const tempIsNFTCanSell = await isNFTReadyToSell(tokenId)
-        //             setIsNFTCanSell(tempIsNFTCanSell)
-        //             setIsPrcessing(false)   
-        //         }
-        //     },20000)
-        //   }).catch(err=>{
-        //     alert('Something wrong, please try again later.')
-        //     setIsPrcessing(false)
-        //   })
+        const tokenId = data?.tokenId;
+        setIsPrcessing(true)
+        approveNFTToMarket(tokenId).then(dt=>{
+            setTimeout(async()=>{
+                if(dt.hash){
+                    const tempIsNFTCanSell = await isNFTReadyToSell(tokenId)
+                    setIsNFTCanSell(tempIsNFTCanSell)
+                    setIsPrcessing(false)   
+                }
+            },20000)
+          }).catch(err=>{
+            alert('Something wrong, please try again later.')
+            setIsPrcessing(false)
+          })
     }
   
     return (
