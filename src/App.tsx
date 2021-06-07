@@ -31,7 +31,7 @@ import { TranslationsContext } from './hooks/TranslationsContext'
 import { EN, allLanguages } from './constants/localisation/languageCodes'
 import Popups from './components/Popups'
 
-// Route-based code splitting
+// Route-based code splitting2
 // Only pool is included in the main bundle because of it's the most visited page .
 const Home = lazy(() => import('./views/Home'))
 const Farms = lazy(() => import('./views/Farms'))
