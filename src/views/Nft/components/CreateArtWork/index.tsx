@@ -11,7 +11,7 @@ import {
   Col,
   Checkbox,
 } from 'antd'
-import UploadFile from 'components-v2/Upload/index'
+import UploadFile from 'components-v2/UploadMedia'
 import {
   UploadOutlined,
   EditOutlined,
@@ -311,7 +311,7 @@ const ArtistInput = ({ value, setShowModalCreateArtist }: any) => {
     <>
       <Input
         value={value}
-        style={{ borderRadius: '100px' }}
+        style={{ borderRadius: '100px', marginBottom: '20px' }}
         placeholder="The artist name"
         disabled
       />

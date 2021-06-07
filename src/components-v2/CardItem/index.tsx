@@ -37,7 +37,7 @@ export default function CardItem({data}: any) {
     }
   },[data?.tokenId])
   return (
-    <StyledCart>
+    <StyledCart src={data?.contentUrl}>
       <div className="header-card-art-work">
         <div className="date-time">02h 31m 04s left 🔥 </div>
         <img src={Copy} alt=""/>

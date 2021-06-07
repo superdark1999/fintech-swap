@@ -61,16 +61,11 @@ const UploadStyled = styled.div`
 `
 
 export function Upload(props) {
-  console.log('props: ', props)
   const [images, setImages] = React.useState();
-  const maxNumber = 69;
 
   const onChange = (imageList,addUpdateIndex) => {
-    // data for submit
-    console.log(imageList, addUpdateIndex);
     setImages(imageList);
     props.onChange(imageList)
-    console.log('imageList: ', imageList)
   };
 
   return (
@@ -102,7 +97,7 @@ export function Upload(props) {
                   Upload
                 </Button>
                 <p>Support: png / jpg / gif
-                  Suggested ratio: 1:1
+                  {/* Suggested ratio: 1:1 */}
                   Size: ≤ 10MB
                 </p>
                 

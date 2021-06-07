@@ -140,7 +140,7 @@ export const ImageStyled = styled.div<Props>`
   overflow: hidden;
   .bg-image {
     /* The image used */
-    background-image: ${ props => `url(${props.bgImage}`};
+    background-image: ${ props => `url(${props.bgImage})`};
     animation-play-state: paused;
     /* Add the blur effect */
     filter: blur(8px);
@@ -148,7 +148,6 @@ export const ImageStyled = styled.div<Props>`
     
     /* Full height */
     height: 100%; 
-    
     /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;
