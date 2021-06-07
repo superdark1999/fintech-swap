@@ -9,7 +9,7 @@ body {
 }
 
 * {
-  font-family: 'Roboto', sans-serif !important;
+  font-family: 'Poppins', sans-serif !important;
 }
 
 .custom button {
@@ -252,9 +252,9 @@ input.input-search {
   box-shadow: none !important;
 }
 
-.ant-carousel .slick-slide img {
+/* .ant-carousel .slick-slide img {
   height: 350px;
-}
+} */
 
 .modal-header button.close {
   background: #cecece;
