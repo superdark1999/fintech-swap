@@ -95,16 +95,13 @@ const App: React.FC = () => {
             <Route path="/create/artwork">
               <CreateArtWork />
             </Route>
-            <Route path="/create/artwork">
-              <CreateArtWork />
-            </Route>
             <Route path="/artwork/detail/:id">
               <DetailArtWork />
             </Route>
             <Route path="/user-profile/:tab/:option">
               <UserProfile />
             </Route>
-            <Route path="/trade-artwork">
+            <Route path="/swap">
               <TradeArtWork />
             </Route>
           </Switch>
