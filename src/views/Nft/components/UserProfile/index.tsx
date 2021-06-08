@@ -14,16 +14,21 @@ import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
 
 import { HeartOutlined } from '@ant-design/icons';
-import {useParams} from "react-router-dom";
+import {useParams,useHistory} from "react-router-dom";
 const { TabPane } = Tabs;
 
 
 const UserProfile: React.FC = () => {
   const [userState, userActions] = useUserStore()
+  const history = useHistory();
   const { tab, option } = useParams();
-  useEffect(()=>{
-    console.log(tab,option)
-  },[])
+  const onChangeTab = (e:any)=>{
+    if(e==='onsale'){
+      history.push(`/user-profile/onsale/readyToSell`)
+    }else if(e=='mycollection'){
+      history.push(`/user-profile/mycollection/all`)
+    }
+  }
   return (
     <UserProfileStyled>
       <Row className="section header-profile">
@@ -55,7 +60,7 @@ const UserProfile: React.FC = () => {
             <p className="description">
                 {userState?.biography}
             </p>  
-          <Tabs defaultActiveKey={tab} >
+          <Tabs defaultActiveKey={tab} onChange={onChangeTab}>
             <TabPane tab="On sale" key="onsale"> 
               <TabOnSale />    
             </TabPane>
@@ -114,6 +119,7 @@ const TabOnSale: React.FC = ()=>{
 
 const TabMyCollection: React.FC = ()=>{
   const { option } = useParams();
+  console.log(option)
   const [optionChecked, setOptionChecked] = useState(option)
   const [renderData,setRenderData] = useState([])
   const {getNFT} = useArtworkServices()
@@ -137,7 +143,7 @@ const TabMyCollection: React.FC = ()=>{
         ownerWalletAddress: account,
         status:optionChecked
       }
-      if(optionChecked==='alll'){
+      if(optionChecked==='all'){
         delete query.status
       }
       getNFT(query).then(({status, data})=>{
