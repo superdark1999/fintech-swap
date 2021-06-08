@@ -1,6 +1,8 @@
 import styled from 'styled-components'
-import CoverDefault from 'assets/images/cover-default.svg'
-export const UserProfileStyled = styled.div`
+interface Props {
+  urlCover?: string
+}
+export const UserProfileStyled = styled.div<Props>`
   .section {
       width: 100%;
       justify-content: center;
@@ -8,7 +10,7 @@ export const UserProfileStyled = styled.div`
       height: 160px;     
       position: relative;
       justify-content: center;
-      background: url(${CoverDefault});
+      background: ${props => `url(${props.urlCover})`};
       background-repeat: no-repeat;
       background-size: cover;
       .header-profile-col{     

@@ -30,7 +30,7 @@ const UserProfile: React.FC = () => {
     }
   }
   return (
-    <UserProfileStyled>
+    <UserProfileStyled urlCover={userState?.coverImage}>
       <Row className="section header-profile">
           <Col className="header-profile-col" xxl={{ span: 24}}  xl={{ span: 20}} md={{ span: 20 }} xs={{span: 20}}>
              <img className="avatar" src={userState?.avatarImage}/>
