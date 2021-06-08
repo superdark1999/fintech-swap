@@ -118,25 +118,26 @@ const TabMyCollection: React.FC = ()=>{
   const [renderData,setRenderData] = useState([])
   const {getNFT} = useArtworkServices()
   const { account } = useActiveWeb3React()
-  useEffect(()=>{
-    const query = {
-      ownerWalletAddress: account,
-      status:'approved'
-    }
-    getNFT(query).then(({status, data})=>{
-      if(status==200){
-        setRenderData(data?.data||[])
-      }
-    })
-  },[])
+  // useEffect(()=>{
+  //   const query = {
+  //     ownerWalletAddress: account,
+  //     status:'approved'
+  //   }
+  //   getNFT(query).then(({status, data})=>{
+  //     if(status==200){
+  //       setRenderData(data?.data||[])
+  //     }
+  //   })
+  // },[])
 
   useEffect(()=>{
+    console.log(optionChecked)
     if(optionChecked){
       const query = {
         ownerWalletAddress: account,
         status:optionChecked
       }
-      if(optionChecked){
+      if(optionChecked==='alll'){
         delete query.status
       }
       getNFT(query).then(({status, data})=>{
@@ -154,7 +155,7 @@ const TabMyCollection: React.FC = ()=>{
   return(
     <>
           <Row align="middle" justify="space-between">
-                <GroupButton>
+                <GroupButton defaultValue={option}>
                   <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
                   <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
                   <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>

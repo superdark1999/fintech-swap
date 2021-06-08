@@ -109,7 +109,7 @@ const CreateArtWork: React.FC = () => {
             })
           })
           .catch((err: any) => {
-            alert('Something went wrong please try again')
+            alert(err?.message||'Something went wrong please try again')
           })
         }
       })
