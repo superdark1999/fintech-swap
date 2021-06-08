@@ -14,14 +14,16 @@ import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
 
 import { HeartOutlined } from '@ant-design/icons';
-import { margin } from 'polished';
-import _ from 'lodash'
-import userStore from '../../../../store/userStore';
+import {useParams} from "react-router-dom";
 const { TabPane } = Tabs;
 
 
 const UserProfile: React.FC = () => {
   const [userState, userActions] = useUserStore()
+  const { tab, option } = useParams();
+  useEffect(()=>{
+    console.log(tab,option)
+  },[])
   return (
     <UserProfileStyled>
       <Row className="section header-profile">
@@ -53,11 +55,11 @@ const UserProfile: React.FC = () => {
             <p className="description">
                 {userState?.biography}
             </p>  
-          <Tabs defaultActiveKey="1" >
-            <TabPane tab="On sale" key="1"> 
-              <TabOnSale/>    
+          <Tabs defaultActiveKey={tab} >
+            <TabPane tab="On sale" key="onsale"> 
+              <TabOnSale />    
             </TabPane>
-            <TabPane tab="My Collection" key="2">
+            <TabPane tab="My Collection" key="mycollection">
               <TabMyCollection/>
             </TabPane>
             <TabPane tab="Settings"></TabPane>
@@ -111,30 +113,54 @@ const TabOnSale: React.FC = ()=>{
 }
 
 const TabMyCollection: React.FC = ()=>{
+  const { option } = useParams();
+  const [optionChecked, setOptionChecked] = useState(option)
   const [renderData,setRenderData] = useState([])
   const {getNFT} = useArtworkServices()
   const { account } = useActiveWeb3React()
+  // useEffect(()=>{
+  //   const query = {
+  //     ownerWalletAddress: account,
+  //     status:'approved'
+  //   }
+  //   getNFT(query).then(({status, data})=>{
+  //     if(status==200){
+  //       setRenderData(data?.data||[])
+  //     }
+  //   })
+  // },[])
+
   useEffect(()=>{
-    const query = {
-      ownerWalletAddress: account,
-      status:'approved'
-    }
-    getNFT(query).then(({status, data})=>{
-      if(status==200){
-        setRenderData(data?.data||[])
+    console.log(optionChecked)
+    if(optionChecked){
+      const query = {
+        ownerWalletAddress: account,
+        status:optionChecked
       }
-    })
-  },[])
+      if(optionChecked==='alll'){
+        delete query.status
+      }
+      getNFT(query).then(({status, data})=>{
+        if(status==200){
+          setRenderData(data?.data||[])
+        }
+      })
+    }
+  },[optionChecked])
+
+  const onHandleOptionCheck = (e:any)=>{
+    setOptionChecked(e.target.value)
+  }
 
   return(
     <>
           <Row align="middle" justify="space-between">
-                {/* <GroupButton>
-                  <RadioButton width="auto" borderRadius="10px" value="All">All  </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="Pending" disabled>Game </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="Approved">Art </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="Cancelled" disabled>Music </RadioButton>
-                </GroupButton>  */}
+                <GroupButton defaultValue={option}>
+                  <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
+                  <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
+                  <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>
+                  <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
+                </GroupButton> 
                 <SearchInput maxWidth="300px" placeholder="Search items"/>
               </Row>
               <ListCart className="list-artwork">

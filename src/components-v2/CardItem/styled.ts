@@ -3,6 +3,7 @@ import styled from 'styled-components'
 interface PropsStyled {
   width?: string;
   height?: string;
+  src?: string
 }
 
 export const StyledCart = styled.div<PropsStyled>`
@@ -57,7 +58,13 @@ export const StyledCart = styled.div<PropsStyled>`
       width: 100%;
       height: 100%;
       padding-top: 100%;
-      .avatar {
+      /* background-image: ${props => `url(${props.src})`};
+      background-size: contain;
+      background-repeat: no-repeat;
+      [data-animation] {
+      animation: var(--animn, none) var(--animdur, 0s) var(--animtf, linear) var(--animdel, 0s) var(--animic, infinite) var(--animdir, alternate) var(--animfm, none) var(--animps, running);
+       }  */
+       .avatar {
         width: 100%;
         height: 100%;
         position: absolute;

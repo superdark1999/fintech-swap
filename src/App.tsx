@@ -101,7 +101,7 @@ const App: React.FC = () => {
             <Route path="/artwork/detail/:id">
               <DetailArtWork />
             </Route>
-            <Route path="/user-profile">
+            <Route path="/user-profile/:tab/:option">
               <UserProfile />
             </Route>
             <Route path="/trade-artwork">

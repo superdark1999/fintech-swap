@@ -1,6 +1,6 @@
 import { Row, Col, Input, Select } from 'antd'
 import React from 'react'
-import { TradeArtWorkStyled, CardStyled } from './styled'
+import { TradeArtWorkStyled, CardStyled, TableStyled } from './styled'
 import CheckMark from 'assets/images/checkmark.svg'
 import TextGradient from 'components-v2/ID'
 import Token from 'assets/images/token.svg'
@@ -8,6 +8,7 @@ import Plus from 'assets/images/plus.svg'
 import Swap from 'assets/images/swap.svg'
 import { ButtonTrade } from 'components-v2/Button'
 import { isMobile } from 'react-device-detect'
+import { data, column } from './mock'
 const OptionData = [
   {
    label: 'Lucky',
@@ -42,21 +43,18 @@ const Trade: React.FC = () => {
         <div className="name">Your offer</div>
         <Input className="input" placeholder='Enter price' bordered/>
         <Row>
-          <TextGradient width="auto">100K LUCKY</TextGradient>
+          <TextGradient id={true} width="auto">100K LUCKY</TextGradient>
           {' '}<img src={Token} />
         </Row>
       </CardStyled>
-      <img src={Swap} style={isMobile && {transform: 'rotate(90deg)', margin: 'auto 40px'}}/>
+      <img src={Swap} style={isMobile ? {transform: 'rotate(90deg)', margin: 'auto 40px'} : null}/>
     </Row>
-    
-    
   )
 }
 
 const TradeArtWork: React.FC = () => {
   const [select, setSelect] = React.useState<string | null>('Lucky');
   return (
-   
       <Row gutter={24} className="trade-option" justify="center">
         <Col xl={{ span: 20}} md={{ span:  22}} xs={{span: 24}}>
           <TradeArtWorkStyled>
@@ -87,11 +85,27 @@ const TradeArtWork: React.FC = () => {
               </Col>
             </Row>
           </TradeArtWorkStyled>
-
         </Col>
       </Row>
   )
 }
 
-export default TradeArtWork
 
+
+export default () => {
+  return (
+    <div>
+      <TradeArtWork/>
+      <Row gutter={24} className="trade-option" justify="center">
+        <Col xl={{ span: 20}} md={{ span:  22}} xs={{span: 22}}>
+          <TableStyled
+            columns={column} 
+            dataSource={data} 
+            size="middle"
+            scroll={{ x: 300 }}
+            />            
+        </Col>
+      </Row>
+    </div>
+  )
+}

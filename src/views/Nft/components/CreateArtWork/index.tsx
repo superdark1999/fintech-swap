@@ -11,12 +11,13 @@ import {
   Col,
   Checkbox,
 } from 'antd'
-import UploadFile from 'components-v2/Upload/index'
+import UploadFile from 'components-v2/UploadMedia'
 import {
   UploadOutlined,
   EditOutlined,
   PictureOutlined,
 } from '@ant-design/icons'
+import { useHistory } from "react-router-dom";
 import { ButtonStyle } from 'components-v2/cart/styled'
 import useArtworkServices from '../../../../services/ArtworkServices'
 import useUserServices from '../../../../services/UserServices'
@@ -41,7 +42,7 @@ const CreateArtWork: React.FC = () => {
   const [isProccessing, setIsProcessing] = useState(false)
   const [userState, userActions] = useUserStore()
   const [form] = Form.useForm()
-
+  const history = useHistory();
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
@@ -74,7 +75,6 @@ const CreateArtWork: React.FC = () => {
   }
 
   useEffect(()=>{
-    console.log(userState)
     form.setFieldsValue({ artistName: userState.name })
   },[userState.name])
 
@@ -102,10 +102,19 @@ const CreateArtWork: React.FC = () => {
         mintNFT(url)
           .then((mintData: any) => {
             const txHash = mintData?.hash
-            updateHashInfoNFT({ NFTid, txHash })
+            updateHashInfoNFT({ NFTid, txHash }).then(({status,data})=>{
+              if(status==200){
+                history.push('/user-profile/mycollection/pending')
+              }
+            })
           })
-          .catch((err: any) => {})
+          .catch((err: any) => {
+            alert(err?.message||'Something went wrong please try again')
+          })
         }
+      })
+      .catch((err: any) => {
+        alert('Something went wrong please try again')
       })
       .finally(() => {
         setIsProcessing(false)
@@ -311,7 +320,7 @@ const ArtistInput = ({ value, setShowModalCreateArtist }: any) => {
     <>
       <Input
         value={value}
-        style={{ borderRadius: '100px' }}
+        style={{ borderRadius: '100px', marginBottom: '20px' }}
         placeholder="The artist name"
         disabled
       />

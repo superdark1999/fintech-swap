@@ -37,7 +37,7 @@ export default function CardItem({data}: any) {
     }
   },[data?.tokenId])
   return (
-    <StyledCart>
+    <StyledCart src={data?.contentUrl}>
       <div className="header-card-art-work">
         <div className="date-time">02h 31m 04s left 🔥 </div>
         <img src={Copy} alt=""/>
@@ -58,7 +58,7 @@ export default function CardItem({data}: any) {
         </div>
         <div className="number">
           <div>
-              69 LUCKY {' '}
+              {price} LUCKY {' '}
             <img src={Token} alt=""/></div>  
           <div>
             4.8 {' '}<StarFilled style={{color: '#fadb14', marginRight: 8}} />
@@ -69,3 +69,4 @@ export default function CardItem({data}: any) {
     </StyledCart>
   )
 }
+

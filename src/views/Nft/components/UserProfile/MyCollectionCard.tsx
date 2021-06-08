@@ -71,7 +71,34 @@ export default function MyCollectionCard({data,}:any){
             setIsPrcessing(false)
           })
     }
-  
+    const renderGroupAction = (status:any)=>{
+      if(status==='readyToSell'){
+        return(
+          <div className="group-button">
+            <ButtonTrade height="45px">Send</ButtonTrade>
+            {isProcessing?(
+              <ButtonBuy height="45px" >Processing...</ButtonBuy>
+            ):isNFTCanSell?(
+              <ButtonBuy height="45px" onClick={onSellItem}>{'Sell'}</ButtonBuy>
+            ):(
+              <ButtonBuy height="45px" onClick={onAllowSellItem}>{'Allow to Sell'}</ButtonBuy>
+            )}
+              {/* <ButtonBuy height="45px">Auction</ButtonBuy>
+              <ButtonBuy height="45px">Swap</ButtonBuy>
+              <ButtonBuy height="45px">Public swap</ButtonBuy> */}
+            <ButtonBuy borderRadius="100px" width="40px" height="45px"><img src={QRCode} /></ButtonBuy>
+          </div>
+        )   
+      }else if(status==='pending'){
+        return(
+        <div className="group-button">
+            <ButtonBuy height="45px" >Processing...</ButtonBuy>
+            <ButtonBuy borderRadius="100px" width="40px" height="45px"><img src={QRCode} /></ButtonBuy>
+        </div>)
+      }else if(status==='reject'){
+        return null
+      }
+    }
     return (
       <CartStyled>
         <Row gutter={24}>
@@ -90,23 +117,8 @@ export default function MyCollectionCard({data,}:any){
                 </div>)}
               </div>
               <div>
-                <div className="group-button">
-                  <ButtonTrade height="45px">Send</ButtonTrade>
-                  {isProcessing?(
-                    <ButtonBuy height="45px" >Processing...</ButtonBuy>
-                  ):isNFTCanSell?(
-                    <ButtonBuy height="45px" onClick={onSellItem}>{'Sell'}</ButtonBuy>
-                  ):(
-                    <ButtonBuy height="45px" onClick={onAllowSellItem}>{'Allow to Sell'}</ButtonBuy>
-                  )
-                  }
-                    <ButtonBuy height="45px">Auction</ButtonBuy>
-                    <ButtonBuy height="45px">Swap</ButtonBuy>
-                    <ButtonBuy height="45px">Public swap</ButtonBuy>
-                  <ButtonBuy borderRadius="100px" width="40px" height="45px"><img src={QRCode} /></ButtonBuy>
-                </div>   
-              </div> 
-                 
+               {renderGroupAction(data?.status)}
+              </div>      
           </Col>
         </Row>                
       </CartStyled>
