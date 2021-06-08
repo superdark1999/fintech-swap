@@ -58,7 +58,7 @@ export default function CardItem({data}: any) {
         </div>
         <div className="number">
           <div>
-              69 LUCKY {' '}
+              {price} LUCKY {' '}
             <img src={Token} alt=""/></div>  
           <div>
             4.8 {' '}<StarFilled style={{color: '#fadb14', marginRight: 8}} />

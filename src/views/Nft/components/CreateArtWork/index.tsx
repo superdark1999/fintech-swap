@@ -113,6 +113,9 @@ const CreateArtWork: React.FC = () => {
           })
         }
       })
+      .catch((err: any) => {
+        alert('Something went wrong please try again')
+      })
       .finally(() => {
         setIsProcessing(false)
       })

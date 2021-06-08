@@ -136,6 +136,9 @@ const TabMyCollection: React.FC = ()=>{
         ownerWalletAddress: account,
         status:optionChecked
       }
+      if(optionChecked){
+        delete query.status
+      }
       getNFT(query).then(({status, data})=>{
         if(status==200){
           setRenderData(data?.data||[])
@@ -144,18 +147,18 @@ const TabMyCollection: React.FC = ()=>{
     }
   },[optionChecked])
 
-  const onHandleOptionCheck =(option:any)=> ()=>{
-    setOptionChecked(option)
+  const onHandleOptionCheck = (e:any)=>{
+    setOptionChecked(e.target.value)
   }
 
   return(
     <>
           <Row align="middle" justify="space-between">
                 <GroupButton>
-                  <RadioButton width="auto" borderRadius="10px" value="All" onClick={onHandleOptionCheck('all')} checked={optionChecked=='all'}>All </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="Approved" onClick={onHandleOptionCheck('approved')}  checked={optionChecked=='approved'} >Approved </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="Pending" onClick={onHandleOptionCheck('pending')}  checked={optionChecked=='pending'}>Pending </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="Reject" onClick={onHandleOptionCheck('reject')}  checked={optionChecked=='reject'}>Reject</RadioButton>
+                  <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
+                  <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
+                  <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>
+                  <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
                 </GroupButton> 
                 <SearchInput maxWidth="300px" placeholder="Search items"/>
               </Row>

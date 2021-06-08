@@ -83,7 +83,6 @@ const  DetaiArtWork = () => {
       }
     })
   }
-  console.log(NFTDetail)
   return (
     <Row>
       <Col className="gutter-row" style={{width: '100%'}}
