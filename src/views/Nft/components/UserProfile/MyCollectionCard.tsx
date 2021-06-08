@@ -72,7 +72,7 @@ export default function MyCollectionCard({data,}:any){
           })
     }
     const renderGroupAction = (status:any)=>{
-      if(status==='readyToSell'){
+      if(status==='approved'){
         return(
           <div className="group-button">
             <ButtonTrade height="45px">Send</ButtonTrade>
