@@ -197,8 +197,7 @@ button.btn-blue {
   }
 
   .ant-carousel .slick-slide img {
-    min-height: 150px;
-    object-fit: cover;
+    min-height: 116px;
   }
 }
 

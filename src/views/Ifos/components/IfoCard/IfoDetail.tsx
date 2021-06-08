@@ -15,9 +15,6 @@ const IfoTitle = () => {
     </TitleDetail>
     <BoxIfoDetail>
       <img src="../images/hyfi-detail.png" alt=""/>
-      <section>
-        <p>Coming soon</p>
-      </section>
 
       <BoxContent>
         <div className="two-column">
@@ -132,6 +129,11 @@ const BoxIfoDetail = styled.div`
   overflow: hidden;
   background: rgb(255, 253, 250);
 
+  @media (max-width: 768px) {
+    width: auto;
+    margin: 15px;
+  }
+
   section {
     position: absolute;
     top: 24px;
@@ -168,6 +170,10 @@ const BoxContent = styled.div`
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid rgb(43 44 58);
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
 
     &-left {
       box-sizing: border-box;

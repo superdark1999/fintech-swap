@@ -4,10 +4,98 @@ import { useRouteMatch, Link } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem } from '@luckyswap/uikit'
 
 const Wrapper = styled.div`
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
   margin-bottom: 39px;
+
+  .custom-bt {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+
+    a {
+      padding: 25px;
+
+      svg {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+
+  select{
+    padding: 12px 56px 12px 14px;
+    margin: 0 7px;
+    background-color: #4a4873;
+    font-size: 21px;
+    color: #dcbd6b;
+    border-radius: .5rem;
+    cursor: pointer;
+    border: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('https://image.flaticon.com/icons/png/512/2285/2285537.png');
+    background-repeat: no-repeat;
+    background-size: 1.5rem;
+    background-position: right 1.2rem top 50%;
+  }
+
+  select:hover, 
+  select:focus{
+    background-size: 2rem;
+    outline: none;
+  }
+
+
+  form{
+    box-sizing: border-box;
+    display: flex;
+    margin-left: 10px;
+
+    input{
+      height: 40px;
+      width: 100%;
+      border: 1px transparent solid;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      outline: none;
+    }
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+
+    button {
+      background-color:#1890ff;
+      height: 40px;
+      width: 40px;
+      border:1px transparent solid;
+
+      &:hover {
+        opacity: 0.7;
+        height:40px;
+        width:40px;
+        border:1px transparent solid;
+      }
+    }
+  }
+`
+
+const Dflex = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    margin-bottom: 15px;
+  }
 `
 
 const IfoTabButtons = () => {
@@ -16,14 +104,36 @@ const IfoTabButtons = () => {
   return (
     <Wrapper>
       <div className="custom-bt">
-        <ButtonMenu activeIndex={!isExact ? 1 : 0} scale="sm" variant="subtle">
+        <Dflex>
+          <select>
+            <option>Type</option>
+            <option>BEP-20</option>
+            <option>NFT</option>
+          </select>
+
+          <select>
+            <option>Status</option>
+            <option>Open</option>
+            <option>Close</option>
+            <option>Coming Soon</option>
+          </select>
+
+          <form>
+            <input type="search" placeholder="search"/>
+            <button type="submit" aria-label="Save" value="search">
+              <img src="../images/icon-search.svg" alt=""></img>
+            </button>
+          </form>
+        </Dflex>
+
+        {/* <ButtonMenu activeIndex={!isExact ? 1 : 0} scale="sm" variant="subtle">
           <ButtonMenuItem as={Link} to={`${url}`}>
             Launchpad BEP-20
           </ButtonMenuItem>
           <ButtonMenuItem as={Link} to={`${url}/history`}>
             Launchpad NFT
           </ButtonMenuItem>
-        </ButtonMenu>
+        </ButtonMenu> */}
       </div>
     </Wrapper>
   )
