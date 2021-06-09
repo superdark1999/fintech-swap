@@ -79,7 +79,7 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
           <Col xl={{ span: 24 }} md={{ span: 24 }} xs={{ span: 24 }}>
             <Form.Item
               name="cover"
-              label="Upload cover"
+              label="Upload banner"
               valuePropName="fileList"
               getValueFromEvent={normFile}
             >

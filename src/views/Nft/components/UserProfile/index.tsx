@@ -12,6 +12,7 @@ import { useActiveWeb3React } from '../../../../wallet/hooks'
 import useUserStore from '../../../../store/userStore'
 import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
+import TabSetting from './TabSetting'
 
 import { HeartOutlined } from '@ant-design/icons';
 import {useParams,useHistory} from "react-router-dom";
@@ -20,6 +21,7 @@ const { TabPane } = Tabs;
 
 const UserProfile: React.FC = () => {
   const [userState, userActions] = useUserStore()
+
   const history = useHistory();
   const { tab, option } = useParams();
   const onChangeTab = (e:any)=>{
@@ -28,6 +30,9 @@ const UserProfile: React.FC = () => {
     }else if(e=='mycollection'){
       history.push(`/user-profile/mycollection/all`)
     }
+    // else if(e=='setting'){
+    //   history.push(`/user-profile/setting`)
+    // }
   }
   return (
     <UserProfileStyled urlCover={userState?.coverImage}>
@@ -67,7 +72,9 @@ const UserProfile: React.FC = () => {
             <TabPane tab="My Collection" key="mycollection">
               <TabMyCollection/>
             </TabPane>
-            <TabPane tab="Settings"></TabPane>
+            <TabPane tab="Settings" key="setting">
+              <TabSetting />
+            </TabPane>
           </Tabs>
 
           </Col>
