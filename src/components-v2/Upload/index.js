@@ -1,16 +1,14 @@
 import React from "react";
-import ImageUploading, { ImageListType } from "react-images-uploading";
+import ImageUploading from "react-images-uploading";
 import styled from "styled-components";
 import { Button } from 'antd'
 import _ from 'lodash'
 import { CloseCircleFilled } from '@ant-design/icons'
 
 const UploadStyled = styled.div`
-  /* min-width: 480px; */
   max-height: ${props => props.maxHeight || '350px'};
   min-height:  350px;
   max-width: ${props => props.maxWidth || '480px'};
-  /* background: ${props => props.url ? `url('${props.url})`: '#fff'}; */
   background-color: #fff;
   border: 1px dashed #E7EBEF;
   box-sizing: border-box;
@@ -21,17 +19,11 @@ const UploadStyled = styled.div`
   align-items: center;
 
   >img {
-    /* position: absolute; */
     display: block;
     max-height: ${props => props.maxHeight || '350px'};
     max-width: ${props => props.maxWidth || '480px'};
     width: auto;
     height: auto;
-    /* bottom: 0;
-    top: 0;
-    left: 0;
-    right: 0; */
-    /* border-radius: 20px; */
   }
   >.remove-image {
     position: absolute;

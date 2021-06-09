@@ -12,6 +12,7 @@ import { useActiveWeb3React } from '../../../../wallet/hooks'
 import useUserStore from '../../../../store/userStore'
 import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
+import TabSetting from './TabSetting'
 
 import { HeartOutlined } from '@ant-design/icons';
 import { margin } from 'polished';
@@ -22,6 +23,21 @@ const { TabPane } = Tabs;
 
 const UserProfile: React.FC = () => {
   const [userState, userActions] = useUserStore()
+<<<<<<< Updated upstream
+=======
+  const history = useHistory();
+  const { tab, option } = useParams();
+  const onChangeTab = (e:any)=>{
+    if(e==='onsale'){
+      history.push(`/user-profile/onsale/readyToSell`)
+    }else if(e=='mycollection'){
+      history.push(`/user-profile/mycollection/all`)
+    }
+    // else if(e=='setting'){
+    //   history.push(`/user-profile/setting`)
+    // }
+  }
+>>>>>>> Stashed changes
   return (
     <UserProfileStyled urlCover={userState?.coverImage}>
       <Row className="section header-profile">
@@ -60,7 +76,9 @@ const UserProfile: React.FC = () => {
             <TabPane tab="My Collection" key="2">
               <TabMyCollection/>
             </TabPane>
-            <TabPane tab="Settings"></TabPane>
+            <TabPane tab="Settings" key="setting">
+              <TabSetting />
+            </TabPane>
           </Tabs>
 
           </Col>

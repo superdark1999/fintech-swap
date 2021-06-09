@@ -29,6 +29,15 @@ import { GroupButton, RadioButton } from './styled'
 import ModalCreateArtist from './ModalCreateArtist'
 import axios from 'axios'
 
+
+
+const TextAreaStyled = styled(Input.TextArea)`
+  &.ant-input-textarea > textarea {
+    border-radius: 16px;
+    height: 148px;
+}
+`
+
 const CreateArtWork: React.FC = () => {
   const [showModalCreateArtist, setShowModalCreateArtist] =
     React.useState<boolean | null>(false)
@@ -191,7 +200,7 @@ const CreateArtWork: React.FC = () => {
               >
                 <Form.Item
                   name="upload-artwork"
-                  label="Upload cover"
+                  label="Upload banner"
                   valuePropName="fileList"
                   getValueFromEvent={normFile}
                   rules={[
@@ -238,12 +247,12 @@ const CreateArtWork: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item name={'introduction'} label="Introduction">
-                  <Input.TextArea
-                    style={{ borderRadius: '16px', resize: 'none' }}
+                  <TextAreaStyled
                     placeholder="Enter the brief introduction"
                     maxLength={1000}
                     showCount={true}
                     autoSize={false}
+                    
                   />
                 </Form.Item>
                 <Form.Item
