@@ -81,12 +81,10 @@ export const StyledCart = styled.div<PropsStyled>`
         height: 100%;
         position: absolute;
         top: 0;
-        position: absolute;
-        top: 0;
         left: 0;
         bottom: 0;
         right: 0;
-        object-fit: contain;
+        object-fit: cover;
       }
     }
   

@@ -57,7 +57,11 @@ export const StyledCart = styled.div<PropsStyled>`
       position: relative;
       width: 100%;
       height: 100%;
-      padding-top: 100%;
+      .ff-responsive {
+        width:300px !important;
+        height:450px !important;
+      }
+      /* padding-top: 100%; */
       /* background-image: ${props => `url(${props.src})`};
       background-size: contain;
       background-repeat: no-repeat;

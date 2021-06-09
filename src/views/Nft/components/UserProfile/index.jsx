@@ -19,12 +19,12 @@ import {useParams,useHistory} from "react-router-dom";
 const { TabPane } = Tabs;
 
 
-const UserProfile: React.FC = () => {
+const UserProfile = () => {
   const [userState, userActions] = useUserStore()
 
   const history = useHistory();
   const { tab, option } = useParams();
-  const onChangeTab = (e:any)=>{
+  const onChangeTab = (e)=>{
     if(e==='onsale'){
       history.push(`/user-profile/onsale/readyToSell`)
     }else if(e=='mycollection'){
@@ -85,7 +85,7 @@ const UserProfile: React.FC = () => {
 }
 export default UserProfile
 
-const TabOnSale: React.FC = ()=>{
+const TabOnSale = ()=>{
   const [loading, setLoading] = useState(true)
   const [NFTs,setNFTs] = useState([])
   const {getNFT} = useArtworkServices()
@@ -124,7 +124,7 @@ const TabOnSale: React.FC = ()=>{
   )
 }
 
-const TabMyCollection: React.FC = ()=>{
+const TabMyCollection= ()=>{
   const { option } = useParams();
   console.log(option)
   const [optionChecked, setOptionChecked] = useState(option)
@@ -161,7 +161,7 @@ const TabMyCollection: React.FC = ()=>{
     }
   },[optionChecked])
 
-  const onHandleOptionCheck = (e:any)=>{
+  const onHandleOptionCheck = (e)=>{
     setOptionChecked(e.target.value)
   }
 
