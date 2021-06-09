@@ -73,7 +73,7 @@ const config: MenuEntry[] = [
     label: 'NFT',
     icon: 'NftIcon',
     href: '#',
-    calloutClass: 'style-color',
+    calloutClass: 'style-color icon-hot',
   },
   {
     label: 'More',

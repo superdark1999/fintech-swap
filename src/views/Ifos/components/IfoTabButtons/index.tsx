@@ -41,10 +41,19 @@ const Wrapper = styled.div`
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: url('https://image.flaticon.com/icons/png/512/2285/2285537.png');
+    background-image: url('../images/rocket.png');
     background-repeat: no-repeat;
     background-size: 1.5rem;
     background-position: right 1.2rem top 50%;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    &.list-options {
+      background-image: url('../images/plannet.svg');
+    }
   }
 
   select:hover, 
@@ -59,7 +68,13 @@ const Wrapper = styled.div`
     display: flex;
     margin-left: 10px;
 
+    @media (max-width: 768px) {
+      margin-left: 0;
+      width: 100%;
+    }
+
     input{
+      text-indent: 10px;
       height: 40px;
       width: 100%;
       border: 1px transparent solid;
@@ -78,6 +93,12 @@ const Wrapper = styled.div`
       height: 40px;
       width: 40px;
       border:1px transparent solid;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+
+      @media (max-width: 768px) {
+        width: 50px;
+      }
 
       &:hover {
         opacity: 0.7;
@@ -94,7 +115,8 @@ const Dflex = styled.div`
   align-items: center;
 
   @media (max-width: 768px) {
-    margin-bottom: 15px;
+    width: 100%;
+    flex-direction: column;
   }
 `
 
@@ -111,7 +133,7 @@ const IfoTabButtons = () => {
             <option>NFT</option>
           </select>
 
-          <select>
+          <select className="list-options">
             <option>Status</option>
             <option>Open</option>
             <option>Close</option>

@@ -318,3 +318,48 @@ button.button-connect:hover {
 .menu-button:hover {
   color: #08a7da !important;
 }
+
+.icon-hot a {
+  position: relative;
+}
+
+.icon-hot a:before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 57px;
+  background: url('http://luckyswap.finance/images/new.svg');
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  animation: 2s linear 0s infinite normal forwards running fadeinout;
+  opacity: 0;
+}
+
+
+@keyframes fadeinout {
+  from {
+      opacity: 0;
+  }
+  33% {
+      opacity: 1;
+  }
+  to {
+      opacity: 0;
+  }
+}
+
+.icon-hot a:hover ::after {
+  content: 'Coming Soon';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background: url('ttp://luckyswap.finance/images/incipia-coming-soon.png');
+  color: #1a1a1a;
+  font-weight: 600;
+  background-repeat: no-repeat;
+  width: 130px;
+  height: auto;
+  transition:1s;
+}
