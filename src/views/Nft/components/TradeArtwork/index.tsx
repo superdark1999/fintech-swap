@@ -55,8 +55,8 @@ const Trade: React.FC = () => {
 const TradeArtWork: React.FC = () => {
   const [select, setSelect] = React.useState<string | null>('Lucky');
   return (
-      <Row gutter={24} className="trade-option" justify="center">
-        <Col xl={{ span: 20}} md={{ span:  22}} xs={{span: 24}}>
+      // <Row gutter={24} className="trade-option" justify="center">
+      //   <Col xl={{ span: 20}} md={{ span:  22}} xs={{span: 24}}>
           <TradeArtWorkStyled>
             <Select className="select" style={{ width: 120, borderRadius: 30, textAlign: 'center' }} onChange={setSelect} defaultValue={select}>
               {OptionData.map((item, i) => (
@@ -85,8 +85,8 @@ const TradeArtWork: React.FC = () => {
               </Col>
             </Row>
           </TradeArtWorkStyled>
-        </Col>
-      </Row>
+      //   </Col>
+      // </Row>
   )
 }
 
@@ -94,18 +94,20 @@ const TradeArtWork: React.FC = () => {
 
 export default () => {
   return (
-    <div>
-      <TradeArtWork/>
-      <Row gutter={24} className="trade-option" justify="center">
-        <Col xl={{ span: 20}} md={{ span:  22}} xs={{span: 22}}>
-          <TableStyled
-            columns={column} 
-            dataSource={data} 
-            size="middle"
-            scroll={{ x: 300 }}
-            />            
-        </Col>
-      </Row>
-    </div>
+    <Row gutter={24} className="trade-option" justify="center">
+      <Col xl={{ span: 20}} md={{ span:  22}} xs={{span: 24}}>
+        <TradeArtWork/>
+        <Row gutter={20} className="trade-option" justify="center">
+          <Col xl={{ span: 20}} md={{ span:  22}} xs={{span: 22}}  xxl={{ span: 20}}>
+            <TableStyled
+              columns={column} 
+              dataSource={data} 
+              size="middle"
+              scroll={{ x: 300 }}
+              />            
+          </Col>
+        </Row>
+      </Col>
+    </Row>
   )
 }

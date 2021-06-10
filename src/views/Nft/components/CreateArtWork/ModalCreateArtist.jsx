@@ -44,15 +44,6 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
     },
   }
 
-
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e
-    }
-    return e && e.fileList
-  }
-
-
   return (
     <Modal
       title="Create Artist"
@@ -78,10 +69,9 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
         <Row gutter={24}>
           <Col xl={{ span: 24 }} md={{ span: 24 }} xs={{ span: 24 }}>
             <Form.Item
-              name="cover"
+              name="coverImage"
               label="Upload banner"
               valuePropName="fileList"
-              getValueFromEvent={normFile}
             >
               <UploadFile maxWidth="1000px" maxHeight="250px" />
             </Form.Item>
@@ -90,10 +80,9 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
         <Row gutter={24}>
           <Col xl={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
             <Form.Item
-              name="avatar"
+              name="avatarImage"
               label="Upload Avatar"
               valuePropName="fileList"
-              getValueFromEvent={normFile}
             >
               <UploadFile maxWidth="400px" />
             </Form.Item>
@@ -110,7 +99,7 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
               />
             </Form.Item>
             <Form.Item
-              name="socialLink"
+              name="socialMediaLink"
               label="Social media/Portfolio link "
               rules={[{ required: true, message: 'This Field is required!' }]}
             >
@@ -142,19 +131,5 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
     </Modal>
   )
 }
-const CreateArtWorkStyled = styled.div`
-  margin: 40px auto;
-  max-width: 1100px;
-  background: #f9fafb;
-  padding: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid #e7ebef;
-  border-radius: 32px;
-  .ant-modal-content {
-    overflow: auto;
-    border-radius: 24px;
-  }
-`
+
 export default ModalCreateArtist

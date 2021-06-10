@@ -53,13 +53,15 @@ const UploadStyled = styled.div`
 `
 
 export function Upload(props) {
+  console.log('props: ', props)
   const [images, setImages] = React.useState();
+ 
 
   const onChange = (imageList,addUpdateIndex) => {
-    setImages(imageList);
-    props.onChange(imageList)
+    setImages(imageList[0]?.data_url);
+    props.onChange(imageList[0]?.data_url)
   };
-
+  console.log('images: ', images)
   return (
       <ImageUploading
         // multiple
@@ -79,9 +81,9 @@ export function Upload(props) {
         }) => (
           // write your building UI
           <UploadStyled maxWidth={props.maxWidth} maxHeight={props.maxHeight}>
-            {_.get(imageList, '[0].data_url') && <CloseCircleFilled className="remove-image" onClick={onImageRemove}/>}
-            {_.get(imageList, '[0].data_url') && <img src={_.get(imageList, '[0].data_url')} alt="" width="100" />}
-            { !_.get(imageList, '[0].data_url') && (
+            {(images || props.value)  && <CloseCircleFilled className="remove-image" onClick={onImageRemove}/>}
+            {(images || props.value) && <img src={(images || props.value)} alt="" width="100" />}
+            {!(images || props.value) && (
               <div className="upload-image">
                 <Button type="" style={isDragging ? { color: "red" } : undefined}
                     onClick={onImageUpload}

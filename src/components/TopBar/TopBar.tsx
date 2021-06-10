@@ -102,51 +102,44 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
         </a>
       )}
 
-      <div className="nav-bar-wrapper">
-        <Input
-          placeholder="Search items, collections, and accounts"
-          prefix={<SearchOutlined />}
-          className="search-nav"
-        ></Input>
-        <Link to="/" className="home-nav">
-          Home
-        </Link>
-        <Switch
-          checkedChildren="Animation"
-          unCheckedChildren="Animation"
-          onChange={onChangeAnimation}
-        />
-        {!!account ? (
-          <Link to={'/create/artwork'} className="create-nav">
-            Create
-          </Link>
-        ) : (
-          <a
-            onClick={() => {
-              alert('Unblock your wallet before create NFT')
-            }}
-            className="create-nav"
-          >
-            Create
-          </a>
-        )}
-        <div className="connect-wallet">
-          <Web3Status />
-        </div>
-        {account && (
-          <Link to="/user-profile/onsale/readyToSell">
-            <ButtonBuy
-              padding="10px"
-              borderRadius="100px"
-              height="40px"
-              width="40px"
-              className="connect-wallet"
-            >
-              <img src={ViewMore} />
-            </ButtonBuy>
-          </Link>
-        )}
-      </div>
+          <div className="nav-bar-wrapper">
+            <Input placeholder="Search items, collections, and accounts" prefix={<SearchOutlined/>} className="search-nav"></Input>
+            <Link to="/" className="home-nav">Home</Link>
+            {!!account?(
+               <Link to={"/create/artwork"} className="create-nav">Create</Link>
+            ):(
+              <a onClick={()=>{alert("Unblock your wallet before create NFT")}} className="create-nav" >Create</a>
+            )}
+            {/* <Switch
+              checkedChildren="Animation"
+              unCheckedChildren="Animation"
+              onChange={onChangeAnimation}
+            /> */}
+            <div className="connect-wallet">
+              <Web3Status />
+            </div>
+            {account&&(
+              <Link to="/user-profile/onsale/readyToSell">
+                <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" className="connect-wallet view-more">
+                  <img src={ViewMore} />
+                  {/* <div className="menu">
+                    <div className="menu-item">
+                      My profile
+                    </div>
+                    <div className="menu-item">
+                      My collection
+                    </div>
+                    <div className="menu-item">
+                      Settings
+                    </div>
+                    <div className="menu-item">
+                      Log out
+                    </div>
+                  </div> */}
+                </ButtonBuy>
+               </Link>
+            )}
+          </div>
     </StyledTopBar>
   )
 }
@@ -195,10 +188,18 @@ const StyledTopBar = styled.div`
       @media (max-width: 756px) {
         display: none;
       }
-    }
-    .connect-wallet {
-      margin-right: 10px;
-      @media (max-width: 756px) {
+      .connect-wallet{
+        &.view-more {
+          .menu{
+            display: none;
+            :hover{
+              display: block;
+              }
+            }
+          }
+        }
+      margin-right:10px;
+      @media (max-width:756px){
         display: none;
       }
     }
@@ -218,10 +219,6 @@ const StyledTopBar = styled.div`
   box-shadow: 0px 4px 16px -4px rgba(35, 35, 35, 0.06);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   &.fixed {
-    /* background: linear-gradient(
-      rgb(14, 19, 29),
-      rgb(6, 10, 16) 30.65%
-    ) !important; */
     position: fixed;
     padding-bottom: 5px;
     left: 0;

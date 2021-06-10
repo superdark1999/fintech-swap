@@ -21,6 +21,7 @@ const { TabPane } = Tabs;
 
 const UserProfile = () => {
   const [userState, userActions] = useUserStore()
+  console.log('userState: ', userState)
 
   const history = useHistory();
   const { tab, option } = useParams();
@@ -73,7 +74,7 @@ const UserProfile = () => {
               <TabMyCollection/>
             </TabPane>
             <TabPane tab="Settings" key="setting">
-              <TabSetting />
+              <TabSetting userState={userState}/>
             </TabPane>
           </Tabs>
 
