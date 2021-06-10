@@ -7,9 +7,9 @@ import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import SearchInput from 'components-v2/SearchInput'
 import { ButtonStyle } from 'components-v2/cart/styled'
 import  Copy from 'assets/images/copy.svg'
-import useArtworkServices from 'services/axiosServices/ArtworkServices'; 
-import { useActiveWeb3React } from 'wallet/hooks'
-import useUserStore from 'store/userStore'
+import useArtworkServices from '../../../../services/ArtworkServices'; 
+import { useActiveWeb3React } from '../../../../wallet/hooks'
+import useUserStore from '../../../../store/userStore'
 import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
 import TabSetting from './TabSetting'
@@ -19,17 +19,17 @@ import {useParams,useHistory} from "react-router-dom";
 const { TabPane } = Tabs;
 
 
-const UserProfile = () => {
+export default () => {
   const [userState, userActions] = useUserStore()
-  console.log('userState: ', userState)
+  // console.log('userState: ', userState)
 
   const history = useHistory();
   const { tab, option } = useParams();
   const onChangeTab = (e)=>{
     if(e==='onsale'){
-      history.push(`/user-profile/onsale/readyToSell`)
+      history.push(`/my-profile/onsale/readyToSell`)
     }else if(e=='mycollection'){
-      history.push(`/user-profile/mycollection/all`)
+      history.push(`/my-profile/mycollection/all`)
     }
     // else if(e=='setting'){
     //   history.push(`/user-profile/setting`)
@@ -73,9 +73,9 @@ const UserProfile = () => {
             <TabPane tab="My Collection" key="mycollection">
               <TabMyCollection/>
             </TabPane>
-            {/* <TabPane tab="Settings" key="setting">
+            <TabPane tab="Settings" key="setting">
               <TabSetting userState={userState}/>
-            </TabPane> */}
+            </TabPane>
           </Tabs>
 
           </Col>
@@ -84,7 +84,6 @@ const UserProfile = () => {
     </UserProfileStyled>
   )
 }
-export default UserProfile
 
 const TabOnSale = ()=>{
   const [loading, setLoading] = useState(true)
@@ -172,7 +171,7 @@ const TabMyCollection= ()=>{
                 <GroupButton defaultValue={option}>
                   <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
                   <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="checkingReadyToSell" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingReadyToSell'}>Pending </RadioButton>
+                  <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>
                   <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
                 </GroupButton> 
                 <SearchInput maxWidth="300px" placeholder="Search items"/>
