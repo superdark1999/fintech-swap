@@ -105,7 +105,7 @@ const CreateArtWork: React.FC = () => {
             const txHash = mintData?.hash
             updateHashInfoNFT({ NFTid, txHash }).then(({status,data})=>{
               if(status==200){
-                history.push('/user-profile/mycollection/pending')
+                history.push('/my-profile/mycollection/pending')
               }
             })
           })
