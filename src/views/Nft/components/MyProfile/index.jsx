@@ -13,6 +13,7 @@ import useUserStore from 'store/userStore'
 import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
 import TabSetting from './TabSetting'
+import TableHistory from './Table'
 
 import { HeartOutlined } from '@ant-design/icons';
 import {useParams,useHistory} from "react-router-dom";
@@ -32,7 +33,10 @@ export default () => {
       history.push(`/my-profile/mycollection/all`)
     }
     // else if(e=='setting'){
-    //   history.push(`/user-profile/setting`)
+    //   history.push(`/my-profile/setting`)
+    // }
+    // else if(e=='history'){
+    //   history.push(`/my-profile/history`)
     // }
   }
   return (
@@ -72,6 +76,9 @@ export default () => {
             </TabPane>
             <TabPane tab="My Collection" key="mycollection">
               <TabMyCollection/>
+            </TabPane>
+            <TabPane tab="History" key="history">
+              <TableHistory/>
             </TabPane>
             <TabPane tab="Settings" key="setting">
               <TabSetting userState={userState}/>
@@ -171,24 +178,24 @@ const TabMyCollection= ()=>{
 
   return(
     <>
-          <Row align="middle" justify="space-between">
-                <GroupButton defaultValue={option}>
-                  <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="checkingReadyToSell" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingReadyToSell'} >Checking To Sell</RadioButton>
-                </GroupButton> 
-                <SearchInput maxWidth="300px" placeholder="Search items"/>
-              </Row>
-              <ListCart className="list-artwork">
-                {renderData.map(item=>{
-                  return(
-                    <MyCollectionCard key={item?.id} data={item}/>
-                  )
-                })}
-              </ListCart> 
-              {/* <Loadmore/>  */}
+      <Row align="middle" justify="space-between">
+            <GroupButton defaultValue={option}>
+              <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
+              <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
+              <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>
+              <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
+              <RadioButton width="auto" borderRadius="10px" value="checkingReadyToSell" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingReadyToSell'} >Checking To Sell</RadioButton>
+            </GroupButton> 
+            <SearchInput maxWidth="300px" placeholder="Search items"/>
+          </Row>
+          <ListCart className="list-artwork">
+            {renderData.map(item=>{
+              return(
+                <MyCollectionCard key={item?.id} data={item}/>
+              )
+            })}
+          </ListCart> 
+          {/* <Loadmore/>  */}
     </>
   )
 }

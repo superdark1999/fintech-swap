@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
-import { Row, Col, Tabs, Modal, Input, Form, Button} from 'antd';
+import { Row, Col, Tabs, Modal, Input, Form, Button, Radio} from 'antd';
 
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import Loadmore from 'components-v2/Loadmore'
@@ -14,11 +14,18 @@ import useNFTServices from 'services/web3Services/NFTServices'
 import { useHistory } from "react-router-dom";
 import { useActiveWeb3React } from '../../../../wallet/hooks'
 import OnsSaleCard from './OnSaleCard'
-
-import { HeartOutlined } from '@ant-design/icons'
-import { margin } from 'polished'
 import _ from 'lodash'
-import { ButtonStyle } from 'components-v2/CardItem/styled';
+
+const options = [
+  {
+    label: "a",
+    value: "a",
+  },
+  {
+    label: "b",
+    value: "b",
+  }
+]
 
 export default function MyCollectionCard({ data }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(false)
@@ -130,9 +137,6 @@ export default function MyCollectionCard({ data }: any) {
     }
   }
 
-  const onFinish = (value: any) => {
-    setLucky(value)
-  }
   return (
     <CartStyled>
       <Row gutter={24}>
@@ -185,12 +189,20 @@ export default function MyCollectionCard({ data }: any) {
         width={400}
       >
         <Form ref={formRef} onFinish={onSellItem}>
-            <Form.Item name="lucky" label="Price" >
+            <Form.Item label="Type" name="type" >
+              <Radio.Group
+                options={options}
+              />
+            </Form.Item>
+            <Form.Item 
+              name="lucky" 
+              label="Price" 
+              rules={[{ required: true, message: 'This Field is required!' }]}
+            >
                 <Input style={{ borderRadius: '16px', overflow: 'hidden'}} placeholder="Enter price"/>
             </Form.Item>
-            <Form.Item  
-              
-              rules={[{ required: true, message: 'This Field is required!' }]}>
+
+            <Form.Item>
               <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
                 <ButtonTrade htmlType="submit">Submit</ButtonTrade>
               </div>           
