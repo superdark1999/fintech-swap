@@ -10,6 +10,7 @@ import QRCode from 'assets/images/qr-code.svg'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices from 'services/web3Services/MarketServices'
 import useNFTServices from 'services/web3Services/NFTServices'
+import { useHistory } from "react-router-dom";
 import { useActiveWeb3React } from '../../../../wallet/hooks'
 import OnsSaleCard from './OnSaleCard'
 
@@ -23,6 +24,7 @@ export default function MyCollectionCard({ data }: any) {
   const { isTokenReadyToSell, approveTokenToMarket } =useNFTServices()
   const {setTokenPrice,} = useMarketServices()
   const { updateNFTInfo, setPrice } = useArtworkServices()
+  const history = useHistory();
   useEffect(() => {
     if (data?.tokenId) {
       isTokenReadyToSell(data?.tokenId)
@@ -45,23 +47,21 @@ export default function MyCollectionCard({ data }: any) {
         if (dt?.hash) {
           setPrice({ id: data?.id }).then(({ status }) => {
             if (status == 200) {
+              console.log('runnnnn')
+              history.push('/my-profile/mycollection/checkingToSell')
+            }else{
+              alert('Something when wrong, please try again later.')
               setIsPrcessing(false)
             }
           })
         }
-      })
-      .finally(() => {
+      }).catch((err) => {
+        alert('Something when wrong, please try again later.')
         setIsPrcessing(false)
       })
   }
 
   const onAllowSellItem = () => {
-    setIsPrcessing(true)
-    setPrice({ id: data?.id }).then(({ status }) => {
-      if (status == 200) {
-        setIsPrcessing(false)
-      }
-    })
     const tokenId = data?.tokenId
     setIsPrcessing(true)
     approveTokenToMarket(tokenId)
