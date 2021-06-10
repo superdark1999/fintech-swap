@@ -7,7 +7,7 @@ import {
 } from 'antd'
 import UploadFile from 'components-v2/Upload'
 import { ButtonStyle } from 'components-v2/cart/styled'
-import useUserServices from 'services/UserServices'
+import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 
