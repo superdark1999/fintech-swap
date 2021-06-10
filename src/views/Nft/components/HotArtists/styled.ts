@@ -58,7 +58,8 @@ position: relative;
       .card-artists{
         margin:24px 0px;
         min-width:248px;
-        height:408px;
+        /* height:408px; */
+        height:330px;
         border: 1px solid #E7EBEF;
         box-sizing: border-box;
         border-radius: 24px;
@@ -121,7 +122,7 @@ position: relative;
               left: 0;
               bottom: 0;
               right: 0;
-              object-fit: contain;
+              object-fit: cover;
             }
           }
         }
@@ -159,7 +160,18 @@ export const ImageStyled = styled.div<Props>`
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-    width: ${isMobile ? '300px' : '400px'};
+    max-width: calc(100% - 100px);
+    max-height: calc(100vh - 300px);
+    border-radius: 16px;
+  }
+  .img-artwork {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    max-width: calc(100% - 100px);
+    max-height: calc(100vh - 300px);
     border-radius: 16px;
   }
 `

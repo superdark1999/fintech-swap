@@ -30,6 +30,15 @@ import { GroupButton, RadioButton } from './styled'
 import ModalCreateArtist from './ModalCreateArtist'
 import axios from 'axios'
 
+
+
+const TextAreaStyled = styled(Input.TextArea)`
+  &.ant-input-textarea > textarea {
+    border-radius: 16px;
+    height: 148px;
+}
+`
+
 const CreateArtWork: React.FC = () => {
   const [showModalCreateArtist, setShowModalCreateArtist] =
     React.useState<boolean | null>(false)
@@ -61,10 +70,10 @@ const CreateArtWork: React.FC = () => {
   const createArtist = (values: any) => {
     const artistData = {
       walletAddress: account,
-      coverImage: values?.cover?.[0]?.['data_url'],
-      avatarImage: values?.avatar?.[0]?.['data_url'],
+      coverImage: values?.coverImage,
+      avatarImage: values?.avatarImage,
       name: values?.name,
-      socialMediaLink: values?.socialLink,
+      socialMediaLink: values?.socialMediaLink,
       biography: values?.biography,
     }
     updateProfile(artistData).then(({data, status})=>{
@@ -78,19 +87,12 @@ const CreateArtWork: React.FC = () => {
     form.setFieldsValue({ artistName: userState.name })
   },[userState.name])
 
-  const normFile = (e: any) => {
-    if (Array.isArray(e)) {
-      return e
-    }
-    return e && e.fileList
-  }
-
   const onCreateNFT = async (values: any) => {
     const mintData = {
       title: values?.artworkName || '',
       description: values?.introduction || '',
-      type: values?.[`radio-artwork-type`] || 'image',
-      content: values?.[`upload-artwork`]?.[0]?.[`data_url`] || '',
+      type: values?.[`type`] || 'image',
+      content: values?.[`content`] || '',
       ownerWalletAddress: account || '',
     }
 
@@ -142,7 +144,7 @@ const CreateArtWork: React.FC = () => {
             validateMessages={validateMessages}
           >
             <Form.Item
-              name="radio-artwork-type"
+              name="type"
               label="Select artwork type"
               rules={[{ required: true, message: 'This Field is required!' }]}
             >
@@ -199,10 +201,10 @@ const CreateArtWork: React.FC = () => {
                 xxl={{ span: 12 }}
               >
                 <Form.Item
-                  name="upload-artwork"
-                  label="Upload cover"
-                  valuePropName="fileList"
-                  getValueFromEvent={normFile}
+                  name="content"
+                  label="Upload banner"
+                  valuePropName="content"
+                  // getValueFromEvent={normFile}
                   rules={[
                     { required: true, message: 'This Field is required!' },
                   ]}
@@ -247,12 +249,12 @@ const CreateArtWork: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item name={'introduction'} label="Introduction">
-                  <Input.TextArea
-                    style={{ borderRadius: '16px', resize: 'none' }}
+                  <TextAreaStyled
                     placeholder="Enter the brief introduction"
                     maxLength={1000}
                     showCount={true}
                     autoSize={false}
+                    
                   />
                 </Form.Item>
                 <Form.Item

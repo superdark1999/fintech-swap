@@ -1,19 +1,20 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState, useEffect,useRef} from 'react'
 import { StyledCart, ButtonBuyStyle, ButtonStyle } from './styled'
 import Copy from 'assets/images/copy.svg'
 import Checkmark from 'assets/images/checkmark.svg'
 import Token from 'assets/images/token.svg'
 import Hammer from 'assets/images/hammer.svg'
 import Hammer2 from 'assets/images/hammer2.svg'
-
+import ReactFreezeframe from 'react-freezeframe';
 import {Link} from 'react-router-dom'
+import useConfigStore from 'store/configStore'
 
 import { Rate } from 'antd';
 import { SwapOutlined, StarFilled } from '@ant-design/icons'
 import useNFTServices from '../../services/NFTServices';
 import _ from 'lodash' 
 
-const getPrice = (price:number)=>{
+const getPrice = (price)=>{
   if(price?.toString()?.length<24){
     const priceString = _.replace(price?.toString(),'000000000000000000','')
     return Number(priceString)
@@ -21,21 +22,30 @@ const getPrice = (price:number)=>{
   return -1
 }
 
-export default function CardItem({data}: any) {
+export default function CardItem({data}) {
   const [price,setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [, updateState] = React.useState();
+  const [configState, configAction] = useConfigStore()
+  const forceUpdate = React.useCallback(() => updateState({}), []);
   const {getPriceNFT,approveLevelAmount,buyNFT} = useNFTServices()
+  const useFrameGif = useRef(null)
   useEffect(()=>{
     if(data?.tokenId){
-      getPriceNFT(data?.tokenId).then((dt:any)=>{
+      getPriceNFT(data?.tokenId).then((dt)=>{
         const price = getPrice(Number(dt?._hex))
         if(price!=-1){
           setLoading(false)
           setPrice(price)
         }
-      }).catch((err:any)=>{})
+      }).catch((err)=>{})
     }
   },[data?.tokenId])
+  // console.log(configState.isUsingAnimation)
+  // useEffect(()=>{
+  //   configState.isUsingAnimation&&useFrameGif.current.start()
+  //    !configState.isUsingAnimation&&useFrameGif.current.stop()
+  // },[configState.isUsingAnimation])
   return (
     <StyledCart src={data?.contentUrl}>
       <div className="header-card-art-work">
@@ -45,7 +55,8 @@ export default function CardItem({data}: any) {
      <Link to={`/artwork/detail/${data?.id}`} className="create-nav">
       <div className="card-art-work">               
         
-        <div className="wrapper-image">
+        <div className="wrapper-image">     
+          {/* <ReactFreezeframe ref={useFrameGif} className="avatar"  src={data?.contentUrl}/>      */}
           <img className="avatar"  src={data?.contentUrl} alt="" loading="lazy"/>
         </div>
       </div>

@@ -1,16 +1,14 @@
 import React from "react";
-import ImageUploading, { ImageListType } from "react-images-uploading";
+import ImageUploading from "react-images-uploading";
 import styled from "styled-components";
 import { Button } from 'antd'
 import _ from 'lodash'
 import { CloseCircleFilled } from '@ant-design/icons'
 
 const UploadStyled = styled.div`
-  /* min-width: 480px; */
   max-height: ${props => props.maxHeight || '350px'};
   min-height:  350px;
   max-width: ${props => props.maxWidth || '480px'};
-  /* background: ${props => props.url ? `url('${props.url})`: '#fff'}; */
   background-color: #fff;
   border: 1px dashed #E7EBEF;
   box-sizing: border-box;
@@ -21,17 +19,11 @@ const UploadStyled = styled.div`
   align-items: center;
 
   >img {
-    /* position: absolute; */
     display: block;
     max-height: ${props => props.maxHeight || '350px'};
     max-width: ${props => props.maxWidth || '480px'};
     width: auto;
     height: auto;
-    /* bottom: 0;
-    top: 0;
-    left: 0;
-    right: 0; */
-    /* border-radius: 20px; */
   }
   >.remove-image {
     position: absolute;
@@ -61,13 +53,15 @@ const UploadStyled = styled.div`
 `
 
 export function Upload(props) {
+  console.log('props: ', props)
   const [images, setImages] = React.useState();
+ 
 
   const onChange = (imageList,addUpdateIndex) => {
-    setImages(imageList);
-    props.onChange(imageList)
+    setImages(imageList[0]?.data_url);
+    props.onChange(imageList[0]?.data_url)
   };
-
+  console.log('images: ', images)
   return (
       <ImageUploading
         // multiple
@@ -87,9 +81,9 @@ export function Upload(props) {
         }) => (
           // write your building UI
           <UploadStyled maxWidth={props.maxWidth} maxHeight={props.maxHeight}>
-            {_.get(imageList, '[0].data_url') && <CloseCircleFilled className="remove-image" onClick={onImageRemove}/>}
-            {_.get(imageList, '[0].data_url') && <img src={_.get(imageList, '[0].data_url')} alt="" width="100" />}
-            { !_.get(imageList, '[0].data_url') && (
+            {(images || props.value)  && <CloseCircleFilled className="remove-image" onClick={onImageRemove}/>}
+            {(images || props.value) && <img src={(images || props.value)} alt="" width="100" />}
+            {!(images || props.value) && (
               <div className="upload-image">
                 <Button type="" style={isDragging ? { color: "red" } : undefined}
                     onClick={onImageUpload}
