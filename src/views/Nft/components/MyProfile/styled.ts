@@ -93,7 +93,7 @@ export const CartStyled = styled.div`
   box-sizing: border-box;
   border-radius: 24px;
   
-  .avatar, video {
+  .avatar {
     width: 300px;
     height: 300px;
     border-radius: 8px;

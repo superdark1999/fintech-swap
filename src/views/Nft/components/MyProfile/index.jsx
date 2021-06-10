@@ -19,17 +19,17 @@ import {useParams,useHistory} from "react-router-dom";
 const { TabPane } = Tabs;
 
 
-const UserProfile = () => {
+export default () => {
   const [userState, userActions] = useUserStore()
-  console.log('userState: ', userState)
+  // console.log('userState: ', userState)
 
   const history = useHistory();
   const { tab, option } = useParams();
   const onChangeTab = (e)=>{
     if(e==='onsale'){
-      history.push(`/user-profile/onsale/readyToSell`)
+      history.push(`/my-profile/onsale/readyToSell`)
     }else if(e=='mycollection'){
-      history.push(`/user-profile/mycollection/all`)
+      history.push(`/my-profile/mycollection/all`)
     }
     // else if(e=='setting'){
     //   history.push(`/user-profile/setting`)
@@ -73,9 +73,9 @@ const UserProfile = () => {
             <TabPane tab="My Collection" key="mycollection">
               <TabMyCollection/>
             </TabPane>
-            {/* <TabPane tab="Settings" key="setting">
+            <TabPane tab="Settings" key="setting">
               <TabSetting userState={userState}/>
-            </TabPane> */}
+            </TabPane>
           </Tabs>
 
           </Col>
@@ -84,7 +84,6 @@ const UserProfile = () => {
     </UserProfileStyled>
   )
 }
-export default UserProfile
 
 const TabOnSale = ()=>{
   const [loading, setLoading] = useState(true)

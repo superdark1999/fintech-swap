@@ -119,7 +119,7 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
               <Web3Status />
             </div>
             {account&&(
-              <Link to="/user-profile/onsale/readyToSell">
+              <Link to="/my-profile/onsale/readyToSell">
                 <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" className="connect-wallet view-more">
                   <img src={ViewMore} />
                   {/* <div className="menu">

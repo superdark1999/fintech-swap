@@ -3,8 +3,8 @@ import { StyledCart, ButtonBuyStyle, ButtonStyle } from './styled'
 import Copy from 'assets/images/copy.svg'
 import Checkmark from 'assets/images/checkmark.svg'
 import Token from 'assets/images/token.svg'
+// import Hammer from 'assets/images/hammer.svg'
 import Hammer from 'assets/images/hammer.svg'
-import Hammer2 from 'assets/images/hammer2.svg'
 import ReactFreezeframe from 'react-freezeframe';
 import {Link} from 'react-router-dom'
 import useConfigStore from 'store/configStore'
@@ -47,37 +47,46 @@ export default function CardItem({data}) {
   //    !configState.isUsingAnimation&&useFrameGif.current.stop()
   // },[configState.isUsingAnimation])
   return (
-    <StyledCart src={data?.contentUrl}>
-      <div className="header-card-art-work">
-        <div className="date-time">02h 31m 04s left 🔥 </div>
-        <img src={Copy} alt=""/>
-      </div>
-     <Link to={`/artwork/detail/${data?.id}`} className="create-nav">
-      <div className="card-art-work">               
-        
-        <div className="wrapper-image">     
-          {/* <ReactFreezeframe ref={useFrameGif} className="avatar"  src={data?.contentUrl}/>      */}
-          <img className="avatar"  src={data?.contentUrl} alt="" loading="lazy"/>
-        </div>
-      </div>
-      
-      </Link> 
-      <div className="wrapper-info">
-        <div className="title">
-          LuckySwapStudio {' '}
-          <img src={Checkmark} alt=""/>
-        </div>
-        <div className="number">
-          <div>
-              {price} LUCKY {' '}
-            <img src={Token} alt=""/></div>  
-          <div>
-            4.8 {' '}<StarFilled style={{color: '#fadb14', marginRight: 8}} />
-            <img src={Hammer2} alt=""/>
+    <Link to={`/artwork/detail/${data?.id}`} className="create-nav">
+      <StyledCart src={data?.contentUrl}>  
+        <div className="card-art-work">                     
+          <div className="wrapper-image">  
+            <div className="gradient-background"><div className="title">CRYPTOCARD 001 - ETH...</div></div>   
+            <div className="header-card-art-work">
+              <div className="date-time">02h 31m 04s left 🔥 </div>
+            </div>
+            {/* <ReactFreezeframe ref={useFrameGif} className="avatar"  src={data?.contentUrl}/>      */}
+            <img className="avatar"  src={data?.contentUrl} alt="" loading="lazy"/>
+          </div>
+          <div className="wrapper-info">
+          <div className="title">
+            <div className="name-artist">
+              LuckySwapStudio {' '}
+              <img src={Checkmark} alt=""/>
+            </div>
+            <div className="copy">
+              <img src={Copy} alt=""/> Copy
+            </div>
+            
+          </div>
+          <div className="number">
+            <div>
+                {price} LUCKY {' '}
+              <img src={Token} alt=""/></div>  
+            <div>
+              4.8 
+              {' '}
+              <StarFilled style={{color: '#fadb14'}} />
+              {' '}
+              <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5'}}>(15)</span>
+              {' '}
+              <img src={Hammer} alt=""/>
+            </div>      
+            </div> 
           </div>      
-        </div> 
-      </div>      
-    </StyledCart>
+        </div>   
+      </StyledCart>
+    </Link> 
   )
 }
 
