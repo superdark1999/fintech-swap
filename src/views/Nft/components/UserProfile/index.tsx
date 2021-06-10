@@ -164,7 +164,7 @@ const TabMyCollection: React.FC = ()=>{
                 <GroupButton defaultValue={option}>
                   <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
                   <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>
+                  <RadioButton width="auto" borderRadius="10px" value="checkingReadyToSell" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingReadyToSell'}>Pending </RadioButton>
                   <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
                 </GroupButton> 
                 <SearchInput maxWidth="300px" placeholder="Search items"/>

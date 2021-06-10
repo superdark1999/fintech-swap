@@ -12,10 +12,11 @@ import {ButtonStyle, ButtonBuyStyle} from 'components-v2/cart/styled'
 import { SwapOutlined } from '@ant-design/icons';
 import { DetailStyled, ReviewStyled, ScrollReview, FooterStyled, ImageStyled, DetailTabpane} from './styled'
 import { dataHistory, columnHistory, dataBidding, columnBidding } from './Mock'
-import useArtworkServices from '../../../../services/ArtworkServices'
-import useNFTServices,{MARKET_ADDRESS} from '../../../../services/NFTServices'; 
-import useUserStore from '../../../../store/userStore';
-import { useActiveWeb3React } from '../../../../wallet/hooks'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
+import useMarketServices,{MARKET_ADDRESS} from 'services/web3Services/MarketServices'; 
+import useLuckyServices from 'services/web3Services/LuckyServices'; 
+import useUserStore from 'store/userStore';
+import { useActiveWeb3React } from 'wallet/hooks'
 import {useParams} from "react-router-dom";
 import _ from 'lodash'
 import { Link } from 'react-router-dom';
@@ -33,7 +34,7 @@ const getPrice = (price:number)=>{
 
 
 const  DetaiArtWork = () => {
-  const {getDetailNFT,updateNFTInfo} = useArtworkServices()
+  const {getDetailNFT,updateNFTInfo,buyItem} = useArtworkServices()
   const { account } = useActiveWeb3React()
   const { id } = useParams();
   const [NFTDetail, setNFTDetail] = useState<any>({});
@@ -41,27 +42,24 @@ const  DetaiArtWork = () => {
   const [isSelled,setIsSelled] = useState(false)
   const [price, setPrice] = useState(0)
   const [userState, userActions] = useUserStore()
-  const {getPriceNFT,approveLevelAmount,buyNFT} = useNFTServices()
+  const {getTokenPrice, buyToken} = useMarketServices()
+  const {approveLevelAmount} = useLuckyServices()
   useEffect(()=>{
-    if(id&&!id.includes('tempId')){
-      getDetailNFT({id}).then(({status, data})=>{
-        if(status==200){
-         if(data?.data?.tokenId){
-           getPriceNFT(data?.data?.tokenId).then(data=>{
-             const price = getPrice(Number(data?._hex))
-             if(price!=-1){
-               setLoading(false)
-               setPrice(price)
-             }
-           }).catch(err=>{})
+    getDetailNFT({id}).then(({status, data})=>{
+      if(status==200){
+       if(data?.data?.tokenId){
+        getTokenPrice(data?.data?.tokenId).then(data=>{
+           const price = getPrice(Number(data?._hex))
+           if(price!=-1){
+             setLoading(false)
+             setPrice(price)
            }
-          setNFTDetail(data?.data)
-          setLoading(false)
-        }
-       })
-    }else{
-      setNFTDetail(data?.find(item=>item?.tokenId==id)||data?.[0])
-    }
+         }).catch(err=>{})
+         }
+        setNFTDetail(data?.data)
+        setLoading(false)
+      }
+     })
   },[])
   const onApproveBuyOnMarket = ()=>{
     approveLevelAmount(MARKET_ADDRESS).then((data:any)=>{
@@ -73,14 +71,16 @@ const  DetaiArtWork = () => {
       return alert('Unblock your wallet to buy this item')
     }
     const tokenId = NFTDetail?.tokenId
-    buyNFT(tokenId).then(dt=>{
+    buyToken(tokenId).then(dt=>{
       if(dt?.hash){
-        updateNFTInfo({id:id,status:'approved',ownerWalletAddress:account}).then(({status})=>{
+        buyItem({id:id,walletAddress:account}).then(({status})=>{
           if(status==200){
             setIsSelled(true)
           }
-        }) 
+        })
       }
+    }).catch((err)=>{
+      alert(err?.message||'Something went wrong please try again')
     })
   }
   return (
@@ -283,188 +283,3 @@ const  DetaiArtWork = () => {
 }
 
 export default DetaiArtWork
-
-
-const data = [
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId1",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/cfe06a402ff54798b0285eceffdc6a2a.gif"
-  },
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId2",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/2b061704f09e4bd485ebd66cf8b5f4fa.gif"
-  },
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId3",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/689d6bf2d7cd4866b5e521fd6fdf851b.gif"
-  },
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId4",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/a0c90da902454397994995a3fcf50b8d.gif"
-  },
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId5",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif"
-  },
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId6",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/f8695348b9064cae934ea91aca485a17.gif"
-  },
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId7",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/9f90c1dcec8a4316a13343db0c45136c.gif"
-  },
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId8",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/cfe06a402ff54798b0285eceffdc6a2a.gif"},
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId9",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/2b061704f09e4bd485ebd66cf8b5f4fa.gif"
-  },
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId10",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/689d6bf2d7cd4866b5e521fd6fdf851b.gif"
-  },
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId11",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/a0c90da902454397994995a3fcf50b8d.gif"
-  },
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId12",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/88cedba608e94699ba114a36c0a81981.gif"
-  },
-  {
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId13",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/f8695348b9064cae934ea91aca485a17.gif"
-  },
-  { 
-    TXHash: "0xfe5bee9431ba16423978a836d2acbe5a8efc3edcad84fb68c0fdeb9ffe4ad5bf",
-    createdAt: "2021-06-04T14:16:11.179Z",
-    createdBy: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    description: `This is demo NFT, you can't buy this item`,
-    ownerWalletAddress: "0x09D0A2963D27B27C234b3637C528eCB9356B8867",
-    price: 10,
-    status: "approved",
-    title: "NFT Demo",
-    tokenId: "tempId14",
-    type: "image",
-    contentUrl:"https://d3ggs2vjn5heyw.cloudfront.net/static/nfts/artworks/9f90c1dcec8a4316a13343db0c45136c.gif"
-  },
-]
