@@ -37,5 +37,39 @@ export default function MarketService(){
             })
         },[marketContract])
 
-    return {cancelSellToken,getTokenPrice,setTokenPrice, buyToken}
+        const getBidsByUser = useCallback(async(address:string|undefined)=>{
+            return marketContract.getUserBids(address)
+        },[marketContract])
+
+        const bidToken = useCallback(async(tokenId:string|undefined,price:number|undefined)=>{
+            const unitPrice = price + '000000000000000000'
+            const estimatedGas = await marketContract.estimateGas.bidtoken(tokenId,unitPrice)
+            return marketContract.bidtoken(tokenId,unitPrice, {
+              gasLimit: estimatedGas,
+            })
+        },[marketContract])
+
+        const updateBidPrice = useCallback(async(tokenId:string|undefined,price:number|undefined)=>{
+            const unitPrice = price + '000000000000000000'
+            const estimatedGas = await marketContract.estimateGas.updateBidPrice(tokenId,unitPrice)
+            return marketContract.updateBidPrice(tokenId,unitPrice, {
+              gasLimit: estimatedGas,
+            })
+        },[marketContract])
+
+        const cancelBidToken = useCallback(async(tokenId:string|undefined)=>{
+            const estimatedGas = await marketContract.estimateGas.cancelBidToken(tokenId)
+            return marketContract.cancelBidToken(tokenId, {
+              gasLimit: estimatedGas,
+            })
+        },[marketContract])
+
+        const sellTokenToBidUser = useCallback(async(tokenId:string|undefined,address:string|undefined)=>{
+            const estimatedGas = await marketContract.estimateGas.sellTokenTo(tokenId,address)
+            return marketContract.buyToken(tokenId,address, {
+              gasLimit: estimatedGas,
+            })
+        },[marketContract])
+
+    return {cancelSellToken,getTokenPrice,setTokenPrice, buyToken, getBidsByUser,bidToken,updateBidPrice,cancelBidToken,sellTokenToBidUser}
 }
