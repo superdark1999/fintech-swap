@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Cart from 'components-v2/CardItem'
 import { HotArtWorksStyled } from './styled'
-import useArtworkServices from '../../../../services/ArtworkServices'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
-import { useActiveWeb3React } from '../../../../wallet/hooks'
 
 function HotArtWorks() {
   const divRef = useRef(null)
@@ -15,7 +14,6 @@ function HotArtWorks() {
   }
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
-  const { account } = useActiveWeb3React()
   useEffect(() => {
     getNFT({
       status: 'readyToSell',

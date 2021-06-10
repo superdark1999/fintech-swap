@@ -13,10 +13,11 @@ import { ButtonBuy } from 'components-v2/Button'
 import ViewMore from 'assets/images/view-more.svg'
 import Token from 'assets/images/token.svg'
 import { isMobile } from 'react-device-detect'
-import { useActiveWeb3React } from '../../wallet/hooks'
-import useNFTServices, { MARKET_ADDRESS } from '../../services/NFTServices'
-import useUserServices from '../../services/UserServices'
-import useUserStore from '../../store/userStore'
+import { useActiveWeb3React } from 'wallet/hooks'
+import useLuckyServices from 'services/web3Services/LuckyServices'
+import { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
+import useUserServices from 'services/axiosServices/UserServices'
+import useUserStore from 'store/userStore'
 import { Switch } from 'antd'
 import useConfigStore from 'store/configStore'
 interface TopBarProps {
@@ -32,7 +33,7 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
   const [showMenuMobile, setShowMenuMobile] = useState(false)
   const { account } = useActiveWeb3React()
-  const { checkApproveLevelAmount } = useNFTServices()
+  const { checkApproveLevelAmount } = useLuckyServices()
   const { login } = useUserServices()
   const [userState, userActions] = useUserStore()
   const [configState, configAction] = useConfigStore()

@@ -7,9 +7,11 @@ import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import Loadmore from 'components-v2/Loadmore'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import QRCode from 'assets/images/qr-code.svg'
-import useArtworkServices from '../../../../services/ArtworkServices'
-import useNFTServices from '../../../../services/NFTServices'
-import { useActiveWeb3React } from '../../../../wallet/hooks'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
+import useMarketServices from 'services/web3Services/MarketServices'
+import useNFTServices from 'services/web3Services/NFTServices'
+
+import { useActiveWeb3React } from 'wallet/hooks'
 import OnsSaleCard from './OnSaleCard'
 
 import { HeartOutlined } from '@ant-design/icons'
@@ -19,12 +21,12 @@ import _ from 'lodash'
 export default function MyCollectionCard({ data }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(false)
   const [isProcessing, setIsPrcessing] = useState(true)
-  const { isNFTReadyToSell, approveNFTToMarket, setPriceForNFT } =
-    useNFTServices()
+  const { isTokenReadyToSell, approveTokenToMarket } =useNFTServices()
+  const {setTokenPrice} = useMarketServices()
   const { updateNFTInfo, setPrice } = useArtworkServices()
   useEffect(() => {
     if (data?.tokenId) {
-      isNFTReadyToSell(data?.tokenId)
+      isTokenReadyToSell(data?.tokenId)
         .then((data) => {
           setIsNFTCanSell(data)
         })
@@ -39,7 +41,7 @@ export default function MyCollectionCard({ data }: any) {
     const tokenId = data?.tokenId
 
     setIsPrcessing(true)
-    setPriceForNFT(tokenId, 100)
+    setTokenPrice(tokenId, 100)
       .then((dt) => {
         if (dt?.hash) {
           setPrice({ id: data?.id }).then(({ status }) => {
@@ -63,11 +65,11 @@ export default function MyCollectionCard({ data }: any) {
     })
     const tokenId = data?.tokenId
     setIsPrcessing(true)
-    approveNFTToMarket(tokenId)
+    approveTokenToMarket(tokenId)
       .then((dt) => {
         setTimeout(async () => {
           if (dt.hash) {
-            const tempIsNFTCanSell = await isNFTReadyToSell(tokenId)
+            const tempIsNFTCanSell = await isTokenReadyToSell(tokenId)
             setIsNFTCanSell(tempIsNFTCanSell)
             setIsPrcessing(false)
           }

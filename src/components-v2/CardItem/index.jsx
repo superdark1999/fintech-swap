@@ -11,7 +11,7 @@ import useConfigStore from 'store/configStore'
 
 import { Rate } from 'antd';
 import { SwapOutlined, StarFilled } from '@ant-design/icons'
-import useNFTServices from '../../services/NFTServices';
+import useMarketServices from 'services/web3Services/MarketServices'
 import _ from 'lodash' 
 
 const getPrice = (price)=>{
@@ -25,14 +25,10 @@ const getPrice = (price)=>{
 export default function CardItem({data}) {
   const [price,setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
-  const [, updateState] = React.useState();
-  const [configState, configAction] = useConfigStore()
-  const forceUpdate = React.useCallback(() => updateState({}), []);
-  const {getPriceNFT,approveLevelAmount,buyNFT} = useNFTServices()
-  const useFrameGif = useRef(null)
+  const  {getTokenPrice} =useMarketServices()
   useEffect(()=>{
     if(data?.tokenId){
-      getPriceNFT(data?.tokenId).then((dt)=>{
+      getTokenPrice(data?.tokenId).then((dt)=>{
         const price = getPrice(Number(dt?._hex))
         if(price!=-1){
           setLoading(false)

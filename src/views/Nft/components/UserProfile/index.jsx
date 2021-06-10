@@ -7,9 +7,9 @@ import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import SearchInput from 'components-v2/SearchInput'
 import { ButtonStyle } from 'components-v2/cart/styled'
 import  Copy from 'assets/images/copy.svg'
-import useArtworkServices from '../../../../services/ArtworkServices'; 
-import { useActiveWeb3React } from '../../../../wallet/hooks'
-import useUserStore from '../../../../store/userStore'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'; 
+import { useActiveWeb3React } from 'wallet/hooks'
+import useUserStore from 'store/userStore'
 import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
 import TabSetting from './TabSetting'

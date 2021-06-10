@@ -1,7 +1,8 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import { Select, Button } from 'antd'
 import { CollectionStyled } from './styled'
 import Cart from 'components-v2/CardItem'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
 const OptionData = ['Hangzhou', 'Ningbo', 'All items']
 const OptionSort = ['Hangzhou', 'Ningbo', 'Sort by']
 
@@ -28,6 +29,17 @@ const data = [
 function Collection() {
   const [select, setSelect] = useState('All items')
   const [selectSort, setSelectSort] = useState('Sort by')
+  const [NFTs, setNFTs] = useState([])
+  const { getNFT } = useArtworkServices()
+  useEffect(() => {
+    getNFT({
+      status: 'readyToSell',
+    }).then(({ status, data }) => {
+      if (status == 200) {
+        setNFTs(data?.data || [])
+      }
+    })
+  }, [])
 
   return (
     <CollectionStyled>
@@ -59,12 +71,8 @@ function Collection() {
         </div>
       </div>
       <div className="content-collect">
-        {data.map((item, index) => (
-          <Cart
-            width="320px"
-            height="480px"
-            data={{ contentUrl: item, id: `tempId${index}` }}
-          />
+        {NFTs.map((item) => (
+          <Cart width="320px" height="480px" data={item} />
         ))}
       </div>
       <div className="footer-section">
