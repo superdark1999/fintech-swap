@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
-import { Row, Col, Tabs } from 'antd'
+import { Row, Col, Tabs, Modal, Input, Form, Button} from 'antd';
+
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import Loadmore from 'components-v2/Loadmore'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
@@ -17,6 +18,7 @@ import OnsSaleCard from './OnSaleCard'
 import { HeartOutlined } from '@ant-design/icons'
 import { margin } from 'polished'
 import _ from 'lodash'
+import { ButtonStyle } from 'components-v2/CardItem/styled';
 
 export default function MyCollectionCard({ data }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(false)
@@ -25,6 +27,12 @@ export default function MyCollectionCard({ data }: any) {
   const {setTokenPrice,} = useMarketServices()
   const { updateNFTInfo, setPrice } = useArtworkServices()
   const history = useHistory();
+
+  const formRef = useRef()
+
+  const [lucky, setLucky] = useState()
+  const [isShowModalSetPrice, setShowModalsetPrice] = useState(false)
+
   useEffect(() => {
     if (data?.tokenId) {
       isTokenReadyToSell(data?.tokenId)
@@ -37,12 +45,16 @@ export default function MyCollectionCard({ data }: any) {
     }
   }, [data?.tokenId])
 
-  const onSellItem = () => {
+  const showModalSetProcePrice = () => {
+    setShowModalsetPrice(true)
+  }
+
+  const onSellItem = (value: any) => {
+    console.log('value: ', value)
     setIsPrcessing(true)
     const tokenId = data?.tokenId
-
     setIsPrcessing(true)
-    setTokenPrice(tokenId, 100)
+    setTokenPrice(tokenId, value.lucky)
       .then((dt) => {
         if (dt?.hash) {
           setPrice({ id: data?.id }).then(({ status }) => {
@@ -59,6 +71,7 @@ export default function MyCollectionCard({ data }: any) {
         alert('Something when wrong, please try again later.')
         setIsPrcessing(false)
       })
+      setShowModalsetPrice(false)
   }
 
   const onAllowSellItem = () => {
@@ -87,7 +100,7 @@ export default function MyCollectionCard({ data }: any) {
           {isProcessing ? (
             <ButtonBuy height="45px">Processing...</ButtonBuy>
           ) : isNFTCanSell ? (
-            <ButtonBuy height="45px" onClick={onSellItem}>
+            <ButtonBuy height="45px" onClick={showModalSetProcePrice}>
               {'Sell'}
             </ButtonBuy>
           ) : (
@@ -115,6 +128,10 @@ export default function MyCollectionCard({ data }: any) {
     } else if (status === 'reject') {
       return null
     }
+  }
+
+  const onFinish = (value: any) => {
+    setLucky(value)
   }
   return (
     <CartStyled>
@@ -159,6 +176,27 @@ export default function MyCollectionCard({ data }: any) {
           <div>{renderGroupAction(data?.status)}</div>
         </Col>
       </Row>
+
+      <Modal 
+        title="Set price" 
+        visible={isShowModalSetPrice} 
+        onCancel={()=>setShowModalsetPrice(false)} 
+        footer={null}
+        width={400}
+      >
+        <Form ref={formRef} onFinish={onSellItem}>
+            <Form.Item name="lucky" label="Price" >
+                <Input style={{ borderRadius: '16px', overflow: 'hidden'}} placeholder="Enter price"/>
+            </Form.Item>
+            <Form.Item  
+              
+              rules={[{ required: true, message: 'This Field is required!' }]}>
+              <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                <ButtonTrade htmlType="submit">Submit</ButtonTrade>
+              </div>           
+            </Form.Item>
+        </Form>
+      </Modal>
     </CartStyled>
   )
 }

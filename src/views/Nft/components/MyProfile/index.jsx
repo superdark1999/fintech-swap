@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
-import { Row, Col, Tabs} from 'antd';
+import { Row, Col, Tabs, Modal, Input, Form, Button} from 'antd';
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import SearchInput from 'components-v2/SearchInput'
 import { ButtonStyle } from 'components-v2/cart/styled'
@@ -126,8 +126,10 @@ const TabOnSale = ()=>{
 
 const TabMyCollection= ()=>{
   const { option } = useParams();
+  const formRef = useRef(null)
   console.log(option)
   const [optionChecked, setOptionChecked] = useState(option)
+
   const [renderData,setRenderData] = useState([])
   const {getNFT} = useArtworkServices()
   const { account } = useActiveWeb3React()
@@ -164,6 +166,8 @@ const TabMyCollection= ()=>{
   const onHandleOptionCheck = (e)=>{
     setOptionChecked(e.target.value)
   }
+
+
 
   return(
     <>
