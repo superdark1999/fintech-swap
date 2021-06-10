@@ -41,11 +41,11 @@ export default function CardItem({data}) {
       }).catch((err)=>{})
     }
   },[data?.tokenId])
-  console.log(configState.isUsingAnimation)
-  useEffect(()=>{
-    configState.isUsingAnimation&&useFrameGif.current.start()
-    !configState.isUsingAnimation&&useFrameGif.current.stop()
-  },[configState.isUsingAnimation])
+  // console.log(configState.isUsingAnimation)
+  // useEffect(()=>{
+  //   configState.isUsingAnimation&&useFrameGif.current.start()
+  //    !configState.isUsingAnimation&&useFrameGif.current.stop()
+  // },[configState.isUsingAnimation])
   return (
     <StyledCart src={data?.contentUrl}>
       <div className="header-card-art-work">

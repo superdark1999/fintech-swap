@@ -21,10 +21,7 @@ const UploadForm = (props) => {
   const getBase64 = (img, callback) => {
     const reader = new FileReader();
     reader.addEventListener("load", () =>{
-      props.onChange([{
-        data_url: reader.result,
-        file,
-      }])
+      props.onChange(reader.result)
       setUrlImage(reader.result)
     }
     );

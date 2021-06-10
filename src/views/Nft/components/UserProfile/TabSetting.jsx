@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import {
   Form,
   Input,
@@ -7,50 +7,73 @@ import {
 } from 'antd'
 import UploadFile from 'components-v2/Upload'
 import { ButtonStyle } from 'components-v2/cart/styled'
+import useUserServices from 'services/UserServices'
+import useUserStore from 'store/userStore'
+import { useActiveWeb3React } from 'wallet/hooks'
 
-const  TabSetting: React.FC = () => {
-  const formRef = React.useRef() as React.MutableRefObject<any>
-  const normFile = (e: any) => {
-    if (Array.isArray(e)) {
-      return e
+const  TabSetting= () => {
+  const {updateProfile} = useUserServices()
+  const [userState, userActions] = useUserStore()
+  console.log('userState: ', userState)
+  const [form] = Form.useForm()
+  const { account } = useActiveWeb3React()
+
+  useEffect(() => {
+    form.setFieldsValue(userState)
+  }, [])
+
+  // const normFile = (e) => {
+  //   if (Array.isArray(e)) {
+  //     return e
+  //   }
+  //   return e && e.fileList
+  // }
+
+  const handleUpdateProfile = (values) => {
+    const artistData = {
+      walletAddress: account,
+      coverImage: values?.coverImage,
+      avatarImage: values?.avatarImage,
+      name: values?.name,
+      socialMediaLink: values?.socialMediaLink,
+      biography: values?.biography,
     }
-    return e && e.fileList
-  }
-
-  const createArtist = (values: any) => {
-    console.log(values)
+    updateProfile(artistData).then(({data, status})=>{
+      // form.setFieldsValue({ artistName: artistData.name })
+      userActions.updateUserInfo(data?.data)
+    })
   }
 
   return (
     <Form
-      ref={formRef}
+      form={form}
       labelCol={{ span: 24 }}
       name="nest-messages"
-      onFinish={createArtist}
+      onFinish={handleUpdateProfile}
       layout="vertical"
       style={{maxWidth: 900,  margin: 'auto'}}
+      // initialValues={{userState}}
+      // defaultValue={{userState}}
   >
     <Row gutter={24}>
       <Col xl={{ span: 24 }} md={{ span: 24 }} xs={{ span: 24 }}>
         <Form.Item
-          name="cover"
+          name="coverImage"
           label="Change banner"
-          valuePropName="fileList"
-          getValueFromEvent={normFile}
+          // getValueFromEvent={normFile}
         >
-          <UploadFile maxWidth="1000px" maxHeight="200px" />
+          <UploadFile maxWidth="1000px" maxHeight="200px"/>
         </Form.Item>
       </Col>
     </Row>
     <Row gutter={24}>
       <Col xl={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
         <Form.Item
-          name="avatar"
+          name="avatarImage"
           label="Change Avatar"
-          valuePropName="fileList"
-          getValueFromEvent={normFile}
+          // getValueFromEvent={normFile}
         >
-          <UploadFile maxWidth="400px" />
+          <UploadFile maxWidth="400px"/>
         </Form.Item>
       </Col>
       <Col xl={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
@@ -64,7 +87,7 @@ const  TabSetting: React.FC = () => {
           />
         </Form.Item>
         <Form.Item
-          name="socialLink"
+          name="socialMediaLink"
           label="Social media/Portfolio link "
         >
           <Input
@@ -83,7 +106,8 @@ const  TabSetting: React.FC = () => {
         </Form.Item>
 
         <ButtonStyle
-          // type="submit"
+          type="submit"
+          // onClick={handleUpdateProfile}
           style={{ width: 200, margin: '20px auto' }}
         >
           Update
