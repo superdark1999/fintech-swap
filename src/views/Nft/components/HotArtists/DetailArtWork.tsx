@@ -20,15 +20,17 @@ import {
 } from './styled'
 import { dataHistory, columnHistory, dataBidding, columnBidding } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import useMarketServices,{MARKET_ADDRESS} from 'services/web3Services/MarketServices'; 
-import useLuckyServices from 'services/web3Services/LuckyServices'; 
+import useMarketServices, {
+  MARKET_ADDRESS,
+} from 'services/web3Services/MarketServices'
+import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
 import _ from 'lodash'
 const { TabPane } = Tabs
 
-const getPrice = (price:number) => {
+const getPrice = (price: number) => {
   if (price?.toString()?.length < 24) {
     const priceString = _.replace(price?.toString(), '000000000000000000', '')
     return Number(priceString)
@@ -45,8 +47,8 @@ const DetaiArtWork = () => {
   const [isSelled, setIsSelled] = useState(false)
   const [price, setPrice] = useState(0)
   const [userState, userActions] = useUserStore()
-  const {getTokenPrice, buyToken} = useMarketServices()
-  const {approveLevelAmount} = useLuckyServices()
+  const { getTokenPrice, buyToken } = useMarketServices()
+  const { approveLevelAmount } = useLuckyServices()
   const [isProcessing, setIsProccessing] = useState(false)
   useEffect(() => {
     getDetailNFT({ id }).then(({ status, data }) => {
@@ -72,7 +74,7 @@ const DetaiArtWork = () => {
     approveLevelAmount(MARKET_ADDRESS)
       .then(console.log)
       .catch(console.log)
-      .finally(()=>{
+      .finally(() => {
         setIsProccessing(false)
       })
   }
@@ -81,7 +83,7 @@ const DetaiArtWork = () => {
     if (!account) {
       return alert('Unblock your wallet to buy this item')
     }
-    if(account===NFTDetail.ownerWalletAddress){
+    if (account === NFTDetail.ownerWalletAddress) {
       return alert(`You can't buy your item`)
     }
     setIsProccessing(true)
@@ -92,62 +94,67 @@ const DetaiArtWork = () => {
       if (status == 200) {
         setIsSelled(true)
         setIsProccessing(false)
-    }})
-    return 
+      }
+    })
+    return
 
     const tokenId = NFTDetail?.tokenId
-    buyToken(tokenId).then((dt) => {
-      if (dt?.hash) {
-        buyItem({
-          id: id,
-          walletAddress: account,
-        }).then(({ status }) => {
-          if (status == 200) {
-            setIsSelled(true)
-            setIsProccessing(false)
-          }
-        }).catch(()=>{
-          setIsProccessing(false)
-        })
-      }
-    }).catch(()=>{
-      setIsProccessing(false)
-    })
+    buyToken(tokenId)
+      .then((dt) => {
+        if (dt?.hash) {
+          buyItem({
+            id: id,
+            walletAddress: account,
+          })
+            .then(({ status }) => {
+              if (status == 200) {
+                setIsSelled(true)
+                setIsProccessing(false)
+              }
+            })
+            .catch(() => {
+              setIsProccessing(false)
+            })
+        }
+      })
+      .catch(() => {
+        setIsProccessing(false)
+      })
   }
-  const renderFooter = ()=>{
-    if(isSelled) return null;
-    if(isProcessing){
-      return(
+  const renderFooter = () => {
+    if (isSelled) return null
+    if (isProcessing) {
+      return (
         <FooterStyled>
-          <ButtonBuyStyle onClick={onBuyItem}> 
-            Processing...
-          </ButtonBuyStyle>
+          <ButtonBuyStyle onClick={onBuyItem}>Processing...</ButtonBuyStyle>
         </FooterStyled>
       )
     }
-    if(!account){
-      return(
+    if (!account) {
+      return (
         <FooterStyled>
-            <ButtonStyle>
-              <SwapOutlined /> Aution
-            </ButtonStyle>
-            <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
-        </FooterStyled>)
-    }
-    if(userState?.isCanBuy){
-      return(
-      <FooterStyled>
           <ButtonStyle>
-              <SwapOutlined /> Aution
+            <SwapOutlined /> Aution
           </ButtonStyle>
           <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
-      </FooterStyled>)
+        </FooterStyled>
+      )
     }
-    if(!userState?.isCanBuy){
-      return(
-          <ButtonBuyStyle onClick={onApproveBuyOnMarket}>
-            Allow to buy
-          </ButtonBuyStyle>
+    if (userState?.isCanBuy) {
+      return (
+        <FooterStyled>
+          <ButtonStyle>
+            <SwapOutlined /> Aution
+          </ButtonStyle>
+          <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
+        </FooterStyled>
+      )
+    }
+    if (!userState?.isCanBuy) {
+      return (
+        <ButtonBuyStyle onClick={onApproveBuyOnMarket}>
+          Allow to buy
+        </ButtonBuyStyle>
       )
     }
   }
