@@ -27,17 +27,18 @@ export default () => {
   const history = useHistory();
   const { tab, option } = useParams();
   const onChangeTab = (e)=>{
+    console.log('e: ', e)
     if(e==='onsale'){
       history.push(`/my-profile/onsale/readyToSell`)
-    }else if(e=='mycollection'){
+    }else if(e === 'mycollection'){
       history.push(`/my-profile/mycollection/all`)
     }
-    // else if(e=='setting'){
-    //   history.push(`/my-profile/setting`)
-    // }
-    // else if(e=='history'){
-    //   history.push(`/my-profile/history`)
-    // }
+    else if(e === 'settings'){
+      history.push(`/my-profile/settings/#`)
+    }
+    else if(e === 'history'){
+      history.push(`/my-profile/history/#`)
+    }
   }
   return (
     <UserProfileStyled urlCover={userState?.coverImage}>
@@ -80,7 +81,7 @@ export default () => {
             <TabPane tab="History" key="history">
               <TableHistory/>
             </TabPane>
-            <TabPane tab="Settings" key="setting">
+            <TabPane tab="Settings" key="settings">
               <TabSetting userState={userState}/>
             </TabPane>
           </Tabs>

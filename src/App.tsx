@@ -105,6 +105,12 @@ const App: React.FC = () => {
             <Route path="/my-profile/:tab/:option">
               <MyProfile />
             </Route>
+            <Route path="/user-profile/:id/:tab">
+              <UserProfile />
+            </Route>
+            <Route path="/my-profile/:tab">
+              <MyProfile />
+            </Route>
             <Route path="/swap">
               <TradeArtWork />
             </Route>
