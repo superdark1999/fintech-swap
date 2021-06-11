@@ -26,68 +26,65 @@ import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
+import {getPrice} from 'utils'
+
+
 import _ from 'lodash'
 const { TabPane } = Tabs
 
-const getPrice = (price:number) => {
-  const priceString = Number(price)/Number(1e+18)
-  return Number(priceString)
-}
 
 const DetaiArtWork = ({id}:any) => {
-  const { getDetailNFT, buyItem } = useArtworkServices()
-  const { account } = useActiveWeb3React()
-  const [NFTDetail, setNFTDetail] = useState<any>({})
-  const [loading, setLoading] = useState(true)
-  const [isSelled, setIsSelled] = useState(false)
-  const [price, setPrice] = useState(0)
-  const [userState, userActions] = useUserStore()
-  const {getTokenPrice, buyToken, bidToken, getBidsByTokenId, updateBidPrice} = useMarketServices()
-  const {approveLevelAmount} = useLuckyServices()
-  const [isProcessing, setIsProccessing] = useState(false)
-  const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
-  const [isReadyBid, setIsReadyBid] = useState(false)
-  useEffect(() => {
-    if(account){
-    getDetailNFT({ id }).then(({ status, data }) => {
-      if (status == 200) {
-        if (data?.data?.tokenId) {
-          if(account){
-            getBidsByTokenId(data?.data?.tokenId).then(data=>{
-              const bidsData=data?.map((item:any)=>{
-                return {
-                  key: item?.[1]||'',
-                  address : item?.[0]||'',
+    const { getDetailNFT, buyItem } = useArtworkServices()
+    const { account } = useActiveWeb3React()
+    const [NFTDetail, setNFTDetail] = useState<any>({})
+    const [loading, setLoading] = useState(true)
+    const [isSelled, setIsSelled] = useState(false)
+    const [price, setPrice] = useState(0)
+    const [userState, userActions] = useUserStore()
+    const {getTokenPrice, buyToken} = useMarketServices()
+    const {approveLevelAmount} = useLuckyServices()
+    const [isProcessing, setIsProccessing] = useState(false)
+    const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
+    const { checkApproveLevelAmount } = useLuckyServices()
+    useEffect(() => {
+        if(account){
+        getDetailNFT({ id }).then(({ status, data }) => {
+        if (status == 200) {
+            if (data?.data?.tokenId) {
+            getTokenPrice(data?.data?.tokenId)
+                .then((data) => {
+                const price = getPrice(data?._hex)
+                if (price != -1) {
+                    setLoading(false)
+                    setPrice(price)
                 }
-              })||[]
-              setIsReadyBid(!!bidsData.find((it:any)=>it.address==account))
-          })
-          }
-          getTokenPrice(data?.data?.tokenId)
-            .then((data) => {
-              const price = getPrice(data?._hex)
-              console.log(data)
-              if (price != -1) {
-                setLoading(false)
-                setPrice(price)
-              }
-            })
-            .catch((err) => {})
+                })
+                .catch((err) => {})
+            }
+            setNFTDetail(data?.data)
+            setLoading(false)
         }
-        setNFTDetail(data?.data)
-        setLoading(false)
-      }
-    })
-   }
-  }, [])
+        })
+    }
+    }, [])
+
   const onApproveBuyOnMarket = () => {
     setIsProccessing(true)
     approveLevelAmount(MARKET_ADDRESS)
-      .then(console.log)
-      .catch(console.log)
-      .finally(()=>{
+      .then(_.debounce(()=>{
+        checkApproveLevelAmount(MARKET_ADDRESS)
+        .then((dt: any) => {
+          const allowance = Number(dt?._hex || 0) > 0
+          userActions.updateUserInfo({isCanBuy:allowance})
+        })
+        .catch(() => {
+            userActions.updateUserInfo({isCanBuy:false})
+        })
         setIsProccessing(false)
-      })
+    },25000))
+      .catch(()=>{
+        setIsProccessing(false)
+    })
   }
 
   const onBuyItem = () => {
@@ -117,6 +114,8 @@ const DetaiArtWork = ({id}:any) => {
       setIsProccessing(false)
     })
   }
+
+
   const renderFooter = ()=>{
     if(isSelled) return null;
     if(isProcessing){

@@ -26,13 +26,9 @@ import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
+import {getPrice} from 'utils' 
 import _ from 'lodash'
 const { TabPane } = Tabs
-
-const getPrice = (price:number) => {
-  const priceString = Number(price)/Number(1e+18)
-  return Number(priceString)
-}
 
 const DetaiArtWork = ({id}:any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
@@ -117,17 +113,6 @@ const DetaiArtWork = ({id}:any) => {
   }
 
   const onBuyItem = () => {
-    return buyItem({
-      id: id,
-      walletAddress: account,
-    }).then(({ status }) => {
-      if (status == 200) {
-        setIsSelled(true)
-        setIsProccessing(false)
-      }
-    }).catch(()=>{
-      setIsProccessing(false)
-    })
     if (!account) {
       return alert('Unblock your wallet to buy this item')
     }

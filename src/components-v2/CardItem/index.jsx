@@ -12,15 +12,8 @@ import useConfigStore from 'store/configStore'
 import { Rate } from 'antd';
 import { SwapOutlined, StarFilled } from '@ant-design/icons'
 import useMarketServices from 'services/web3Services/MarketServices'
+import {getPrice} from 'utils'
 import _ from 'lodash' 
-
-const getPrice = (price)=>{
-  if(price?.toString()?.length<24){
-    const priceString = _.replace(price?.toString(),'000000000000000000','')
-    return Number(priceString)
-  }
-  return -1
-}
 
 export default function CardItem({data}) {
   const [price,setPrice] = useState(0)

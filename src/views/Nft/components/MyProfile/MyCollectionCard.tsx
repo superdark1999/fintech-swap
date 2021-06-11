@@ -64,9 +64,8 @@ export default function MyCollectionCard({ data }: any) {
     setTokenPrice(tokenId, value.lucky)
       .then((dt) => {
         if (dt?.hash) {
-          setPrice({ id: data?.id }).then(({ status }) => {
+          setPrice({ id: data?.id, NFTType:'buy'  }).then(({ status }) => {
             if (status == 200) {
-              console.log('runnnnn')
               history.push('/my-profile/mycollection/checkingToSell')
             } else {
               alert('Something when wrong, please try again later.')
@@ -98,12 +97,30 @@ export default function MyCollectionCard({ data }: any) {
       .catch((err) => {
         alert('Something wrong, please try again later.')
         setIsPrcessing(false)
-      })
+    })
   }
   const onSubmitRuleAuction = (value: any) => {
-    console.log('value: ', value)
+    setIsPrcessing(true)
+    const tokenId = data?.tokenId
+    setIsPrcessing(true)
+    setTokenPrice(tokenId, value.price)
+      .then((dt) => {
+        if (dt?.hash) {
+          setPrice({ id: data?.id,NFTType:'auction' }).then(({ status }) => {
+            if (status == 200) {
+              history.push('/my-profile/mycollection/checkingToSell')
+            } else {
+              alert('Something when wrong, please try again later.')
+              setIsPrcessing(false)
+            }
+          })
+        }
+      })
+      .catch((err) => {
+        alert('Something when wrong, please try again later.')
+        setIsPrcessing(false)
+      })
     setRuleAuctionModal(false)
-    alert('Set rule auction successfully')
   }
   const renderGroupAction = (status: any) => {
     if (status === 'approved') {
@@ -113,64 +130,24 @@ export default function MyCollectionCard({ data }: any) {
           {isProcessing ? (
             <ButtonBuy height="45px">Processing...</ButtonBuy>
           ) : isNFTCanSell ? (
-            <ButtonBuy height="45px" onClick={showModalSetProcePrice}>
-              {'Sell'}
-            </ButtonBuy>
+            <>
+              <ButtonBuy height="45px" onClick={showModalSetProcePrice}>
+                Sell
+              </ButtonBuy>
+              <ButtonBuy height="45px" onClick={() => setRuleAuctionModal(true)}>
+                Auction
+              </ButtonBuy>
+            </>
           ) : (
             <ButtonBuy height="45px" onClick={onAllowSellItem}>
               {'Allow to Sell'}
             </ButtonBuy>
           )}
-          <ButtonBuy height="45px" onClick={() => setRuleAuctionModal(true)}>
-            Auction
-          </ButtonBuy>
           {/* <ButtonBuy height="45px">Swap</ButtonBuy>
               <ButtonBuy height="45px">Public swap</ButtonBuy> */}
           <ButtonBuy borderRadius="100px" width="40px" height="45px">
             <img src={QRCode} />
           </ButtonBuy>
-          <Modal
-            title="Set price"
-            visible={ruleAuctionModal}
-            onCancel={() => setRuleAuctionModal(false)}
-            footer={null}
-            width={400}
-          >
-            <Form ref={formRef} onFinish={onSubmitRuleAuction}>
-              <Form.Item
-                label="Price"
-                name="price"
-                rules={[{ required: true, message: 'This Field is required' }]}
-              >
-                <Input
-                  style={{ borderRadius: '16px', overflow: 'hidden' }}
-                  placeholder="Enter NFT auction price"
-                />
-              </Form.Item>
-              <Form.Item
-                name="stepPrice"
-                label="Step Price"
-                rules={[{ required: true, message: 'This Field is required' }]}
-              >
-                <Input
-                  style={{ borderRadius: '16px', overflow: 'hidden' }}
-                  placeholder="Enter step price of NFT"
-                />
-              </Form.Item>
-              <p>* Note:Step price is</p>
-              <Form.Item>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <ButtonTrade htmlType="submit">Submit</ButtonTrade>
-                </div>
-              </Form.Item>
-            </Form>
-          </Modal>
         </div>
       )
     } else if (status === 'pending') {
@@ -235,9 +212,6 @@ export default function MyCollectionCard({ data }: any) {
         width={400}
       >
         <Form ref={formRef} onFinish={onSellItem}>
-          <Form.Item label="Type" name="type">
-            <Radio.Group options={options} />
-          </Form.Item>
           <Form.Item
             name="lucky"
             label="Price"
@@ -262,6 +236,49 @@ export default function MyCollectionCard({ data }: any) {
           </Form.Item>
         </Form>
       </Modal>
+
+      <Modal
+            title="Set price"
+            visible={ruleAuctionModal}
+            onCancel={() => setRuleAuctionModal(false)}
+            footer={null}
+            width={400}
+          >
+            <Form ref={formRef} onFinish={onSubmitRuleAuction}>
+              <Form.Item
+                label="Price"
+                name="price"
+                rules={[{ required: true, message: 'This Field is required' }]}
+              >
+                <Input
+                  style={{ borderRadius: '16px', overflow: 'hidden' }}
+                  placeholder="Enter NFT auction price"
+                />
+              </Form.Item>
+              <Form.Item
+                name="stepPrice"
+                label="Step Price"
+                rules={[{ required: true, message: 'This Field is required' }]}
+              >
+                <Input
+                  style={{ borderRadius: '16px', overflow: 'hidden' }}
+                  placeholder="Enter step price of NFT"
+                />
+              </Form.Item>
+              <p>* Note:Step price is</p>
+              <Form.Item>
+                <div
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <ButtonTrade htmlType="submit">Submit</ButtonTrade>
+                </div>
+              </Form.Item>
+            </Form>
+          </Modal>
     </CartStyled>
   )
 }
