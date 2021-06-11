@@ -20,8 +20,10 @@ import {
 } from './styled'
 import { dataHistory, columnHistory} from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import useMarketServices,{MARKET_ADDRESS} from 'services/web3Services/MarketServices'; 
-import useLuckyServices from 'services/web3Services/LuckyServices'; 
+import useMarketServices, {
+  MARKET_ADDRESS,
+} from 'services/web3Services/MarketServices'
+import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
@@ -86,7 +88,7 @@ const DetaiArtWork = () => {
     approveLevelAmount(MARKET_ADDRESS)
       .then(console.log)
       .catch(console.log)
-      .finally(()=>{
+      .finally(() => {
         setIsProccessing(false)
       })
   }
@@ -95,7 +97,7 @@ const DetaiArtWork = () => {
     if (!account) {
       return alert('Unblock your wallet to buy this item')
     }
-    if(account===NFTDetail.ownerWalletAddress){
+    if (account === NFTDetail.ownerWalletAddress) {
       return alert(`You can't buy your item`)
     }
     setIsProccessing(true)
@@ -151,29 +153,50 @@ const DetaiArtWork = () => {
           setIsProccessing(false)
         })
       }
-    }).catch(()=>{
-      setIsProccessing(false)
     })
+    return
+
+    const tokenId = NFTDetail?.tokenId
+    buyToken(tokenId)
+      .then((dt) => {
+        if (dt?.hash) {
+          buyItem({
+            id: id,
+            walletAddress: account,
+          })
+            .then(({ status }) => {
+              if (status == 200) {
+                setIsSelled(true)
+                setIsProccessing(false)
+              }
+            })
+            .catch(() => {
+              setIsProccessing(false)
+            })
+        }
+      })
+      .catch(() => {
+        setIsProccessing(false)
+      })
   }
-  const renderFooter = ()=>{
-    if(isSelled) return null;
-    if(isProcessing){
-      return(
+  const renderFooter = () => {
+    if (isSelled) return null
+    if (isProcessing) {
+      return (
         <FooterStyled>
-          <ButtonBuyStyle onClick={onBuyItem}> 
-            Processing...
-          </ButtonBuyStyle>
+          <ButtonBuyStyle onClick={onBuyItem}>Processing...</ButtonBuyStyle>
         </FooterStyled>
       )
     }
-    if(!account){
-      return(
+    if (!account) {
+      return (
         <FooterStyled>
-            <ButtonStyle>
-              <SwapOutlined /> Aution
-            </ButtonStyle>
-            <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
-        </FooterStyled>)
+          <ButtonStyle>
+            <SwapOutlined /> Aution
+          </ButtonStyle>
+          <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
+        </FooterStyled>
+      )
     }
     if(userState?.isCanBuy){
       return(
@@ -182,13 +205,14 @@ const DetaiArtWork = () => {
               <SwapOutlined /> Aution
           </ButtonStyle>
           <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
-      </FooterStyled>)
+        </FooterStyled>
+      )
     }
-    if(!userState?.isCanBuy){
-      return(
-          <ButtonBuyStyle onClick={onApproveBuyOnMarket}>
-            Allow to buy
-          </ButtonBuyStyle>
+    if (!userState?.isCanBuy) {
+      return (
+        <ButtonBuyStyle onClick={onApproveBuyOnMarket}>
+          Allow to buy
+        </ButtonBuyStyle>
       )
     }
   }

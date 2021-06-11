@@ -56,10 +56,12 @@ export default function CardItem({data}) {
           </div>
           <div className="wrapper-info">
           <div className="title">
-            <div className="name-artist">
-              LuckySwapStudio {' '}
-              <img src={Checkmark} alt=""/>
-            </div>
+            <Link to="/user-profile/:id/onsale/readyToSell">
+              <div className="name-artist">
+                LuckySwapStudio {' '}
+                <img src={Checkmark} alt=""/>
+              </div>
+            </Link>
             <div className="copy">
               <img src={Copy} alt=""/> Copy
             </div>

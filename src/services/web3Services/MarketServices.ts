@@ -37,9 +37,6 @@ export default function MarketService(){
             })
         },[marketContract])
 
-<<<<<<< Updated upstream
-    return {cancelSellToken,getTokenPrice,setTokenPrice, buyToken}
-=======
         const getBidsByUser = useCallback(async(address:string|undefined)=>{
             return marketContract.getUserBids(address)
         },[marketContract])
@@ -79,5 +76,4 @@ export default function MarketService(){
         },[marketContract])
 
     return {cancelSellToken,getTokenPrice,setTokenPrice, buyToken, getBidsByUser,getBidsByTokenId,bidToken,updateBidPrice,cancelBidToken,sellTokenToBidUser}
->>>>>>> Stashed changes
 }

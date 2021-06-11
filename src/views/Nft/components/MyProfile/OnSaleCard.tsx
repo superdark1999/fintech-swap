@@ -5,7 +5,7 @@ import Checkmark from 'assets/images/checkmark.svg'
 import { Row, Col, Tabs} from 'antd';
 import Token from 'assets/images/token.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
-import useNFTServices from '../../../../services/NFTServices'; 
+import usrMarketServices from 'services/web3Services/MarketServices'; 
 import _ from 'lodash'
 
 const getPrice = (price:number)=>{
@@ -18,11 +18,11 @@ const getPrice = (price:number)=>{
 export default function OnSaleCard({data,}:any){
     const [loading, setLoading] = useState(true)
     const [price,setPrice] = useState(0)
-    const { getPriceNFT} = useNFTServices()
+    const { getTokenPrice} = usrMarketServices()
   
     useEffect(()=>{
       if(data?.tokenId){
-        getPriceNFT(data?.tokenId).then(data=>{
+        getTokenPrice(data?.tokenId).then(data=>{
           const price = getPrice(Number(data?._hex))
           if(price!=-1){
             setLoading(false)
