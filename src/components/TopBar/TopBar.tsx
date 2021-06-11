@@ -120,25 +120,33 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
               <Web3Status />
             </div>
             {account&&(
-              <Link to="/my-profile/onsale/readyToSell">
-                <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" className="connect-wallet view-more">
+              <div  className="view-more">
+                <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" >
                   <img src={ViewMore} />
-                  {/* <div className="menu">
-                    <div className="menu-item">
-                      My profile
-                    </div>
-                    <div className="menu-item">
-                      My collection
-                    </div>
-                    <div className="menu-item">
-                      Settings
-                    </div>
-                    <div className="menu-item">
-                      Log out
-                    </div>
-                  </div> */}
                 </ButtonBuy>
-               </Link>
+                <div className="menu">
+                    <Link to="/my-profile/onsale/readyToSell">
+                      <div className="menu-item">
+                        My profile
+                      </div>
+                    </Link>
+                    <Link to="/my-profile/mycollection/all">
+                      <div className="menu-item">
+                        My collection
+                      </div>
+                    </Link>
+                    <Link to="/my-profile/settings">
+                      <div className="menu-item">
+                        Settings
+                      </div>
+                    </Link>
+                    {/* <Link to="/my-profile/login"> */}
+                      <div className="menu-item">
+                        Log out
+                      </div>
+                    {/* </Link> */}
+                  </div>
+               </div>
             )}
           </div>
     </StyledTopBar>
@@ -189,22 +197,64 @@ const StyledTopBar = styled.div`
       @media (max-width: 756px) {
         display: none;
       }
-      .connect-wallet{
-        &.view-more {
-          .menu{
-            display: none;
-            :hover{
-              display: block;
-              }
-            }
-          }
-        }
-      margin-right:10px;
       @media (max-width:756px){
         display: none;
       }
     }
   }
+  .view-more {
+    position: relative;
+    margin-left: 12px;
+    margin-right: 12px;
+    .menu{
+      display: none;
+    }
+    /* .menu {
+      width: 120px;
+      display: block;
+      position: absolute;
+      background-color: #ffffff;
+      color: #333333;
+      bottom: -100%;
+      left: -200%;
+      border: 1px solid #E7EBEF;
+      box-sizing: border-box;
+      box-shadow: 0px 24px 48px rgb(35 35 35 / 8%);
+      border-radius: 8px;
+      .menu-item {
+          border: 0.5px solid #E7EBEF;
+          padding: 16px 24px;
+        }
+      } */
+    :hover {
+      .menu{
+        width: 200px;
+        display: block;
+        position: absolute;
+        background-color: #ffffff;
+        color: #333333;
+        bottom: -235px;
+        left: -160px;
+        border: 1px solid #E7EBEF;
+        box-sizing: border-box;
+        box-shadow: 0px 24px 48px rgb(35 35 35 / 8%);
+        border-radius: 8px;
+        .menu-item {
+          border-bottom: 0.5px solid #E7EBEF;
+          padding: 16px 24px;
+          font-weight: 500;
+          font-size: 16px;
+          color: #333333;
+          :hover {
+            background: linear-gradient(270deg,#19A3DD -16.5%,#BADEB7 117.25%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+        }
+      }
+     }
+    }
+
   .header-wrapper {
     width: 100vw;
     background: #ffffff;
