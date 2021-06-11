@@ -13,6 +13,10 @@ import useUserStore from '../../../../store/userStore'
 import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
 import TabSetting from './TabSetting'
+<<<<<<< Updated upstream
+=======
+import TableHistory from './TableHistory'
+>>>>>>> Stashed changes
 
 import { HeartOutlined } from '@ant-design/icons';
 import {useParams,useHistory} from "react-router-dom";
@@ -126,7 +130,11 @@ const TabOnSale = ()=>{
 
 const TabMyCollection= ()=>{
   const { option } = useParams();
+<<<<<<< Updated upstream
   console.log(option)
+=======
+  const formRef = useRef(null)
+>>>>>>> Stashed changes
   const [optionChecked, setOptionChecked] = useState(option)
   const [renderData,setRenderData] = useState([])
   const {getNFT} = useArtworkServices()

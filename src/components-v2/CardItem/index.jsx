@@ -43,11 +43,11 @@ export default function CardItem({data}) {
   //    !configState.isUsingAnimation&&useFrameGif.current.stop()
   // },[configState.isUsingAnimation])
   return (
-    <Link to={`/artwork/detail/${data?.id}`} className="create-nav">
+    <Link to={`/artwork/detail/${data?.NFTType||'sell'}/${data?.id}`} className="create-nav">
       <StyledCart src={data?.contentUrl}>  
         <div className="card-art-work">                     
           <div className="wrapper-image">  
-            <div className="gradient-background"><div className="title">CRYPTOCARD 001 - ETH...</div></div>   
+            <div className="gradient-background"><div className="title">{data?.title}</div></div>   
             <div className="header-card-art-work">
               <div className="date-time">02h 31m 04s left 🔥 </div>
             </div>

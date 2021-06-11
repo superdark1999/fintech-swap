@@ -34,10 +34,9 @@ const getPrice = (price:number) => {
   return Number(priceString)
 }
 
-const DetaiArtWork = () => {
+const DetaiArtWork = ({id}:any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
   const { account } = useActiveWeb3React()
-  const { id } = useParams()
   const [NFTDetail, setNFTDetail] = useState<any>({})
   const [loading, setLoading] = useState(true)
   const [isSelled, setIsSelled] = useState(false)

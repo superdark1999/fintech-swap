@@ -34,10 +34,9 @@ const getPrice = (price:number) => {
   return Number(priceString)
 }
 
-const DetaiArtWork = () => {
+const DetaiArtWork = ({id}:any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
   const { account } = useActiveWeb3React()
-  const { id } = useParams()
   const [NFTDetail, setNFTDetail] = useState<any>({})
   const [loading, setLoading] = useState(true)
   const [isSelled, setIsSelled] = useState(false)
@@ -90,45 +89,8 @@ const DetaiArtWork = () => {
         setIsProccessing(false)
       })
   }
-  const onBidItem = (e:any)=>{
-
-    if (!account) {
-      return alert('Unblock your wallet to buy this item')
-    }
-    if(account===NFTDetail.ownerWalletAddress){
-      return alert(`You can't buy your item`)
-    }
-    setIsProccessing(true)
-    if(isReadyBid){
-      const {lucky} = e;
-      updateBidPrice(NFTDetail?.tokenId,lucky).then((data)=>{
-        console.log(data)
-      }).catch(err=>{
-        alert(err?.message||'')
-      }) 
-    }else{
-      const {lucky} = e;
-      bidToken(NFTDetail?.tokenId,lucky).then((data)=>{
-  
-      }).catch(err=>{
-        alert(err?.message||'')
-      }) 
-    }
-    setIsShowModalSetPrice(false)
-  }
 
   const onBuyItem = () => {
-    return buyItem({
-      id: id,
-      walletAddress: account,
-    }).then(({ status }) => {
-      if (status == 200) {
-        setIsSelled(true)
-        setIsProccessing(false)
-      }
-    }).catch(()=>{
-      setIsProccessing(false)
-    })
     if (!account) {
       return alert('Unblock your wallet to buy this item')
     }
@@ -160,7 +122,7 @@ const DetaiArtWork = () => {
     if(isProcessing){
       return(
         <FooterStyled>
-          <ButtonBuyStyle onClick={onBuyItem}> 
+          <ButtonBuyStyle> 
             Processing...
           </ButtonBuyStyle>
         </FooterStyled>
@@ -169,18 +131,12 @@ const DetaiArtWork = () => {
     if(!account){
       return(
         <FooterStyled>
-            <ButtonStyle>
-              <SwapOutlined /> Aution
-            </ButtonStyle>
             <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
         </FooterStyled>)
     }
     if(userState?.isCanBuy){
       return(
       <FooterStyled>
-          <ButtonStyle onClick={()=>setIsShowModalSetPrice(true)}>
-              <SwapOutlined /> Aution
-          </ButtonStyle>
           <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
       </FooterStyled>)
     }
@@ -286,9 +242,6 @@ const DetaiArtWork = () => {
                 scroll={{ x: 'calc(300px + 50%)', y: 240 }}
               />
             </TabPane>
-            <TabPane tab="Bidding" key="3">
-              <BiddingTable NFTInfo = {NFTDetail}/> 
-            </TabPane>
             <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">
                 <ReviewStyled>
@@ -376,7 +329,7 @@ const DetaiArtWork = () => {
             footer={null}
             width={400}
           >
-            <Form onFinish={onBidItem}>
+            <Form onFinish={()=>{}}>
                 <Form.Item 
                   name="lucky" 
                   label="Price" 
@@ -395,63 +348,6 @@ const DetaiArtWork = () => {
         </DetailStyled>
       </Col>
     </Row>
-  )
-}
-
-const BiddingTable = ({NFTInfo}:any)=>{
-  const {getBidsByTokenId} = useMarketServices()
-  const [bids, setBids] = useState([])
-  const { account } = useActiveWeb3React()
-  useEffect(()=>{
-    if(NFTInfo?.tokenId){
-      getBidsByTokenId(NFTInfo?.tokenId).then(data=>{
-        const bidsData=data.map((item:any)=>{
-          return {
-            key: item?.[1]||'',
-            address : item?.[0]||'aaaa',
-            price: Number(item?.[1]?._hex)/Number(1e+18)
-          }
-        })
-        setBids(bidsData)
-      })
-    }
-  },[])
-  const columnBidding = NFTInfo?.ownerWalletAddress===account?[{
-    title: 'Address',
-    dataIndex: 'address',
-    width: 100,
-    render: (address:String)=><a className="value" href="/" target="_blank">{address}</a>
-  },
-  {
-    title: 'Price',
-    dataIndex: 'price',
-    width: 100,
-    render: (price:Number)=> <div className="token">{price} LUCKY<img src={Token} alt="" /></div>
-  },
-  {
-    title: 'Action',
-    dataIndex: 'action',
-    render: (_:any,record:any) => (<ButtonTrade onClick={(check)=>{console.log(record)}} >Confirm</ButtonTrade>),
-    width: 100,
-  }]:[{
-    title: 'Address',
-    dataIndex: 'address',
-    width: 150,
-    render: (address:String)=><a className="value" href="/" target="_blank">{address}</a>
-  },
-  {
-    title: 'Price',
-    dataIndex: 'price',
-    width: 150,
-    render: (price:Number)=> <div className="token">{price} LUCKY<img src={Token} alt="" /></div>
-  }]
-  return(
-    <Table
-      columns={columnBidding}
-      dataSource={bids}
-      size="middle"
-      scroll={{ x: 300, y: 300 }}
-    />
   )
 }
 

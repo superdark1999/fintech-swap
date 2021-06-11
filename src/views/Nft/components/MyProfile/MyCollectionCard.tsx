@@ -12,9 +12,22 @@ import useNFTServices from '../../../../services/NFTServices'
 import { useActiveWeb3React } from '../../../../wallet/hooks'
 import OnsSaleCard from './OnSaleCard'
 
+<<<<<<< Updated upstream
 import { HeartOutlined } from '@ant-design/icons'
 import { margin } from 'polished'
 import _ from 'lodash'
+=======
+const options = [
+  {
+    label: "Aution",
+    value: "aution",
+  },
+  {
+    label: "Sell",
+    value: "sell",
+  }
+]
+>>>>>>> Stashed changes
 
 export default function MyCollectionCard({ data }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(false)
@@ -34,7 +47,25 @@ export default function MyCollectionCard({ data }: any) {
     }
   }, [data?.tokenId])
 
+<<<<<<< Updated upstream
   const onSellItem = () => {
+=======
+  const showModalSetProcePrice = () => {
+    setShowModalsetPrice(true)
+  }
+
+  const onSellItem = (value: any) => {
+    setPrice({ id: data?.id,NFTType:value.type }).then(({ status }) => {
+      if (status == 200) {
+        console.log('runnnnn')
+        history.push('/my-profile/mycollection/checkingToSell')
+      }else{
+        alert('Something when wrong, please try again later.')
+        setIsPrcessing(false)
+      }
+    })
+    return
+>>>>>>> Stashed changes
     setIsPrcessing(true)
     const tokenId = data?.tokenId
 
@@ -42,14 +73,19 @@ export default function MyCollectionCard({ data }: any) {
     setPriceForNFT(tokenId, 100)
       .then((dt) => {
         if (dt?.hash) {
-          setPrice({ id: data?.id }).then(({ status }) => {
+          setPrice({ id: data?.id,NFTType:value.type }).then(({ status }) => {
             if (status == 200) {
               setIsPrcessing(false)
             }
           })
         }
+<<<<<<< Updated upstream
       })
       .finally(() => {
+=======
+      }).catch((err) => {
+        alert(err?.message||'Something when wrong, please try again later.')
+>>>>>>> Stashed changes
         setIsPrcessing(false)
       })
   }
@@ -158,6 +194,38 @@ export default function MyCollectionCard({ data }: any) {
           <div>{renderGroupAction(data?.status)}</div>
         </Col>
       </Row>
+<<<<<<< Updated upstream
+=======
+
+      <Modal 
+        title="Set price" 
+        visible={isShowModalSetPrice} 
+        onCancel={()=>setShowModalsetPrice(false)} 
+        footer={null}
+        width={400}
+      >
+        <Form ref={formRef} onFinish={onSellItem}>
+            <Form.Item label="Type" name="type" >
+              <Radio.Group
+                options={options}
+              />
+            </Form.Item>
+            <Form.Item 
+              name="lucky" 
+              label="Price" 
+              rules={[{ required: true, message: 'This Field is required!' }]}
+            >
+                <Input style={{ borderRadius: '16px', overflow: 'hidden'}} placeholder="Enter price"/>
+            </Form.Item>
+
+            <Form.Item>
+              <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                <button type="submit">Submit</button>
+              </div>           
+            </Form.Item>
+        </Form>
+      </Modal>
+>>>>>>> Stashed changes
     </CartStyled>
   )
 }
