@@ -29,7 +29,7 @@ export default () => {
   const onChangeTab = (e)=>{
     console.log('e: ', e)
     if(e==='onsale'){
-      history.push(`/my-profile/onsale/readyToSell`)
+      history.push(`/my-profile/onsale/all`)
     }else if(e === 'mycollection'){
       history.push(`/my-profile/mycollection/all`)
     }

@@ -21,7 +21,7 @@ import Nft from './views/Nft'
 import getLibrary from './wallet/utils/getLibrary'
 import { Layout} from 'antd';
 import CreateArtWork from 'views/Nft/components/CreateArtWork/index'
-import DetailArtWork from 'views/Nft/components/HotArtists/DetailArtWork'
+import DetailArtWork from 'views/Nft/components/DetailArtWork'
 import TradeArtWork from 'views/Nft/components/TradeArtwork'
 import UserProfile from 'views/Nft/components/UserProfile'
 import 'antd/dist/antd.css';
@@ -96,7 +96,7 @@ const App: React.FC = () => {
             <Route path="/create/artwork">
               <CreateArtWork />
             </Route>
-            <Route path="/artwork/detail/:id">
+            <Route path="/artwork/detail/:type/:id">
               <DetailArtWork />
             </Route>
             <Route path="/user-profile/:id/:tab/:option">

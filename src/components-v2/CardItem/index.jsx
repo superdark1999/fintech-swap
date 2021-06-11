@@ -12,15 +12,8 @@ import useConfigStore from 'store/configStore'
 import { Rate } from 'antd';
 import { SwapOutlined, StarFilled } from '@ant-design/icons'
 import useMarketServices from 'services/web3Services/MarketServices'
+import {getPrice} from 'utils'
 import _ from 'lodash' 
-
-const getPrice = (price)=>{
-  if(price?.toString()?.length<24){
-    const priceString = _.replace(price?.toString(),'000000000000000000','')
-    return Number(priceString)
-  }
-  return -1
-}
 
 export default function CardItem({data}) {
   const [price,setPrice] = useState(0)
@@ -43,11 +36,11 @@ export default function CardItem({data}) {
   //    !configState.isUsingAnimation&&useFrameGif.current.stop()
   // },[configState.isUsingAnimation])
   return (
-    <Link to={`/artwork/detail/${data?.id}`} className="create-nav">
+    <Link to={`/artwork/detail/${data?.NFTType||'buy'}/${data?.id}`} className="create-nav">
       <StyledCart src={data?.contentUrl}>  
         <div className="card-art-work">                     
           <div className="wrapper-image">  
-            <div className="gradient-background"><div className="title">CRYPTOCARD 001 - ETH...</div></div>   
+            <div className="gradient-background"><div className="title">{data?.title}</div></div>   
             <div className="header-card-art-work">
               <div className="date-time">02h 31m 04s left 🔥 </div>
             </div>

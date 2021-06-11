@@ -14,15 +14,9 @@ import useNFTServices, { MARKET_ADDRESS } from 'services/NFTServices'
 import useMarketServices,{MARKET_ADDRESS} from 'services/web3Services/MarketServices'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
+import {getPrice}  from 'utils'
 import _ from 'lodash'
 import ReactFreezeframe from 'react-freezeframe'
-const getPrice = (price) => {
-  if (price?.toString()?.length < 24) {
-    const priceString = _.replace(price?.toString(), '000000000000000000', '')
-    return Number(priceString)
-  }
-  return -1
-}
 export default function Cart({ data }) {
   const [loading, setLoading] = useState(true)
   const [price, setPrice] = useState(0)

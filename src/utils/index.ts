@@ -34,3 +34,8 @@ export function isAddress(value: any): string | false {
 export function calculateGasMargin(value: BigNumber): BigNumber {
   return value.mul(BigNumber.from(10000).add(BigNumber.from(1000))).div(BigNumber.from(10000))
 }
+
+export const getPrice = (price:number) => {
+  const priceString = Number(price)/Number(1e+18)
+  return Number(priceString)
+}

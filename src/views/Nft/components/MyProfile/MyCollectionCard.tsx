@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
-import { Row, Col, Tabs, Modal, Input, Form, Button, Radio} from 'antd';
+import { Row, Col, Tabs, Modal, Input, Form, Button, Radio } from 'antd'
 
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import Loadmore from 'components-v2/Loadmore'
@@ -11,29 +11,30 @@ import QRCode from 'assets/images/qr-code.svg'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices from 'services/web3Services/MarketServices'
 import useNFTServices from 'services/web3Services/NFTServices'
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom'
 import { useActiveWeb3React } from '../../../../wallet/hooks'
 import OnsSaleCard from './OnSaleCard'
 import _ from 'lodash'
-
+import { Alert } from 'antd'
 const options = [
   {
-    label: "a",
-    value: "a",
+    label: 'a',
+    value: 'a',
   },
   {
-    label: "b",
-    value: "b",
-  }
+    label: 'b',
+    value: 'b',
+  },
 ]
 
 export default function MyCollectionCard({ data }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(false)
   const [isProcessing, setIsPrcessing] = useState(true)
-  const { isTokenReadyToSell, approveTokenToMarket } =useNFTServices()
-  const {setTokenPrice,} = useMarketServices()
+  const [ruleAuctionModal, setRuleAuctionModal] = useState(false)
+  const { isTokenReadyToSell, approveTokenToMarket } = useNFTServices()
+  const { setTokenPrice } = useMarketServices()
   const { updateNFTInfo, setPrice } = useArtworkServices()
-  const history = useHistory();
+  const history = useHistory()
 
   const formRef = useRef()
 
@@ -57,28 +58,27 @@ export default function MyCollectionCard({ data }: any) {
   }
 
   const onSellItem = (value: any) => {
-    console.log('value: ', value)
     setIsPrcessing(true)
     const tokenId = data?.tokenId
     setIsPrcessing(true)
     setTokenPrice(tokenId, value.lucky)
       .then((dt) => {
         if (dt?.hash) {
-          setPrice({ id: data?.id }).then(({ status }) => {
+          setPrice({ id: data?.id, NFTType:'buy'  }).then(({ status }) => {
             if (status == 200) {
-              console.log('runnnnn')
               history.push('/my-profile/mycollection/checkingToSell')
-            }else{
+            } else {
               alert('Something when wrong, please try again later.')
               setIsPrcessing(false)
             }
           })
         }
-      }).catch((err) => {
+      })
+      .catch((err) => {
         alert('Something when wrong, please try again later.')
         setIsPrcessing(false)
       })
-      setShowModalsetPrice(false)
+    setShowModalsetPrice(false)
   }
 
   const onAllowSellItem = () => {
@@ -97,7 +97,30 @@ export default function MyCollectionCard({ data }: any) {
       .catch((err) => {
         alert('Something wrong, please try again later.')
         setIsPrcessing(false)
+    })
+  }
+  const onSubmitRuleAuction = (value: any) => {
+    setIsPrcessing(true)
+    const tokenId = data?.tokenId
+    setIsPrcessing(true)
+    setTokenPrice(tokenId, value.price)
+      .then((dt) => {
+        if (dt?.hash) {
+          setPrice({ id: data?.id,NFTType:'auction' }).then(({ status }) => {
+            if (status == 200) {
+              history.push('/my-profile/mycollection/checkingToSell')
+            } else {
+              alert('Something when wrong, please try again later.')
+              setIsPrcessing(false)
+            }
+          })
+        }
       })
+      .catch((err) => {
+        alert('Something when wrong, please try again later.')
+        setIsPrcessing(false)
+      })
+    setRuleAuctionModal(false)
   }
   const renderGroupAction = (status: any) => {
     if (status === 'approved') {
@@ -107,16 +130,20 @@ export default function MyCollectionCard({ data }: any) {
           {isProcessing ? (
             <ButtonBuy height="45px">Processing...</ButtonBuy>
           ) : isNFTCanSell ? (
-            <ButtonBuy height="45px" onClick={showModalSetProcePrice}>
-              {'Sell'}
-            </ButtonBuy>
+            <>
+              <ButtonBuy height="45px" onClick={showModalSetProcePrice}>
+                Sell
+              </ButtonBuy>
+              <ButtonBuy height="45px" onClick={() => setRuleAuctionModal(true)}>
+                Auction
+              </ButtonBuy>
+            </>
           ) : (
             <ButtonBuy height="45px" onClick={onAllowSellItem}>
               {'Allow to Sell'}
             </ButtonBuy>
           )}
-          {/* <ButtonBuy height="45px">Auction</ButtonBuy>
-              <ButtonBuy height="45px">Swap</ButtonBuy>
+          {/* <ButtonBuy height="45px">Swap</ButtonBuy>
               <ButtonBuy height="45px">Public swap</ButtonBuy> */}
           <ButtonBuy borderRadius="100px" width="40px" height="45px">
             <img src={QRCode} />
@@ -146,18 +173,14 @@ export default function MyCollectionCard({ data }: any) {
           xs={{ span: 24 }}
           xxl={{ span: 8 }}
         >
-          {
-          data.type==='video' ?          
-          <video width="100%" controls>
-            <source
-              src={data?.contentUrl}
-              type="video/mp4"
-            />
-            Your browser does not support HTML5 video.
-          </video>
-          :
-          <img className="avatar" src={data?.contentUrl} />        
-          }
+          {data.type === 'video' ? (
+            <video width="100%" controls>
+              <source src={data?.contentUrl} type="video/mp4" />
+              Your browser does not support HTML5 video.
+            </video>
+          ) : (
+            <img className="avatar" src={data?.contentUrl} />
+          )}
         </Col>
         <Col
           className="description space-vehicle"
@@ -181,34 +204,81 @@ export default function MyCollectionCard({ data }: any) {
         </Col>
       </Row>
 
-      <Modal 
-        title="Set price" 
-        visible={isShowModalSetPrice} 
-        onCancel={()=>setShowModalsetPrice(false)} 
+      <Modal
+        title="Set price"
+        visible={isShowModalSetPrice}
+        onCancel={() => setShowModalsetPrice(false)}
         footer={null}
         width={400}
       >
         <Form ref={formRef} onFinish={onSellItem}>
-            <Form.Item label="Type" name="type" >
-              <Radio.Group
-                options={options}
-              />
-            </Form.Item>
-            <Form.Item 
-              name="lucky" 
-              label="Price" 
-              rules={[{ required: true, message: 'This Field is required!' }]}
-            >
-                <Input style={{ borderRadius: '16px', overflow: 'hidden'}} placeholder="Enter price"/>
-            </Form.Item>
+          <Form.Item
+            name="lucky"
+            label="Price"
+            rules={[{ required: true, message: 'This Field is required!' }]}
+          >
+            <Input
+              style={{ borderRadius: '16px', overflow: 'hidden' }}
+              placeholder="Enter price"
+            />
+          </Form.Item>
 
-            <Form.Item>
-              <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-                <ButtonTrade htmlType="submit">Submit</ButtonTrade>
-              </div>           
-            </Form.Item>
+          <Form.Item>
+            <div
+              style={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <ButtonTrade htmlType="submit">Submit</ButtonTrade>
+            </div>
+          </Form.Item>
         </Form>
       </Modal>
+
+      <Modal
+            title="Set price"
+            visible={ruleAuctionModal}
+            onCancel={() => setRuleAuctionModal(false)}
+            footer={null}
+            width={400}
+          >
+            <Form ref={formRef} onFinish={onSubmitRuleAuction}>
+              <Form.Item
+                label="Price"
+                name="price"
+                rules={[{ required: true, message: 'This Field is required' }]}
+              >
+                <Input
+                  style={{ borderRadius: '16px', overflow: 'hidden' }}
+                  placeholder="Enter NFT auction price"
+                />
+              </Form.Item>
+              <Form.Item
+                name="stepPrice"
+                label="Step Price"
+                rules={[{ required: true, message: 'This Field is required' }]}
+              >
+                <Input
+                  style={{ borderRadius: '16px', overflow: 'hidden' }}
+                  placeholder="Enter step price of NFT"
+                />
+              </Form.Item>
+              <p>* Note:Step price is</p>
+              <Form.Item>
+                <div
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <ButtonTrade htmlType="submit">Submit</ButtonTrade>
+                </div>
+              </Form.Item>
+            </Form>
+          </Modal>
     </CartStyled>
   )
 }
