@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 import {isMobile} from 'react-device-detect'
-import { Interface } from 'ethers/lib/utils'
-
 
 export const HotArtistsStyled = styled.div`
 position: relative;
@@ -139,6 +137,7 @@ export const ImageStyled = styled.div<Props>`
   height: ${isMobile ? 'calc(100vh - 200px)' : 'calc(100vh - 80px)'};
   width: 100%;
   overflow: hidden;
+  
   .bg-image {
     /* The image used */
     background-image: ${ props => `url(${props.bgImage})`};
@@ -153,7 +152,8 @@ export const ImageStyled = styled.div<Props>`
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-}
+    position: relative;
+  }
   >img {
     position: absolute;
     top: 50%;
@@ -179,33 +179,6 @@ export const DetailStyled = styled.div`
   padding: 42px 32px;
   height: calc(100vh - 200px);
   /* overflow: auto; */
-  .header-detail {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    .date-time {
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 20px;
-      color: #FC636B;
-      border: 2px solid #FC636B;
-      border-radius: 30px;
-      padding-left: 10px;
-      padding-right: 10px;
-      width: max-content;
-      height: 24px;
-    }
-  .social-icon  {
-    img {
-      width: 23px;
-      height: 23px;
-      padding: 1px;
-      border-radius: 50%;
-      border: 1px solid #000000;
-      margin: 5px;
-    }
-  }
-  }
   
   
   .title {
@@ -220,12 +193,12 @@ export const DetailStyled = styled.div`
     margin-top: 16px;
   }
   .token{
-    -webkit-flex: 1;
+    /* -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
     background: linear-gradient(270deg,#19A3DD -16.5%,#BADEB7 117.25%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent; */
     font-size: 16px;
     font-weight: 600;
     >img {
@@ -317,4 +290,65 @@ export const DetailTabpane = styled.div`
     }
   }
   
+`
+
+export const HeaderStyled = styled.div`
+  position: absolute;
+  top: 20px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: ${isMobile ? '12px' : '24px'};
+  flex-wrap: wrap;
+  .date-time {
+    font-weight: 600;
+    font-size: 14px;
+    background-color: #FC636B;
+    color: #ffffff;
+    /* border: 2px solid #FC636B; */
+    border-radius: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: max-content;
+    height: 24px;   
+    margin-right: 12px;
+    margin-left: 20px;
+    margin-bottom: 12px;
+  }
+  .rating {
+    padding: 0px 8px;
+    background-color: #ffffff;
+    border: 1px solid #E7EBEF;
+    box-sizing: border-box;
+    border-radius: 100px;
+    height: 24px;
+    margin-bottom: 12px;
+  }
+  .social-icon  {
+    display: flex;
+    margin-bottom: 12px;
+    > span {
+      font-size: ${isMobile ? '16px' : '24px'};
+      background: #FFFFFF;
+    }
+    .icon {
+      background: #FFFFFF;
+      border: 1px solid #E7EBEF;
+      box-sizing: border-box;
+      border-radius: 100px;
+      margin-left: 12px;
+      cursor: pointer;
+      width: ${isMobile? '30px' : '40px'};
+      height: ${isMobile? '30px' : '40px'};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333333;
+      img {
+        width: ${isMobile? '16px' : '24px'};
+        height: ${isMobile? '16px' : '24px'};
+      }
+    }
+  }
 `

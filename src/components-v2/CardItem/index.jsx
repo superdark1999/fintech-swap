@@ -64,15 +64,15 @@ export default function CardItem({data}) {
             <div>
                 {price} LUCKY {' '}
               <img src={Token} alt=""/></div>  
-            <div>
-              4.8 
-              {' '}
-              <StarFilled style={{color: '#fadb14'}} />
-              {' '}
-              <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5'}}>(15)</span>
-              {' '}
-              <img src={Hammer} alt=""/>
-            </div>      
+              <div>
+                4.8 
+                {' '}
+                <StarFilled style={{color: '#fadb14'}} />
+                {' '}
+                <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5'}}>(15)</span>
+                {' '}
+                <img src={Hammer} alt=""/>
+              </div>      
             </div> 
           </div>      
         </div>   

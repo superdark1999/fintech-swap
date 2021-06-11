@@ -9,7 +9,7 @@ import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
 import { ButtonStyle, ButtonBuyStyle } from 'components-v2/cart/styled'
-import { SwapOutlined } from '@ant-design/icons'
+import { SwapOutlined, CloseOutlined, StarFilled } from '@ant-design/icons'
 import {
   DetailStyled,
   ReviewStyled,
@@ -17,6 +17,7 @@ import {
   FooterStyled,
   ImageStyled,
   DetailTabpane,
+  HeaderStyled,
 } from './styled'
 import { dataHistory, columnHistory} from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
@@ -26,6 +27,8 @@ import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
+import Hammer from 'assets/images/hammer.svg'
+import { Link } from 'react-router-dom'
 import {getPrice} from 'utils'
 
 
@@ -116,34 +119,30 @@ const DetaiArtWork = ({id}:any) => {
   }
 
 
-  const renderFooter = ()=>{
+  const renderButton = ()=>{
     if(isSelled) return null;
     if(isProcessing){
       return(
-        <FooterStyled>
-          <ButtonBuyStyle> 
+          <ButtonBuy> 
             Processing...
-          </ButtonBuyStyle>
-        </FooterStyled>
+          </ButtonBuy>
       )
     }
     if(!account){
       return(
-        <FooterStyled>
-            <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
-        </FooterStyled>)
+            <ButtonBuy onClick={onBuyItem}>Buy</ButtonBuy>
+      )
     }
     if(userState?.isCanBuy){
       return(
-      <FooterStyled>
-          <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
-      </FooterStyled>)
+          <ButtonBuy onClick={onBuyItem}>Buy</ButtonBuy>
+      )
     }
     if(!userState?.isCanBuy){
       return(
-          <ButtonBuyStyle onClick={onApproveBuyOnMarket}>
+          <ButtonBuy onClick={onApproveBuyOnMarket}>
             Allow to buy
-          </ButtonBuyStyle>
+          </ButtonBuy>
       )
     }
   }
@@ -157,6 +156,27 @@ const DetaiArtWork = ({id}:any) => {
         md={{ span: 24 }}
         sm={{ span: 24 }}
       >
+         <HeaderStyled className="header-detail">
+          <Row align="middle"> 
+            <div className="social-icon"><Link to="/"><CloseOutlined className="icon"/></Link></div>
+            <div className="date-time">02h 31m 04s left 🔥 </div>
+            <div className="rating">
+              4.8 
+              {' '}
+              <StarFilled style={{color: '#fadb14'}} />
+              {' '}
+              <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5'}}>(15)</span>
+              {' '}
+              <img src={Hammer} alt=""/>
+            </div>   
+          </Row>
+          
+          <div className="social-icon">    
+            <div className="icon"><img src={Facebook} alt="" /></div> 
+            <div className="icon"><img src={Telegram} alt="" /></div> 
+            <div className="icon"><img src={Copy} alt="" /></div> 
+          </div>
+        </HeaderStyled>
         <ImageStyled bgImage={NFTDetail?.contentUrl}>
           <div className="bg-image"></div>
           <img src={NFTDetail?.contentUrl} />
@@ -170,26 +190,17 @@ const DetaiArtWork = ({id}:any) => {
         sm={{ span: 24 }}
       >
         <DetailStyled>
-          <div className="header-detail">
-            <div className="date-time">02h 31m 04s left 🔥 </div>
-            <div className="social-icon">
-              <img src={Facebook} alt="" />
-              <img src={Telegram} alt="" />
-              <img src={Copy} alt="" />
-            </div>
-          </div>
 
           <p className="title">{NFTDetail?.title}</p>
 
-          <div className="token">
-            {price} LUCKY
-            <img src={Token} alt="" />
-          </div>
+          <Row align="middle" justify="space-between">
+            <div className="token">
+              {price} LUCKY
+              <img src={Token} alt="" />
+            </div>
+            {renderButton()}
+          </Row>
 
-          <div className="rating">
-            <Rate disabled defaultValue={2} />
-            (15 reviews)
-          </div>
 
           <p className="description">{NFTDetail?.description||''}</p>
 
@@ -318,7 +329,7 @@ const DetaiArtWork = ({id}:any) => {
                 padding: 0,
               }}
             >
-              {renderFooter()}
+              {/* {renderFooter()} */}
             </Col>
           </Row>
           <Modal 

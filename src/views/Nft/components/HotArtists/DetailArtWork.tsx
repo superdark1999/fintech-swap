@@ -6,10 +6,13 @@ import Telegram from 'assets/images/telegram.svg'
 import Token from 'assets/images/token.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
 import Checkmark from 'assets/images/checkmark.svg'
+import Hammer from 'assets/images/hammer.svg'
+import { Link } from 'react-router-dom'
+
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
 import { ButtonStyle, ButtonBuyStyle } from 'components-v2/cart/styled'
-import { SwapOutlined } from '@ant-design/icons'
+import { SwapOutlined, StarFilled, CloseOutlined } from '@ant-design/icons'
 import {
   DetailStyled,
   ReviewStyled,
@@ -17,6 +20,7 @@ import {
   FooterStyled,
   ImageStyled,
   DetailTabpane,
+  HeaderStyled,
 } from './styled'
 import { dataHistory, columnHistory} from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
@@ -122,40 +126,40 @@ const DetaiArtWork = () => {
   const onBuyItem = () => {
     
   }
-  const renderFooter = () => {
-    if (isSelled) return null
-    if (isProcessing) {
-      return (
+  const renderButton = ()=>{
+    if(isSelled) return null;
+    if(isProcessing){
+      return(
         <FooterStyled>
-          <ButtonBuyStyle onClick={onBuyItem}>Processing...</ButtonBuyStyle>
+          <ButtonBuy onClick={onBuyItem}> 
+            Processing...
+          </ButtonBuy>
         </FooterStyled>
       )
     }
     if (!account) {
       return (
         <FooterStyled>
-          <ButtonStyle>
-            <SwapOutlined /> Aution
-          </ButtonStyle>
-          <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
-        </FooterStyled>
-      )
+            <ButtonTrade>
+              <SwapOutlined /> Aution
+            </ButtonTrade>
+            <ButtonBuy onClick={onBuyItem}>Buy</ButtonBuy>
+        </FooterStyled>)
     }
     if(userState?.isCanBuy){
       return(
       <FooterStyled>
-          <ButtonStyle onClick={()=>setIsShowModalSetPrice(true)}>
+          <ButtonTrade onClick={()=>setIsShowModalSetPrice(true)}>
               <SwapOutlined /> Aution
-          </ButtonStyle>
-          <ButtonBuyStyle onClick={onBuyItem}>Buy</ButtonBuyStyle>
-        </FooterStyled>
-      )
+          </ButtonTrade>
+          <ButtonBuy onClick={onBuyItem}>Buy</ButtonBuy>
+      </FooterStyled>)
     }
-    if (!userState?.isCanBuy) {
-      return (
-        <ButtonBuyStyle onClick={onApproveBuyOnMarket}>
-          Allow to buy
-        </ButtonBuyStyle>
+    if(!userState?.isCanBuy){
+      return(
+          <ButtonBuy onClick={onApproveBuyOnMarket}>
+            Allow to buy
+          </ButtonBuy>
       )
     }
   }
@@ -169,8 +173,30 @@ const DetaiArtWork = () => {
         md={{ span: 24 }}
         sm={{ span: 24 }}
       >
-        <ImageStyled bgImage={NFTDetail?.contentUrl}>
-          <div className="bg-image"></div>
+        <HeaderStyled className="header-detail">
+          <Row align="middle"> 
+            <div className="social-icon"><Link to="/"><CloseOutlined className="icon"/></Link></div>
+            <div className="date-time">02h 31m 04s left 🔥 </div>
+            <div className="rating">
+              4.8 
+              {' '}
+              <StarFilled style={{color: '#fadb14'}} />
+              {' '}
+              <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5'}}>(15)</span>
+              {' '}
+              <img src={Hammer} alt=""/>
+            </div>   
+          </Row>
+          
+          <div className="social-icon">    
+            <div className="icon"><img src={Facebook} alt="" /></div> 
+            <div className="icon"><img src={Telegram} alt="" /></div> 
+            <div className="icon"><img src={Copy} alt="" /></div> 
+          </div>
+        </HeaderStyled>
+        
+        <ImageStyled bgImage={NFTDetail?.contentUrl}>    
+          <div className="bg-image"/>
           <img src={NFTDetail?.contentUrl} />
         </ImageStyled>
       </Col>
@@ -182,26 +208,14 @@ const DetaiArtWork = () => {
         sm={{ span: 24 }}
       >
         <DetailStyled>
-          <div className="header-detail">
-            <div className="date-time">02h 31m 04s left 🔥 </div>
-            <div className="social-icon">
-              <img src={Facebook} alt="" />
-              <img src={Telegram} alt="" />
-              <img src={Copy} alt="" />
-            </div>
-          </div>
-
           <p className="title">{NFTDetail?.title}</p>
-
-          <div className="token">
-            {price} LUCKY
-            <img src={Token} alt="" />
-          </div>
-
-          <div className="rating">
-            <Rate disabled defaultValue={2} />
-            (15 reviews)
-          </div>
+          <Row align="middle" justify="space-between">
+            <div className="token">
+              {price} LUCKY
+              <img src={Token} alt="" />
+            </div>
+            {renderButton()}
+          </Row>
 
           <p className="description">{NFTDetail?.description||''}</p>
 
@@ -333,7 +347,6 @@ const DetaiArtWork = () => {
                 padding: 0,
               }}
             >
-              {renderFooter()}
             </Col>
           </Row>
           <Modal 

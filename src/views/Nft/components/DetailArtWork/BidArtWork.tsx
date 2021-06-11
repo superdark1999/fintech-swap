@@ -9,7 +9,7 @@ import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
 import { ButtonStyle, ButtonBuyStyle } from 'components-v2/cart/styled'
-import { SwapOutlined } from '@ant-design/icons'
+import { SwapOutlined, CloseOutlined, StarFilled } from '@ant-design/icons'
 import {
   DetailStyled,
   ReviewStyled,
@@ -17,6 +17,7 @@ import {
   FooterStyled,
   ImageStyled,
   DetailTabpane,
+  HeaderStyled
 } from './styled'
 import { dataHistory, columnHistory } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
@@ -31,10 +32,12 @@ import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import {getPrice} from 'utils' 
 import _ from 'lodash'
 import { InputNumber } from 'antd'
+import Hammer from 'assets/images/hammer.svg'
+import { Link } from 'react-router-dom'
 const { TabPane } = Tabs
 
 const STEP = 10;
-
+ 
 
 const DetaiArtWork = ({ id }: any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
@@ -181,38 +184,32 @@ const DetaiArtWork = ({ id }: any) => {
     setIsShowModalSetPrice(false)
   }
 
-  const renderFooter = () => {
+  const renderButton = () => {
     if (isSelled) return null
     if (isProcessing) {
       return (
-        <FooterStyled>
-          <ButtonBuyStyle >Processing...</ButtonBuyStyle>
-        </FooterStyled>
+          <ButtonBuy >Processing...</ButtonBuy>
       )
     }
     if (!account) {
       return (
-        <FooterStyled>
-          <ButtonStyle onClick={() => alert('Unblock your wallet to bid this item')}>
+          <ButtonTrade onClick={() => alert('Unblock your wallet to bid this item')}>
             <SwapOutlined /> Auction
-          </ButtonStyle>
-        </FooterStyled>
+          </ButtonTrade>
       )
     }
     if (userState?.isCanBuy) {
       return (
-        <FooterStyled>
-          <ButtonStyle onClick={() => setIsShowModalSetPrice(true)}>
+          <ButtonTrade onClick={() => setIsShowModalSetPrice(true)}>
             <SwapOutlined /> Auction
-          </ButtonStyle>
-        </FooterStyled>
+          </ButtonTrade>
       )
     }
     if(!userState?.isCanBuy){
         return(
-            <ButtonBuyStyle onClick={onApproveBuyOnMarket}>
-              Allow to buy
-            </ButtonBuyStyle>
+          <ButtonBuy onClick={onApproveBuyOnMarket}>
+            Allow to buy
+          </ButtonBuy>
         )
     }
   }
@@ -226,6 +223,27 @@ const DetaiArtWork = ({ id }: any) => {
         md={{ span: 24 }}
         sm={{ span: 24 }}
       >
+        <HeaderStyled className="header-detail">
+          <Row align="middle"> 
+            <div className="social-icon"><Link to="/"><CloseOutlined className="icon"/></Link></div>
+            <div className="date-time">02h 31m 04s left 🔥 </div>
+            <div className="rating">
+              4.8 
+              {' '}
+              <StarFilled style={{color: '#fadb14'}} />
+              {' '}
+              <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5'}}>(15)</span>
+              {' '}
+              <img src={Hammer} alt=""/>
+            </div>   
+          </Row>
+          
+          <div className="social-icon">    
+            <div className="icon"><img src={Facebook} alt="" /></div> 
+            <div className="icon"><img src={Telegram} alt="" /></div> 
+            <div className="icon"><img src={Copy} alt="" /></div> 
+          </div>
+        </HeaderStyled>
         <ImageStyled bgImage={NFTDetail?.contentUrl}>
           <div className="bg-image"></div>
           <img src={NFTDetail?.contentUrl} />
@@ -239,37 +257,28 @@ const DetaiArtWork = ({ id }: any) => {
         sm={{ span: 24 }}
       >
         <DetailStyled>
-          <div className="header-detail">
-            <div className="date-time">02h 31m 04s left 🔥 </div>
-            <div className="social-icon">
-              <img src={Facebook} alt="" />
-              <img src={Telegram} alt="" />
-              <img src={Copy} alt="" />
-            </div>
-          </div>
 
           <p className="title">{NFTDetail?.title}</p>
           <div className="token">
             Current Bid:{price} LUCKY
             <img src={Token} alt="" />
           </div>
-          <div className="next-auction">Place bid:</div>
-          <div className="price-next-auction">
-            <span className="label-price">
-              {price + STEP * nextStepOffer} <img src={Token} alt="" /> LUCKY
-            </span>
-            <span style={{ fontWeight: 'bold', margin: '0 10px' }}> X </span>
-            <InputNumber
-              min={1}
-              defaultValue={nextStepOffer}
-              onChange={(e: any) => setStepNextOffer(e)}
-            />
-          </div>
+          <div className="next-auction">Place bid:</div>  
+          <Row align="middle" justify="space-between">
+            <div className="price-next-auction">
+              <span className="label-price">
+                {price + STEP * nextStepOffer} <img src={Token} alt="" /> LUCKY
+              </span>
+              <span style={{ fontWeight: 'bold', margin: '0 10px' }}> X </span>
+              <InputNumber
+                min={1}
+                defaultValue={nextStepOffer}
+                onChange={(e: any) => setStepNextOffer(e)}
+              />
+            </div>
+            {renderButton()}
+          </Row>
 
-          <div className="rating">
-            <Rate disabled defaultValue={2} />
-            (15 reviews)
-          </div>
 
           <p className="description">{NFTDetail?.description || ''}</p>
 
@@ -401,7 +410,7 @@ const DetaiArtWork = ({ id }: any) => {
                 padding: 0,
               }}
             >
-              {renderFooter()}
+              {/* {renderFooter()} */}
               <Modal
                 title="Set price"
                 visible={isShowModalSetPrice}
