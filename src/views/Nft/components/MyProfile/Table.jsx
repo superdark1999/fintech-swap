@@ -60,16 +60,21 @@ export const columnBidding = [
   {
     title: 'Action',
     dataIndex: 'action',
-    render: (record) => <ButtonTrade>Confirm</ButtonTrade>,
+    render: (record) => <ButtonTrade>Widthdraw</ButtonTrade>,
     width: 100,
-  }
+  },
+  {
+    title: 'Note',
+    dataIndex: 'note',
+    width: 100,
+  },
 ]
 export const dataBidding = [
   {
-    address: 505, price: 505
+    address: 505, price: 505, note:"NFT was sold"
   },
   {
-    address: 505, price: 505
+    address: 505, price: 505, note:"NFT was sold"
   }
 ]
 export default () => {
