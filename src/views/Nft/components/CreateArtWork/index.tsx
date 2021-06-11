@@ -19,16 +19,15 @@ import {
 } from '@ant-design/icons'
 import { useHistory } from "react-router-dom";
 import { ButtonStyle } from 'components-v2/cart/styled'
-import useArtworkServices from '../../../../services/ArtworkServices'
-import useUserServices from '../../../../services/UserServices'
-import useNFTServices, { NFT_ADDRESS } from '../../../../services/NFTServices'
-import { useActiveWeb3React } from '../../../../wallet/hooks'
-import useUserStore from '../../../../store/userStore'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
+import useUserServices from 'services/axiosServices/UserServices'
+import useNFTServices from 'services/web3Services/NFTServices'
+import { useActiveWeb3React } from 'wallet/hooks'
+import useUserStore from 'store/userStore'
 import { CreateArtWorkStyled } from './styled'
 
 import { GroupButton, RadioButton } from './styled'
 import ModalCreateArtist from './ModalCreateArtist'
-import axios from 'axios'
 
 
 
@@ -44,10 +43,10 @@ const CreateArtWork: React.FC = () => {
     React.useState<boolean | null>(false)
   const formRef = React.useRef() as React.MutableRefObject<any>
   const formArtistRef = React.useRef() as React.MutableRefObject<any>
-  const { createNFT, getNFT, updateHashInfoNFT } = useArtworkServices();
+  const { createNFT, updateHashInfoNFT } = useArtworkServices();
   const {updateProfile} = useUserServices()
   const { account } = useActiveWeb3React()
-  const { approveLevelAmount, mintNFT } = useNFTServices()
+  const { mintToken } = useNFTServices()
   const [isProccessing, setIsProcessing] = useState(false)
   const [userState, userActions] = useUserStore()
   const [form] = Form.useForm()
@@ -101,12 +100,12 @@ const CreateArtWork: React.FC = () => {
         if(status===200){
         const url = data?.data?.contentUrl || ''
         const NFTid = data?.data?._id || ''
-        mintNFT(url)
+        mintToken(url)
           .then((mintData: any) => {
             const txHash = mintData?.hash
             updateHashInfoNFT({ NFTid, txHash }).then(({status,data})=>{
               if(status==200){
-                history.push('/user-profile/mycollection/pending')
+                history.push('/my-profile/mycollection/pending')
               }
             })
           })

@@ -10,8 +10,10 @@ import { Link } from 'react-router-dom'
 
 import { Rate } from 'antd'
 import { SwapOutlined } from '@ant-design/icons'
-import useNFTServices, { MARKET_ADDRESS } from '../../services/NFTServices'
-import useUserStore from '../../store/userStore'
+import useNFTServices, { MARKET_ADDRESS } from 'services/NFTServices'
+import useMarketServices,{MARKET_ADDRESS} from 'services/web3Services/MarketServices'
+import useLuckyServices from 'services/web3Services/LuckyServices'
+import useUserStore from 'store/userStore'
 import _ from 'lodash'
 import ReactFreezeframe from 'react-freezeframe'
 const getPrice = (price) => {
@@ -23,12 +25,11 @@ const getPrice = (price) => {
 }
 export default function Cart({ data }) {
   const [loading, setLoading] = useState(true)
-  const [userState, userActions] = useUserStore()
   const [price, setPrice] = useState(0)
-  const { getPriceNFT, approveLevelAmount, buyNFT } = useNFTServices()
+  const {getTokenPrice} = useMarketServices()
   useEffect(() => {
     if (data?.tokenId) {
-      getPriceNFT(data?.tokenId)
+      getTokenPrice(data?.tokenId)
         .then((data) => {
           const price = getPrice(Number(data?._hex))
           if (price != -1) {
@@ -39,21 +40,6 @@ export default function Cart({ data }) {
         .catch((err) => {})
     }
   }, [data?.tokenId])
-
-  const onApproveBuyOnMarket = () => {
-    approveLevelAmount(MARKET_ADDRESS)
-      .then((data) => {
-        console.log(data)
-      })
-      .catch(console.log)
-  }
-
-  const onBuyItem = () => {
-    const tokenId = '41'
-    buyNFT(tokenId).then((data) => {
-      console.log(data)
-    })
-  }
 
   if (loading) {
     return null

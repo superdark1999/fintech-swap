@@ -1,3 +1,6 @@
+import { ButtonTrade } from "components-v2/Button";
+import React from 'react'
+
 export const columnHistory = [
   {
     title: 'Event',
@@ -44,16 +47,30 @@ export const dataHistory = [
   }
 ];
 
-export const dataBidding = []
+export const dataBidding = [
+  {
+    address: "Bid", price: 505
+  },
+  {
+    address: "Bid", price: 505
+  }
+]
+
 export const columnBidding = [
   {
-    title: 'Adress',
-    dataIndex: 'adress',
+    title: 'Address',
+    dataIndex: 'address',
     width: 100,
   },
   {
     title: 'Price',
     dataIndex: 'price',
+    width: 100,
+  },
+  {
+    title: 'Action',
+    dataIndex: 'action',
+    render: (record) => <ButtonTrade>Confirm</ButtonTrade>,
     width: 100,
   }
 ]

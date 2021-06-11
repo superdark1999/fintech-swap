@@ -5,6 +5,7 @@ interface StyledButtonProps {
     borderRadius?: string,
     height?: string,
     padding?: string,
+    htmlType?: any,
   }
 
 export const ButtonTrade = styled.div<StyledButtonProps>`

@@ -33,5 +33,9 @@ export default function useArtworkService(){
         return POST(`/artwork/set-price`,body,false, false)
     }
 
-    return {createNFT,getNFT,updateHashInfoNFT,getDetailNFT,updateNFTInfo,setPrice}
+    const buyItem = (body:any)=>{
+        return POST('artwork/buy',body, false,false)
+    }
+
+    return {createNFT,getNFT,updateHashInfoNFT,getDetailNFT,updateNFTInfo,setPrice,buyItem}
 }

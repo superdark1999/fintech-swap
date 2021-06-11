@@ -3,6 +3,7 @@ import { HotArtistsStyled } from './styled'
 import Crown from 'assets/images/crown.svg'
 import Checkmark from 'assets/images/checkmark.svg'
 import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
 
 const dataMock = [
   {
@@ -119,9 +120,12 @@ function HotArtists() {
               src={`https://i.pravatar.cc/150?img=${i + 1}`}
               alt=""
             />
-            <div className="name-artists">
-              {item.name} <img src={Checkmark} />
-            </div>
+            {/* gắn ID user ở đây */}
+            <Link to="/user-profile/:id/onsale/readyToSell">
+              <div className="name-artists">
+                {item.name} <img src={Checkmark} />
+              </div>
+            </Link>
             <div className="rank-artists">
               <img src={Crown} /> {item.rank}
             </div>

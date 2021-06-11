@@ -13,36 +13,16 @@ import {
 } from 'antd'
 import UploadFile from 'components-v2/Upload/index'
 import { ButtonStyle } from 'components-v2/cart/styled'
-import useArtworkServices from '../../../../services/ArtworkServices'
-import useNFTServices, { NFT_ADDRESS } from '../../../../services/NFTServices'
-import { useActiveWeb3React } from '../../../../wallet/hooks'
-import useUserStore from '../../../../store/userStore'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
+import useNFTServices from 'services/web3Services/NFTServices'
+import { useActiveWeb3React } from 'wallet/hooks'
+import useUserStore from 'store/userStore'
 
 import { GroupButton, RadioButton } from './styled'
 import axios from 'axios'
 
 const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
-  const formRef = React.useRef()
   const formArtistRef = React.useRef() 
-  const { createNFT, getNFT, updateHashInfoNFT } = useArtworkServices()
-  const { account } = useActiveWeb3React()
-  const { approveLevelAmount, mintNFT } = useNFTServices()
-  const [isProccessing, setIsProcessing] = useState(false)
-  const [userState, userActions] = useUserStore()
-  const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-  }
-  const validateMessages = {
-    required: '${label} is required!',
-    types: {
-      email: '${label} is not a valid email!',
-      number: '${label} is not a valid number!',
-    },
-    number: {
-      range: '${label} must be between ${min} and ${max}',
-    },
-  }
 
   return (
     <Modal

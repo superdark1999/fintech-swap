@@ -1,6 +1,5 @@
 import React from 'react'
 import {TrendingBarStyled} from './styled'
-import NFTServices from '../../../../services/NFTServices'
 import {isMobile} from 'react-device-detect'
 const TrendingBar: React.FC = () => {
     return (

@@ -5,7 +5,7 @@ import Checkmark from 'assets/images/checkmark.svg'
 import { Row, Col, Tabs} from 'antd';
 import Token from 'assets/images/token.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
-import useMarketServices from 'services/web3Services/MarketServices'; 
+import usrMarketServices from 'services/web3Services/MarketServices'; 
 import _ from 'lodash'
 
 const getPrice = (price:number)=>{
@@ -18,7 +18,7 @@ const getPrice = (price:number)=>{
 export default function OnSaleCard({data,}:any){
     const [loading, setLoading] = useState(true)
     const [price,setPrice] = useState(0)
-    const { getTokenPrice} = useMarketServices()
+    const { getTokenPrice} = usrMarketServices()
   
     useEffect(()=>{
       if(data?.tokenId){
