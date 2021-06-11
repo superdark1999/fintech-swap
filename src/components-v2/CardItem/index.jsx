@@ -36,7 +36,7 @@ export default function CardItem({data}) {
   //    !configState.isUsingAnimation&&useFrameGif.current.stop()
   // },[configState.isUsingAnimation])
   return (
-    <Link to={`/artwork/detail/${data?.NFTType||'sell'}/${data?.id}`} className="create-nav">
+    <Link to={`/artwork/detail/${data?.NFTType||'buy'}/${data?.id}`} className="create-nav">
       <StyledCart src={data?.contentUrl}>  
         <div className="card-art-work">                     
           <div className="wrapper-image">  

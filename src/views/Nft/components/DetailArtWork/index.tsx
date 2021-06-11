@@ -5,8 +5,7 @@ import SellArtWork from './SellArtWork';
 
 const DetailArtWord = ()=>{
     const {id,type} = useParams()
-    console.log(id,type)
-    if(false){
+    if(type=='auction'){
         return <BidArtWork id={id} />
     }else{
         return <SellArtWork id={id}/>

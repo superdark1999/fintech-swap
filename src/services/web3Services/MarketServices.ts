@@ -20,6 +20,7 @@ export default function MarketService(){
         },[marketContract])
 
         const getTokenPrice = useCallback(async(tokenId:string|undefined)=>{
+          console.log(tokenId)
             return marketContract.getPriceByTokenId(tokenId)      
         },[marketContract])
 
