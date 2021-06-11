@@ -33,10 +33,6 @@ import _ from 'lodash'
 import { InputNumber } from 'antd'
 const { TabPane } = Tabs
 
-const getPrice = (price: number) => {
-  const priceString = Number(price) / Number(1e18)
-  return Number(priceString)
-}
 
 const DetaiArtWork = ({ id }: any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
