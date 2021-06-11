@@ -76,7 +76,7 @@ const config: MenuEntry[] = [
     calloutClass: 'style-color icon-hot',
   },
   {
-    label: 'More',
+    label: 'Channel',
     icon: 'MoreIcon',
     calloutClass: 'style-color',
     items: [
