@@ -120,64 +120,7 @@ const DetaiArtWork = () => {
   }
 
   const onBuyItem = () => {
-    return buyItem({
-      id: id,
-      walletAddress: account,
-    }).then(({ status }) => {
-      if (status == 200) {
-        setIsSelled(true)
-        setIsProccessing(false)
-      }
-    }).catch(()=>{
-      setIsProccessing(false)
-    })
-    if (!account) {
-      return alert('Unblock your wallet to buy this item')
-    }
-    if(account===NFTDetail.ownerWalletAddress){
-      return alert(`You can't buy your item`)
-    }
-    setIsProccessing(true)
-    const tokenId = NFTDetail?.tokenId
-    buyToken(tokenId).then((dt) => {
-      if (dt?.hash) {
-        buyItem({
-          id: id,
-          walletAddress: account,
-        }).then(({ status }) => {
-          if (status == 200) {
-            setIsSelled(true)
-            setIsProccessing(false)
-          }
-        }).catch(()=>{
-          setIsProccessing(false)
-        })
-      }
-    })
-    return
-
-    const tokenId = NFTDetail?.tokenId
-    buyToken(tokenId)
-      .then((dt) => {
-        if (dt?.hash) {
-          buyItem({
-            id: id,
-            walletAddress: account,
-          })
-            .then(({ status }) => {
-              if (status == 200) {
-                setIsSelled(true)
-                setIsProccessing(false)
-              }
-            })
-            .catch(() => {
-              setIsProccessing(false)
-            })
-        }
-      })
-      .catch(() => {
-        setIsProccessing(false)
-      })
+    
   }
   const renderFooter = () => {
     if (isSelled) return null
