@@ -33,7 +33,6 @@ import _ from 'lodash'
 import { InputNumber } from 'antd'
 const { TabPane } = Tabs
 
-
 const DetaiArtWork = ({ id }: any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
   const { account } = useActiveWeb3React()
@@ -41,13 +40,16 @@ const DetaiArtWork = ({ id }: any) => {
   const [loading, setLoading] = useState(true)
   const [isSelled, setIsSelled] = useState(false)
   const [price, setPrice] = useState<number>(0)
+  const [bidsData, setBidsData] = useState([])
   const [userState, userActions] = useUserStore()
+  const [step,setStep] = useState(0)
   const {
     getTokenPrice,
     buyToken,
     bidToken,
     getBidsByTokenId,
     updateBidPrice,
+    getStepPrice
   } = useMarketServices()
   const { approveLevelAmount } = useLuckyServices()
   const [isProcessing, setIsProccessing] = useState(false)
@@ -55,12 +57,14 @@ const DetaiArtWork = ({ id }: any) => {
   const [isReadyBid, setIsReadyBid] = useState(false)
   const [nextStepOffer, setStepNextOffer] = useState<number>(1)
   useEffect(() => {
-    if (account) {
       getDetailNFT({ id }).then(({ status, data }) => {
         if (status == 200) {
-          if (data?.data?.tokenId) {
-            if (account) {
-              getBidsByTokenId(data?.data?.tokenId).then((data) => {
+        if (data?.data?.tokenId) {
+              getStepPrice(data?.data?.tokenId).then((dt)=>{
+                const step = getPrice(dt?._hex)
+                setStep(step)
+              })
+              getBidsByTokenId(data?.data?.tokenId).then((bidsArr) => {
                 const bidsData =
                   data?.map((item: any) => {
                     return {
@@ -68,27 +72,33 @@ const DetaiArtWork = ({ id }: any) => {
                       address: item?.[0] || '',
                     }
                   }) || []
-                setIsReadyBid(
-                  !!bidsData.find((it: any) => it.address == account),
-                )
-              })
-            }
-            getTokenPrice(data?.data?.tokenId)
-              .then((data) => {
-                const price = getPrice(data?._hex)
-                console.log(data)
-                if (price != -1) {
-                  setLoading(false)
-                  setPrice(price)
+                const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price
+                if(!maxPrice){
+                    getTokenPrice(data?.data?.tokenId)
+                    .then((dt:any) => {
+                      const price = getPrice(dt?._hex)
+                      if (price != -1) {
+                        setLoading(false)
+                        setPrice(price)
+                      }
+                    })
+                    .catch((err:any) => {
+                        console.log(err)
+                    })
+                    return
+                }else{
+                    setPrice(maxPrice)
                 }
-              })
-              .catch((err) => {})
-          }
-          setNFTDetail(data?.data)
-          setLoading(false)
+                setLoading(false)
+                setBidsData(bidsData)
+                if (account) {
+                setIsReadyBid(!!bidsData.find((it: any) => it.address == account))
+              }
+            })
+
         }
-      })
-    }
+          setNFTDetail(data?.data)
+        }})
   }, [])
   const onApproveBuyOnMarket = () => {
     setIsProccessing(true)
@@ -106,6 +116,7 @@ const DetaiArtWork = ({ id }: any) => {
     if (account === NFTDetail.ownerWalletAddress) {
       return alert(`You can't buy your item`)
     }
+    const bidPrice = price + step * nextStepOffer
     setIsProccessing(true)
     if (isReadyBid) {
       const { lucky } = e
@@ -256,7 +267,7 @@ const DetaiArtWork = ({ id }: any) => {
           <div className="next-auction">Place bid:</div>
           <div className="price-next-auction">
             <span className="label-price">
-              {price * nextStepOffer} <img src={Token} alt="" /> LUCKY
+              {price + step * nextStepOffer} <img src={Token} alt="" /> LUCKY
             </span>
             <span style={{ fontWeight: 'bold', margin: '0 10px' }}> X </span>
             <InputNumber
@@ -322,7 +333,7 @@ const DetaiArtWork = ({ id }: any) => {
               />
             </TabPane>
             <TabPane tab="Bidding" key="3">
-              <BiddingTable NFTInfo={NFTDetail} />
+              <BiddingTable NFTInfo={NFTDetail} bids={bidsData} />
             </TabPane>
             <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">
@@ -413,7 +424,7 @@ const DetaiArtWork = ({ id }: any) => {
                   <Form.Item name="pricePlaceBid">
                     <label>
                       * You will place bid for this NFT is :{' '}
-                      <b>{price * nextStepOffer} LUCKY</b>{' '}
+                      <b>{price + step * nextStepOffer} LUCKY</b>{' '}
                       <img src={Token} alt="" />
                     </label>
                   </Form.Item>
@@ -438,24 +449,37 @@ const DetaiArtWork = ({ id }: any) => {
   )
 }
 
-const BiddingTable = ({ NFTInfo }: any) => {
+const BiddingTable = ({ NFTInfo, bids }: any) => {
   const { getBidsByTokenId } = useMarketServices()
-  const [bids, setBids] = useState([])
   const { account } = useActiveWeb3React()
-  useEffect(() => {
-    if (NFTInfo?.tokenId) {
-      getBidsByTokenId(NFTInfo?.tokenId).then((data) => {
-        const bidsData = data.map((item: any) => {
-          return {
-            key: item?.[1] || '',
-            address: item?.[0] || 'aaaa',
-            price: Number(item?.[1]?._hex) / Number(1e18),
-          }
-        })
-        setBids(bidsData)
-      })
+  const [isProcessing,setIsProccessing] = useState(false)
+  const { buyItem } = useArtworkServices()
+  const {
+    sellTokenToBidUser
+  } = useMarketServices()
+  const confirmSellToken = ()=>{
+    if (!account) {
+      return alert('Unblock your wallet to confirm this item')
     }
-  }, [])
+    setIsProccessing(true)
+    const tokenId = NFTInfo?.tokenId
+    sellTokenToBidUser(tokenId,'').then((dt) => {
+      if (dt?.hash) {
+        buyItem({
+          id: NFTInfo?.id,
+          walletAddress: account,
+        }).then(({ status }) => {
+          if (status == 200) {
+            setIsProccessing(false)
+          }
+        }).catch(()=>{
+          setIsProccessing(false)
+        })
+      }
+    }).catch(()=>{
+      setIsProccessing(false)
+    })
+  }
   const columnBidding =
     NFTInfo?.ownerWalletAddress === account
       ? [
@@ -499,7 +523,7 @@ const BiddingTable = ({ NFTInfo }: any) => {
           {
             title: 'Address',
             dataIndex: 'address',
-            width: 150,
+            width: 200,
             render: (address: String) => (
               <a className="value" href="/" target="_blank">
                 {address}
@@ -509,7 +533,7 @@ const BiddingTable = ({ NFTInfo }: any) => {
           {
             title: 'Price',
             dataIndex: 'price',
-            width: 150,
+            width: 100,
             render: (price: Number) => (
               <div className="token">
                 {price} LUCKY

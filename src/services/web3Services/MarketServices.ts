@@ -4,7 +4,7 @@ import { useContract } from 'wallet/hooks/useContract'
 import { useCallback } from 'react'
 import _ from 'lodash'
 
-export const MARKET_ADDRESS = '0x172D30072817afBcaebF39B75b6eCd1E0B8Ec90F';
+export const MARKET_ADDRESS = '0x161bd680Ac3cDB6abF5ECF071810bc870d390f23';
 
 
 
@@ -19,8 +19,21 @@ export default function MarketService(){
             })
         },[marketContract])
 
+        const setTokenBidInfo = useCallback(async(tokenId:string|undefined,price:number|undefined,step:number|undefined)=>{
+            const unitPrice = price + '000000000000000000'
+            const unitStep = step + '000000000000000000'
+            const estimatedGas = await marketContract.estimateGas.readyToBidToken(tokenId,unitPrice,unitStep);
+            return marketContract.readyToBidToken(tokenId,unitPrice,unitStep,{
+                gasLimit: estimatedGas,
+            })
+        },[marketContract])
+
         const getTokenPrice = useCallback(async(tokenId:string|undefined)=>{
             return marketContract.getPriceByTokenId(tokenId)      
+        },[marketContract])
+
+        const getStepPrice = useCallback(async(tokenId:string|undefined)=>{
+            return marketContract.getStepByTokenId(tokenId)      
         },[marketContract])
 
         const cancelSellToken = useCallback(async(tokenId:string|undefined)=>{
@@ -75,5 +88,5 @@ export default function MarketService(){
             })
         },[marketContract])
 
-    return {cancelSellToken,getTokenPrice,setTokenPrice, buyToken, getBidsByUser,getBidsByTokenId,bidToken,updateBidPrice,cancelBidToken,sellTokenToBidUser}
+    return {cancelSellToken,getTokenPrice,setTokenPrice, buyToken, getBidsByUser,getBidsByTokenId,bidToken,updateBidPrice,cancelBidToken,sellTokenToBidUser, setTokenBidInfo,getStepPrice}
 }

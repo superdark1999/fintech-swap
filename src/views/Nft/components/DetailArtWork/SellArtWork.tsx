@@ -47,12 +47,11 @@ const DetaiArtWork = ({id}:any) => {
     const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
     const { checkApproveLevelAmount } = useLuckyServices()
     useEffect(() => {
-        if(account){
         getDetailNFT({ id }).then(({ status, data }) => {
         if (status == 200) {
             if (data?.data?.tokenId) {
             getTokenPrice(data?.data?.tokenId)
-                .then((data) => {
+                .then((data:any) => {
                 const price = getPrice(data?._hex)
                 if (price != -1) {
                     setLoading(false)
@@ -65,7 +64,6 @@ const DetaiArtWork = ({id}:any) => {
             setLoading(false)
         }
         })
-    }
     }, [])
 
   const onApproveBuyOnMarket = () => {
