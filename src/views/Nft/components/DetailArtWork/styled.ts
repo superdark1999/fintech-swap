@@ -178,6 +178,25 @@ export const ImageStyled = styled.div<Props>`
 export const DetailStyled = styled.div`
   padding: 42px 32px;
   height: calc(100vh - 200px);
+  .offer-auction{
+    height:30px;
+    span{
+      width:40px;
+      line-height:30px;
+    }
+    .next-auction{
+      max-width:450px;
+      font-weight:600;
+      line-height:30px;
+    }
+    .price-next-auction{
+      width:100%;
+      font-weight: 600;
+      .label-price{
+        margin-right:10px;
+      }
+    }
+  }
   /* overflow: auto; */
   .header-detail {
     display: flex;
