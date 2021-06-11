@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
-import { Row, Col, Tabs} from 'antd';
+import { Row, Col, Tabs, Modal, Input, Form, Button} from 'antd';
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import SearchInput from 'components-v2/SearchInput'
 import { ButtonStyle } from 'components-v2/cart/styled'
@@ -13,7 +13,7 @@ import useUserStore from 'store/userStore'
 import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
 import TabSetting from './TabSetting'
-import TableHistory from './TableHistory'
+import TableHistory from './Table'
 
 import { HeartOutlined } from '@ant-design/icons';
 import {useParams,useHistory} from "react-router-dom";
@@ -27,14 +27,18 @@ export default () => {
   const history = useHistory();
   const { tab, option } = useParams();
   const onChangeTab = (e)=>{
+    console.log('e: ', e)
     if(e==='onsale'){
-      history.push(`/my-profile/onsale/readyToSell`)
-    }else if(e=='mycollection'){
+      history.push(`/my-profile/onsale/all`)
+    }else if(e === 'mycollection'){
       history.push(`/my-profile/mycollection/all`)
     }
-    // else if(e=='setting'){
-    //   history.push(`/user-profile/setting`)
-    // }
+    else if(e === 'settings'){
+      history.push(`/my-profile/settings/#`)
+    }
+    else if(e === 'history'){
+      history.push(`/my-profile/history/#`)
+    }
   }
   return (
     <UserProfileStyled urlCover={userState?.coverImage}>
@@ -74,7 +78,10 @@ export default () => {
             <TabPane tab="My Collection" key="mycollection">
               <TabMyCollection/>
             </TabPane>
-            <TabPane tab="Settings" key="setting">
+            <TabPane tab="History" key="history">
+              <TableHistory/>
+            </TabPane>
+            <TabPane tab="Settings" key="settings">
               <TabSetting userState={userState}/>
             </TabPane>
           </Tabs>
@@ -128,7 +135,9 @@ const TabOnSale = ()=>{
 const TabMyCollection= ()=>{
   const { option } = useParams();
   const formRef = useRef(null)
+  console.log(option)
   const [optionChecked, setOptionChecked] = useState(option)
+
   const [renderData,setRenderData] = useState([])
   const {getNFT} = useArtworkServices()
   const { account } = useActiveWeb3React()
@@ -166,25 +175,28 @@ const TabMyCollection= ()=>{
     setOptionChecked(e.target.value)
   }
 
+
+
   return(
     <>
-          <Row align="middle" justify="space-between">
-                <GroupButton defaultValue={option}>
-                  <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
-                </GroupButton> 
-                <SearchInput maxWidth="300px" placeholder="Search items"/>
-              </Row>
-              <ListCart className="list-artwork">
-                {renderData.map(item=>{
-                  return(
-                    <MyCollectionCard key={item?.id} data={item}/>
-                  )
-                })}
-              </ListCart> 
-              {/* <Loadmore/>  */}
+      <Row align="middle" justify="space-between">
+            <GroupButton defaultValue={option}>
+              <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
+              <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
+              <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>
+              <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
+              <RadioButton width="auto" borderRadius="10px" value="checkingReadyToSell" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingReadyToSell'} >Checking To Sell</RadioButton>
+            </GroupButton> 
+            <SearchInput maxWidth="300px" placeholder="Search items"/>
+          </Row>
+          <ListCart className="list-artwork">
+            {renderData.map(item=>{
+              return(
+                <MyCollectionCard key={item?.id} data={item}/>
+              )
+            })}
+          </ListCart> 
+          {/* <Loadmore/>  */}
     </>
   )
 }
