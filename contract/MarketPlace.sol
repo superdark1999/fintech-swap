@@ -1370,26 +1370,33 @@ library EnumerableMap {
 pragma solidity >=0.6.2;
 
 interface IBidNFT {
+    function buyToken(uint256 _tokenId) external;
 
+    function buyTokenTo(uint256 _tokenId, address _to) external;
 
-    function offerNFT(uint256 _tokenId, uint256 _price) external;
-    
-    function cancelOfferNFT(uint256 _tokenId) external;
-    
-    function listNFT(uint256 _tokenId) external;
-    
-    function swapNFT( uint256 nftA,uint256  nftB, address user) external;
-        
+    function setCurrentPrice(uint256 _tokenId, uint256 _price) external;
 
-    function listNFTTo(
+    function readyToSellToken(uint256 _tokenId, uint256 _price) external;
+    
+    function readyToBidToken(uint256 _tokenId, uint256 _price, uint256 _step) external;
+
+    function revokeBidToken(uint256 _tokenId) external;
+    
+    function readyToSellTokenTo(
         uint256 _tokenId,
+        uint256 _price,
         address _to
     ) external;
 
-    function cancelListNFT(uint256 _tokenId) external;
+    function cancelSellToken(uint256 _tokenId) external;
 
-    
-    
+    function bidToken(uint256 _tokenId, uint256 _price) external;
+
+    function updateBidPrice(uint256 _tokenId, uint256 _price) external;
+
+    function sellTokenTo(uint256 _tokenId, address _to) external;
+
+    function cancelBidToken(uint256 _tokenId) external;
 }
 
 // File: contracts/BidNFT.sol
@@ -1408,14 +1415,13 @@ pragma experimental ABIEncoderV2;
 
 
 
-contract SwapNFTMarketPlace is IBidNFT, ERC721Holder, Ownable, Pausable {
+contract LuckyMarketPlace is IBidNFT, ERC721Holder, Ownable, Pausable {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
     using Address for address;
     using EnumerableMap for EnumerableMap.UintToUintMap;
     using EnumerableSet for EnumerableSet.UintSet;
 
-    
     struct AskEntry {
         uint256 tokenId;
         uint256 price;
@@ -1425,13 +1431,7 @@ contract SwapNFTMarketPlace is IBidNFT, ERC721Holder, Ownable, Pausable {
         address bidder;
         uint256 price;
     }
-    
-    struct Offer {
-        address user;
-        uint256 tokenId;
-        uint256 price;
-    }
-    
+
     struct UserBidEntry {
         uint256 tokenId;
         uint256 price;
@@ -1441,26 +1441,24 @@ contract SwapNFTMarketPlace is IBidNFT, ERC721Holder, Ownable, Pausable {
     IERC20 public quoteErc20;
     address public feeAddr;
     uint256 public feePercent;
+
+    EnumerableMap.UintToUintMap private _bidsMap;
     EnumerableMap.UintToUintMap private _asksMap;
-    mapping(uint256 =>address) public _listMap;
-    mapping(uint256 =>Offer[]) private _offerMap;
+    EnumerableMap.UintToUintMap private _stepsMap;    
     mapping(uint256 => address) private _tokenSellers;
+    mapping(uint256 => address) private _tokenBidders;
+    mapping(address => EnumerableSet.UintSet) private _userSellingTokens;
+    mapping(address => EnumerableSet.UintSet) private _userBiddingTokens;    
     mapping(uint256 => BidEntry[]) private _tokenBids;
     mapping(address => EnumerableMap.UintToUintMap) private _userBids;
 
     event Trade(address indexed seller, address indexed buyer, uint256 indexed tokenId, uint256 price, uint256 fee);
     event Ask(address indexed seller, uint256 indexed tokenId, uint256 price);
-    event OfferNFTs(address indexed user, uint256 indexed tokenId, uint256 price);
-    
-    event SwapNFTs( uint256 nftA,uint256  nftB, address user);
-
-    event List(address indexed seller, uint256 indexed tokenId);
-    event CancelOfferNFT(uint256 indexed tokenId);
-    event CancelListNFT(address indexed seller, uint256 indexed tokenId);
+    event CancelSellToken(address indexed seller, uint256 indexed tokenId);
     event FeeAddressTransferred(address indexed previousOwner, address indexed newOwner);
     event SetFeePercent(address indexed seller, uint256 oldFeePercent, uint256 newFeePercent);
     event Bid(address indexed bidder, uint256 indexed tokenId, uint256 price);
-    event CancelOfferNFT(address indexed user, uint256 indexed tokenId);
+    event CancelBidToken(address indexed bidder, uint256 indexed tokenId);
 
     constructor(
         address _nftAddress,
@@ -1478,47 +1476,173 @@ contract SwapNFTMarketPlace is IBidNFT, ERC721Holder, Ownable, Pausable {
         emit SetFeePercent(_msgSender(), 0, feePercent);
     }
 
-   
-    function swapNFT(uint256 _nftA,uint256 _nftB, address _userB) public override whenNotPaused {
-        (Offer memory offerEntry) = getOfferByTokenIdAndAddressSwap(_nftB, _userB);
-        
-        require(offerEntry.user != _userB, 'User B not exist');
-        require(_listMap[_nftA] != address(_msgSender()), 'User A not exist');
-        
-        uint256 price =offerEntry.price;
-        if(price>0){
-             quoteErc20.safeTransferFrom(address(this),address(_msgSender()), price);
-         }
-         
-         nft.safeTransferFrom(address(this),address(_msgSender()) , _nftB);
-         
-         nft.safeTransferFrom(address(this), address(_userB), _nftA);
-         
-        emit SwapNFTs(_nftA, _nftB, _msgSender());
-    }
-    
-  
-    function listNFT(uint256 _tokenId) public override whenNotPaused {
-        listNFTTo(_tokenId, address(_msgSender()));
+    function buyToken(uint256 _tokenId) public override whenNotPaused {
+        buyTokenTo(_tokenId, _msgSender());
     }
 
-    function listNFTTo(
+    function buyTokenTo(uint256 _tokenId, address _to) public override whenNotPaused {
+        require(_msgSender() != address(0) && _msgSender() != address(this), 'Wrong msg sender');
+        require(_asksMap.contains(_tokenId), 'Token not in sell book');
+        require(!_userBids[_msgSender()].contains(_tokenId), 'You must cancel your bid first');
+        nft.safeTransferFrom(address(this), _to, _tokenId);
+        uint256 price = _asksMap.get(_tokenId);
+        uint256 feeAmount = price.mul(feePercent).div(100);
+        if (feeAmount != 0) {
+            quoteErc20.safeTransferFrom(_msgSender(), feeAddr, feeAmount);
+        }
+        quoteErc20.safeTransferFrom(_msgSender(), _tokenSellers[_tokenId], price.sub(feeAmount));
+        _asksMap.remove(_tokenId);
+        _userSellingTokens[_tokenSellers[_tokenId]].remove(_tokenId);
+        emit Trade(_tokenSellers[_tokenId], _to, _tokenId, price, feeAmount);
+        delete _tokenSellers[_tokenId];
+    }
+
+    function setCurrentPrice(uint256 _tokenId, uint256 _price) public override whenNotPaused {
+        require(_userSellingTokens[_msgSender()].contains(_tokenId), 'Only Seller can update price');
+        require(_price != 0, 'Price must be granter than zero');
+        _asksMap.set(_tokenId, _price);
+        emit Ask(_msgSender(), _tokenId, _price);
+    }
+
+    function readyToSellToken(uint256 _tokenId, uint256 _price) public override whenNotPaused {
+        readyToSellTokenTo(_tokenId, _price, address(_msgSender()));
+    }
+
+    function readyToSellTokenTo(
         uint256 _tokenId,
+        uint256 _price,
         address _to
     ) public override whenNotPaused {
         require(_msgSender() == nft.ownerOf(_tokenId), 'Only Token Owner can sell token');
+        require(_price != 0, 'Price must be granter than zero');
         nft.safeTransferFrom(address(_msgSender()), address(this), _tokenId);
-        _listMap[_tokenId]=_to;
-        emit List(_to, _tokenId);
+        _asksMap.set(_tokenId, _price);
+        _tokenSellers[_tokenId] = _to;
+        _userSellingTokens[_to].add(_tokenId);
+        
+        emit Ask(_to, _tokenId, _price);
     }
 
-    function cancelListNFT(uint256 _tokenId) public override whenNotPaused {
-        require(_listMap[_tokenId]!=0x0000000000000000000000000000000000000000, 'User do not list NFT');
+    function cancelSellToken(uint256 _tokenId) public override whenNotPaused {
+        require(_userSellingTokens[_msgSender()].contains(_tokenId), 'Only Seller can cancel sell token');
         nft.safeTransferFrom(address(this), _msgSender(), _tokenId);
-        delete _listMap[_tokenId];
-        emit CancelOfferNFT(_msgSender(), _tokenId);
+        _asksMap.remove(_tokenId);
+        _userSellingTokens[_tokenSellers[_tokenId]].remove(_tokenId);
+        delete _tokenSellers[_tokenId];
+        emit CancelSellToken(_msgSender(), _tokenId);
+    }
+
+    function readyToBidToken(uint256 _tokenId, uint256 _price, uint256 _step) public override whenNotPaused {
+        require(_msgSender() == nft.ownerOf(_tokenId), 'Only Token Owner can sell token');
+        require(_price != 0, 'Price must be granter than zero');
+        require(_step != 0, 'Step must be granter than zero');
+        nft.safeTransferFrom(address(_msgSender()), address(this), _tokenId);
+        _stepsMap.set(_tokenId, _step);
+        _bidsMap.set(_tokenId, _price);
+        _tokenBidders[_tokenId] = address(_msgSender());
+        _userBiddingTokens[address(_msgSender())].add(_tokenId);
     }
     
+    function revokeBidToken(uint256 _tokenId) public override whenNotPaused {
+        require(_userBiddingTokens[_msgSender()].contains(_tokenId), 'Only Seller can cancel sell token');
+        nft.safeTransferFrom(address(this), _msgSender(), _tokenId);
+        _bidsMap.remove(_tokenId);
+        _userBiddingTokens[_tokenBidders[_tokenId]].remove(_tokenId);
+        delete _tokenBidders[_tokenId];
+    }
+    
+    function getAskLength() public view returns (uint256) {
+        return _asksMap.length();
+    }
+
+    function getAsks() public view returns (AskEntry[] memory) {
+        AskEntry[] memory asks = new AskEntry[](_asksMap.length());
+        for (uint256 i = 0; i < _asksMap.length(); ++i) {
+            (uint256 tokenId, uint256 price) = _asksMap.at(i);
+            asks[i] = AskEntry({tokenId: tokenId, price: price});
+        }
+        return asks;
+    }
+
+    function getAsksDesc() public view returns (AskEntry[] memory) {
+        AskEntry[] memory asks = new AskEntry[](_asksMap.length());
+        if (_asksMap.length() > 0) {
+            for (uint256 i = _asksMap.length() - 1; i > 0; --i) {
+                (uint256 tokenId, uint256 price) = _asksMap.at(i);
+                asks[_asksMap.length() - 1 - i] = AskEntry({tokenId: tokenId, price: price});
+            }
+            (uint256 tokenId, uint256 price) = _asksMap.at(0);
+            asks[_asksMap.length() - 1] = AskEntry({tokenId: tokenId, price: price});
+        }
+        return asks;
+    }
+
+    function getAsksByPage(uint256 page, uint256 size) public view returns (AskEntry[] memory) {
+        if (_asksMap.length() > 0) {
+            uint256 from = page == 0 ? 0 : (page - 1) * size;
+            uint256 to = Math.min((page == 0 ? 1 : page) * size, _asksMap.length());
+            AskEntry[] memory asks = new AskEntry[]((to - from));
+            for (uint256 i = 0; from < to; ++i) {
+                (uint256 tokenId, uint256 price) = _asksMap.at(from);
+                asks[i] = AskEntry({tokenId: tokenId, price: price});
+                ++from;
+            }
+            return asks;
+        } else {
+            return new AskEntry[](0);
+        }
+    }
+
+    function getAsksByPageDesc(uint256 page, uint256 size) public view returns (AskEntry[] memory) {
+        if (_asksMap.length() > 0) {
+            uint256 from = _asksMap.length() - 1 - (page == 0 ? 0 : (page - 1) * size);
+            uint256 to = _asksMap.length() - 1 - Math.min((page == 0 ? 1 : page) * size - 1, _asksMap.length() - 1);
+            uint256 resultSize = from - to + 1;
+            AskEntry[] memory asks = new AskEntry[](resultSize);
+            if (to == 0) {
+                for (uint256 i = 0; from > to; ++i) {
+                    (uint256 tokenId, uint256 price) = _asksMap.at(from);
+                    asks[i] = AskEntry({tokenId: tokenId, price: price});
+                    --from;
+                }
+                (uint256 tokenId, uint256 price) = _asksMap.at(0);
+                asks[resultSize - 1] = AskEntry({tokenId: tokenId, price: price});
+            } else {
+                for (uint256 i = 0; from >= to; ++i) {
+                    (uint256 tokenId, uint256 price) = _asksMap.at(from);
+                    asks[i] = AskEntry({tokenId: tokenId, price: price});
+                    --from;
+                }
+            }
+            return asks;
+        }
+        return new AskEntry[](0);
+    }
+
+    function getAsksByUser(address user) public view returns (AskEntry[] memory) {
+        AskEntry[] memory asks = new AskEntry[](_userSellingTokens[user].length());
+        for (uint256 i = 0; i < _userSellingTokens[user].length(); ++i) {
+            uint256 tokenId = _userSellingTokens[user].at(i);
+            uint256 price = _asksMap.get(tokenId);
+            asks[i] = AskEntry({tokenId: tokenId, price: price});
+        }
+        return asks;
+    }
+
+    function getAsksByUserDesc(address user) public view returns (AskEntry[] memory) {
+        AskEntry[] memory asks = new AskEntry[](_userSellingTokens[user].length());
+        if (_userSellingTokens[user].length() > 0) {
+            for (uint256 i = _userSellingTokens[user].length() - 1; i > 0; --i) {
+                uint256 tokenId = _userSellingTokens[user].at(i);
+                uint256 price = _asksMap.get(tokenId);
+                asks[_userSellingTokens[user].length() - 1 - i] = AskEntry({tokenId: tokenId, price: price});
+            }
+            uint256 tokenId = _userSellingTokens[user].at(0);
+            uint256 price = _asksMap.get(tokenId);
+            asks[_userSellingTokens[user].length() - 1] = AskEntry({tokenId: tokenId, price: price});
+        }
+        return asks;
+    }
 
     function pause() public onlyOwner whenNotPaused {
         _pause();
@@ -1540,89 +1664,113 @@ contract SwapNFTMarketPlace is IBidNFT, ERC721Holder, Ownable, Pausable {
         feePercent = _feePercent;
     }
 
-     function getOfferByTokenIdAndAddress(uint256 _tokenId, address _address)
-            private
-            view
-            returns (Offer memory, uint256)
-        {
-            // find the index of the offer
-            Offer[] memory offerEntries = _offerMap[_tokenId];
-            uint256 len = offerEntries.length;
-            uint256 _index;
-            Offer memory offerEntry;
-            for (uint256 i = 0; i < len; i++) {
-                if (_address == offerEntries[i].user) {
-                    _index = i;
-                    offerEntry = Offer({user: offerEntries[i].user, price: offerEntries[i].price, tokenId:offerEntries[i].tokenId});
-                    break;
-                }
-            }
-            return (offerEntry, _index);
-    }
-    
-      function getOfferByTokenIdAndAddressSwap(uint256 _tokenId, address _address)
-            private
-            view
-            returns (Offer memory)
-        {
-            // find the index of the offer
-            Offer[] memory offerEntries = _offerMap[_tokenId];
-            uint256 len = offerEntries.length;
-            uint256 _index;
-            Offer memory offerEntry;
-            for (uint256 i = 0; i < len; i++) {
-                if (_address == offerEntries[i].user) {
-                    _index = i;
-                    offerEntry = Offer({user: offerEntries[i].user, price: offerEntries[i].price, tokenId:offerEntries[i].tokenId});
-                    break;
-                }
-            }
-            return (offerEntry);
-    }
-    
-     function offerNFT(uint256 _tokenId, uint256 _price) public override whenNotPaused {
-        require(_listMap[_tokenId]!=0x0000000000000000000000000000000000000000, 'Token not yet listing');
-         if(_price>0){
-             quoteErc20.safeTransferFrom(address(_msgSender()), address(this), _price);
-         }
-         nft.safeTransferFrom(address(_msgSender()), address(this), _tokenId);
-        _offerMap[_tokenId].push(Offer({tokenId: _tokenId, price: _price, user:address(_msgSender())}));
-      
-        emit OfferNFTs(_msgSender(), _tokenId, _price);
-    }
-    
-    function cancelOfferNFT(uint256 _tokenId) public override whenNotPaused {
-        address _address = address(_msgSender());
+    function bidToken(uint256 _tokenId, uint256 _price) public override whenNotPaused {
+        require(_msgSender() != address(0) && _msgSender() != address(this), 'Wrong msg sender');
+        require(_price != 0, 'Price must be granter than zero');
+        require(_bidsMap.contains(_tokenId), 'Token not in bid book');
         
-        (Offer memory offerEntry, uint256 _index) = getOfferByTokenIdAndAddress(_tokenId, _address);
-        require(offerEntry.user != _address, 'User offer not exist');
-        if(offerEntry.price>0){
-            quoteErc20.transfer(_address, offerEntry.price);
-        }
-        nft.safeTransferFrom(address(this), address(_msgSender()), offerEntry.tokenId);
-        delOfferByTokenIdAndIndex(_tokenId, _index);
-        emit CancelOfferNFT(_msgSender(), _tokenId);
-    }
+        uint256 priceBid = _bidsMap.get(_tokenId);
+        require(_price>priceBid, 'Price must be granter than price bid');
     
-    
-    
-    function delOfferByTokenIdAndIndex(uint256 _tokenId, uint256 _index) private {
-        // delete the offer
-        uint256 len = _offerMap[_tokenId].length;
-        for (uint256 i = _index; i < len - 1; i++) {
-            _offerMap[_tokenId][i] = _offerMap[_tokenId][i + 1];
-        }
-        _offerMap[_tokenId].pop();
-    }
-   
-    function getOffersLength(uint256 _tokenId) public view returns (uint256) {
-        return _offerMap[_tokenId].length;
+        address _bidder = _tokenBidders[_tokenId];
+        address _to = address(_msgSender());
+        require(_bidder != _to, 'Owner cannot bid');
+        require(!_userBids[_to].contains(_tokenId), 'Bidder already exists');
+        quoteErc20.safeTransferFrom(address(_msgSender()), address(this), _price);
+        _userBids[_to].set(_tokenId, _price);
+        _tokenBids[_tokenId].push(BidEntry({bidder: _to, price: _price}));
+        emit Bid(_msgSender(), _tokenId, _price);
     }
 
-    function getOffers(uint256 _tokenId) public view returns (Offer[] memory) {
-        return _offerMap[_tokenId];
+    function updateBidPrice(uint256 _tokenId, uint256 _price) public override whenNotPaused {
+        require(_userBids[_msgSender()].contains(_tokenId), 'Only Bidder can update the bid price');
+        require(_price != 0, 'Price must be granter than zero');
+        address _to = address(_msgSender()); // find  bid and the index
+        (BidEntry memory bidEntry, uint256 _index) = getBidByTokenIdAndAddress(_tokenId, _to);
+        require(bidEntry.price != 0, 'Bidder does not exist');
+        require(bidEntry.price != _price, 'The bid price cannot be the same');
+        if (_price > bidEntry.price) {
+            quoteErc20.safeTransferFrom(address(_msgSender()), address(this), _price - bidEntry.price);
+        } else {
+            quoteErc20.transfer(_to, bidEntry.price - _price);
+        }
+        _userBids[_to].set(_tokenId, _price);
+        _tokenBids[_tokenId][_index] = BidEntry({bidder: _to, price: _price});
+        emit Bid(_msgSender(), _tokenId, _price);
     }
-    
+
+    function getBidByTokenIdAndAddress(uint256 _tokenId, address _address)
+        private
+        view
+        returns (BidEntry memory, uint256)
+    {
+        // find the index of the bid
+        BidEntry[] memory bidEntries = _tokenBids[_tokenId];
+        uint256 len = bidEntries.length;
+        uint256 _index;
+        BidEntry memory bidEntry;
+        for (uint256 i = 0; i < len; i++) {
+            if (_address == bidEntries[i].bidder) {
+                _index = i;
+                bidEntry = BidEntry({bidder: bidEntries[i].bidder, price: bidEntries[i].price});
+                break;
+            }
+        }
+        return (bidEntry, _index);
+    }
+
+    function delBidByTokenIdAndIndex(uint256 _tokenId, uint256 _index) private {
+        _userBids[_tokenBids[_tokenId][_index].bidder].remove(_tokenId);
+        // delete the bid
+        uint256 len = _tokenBids[_tokenId].length;
+        for (uint256 i = _index; i < len - 1; i++) {
+            _tokenBids[_tokenId][i] = _tokenBids[_tokenId][i + 1];
+        }
+        _tokenBids[_tokenId].pop();
+    }
+
+    function sellTokenTo(uint256 _tokenId, address _to) public override whenNotPaused {
+        require(_bidsMap.contains(_tokenId), 'Token not in sell book');
+        address _bidder = _tokenBidders[_tokenId];
+        address _owner = address(_msgSender());
+        require(_bidder == _owner, 'Only owner can sell token');
+        // find  bid and the index
+        (BidEntry memory bidEntry, uint256 _index) = getBidByTokenIdAndAddress(_tokenId, _to);
+        require(bidEntry.price != 0, 'Bidder does not exist');
+        // transfer token to bidder
+        nft.safeTransferFrom(address(this), _to, _tokenId);
+        uint256 price = bidEntry.price;
+        uint256 feeAmount = price.mul(feePercent).div(100);
+        if (feeAmount != 0) {
+            quoteErc20.transfer(feeAddr, feeAmount);
+        }
+        quoteErc20.transfer(_bidder, price.sub(feeAmount));
+        _bidsMap.remove(_tokenId);
+        _userBiddingTokens[_tokenSellers[_tokenId]].remove(_tokenId);
+        delBidByTokenIdAndIndex(_tokenId, _index);
+        emit Trade(_tokenBidders[_tokenId], _to, _tokenId, price, feeAmount);
+        delete _tokenSellers[_tokenId];
+    }
+
+    function cancelBidToken(uint256 _tokenId) public override whenNotPaused {
+        require(_userBids[_msgSender()].contains(_tokenId), 'Only Bidder can cancel the bid');
+        address _address = address(_msgSender());
+        // find  bid and the index
+        (BidEntry memory bidEntry, uint256 _index) = getBidByTokenIdAndAddress(_tokenId, _address);
+        require(bidEntry.price != 0, 'Bidder does not exist');
+        quoteErc20.transfer(_address, bidEntry.price);
+        delBidByTokenIdAndIndex(_tokenId, _index);
+        emit CancelBidToken(_msgSender(), _tokenId);
+    }
+
+    function getBidsLength(uint256 _tokenId) public view returns (uint256) {
+        return _tokenBids[_tokenId].length;
+    }
+
+    function getBids(uint256 _tokenId) public view returns (BidEntry[] memory) {
+        return _tokenBids[_tokenId];
+    }
+
     function getUserBids(address user) public view returns (UserBidEntry[] memory) {
         uint256 len = _userBids[user].length();
         UserBidEntry[] memory bids = new UserBidEntry[](len);
@@ -1632,6 +1780,19 @@ contract SwapNFTMarketPlace is IBidNFT, ERC721Holder, Ownable, Pausable {
         }
         return bids;
     }
+    function getPriceByTokenId(uint256 _tokenId)public view returns(uint256) {
+        uint256 price =  _asksMap.get(_tokenId);
+        return price;
+    }
+
+    function getPriceBidCurrentByTokenId(uint256 _tokenId)public view returns(uint256) {
+        return _bidsMap.get(_tokenId);
+    }
+    
+    function getStepByTokenId(uint256 _tokenId)public view returns(uint256) {
+        uint256 price = _stepsMap.get(_tokenId);
+        return price;
+    }    
 }   
  
   
