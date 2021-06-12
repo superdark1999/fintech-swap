@@ -68,38 +68,28 @@ const DetaiArtWork = ({ id }: any) => {
                 const step = getPrice(dt?._hex)
                 setStep(step)
               })
-              getBidsByTokenId(data?.data?.tokenId).then((bidsArr) => {
-                const bidsData =
-                    bidsArr?.map((item: any) => {
-                    return {
+              const getBidInfoToken = async()=>{
+                const bidsArr = await getBidsByTokenId(data?.data?.tokenId)
+                const bidsData = bidsArr?.map((item:any) => {
+                  return {
                       key: item?.[0] || '',
                       address: item?.[0] || '',
                       price: Number(item?.[1]?._hex) / Number(1e18),
                     }
                   }) || []
                 const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price
-                if(!maxPrice){
-                  getTokenBidPrice(data?.data?.tokenId)
-                    .then((dt:any) => {
-                      const price = getPrice(dt?._hex)
-                      if (price != -1) {
-                        setLoading(false)
-                        setPrice(price)
-                      }
-                    })
-                    .catch((err:any) => {
-                        console.log(err)
-                    })
-                    return
+                const unitPrice = await getTokenBidPrice(data?.data?.tokenId)
+                const price = getPrice(unitPrice?._hex)
+                setBidsData(bidsData.map((it:any)=>it.price>price))
+                if(price>maxPrice){
+                  setPrice(price)
                 }else{
-                    setPrice(maxPrice)
+                  setPrice(maxPrice)
                 }
-                setLoading(false)
-                setBidsData(bidsData)
-                if (account) {
-                setIsReadyBid(!!bidsData.find((it: any) => it.address == account))
+                if (account) setIsReadyBid(!!bidsData.find((it: any) => it.address == account))
               }
-            })
+              setLoading(false)
+              getBidInfoToken()
 
         }
           setNFTDetail(data?.data)

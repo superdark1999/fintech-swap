@@ -16,16 +16,6 @@ import { useActiveWeb3React } from '../../../../wallet/hooks'
 import OnsSaleCard from './OnSaleCard'
 import _ from 'lodash'
 import { Alert } from 'antd'
-const options = [
-  {
-    label: 'a',
-    value: 'a',
-  },
-  {
-    label: 'b',
-    value: 'b',
-  },
-]
 
 export default function MyCollectionCard({ data }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(false)
@@ -124,7 +114,7 @@ export default function MyCollectionCard({ data }: any) {
     setRuleAuctionModal(false)
   }
   const renderGroupAction = (status: any) => {
-    if (status === 'approved') {
+    if (true) {
       return (
         <div className="group-button">
           <ButtonTrade height="45px">Send</ButtonTrade>
@@ -144,8 +134,8 @@ export default function MyCollectionCard({ data }: any) {
               {'Allow to Sell'}
             </ButtonBuy>
           )}
-          {/* <ButtonBuy height="45px">Swap</ButtonBuy>
-              <ButtonBuy height="45px">Public swap</ButtonBuy> */}
+          <ButtonBuy height="45px">Swap</ButtonBuy>
+              <ButtonBuy height="45px">Public swap</ButtonBuy>
           <ButtonBuy borderRadius="100px" width="40px" height="45px">
             <img src={QRCode} />
           </ButtonBuy>

@@ -13,50 +13,36 @@ export default function OnSaleCard({data,}:any){
     const [loading, setLoading] = useState(true)
     const [price,setPrice] = useState(0)
     const { getTokenPrice,getBidsByTokenId,getTokenBidPrice} = usrMarketServices()
-    console.log('dtata',data)
   
     useEffect(()=>{
-      if(data?.tokenId){
-        if(data?.NFTType=='buy'){
-          getTokenPrice(data?.tokenId).then(data=>{
-            const price = getPrice(Number(data?._hex))
-            if(price!=-1){
-              setLoading(false)
-              setPrice(price)
-            }
-        })
-        }else{
-          getBidsByTokenId(data?.tokenId).then((bidsArr) => {
-            const bidsData =
-                bidsArr?.map((item: any) => {
-                return {
-                  key: item?.[0] || '',
-                  address: item?.[0] || '',
-                  price: Number(item?.[1]?._hex) / Number(1e18),
-                }
-              }) || []
-            const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price
-            if(!maxPrice){
-              getTokenBidPrice(data?.tokenId)
-                .then((dt:any) => {
-                  const price = getPrice(dt?._hex)
-                  if (price != -1) {
-                    setLoading(false)
-                    setPrice(price)
+      const getPriceToken = async()=>{
+        if(data?.tokenId){
+          if(data?.NFTType=='buy'){
+            const unitPrice =  await getTokenPrice(data?.tokenId)
+            const price = getPrice(Number(unitPrice?._hex))
+            setPrice(price)
+          }else{
+            const bidsArr = await getBidsByTokenId(data?.tokenId)
+            const bidsData = bidsArr?.map((item: any) => {
+                  return {
+                    key: item?.[0] || '',
+                    address: item?.[0] || '',
+                    price: Number(item?.[1]?._hex) / Number(1e18),
                   }
-                })
-                .catch((err:any) => {
-                    console.log(err)
-                })
-                return
+                }) || []
+            const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price
+            const unitPrice = await getTokenBidPrice(data?.tokenId)
+            const price = getPrice(unitPrice?._hex)
+            if(price>maxPrice){
+              setPrice(price)
             }else{
-                setPrice(maxPrice)
+              setPrice(maxPrice)
             }
-            setLoading(false)
-        })
+          }
         }
-        
-    }
+      }
+      setLoading(false)
+      getPriceToken()
     },[data?.tokenId])
   
   
