@@ -86,11 +86,9 @@ export default function MarketService(){
         },[marketContract])
 
         const sellTokenToBidUser = useCallback(async(tokenId:string|undefined,address:string|undefined)=>{
-          // // console.log(marketContract.estimateGas.sellTokenTo)
-          //   const estimatedGas = await marketContract.estimateGas.sellTokenTo(109,address)
-          //   // console.log(estimatedGas)
+            const estimatedGas = await marketContract.estimateGas.sellTokenTo(tokenId,address)
             return marketContract.sellTokenTo(tokenId,address, {
-              gasLimit: '28500000',
+              gasLimit: estimatedGas,
             })
         },[marketContract])
 
