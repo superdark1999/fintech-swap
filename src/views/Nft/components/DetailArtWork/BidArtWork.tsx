@@ -9,7 +9,7 @@ import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
 import { ButtonStyle, ButtonBuyStyle } from 'components-v2/cart/styled'
-import { SwapOutlined } from '@ant-design/icons'
+import { SwapOutlined, CloseOutlined, StarFilled } from '@ant-design/icons'
 import {
   DetailStyled,
   ReviewStyled,
@@ -17,6 +17,7 @@ import {
   FooterStyled,
   ImageStyled,
   DetailTabpane,
+  HeaderStyled
 } from './styled'
 import { dataHistory, columnHistory } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
@@ -31,10 +32,10 @@ import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import {getPrice} from 'utils' 
 import _ from 'lodash'
 import { InputNumber } from 'antd'
+import Hammer from 'assets/images/hammer.svg'
+import { Link } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 const { TabPane } = Tabs
-
-const STEP = 10;
-
 
 const DetaiArtWork = ({ id }: any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
@@ -43,13 +44,16 @@ const DetaiArtWork = ({ id }: any) => {
   const [loading, setLoading] = useState(true)
   const [isSelled, setIsSelled] = useState(false)
   const [price, setPrice] = useState<number>(0)
-  const [bidsData, setBidsData] = useState<any>([])
+  const [bidsData, setBidsData] = useState([])
   const [userState, userActions] = useUserStore()
+  const [step,setStep] = useState(0)
   const {
     getTokenPrice,
     bidToken,
     getBidsByTokenId,
     updateBidPrice,
+    getStepPrice,
+    getTokenBidPrice
   } = useMarketServices()
   const { approveLevelAmount, checkApproveLevelAmount } = useLuckyServices()
   const [isProcessing, setIsProccessing] = useState(false)
@@ -57,48 +61,39 @@ const DetaiArtWork = ({ id }: any) => {
   const [isReadyBid, setIsReadyBid] = useState(false)
   const [nextStepOffer, setStepNextOffer] = useState<number>(1)
   useEffect(() => {
-    if (account) {
       getDetailNFT({ id }).then(({ status, data }) => {
         if (status == 200) {
         if (data?.data?.tokenId) {
-            if (account) {
-              getBidsByTokenId(data?.data?.tokenId).then((bidsArr) => {
-                const bidsData =
-                    bidsArr?.map((item: any) => {
-                    return {
-                      key: item?.[1] || '',
+              getStepPrice(data?.data?.tokenId).then((dt)=>{
+                const step = getPrice(dt?._hex)
+                setStep(step)
+              })
+              const getBidInfoToken = async()=>{
+                const bidsArr = await getBidsByTokenId(data?.data?.tokenId)
+                const bidsData = bidsArr?.map((item:any) => {
+                  return {
+                      key: item?.[0] || '',
                       address: item?.[0] || '',
                       price: Number(item?.[1]?._hex) / Number(1e18),
                     }
                   }) || []
                 const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price
-                if(!maxPrice){
-                    getTokenPrice(data?.data?.tokenId)
-                    .then((dt:any) => {
-                      const price = getPrice(dt?._hex)
-                      if (price != -1) {
-                        setLoading(false)
-                        setPrice(price)
-                      }
-                    })
-                    .catch((err:any) => {
-                        console.log(err)
-                    })
-                    return
+                const unitPrice = await getTokenBidPrice(data?.data?.tokenId)
+                const price = getPrice(unitPrice?._hex)
+                setBidsData(bidsData.map((it:any)=>it.price>price))
+                if(price>maxPrice){
+                  setPrice(price)
                 }else{
-                    setPrice(maxPrice)
+                  setPrice(maxPrice)
                 }
-                setLoading(false)
-                setBidsData(bidsData)
-                setIsReadyBid(
-                  !!bidsData.find((it: any) => it.address == account),
-                )
-              })
-            }
+                if (account) setIsReadyBid(!!bidsData.find((it: any) => it.address == account))
+              }
+              setLoading(false)
+              getBidInfoToken()
+
         }
           setNFTDetail(data?.data)
         }})
-    }
   }, [])
   const onApproveBuyOnMarket = () => {
     setIsProccessing(true)
@@ -119,13 +114,11 @@ const DetaiArtWork = ({ id }: any) => {
     })
   }
   const onBidItem = (e: any) => {
+    console.log(isReadyBid)
     if (!account) {
       return alert('Unblock your wallet to buy this item')
     }
-    if (account === NFTDetail.ownerWalletAddress) {
-      return alert(`You can't buy your item`)
-    }
-    const bidPrice = price + STEP * nextStepOffer
+    const bidPrice = price + step * nextStepOffer
     setIsProccessing(true)
     if (isReadyBid) {
       updateBidPrice(NFTDetail?.tokenId,bidPrice )
@@ -181,38 +174,32 @@ const DetaiArtWork = ({ id }: any) => {
     setIsShowModalSetPrice(false)
   }
 
-  const renderFooter = () => {
-    if (isSelled) return null
+  const renderButton = () => {
+    if (isSelled||account === NFTDetail.ownerWalletAddress) return null
     if (isProcessing) {
       return (
-        <FooterStyled>
-          <ButtonBuyStyle >Processing...</ButtonBuyStyle>
-        </FooterStyled>
+          <ButtonBuy >Processing...</ButtonBuy>
       )
     }
     if (!account) {
       return (
-        <FooterStyled>
-          <ButtonStyle onClick={() => alert('Unblock your wallet to bid this item')}>
-            <SwapOutlined /> Auction
-          </ButtonStyle>
-        </FooterStyled>
+          <ButtonTrade onClick={() => alert('Unblock your wallet to bid this item')}>
+            <SwapOutlined /> Play Bid
+          </ButtonTrade>
       )
     }
     if (userState?.isCanBuy) {
       return (
-        <FooterStyled>
-          <ButtonStyle onClick={() => setIsShowModalSetPrice(true)}>
-            <SwapOutlined /> Auction
-          </ButtonStyle>
-        </FooterStyled>
+          <ButtonTrade onClick={() => setIsShowModalSetPrice(true)}>
+            <SwapOutlined /> Play Bid
+          </ButtonTrade>
       )
     }
     if(!userState?.isCanBuy){
         return(
-            <ButtonBuyStyle onClick={onApproveBuyOnMarket}>
-              Allow to buy
-            </ButtonBuyStyle>
+          <ButtonBuy onClick={onApproveBuyOnMarket}>
+            Allow to buy
+          </ButtonBuy>
         )
     }
   }
@@ -226,6 +213,27 @@ const DetaiArtWork = ({ id }: any) => {
         md={{ span: 24 }}
         sm={{ span: 24 }}
       >
+        <HeaderStyled className="header-detail">
+          <Row align="middle"> 
+            <div className="social-icon"><Link to="/"><CloseOutlined className="icon"/></Link></div>
+            <div className="date-time">02h 31m 04s left 🔥 </div>
+            <div className="rating">
+              4.8 
+              {' '}
+              <StarFilled style={{color: '#fadb14'}} />
+              {' '}
+              <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5'}}>(15)</span>
+              {' '}
+              <img src={Hammer} alt=""/>
+            </div>   
+          </Row>
+          
+          <div className="social-icon">    
+            <div className="icon"><img src={Facebook} alt="" /></div> 
+            <div className="icon"><img src={Telegram} alt="" /></div> 
+            <div className="icon"><img src={Copy} alt="" /></div> 
+          </div>
+        </HeaderStyled>
         <ImageStyled bgImage={NFTDetail?.contentUrl}>
           <div className="bg-image"></div>
           <img src={NFTDetail?.contentUrl} />
@@ -239,37 +247,28 @@ const DetaiArtWork = ({ id }: any) => {
         sm={{ span: 24 }}
       >
         <DetailStyled>
-          <div className="header-detail">
-            <div className="date-time">02h 31m 04s left 🔥 </div>
-            <div className="social-icon">
-              <img src={Facebook} alt="" />
-              <img src={Telegram} alt="" />
-              <img src={Copy} alt="" />
-            </div>
-          </div>
 
           <p className="title">{NFTDetail?.title}</p>
           <div className="token">
             Current Bid:{price} LUCKY
             <img src={Token} alt="" />
           </div>
-          <div className="next-auction">Place bid:</div>
-          <div className="price-next-auction">
-            <span className="label-price">
-              {price + STEP * nextStepOffer} <img src={Token} alt="" /> LUCKY
-            </span>
-            <span style={{ fontWeight: 'bold', margin: '0 10px' }}> X </span>
-            <InputNumber
-              min={1}
-              defaultValue={nextStepOffer}
-              onChange={(e: any) => setStepNextOffer(e)}
-            />
-          </div>
+          <div className="next-auction">Place bid:</div>  
+          <Row align="middle" justify="space-between">
+            <div className="price-next-auction">
+              <span className="label-price">
+              {price + step * nextStepOffer} <img src={Token} alt="" /> LUCKY
+              </span>
+              <span style={{ fontWeight: 'bold', margin: '0 10px' }}> X </span>
+              <InputNumber
+                min={1}
+                defaultValue={nextStepOffer}
+                onChange={(e: any) => setStepNextOffer(e)}
+              />
+            </div>
+            {renderButton()}
+          </Row>
 
-          <div className="rating">
-            <Rate disabled defaultValue={2} />
-            (15 reviews)
-          </div>
 
           <p className="description">{NFTDetail?.description || ''}</p>
 
@@ -401,7 +400,7 @@ const DetaiArtWork = ({ id }: any) => {
                 padding: 0,
               }}
             >
-              {renderFooter()}
+              {/* {renderFooter()} */}
               <Modal
                 title="Set price"
                 visible={isShowModalSetPrice}
@@ -413,7 +412,7 @@ const DetaiArtWork = ({ id }: any) => {
                   <Form.Item name="pricePlaceBid">
                     <label>
                       * You will place bid for this NFT is :{' '}
-                      <b>{price + STEP * nextStepOffer} LUCKY</b>{' '}
+                      <b>{price + step * nextStepOffer} LUCKY</b>{' '}
                       <img src={Token} alt="" />
                     </label>
                   </Form.Item>
@@ -440,6 +439,38 @@ const DetaiArtWork = ({ id }: any) => {
 
 const BiddingTable = ({ NFTInfo, bids }: any) => {
   const { account } = useActiveWeb3React()
+  const [isProcessing,setIsProccessing] = useState(false)
+  const { buyItem } = useArtworkServices()
+  const history = useHistory();
+  const {
+    sellTokenToBidUser
+  } = useMarketServices()
+  const confirmSellToken =(record:any) =>()=>{
+    if (!account) {
+      return alert('Unblock your wallet to confirm this item')
+    }
+    if(isProcessing) return 
+    setIsProccessing(true)
+    const tokenId = NFTInfo?.tokenId
+    if(tokenId&&record?.address){
+      sellTokenToBidUser(tokenId,record?.address).then((dt) => {
+        if (dt?.hash) {
+          buyItem({
+            id: NFTInfo?._id,
+            walletAddress: record?.address,
+          }).then(({ status }) => {
+            if (status == 200) {
+              history.push('/my-profile/mycollection/checkingReadyToBuy')
+            }
+          }).catch(()=>{
+            setIsProccessing(false)
+          })
+        }
+      }).catch(()=>{
+        setIsProccessing(false)
+      })
+    }
+  }
   const columnBidding =
     NFTInfo?.ownerWalletAddress === account
       ? [
@@ -469,11 +500,9 @@ const BiddingTable = ({ NFTInfo, bids }: any) => {
             dataIndex: 'action',
             render: (_: any, record: any) => (
               <ButtonTrade
-                onClick={(check) => {
-                  console.log(record)
-                }}
+                onClick={confirmSellToken(record)}
               >
-                Confirm
+                {isProcessing?'Processing...':'Confirm'}
               </ButtonTrade>
             ),
             width: 100,
@@ -483,7 +512,7 @@ const BiddingTable = ({ NFTInfo, bids }: any) => {
           {
             title: 'Address',
             dataIndex: 'address',
-            width: 150,
+            width: 200,
             render: (address: String) => (
               <a className="value" href="/" target="_blank">
                 {address}
@@ -493,7 +522,7 @@ const BiddingTable = ({ NFTInfo, bids }: any) => {
           {
             title: 'Price',
             dataIndex: 'price',
-            width: 150,
+            width: 100,
             render: (price: Number) => (
               <div className="token">
                 {price} LUCKY

@@ -9,7 +9,7 @@ import {
   MenuUnfoldOutlined,
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
-import { ButtonBuy } from 'components-v2/Button'
+import { ButtonBuy, ButtonTrade } from 'components-v2/Button'
 import ViewMore from 'assets/images/view-more.svg'
 import Token from 'assets/images/token.svg'
 import { isMobile } from 'react-device-detect'
@@ -116,15 +116,28 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
               unCheckedChildren="Animation"
               onChange={onChangeAnimation}
             /> */}
-            <div className="connect-wallet">
-              <Web3Status />
-            </div>
-            {account&&(
+            {!isMobile && 
+              <div className="connect-wallet">
+                <Web3Status />
+              </div>
+            }
+            {account ? (
               <div  className="view-more">
                 <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" >
                   <img src={ViewMore} />
                 </ButtonBuy>
                 <div className="menu">
+
+                    { isMobile &&
+                      <div className="menu-item">
+                        <div className="connect-wallet">
+                          <Web3Status />
+                        </div>
+                      </div>
+                    }
+                     {isMobile && (
+                        <div className="menu-item"><Link to={"/create/artwork"}><ButtonTrade>Create</ButtonTrade></Link></div>
+                      )}
                     <Link to="/my-profile/onsale/readyToSell">
                       <div className="menu-item">
                         My profile
@@ -147,7 +160,27 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
                     {/* </Link> */}
                   </div>
                </div>
-            )}
+            )
+          :
+          
+          <div className="view-more">
+            <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" >
+              <img src={ViewMore} />
+            </ButtonBuy>
+            <div className="menu">
+                { isMobile &&
+                  <div className="menu-item">
+                    <div className="connect-wallet">
+                      <Web3Status />
+                    </div>
+                  </div>
+                }
+                  {isMobile && (
+                    <div className="menu-item"><a onClick={()=>{alert("Unblock your wallet before create NFT")}} ><ButtonTrade>Create</ButtonTrade></a></div>
+                  )}
+                </div>
+            </div>
+          }
           </div>
     </StyledTopBar>
   )
@@ -209,23 +242,6 @@ const StyledTopBar = styled.div`
     .menu{
       display: none;
     }
-    /* .menu {
-      width: 120px;
-      display: block;
-      position: absolute;
-      background-color: #ffffff;
-      color: #333333;
-      bottom: -100%;
-      left: -200%;
-      border: 1px solid #E7EBEF;
-      box-sizing: border-box;
-      box-shadow: 0px 24px 48px rgb(35 35 35 / 8%);
-      border-radius: 8px;
-      .menu-item {
-          border: 0.5px solid #E7EBEF;
-          padding: 16px 24px;
-        }
-      } */
     :hover {
       .menu{
         width: 200px;
@@ -233,7 +249,7 @@ const StyledTopBar = styled.div`
         position: absolute;
         background-color: #ffffff;
         color: #333333;
-        bottom: -235px;
+        /* bottom: ${isMobile ? '-380px' : '-235px'}; */
         left: -160px;
         border: 1px solid #E7EBEF;
         box-sizing: border-box;

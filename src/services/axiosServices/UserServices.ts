@@ -6,13 +6,17 @@ export default function useArtworkService(){
     const {GET,POST, PATCH, PUT} = useAxiosServices('https://api.luckyswap.center')
 
     const login = (body:any)=>{
-        return POST('/login',body,false, false)
+        return POST('/user/login',body,false, false)
     }
 
     const updateProfile = (body:any)=>{
-        return POST('/updateProfile',body, false, false)
+        return POST('/user/updateProfile',body, false, false)
+    } 
+
+    const getUsers = ()=>{
+        return GET('/user',{}, false, false)
     } 
 
 
-    return {login,updateProfile}
+    return {login,updateProfile, getUsers}
 }

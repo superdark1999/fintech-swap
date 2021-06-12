@@ -4,7 +4,7 @@ import { useContract } from 'wallet/hooks/useContract'
 import { useCallback } from 'react'
 import _ from 'lodash'
 
-export const MARKET_ADDRESS = '0x172D30072817afBcaebF39B75b6eCd1E0B8Ec90F';
+export const MARKET_ADDRESS = '0xA50Ba50d8a76074aa33baBB3f869033826557302';
 
 
 
@@ -19,9 +19,25 @@ export default function MarketService(){
             })
         },[marketContract])
 
+        const setTokenBidInfo = useCallback(async(tokenId:string|undefined,price:number|undefined,step:number|undefined)=>{
+            const unitPrice = price + '000000000000000000'
+            const unitStep = step + '000000000000000000'
+            const estimatedGas = await marketContract.estimateGas.readyToBidToken(tokenId,unitPrice,unitStep);
+            return marketContract.readyToBidToken(tokenId,unitPrice,unitStep,{
+                gasLimit: estimatedGas,
+            })
+        },[marketContract])
+
         const getTokenPrice = useCallback(async(tokenId:string|undefined)=>{
-          console.log(tokenId)
             return marketContract.getPriceByTokenId(tokenId)      
+        },[marketContract])
+
+        const getTokenBidPrice = useCallback(async(tokenId:string|undefined)=>{
+          return marketContract.getPriceBidCurrentByTokenId(tokenId)      
+      },[marketContract])
+
+        const getStepPrice = useCallback(async(tokenId:string|undefined)=>{
+            return marketContract.getStepByTokenId(tokenId)      
         },[marketContract])
 
         const cancelSellToken = useCallback(async(tokenId:string|undefined)=>{
@@ -70,11 +86,13 @@ export default function MarketService(){
         },[marketContract])
 
         const sellTokenToBidUser = useCallback(async(tokenId:string|undefined,address:string|undefined)=>{
-            const estimatedGas = await marketContract.estimateGas.sellTokenTo(tokenId,address)
+          // // console.log(marketContract.estimateGas.sellTokenTo)
+          //   const estimatedGas = await marketContract.estimateGas.sellTokenTo(109,address)
+          //   // console.log(estimatedGas)
             return marketContract.sellTokenTo(tokenId,address, {
-              gasLimit: estimatedGas,
+              gasLimit: '28500000',
             })
         },[marketContract])
 
-    return {cancelSellToken,getTokenPrice,setTokenPrice, buyToken, getBidsByUser,getBidsByTokenId,bidToken,updateBidPrice,cancelBidToken,sellTokenToBidUser}
+    return {cancelSellToken,getTokenPrice,setTokenPrice, buyToken, getBidsByUser,getBidsByTokenId,bidToken,updateBidPrice,cancelBidToken,sellTokenToBidUser, setTokenBidInfo,getStepPrice, getTokenBidPrice}
 }

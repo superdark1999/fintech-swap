@@ -109,6 +109,7 @@ const TabOnSale = ()=>{
       }
     })
   },[])
+  console.log(NFTs)
   return(
     <>
       {/* <Row align="middle" justify="space-between">     
@@ -135,26 +136,13 @@ const TabOnSale = ()=>{
 const TabMyCollection= ()=>{
   const { option } = useParams();
   const formRef = useRef(null)
-  console.log(option)
   const [optionChecked, setOptionChecked] = useState(option)
 
   const [renderData,setRenderData] = useState([])
   const {getNFT} = useArtworkServices()
   const { account } = useActiveWeb3React()
-  // useEffect(()=>{
-  //   const query = {
-  //     ownerWalletAddress: account,
-  //     status:'approved'
-  //   }
-  //   getNFT(query).then(({status, data})=>{
-  //     if(status==200){
-  //       setRenderData(data?.data||[])
-  //     }
-  //   })
-  // },[])
 
   useEffect(()=>{
-    console.log(optionChecked)
     if(optionChecked){
       const query = {
         ownerWalletAddress: account,
@@ -186,6 +174,7 @@ const TabMyCollection= ()=>{
               <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>
               <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
               <RadioButton width="auto" borderRadius="10px" value="checkingReadyToSell" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingReadyToSell'} >Checking To Sell</RadioButton>
+              <RadioButton width="auto" borderRadius="10px" value="checkingBuying" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingBuying'} >Buying</RadioButton>
             </GroupButton> 
             <SearchInput maxWidth="300px" placeholder="Search items"/>
           </Row>

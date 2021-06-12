@@ -18,16 +18,37 @@ import _ from 'lodash'
 export default function CardItem({data}) {
   const [price,setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
-  const  {getTokenPrice} =useMarketServices()
+  const  {getTokenPrice,getTokenBidPrice, getBidsByTokenId} =useMarketServices()
   useEffect(()=>{
     if(data?.tokenId){
-      getTokenPrice(data?.tokenId).then((dt)=>{
-        const price = getPrice(Number(dt?._hex))
-        if(price!=-1){
-          setLoading(false)
-          setPrice(price)
+      const getPriceToken = async()=>{
+        if(data?.tokenId){
+          if(data?.NFTType=='buy'){
+            const unitPrice =  await getTokenPrice(data?.tokenId)
+            const price = getPrice(Number(unitPrice?._hex))
+            setPrice(price)
+          }else{
+            const bidsArr = await getBidsByTokenId(data?.tokenId)
+            const bidsData = bidsArr?.map((item) => {
+                  return {
+                    key: item?.[0] || '',
+                    address: item?.[0] || '',
+                    price: Number(item?.[1]?._hex) / Number(1e18),
+                  }
+                }) || []
+            const maxPrice = _.maxBy(bidsData,(item)=> item?.price)?.price
+            const unitPrice = await getTokenBidPrice(data?.tokenId)
+            const price = getPrice(unitPrice?._hex)
+            if(price>maxPrice){
+              setPrice(price)
+            }else{
+              setPrice(maxPrice)
+            }
+          }
         }
-      }).catch((err)=>{})
+      }
+      setLoading(false)
+      getPriceToken()
     }
   },[data?.tokenId])
   // console.log(configState.isUsingAnimation)
@@ -64,15 +85,15 @@ export default function CardItem({data}) {
             <div>
                 {price} LUCKY {' '}
               <img src={Token} alt=""/></div>  
-            <div>
-              4.8 
-              {' '}
-              <StarFilled style={{color: '#fadb14'}} />
-              {' '}
-              <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5'}}>(15)</span>
-              {' '}
-              <img src={Hammer} alt=""/>
-            </div>      
+              <div>
+                4.8 
+                {' '}
+                <StarFilled style={{color: '#fadb14'}} />
+                {' '}
+                <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5'}}>(15)</span>
+                {' '}
+                <img src={Hammer} alt=""/>
+              </div>      
             </div> 
           </div>      
         </div>   

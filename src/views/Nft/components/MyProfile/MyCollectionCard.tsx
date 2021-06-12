@@ -16,23 +16,13 @@ import { useActiveWeb3React } from '../../../../wallet/hooks'
 import OnsSaleCard from './OnSaleCard'
 import _ from 'lodash'
 import { Alert } from 'antd'
-const options = [
-  {
-    label: 'a',
-    value: 'a',
-  },
-  {
-    label: 'b',
-    value: 'b',
-  },
-]
 
 export default function MyCollectionCard({ data }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(false)
   const [isProcessing, setIsPrcessing] = useState(true)
   const [ruleAuctionModal, setRuleAuctionModal] = useState(false)
   const { isTokenReadyToSell, approveTokenToMarket } = useNFTServices()
-  const { setTokenPrice } = useMarketServices()
+  const { setTokenPrice, setTokenBidInfo } = useMarketServices()
   const { updateNFTInfo, setPrice } = useArtworkServices()
   const history = useHistory()
 
@@ -103,7 +93,7 @@ export default function MyCollectionCard({ data }: any) {
     setIsPrcessing(true)
     const tokenId = data?.tokenId
     setIsPrcessing(true)
-    setTokenPrice(tokenId, value.price)
+    setTokenBidInfo(tokenId, value.price, value.stepPrice)
       .then((dt) => {
         if (dt?.hash) {
           setPrice({ id: data?.id,NFTType:'auction' }).then(({ status }) => {
@@ -117,6 +107,7 @@ export default function MyCollectionCard({ data }: any) {
         }
       })
       .catch((err) => {
+        console.log(err)
         alert('Something when wrong, please try again later.')
         setIsPrcessing(false)
       })

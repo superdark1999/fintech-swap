@@ -103,6 +103,7 @@ const CreateArtWork: React.FC = () => {
         mintToken(url)
           .then((mintData: any) => {
             const txHash = mintData?.hash
+            
             updateHashInfoNFT({ NFTid, txHash }).then(({status,data})=>{
               if(status==200){
                 history.push('/my-profile/mycollection/pending')
@@ -110,15 +111,14 @@ const CreateArtWork: React.FC = () => {
             })
           })
           .catch((err: any) => {
+            setIsProcessing(false)
             alert(err?.message||'Something went wrong please try again')
           })
         }
       })
       .catch((err: any) => {
-        alert('Something went wrong please try again')
-      })
-      .finally(() => {
         setIsProcessing(false)
+        alert('Something went wrong please try again')
       })
   }
 
