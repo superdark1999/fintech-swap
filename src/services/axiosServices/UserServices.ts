@@ -13,6 +13,10 @@ export default function useArtworkService(){
         return POST('/user/updateProfile',body, false, false)
     } 
 
+    const getUsers = ()=>{
+        return GET('/user',{}, false, false)
+    } 
 
-    return {login,updateProfile}
+
+    return {login,updateProfile, getUsers}
 }
