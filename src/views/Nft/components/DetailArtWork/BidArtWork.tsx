@@ -194,14 +194,14 @@ const DetaiArtWork = ({ id }: any) => {
     if (!account) {
       return (
           <ButtonTrade onClick={() => alert('Unblock your wallet to bid this item')}>
-            <SwapOutlined /> Auction
+            <SwapOutlined /> Play Bid
           </ButtonTrade>
       )
     }
     if (userState?.isCanBuy) {
       return (
           <ButtonTrade onClick={() => setIsShowModalSetPrice(true)}>
-            <SwapOutlined /> Auction
+            <SwapOutlined /> Play Bid
           </ButtonTrade>
       )
     }

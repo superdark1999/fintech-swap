@@ -18,16 +18,47 @@ import _ from 'lodash'
 export default function CardItem({data}) {
   const [price,setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
-  const  {getTokenPrice} =useMarketServices()
+  const  {getTokenPrice,getTokenBidPrice, getBidsByTokenId} =useMarketServices()
   useEffect(()=>{
     if(data?.tokenId){
-      getTokenPrice(data?.tokenId).then((dt)=>{
-        const price = getPrice(Number(dt?._hex))
-        if(price!=-1){
+      if(data?.NFTType==='buy'){
+        getTokenPrice(data?.tokenId).then((dt)=>{
+          const price = getPrice(Number(dt?._hex))
+          if(price!=-1){
+            setLoading(false)
+            setPrice(price)
+          }
+        }).catch((err)=>{})
+      }else{
+        getBidsByTokenId(data?.tokenId).then((bidsArr) => {
+          const bidsData =
+              bidsArr?.map((item) => {
+              return {
+                key: item?.[0] || '',
+                address: item?.[0] || '',
+                price: Number(item?.[1]?._hex) / Number(1e18),
+              }
+            }) || []
+          const maxPrice = _.maxBy(bidsData,(item)=> item?.price)?.price
+          if(!maxPrice){
+            getTokenBidPrice(data?.tokenId)
+              .then((dt) => {
+                const price = getPrice(dt?._hex)
+                if (price != -1) {
+                  setLoading(false)
+                  setPrice(price)
+                }
+              })
+              .catch((err) => {
+                  console.log(err)
+              })
+              return
+          }else{
+              setPrice(maxPrice)
+          }
           setLoading(false)
-          setPrice(price)
-        }
-      }).catch((err)=>{})
+      })
+      }
     }
   },[data?.tokenId])
   // console.log(configState.isUsingAnimation)

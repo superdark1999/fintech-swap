@@ -7,28 +7,55 @@ import Token from 'assets/images/token.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
 import usrMarketServices from 'services/web3Services/MarketServices'; 
 import _ from 'lodash'
+import {getPrice} from 'utils'
 
-const getPrice = (price:number)=>{
-    if(price?.toString()?.length<24){
-      const priceString = _.replace(price?.toString(),'000000000000000000','')
-      return Number(priceString)
-    }
-    return -1
-  }
 export default function OnSaleCard({data,}:any){
     const [loading, setLoading] = useState(true)
     const [price,setPrice] = useState(0)
-    const { getTokenPrice} = usrMarketServices()
+    const { getTokenPrice,getBidsByTokenId,getTokenBidPrice} = usrMarketServices()
+    console.log('dtata',data)
   
     useEffect(()=>{
       if(data?.tokenId){
-        getTokenPrice(data?.tokenId).then(data=>{
-          const price = getPrice(Number(data?._hex))
-          if(price!=-1){
+        if(data?.NFTType=='buy'){
+          getTokenPrice(data?.tokenId).then(data=>{
+            const price = getPrice(Number(data?._hex))
+            if(price!=-1){
+              setLoading(false)
+              setPrice(price)
+            }
+        })
+        }else{
+          getBidsByTokenId(data?.tokenId).then((bidsArr) => {
+            const bidsData =
+                bidsArr?.map((item: any) => {
+                return {
+                  key: item?.[0] || '',
+                  address: item?.[0] || '',
+                  price: Number(item?.[1]?._hex) / Number(1e18),
+                }
+              }) || []
+            const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price
+            if(!maxPrice){
+              getTokenBidPrice(data?.tokenId)
+                .then((dt:any) => {
+                  const price = getPrice(dt?._hex)
+                  if (price != -1) {
+                    setLoading(false)
+                    setPrice(price)
+                  }
+                })
+                .catch((err:any) => {
+                    console.log(err)
+                })
+                return
+            }else{
+                setPrice(maxPrice)
+            }
             setLoading(false)
-            setPrice(price)
-          }
-      })
+        })
+        }
+        
     }
     },[data?.tokenId])
   
