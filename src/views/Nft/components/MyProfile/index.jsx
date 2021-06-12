@@ -22,8 +22,6 @@ const { TabPane } = Tabs;
 
 export default () => {
   const [userState, userActions] = useUserStore()
-  // console.log('userState: ', userState)
-
   const history = useHistory();
   const { tab, option } = useParams();
   const onChangeTab = (e)=>{
