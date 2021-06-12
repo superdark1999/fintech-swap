@@ -77,7 +77,7 @@ const DetaiArtWork = ({ id }: any) => {
                       price: Number(item?.[1]?._hex) / Number(1e18),
                     }
                   }) || []
-                const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price
+                const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
                 const unitPrice = await getTokenBidPrice(data?.data?.tokenId)
                 const price = getPrice(unitPrice?._hex)
                 setBidsData(bidsData.filter((it:any)=>it.price>price))
@@ -132,7 +132,7 @@ const DetaiArtWork = ({ id }: any) => {
                       price: Number(item?.[1]?._hex) / Number(1e18),
                     }
                   }) || []
-                const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price
+                const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
                 if(maxPrice){
                     setPrice(maxPrice)
                 }
@@ -156,7 +156,7 @@ const DetaiArtWork = ({ id }: any) => {
                       price: Number(item?.[1]?._hex) / Number(1e18),
                     }
                   }) || []
-                const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price
+                const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
                 if(maxPrice){
                     setPrice(maxPrice)
                 }

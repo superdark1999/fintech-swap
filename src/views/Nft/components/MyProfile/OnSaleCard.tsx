@@ -30,7 +30,7 @@ export default function OnSaleCard({data,}:any){
                     price: Number(item?.[1]?._hex) / Number(1e18),
                   }
                 }) || []
-            const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price
+            const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
             const unitPrice = await getTokenBidPrice(data?.tokenId)
             const price = getPrice(unitPrice?._hex)
             if(price>maxPrice){
