@@ -9,37 +9,41 @@ import { ButtonStyle } from 'components-v2/cart/styled'
 import  Copy from 'assets/images/copy.svg'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'; 
 import { useActiveWeb3React } from 'wallet/hooks'
-import useUserStore from 'store/userStore'
 import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
-import TabSetting from './TabSetting'
-
+import useArtworkService from 'services/axiosServices/UserServices'
 import { HeartOutlined } from '@ant-design/icons';
-import {useParams,useHistory} from "react-router-dom";
+import {useParams, useHistory, useRouteMatch} from "react-router-dom";
 const { TabPane } = Tabs;
 
 
 const UserProfile = () => {
-  const [userState, userActions] = useUserStore()
-  console.log('userState: ', userState)
+  const [user, setUser] = useState()
+  const match = useRouteMatch()
+  const { getUserDetail } = useArtworkService()
+  useEffect(()=>{
+    getUserDetail(match.params?.id).then(({data, status})=>{
+     if(status===200){
+       setUser(data)
+       console.log('res: ', data)
+     }
+    })
+  },[])
 
   const history = useHistory();
   const { tab, option } = useParams();
   const onChangeTab = (e)=>{
-    if(e==='onsale'){
-      history.push(`/user-profile/onsale/readyToSell`)
-    }else if(e=='mycollection'){
-      history.push(`/user-profile/mycollection/all`)
+    if (e === 'onsale') {
+      history.push(`/user-profile/${match.params?.id}/onsale/readyToSell`)
+    }else if (e === 'mycollection'){
+      history.push(`/user-profile/${match.params?.id}/collection/all`)
     }
-    // else if(e=='setting'){
-    //   history.push(`/user-profile/setting`)
-    // }
   }
   return (
-    <UserProfileStyled urlCover={userState?.coverImage}>
+    <UserProfileStyled urlCover={user?.coverImage}>
       <Row className="section header-profile">
           <Col className="header-profile-col" xxl={{ span: 24}}  xl={{ span: 20}} md={{ span: 20 }} xs={{span: 20}}>
-             <img className="avatar" src={userState?.avatarImage}/>
+             <img className="avatar" src={user?.avatarImage}/>
           </Col>
       </Row>
       <Row className="section content-profile">
@@ -47,7 +51,7 @@ const UserProfile = () => {
             <div className="info-detail">
               <div>
                 <div className="name">
-                  <span>{userState?.name}</span>
+                  <span>{user?.name}</span>
                   <img src={Checkmark} />
                 </div>
                 <div className="rank">
@@ -64,18 +68,15 @@ const UserProfile = () => {
               </div> 
             </div>
             <p className="description">
-                {userState?.biography}
+                {user?.biography}
             </p>  
           <Tabs defaultActiveKey={tab} onChange={onChangeTab}>
             <TabPane tab="On sale" key="onsale"> 
               <TabOnSale />    
             </TabPane>
-            <TabPane tab="My Collection" key="mycollection">
+            <TabPane tab="Collection" key="collection">
               <TabMyCollection/>
             </TabPane>
-            {/* <TabPane tab="Settings" key="setting">
-              <TabSetting userState={userState}/>
-            </TabPane> */}
           </Tabs>
 
           </Col>
@@ -168,23 +169,23 @@ const TabMyCollection= ()=>{
 
   return(
     <>
-          <Row align="middle" justify="space-between">
-                <GroupButton defaultValue={option}>
-                  <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="checkingReadyToSell" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingReadyToSell'}>Pending </RadioButton>
-                  <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
-                </GroupButton> 
-                <SearchInput maxWidth="300px" placeholder="Search items"/>
-              </Row>
-              <ListCart className="list-artwork">
-                {renderData.map(item=>{
-                  return(
-                    <MyCollectionCard key={item?.id} data={item}/>
-                  )
-                })}
-              </ListCart> 
-              {/* <Loadmore/>  */}
+      <Row align="middle" justify="space-between">
+        <GroupButton defaultValue={option}>
+          <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
+          <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
+          <RadioButton width="auto" borderRadius="10px" value="checkingReadyToSell" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingReadyToSell'}>Pending </RadioButton>
+          <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
+        </GroupButton> 
+        <SearchInput maxWidth="300px" placeholder="Search items"/>
+      </Row>
+      <ListCart className="list-artwork">
+        {renderData.map(item=>{
+          return(
+            <MyCollectionCard key={item?.id} data={item}/>
+          )
+        })}
+      </ListCart> 
+          {/* <Loadmore/>  */}
     </>
   )
 }

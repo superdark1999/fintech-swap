@@ -80,7 +80,7 @@ const DetaiArtWork = ({ id }: any) => {
                 const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price
                 const unitPrice = await getTokenBidPrice(data?.data?.tokenId)
                 const price = getPrice(unitPrice?._hex)
-                setBidsData(bidsData.map((it:any)=>it.price>price))
+                setBidsData(bidsData.filter((it:any)=>it.price>price))
                 if(price>maxPrice){
                   setPrice(price)
                 }else{

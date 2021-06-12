@@ -17,6 +17,10 @@ export default function useArtworkService(){
         return GET('/user',{}, false, false)
     } 
 
+    const getUserDetail = (id: string)=>{
+        return GET(`/user/${id}`,{}, false, false)
+    } 
 
-    return {login,updateProfile, getUsers}
+
+    return {login,updateProfile, getUsers, getUserDetail}
 }
