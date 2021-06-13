@@ -66,6 +66,8 @@ const CreateArtWork: React.FC = () => {
   }, [userState.name])
 
   const onCreateNFT = async (values: any) => {
+    console.log('values: ', values)
+    setIsProcessing(true)
     const mintData = {
       title: values?.artworkName || '',
       description: values?.introduction || '',
@@ -112,14 +114,6 @@ const CreateArtWork: React.FC = () => {
       })
   }
 
-  const handleSubmit = async () => {
-    if (!isProccessing) {
-      formRef.current.validateFields().then((values: any) => {
-        setIsProcessing(true)
-        onCreateNFT(values)
-      })
-    }
-  }
   return (
     <Row gutter={24} style={{ justifyContent: 'center' }}>
       <Col xl={{ span: 18 }} md={{ span: 18 }} xs={{ span: 24 }}>
@@ -131,6 +125,7 @@ const CreateArtWork: React.FC = () => {
             layout="vertical"
             name="nest-messages"
             validateMessages={validateMessages}
+            onFinish={onCreateNFT}
           >
             <Form.Item
               name="type"
@@ -139,7 +134,6 @@ const CreateArtWork: React.FC = () => {
             >
               <GroupButton>
                 <RadioButton style={{ height: 100 }} value="image">
-                  {' '}
                   Picture
                 </RadioButton>
                 <RadioButton style={{ height: 100 }} value="gif">
@@ -172,7 +166,7 @@ const CreateArtWork: React.FC = () => {
                 >
                   <GroupButton>
                     <RadioButton style={{ height: 60 }} value="Bep721 ">
-                      Bep721{' '}
+                      Bep721
                     </RadioButton>
                     <RadioButton style={{ height: 60 }} value="Bep1155">
                       Bep1155
@@ -273,7 +267,7 @@ const CreateArtWork: React.FC = () => {
             </Row>
 
             <ButtonStyle
-              onClick={handleSubmit}
+              type="submit"
               style={{ width: 300, margin: '20px auto' }}
             >
               {isProccessing ? `Proccessing ...` : `Create`}
