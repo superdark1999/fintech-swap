@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import {
-  Form,
-  Input,
-  Button,
-  Row,
-  Col,
-  Checkbox,
-} from 'antd'
+import { Form, Input, Button, Row, Col, Checkbox } from 'antd'
 import UploadFile from 'components-v2/UploadMedia'
-import {
-  EditOutlined,
-} from '@ant-design/icons'
-import { useHistory } from "react-router-dom";
+import { EditOutlined } from '@ant-design/icons'
+import { useHistory } from 'react-router-dom'
 import { ButtonStyle } from 'components-v2/cart/styled'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useUserServices from 'services/axiosServices/UserServices'
@@ -28,21 +19,21 @@ const TextAreaStyled = styled(Input.TextArea)`
   &.ant-input-textarea > textarea {
     border-radius: 16px;
     height: 148px;
-}
+  }
 `
 
 const CreateArtWork: React.FC = () => {
   const [showModalCreateArtist, setShowModalCreateArtist] =
     React.useState<boolean | null>(false)
   const formRef = React.useRef() as React.MutableRefObject<any>
-  const { createNFT, updateHashInfoNFT } = useArtworkServices();
-  const {updateProfile} = useUserServices()
+  const { createNFT, updateHashInfoNFT } = useArtworkServices()
+  const { updateProfile } = useUserServices()
   const { account } = useActiveWeb3React()
   const { mintToken } = useNFTServices()
   const [isProccessing, setIsProcessing] = useState(false)
   const [userState, userActions] = useUserStore()
   const [form] = Form.useForm()
-  const history = useHistory();
+  const history = useHistory()
   const validateMessages = {
     required: '${label} is required!',
     types: {
@@ -63,16 +54,16 @@ const CreateArtWork: React.FC = () => {
       socialMediaLink: values?.socialMediaLink,
       biography: values?.biography,
     }
-    updateProfile(artistData).then(({data, status})=>{
+    updateProfile(artistData).then(({ data, status }) => {
       form.setFieldsValue({ artistName: artistData.name })
       userActions.updateUserInfo(data?.data)
       setShowModalCreateArtist(false)
     })
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     form.setFieldsValue({ artistName: userState.name })
-  },[userState.name])
+  }, [userState.name])
 
   const onCreateNFT = async (values: any) => {
     const mintData = {
@@ -84,30 +75,40 @@ const CreateArtWork: React.FC = () => {
     }
 
     createNFT(mintData)
-      .then(({data,status}) => {
-        if(status===200){
-        const url = data?.data?.contentUrl || ''
-        const NFTid = data?.data?._id || ''
-        notification('success', {message: "Create NFT success", description: ""})
-        mintToken(url)
-          .then((mintData: any) => {
-            const txHash = mintData?.hash
-            
-            updateHashInfoNFT({ NFTid, txHash }).then(({status,data})=>{
-              if(status === 200){
-                history.push('/my-profile/mycollection/pending')
-              }
+      .then(({ data, status }) => {
+        if (status === 200) {
+          const url = data?.data?.contentUrl || ''
+          const NFTid = data?.data?._id || ''
+          notification('success', {
+            message: 'Create NFT success',
+            description: '',
+          })
+          mintToken(url)
+            .then((mintData: any) => {
+              const txHash = mintData?.hash
+
+              updateHashInfoNFT({ NFTid, txHash }).then(({ status, data }) => {
+                if (status === 200) {
+                  history.push('/my-profile/mycollection/pending')
+                }
+              })
             })
-          })
-          .catch((err: any) => {
-            setIsProcessing(false)
-            notification('error', { message: err?.message||'Something went wrong please try again', description: "" })
-          })
+            .catch((err: any) => {
+              setIsProcessing(false)
+              notification('error', {
+                message:
+                  err?.message || 'Something went wrong please try again',
+                description: '',
+              })
+            })
         }
       })
       .catch((err: any) => {
         setIsProcessing(false)
-        notification('error', { message: "Something went wrong please try again", description: "" })
+        notification('error', {
+          message: 'Something went wrong please try again',
+          description: '',
+        })
       })
   }
 
@@ -242,7 +243,6 @@ const CreateArtWork: React.FC = () => {
                     maxLength={1000}
                     showCount={true}
                     autoSize={false}
-                    
                   />
                 </Form.Item>
                 <Form.Item
