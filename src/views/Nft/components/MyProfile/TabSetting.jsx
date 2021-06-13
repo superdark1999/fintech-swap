@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import {
   Form,
   Input,
@@ -20,14 +20,7 @@ const  TabSetting= () => {
 
   useEffect(() => {
     form.setFieldsValue(userState)
-  }, [])
-
-  // const normFile = (e) => {
-  //   if (Array.isArray(e)) {
-  //     return e
-  //   }
-  //   return e && e.fileList
-  // }
+  }, [userState])
 
   const handleUpdateProfile = (values) => {
     const artistData = {
@@ -39,7 +32,6 @@ const  TabSetting= () => {
       biography: values?.biography,
     }
     updateProfile(artistData).then(({data, status})=>{
-      // form.setFieldsValue({ artistName: artistData.name })
       userActions.updateUserInfo(data?.data)
     })
   }
@@ -52,8 +44,6 @@ const  TabSetting= () => {
       onFinish={handleUpdateProfile}
       layout="vertical"
       style={{maxWidth: 900,  margin: 'auto'}}
-      // initialValues={{userState}}
-      // defaultValue={{userState}}
   >
     <Row gutter={24}>
       <Col xl={{ span: 24 }} md={{ span: 24 }} xs={{ span: 24 }}>
