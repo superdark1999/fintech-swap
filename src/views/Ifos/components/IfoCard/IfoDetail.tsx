@@ -364,7 +364,7 @@ const BoxForm = styled.div`
     cursor: pointer;
     position: relative;
     z-index: 1;
-    background: #1890ff4d;
+    background: #f5c6064d;
     color: rgb(255, 253, 250);
     cursor: auto;
     box-shadow: none;

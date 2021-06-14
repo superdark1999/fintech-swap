@@ -1550,7 +1550,7 @@ const Boxbtn = styled.div`
   padding-top: 15px;
 
   button {
-    background: #1890ff;
+    background: #f5c606;
     font-weight: 600;
 
     &:hover {
