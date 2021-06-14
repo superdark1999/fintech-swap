@@ -409,7 +409,7 @@ const BoxLink = styled.div`
     text-decoration: none;
 
     &:hover {
-      background-color: #40a9ff;
+      background-color: #e4bc17;
       transition: 0.5s;
       color: rgb(255, 253, 250);
     }
