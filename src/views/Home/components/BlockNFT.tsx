@@ -152,10 +152,43 @@ const WrapNFT = styled.div`
   }
 
   .left {
-    
+    position: relative;
+    overflow: hidden;
+
+    &:before {
+      content: '';
+      background: url('../images/bg-swap.png');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      width: 100%;
+      height: 148px;
+      position: absolute;
+      left: 51px;
+      top: 10px;
+      opacity: 0.4;
+    }
   }
 
   .right {
+    position: relative;
+    overflow: hidden;
+
+    &:before {
+      content: '';
+      background: url('../images/bg-nft.png');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      width: 100%;
+      height: 177px;
+      position: absolute;
+      left: 0;
+      top: -9px;
+      opacity: 0.7;
+      transform: rotate(45deg);
+    }
+
     .box {
       &__item {
         width: 100%;
@@ -176,9 +209,13 @@ const WrapNFT = styled.div`
       &__item {
         width: 100%;
         margin-bottom: 20px;
+        border-bottom: 1px solid #676666;
+        padding-bottom: 10px;
 
         @media(min-width: 991px) {
           width: 25%;
+          border-bottom: none;
+          padding-bottom: 0;
         }
 
         > div {
@@ -186,6 +223,11 @@ const WrapNFT = styled.div`
           -webkit-box-align: center;
           align-items: center;
           text-align: center;
+
+          @media(max-width: 991px) {
+            width: 100%;
+            justify-content: center;
+          }
         }
       }
 
