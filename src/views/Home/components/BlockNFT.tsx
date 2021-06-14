@@ -9,7 +9,7 @@ const BlockNFT = () => {
   return (
     <WrapNFT>
         <Row gutter={[24, 24]}>
-            <Col span={16}>
+            <Col span={24} sm={24} md={16}>
               <div className="left">
                 <div className="box">
                   <div className="box__item">
@@ -94,7 +94,7 @@ const BlockNFT = () => {
                 </div>
               </div>
             </Col>
-            <Col span={8}>
+            <Col span={24} sm={24} md={8}>
               <div className="right">
                 <div className="box">
                   <div className="box__item">
@@ -126,7 +126,7 @@ const BlockNFT = () => {
                   </div>
 
                   <div className="box__item">
-                    <div className="box__item-title">BAKE locked by NFT</div>
+                    <div className="box__item-title">LUCKY locked by NFT</div>
                     <div className="box__item-number">
                       <img src="images/logo-icon.png" alt=""/>
                       <div className="number">
@@ -158,7 +158,11 @@ const WrapNFT = styled.div`
   .right {
     .box {
       &__item {
-        width: 50%;
+        width: 100%;
+
+        @media(min-width: 991px) {
+          width: 50%;
+        }
       }
     }
   }
@@ -170,8 +174,12 @@ const WrapNFT = styled.div`
       flex-wrap: wrap;
 
       &__item {
-        width: 25%;
+        width: 100%;
         margin-bottom: 20px;
+
+        @media(min-width: 991px) {
+          width: 25%;
+        }
 
         > div {
           display: flex;
@@ -186,7 +194,7 @@ const WrapNFT = styled.div`
         margin: 0px;
         min-width: 0px;
         color: rgb(240, 185, 11);
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 600;
         margin-bottom: 10px;
       }
