@@ -296,6 +296,7 @@ button.button-connect:hover {
 
 .custom-btn a#join-pool-button{
   background-color: #f5c606;
+  color: #2b2e2f !important;
   margin-top: 15px;
 }
 
