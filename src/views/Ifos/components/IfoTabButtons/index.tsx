@@ -89,7 +89,7 @@ const Wrapper = styled.div`
     }
 
     button {
-      background-color:#1890ff;
+      background-color:#f5c606;
       height: 40px;
       width: 40px;
       border:1px transparent solid;

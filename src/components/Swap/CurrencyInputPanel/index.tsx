@@ -38,7 +38,7 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   :focus,
   :hover {
     /* background-color: ${({ theme }) => darken(0.05, theme.colors.input)}; */
-    color:#1890ff ;
+    color:#f5c606 ;
   }
 `
 
