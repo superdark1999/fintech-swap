@@ -151,7 +151,7 @@ const WrapNFT = styled.div`
     padding: 20px 20px 0;
   }
 
-  .left {
+  /* .left {
     position: relative;
     overflow: hidden;
 
@@ -168,7 +168,7 @@ const WrapNFT = styled.div`
       top: 10px;
       opacity: 0.4;
     }
-  }
+  } */
 
   .right {
     position: relative;
