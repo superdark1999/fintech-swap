@@ -28,6 +28,7 @@ body {
 .custome-line a {
   border: 1px solid #2b2c3a;
   color: #2b2c3a;
+  font-weight: 600;
 }
 
 .block-pool div,
@@ -364,4 +365,9 @@ button.button-connect:hover {
   width: 110px;
   height: 90px;
   transition: 1s;
+}
+
+.logo-mobile {
+  width: 100%;
+  max-width: 40px;
 }

@@ -72,6 +72,7 @@ const ArtItemStyled = styled.div`
   font-family: Source Sans Pro;
   border-radius: 20px;
   overflow: hidden;
+  min-height: 306px;
 
   .thumb-container {
     position: relative;
