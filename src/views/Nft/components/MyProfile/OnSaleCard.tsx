@@ -74,7 +74,7 @@ export default function OnSaleCard({data,}:any){
               </div> 
               <div style={{display: "flex"}}>
                 <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
-                <div className="number">{data?.TXHash} </div>
+                <div className="number">{data?.TXHash?.slice(1, 20)}...</div>
               </div> 
               
               <div className="content">

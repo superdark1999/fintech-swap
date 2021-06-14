@@ -64,9 +64,13 @@ const CreateArtWork: React.FC = () => {
       biography: values?.biography,
     }
     updateProfile(artistData).then(({data, status})=>{
+      notification('success', {message: "Create Artist success", description: ""})
       form.setFieldsValue({ artistName: artistData.name })
       userActions.updateUserInfo(data?.data)
       setShowModalCreateArtist(false)
+    })
+    .catch((err) => {
+      notification('error', { message: err?.message||'Something went wrong please try again', description: "" })
     })
   }
 

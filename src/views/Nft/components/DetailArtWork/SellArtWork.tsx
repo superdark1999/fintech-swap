@@ -247,7 +247,7 @@ const DetaiArtWork = ({id}:any) => {
                 columns={columnHistory}
                 dataSource={dataHistory}
                 size="middle"
-                scroll={{ x: 'calc(300px + 50%)', y: 240 }}
+                scroll={{ x: 'calc(300px + 50%)', y: 700 }}
               />
             </TabPane>
             <TabPane tab="Reviews" key="4">
