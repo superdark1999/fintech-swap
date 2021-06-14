@@ -151,25 +151,6 @@ const WrapNFT = styled.div`
     padding: 20px 20px 0;
   }
 
-  /* .left {
-    position: relative;
-    overflow: hidden;
-
-    &:before {
-      content: '';
-      background: url('../images/bg-swap.png');
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
-      width: 100%;
-      height: 148px;
-      position: absolute;
-      left: 51px;
-      top: 10px;
-      opacity: 0.4;
-    }
-  } */
-
   .right {
     position: relative;
     overflow: hidden;
@@ -191,23 +172,23 @@ const WrapNFT = styled.div`
 
     .box {
       &__item {
-        width: 100%;
-
-        @media(min-width: 991px) {
-          width: 50%;
-        }
+        width: 50%;
       }
     }
   }
 
   .box {
-      padding-left: 20px;
+      padding-left: 0;
       width: 100%;
       display: flex;
       flex-wrap: wrap;
 
+      @media(min-width: 991px) {
+        padding-left: 20px;
+      }
+
       &__item {
-        width: 100%;
+        width: 50%;
         margin-bottom: 20px;
         border-bottom: 1px solid #676666;
         padding-bottom: 10px;
