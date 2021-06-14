@@ -3,19 +3,14 @@ import styled from 'styled-components'
 import {
   Form,
   Input,
-  InputNumber,
   Button,
-  Radio,
-  Modal,
   Row,
   Col,
   Checkbox,
 } from 'antd'
 import UploadFile from 'components-v2/UploadMedia'
 import {
-  UploadOutlined,
   EditOutlined,
-  PictureOutlined,
 } from '@ant-design/icons'
 import { useHistory } from "react-router-dom";
 import { ButtonStyle } from 'components-v2/cart/styled'
@@ -25,11 +20,9 @@ import useNFTServices from 'services/web3Services/NFTServices'
 import { useActiveWeb3React } from 'wallet/hooks'
 import useUserStore from 'store/userStore'
 import { CreateArtWorkStyled } from './styled'
-
 import { GroupButton, RadioButton } from './styled'
 import ModalCreateArtist from './ModalCreateArtist'
-
-
+import notification from 'components-v2/Alert'
 
 const TextAreaStyled = styled(Input.TextArea)`
   &.ant-input-textarea > textarea {
@@ -42,7 +35,6 @@ const CreateArtWork: React.FC = () => {
   const [showModalCreateArtist, setShowModalCreateArtist] =
     React.useState<boolean | null>(false)
   const formRef = React.useRef() as React.MutableRefObject<any>
-  const formArtistRef = React.useRef() as React.MutableRefObject<any>
   const { createNFT, updateHashInfoNFT } = useArtworkServices();
   const {updateProfile} = useUserServices()
   const { account } = useActiveWeb3React()
@@ -51,10 +43,6 @@ const CreateArtWork: React.FC = () => {
   const [userState, userActions] = useUserStore()
   const [form] = Form.useForm()
   const history = useHistory();
-  const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-  }
   const validateMessages = {
     required: '${label} is required!',
     types: {
@@ -76,9 +64,13 @@ const CreateArtWork: React.FC = () => {
       biography: values?.biography,
     }
     updateProfile(artistData).then(({data, status})=>{
+      notification('success', {message: "Create Artist success", description: ""})
       form.setFieldsValue({ artistName: artistData.name })
       userActions.updateUserInfo(data?.data)
       setShowModalCreateArtist(false)
+    })
+    .catch((err) => {
+      notification('error', { message: err?.message||'Something went wrong please try again', description: "" })
     })
   }
 
@@ -100,25 +92,26 @@ const CreateArtWork: React.FC = () => {
         if(status===200){
         const url = data?.data?.contentUrl || ''
         const NFTid = data?.data?._id || ''
+        notification('success', {message: "Create NFT success", description: ""})
         mintToken(url)
           .then((mintData: any) => {
             const txHash = mintData?.hash
             
             updateHashInfoNFT({ NFTid, txHash }).then(({status,data})=>{
-              if(status==200){
+              if(status === 200){
                 history.push('/my-profile/mycollection/pending')
               }
             })
           })
           .catch((err: any) => {
             setIsProcessing(false)
-            alert(err?.message||'Something went wrong please try again')
+            notification('error', { message: err?.message||'Something went wrong please try again', description: "" })
           })
         }
       })
       .catch((err: any) => {
         setIsProcessing(false)
-        alert('Something went wrong please try again')
+        notification('error', { message: "Something went wrong please try again", description: "" })
       })
   }
 

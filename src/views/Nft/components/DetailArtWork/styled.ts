@@ -325,6 +325,7 @@ export const DetailTabpane = styled.div`
       padding: 6px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       .title {
         font-size: 14px;
         font-weight: normal;
@@ -332,6 +333,9 @@ export const DetailTabpane = styled.div`
       .value{
         width: 50%;
         text-align: right;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
       }
     }
   }
