@@ -157,7 +157,8 @@ input:focus {
 }
 
 .btn-supply {
-  background-color: #1c90ff !important;
+  background-color: #f5c606 !important;
+  color: #2b2e2f !important;
   border-radius: 6px !important;
 }
 
@@ -189,6 +190,7 @@ input:focus {
 
 button.btn-blue {
   background-color: #f5c606;
+  color: #2b2e2f !important;
 }
 
 @media (max-width: 768px) {
@@ -309,14 +311,15 @@ button.button-connect:hover {
 
 .bot-btn #swap-button{
   background-color: #f5c606;
+  color: #2b2e2f !important;
 }
 
 .custom-btn-farm button {
-  background-color: #1c90ff;
+  background-color: #f5c606;
 }
 
 .menu-button:hover {
-  color: #08a7da !important;
+  color: #ffdb4a !important;
 }
 
 .icon-hot a {
