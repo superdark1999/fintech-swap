@@ -167,8 +167,8 @@ const TabMyCollection= ()=>{
       <Row align="middle" justify="space-between">
             <GroupButton defaultValue={option}>
               <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
-              <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
               <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>
+              <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
               <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
               <RadioButton width="auto" borderRadius="10px" value="checkingReadyToSell" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingReadyToSell'} >Checking To Sell</RadioButton>
               <RadioButton width="auto" borderRadius="10px" value="checkingBuying" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingBuying'} >Buying</RadioButton>

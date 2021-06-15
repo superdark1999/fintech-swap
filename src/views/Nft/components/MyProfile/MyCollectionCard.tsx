@@ -274,6 +274,7 @@ export default function MyCollectionCard({ data }: any) {
             onCancel={() => setRuleAuctionModal(false)}
             footer={null}
             width={400}
+            style={{borderRadius: 16}}
           >
             <Form ref={formRef} onFinish={onSubmitRuleAuction}>
               <Form.Item
@@ -288,7 +289,7 @@ export default function MyCollectionCard({ data }: any) {
               </Form.Item>
               <Form.Item
                 name="stepPrice"
-                label="Step Price"
+                label="Price Step"
                 rules={[{ required: true, message: 'This Field is required' }]}
               >
                 <Input
@@ -296,7 +297,9 @@ export default function MyCollectionCard({ data }: any) {
                   placeholder="Enter step price of NFT"
                 />
               </Form.Item>
-              <p>* Note:Step price is</p>
+              <p><span style={{color:'red'}}>*</span> <b>Note</b>:The price step is the way to calculate the price increase for each offer NFT</p>
+              <p>Example: NFT has a current price of 300 LUCKY and a price step of 100 LUCKY</p>
+              <p>then the purchase price after that is 400 LUCKY</p>
               <Form.Item>
                 <div
                   style={{

@@ -16,12 +16,13 @@ import { SwapOutlined, StarFilled } from '@ant-design/icons'
 import useMarketServices from 'services/web3Services/MarketServices'
 import {getPrice} from 'utils'
 import _ from 'lodash' 
+import Countdown from "react-countdown";
 const { Meta } = Card;
 export default function CardItem({data}) {
-  console.log('data: ', data);
   const [price,setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
-  const  marketServiceMethod =useMarketServices()
+const [dayExp, setDayExp] = useState(false)  
+const  marketServiceMethod =useMarketServices()
   useEffect(()=>{
     const getTokenPrice = async ()=>{
       if(marketServiceMethod&&data?.tokenId&&data?.NFTType){
@@ -32,7 +33,7 @@ export default function CardItem({data}) {
     }
     getTokenPrice()
   },[data?.tokenId])
-  // console.log(configState.isUsingAnimation)
+  // 
   // useEffect(()=>{
   //   configState.isUsingAnimation&&useFrameGif.current.start()
   //    !configState.isUsingAnimation&&useFrameGif.current.stop()
@@ -43,9 +44,9 @@ export default function CardItem({data}) {
         <div className="card-art-work">                     
           <div className="wrapper-image">  
             <div className="gradient-background"><div className="title">{data?.title}</div></div>   
-            <div className="header-card-art-work">
-              <div className="date-time">02h 31m 04s left 🔥 </div>
-            </div>
+            {!dayExp&&data.NFTType === 'auction'&&<div className="header-card-art-work">
+              <div className="date-time"><Countdown onComplete={()=>setDayExp(true)} date={Date.now() + Math.floor(Math.random()*10000000)}/> 🔥 </div>
+            </div>}
             {/* <ReactFreezeframe ref={useFrameGif} className="avatar"  src={data?.contentUrl}/>      */}
             <img className="avatar"  src={data?.contentUrl} alt="" loading="lazy"/>
           </div>
