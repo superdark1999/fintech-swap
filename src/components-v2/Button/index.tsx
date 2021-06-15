@@ -24,6 +24,7 @@ export const ButtonTrade = styled.button<StyledButtonProps>`
   line-height: 24px;
   color: #ffffff;
   cursor: pointer;
+  margin-right: 10px;
   > img,
   span {
     margin-right: 5px;
@@ -61,6 +62,7 @@ export const ButtonBuy = styled.div<StyledButtonProps>`
     -webkit-mask-composite: destination-out;
     mask-composite: exclude;
   }
+
 `
 
 export const ButtonProccesing = styled.div<StyledButtonProps>`

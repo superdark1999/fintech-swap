@@ -43,4 +43,12 @@ export const getPrice = (price:number) => {
   return Number(priceString)
 }
 
+export const getCompactString=(str:string, sepLen:number)=>{
+  if(!str){
+    return ''
+  }
+  const strLen = str.length || 0
+  return `${str.slice(0,sepLen)} ... ${str.slice(strLen-sepLen-1,strLen-1)}`
+}
+
 export const SUPPORT_CHAIN_IDS:Array<ChainId> = [97]

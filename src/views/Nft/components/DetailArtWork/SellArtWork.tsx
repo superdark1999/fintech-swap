@@ -29,7 +29,7 @@ import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import Hammer from 'assets/images/hammer.svg'
 import { Link } from 'react-router-dom'
-import {getPrice} from 'utils'
+import {getPrice, getCompactString} from 'utils'
 import notification from 'components-v2/Alert';
 import { useHistory } from 'react-router-dom'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
@@ -230,7 +230,7 @@ const DetaiArtWork = ({id}:any) => {
                   <div className="info">
                     <div className="title">NFT Contract ID:</div>
                     <a className="value" href="/" target="_blank">
-                      {NFTDetail && NFTDetail.contractAddress}
+                      {getCompactString(NFTDetail?.contractAddress,10)}
                     </a>
                   </div>
                   <div className="info">
@@ -244,13 +244,13 @@ const DetaiArtWork = ({id}:any) => {
                   <div className="info">
                     <div className="title">Creator's Adress:</div>
                     <a className="value" href="/" target="_blank">
-                      {NFTDetail && NFTDetail.createdBy}
+                      {getCompactString(NFTDetail?.createdBy,10)}
                     </a>
                   </div>
                   <div className="info">
                     <div className="title">Owner Adress:</div>
                     <a className="value" href="/" target="_blank">
-                      {NFTDetail && NFTDetail.ownerWalletAddress}
+                      {getCompactString(NFTDetail?.ownerWalletAddress,10)}
                     </a>
                   </div>
                 </div>

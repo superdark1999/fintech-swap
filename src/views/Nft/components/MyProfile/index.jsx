@@ -150,6 +150,11 @@ const TabMyCollection= ()=>{
       }
       getNFT(query).then(({status, data})=>{
         if(status==200){
+          if(optionChecked=='pending'){
+           return setRenderData(data?.data?.filter(item=>{
+             return item.status == 'pending' && item.status == 'checkingReadyToSell' && item.status == 'checkingBuying'
+           })||[])
+          }
           setRenderData(data?.data||[])
         }
       })
@@ -170,15 +175,13 @@ const TabMyCollection= ()=>{
               <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>
               <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
               <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
-              <RadioButton width="auto" borderRadius="10px" value="checkingReadyToSell" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingReadyToSell'} >Checking To Sell</RadioButton>
-              <RadioButton width="auto" borderRadius="10px" value="checkingBuying" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingBuying'} >Buying</RadioButton>
             </GroupButton> 
             <SearchInput maxWidth="300px" placeholder="Search items"/>
           </Row>
           <ListCart className="list-artwork">
             {renderData.map(item=>{
               return(
-                <MyCollectionCard key={item?.id} data={item}/>
+                <MyCollectionCard key={item?.id} data={item} option={optionChecked}/>
               )
             })}
           </ListCart> 

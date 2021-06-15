@@ -29,7 +29,7 @@ import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
-import {getPrice} from 'utils' 
+import {getPrice, getCompactString} from 'utils' 
 import _ from 'lodash'
 import { InputNumber } from 'antd'
 import Hammer from 'assets/images/hammer.svg'
@@ -71,7 +71,7 @@ const DetaiArtWork = ({ id }: any) => {
               const getBidInfoToken = async()=>{
                 const bidsArr = await marketServicesMethod?.getBidsByTokenId?.(data?.data?.tokenId)
                 const stepPriceUnit = await marketServicesMethod?.getStepPrice?.(data?.data?.tokenId)
-                setStep(stepPriceUnit._hex)
+                setStep(getPrice(stepPriceUnit._hex))
                 const bidsData = bidsArr?.map((item:any) => {
                   return {
                       key: item?.[0] || '',
@@ -296,7 +296,7 @@ const DetaiArtWork = ({ id }: any) => {
                   <div className="info">
                     <div className="title">NFT Contract ID:</div>
                     <a className="value" href="/" target="_blank">
-                      {NFTDetail && NFTDetail.contractAddress}
+                      {getCompactString(NFTDetail?.contractAddress,10)}
                     </a>
                   </div>
                   <div className="info">
@@ -310,13 +310,13 @@ const DetaiArtWork = ({ id }: any) => {
                   <div className="info">
                     <div className="title">Creator's Adress:</div>
                     <a className="value" href="/" target="_blank">
-                      {NFTDetail && NFTDetail.createdBy}
+                    {getCompactString(NFTDetail?.createdBy,10)}
                     </a>
                   </div>
                   <div className="info">
                     <div className="title">Owner Adress:</div>
                     <a className="value" href="/" target="_blank">
-                      {NFTDetail && NFTDetail.ownerWalletAddress}
+                    {getCompactString(NFTDetail?.ownerWalletAddress,10)}
                     </a>
                   </div>
                 </div>
