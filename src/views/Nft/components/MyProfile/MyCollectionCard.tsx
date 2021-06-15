@@ -2,10 +2,11 @@ import React, { useEffect, useState, useRef } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
-import { Row, Col, Tabs, Modal, Input, Form, Button, Radio } from 'antd'
-
+import { Row, Col, Tabs, Modal, Input, Form, Button, Radio,Menu, Dropdown } from 'antd'
+import { DownOutlined,SyncOutlined,CheckOutlined} from '@ant-design/icons';
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import Loadmore from 'components-v2/Loadmore'
+import StatusBar from 'components-v2/StatusBar'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import QRCode from 'assets/images/qr-code.svg'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
@@ -117,44 +118,63 @@ export default function MyCollectionCard({ data }: any) {
     if (status === 'approved') {
       return (
         <div className="group-button">
-          <ButtonTrade height="45px">Send</ButtonTrade>
+          <ButtonBuy height="40px">Transfer</ButtonBuy>
           {isProcessing ? (
-            <ButtonBuy height="45px">Processing...</ButtonBuy>
+            <ButtonBuy height="40px">Processing...</ButtonBuy>
           ) : isNFTCanSell ? (
             <>
-              <ButtonBuy height="45px" onClick={showModalSetProcePrice}>
+              <ButtonBuy height="40px" onClick={showModalSetProcePrice}>
                 Sell
               </ButtonBuy>
-              <ButtonBuy height="45px" onClick={() => setRuleAuctionModal(true)}>
+              <ButtonBuy height="40px" onClick={() => setRuleAuctionModal(true)}>
                 Auction
               </ButtonBuy>
             </>
           ) : (
-            <ButtonBuy height="45px" onClick={onAllowSellItem}>
+            <ButtonBuy height="40px" onClick={onAllowSellItem}>
               {'Allow to Sell'}
             </ButtonBuy>
           )}
-          {/* <ButtonBuy height="45px">Swap</ButtonBuy>
-              <ButtonBuy height="45px">Public swap</ButtonBuy> */}
-          <ButtonBuy borderRadius="100px" width="40px" height="45px">
+          {/* <ButtonBuy height="40px">Swap</ButtonBuy>
+              <ButtonBuy height="40px">Public swap</ButtonBuy> */}
+          <button className="btn-qrCode">
             <img src={QRCode} />
-          </ButtonBuy>
+          </button>
         </div>
       )
     } else if (status === 'pending') {
       return (
         <div className="group-button">
-          <ButtonBuy height="45px">Processing...</ButtonBuy>
-          <ButtonBuy borderRadius="100px" width="40px" height="45px">
+          <ButtonBuy height="40px">Processing...</ButtonBuy>
+          <button className="btn-qrCode">
             <img src={QRCode} />
-          </ButtonBuy>
+          </button>
         </div>
       )
     } else if (status === 'reject') {
       return null
     }
   }
+  const handleMenuClick = () =>{
 
+  }
+  // menu dropdown choose allow to sell
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="1" >
+        Allow to sell
+      </Menu.Item>
+      <Menu.Item key="2" >
+      Allow to swap
+      </Menu.Item>
+    </Menu>
+  );
+    console.log(data);
+
+  const onCancel = ()=>{
+
+  }
+  //render status from API
   return (
     <CartStyled>
       <Row gutter={24}>
@@ -181,15 +201,34 @@ export default function MyCollectionCard({ data }: any) {
           xxl={{ span: 16 }}
         >
           <div>
-            <div className="name">{data?.title}</div>
+            <div className="header-card">
+              <div className="name">{data?.title}</div>
+              <div className="group-btn-action">
+                {/* two case is drop and cancel */}
+              {
+              isProcessing ?
+              true?<Dropdown className="dropdown-action" overlay={menu}>
+                <Button>
+                  Allow to sell <DownOutlined />
+                </Button>
+              </Dropdown>:<div className="cancel-action" onClick={onCancel}> Cancel</div>
+              :
+              // render status of card
+              <StatusBar type='processing' label="processing"/>
+              }
+              </div>
+            </div>
             {data?.TXHash && (
               <div style={{ display: 'flex', marginBottom: 10 }}>
                 <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
-                  TXHash:{' '}
+                  ID: {' '}
                 </div>
-                <div className="number">{data?.TXHash?.slice(1, 20)}...</div>
+                <a href="#" target="_blank" className="number">{data?.TXHash?.slice(1, 20)}...</a>
               </div>
             )}
+            <div style={{ color: '#AFBAC5', fontWeight: 600,    textTransform: 'capitalize' }}>
+                  Type: {data?.type}
+            </div>
           </div>
           <div>{renderGroupAction(data?.status)}</div>
         </Col>
