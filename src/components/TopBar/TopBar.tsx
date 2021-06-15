@@ -107,7 +107,10 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
             <Input placeholder="Search items, collections, and accounts" prefix={<SearchOutlined/>} className="search-nav"></Input>
             <Link to="/" className="home-nav">Home</Link>
             {!!account?(
-               <Link to={"/create/artwork"} className="create-nav">Create</Link>
+              <>
+                <Link to={"/create/artwork"} className="create-nav">Create</Link>
+                <Link to={"/swap"} className="create-nav">Swap</Link>
+              </>
             ):(
               <a onClick={()=>{alert("Unblock your wallet before create NFT")}} className="create-nav" >Create</a>
             )}
@@ -136,7 +139,10 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
                       </div>
                     }
                      {isMobile && (
-                        <div className="menu-item"><Link to={"/create/artwork"}><ButtonTrade>Create</ButtonTrade></Link></div>
+                        <>
+                        <div className="menu-item"><Link to={"/create/artwork"}><ButtonBuy>Create</ButtonBuy></Link></div>
+                        <div className="menu-item"><Link to={"/swap"}><ButtonBuy>Swap</ButtonBuy></Link></div>
+                        </>
                       )}
                     <Link to="/my-profile/onsale/readyToSell">
                       <div className="menu-item">
