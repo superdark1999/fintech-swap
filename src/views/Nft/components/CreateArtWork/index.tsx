@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import {
-  Form,
-  Input,
-  Button,
-  Row,
-  Col,
-  Checkbox,
-} from 'antd'
+import { Form, Input, Button, Row, Col, Checkbox } from 'antd'
 import UploadFile from 'components-v2/UploadMedia'
-import {
-  EditOutlined,
-} from '@ant-design/icons'
-import { useHistory } from "react-router-dom";
+import { EditOutlined } from '@ant-design/icons'
+import { useHistory } from 'react-router-dom'
 import { ButtonStyle } from 'components-v2/cart/styled'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useUserServices from 'services/axiosServices/UserServices'
@@ -28,21 +19,21 @@ const TextAreaStyled = styled(Input.TextArea)`
   &.ant-input-textarea > textarea {
     border-radius: 16px;
     height: 148px;
-}
+  }
 `
 
 const CreateArtWork: React.FC = () => {
   const [showModalCreateArtist, setShowModalCreateArtist] =
     React.useState<boolean | null>(false)
   const formRef = React.useRef() as React.MutableRefObject<any>
-  const { createNFT, updateHashInfoNFT } = useArtworkServices();
-  const {updateProfile} = useUserServices()
+  const { createNFT, updateHashInfoNFT } = useArtworkServices()
+  const { updateProfile } = useUserServices()
   const { account } = useActiveWeb3React()
   const { mintToken } = useNFTServices()
   const [isProccessing, setIsProcessing] = useState(false)
   const [userState, userActions] = useUserStore()
   const [form] = Form.useForm()
-  const history = useHistory();
+  const history = useHistory()
   const validateMessages = {
     required: '${label} is required!',
     types: {
@@ -63,22 +54,31 @@ const CreateArtWork: React.FC = () => {
       socialMediaLink: values?.socialMediaLink,
       biography: values?.biography,
     }
-    updateProfile(artistData).then(({data, status})=>{
-      notification('success', {message: "Create Artist success", description: ""})
-      form.setFieldsValue({ artistName: artistData.name })
-      userActions.updateUserInfo(data?.data)
-      setShowModalCreateArtist(false)
-    })
-    .catch((err) => {
-      notification('error', { message: err?.message||'Something went wrong please try again', description: "" })
-    })
+    updateProfile(artistData)
+      .then(({ data, status }) => {
+        notification('success', {
+          message: 'Create Artist success',
+          description: '',
+        })
+        form.setFieldsValue({ artistName: artistData.name })
+        userActions.updateUserInfo(data?.data)
+        setShowModalCreateArtist(false)
+      })
+      .catch((err) => {
+        notification('error', {
+          message: err?.message || 'Something went wrong please try again',
+          description: '',
+        })
+      })
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     form.setFieldsValue({ artistName: userState.name })
-  },[userState.name])
+  }, [userState.name])
 
   const onCreateNFT = async (values: any) => {
+    console.log('values: ', values)
+    setIsProcessing(true)
     const mintData = {
       title: values?.artworkName || '',
       description: values?.introduction || '',
@@ -88,41 +88,43 @@ const CreateArtWork: React.FC = () => {
     }
 
     createNFT(mintData)
-      .then(({data,status}) => {
-        if(status===200){
-        const url = data?.data?.contentUrl || ''
-        const NFTid = data?.data?._id || ''
-        notification('success', {message: "Create NFT success", description: ""})
-        mintToken(url)
-          .then((mintData: any) => {
-            const txHash = mintData?.hash
-            
-            updateHashInfoNFT({ NFTid, txHash }).then(({status,data})=>{
-              if(status === 200){
-                history.push('/my-profile/mycollection/pending')
-              }
+      .then(({ data, status }) => {
+        if (status === 200) {
+          const url = data?.data?.contentUrl || ''
+          const NFTid = data?.data?._id || ''
+          notification('success', {
+            message: 'Create NFT success',
+            description: '',
+          })
+          mintToken(url)
+            .then((mintData: any) => {
+              const txHash = mintData?.hash
+
+              updateHashInfoNFT({ NFTid, txHash }).then(({ status, data }) => {
+                if (status === 200) {
+                  history.push('/my-profile/mycollection/pending')
+                }
+              })
             })
-          })
-          .catch((err: any) => {
-            setIsProcessing(false)
-            notification('error', { message: err?.message||'Something went wrong please try again', description: "" })
-          })
+            .catch((err: any) => {
+              setIsProcessing(false)
+              notification('error', {
+                message:
+                  err?.message || 'Something went wrong please try again',
+                description: '',
+              })
+            })
         }
       })
       .catch((err: any) => {
         setIsProcessing(false)
-        notification('error', { message: "Something went wrong please try again", description: "" })
+        notification('error', {
+          message: 'Something went wrong please try again',
+          description: '',
+        })
       })
   }
 
-  const handleSubmit = async () => {
-    if (!isProccessing) {
-      formRef.current.validateFields().then((values: any) => {
-        setIsProcessing(true)
-        onCreateNFT(values)
-      })
-    }
-  }
   return (
     <Row gutter={24} style={{ justifyContent: 'center' }}>
       <Col xl={{ span: 18 }} md={{ span: 18 }} xs={{ span: 24 }}>
@@ -134,6 +136,7 @@ const CreateArtWork: React.FC = () => {
             layout="vertical"
             name="nest-messages"
             validateMessages={validateMessages}
+            onFinish={onCreateNFT}
           >
             <Form.Item
               name="type"
@@ -142,7 +145,6 @@ const CreateArtWork: React.FC = () => {
             >
               <GroupButton>
                 <RadioButton style={{ height: 100 }} value="image">
-                  {' '}
                   Picture
                 </RadioButton>
                 <RadioButton style={{ height: 100 }} value="gif">
@@ -175,7 +177,7 @@ const CreateArtWork: React.FC = () => {
                 >
                   <GroupButton>
                     <RadioButton style={{ height: 60 }} value="Bep721 ">
-                      Bep721{' '}
+                      Bep721
                     </RadioButton>
                     <RadioButton style={{ height: 60 }} value="Bep1155">
                       Bep1155
@@ -201,7 +203,7 @@ const CreateArtWork: React.FC = () => {
                     { required: true, message: 'This Field is required!' },
                   ]}
                 >
-                  <UploadFile />
+                  <UploadFile isFormData />
                 </Form.Item>
               </Col>
 
@@ -246,7 +248,6 @@ const CreateArtWork: React.FC = () => {
                     maxLength={1000}
                     showCount={true}
                     autoSize={false}
-                    
                   />
                 </Form.Item>
                 <Form.Item
@@ -277,7 +278,7 @@ const CreateArtWork: React.FC = () => {
             </Row>
 
             <ButtonStyle
-              onClick={handleSubmit}
+              type="submit"
               style={{ width: 300, margin: '20px auto' }}
             >
               {isProccessing ? `Proccessing ...` : `Create`}
