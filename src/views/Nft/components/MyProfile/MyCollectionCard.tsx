@@ -8,6 +8,7 @@ import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import Loadmore from 'components-v2/Loadmore'
 import StatusBar from 'components-v2/StatusBar'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
+import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import QRCode from 'assets/images/qr-code.svg'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices from 'services/web3Services/MarketServices'
@@ -145,7 +146,7 @@ export default function MyCollectionCard({ data }: any) {
     } else if (status === 'pending') {
       return (
         <div className="group-button">
-          <ButtonBuy height="40px">Processing...</ButtonBuy>
+          <ButtonProccesing></ButtonProccesing>
           <button className="btn-qrCode">
             <img src={QRCode} />
           </button>
