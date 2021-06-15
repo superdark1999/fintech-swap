@@ -18,38 +18,16 @@ import _ from 'lodash'
 export default function CardItem({data}) {
   const [price,setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
-  const  {getTokenPrice,getTokenBidPrice, getBidsByTokenId} =useMarketServices()
+  const  marketServiceMethod =useMarketServices()
   useEffect(()=>{
-    if(data?.tokenId){
-      const getPriceToken = async()=>{
-        if(data?.tokenId){
-          if(data?.NFTType=='buy'){
-            const unitPrice =  await getTokenPrice(data?.tokenId)
-            const price = getPrice(Number(unitPrice?._hex))
-            setPrice(price)
-          }else{
-            const bidsArr = await getBidsByTokenId(data?.tokenId)
-            const bidsData = bidsArr?.map((item) => {
-                  return {
-                    key: item?.[0] || '',
-                    address: item?.[0] || '',
-                    price: Number(item?.[1]?._hex) / Number(1e18),
-                  }
-                }) || []
-            const maxPrice = _.maxBy(bidsData,(item)=> item?.price)?.price
-            const unitPrice = await getTokenBidPrice(data?.tokenId)
-            const price = getPrice(unitPrice?._hex)
-            if(price>maxPrice){
-              setPrice(price)
-            }else{
-              setPrice(maxPrice)
-            }
-          }
-        }
+    const getTokenPrice = async ()=>{
+      if(marketServiceMethod&&data?.tokenId&&data?.NFTType){
+        const price =  await marketServiceMethod?.getHighestBidAndPrice(data?.tokenId,data?.NFTType)
+        setPrice(price)
+        setLoading(false)
       }
-      setLoading(false)
-      getPriceToken()
     }
+    getTokenPrice()
   },[data?.tokenId])
   // console.log(configState.isUsingAnimation)
   // useEffect(()=>{

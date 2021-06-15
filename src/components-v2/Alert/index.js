@@ -25,11 +25,13 @@ const getNotificationStyle = (type) => {
   }[type]
 }
 
-export default (type, {message, description}) => {
+export default (type, {message, description}, callback) => {
   notification[type]({
     message,
     description,
     style: getNotificationStyle(type),
-    duration: 0
+    duration: 0,
+    onClick:()=>{return callback?.()},
+    onClose:()=>{return callback?.()}
   })
 }

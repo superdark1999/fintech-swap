@@ -30,6 +30,7 @@ import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import Hammer from 'assets/images/hammer.svg'
 import { Link } from 'react-router-dom'
 import {getPrice} from 'utils'
+import notification from 'components-v2/Alert'
 
 
 import _ from 'lodash'
@@ -44,16 +45,16 @@ const DetaiArtWork = ({id}:any) => {
     const [isSelled, setIsSelled] = useState(false)
     const [price, setPrice] = useState(0)
     const [userState, userActions] = useUserStore()
-    const {getTokenPrice, buyToken} = useMarketServices()
-    const {approveLevelAmount} = useLuckyServices()
+    const marketServicesMethod = useMarketServices()
+    const luckyServiceMethod = useLuckyServices()
     const [isProcessing, setIsProccessing] = useState(false)
     const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
     const { checkApproveLevelAmount } = useLuckyServices()
     useEffect(() => {
         getDetailNFT({ id }).then(({ status, data }) => {
         if (status == 200) {
-            if (data?.data?.tokenId) {
-            getTokenPrice(data?.data?.tokenId)
+            if (data?.data?.tokenId && marketServicesMethod) {
+              marketServicesMethod?.getTokenPrice(data?.data?.tokenId)
                 .then((data:any) => {
                 const price = getPrice(data?._hex)
                 if (price != -1) {
@@ -61,7 +62,9 @@ const DetaiArtWork = ({id}:any) => {
                     setPrice(price)
                 }
                 })
-                .catch((err) => {})
+                .catch((err) => {
+                  notification('error',{message:'Error',description:err.message})
+                })
             }
             setNFTDetail(data?.data)
             setLoading(false)
@@ -71,33 +74,41 @@ const DetaiArtWork = ({id}:any) => {
 
   const onApproveBuyOnMarket = () => {
     setIsProccessing(true)
-    approveLevelAmount(MARKET_ADDRESS)
+
+    if(luckyServiceMethod){
+      luckyServiceMethod?.approveLevelAmount(MARKET_ADDRESS)
       .then(_.debounce(()=>{
         checkApproveLevelAmount(MARKET_ADDRESS)
         .then((dt: any) => {
           const allowance = Number(dt?._hex || 0) > 0
+          notification('success',{message:'Success',description:'You can buy this NFT'})
           userActions.updateUserInfo({isCanBuy:allowance})
         })
-        .catch(() => {
+        .catch((err:string) => {
+            notification('error',{message:'Error',description:err})
             userActions.updateUserInfo({isCanBuy:false})
         })
         setIsProccessing(false)
-    },25000))
-      .catch(()=>{
-        setIsProccessing(false)
-    })
+      },25000))
+        .catch(()=>{
+          setIsProccessing(false)
+      }) 
+    }
   }
 
   const onBuyItem = () => {
+    if(!marketServicesMethod){
+      return 
+    }
     if (!account) {
-      return alert('Unblock your wallet to buy this item')
+      return notification('error',{message:'Error',description:'Unblock your wallet to buy this item'})
     }
     if(account===NFTDetail.ownerWalletAddress){
-      return alert(`You can't buy your item`)
+      return notification('error',{message:'Error',description:`You can't buy your item`})
     }
     setIsProccessing(true)
     const tokenId = NFTDetail?.tokenId
-    buyToken(tokenId).then((dt) => {
+    marketServicesMethod?.buyToken(tokenId).then((dt) => {
       if (dt?.hash) {
         buyItem({
           id: id,
@@ -105,13 +116,16 @@ const DetaiArtWork = ({id}:any) => {
         }).then(({ status }) => {
           if (status == 200) {
             setIsSelled(true)
+            notification('succes',{message:'Success',description:`We will proccessing this action, you can check this item now on your pending profile`})
             setIsProccessing(false)
           }
         }).catch(()=>{
+          notification('error',{message:'Error',description:`Something went wrong please try again`})
           setIsProccessing(false)
         })
       }
     }).catch(()=>{
+      notification('error',{message:'Error',description:`Something went wrong please try again`})
       setIsProccessing(false)
     })
   }
