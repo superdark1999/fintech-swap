@@ -2,6 +2,9 @@
 /* eslint-disable */
 import { BigNumber } from '@ethersproject/bignumber'
 import { getAddress } from '@ethersproject/address'
+import { ChainId } from '@juiceswap/v2-sdk'
+import useMarketServices from 'services/web3Services/MarketServices'
+import _ from 'lodash'
 
 export { default as formatAddress } from './formatAddress'
 
@@ -39,3 +42,5 @@ export const getPrice = (price:number) => {
   const priceString = Number(price)/Number(1e+18)
   return Number(priceString)
 }
+
+export const SUPPORT_CHAIN_IDS:Array<ChainId> = [97]

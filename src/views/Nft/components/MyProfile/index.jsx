@@ -25,7 +25,6 @@ export default () => {
   const history = useHistory();
   const { tab, option } = useParams();
   const onChangeTab = (e)=>{
-    console.log('e: ', e)
     if(e==='onsale'){
       history.push(`/my-profile/onsale/all`)
     }else if(e === 'mycollection'){
