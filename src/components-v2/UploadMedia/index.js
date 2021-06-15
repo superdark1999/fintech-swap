@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import { Button, Upload, Image } from 'antd'
 import { CloseCircleFilled } from '@ant-design/icons'
 import styled from 'styled-components'
+import { get } from 'lodash'
 
 const UploadForm = (props) => {
+  const { isFormData } = props
+  console.log('isFormData: ', isFormData)
   const [imageUrl, setUrlImage] = useState(false)
   const [type, setType] = useState(false)
   const [file, setFile] = useState(false)
@@ -19,7 +22,10 @@ const UploadForm = (props) => {
   const getBase64 = (img, callback) => {
     const reader = new FileReader()
     reader.addEventListener('load', () => {
-      props.onChange(reader.result)
+      if (!isFormData) {
+        console.log('not form')
+        props.onChange(reader.result)
+      }
       setUrlImage(reader.result)
     })
 
@@ -29,6 +35,12 @@ const UploadForm = (props) => {
   const handleRemove = () => {
     setUrlImage(false)
     setFile(false)
+  }
+  const handleUpload = ({ fileList }) => {
+    if (isFormData) {
+      console.log('form', get(fileList, '[0].originFileObj'))
+      props.onChange(get(fileList, '[0].originFileObj'))
+    }
   }
 
   return (
@@ -48,6 +60,7 @@ const UploadForm = (props) => {
       <Upload
         {...props}
         name="avatar"
+        onChange={handleUpload}
         beforeUpload={beforeUpload}
         imageUrl={imageUrl}
         onRemove={handleRemove}

@@ -203,7 +203,7 @@ const CreateArtWork: React.FC = () => {
                     { required: true, message: 'This Field is required!' },
                   ]}
                 >
-                  <UploadFile />
+                  <UploadFile isFormData />
                 </Form.Item>
               </Col>
 

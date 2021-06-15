@@ -1,13 +1,11 @@
 import { useCallback } from 'react'
-import useAxiosServices from './AxiosServices'
+import useAxiosServices, { JSONToFormData } from './AxiosServices'
 
 export default function useArtworkService() {
-  const { GET, POST, PATCH, PUT } = useAxiosServices(
-    'https://api.luckyswap.center',
-  )
+  const { GET, POST, PATCH, PUT } = useAxiosServices('http://localhost:3030')
 
   const createNFT = useCallback((body) => {
-    return POST('/artwork', body, false, false)
+    return POST('/artwork', JSONToFormData(body), false, false)
   }, [])
 
   const updateHashInfoNFT = useCallback(({ NFTid, txHash }) => {

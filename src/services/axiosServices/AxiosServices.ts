@@ -36,7 +36,10 @@ export default function AxiosServices(baseUrl: string = '') {
 
     if (data) {
       if (data instanceof FormData) {
-        Object.assign(options, { data: data })
+        Object.assign(options, {
+          data: data,
+          headers: { ...headers, 'Content-Type': 'multipart/form-data' },
+        })
       } else {
         Object.assign(options, { data: JSON.stringify(data) })
       }
@@ -87,4 +90,13 @@ export default function AxiosServices(baseUrl: string = '') {
   )
 
   return { GET, POST, PUT, DELETE, PATCH }
+}
+
+export const JSONToFormData = (jsonData: any): FormData => {
+  const form_data = new FormData()
+
+  for (var key in jsonData) {
+    form_data.append(key, jsonData[key])
+  }
+  return form_data
 }
