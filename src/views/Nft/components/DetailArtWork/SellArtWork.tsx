@@ -30,7 +30,9 @@ import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import Hammer from 'assets/images/hammer.svg'
 import { Link } from 'react-router-dom'
 import {getPrice} from 'utils'
-import notification from 'components-v2/Alert'
+import notification from 'components-v2/Alert';
+import { useHistory } from 'react-router-dom'
+import ButtonProccesing from 'components-v2/Button/btnProcessing'
 
 
 import _ from 'lodash'
@@ -50,6 +52,7 @@ const DetaiArtWork = ({id}:any) => {
     const [isProcessing, setIsProccessing] = useState(false)
     const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
     const { checkApproveLevelAmount } = useLuckyServices()
+    const history = useHistory()
     useEffect(() => {
         getDetailNFT({ id }).then(({ status, data }) => {
         if (status == 200) {
@@ -114,11 +117,11 @@ const DetaiArtWork = ({id}:any) => {
           id: id,
           walletAddress: account,
         }).then(({ status }) => {
-          if (status == 200) {
-            setIsSelled(true)
-            notification('succes',{message:'Success',description:`We will proccessing this action, you can check this item now on your pending profile`})
-            setIsProccessing(false)
-          }
+          setIsSelled(true)
+          notification('success',{message:'Success',description:`We will proccessing this action, you can check this item now on your pending profile`},()=>{
+            history.push('/my-profile/mycollection/pending')
+          })
+          setIsProccessing(false)
         }).catch(()=>{
           notification('error',{message:'Error',description:`Something went wrong please try again`})
           setIsProccessing(false)
@@ -135,9 +138,7 @@ const DetaiArtWork = ({id}:any) => {
     if(isSelled) return null;
     if(isProcessing){
       return(
-          <ButtonBuy> 
-            Processing...
-          </ButtonBuy>
+          <ButtonProccesing/>
       )
     }
     if(!account){

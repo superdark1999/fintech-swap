@@ -30,7 +30,7 @@ export default (type, {message, description}, callback) => {
     message,
     description,
     style: getNotificationStyle(type),
-    duration: 0,
+    duration: 100,
     onClick:()=>{return callback?.()},
     onClose:()=>{return callback?.()}
   })
