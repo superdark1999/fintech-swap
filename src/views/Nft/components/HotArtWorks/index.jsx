@@ -46,7 +46,7 @@ function HotArtWorks() {
       />
       <div className="content-artwork" ref={divRef}>
        {loading?
-        [1,2,3,4].map(item=>
+        [1,2].map(item=>
         <Card 
           style={{ 
             width: 300,height: 450, 

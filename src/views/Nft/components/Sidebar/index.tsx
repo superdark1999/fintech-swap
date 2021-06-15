@@ -6,7 +6,7 @@ import MoneyIcon from 'assets/images/money.svg'
 
 import { Button, Select, Input, Checkbox } from 'antd'
 import { PlusCircleOutlined, CaretUpOutlined, TagFilled, SearchOutlined, MenuUnfoldOutlined, CaretDownOutlined } from '@ant-design/icons'
-
+import {Link} from 'react-router-dom'
 const plainOptions = ['Apple', 'Pear', 'Orange'];
 interface SidebarProps {
     setShowSidebar:any;
@@ -60,12 +60,12 @@ const Sidebar: React.FC<SidebarProps> = ({setShowSidebar,onShowSidebar}) => {
       {' < '} 
       <div className="title">Collapse</div>
     </div>
-    <div className="button on-sale">
+    <Link className="button on-sale" to="/my-profile/onsale/readyToSell">
       <img src={NotifyIcon} alt=""/>
       On sale
-    </div>
+    </Link>
 
-    <div className="group-menu">
+    {/* <div className="group-menu">
       <div className="button menu" onClick={() => onTogleMenu('collection')}>
         <div className="group-title">
           <img src={Collection} alt=""/>
@@ -89,7 +89,7 @@ const Sidebar: React.FC<SidebarProps> = ({setShowSidebar,onShowSidebar}) => {
           </Button>
         </div>
       </div>
-    </div>
+    </div> */}
 
     <div className="group-menu">
       <div className="button menu" onClick={() => onTogleMenu('price')}>
