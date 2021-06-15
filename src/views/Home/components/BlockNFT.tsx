@@ -73,7 +73,7 @@ const BlockNFT = () => {
                   </div>
 
                   <div className="box__item">
-                    <div className="box__item-title">TLV</div>
+                    <div className="box__item-title">TVL</div>
                     <div className="box__item-number">
                       <img src="images/icon-dollar.svg" alt=""/>
                       <div className="number">
@@ -152,24 +152,6 @@ const WrapNFT = styled.div`
   }
 
   .right {
-    position: relative;
-    overflow: hidden;
-
-    &:before {
-      content: '';
-      background: url('../images/bg-nft.png');
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
-      width: 100%;
-      height: 177px;
-      position: absolute;
-      left: 0;
-      top: -9px;
-      opacity: 0.7;
-      transform: rotate(45deg);
-    }
-
     .box {
       &__item {
         width: 50%;
