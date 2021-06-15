@@ -59,7 +59,7 @@ export const SidebarStyled = styled.div<PropsStyled>`
   .group-menu {
     .menu {
       font-weight: 600;
-      font-size: 20px;
+      font-size: 18px;
       line-height: 32px;
       text-decoration-line: underline;
       color: #333435;

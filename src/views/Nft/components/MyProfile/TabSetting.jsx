@@ -10,6 +10,7 @@ import { ButtonStyle } from 'components-v2/cart/styled'
 import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
+import notification from 'components-v2/Alert'
 
 const  TabSetting= () => {
   const {updateProfile} = useUserServices()
@@ -33,6 +34,17 @@ const  TabSetting= () => {
     }
     updateProfile(artistData).then(({data, status})=>{
       userActions.updateUserInfo(data?.data)
+      if(status===200){
+        notification('success', {
+          message: 'Update information success',
+          description: '',
+        })
+      }else{
+        notification('error', {
+          message: 'Update information fail',
+          description: '',
+        })
+      }
     })
   }
 
