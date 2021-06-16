@@ -161,7 +161,7 @@ export const ImageStyled = styled.div<Props>`
     transform: translate(-50%, -50%);
     z-index: 2;
     max-width: calc(100% - 100px);
-    max-height: calc(100vh - 300px);
+    max-height: calc(100vh - 330px);
     border-radius: 16px;
   }
   .img-artwork {
@@ -171,7 +171,7 @@ export const ImageStyled = styled.div<Props>`
     transform: translate(-50%, -50%);
     z-index: 2;
     max-width: calc(100% - 100px);
-    max-height: calc(100vh - 300px);
+    max-height: calc(100vh - 330px);
     border-radius: 16px;
   }
 `

@@ -19,19 +19,20 @@ import UserUpdater from './wallet/state/user/updater'
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import Nft from './views/Nft'
 import getLibrary from './wallet/utils/getLibrary'
-import { Layout} from 'antd';
+import { Layout } from 'antd';
 import CreateArtWork from 'views/Nft/components/CreateArtWork/index'
 import DetailArtWork from 'views/Nft/components/DetailArtWork'
 import TradeArtWork from 'views/Nft/components/TradeArtwork'
 import UserProfile from 'views/Nft/components/UserProfile'
 import 'antd/dist/antd.css';
 import MyProfile from 'views/Nft/components/MyProfile'
-
+import Page404 from 'views/Nft/components/404'
+import Explore from 'views/Nft/components/Explore'
 // 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if ('ethereum' in window) {
-  ;(window.ethereum as any).autoRefreshOnNetworkChange = false
+  ; (window.ethereum as any).autoRefreshOnNetworkChange = false
 }
 
 const GOOGLE_ANALYTICS_ID: string | undefined =
@@ -42,8 +43,8 @@ if (typeof GOOGLE_ANALYTICS_ID === 'string') {
     customBrowserType: !isMobile
       ? 'desktop'
       : 'web3' in window || 'ethereum' in window
-      ? 'mobileWeb3'
-      : 'mobileRegular',
+        ? 'mobileWeb3'
+        : 'mobileRegular',
   })
 } else {
   ReactGA.initialize('test', { testMode: true, debug: true })
@@ -85,36 +86,40 @@ const App: React.FC = () => {
       <Router>
         <Web3ReactManager>
           <>
-          <TopBar onPresentMobileMenu={handlePresentMobileMenu} />
-          <Switch>
-            <Route path="/" exact>
-              <Nft />
-            </Route>
-            <Route path="/nfts">
-              <Nft />
-            </Route>
-            <Route path="/create/artwork">
-              <CreateArtWork />
-            </Route>
-            <Route path="/artwork/detail/:type/:id">
-              <DetailArtWork />
-            </Route>
-            <Route path="/user-profile/:id/:tab/:option">
-              <UserProfile />
-            </Route>
-            <Route path="/my-profile/:tab/:option">
-              <MyProfile />
-            </Route>
-            <Route path="/user-profile/:id/:tab">
-              <UserProfile />
-            </Route>
-            <Route path="/my-profile/:tab">
-              <MyProfile />
-            </Route>
-            <Route path="/swap">
-              <TradeArtWork />
-            </Route>
-          </Switch>
+            <TopBar onPresentMobileMenu={handlePresentMobileMenu} />
+            <Switch>
+              <Route path="/" exact>
+                <Nft />
+              </Route>
+              <Route path="/nfts">
+                <Nft />
+              </Route>
+              <Route path="/create/artwork">
+                <CreateArtWork />
+              </Route>
+              <Route path="/artwork/detail/:type/:id">
+                <DetailArtWork />
+              </Route>
+              <Route path="/user-profile/:id/:tab/:option">
+                <UserProfile />
+              </Route>
+              <Route path="/my-profile/:tab/:option">
+                <MyProfile />
+              </Route>
+              <Route path="/user-profile/:id/:tab">
+                <UserProfile />
+              </Route>
+              <Route path="/my-profile/:tab">
+                <MyProfile />
+              </Route>
+              <Route path="/swap">
+                <TradeArtWork />
+              </Route>
+              <Route path="/explore">
+                <Explore />
+              </Route>
+              <Route component={Page404} />
+            </Switch>
           </>
         </Web3ReactManager>
       </Router>
