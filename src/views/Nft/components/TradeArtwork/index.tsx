@@ -1,5 +1,5 @@
 import { Row, Col, Input, Select } from 'antd'
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { TradeArtWorkStyled, CardStyled, TableStyled } from './styled'
 import CheckMark from 'assets/images/checkmark.svg'
 import TextGradient from 'components-v2/ID'
@@ -9,6 +9,11 @@ import Swap from 'assets/images/swap.svg'
 import { ButtonTrade } from 'components-v2/Button'
 import { isMobile } from 'react-device-detect'
 import { data, column } from './mock'
+import styled from 'styled-components'
+import ModalSelectSwap from 'components-v2/ModalSelectSwap'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
+
+
 const OptionData = [
   {
    label: 'Lucky',
@@ -18,10 +23,10 @@ const OptionData = [
 const { Option } = Select;
 
 
-const Card: React.FC = () => {
+const Card = (props: any) => {
   return (
     <CardStyled center>
-      <div className="avatar">
+      <div className="avatar" onClick={() => props.setVisible(true)}>
         <img src="https://cdnb.artstation.com/p/assets/images/images/038/322/775/large/pengcheng-yang-souskehb2.jpg?1622761089"/>
       </div>
       <div className="name">Fren's Head 46</div>
@@ -52,9 +57,11 @@ const Trade: React.FC = () => {
   )
 }
 
-const TradeArtWork: React.FC = () => {
+const TradeArtWork = (props: any) => {
   const [select, setSelect] = React.useState<string | null>('Lucky');
   return (
+
+
       // <Row gutter={24} className="trade-option" justify="center">
       //   <Col xl={{ span: 20}} md={{ span:  22}} xs={{span: 24}}>
           <TradeArtWorkStyled>
@@ -65,13 +72,13 @@ const TradeArtWork: React.FC = () => {
             </Select>
             <Row align="middle">
               <Col xl={{ span: 6}} md={{ span:  24}} xs={{span: 24}}>
-                <Card/>
+                <Card />
               </Col>
               <Col xl={{ span: 12}} md={{ span:  24}} xs={{span: 24}}>
                 <Trade/>
               </Col>
               <Col xl={{ span: 6}} md={{ span:  24}} xs={{span: 24}}>
-                <Card/>
+                <Card setVisible={props.setVisible}/>
               </Col>
             </Row>
             <Row className="footer">
@@ -93,21 +100,45 @@ const TradeArtWork: React.FC = () => {
 
 
 export default () => {
+
+  const [visible, setVisible] = useState<boolean>(false);
+  const [NFTs, setNFTs] = useState([]);
+  const { getNFT } = useArtworkServices()
+  
+  useEffect(() => {
+    getNFT({
+      status: 'readyToSell',
+    }).then(({ status, data } : any) => {
+      if (status == 200) {
+        setNFTs(data?.data || [])
+      }
+    })
+  }, [])
+
   return (
-    <Row gutter={24} className="trade-option" justify="center">
-      <Col xl={{ span: 20}} md={{ span:  22}} xs={{span: 24}}>
-        <TradeArtWork/>
-        <Row gutter={20} className="trade-option" justify="center">
-          <Col xl={{ span: 20}} md={{ span:  22}} xs={{span: 22}}  xxl={{ span: 20}}>
-            <TableStyled
-              columns={column} 
-              dataSource={data} 
-              size="middle"
-              scroll={{ x: 300 }}
-              />            
+    <Container>
+      <Row gutter={24} className="trade-option" justify="center">
+          <Col xl={{ span: 24}} md={{ span:  22}} xs={{span: 22}}>
+            <TradeArtWork setVisible={setVisible}/>
+            <Row gutter={20} className="trade-option" justify="center">
+              <Col xl={{ span: 24}} md={{ span:  22}} xs={{span: 22}}  xxl={{ span: 24}}>
+                <TableStyled
+                  columns={column} 
+                  dataSource={data} 
+                  size="middle"
+                  scroll={{ x: 300 }}
+                />            
+              </Col>
+            </Row>
           </Col>
         </Row>
-      </Col>
-    </Row>
+        <ModalSelectSwap visible={visible} setVisible={setVisible} data={NFTs}/>
+    </Container>
+    
   )
 }
+
+const Container = styled.div`
+  max-width: 1320px;
+  margin: 0px auto;
+`

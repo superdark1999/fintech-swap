@@ -2478,7 +2478,7 @@
 
 "@luckyswap/uikit@^0.13.7":
   version "0.13.7"
-  resolved "https://registry.yarnpkg.com/@luckyswap/uikit/-/uikit-0.13.7.tgz#a85d5c2260da02d43caeaaf4b4fcc66fea19a187"
+  resolved "https://npm.vexere.net/@luckyswap%2fuikit/-/uikit-0.13.7.tgz#a85d5c2260da02d43caeaaf4b4fcc66fea19a187"
   integrity sha512-S8kfVtYEXz22/Qm9uTaT8OIOxjQAkbQTdLcmy9DQVdDk4KNh2wk6aQ9vUMDC5D3U/XAgFlEGQ+yED4RDQceZ2Q==
   dependencies:
     "@rollup/plugin-url" "^6.0.0"

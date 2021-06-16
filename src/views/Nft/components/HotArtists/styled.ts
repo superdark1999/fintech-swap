@@ -52,7 +52,7 @@ position: relative;
       }
       position: relative;
       scroll-behavior: smooth;
-      
+      min-height: 378px;
       .card-artists{
         margin:24px 0px;
         min-width:248px;
@@ -72,6 +72,7 @@ position: relative;
           height: 200px;
           background-color: gray;
           border-radius: 50%;
+          margin-bottom: 24px;
           margin-bottom: 24px;
         }
         .name-artists {
