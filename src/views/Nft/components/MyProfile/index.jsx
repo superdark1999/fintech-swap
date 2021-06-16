@@ -25,7 +25,6 @@ export default () => {
   const history = useHistory();
   const { tab, option } = useParams();
   const onChangeTab = (e)=>{
-    console.log('e: ', e)
     if(e==='onsale'){
       history.push(`/my-profile/onsale/all`)
     }else if(e === 'mycollection'){
@@ -151,6 +150,11 @@ const TabMyCollection= ()=>{
       }
       getNFT(query).then(({status, data})=>{
         if(status==200){
+          if(optionChecked=='pending'){
+           return setRenderData(data?.data?.filter(item=>{
+             return item.status == 'pending' && item.status == 'checkingReadyToSell' && item.status == 'checkingBuying'
+           })||[])
+          }
           setRenderData(data?.data||[])
         }
       })
@@ -168,18 +172,16 @@ const TabMyCollection= ()=>{
       <Row align="middle" justify="space-between">
             <GroupButton defaultValue={option}>
               <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
-              <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
               <RadioButton width="auto" borderRadius="10px" value="pending" onChange={onHandleOptionCheck}  checked={optionChecked=='pending'}>Pending </RadioButton>
+              <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
               <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
-              <RadioButton width="auto" borderRadius="10px" value="checkingReadyToSell" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingReadyToSell'} >Checking To Sell</RadioButton>
-              <RadioButton width="auto" borderRadius="10px" value="checkingBuying" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingBuying'} >Buying</RadioButton>
             </GroupButton> 
             <SearchInput maxWidth="300px" placeholder="Search items"/>
           </Row>
           <ListCart className="list-artwork">
             {renderData.map(item=>{
               return(
-                <MyCollectionCard key={item?.id} data={item}/>
+                <MyCollectionCard key={item?.id} data={item} option={optionChecked}/>
               )
             })}
           </ListCart> 

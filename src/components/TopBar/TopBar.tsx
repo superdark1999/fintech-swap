@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Web3Status from '../../wallet/Web3Status'
 import logo from '../../assets/img/logo-no-text.svg'
-import { Input } from 'antd'
 import {
   SearchOutlined,
   MoreOutlined,
@@ -13,13 +12,16 @@ import { ButtonBuy, ButtonTrade } from 'components-v2/Button'
 import ViewMore from 'assets/images/view-more.svg'
 import Token from 'assets/images/token.svg'
 import { isMobile } from 'react-device-detect'
-import { useActiveWeb3React } from 'wallet/hooks'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
 import { Switch } from 'antd'
 import useConfigStore from 'store/configStore'
+import { useActiveWeb3React } from 'wallet/hooks'
+import { chain } from 'lodash'
+import {SUPPORT_CHAIN_IDS} from 'utils'
+import { Modal, Input, Form } from 'antd'
 interface TopBarProps {
   onPresentMobileMenu: () => void
 }
@@ -32,11 +34,12 @@ declare global {
 const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
   const [showMenuMobile, setShowMenuMobile] = useState(false)
-  const { account } = useActiveWeb3React()
-  const { checkApproveLevelAmount } = useLuckyServices()
+  const { account,chainId } = useActiveWeb3React()
+  const luckyMethod = useLuckyServices()
   const { login } = useUserServices()
   const [userState, userActions] = useUserStore()
   const [configState, configAction] = useConfigStore()
+  const [isShowAlert, setIsShowAlert] = useState(false)
   const handleScroll = () => {
     const position = window.pageYOffset
     if (position > 10) {
@@ -45,6 +48,12 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
       setClassSticky('')
     }
   }
+
+  useEffect(()=>{
+    if(!SUPPORT_CHAIN_IDS.includes(chainId)){
+      setIsShowAlert(true)
+    }
+  },[chainId])
 
   // useEffect(() => {
   //   window.addEventListener('scroll', handleScroll, { passive: true })
@@ -67,7 +76,8 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
         if (status === 200) {
           userActions.updateUserInfo(artistData)
         }
-        checkApproveLevelAmount(MARKET_ADDRESS)
+        if(luckyMethod){
+          luckyMethod.checkApproveLevelAmount(MARKET_ADDRESS)
           .then((dt: any) => {
             const allowance = Number(dt?._hex || 0) > 0
             userActions.updateUserInfo({ isCanBuy: allowance })
@@ -75,11 +85,13 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
           .catch(() => {
             userActions.updateUserInfo({ isCanBuy: false })
           })
+        }
       })
     } else {
       userActions.clearUserInfo()
     }
-  }, [account])
+  }, [account,luckyMethod])
+
   const onChangeAnimation = (checked: any, e: any) => {
     configAction.updateConfig({ isUsingAnimation: checked })
   }
@@ -107,7 +119,10 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
             <Input placeholder="Search items, collections, and accounts" prefix={<SearchOutlined/>} className="search-nav"></Input>
             <Link to="/" className="home-nav">Home</Link>
             {!!account?(
-               <Link to={"/create/artwork"} className="create-nav">Create</Link>
+              <>
+                <Link to={"/create/artwork"} className="create-nav">Create</Link>
+                <Link to={"/swap"} className="create-nav">Swap</Link>
+              </>
             ):(
               <a onClick={()=>{alert("Unblock your wallet before create NFT")}} className="create-nav" >Create</a>
             )}
@@ -136,7 +151,10 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
                       </div>
                     }
                      {isMobile && (
-                        <div className="menu-item"><Link to={"/create/artwork"}><ButtonTrade>Create</ButtonTrade></Link></div>
+                        <>
+                        <div className="menu-item"><Link to={"/create/artwork"}><ButtonBuy>Create</ButtonBuy></Link></div>
+                        <div className="menu-item"><Link to={"/swap"}><ButtonBuy>Swap</ButtonBuy></Link></div>
+                        </>
                       )}
                     <Link to="/my-profile/onsale/readyToSell">
                       <div className="menu-item">
@@ -182,6 +200,31 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
             </div>
           }
           </div>
+          <Modal
+                title="Alert"
+                visible={isShowAlert}
+                footer={null}
+                width={400}
+              >
+                <Form onFinish={() => {window.location.reload()}}>
+                  <Form.Item name="pricePlaceBid">
+                    <label>
+                     Please switch our support chainId 
+                    </label>
+                  </Form.Item>
+                  <Form.Item>
+                    <div
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <ButtonTrade type="submit">Reload</ButtonTrade>
+                    </div>
+                  </Form.Item>
+                </Form>
+              </Modal>
     </StyledTopBar>
   )
 }
@@ -218,15 +261,37 @@ const StyledTopBar = styled.div`
       }
     }
     .create-nav {
+      width: 100px;
+      height: 40px;
       background: linear-gradient(270deg, #19a3dd -16.5%, #badeb7 117.25%);
       border-radius: 100px;
-      width: 100px;
-      width: 100px;
-      color: #ffffff;
-      text-align: center;
-      padding: 8px 24px 8px 20px;
-      margin: 0px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: '8px 24px';
+      font-weight: 600;
       font-size: 16px;
+      line-height: 24px;
+      margin-right:14px;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      cursor: pointer;
+      ::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 50px;
+        padding: 2px;
+        background: linear-gradient(270deg, #19a3dd -16.5%, #badeb7 117.25%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+      }
       @media (max-width: 756px) {
         display: none;
       }

@@ -15,7 +15,7 @@ const payableAmountDefault = '10000000000000000'
 
 
 
-export default function NFTService(){
+function useNFTServiceChain97(){
         const { account } = useActiveWeb3React()
         const nftContract = useContract(NFT_ADDRESS,abiNFT)
 
@@ -57,4 +57,14 @@ export default function NFTService(){
 
 
         return {mintToken,getTokenUrl,approveTokenToMarket, isTokenReadyToSell}
+}
+
+
+export default function NFTService(){
+    const { account, chainId } = useActiveWeb3React()
+    const LuckyServiceChain97 = useNFTServiceChain97()
+    if(chainId==97){
+        return LuckyServiceChain97
+    }
+    return null
 }

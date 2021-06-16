@@ -92,7 +92,6 @@ export const CartStyled = styled.div`
   border: 1px solid #E7EBEF;
   box-sizing: border-box;
   border-radius: 24px;
-  
   .avatar {
     width: 300px;
     height: 300px;
@@ -141,14 +140,87 @@ export const CartStyled = styled.div`
       opacity: 0.9;
       margin-bottom: 12px;
     }
+    .header-card{
+      @media (max-width:991px){
+        display: flex;
+        flex-direction: column;
+      }
+      .group-btn-action{
+        height:40px;
+        .dropdown-action{
+          border:none;
+          width: 184px;
+          height: 100%;
+          font-weight: bold;
+          color:#fff;
+          border-radius: 100px;
+          background: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+        }
+        .cancel-action{
+          border:none;
+          width: 98px;
+          height: 100%;
+          font-weight: 600;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color:#fff;
+          border-radius: 100px;
+          background: #FC636B;
+        }
+        .process-action{
+          .status-processing{
+            span{
+            margin-right: 6px;
+            animation: mymove 5s infinite;
+            color: #F0B90B;
+            font-weight: 600;
+            font-size: 16px;
+            }
+            @keyframes mymove {
+              100% {transform: rotate(180deg);}
+            }
+            color: #F0B90B;
+            font-weight: 600;
+            font-size: 16px;
+            border:none;
+            height: 100%;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          .status-approved{
+            span{
+            margin-right: 6px;
+            color: #84C87E;
+            font-weight: 600;
+            font-size: 16px;
+            }
+            color: #84C87E;
+            font-weight: 600;
+            font-size: 16px;
+            border:none;
+            height: 100%;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+      }
+    }
     .number {
       -webkit-flex: 1;
       -ms-flex: 1;
       flex: 1;
-      background: linear-gradient(270deg,#19A3DD -16.5%,#BADEB7 117.25%);
+      cursor: pointer;
+      text-decoration:underline;
+      background: -webkit-linear-gradient(#19A3DD, #BADEB7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 16px;
+      margin-left:4px;
       font-weight: 600;
       >img {
         margin-top: -3px;
@@ -177,6 +249,17 @@ export const CartStyled = styled.div`
       display: flex;
       > div {
         margin-right: 10px;
+      }
+      .btn-qrCode{
+        background: #fff;
+        border-radius: 100px;
+        border: 1px solid #E7EBEF;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        padding: 8px;
+        display: flex;
+        justify-content: center;
       }
     }
     &.space-vehicle{

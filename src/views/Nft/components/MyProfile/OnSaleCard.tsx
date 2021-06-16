@@ -7,7 +7,7 @@ import Token from 'assets/images/token.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
 import usrMarketServices from 'services/web3Services/MarketServices'; 
 import _ from 'lodash'
-import {getPrice} from 'utils'
+import {getPrice, getCompactString} from 'utils'
 
 export default function OnSaleCard({data,}:any){
     const [loading, setLoading] = useState(true)
@@ -60,9 +60,9 @@ export default function OnSaleCard({data,}:any){
                 <div className="status">
                    Ready to Sell
                 </div>
-                {/* <div className="cancel">
+                <div className="cancel">
                   Cancel
-                </div> */}
+                </div>
               </div>
                 
               <div className="name">
@@ -74,7 +74,7 @@ export default function OnSaleCard({data,}:any){
               </div> 
               <div style={{display: "flex"}}>
                 <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
-                <div className="number">{data?.TXHash?.slice(1, 20)}...</div>
+                <div className="number">{getCompactString(data?.TXHash,10)}</div>
               </div> 
               
               <div className="content">

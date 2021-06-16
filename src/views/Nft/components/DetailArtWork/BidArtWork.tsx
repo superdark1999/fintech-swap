@@ -29,12 +29,14 @@ import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
-import {getPrice} from 'utils' 
+import {getPrice, getCompactString} from 'utils' 
 import _ from 'lodash'
 import { InputNumber } from 'antd'
 import Hammer from 'assets/images/hammer.svg'
 import { Link } from 'react-router-dom'
 import { useHistory } from "react-router-dom";
+import notification from 'components-v2/Alert';
+import ButtonProccesing from 'components-v2/Button/btnProcessing'
 const { TabPane } = Tabs
 
 const DetaiArtWork = ({ id }: any) => {
@@ -46,6 +48,7 @@ const DetaiArtWork = ({ id }: any) => {
   const [price, setPrice] = useState<number>(0)
   const [bidsData, setBidsData] = useState([])
   const [userState, userActions] = useUserStore()
+  const marketServicesMethod = useMarketServices()
   const [step,setStep] = useState(0)
   const {
     getTokenPrice,
@@ -55,7 +58,7 @@ const DetaiArtWork = ({ id }: any) => {
     getStepPrice,
     getTokenBidPrice
   } = useMarketServices()
-  const { approveLevelAmount, checkApproveLevelAmount } = useLuckyServices()
+  const luckyServicesMethod = useLuckyServices()
   const [isProcessing, setIsProccessing] = useState(false)
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
   const [isReadyBid, setIsReadyBid] = useState(false)
@@ -63,13 +66,12 @@ const DetaiArtWork = ({ id }: any) => {
   useEffect(() => {
       getDetailNFT({ id }).then(({ status, data }) => {
         if (status == 200) {
-        if (data?.data?.tokenId) {
-              getStepPrice(data?.data?.tokenId).then((dt)=>{
-                const step = getPrice(dt?._hex)
-                setStep(step)
-              })
+        if (data?.data?.tokenId && marketServicesMethod) {
+              //get highest bid price
               const getBidInfoToken = async()=>{
-                const bidsArr = await getBidsByTokenId(data?.data?.tokenId)
+                const bidsArr = await marketServicesMethod?.getBidsByTokenId?.(data?.data?.tokenId)
+                const stepPriceUnit = await marketServicesMethod?.getStepPrice?.(data?.data?.tokenId)
+                setStep(getPrice(stepPriceUnit._hex))
                 const bidsData = bidsArr?.map((item:any) => {
                   return {
                       key: item?.[0] || '',
@@ -78,7 +80,7 @@ const DetaiArtWork = ({ id }: any) => {
                     }
                   }) || []
                 const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
-                const unitPrice = await getTokenBidPrice(data?.data?.tokenId)
+                const unitPrice = await marketServicesMethod?.getTokenBidPrice?.(data?.data?.tokenId)
                 const price = getPrice(unitPrice?._hex)
                 setBidsData(bidsData.filter((it:any)=>it.price>price))
                 if(price>maxPrice){
@@ -95,35 +97,43 @@ const DetaiArtWork = ({ id }: any) => {
           setNFTDetail(data?.data)
         }})
   }, [])
+
+
   const onApproveBuyOnMarket = () => {
     setIsProccessing(true)
-    approveLevelAmount(MARKET_ADDRESS)
+    luckyServicesMethod?.approveLevelAmount?.(MARKET_ADDRESS)
       .then(_.debounce(()=>{
-        checkApproveLevelAmount(MARKET_ADDRESS)
+        luckyServicesMethod?.checkApproveLevelAmount?.(MARKET_ADDRESS)
         .then((dt: any) => {
           const allowance = Number(dt?._hex || 0) > 0
+          notification('success',{message:'Success',description:'You can bid this NFT'})
           userActions.updateUserInfo({isCanBuy:allowance})
         })
         .catch(() => {
+            notification('error',{message:'Error',description:`Something went wrong please try again`})
             userActions.updateUserInfo({isCanBuy:false})
         })
         setIsProccessing(false)
     },25000))
       .catch(()=>{
+        notification('error',{message:'Error',description:`Something went wrong please try again`})
         setIsProccessing(false)
     })
   }
+
+
   const onBidItem = (e: any) => {
-    console.log(isReadyBid)
     if (!account) {
       return alert('Unblock your wallet to buy this item')
     }
+    if(!marketServicesMethod) return
     const bidPrice = price + step * nextStepOffer
     setIsProccessing(true)
     if (isReadyBid) {
-      updateBidPrice(NFTDetail?.tokenId,bidPrice )
+      marketServicesMethod?.updateBidPrice(NFTDetail?.tokenId,bidPrice )
         .then(_.debounce(()=>{
-            getBidsByTokenId(NFTDetail?.tokenId).then((bidsArr) => {
+          marketServicesMethod?.getBidsByTokenId(NFTDetail?.tokenId).then((bidsArr) => {
+                notification('success',{message:'Success',description:'You bid NFT successful'})
                 const bidsData =
                     bidsArr?.map((item: any) => {
                     return {
@@ -139,15 +149,16 @@ const DetaiArtWork = ({ id }: any) => {
                 setIsProccessing(false)
                 setBidsData(bidsData)
               })
-        },20000))
+        },30000))
         .catch((err) => {
-            setIsProccessing(false)
-          alert(err?.message || '')
+          setIsProccessing(false)
+          notification('error',{message:'Error',description:err.message})
         })
     } else {
       bidToken(NFTDetail?.tokenId, bidPrice)
         .then(_.debounce(()=>{
-            getBidsByTokenId(NFTDetail?.tokenId).then((bidsArr) => {
+          notification('success',{message:'Success',description:'You bid NFT successful'})
+          marketServicesMethod?.getBidsByTokenId(NFTDetail?.tokenId).then((bidsArr) => {
                 const bidsData =
                     bidsArr?.map((item: any) => {
                     return {
@@ -164,10 +175,10 @@ const DetaiArtWork = ({ id }: any) => {
                 setBidsData(bidsData)
                 setIsReadyBid(true)
               })
-        },20000))
+        },30000))
         .catch((err) => {
             setIsProccessing(false)
-          alert(err?.message || '')
+            notification('error',{message:'Error',description:err.message})
         })
     }
     
@@ -178,12 +189,12 @@ const DetaiArtWork = ({ id }: any) => {
     if (isSelled||account === NFTDetail.ownerWalletAddress) return null
     if (isProcessing) {
       return (
-          <ButtonBuy >Processing...</ButtonBuy>
+          <ButtonProccesing/ >
       )
     }
     if (!account) {
       return (
-          <ButtonTrade onClick={() => alert('Unblock your wallet to bid this item')}>
+          <ButtonTrade onClick={() =>notification('error',{message:'Error',description:`Unblock your wallet to bid this item`}) }>
             <SwapOutlined /> Play Bid
           </ButtonTrade>
       )
@@ -285,7 +296,7 @@ const DetaiArtWork = ({ id }: any) => {
                   <div className="info">
                     <div className="title">NFT Contract ID:</div>
                     <a className="value" href="/" target="_blank">
-                      {NFTDetail && NFTDetail.contractAddress}
+                      {getCompactString(NFTDetail?.contractAddress,10)}
                     </a>
                   </div>
                   <div className="info">
@@ -299,13 +310,13 @@ const DetaiArtWork = ({ id }: any) => {
                   <div className="info">
                     <div className="title">Creator's Adress:</div>
                     <a className="value" href="/" target="_blank">
-                      {NFTDetail && NFTDetail.createdBy}
+                    {getCompactString(NFTDetail?.createdBy,10)}
                     </a>
                   </div>
                   <div className="info">
                     <div className="title">Owner Adress:</div>
                     <a className="value" href="/" target="_blank">
-                      {NFTDetail && NFTDetail.ownerWalletAddress}
+                    {getCompactString(NFTDetail?.ownerWalletAddress,10)}
                     </a>
                   </div>
                 </div>
