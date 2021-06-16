@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Form, Input, Button, Row, Col, Checkbox } from 'antd'
 import UploadFile from 'components-v2/UploadMedia'
-import { EditOutlined } from '@ant-design/icons'
+import { EditOutlined,SyncOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
 import { ButtonStyle } from 'components-v2/cart/styled'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
@@ -34,6 +34,7 @@ const CreateArtWork: React.FC = () => {
   const [userState, userActions] = useUserStore()
   const [form] = Form.useForm()
   const history = useHistory()
+  const [checkPolicy,setCheckPolicy] = useState(false)
   const validateMessages = {
     required: '${label} is required!',
     types: {
@@ -77,7 +78,7 @@ const CreateArtWork: React.FC = () => {
   }, [userState.name])
 
   const onCreateNFT = async (values: any) => {
-    console.log('values: ', values)
+    if(checkPolicy){
     setIsProcessing(true)
     const mintData = {
       title: values?.artworkName || '',
@@ -86,7 +87,6 @@ const CreateArtWork: React.FC = () => {
       content: values?.[`content`] || '',
       ownerWalletAddress: account || '',
     }
-
     createNFT(mintData)
       .then(({ data, status }) => {
         if (status === 200) {
@@ -123,8 +123,11 @@ const CreateArtWork: React.FC = () => {
           description: '',
         })
       })
+    }
   }
-
+  const onCheckPolicy = (e:any) =>{
+    setCheckPolicy(e.target.checked)
+  }
   return (
     <Row gutter={24} style={{ justifyContent: 'center' }}>
       <Col xl={{ span: 18 }} md={{ span: 18 }} xs={{ span: 24 }}>
@@ -142,8 +145,9 @@ const CreateArtWork: React.FC = () => {
               name="type"
               label="Select artwork type"
               rules={[{ required: true, message: 'This Field is required!' }]}
+              initialValue="image"
             >
-              <GroupButton>
+              <GroupButton defaultValue="image">
                 <RadioButton style={{ height: 100 }} value="image">
                   Picture
                 </RadioButton>
@@ -174,14 +178,15 @@ const CreateArtWork: React.FC = () => {
                   rules={[
                     { required: true, message: 'This Field is required!' },
                   ]}
+                  initialValue="Bep721"
                 >
-                  <GroupButton>
-                    <RadioButton style={{ height: 60 }} value="Bep721 ">
+                  <GroupButton defaultValue="Bep721">
+                    <RadioButton style={{ height: 60 }} value="Bep721">
                       Bep721
                     </RadioButton>
-                    <RadioButton style={{ height: 60 }} value="Bep1155">
+                    {/* <RadioButton style={{ height: 60 }} value="Bep1155">
                       Bep1155
-                    </RadioButton>
+                    </RadioButton> */}
                   </GroupButton>
                 </Form.Item>
               </Col>
@@ -196,7 +201,7 @@ const CreateArtWork: React.FC = () => {
               >
                 <Form.Item
                   name="content"
-                  label="Upload banner"
+                  label="Upload Image"
                   valuePropName="content"
                   // getValueFromEvent={normFile}
                   rules={[
@@ -269,7 +274,7 @@ const CreateArtWork: React.FC = () => {
                 xs={{ span: 24 }}
                 xxl={{ span: 12 }}
               >
-                <Checkbox style={{ textAlign: 'center' }}>
+                <Checkbox style={{ textAlign: 'center',color:checkPolicy?'':'red' }} onChange={onCheckPolicy}>
                   I declare that this is an original artwork. I understand that
                   no plagiarism is allowed, and that the artwork can be removed
                   anytime if detected.
@@ -281,8 +286,9 @@ const CreateArtWork: React.FC = () => {
               type="submit"
               style={{ width: 300, margin: '20px auto' }}
             >
-              {isProccessing ? `Proccessing ...` : `Create`}
+              {isProccessing ? <div className="btn-submit">Processing <SyncOutlined /></div> : `Create`}
             </ButtonStyle>
+           
             <Row style={{ justifyContent: 'center' }}>
               <Col
                 xl={{ span: 12 }}
@@ -290,10 +296,10 @@ const CreateArtWork: React.FC = () => {
                 xs={{ span: 24 }}
                 xxl={{ span: 12 }}
               >
-                <p style={{ textAlign: 'center', fontWeight: 500 }}>
-                  *Mint an NFT charges 0.01BNB Please do not upload any
-                  sensitive content
-                </p>
+                  <p style={{ textAlign: 'center', fontWeight: 500 }}>
+                    <span style={{color:'red'}}>*</span>Mint an NFT charges 0.01BNB Please do not upload any
+                    sensitive content
+                  </p>
               </Col>
             </Row>
           </Form>

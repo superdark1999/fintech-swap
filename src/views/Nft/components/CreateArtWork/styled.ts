@@ -21,6 +21,23 @@ export const CreateArtWorkStyled = styled.div`
     overflow: auto;
     border-radius: 24px
   }
+  .ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child{
+    background:none;
+    border:none;
+  }
+  .btn-submit{
+    span{
+      margin-left: 6px;
+      animation: mymove 5s infinite;
+      color: #fff;
+      font-weight: 600;
+      font-size: 16px;
+      }
+      @keyframes mymove {
+        100% {transform: rotate(180deg);}
+      }
+  }
+
 `
 export const RadioButton= styled(Radio.Button)`
 &.ant-radio-button-wrapper-checked ::before {
