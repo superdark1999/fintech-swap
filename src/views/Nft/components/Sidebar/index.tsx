@@ -64,7 +64,9 @@ const Sidebar: React.FC<SidebarProps> = ({setShowSidebar,onShowSidebar}) => {
       <img src={NotifyIcon} alt=""/>
       On sale
     </Link>
-
+    <a className="button on-sale" target="_blank" href="https://luckyswap.finance/#/">
+      Buy LUCKY
+    </a>
     {/* <div className="group-menu">
       <div className="button menu" onClick={() => onTogleMenu('collection')}>
         <div className="group-title">

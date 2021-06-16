@@ -6,21 +6,19 @@ import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
-
 function HotArtists() {
   const divRef = useRef<HTMLDivElement>(null)
   const [users, setUsers] = useState([]);
   const [userState] = useUserStore()
-  console.log('userState: ', userState)
 
-  const {getUsers} = useUserServices()
-  useEffect(()=>{
-    getUsers().then(({data, status})=>{
-     if(status===200){
-       setUsers(data?.data?.filter((item:any)=>item.name))
-     }
+  const { getUsers } = useUserServices()
+  useEffect(() => {
+    getUsers().then(({ data, status }) => {
+      if (status === 200) {
+        setUsers(data?.data?.filter((item: any) => item.name))
+      }
     })
-  },[])
+  }, [])
 
   const scrollLeft = () => {
     divRef.current.scrollLeft += 260
@@ -32,7 +30,7 @@ function HotArtists() {
     <HotArtistsStyled>
       <div className="header-artists">
         <div className="title-artists">HOT ARTISTS</div>
-        <div className="more-artists">View more</div>
+        <Link className="more-artists" to="/explore?search=hot-artists">View more</Link>
       </div>
 
       <RightCircleOutlined
@@ -54,7 +52,7 @@ function HotArtists() {
               alt=""
             />
             {/* gắn ID user ở đây */}
-            <Link to={userState.walletAddress ===  item.id ?`/my-profile/onsale/readyToSell` : `/user-profile/${item.id}/onsale/readyToSell`}>
+            <Link to={userState.walletAddress === item.id ? `/my-profile/onsale/readyToSell` : `/user-profile/${item.id}/onsale/readyToSell`}>
               <div className="name-artists">
                 {item.name} <img src={Checkmark} />
               </div>

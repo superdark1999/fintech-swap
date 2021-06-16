@@ -8,45 +8,49 @@ import TrendingBar from './components/TrendingBar/index'
 import BannerBar from './components/BannerBar/index'
 import HotArtists from './components/HotArtists/index'
 import HotArtWorks from './components/HotArtWorks/index'
+import HotSwap from './components/HotSwap/index'
 import Collection from './components/Collection/index'
 import ModalLucky from '../../components-v2/Modal'
-import {isMobile} from 'react-device-detect'
+import { isMobile } from 'react-device-detect'
 const NFTContainer: React.FC = () => {
   const [onShowSidebar, setShowSidebar] = useState(true)
   return (
     <Switch>
       <Page>
-          <NFTContainerStyled onShowsidebar={onShowSidebar}>
-            {
-              !isMobile && (
-                <div className="left-sidebar">
-                  <Sidebar setShowSidebar={setShowSidebar} onShowSidebar={onShowSidebar}/>
-                </div>
-              )}
-            <div className="main-nft">
-              <div className="trending-nft">
-                <TrendingBar />
+        <NFTContainerStyled onShowsidebar={onShowSidebar}>
+          {
+            !isMobile && (
+              <div className="left-sidebar">
+                <Sidebar setShowSidebar={setShowSidebar} onShowSidebar={onShowSidebar} />
               </div>
-              {/* <ModalLucky/> */}
-              <div className="banner-nft">
-                <BannerBar/>
-              </div>
-              <div className="hot-artists-nft space-collection">
-                <HotArtists />
-              </div>
-              <div className="hot-artworks-nft space-collection">
-                <HotArtWorks />
-              </div>
-              <div className="collection-nft space-collection">
-                <Collection/>
-              </div>
+            )}
+          <div className="main-nft">
+            <div className="trending-nft">
+              <TrendingBar />
             </div>
-          </NFTContainerStyled>
+            {/* <ModalLucky/> */}
+            <div className="banner-nft">
+              <BannerBar />
+            </div>
+            <div className="hot-artists-nft space-collection">
+              <HotArtists />
+            </div>
+            <div className="hot-artworks-nft space-collection">
+              <HotArtWorks />
+            </div>
+            <div className="hot-artworks-nft space-collection">
+              <HotSwap />
+            </div>
+            <div className="collection-nft space-collection">
+              <Collection />
+            </div>
+          </div>
+        </NFTContainerStyled>
       </Page>
     </Switch>
   )
 }
-const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
+const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
   display: flex;
   width: 100%;
   height: 100%;
@@ -56,9 +60,9 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
   border-top: none;
 
   .left-sidebar{
-    min-width: ${(props) => props.onShowsidebar ? '320px':'80px'};
+    min-width: ${(props) => props.onShowsidebar ? '320px' : '80px'};
     transition: 200ms;
-    height: ${(props) => props.onShowsidebar ? '100%':'80px'};
+    height: ${(props) => props.onShowsidebar ? '100%' : '80px'};
     border-right: ${(props) => props.onShowsidebar && '1px solid rgba(0,0,0,0.2)'};
     max-height: 100vh;
     overflow-y: auto;
@@ -67,14 +71,14 @@ const NFTContainerStyled = styled.div<{ onShowsidebar:boolean }>`
     }
   }
   .main-nft{
-    flex: ${(props:any) => props.onShowsidebar ? 1:'1 240px'};
+    flex: ${(props: any) => props.onShowsidebar ? 1 : '1 240px'};
     ::-webkit-scrollbar {
         display: none;
       }
     height: 100%;
     overflow-y: auto;
     max-width: 1320px;
-        margin: 0 auto;
+    margin: 0 auto;
     .trending-nft{
       width:100%;
       height:80px;

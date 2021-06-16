@@ -94,7 +94,7 @@ const Web3StatusConnected = styled(Web3StatusGeneric)`
     right:0;
     bottom:0;
     border-radius:30px; 
-    padding:3px; 
+    padding:2px; 
     background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%); 
     -webkit-mask: 
       linear-gradient(#fff 0 0) content-box, 

@@ -5,8 +5,7 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
 import { Card } from 'antd'
 import { Link } from 'react-router-dom'
-
-function HotArtWorks() {
+function HotSwap() {
   const divRef = useRef(null)
   const [loading, setLoading] = useState(true)
   const scrollLeft = () => {
@@ -34,8 +33,8 @@ function HotArtWorks() {
   return (
     <HotArtWorksStyled>
       <div className="header-artists">
-        <div className="title-artists">HOT ARTWORK</div>
-        <Link className="more-artists" to="/explore?search=hot-artwork">
+        <div className="title-artists">HOT SWAP</div>
+        <Link className="more-artists" to="/explore?search=hot-swap">
           View more
         </Link>
       </div>
@@ -71,4 +70,4 @@ function HotArtWorks() {
   )
 }
 
-export default HotArtWorks
+export default HotSwap
