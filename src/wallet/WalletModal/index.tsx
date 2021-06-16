@@ -15,7 +15,7 @@ import {
   useWalletModalToggle,
 } from "../state/application/hooks";
 import AccountDetails from "../AccountDetails";
-
+import useAuth from 'hooks/useAuth'
 import Modal from "../Modal";
 import Option from "./Option";
 import PendingView from "./PendingView";
@@ -120,7 +120,7 @@ export default function WalletModal({
 }) {
   // important that these are destructed from the account-specific web3-react context
   const { active, account, connector, activate, error } = useWeb3React();
-
+  const { loginWallet} = useAuth()
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
 
   const [pendingWallet, setPendingWallet] = useState<
