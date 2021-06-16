@@ -22,6 +22,7 @@ import { useActiveWeb3React } from 'wallet/hooks'
 import { chain } from 'lodash'
 import {SUPPORT_CHAIN_IDS} from 'utils'
 import { Modal, Input, Form } from 'antd'
+import useAuth from 'hooks/useAuth'
 interface TopBarProps {
   onPresentMobileMenu: () => void
 }
@@ -34,6 +35,7 @@ declare global {
 const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
   const [showMenuMobile, setShowMenuMobile] = useState(false)
+  const { logout } = useAuth()
   const { account,chainId } = useActiveWeb3React()
   const luckyMethod = useLuckyServices()
   const { login } = useUserServices()
@@ -142,20 +144,17 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
                   <img src={ViewMore} />
                 </ButtonBuy>
                 <div className="menu">
-
                     { isMobile &&
-                      <div className="menu-item">
-                        <div className="connect-wallet">
-                          <Web3Status />
+                      <>
+                        <div className="menu-item">
+                          <div className="connect-wallet">
+                            <Web3Status />
+                          </div>
                         </div>
-                      </div>
-                    }
-                     {isMobile && (
-                        <>
                         <div className="menu-item"><Link to={"/create/artwork"}><ButtonBuy>Create</ButtonBuy></Link></div>
                         <div className="menu-item"><Link to={"/swap"}><ButtonBuy>Swap</ButtonBuy></Link></div>
-                        </>
-                      )}
+                      </>
+                      }
                     <Link to="/my-profile/onsale/readyToSell">
                       <div className="menu-item">
                         My profile
@@ -172,7 +171,7 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
                       </div>
                     </Link>
                     {/* <Link to="/my-profile/login"> */}
-                      <div className="menu-item">
+                      <div className="menu-item" onClick={logout}>
                         Log out
                       </div>
                     {/* </Link> */}
@@ -180,24 +179,24 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
                </div>
             )
           :
-          
           <div className="view-more">
             <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" >
               <img src={ViewMore} />
             </ButtonBuy>
             <div className="menu">
                 { isMobile &&
-                  <div className="menu-item">
-                    <div className="connect-wallet">
-                      <Web3Status />
+                  <>
+                    <div className="menu-item">
+                      <div className="connect-wallet">
+                        <Web3Status />
+                      </div>
                     </div>
-                  </div>
+                    <div className="menu-item"><a onClick={()=>{alert("Unblock your wallet before create NFT")}} ><ButtonBuy>Create</ButtonBuy></a></div>
+                    <div className="menu-item"><a onClick={()=>{alert("Unblock your wallet before create NFT")}} ><ButtonBuy>Swap</ButtonBuy></a></div>
+                  </>
                 }
-                  {isMobile && (
-                    <div className="menu-item"><a onClick={()=>{alert("Unblock your wallet before create NFT")}} ><ButtonTrade>Create</ButtonTrade></a></div>
-                  )}
                 </div>
-            </div>
+            </div> 
           }
           </div>
           <Modal
