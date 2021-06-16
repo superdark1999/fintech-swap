@@ -1621,6 +1621,7 @@ contract SwapNFTMarketPlace is ISwapNFT, ERC721Holder, Ownable, Pausable {
             listings[i] = ListNFT({tokenId: addressIndices[i], user: user});
         }
         return listings;
+        //
     }
 }   
  
