@@ -91,7 +91,7 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
         }
       })
     }
-  }, [account,luckyMethod])
+  }, [account])
 
   const onChangeAnimation = (checked: any, e: any) => {
     configAction.updateConfig({ isUsingAnimation: checked })
