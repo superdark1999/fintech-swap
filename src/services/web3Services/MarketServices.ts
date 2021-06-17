@@ -4,31 +4,42 @@ import { useContract } from 'wallet/hooks/useContract'
 import { useCallback } from 'react'
 import _ from 'lodash'
 import { useActiveWeb3React } from 'wallet/hooks'
-import {getPrice, SUPPORT_CHAIN_IDS} from 'utils'
+import {getPrice, SUPPORT_CHAIN_IDS, getPriceFromEstimateGas} from 'utils'
+import useUserStore from 'store/userStore'
 
 export const MARKET_ADDRESS = '0xA50Ba50d8a76074aa33baBB3f869033826557302';
 
-
+const OUT_OF_BNB = `Insufficient balance of BNB`
+const OUT_OF_LUCKY = `Insufficient balance of LUCKY`
 
 function useMarketServiceChain97(){
         const marketContract = useContract(MARKET_ADDRESS,abiBid)
-
+        const [userState, userActions] = useUserStore()
         const setTokenPrice = useCallback(async(tokenId:string|undefined,price:number|undefined)=>{
             const unitPrice = price + '000000000000000000'
             const estimatedGas = await marketContract.estimateGas.readyToSellToken(tokenId,unitPrice);
+            if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
+              throw new Error(OUT_OF_BNB)
+            }
             return marketContract.readyToSellToken(tokenId,unitPrice,{
                 gasLimit: estimatedGas,
             })
-        },[marketContract])
+        },[marketContract,userState.balance.BNB])
 
         const setTokenBidInfo = useCallback(async(tokenId:string|undefined,price:number|undefined,step:number|undefined)=>{
             const unitPrice = price + '000000000000000000'
             const unitStep = step + '000000000000000000'
+            if(userState.balance.LUCKY<price){
+              throw new Error(OUT_OF_LUCKY)
+            }
             const estimatedGas = await marketContract.estimateGas.readyToBidToken(tokenId,unitPrice,unitStep);
+            if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
+              throw new Error(OUT_OF_BNB)
+            }
             return marketContract.readyToBidToken(tokenId,unitPrice,unitStep,{
                 gasLimit: estimatedGas,
             })
-        },[marketContract])
+        },[marketContract,userState.balance.LUCKY,userState.balance.BNB])
 
         const getTokenPrice = useCallback(async(tokenId:string|undefined)=>{
             return marketContract.getPriceByTokenId(tokenId)      
@@ -44,17 +55,26 @@ function useMarketServiceChain97(){
 
         const cancelSellToken = useCallback(async(tokenId:string|undefined)=>{
             const estimatedGas = await marketContract.estimateGas.cancelBidToken(tokenId)
+            if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
+              throw new Error(OUT_OF_BNB)
+            }
             return marketContract.cancelBidToken(tokenId, {
               gasLimit: estimatedGas,
             })
-        },[marketContract])
+        },[marketContract,userState.balance.BNB])
 
-        const buyToken = useCallback(async(tokenId:string|undefined)=>{
+        const buyToken = useCallback(async(tokenId:string|undefined,price:number|undefined)=>{
+          if(userState.balance.LUCKY<price){
+            throw new Error(OUT_OF_LUCKY)
+          }
             const estimatedGas = await marketContract.estimateGas.buyToken(tokenId)
+            if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
+              throw new Error(OUT_OF_BNB)
+            }
             return marketContract.buyToken(tokenId, {
               gasLimit: estimatedGas,
             })
-        },[marketContract])
+        },[marketContract,userState.balance.BNB,userState.balance.LUCKY])
 
         const getBidsByUser = useCallback(async(address:string|undefined)=>{
             return marketContract.getUserBids(address)
@@ -66,33 +86,51 @@ function useMarketServiceChain97(){
 
         const bidToken = useCallback(async(tokenId:string|undefined,price:number|undefined)=>{
             const unitPrice = price + '000000000000000000'
+            if(userState.balance.LUCKY<price){
+              throw new Error(OUT_OF_LUCKY)
+            }
             const estimatedGas = await marketContract.estimateGas.bidToken(tokenId,unitPrice)
+            if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
+              throw new Error(OUT_OF_BNB)
+            }
             return marketContract.bidToken(tokenId,unitPrice, {
               gasLimit: estimatedGas,
             })
-        },[marketContract])
+        },[marketContract,userState.balance.BNB,userState.balance.LUCKY])
 
         const updateBidPrice = useCallback(async(tokenId:string|undefined,price:number|undefined)=>{
             const unitPrice = price + '000000000000000000'
+            if(userState.balance.LUCKY<price){
+              throw new Error(OUT_OF_LUCKY)
+            }
             const estimatedGas = await marketContract.estimateGas.updateBidPrice(tokenId,unitPrice)
+            if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
+              throw new Error(OUT_OF_BNB)
+            }
             return marketContract.updateBidPrice(tokenId,unitPrice, {
               gasLimit: estimatedGas,
             })
-        },[marketContract])
+        },[marketContract,userState.balance.BNB,userState.balance.LUCKY])
 
         const cancelBidToken = useCallback(async(tokenId:string|undefined)=>{
             const estimatedGas = await marketContract.estimateGas.cancelBidToken(tokenId)
+            if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
+              throw new Error(OUT_OF_BNB)
+            }
             return marketContract.cancelBidToken(tokenId, {
               gasLimit: estimatedGas,
             })
-        },[marketContract])
+        },[marketContract,userState.balance.BNB])
 
         const sellTokenToBidUser = useCallback(async(tokenId:string|undefined,address:string|undefined)=>{
             const estimatedGas = await marketContract.estimateGas.sellTokenTo(tokenId,address)
+            if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
+              throw new Error(OUT_OF_BNB)
+            }
             return marketContract.sellTokenTo(tokenId,address, {
               gasLimit: estimatedGas,
             })
-        },[marketContract])
+        },[marketContract,userState.balance.BNB])
 
         const getHighestBidAndPrice = useCallback(async(tokenId:string|undefined, NFTType:string)=>{
           if(tokenId){

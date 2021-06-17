@@ -7,7 +7,7 @@ export default function AxiosServices(baseUrl: string = '') {
   const headers = {
     Accept: 'application/json',
     'Content-Type': 'application/json; charset=UTF-8',
-    'Access-Control-Allow-Origin': '*',
+    //'Access-Control-Allow-Origin': '*',
   }
 
   function fetch(
@@ -51,7 +51,6 @@ export default function AxiosServices(baseUrl: string = '') {
     if (showError) {
       //Show error
     }
-    console.log(options)
     return axios(options)
   }
   const GET = useCallback(
