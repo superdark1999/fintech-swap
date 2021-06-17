@@ -5,48 +5,56 @@ import styled from 'styled-components'
 import { ButtonTrade } from 'components-v2/Button'
 import { SwapOutlined } from '@ant-design/icons'
 import { isMobile } from 'react-device-detect'
-import Item from 'antd/lib/list/Item'
 
 
 interface Props {
-  visible?: boolean
-  setVisible?: (visible: boolean) => void
+  visible: any
+  setVisible: (visible: boolean) => void
   data: any,
-  multiSelect?: boolean
+  multiSelect?: boolean,
+  getItemSelected?: (data: any) => void
 }
 export default function ModalSelectSwap(props: Props) {
 
-
-
-  const { multiSelect } = props
+  const { multiSelect, getItemSelected, visible, data, setVisible} = props
   const [selected, setSelected] = useState<any>([])
-  const handleCheck = (id: string) => {
-    if (multiSelect) {
-      if (selected.includes(id)) {
-        const arrSelected = selected.filter((idItem:string) => idItem!== id)
+
+  const checkItem = (item: any) => {
+    const checkItem = selected.find((x: any) => x.id === item.id )
+    return !!checkItem
+  }
+
+  const handleCheck = (item: any) => {
+    if (multiSelect) { 
+      if (checkItem(item)) {
+        const arrSelected = selected.filter((x: any) => x.id!== item.id)
         setSelected(arrSelected)
       }
-      else setSelected(selected.concat(id))
+      else setSelected(selected.concat(item))
     } else {
-      setSelected([id])
+      setSelected([item])
     }
+  }
+
+  const handleSubmit = () => {
+    getItemSelected(selected)
+    setVisible(false)
   }
 
   return (
     <ModalStyled
         title="SWAP STORE"
         centered
-        visible={props?.visible}
-        // onOk={() => setVisible(false)}
-        onCancel={() => props.setVisible(false)}
+        visible={visible.isOpen}
+        onCancel={() => setVisible(false)}
         width={1000}
-        footer={<Row justify="center"><ButtonTrade width="200px"><SwapOutlined />Swap {multiSelect && `(${selected.length})`}</ButtonTrade></Row>}
+        footer={<Row justify="center"><ButtonTrade onClick={handleSubmit} width="200px"><SwapOutlined />{visible.value === 'my-item' ? "Select": "Swap" }  {multiSelect && `(${selected.length})`}</ButtonTrade></Row>}
       >
         <WrapperModalBody>
           {
-            props.data.map((item: any, index: number) => {
+            data.map((item: any, index: number) => {
               return (
-                <div className={selected.includes(item.id) ? "card-item active" : "card-item"} onClick={()=>handleCheck(item.id)}>
+                <div key={item.id} className={checkItem(item) ? "card-item active" : "card-item"} onClick={()=>handleCheck(item)}>
                     <div className="card">
                       <CardItem data={item}/>
                     </div>
@@ -67,7 +75,6 @@ const ModalStyled = styled(Modal)`
     .ant-modal-body{
       padding: 20px;
       display: flex;
-      /* justify-content: center; */
     }
   }
 `
@@ -77,7 +84,6 @@ const WrapperModalBody = styled.div`
   display: flex;
   flex-wrap: wrap;
   max-height: 65vh;
-  /* justify-content: center; */
   ::-webkit-scrollbar {
     display: none;
   }
