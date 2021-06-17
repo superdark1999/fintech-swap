@@ -139,9 +139,11 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
               <div className="connect-wallet">
                 <Web3Status />
               </div>
-              <UserBalance/>
               </>
             }
+             {!!account?(
+                <UserBalance/>
+             ):null}
             {account ? (
               <div  className="view-more">
                 <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" >
@@ -241,7 +243,7 @@ const UserBalance = ()=>{
   const {getBNBBalance} = BSCScanServices()
   const luckyMethod = useLuckyServices()
   useEffect(()=>{
-    if(luckyMethod){
+    if(luckyMethod&&account){
       getBNBBalance(account).then(({data,status})=>{
         if(status==200){
           userActions.updateUserBalance({BNB:getPrice(data?.result||0)?.toFixed(3)})
