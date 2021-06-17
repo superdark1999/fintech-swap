@@ -14,6 +14,7 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices from 'services/web3Services/MarketServices'
 import useNFTServices from 'services/web3Services/NFTServices'
 import { useHistory } from 'react-router-dom'
+import notification from 'components-v2/Alert'
 import { useActiveWeb3React } from '../../../../wallet/hooks'
 import OnsSaleCard from './OnSaleCard'
 import _ from 'lodash'
@@ -50,27 +51,35 @@ export default function MyCollectionCard({ data }: any) {
   }
 
   const onSellItem = (value: any) => {
-    setIsPrcessing(true)
-    const tokenId = data?.tokenId
-    setIsPrcessing(true)
-    setTokenPrice(tokenId, value.lucky)
-      .then((dt) => {
-        if (dt?.hash) {
-          setPrice({ id: data?.id, NFTType:'buy'  }).then(({ status }) => {
-            if (status == 200) {
-              history.push('/my-profile/mycollection/checkingToSell')
-            } else {
-              alert('Something when wrong, please try again later.')
-              setIsPrcessing(false)
-            }
-          })
-        }
-      })
-      .catch((err) => {
-        alert('Something when wrong, please try again later.')
+    setPrice({ id: data?.id, NFTType:'buy' }).then(({ status }) => {
+      if (status == 200) {
+        history.push('/my-profile/mycollection/checkingToSell')
+      } else {
+        notification('error',{message:'Error',description:'Something when wrong, please try again later.'})
         setIsPrcessing(false)
-      })
-    setShowModalsetPrice(false)
+      }
+    })
+    // setIsPrcessing(true)
+    // const tokenId = data?.tokenId
+    // setIsPrcessing(true)
+    // marketServicesMethod?.setTokenPrice(tokenId, value.lucky)
+    //   .then((dt) => {
+    //     if (dt?.hash) {
+    //       setPrice({ id: data?.id, NFTType:'buy' }).then(({ status }) => {
+    //         if (status == 200) {
+    //           history.push('/my-profile/mycollection/checkingToSell')
+    //         } else {
+    //           notification('error',{message:'Error',description:'Something when wrong, please try again later.'})
+    //           setIsPrcessing(false)
+    //         }
+    //       })
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     notification('error',{message:'Error',description:err?.message})
+    //     setIsPrcessing(false)
+    //   })
+    // setShowModalsetPrice(false)
   }
 
   const onAllowSellItem = () => {

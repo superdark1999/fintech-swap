@@ -34,7 +34,15 @@ function useLuckyServiceChain97(){
             return LuckyTokenContract.allowance(account,contractAddress)
         }
 
-        return { approveLevelAmount, checkApproveLevelAmount}
+        const getLuckyBalance = ()=>{
+            if(!isAddress(account) || account === AddressZero){
+                window.alert('Your spender address was wrong')
+                return null
+            }
+           return LuckyTokenContract.balanceOf(account)
+        }
+
+        return { approveLevelAmount, checkApproveLevelAmount,getLuckyBalance}
 }
 
 
