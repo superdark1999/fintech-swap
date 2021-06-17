@@ -1,7 +1,7 @@
 
 server {
       server_name     mkp.luckyswap.center www.mkp.luckyswap.center;
-    root /home/luckyswap/dev/luckyswap-exchange-v2/build;
+    root /home/luckyswap/luckyswap-nft-marketplace/build;
 location / {
                     try_files $uri $uri/ /index.html;
         }
@@ -30,4 +30,4 @@ nano /etc/nginx/sites-available/mkp.luckyswap.center.conf
 
 sudo ln -s /etc/nginx/sites-available/mkp.luckyswap.center.conf /etc/nginx/sites-enabled/mkp.luckyswap.center.conf
 
-sudo certbot --nginx -d luckyswap.exchange  -d www.luckyswap.exchange 
+sudo certbot --nginx -d mkp.luckyswap.center 
