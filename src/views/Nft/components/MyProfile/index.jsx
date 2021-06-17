@@ -148,13 +148,11 @@ const TabMyCollection= ()=>{
       if(optionChecked==='all'){
         delete query.status
       }
+      if(optionChecked==='pending'){
+        query.status = ['pending','checkingReadyToSell','checkingBuying']
+      }
       getNFT(query).then(({status, data})=>{
         if(status==200){
-          if(optionChecked=='pending'){
-           return setRenderData(data?.data?.filter(item=>{
-             return item.status == 'pending' && item.status == 'checkingReadyToSell' && item.status == 'checkingBuying'
-           })||[])
-          }
           setRenderData(data?.data||[])
         }
       })

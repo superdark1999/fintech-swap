@@ -111,7 +111,7 @@ const DetaiArtWork = ({id}:any) => {
     }
     setIsProccessing(true)
     const tokenId = NFTDetail?.tokenId
-    marketServicesMethod?.buyToken(tokenId).then((dt) => {
+    marketServicesMethod?.buyToken(tokenId,price).then((dt) => {
       if (dt?.hash) {
         buyItem({
           id: id,
@@ -122,13 +122,13 @@ const DetaiArtWork = ({id}:any) => {
             history.push('/my-profile/mycollection/pending')
           })
           setIsProccessing(false)
-        }).catch(()=>{
+        }).catch((err)=>{
           notification('error',{message:'Error',description:`Something went wrong please try again`})
           setIsProccessing(false)
         })
       }
-    }).catch(()=>{
-      notification('error',{message:'Error',description:`Something went wrong please try again`})
+    }).catch((err)=>{
+      notification('error',{message:'Error',description:err.message})
       setIsProccessing(false)
     })
   }

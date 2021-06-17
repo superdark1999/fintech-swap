@@ -129,6 +129,7 @@ const DetaiArtWork = ({ id }: any) => {
     if(!marketServicesMethod) return
     const bidPrice = price + step * nextStepOffer
     setIsProccessing(true)
+    console.log(isReadyBid)
     if (isReadyBid) {
       marketServicesMethod?.updateBidPrice(NFTDetail?.tokenId,bidPrice )
         .then(_.debounce(()=>{
@@ -155,7 +156,7 @@ const DetaiArtWork = ({ id }: any) => {
           notification('error',{message:'Error',description:err.message})
         })
     } else {
-      bidToken(NFTDetail?.tokenId, bidPrice)
+      marketServicesMethod?.bidToken(NFTDetail?.tokenId, bidPrice)
         .then(_.debounce(()=>{
           notification('success',{message:'Success',description:'You bid NFT successful'})
           marketServicesMethod?.getBidsByTokenId(NFTDetail?.tokenId).then((bidsArr) => {
