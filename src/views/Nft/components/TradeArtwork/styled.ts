@@ -142,7 +142,7 @@ export const WrapperListCard = styled.div`
   }
   .scroll-right {
     position: absolute;
-    left: -10px;
+    left: -15px;
     top: 50%;
     color: #E7EBEF;
     border-radius: 50%;
@@ -155,14 +155,13 @@ interface PropsListCard {
   numOfItem?: number
 }
 export const ListCard = styled.div<PropsListCard>`
-  /* max-width:600px; */
-  /* height:700px; */
+  padding-left: ${props => ( props.numOfItem <= 3) ? '30px' : '400px'};
   display:flex;
   justify-content:center;
   align-items:center;
   transform: ${props => (props.numOfItem === 2 || props.numOfItem === 3) && 'translateX(70px)' };
   max-width: 400px;
-  overflow: ${props => (props.numOfItem === 2 || props.numOfItem === 3) ? 'unset' : 'scroll'};
+  overflow: ${props => (props.numOfItem <= 3) ? 'unset' : 'scroll'};
   /* gap:20px; */
   scroll-behavior: smooth;
   ::-webkit-scrollbar {
@@ -170,6 +169,8 @@ export const ListCard = styled.div<PropsListCard>`
   }  
 
   >div { 
+    min-width: 247px;
+    min-height: 326px;
     -webkit-box-reflect:below 2px linear-gradient(transparent, transparent, #0004); 
     transform-origin:center;
     transform:perspective(800px) rotateY(45deg);

@@ -160,7 +160,9 @@ const SwapArtWork = (props: any) => {
         setVisible={setVisible} 
         data={visible.value === 'my-item' ? NFTs : []} 
         getItemSelected={getItemSelected} 
-        multiSelect={visible.value === 'my-item'}/>
+        multiSelect={visible.value === 'my-item'}
+        selectedItem={visible.value === 'my-item' ? myItems : itemSwap}
+        />
     </TradeArtWorkStyled>
 
   )
