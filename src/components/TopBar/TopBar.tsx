@@ -13,14 +13,15 @@ import ViewMore from 'assets/images/view-more.svg'
 import Token from 'assets/images/token.svg'
 import { isMobile } from 'react-device-detect'
 import useLuckyServices from 'services/web3Services/LuckyServices'
+import BSCScanServices from 'services/axiosServices/BSCScanServices'
 import { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
-import { Switch } from 'antd'
+import { Menu, Dropdown } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { chain } from 'lodash'
-import {SUPPORT_CHAIN_IDS} from 'utils'
+import {getPrice, SUPPORT_CHAIN_IDS} from 'utils'
 import { Modal, Input, Form } from 'antd'
 import useAuth from 'hooks/useAuth'
 interface TopBarProps {
@@ -134,9 +135,12 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
               onChange={onChangeAnimation}
             /> */}
             {!isMobile && 
+              <>
               <div className="connect-wallet">
                 <Web3Status />
               </div>
+              <UserBalance/>
+              </>
             }
             {account ? (
               <div  className="view-more">
@@ -231,6 +235,39 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   )
 }
 
+const UserBalance = ()=>{
+  const { account,chainId } = useActiveWeb3React()
+  const [userState, userActions] = useUserStore()
+  const {getBNBBalance} = BSCScanServices()
+  const luckyMethod = useLuckyServices()
+  useEffect(()=>{
+    if(luckyMethod){
+      getBNBBalance(account).then(({data,status})=>{
+        if(status==200){
+          userActions.updateUserBalance({BNB:getPrice(data?.result||0)?.toFixed(3)})
+        }
+      })
+      luckyMethod?.getLuckyBalance().then((data:any)=>{
+        userActions.updateUserBalance({LUCKY:getPrice(data?._hex||0)})
+      })
+    }
+  },[])
+  const menu = (
+    <Menu>
+      {/* <Menu.Divider /> */}
+      <Menu.Item key="3">{userState?.balance?.LUCKY||0} LUCKY</Menu.Item>
+    </Menu>
+  );
+  return(
+    <Dropdown className="create-nav-balance" overlay={menu} trigger={['click']}>
+              <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                <span className="number-balance">{userState?.balance?.BNB||0}</span>
+                <span className="label-balance">BNB</span>
+              </a>
+    </Dropdown>
+  )
+}
+
 const StyledTopBar = styled.div`
   display: flex;
   align-items: center;
@@ -275,6 +312,45 @@ const StyledTopBar = styled.div`
       font-size: 16px;
       line-height: 24px;
       margin-right:14px;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      cursor: pointer;
+      ::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 50px;
+        padding: 2px;
+        background: linear-gradient(270deg, #19a3dd -16.5%, #badeb7 117.25%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+      }
+      @media (max-width: 756px) {
+        display: none;
+      }
+      @media (max-width:756px){
+        display: none;
+      }
+    }
+    .create-nav-balance {
+      padding:0 10px;
+      height: 40px;
+      background: linear-gradient(270deg, #19a3dd -16.5%, #badeb7 117.25%);
+      border-radius: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: '8px 24px';
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 24px;
+      margin-left:14px;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       position: relative;

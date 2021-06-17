@@ -3,6 +3,7 @@ import { isMobile } from 'react-device-detect'
 import { Table } from 'antd'
 export const TradeArtWorkStyled = styled.div`
   max-width: 1320px;
+  overflow: hidden;
   /* width: 1100px; */
   margin: ${!isMobile ? '60px auto' : '10px auto'};
   padding: 0px 40px;
@@ -67,9 +68,16 @@ export const CardStyled = styled.div<PropsStyled>`
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
     >img {
-      max-width: 200px;
-      max-height: 200px;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      object-fit: cover;
     }
   }
   .name {
@@ -116,3 +124,82 @@ export const TableStyled = styled(Table)`
   }
 `
 
+export const Container = styled.div`
+  max-width: 1320px;
+  margin: 0px auto;
+`
+export const WrapperListCard = styled.div`
+  position: relative;
+  .scroll-left {
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    color: #E7EBEF;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #ffffff;
+    z-index: 1;
+  }
+  .scroll-right {
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    color: #E7EBEF;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #ffffff;
+    z-index: 1;
+  }
+`
+interface PropsListCard {
+  numOfItem?: number
+}
+export const ListCard = styled.div<PropsListCard>`
+  /* max-width:600px; */
+  /* height:700px; */
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  transform: ${props => (props.numOfItem === 2 || props.numOfItem === 3) && 'translateX(70px)' };
+  max-width: 400px;
+  overflow: ${props => (props.numOfItem === 2 || props.numOfItem === 3) ? 'unset' : 'scroll'};
+  /* gap:20px; */
+  scroll-behavior: smooth;
+  ::-webkit-scrollbar {
+    display: none;
+  }  
+
+  >div { 
+    -webkit-box-reflect:below 2px linear-gradient(transparent, transparent, #0004); 
+    transform-origin:center;
+    transform:perspective(800px) rotateY(45deg);
+    transition:0.5s;
+    margin-left: -120px;
+    margin-top: 40px;
+  }
+  :hover {
+    >div {
+      opacity:0.3;
+      
+      :hover {
+        width: 180px;
+        transform:perspective(800px) rotateY(0deg);
+        opacity:1;
+        width: 100%;
+        z-index: 1
+      }
+    }
+  }
+`
+
+export const StyledDefaultCart = styled.div`
+    width: 247px;
+    height: 326px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #E7EBEF;
+    box-sizing: border-box;
+    border-radius: 24px;
+`

@@ -7,18 +7,19 @@ import Token from 'assets/images/token.svg'
 import Hammer from 'assets/images/hammer.svg'
 import CartGrey from 'assets/icon/cart-grey.svg'
 import Trade from 'assets/icon/trade.svg'
-import ReactFreezeframe from 'react-freezeframe';
+// import ReactFreezeframe from 'react-freezeframe';
 import {Link} from 'react-router-dom'
-import useConfigStore from 'store/configStore'
+// import useConfigStore from 'store/configStore'
 
 import { Card,Avatar } from 'antd';
 import { SwapOutlined, StarFilled } from '@ant-design/icons'
 import useMarketServices from 'services/web3Services/MarketServices'
-import {getPrice} from 'utils'
+// import {getPrice} from 'utils'
 import _ from 'lodash' 
 import Countdown from "react-countdown";
 const { Meta } = Card;
-export default function CardItem({data}) {
+export default function CardItem(props?: {data?:any}) {
+  const { data } = props
   const [price,setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
 const [dayExp, setDayExp] = useState(false)  

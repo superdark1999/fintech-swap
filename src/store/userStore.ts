@@ -8,13 +8,22 @@ const userStore = createStore({
     name:'',
     socialMediaLink:'',
     biography:'',
-    isCanBuy:false
+    isCanBuy:false,
+    balance:{
+      BNB:0,
+      LUCKY:0
+    }
   },
   
   actions: {
     updateUserInfo: (userInfo)=>({getState, setState})=>{
       const userInfoState = getState()
         setState({...userInfoState,...userInfo})
+    },
+    updateUserBalance:(balance)=>({getState, setState})=>{
+      const userInfoState = getState()
+      const userBalanceState = getState()?.balance
+      setState({...userInfoState,balance:{...userBalanceState,...balance}})
     },
     clearUserInfo: ()=>({getState, setState})=>{
         setState({
@@ -24,7 +33,11 @@ const userStore = createStore({
           name:'',
           socialMediaLink:'',
           biography:'',
-          isCanBuy:false
+          isCanBuy:false,
+          balance:{
+            BNB:0,
+            LUCKY:0,
+          }
         })
     },
   },

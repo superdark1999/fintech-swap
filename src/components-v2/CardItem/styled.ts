@@ -7,7 +7,6 @@ interface PropsStyled {
 }
 
 export const StyledCart = styled.div<PropsStyled>`
-  padding: 12px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
