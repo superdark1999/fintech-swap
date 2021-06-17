@@ -13,6 +13,7 @@ import ViewMore from 'assets/images/view-more.svg'
 import Token from 'assets/images/token.svg'
 import { isMobile } from 'react-device-detect'
 import useLuckyServices from 'services/web3Services/LuckyServices'
+import BSCScanServices from 'services/axiosServices/BSCScanServices'
 import { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
@@ -20,7 +21,7 @@ import { Switch } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { chain } from 'lodash'
-import {SUPPORT_CHAIN_IDS} from 'utils'
+import {getPrice, SUPPORT_CHAIN_IDS} from 'utils'
 import { Modal, Input, Form } from 'antd'
 import useAuth from 'hooks/useAuth'
 interface TopBarProps {
@@ -122,6 +123,7 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
             <Link to="/" className="home-nav">Home</Link>
             {!!account?(
               <>
+                <UserBalance/>
                 <Link to={"/create/artwork"} className="create-nav">Create</Link>
                 <Link to={"/swap"} className="create-nav">Swap</Link>
               </>
@@ -225,6 +227,31 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
                 </Form>
               </Modal>
     </StyledTopBar>
+  )
+}
+
+const UserBalance = ()=>{
+  const { account,chainId } = useActiveWeb3React()
+  const [userState, userActions] = useUserStore()
+  const {getBNBBalance} = BSCScanServices()
+  const luckyMethod = useLuckyServices()
+  useEffect(()=>{
+    if(luckyMethod){
+      getBNBBalance(account).then(({data,status})=>{
+        if(status==200){
+          userActions.updateUserBalance({BNB:getPrice(data?.result||0)?.toFixed(3)})
+        }
+      })
+      luckyMethod?.getLuckyBalance().then((data:any)=>{
+        userActions.updateUserBalance({LUCKY:getPrice(data?._hex||0)})
+      })
+    }
+  },[])
+  return(
+    <div>
+      {userState?.balance?.BNB||0} BNB
+      {userState?.balance?.LUCKY||0} LUCKY
+    </div>
   )
 }
 
