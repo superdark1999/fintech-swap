@@ -5,8 +5,9 @@ const qs = require('qs')
 
 export default function AxiosServices(baseUrl: string = '') {
   const headers = {
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Content-Type': 'application/json; charset=UTF-8',
+    'Access-Control-Allow-Origin': '*',
   }
 
   function fetch(
