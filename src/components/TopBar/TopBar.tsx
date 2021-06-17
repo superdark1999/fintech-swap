@@ -53,7 +53,7 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   }
 
   useEffect(()=>{
-    if(!SUPPORT_CHAIN_IDS.includes(chainId)){
+    if(chainId && !SUPPORT_CHAIN_IDS.includes(chainId)){
       setIsShowAlert(true)
     }
   },[chainId])
@@ -175,7 +175,10 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
                       </div>
                     </Link>
                     {/* <Link to="/my-profile/login"> */}
-                      <div className="menu-item" onClick={logout}>
+                      <div className="menu-item" onClick={()=>{
+                        logout()
+                        window.localStorage.removeItem('connectorId')
+                      }}>
                         Log out
                       </div>
                     {/* </Link> */}
