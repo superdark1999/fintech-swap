@@ -170,6 +170,7 @@ export class BscConnector extends AbstractConnector {
   }
 
   public deactivate() {
+    alert('aa')
     if (window.BinanceChain && window.BinanceChain.removeListener) {
       window.BinanceChain.removeListener('chainChanged', this.handleChainChanged)
       window.BinanceChain.removeListener('accountsChanged', this.handleAccountsChanged)
