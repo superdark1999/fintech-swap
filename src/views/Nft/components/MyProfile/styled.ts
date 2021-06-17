@@ -42,6 +42,18 @@ export const UserProfileStyled = styled.div<Props>`
         line-height: 40px;
         color: #333435;
         }
+        .copy{
+          span{
+            border-radius: 100px;
+            border:1px solid #E7EBEF;
+            width:40px;
+            height:40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+            
+        }
         img {
           margin-left: 5px;
         }

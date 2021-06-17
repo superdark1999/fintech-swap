@@ -2,108 +2,132 @@ import React, { useEffect, useState } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
-import { Row, Col, Tabs} from 'antd';
+import { Row, Col, Tabs } from 'antd'
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import SearchInput from 'components-v2/SearchInput'
 import { ButtonStyle } from 'components-v2/cart/styled'
-import  Copy from 'assets/images/copy.svg'
-import useArtworkServices from 'services/axiosServices/ArtworkServices'; 
+import Copy from 'assets/images/copy.svg'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import { useActiveWeb3React } from 'wallet/hooks'
 import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
 import useArtworkService from 'services/axiosServices/UserServices'
-import { HeartOutlined } from '@ant-design/icons';
-import {useParams, useHistory, useRouteMatch} from "react-router-dom";
-const { TabPane } = Tabs;
-
+import { HeartOutlined, CheckOutlined } from '@ant-design/icons'
+import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
+import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
+const { TabPane } = Tabs
 
 const UserProfile = () => {
   const [user, setUser] = useState()
   const match = useRouteMatch()
   const { getUserDetail } = useArtworkService()
-  useEffect(()=>{
-    getUserDetail(match.params?.id).then(({data, status})=>{
-     if(status===200){
-       setUser(data)
-       console.log('res: ', data)
-     }
+  const [isCopied, handleCopy] = useCopyToClipboard(3000)
+  useEffect(() => {
+    getUserDetail(match.params?.id).then(({ data, status }) => {
+      if (status === 200) {
+        setUser(data)
+      }
     })
-  },[])
+  }, [])
 
-  const history = useHistory();
-  const { tab, option } = useParams();
-  const onChangeTab = (e)=>{
+  const history = useHistory()
+  const { tab, option } = useParams()
+  const onChangeTab = (e) => {
     if (e === 'onsale') {
       history.push(`/user-profile/${match.params?.id}/onsale/readyToSell`)
-    }else if (e === 'mycollection'){
+    } else if (e === 'mycollection') {
       history.push(`/user-profile/${match.params?.id}/collection/all`)
     }
   }
   return (
     <UserProfileStyled urlCover={user?.coverImage}>
       <Row className="section header-profile">
-          <Col className="header-profile-col" xxl={{ span: 24}}  xl={{ span: 20}} md={{ span: 20 }} xs={{span: 20}}>
-             <img className="avatar" src={user?.avatarImage}/>
-          </Col>
+        <Col
+          className="header-profile-col"
+          xxl={{ span: 24 }}
+          xl={{ span: 20 }}
+          md={{ span: 20 }}
+          xs={{ span: 20 }}
+        >
+          <img className="avatar" src={user?.avatarImage} />
+        </Col>
       </Row>
       <Row className="section content-profile">
-          <Col className="content" xxl={{ span: 24}}  xl={{ span: 20}} md={{ span: 20 }} xs={{span: 20}}>
-            <div className="info-detail">
-              <div>
-                <div className="name">
-                  <span>{user?.name}</span>
-                  <img src={Checkmark} />
-                </div>
-                <div className="rank">
-                  <img src={Crown} /> {" "}
-                  GOLD ARTIST
-                </div>
-              </div> 
-              <div className="button-right">
-                <ButtonStyle  className="btn-donate">
-                  <HeartOutlined />
-                  Donate
-                </ButtonStyle>
-                <img src={Copy} alt=""/>
-              </div> 
+        <Col
+          className="content"
+          xxl={{ span: 24 }}
+          xl={{ span: 20 }}
+          md={{ span: 20 }}
+          xs={{ span: 20 }}
+        >
+          <div className="info-detail">
+            <div>
+              <div className="name">
+                <span>{user?.name}</span>
+                <img src={Checkmark} />
+              </div>
+              <div className="rank">
+                <img src={Crown} /> GOLD ARTIST
+              </div>
             </div>
-            <p className="description">
-                {user?.biography}
-            </p>  
+            <div className="button-right">
+              <ButtonStyle className="btn-donate">
+                <HeartOutlined />
+                Donate
+              </ButtonStyle>
+              <div
+                className="copy"
+                onClick={() =>
+                  handleCopy(
+                    `${window.location.origin}/user-profile/${user?.walletAddress}/onsale/readyToSell`,
+                  )
+                }
+              >
+                {isCopied ? (
+                  <span>
+                    <CheckOutlined />
+                  </span>
+                ) : (
+                  <>
+                    <img src={Copy} alt="copy-artwork" />
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+          <p className="description">{user?.biography}</p>
           <Tabs defaultActiveKey={tab} onChange={onChangeTab}>
-            <TabPane tab="On sale" key="onsale"> 
-              <TabOnSale />    
+            <TabPane tab="On sale" key="onsale">
+              <TabOnSale />
             </TabPane>
             <TabPane tab="Collection" key="collection">
-              <TabMyCollection/>
+              <TabMyCollection />
             </TabPane>
           </Tabs>
-
-          </Col>
+        </Col>
       </Row>
-
     </UserProfileStyled>
   )
 }
 export default UserProfile
 
-const TabOnSale = ()=>{
+const TabOnSale = () => {
   const [loading, setLoading] = useState(true)
-  const [NFTs,setNFTs] = useState([])
-  const {getNFT} = useArtworkServices()
+  const [NFTs, setNFTs] = useState([])
+  const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
-  useEffect(()=>{
+  useEffect(() => {
     const query = {
-      status:'readyToSell',
-      ownerWalletAddress: account
+      status: 'readyToSell',
+      ownerWalletAddress: account,
     }
-    getNFT(query).then(({status, data})=>{
-      if(status==200){
-        setNFTs(data?.data||[])
+    getNFT(query).then(({ status, data }) => {
+      if (status == 200) {
+        setNFTs(data?.data || [])
       }
     })
-  },[])
-  return(
+  }, [])
+  return (
     <>
       {/* <Row align="middle" justify="space-between">     
         <GroupButton>
@@ -114,24 +138,22 @@ const TabOnSale = ()=>{
         </GroupButton>
         <SearchInput maxWidth="300px" placeholder="Search items"/>
       </Row>  */}
-        <ListCart className="list-artwork">
-            {NFTs.map(item=>{
-                  return(
-                    <OnsSaleCard key={item?.id} data={item}/>
-                  )
-            })}
-        </ListCart> 
+      <ListCart className="list-artwork">
+        {NFTs.map((item) => {
+          return <OnsSaleCard key={item?.id} data={item} />
+        })}
+      </ListCart>
       {/* <Loadmore/>  */}
     </>
   )
 }
 
-const TabMyCollection= ()=>{
-  const { option } = useParams();
+const TabMyCollection = () => {
+  const { option } = useParams()
   console.log(option)
   const [optionChecked, setOptionChecked] = useState(option)
-  const [renderData,setRenderData] = useState([])
-  const {getNFT} = useArtworkServices()
+  const [renderData, setRenderData] = useState([])
+  const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
   // useEffect(()=>{
   //   const query = {
@@ -145,47 +167,77 @@ const TabMyCollection= ()=>{
   //   })
   // },[])
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(optionChecked)
-    if(optionChecked){
+    if (optionChecked) {
       const query = {
         ownerWalletAddress: account,
-        status:optionChecked
+        status: optionChecked,
       }
-      if(optionChecked==='all'){
+      if (optionChecked === 'all') {
         delete query.status
       }
-      getNFT(query).then(({status, data})=>{
-        if(status==200){
-          setRenderData(data?.data||[])
+      getNFT(query).then(({ status, data }) => {
+        if (status == 200) {
+          setRenderData(data?.data || [])
         }
       })
     }
-  },[optionChecked])
+  }, [optionChecked])
 
-  const onHandleOptionCheck = (e)=>{
+  const onHandleOptionCheck = (e) => {
     setOptionChecked(e.target.value)
   }
 
-  return(
+  return (
     <>
       <Row align="middle" justify="space-between">
         <GroupButton defaultValue={option}>
-          <RadioButton width="auto" borderRadius="10px" value="all"  onChange={onHandleOptionCheck} checked={optionChecked=='all'}>All </RadioButton>
-          <RadioButton width="auto" borderRadius="10px" value="approved" onChange={onHandleOptionCheck}  checked={optionChecked=='approved'} >Approved </RadioButton>
-          <RadioButton width="auto" borderRadius="10px" value="checkingReadyToSell" onChange={onHandleOptionCheck}  checked={optionChecked=='checkingReadyToSell'}>Pending </RadioButton>
-          <RadioButton width="auto" borderRadius="10px" value="reject" onChange={onHandleOptionCheck}  checked={optionChecked=='reject'}>Reject</RadioButton>
-        </GroupButton> 
-        <SearchInput maxWidth="300px" placeholder="Search items"/>
+          <RadioButton
+            width="auto"
+            borderRadius="10px"
+            value="all"
+            onChange={onHandleOptionCheck}
+            checked={optionChecked == 'all'}
+          >
+            All{' '}
+          </RadioButton>
+          <RadioButton
+            width="auto"
+            borderRadius="10px"
+            value="approved"
+            onChange={onHandleOptionCheck}
+            checked={optionChecked == 'approved'}
+          >
+            Approved{' '}
+          </RadioButton>
+          <RadioButton
+            width="auto"
+            borderRadius="10px"
+            value="checkingReadyToSell"
+            onChange={onHandleOptionCheck}
+            checked={optionChecked == 'checkingReadyToSell'}
+          >
+            Pending{' '}
+          </RadioButton>
+          <RadioButton
+            width="auto"
+            borderRadius="10px"
+            value="reject"
+            onChange={onHandleOptionCheck}
+            checked={optionChecked == 'reject'}
+          >
+            Reject
+          </RadioButton>
+        </GroupButton>
+        <SearchInput maxWidth="300px" placeholder="Search items" />
       </Row>
       <ListCart className="list-artwork">
-        {renderData.map(item=>{
-          return(
-            <MyCollectionCard key={item?.id} data={item}/>
-          )
+        {renderData.map((item) => {
+          return <MyCollectionCard key={item?.id} data={item} />
         })}
-      </ListCart> 
-          {/* <Loadmore/>  */}
+      </ListCart>
+      {/* <Loadmore/>  */}
     </>
   )
 }
