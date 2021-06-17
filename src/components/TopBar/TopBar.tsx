@@ -90,8 +90,6 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
           })
         }
       })
-    } else {
-      userActions.clearUserInfo()
     }
   }, [account,luckyMethod])
 
