@@ -99,7 +99,7 @@ const menu = (
 )
 const listTime = ['1d', '5d', '1m', '1y']
 function BalanceHome() {
-  const balance = BnbBalance()
+  const balance = BnbBalance() //
   return (
     <BalanceContainer>
       <div className="left-balance">
