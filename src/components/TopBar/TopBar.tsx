@@ -242,7 +242,7 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
           </Form.Item>
         </Form>
       </Modal>
-    </StyledTopBar>
+    </StyledTopBar >
   )
 }
 

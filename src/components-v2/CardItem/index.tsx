@@ -53,7 +53,7 @@ export default function CardItem(props?: { data?: any }) {
               </div>}
               {/* <ReactFreezeframe ref={useFrameGif} className="avatar"  src={data?.contentUrl}/>      */}
               {data?.type === 'video' ?
-                <video width="300" height="450" autoPlay><source src={data?.contentUrl} type="video/mp4" /></video>
+                <video width="300" height="450" autoPlay muted><source src={data?.contentUrl} type="video/mp4" /></video>
                 : <img className="avatar" src={data?.contentUrl} alt="" loading="lazy" />
               }
             </div>

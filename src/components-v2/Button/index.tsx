@@ -7,7 +7,28 @@ interface StyledButtonProps {
   padding?: string
   htmlType?: any
 }
-
+export const ButtonCancel = styled.button<StyledButtonProps>`
+  width: ${(props) => props.width || 'max-content'};
+  height: ${(props) => props.height || 'max-content'};
+  background: #FC636B;
+  border-radius: 100px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: ${(props) => props.padding || '8px 24px'};
+  font-weight: 600;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 10px;
+  > img,
+  span {
+    /* margin-right: 5px; */
+  }
+`
 export const ButtonTrade = styled.button<StyledButtonProps>`
   width: ${(props) => props.width || 'max-content'};
   height: ${(props) => props.height || 'max-content'};
@@ -27,7 +48,7 @@ export const ButtonTrade = styled.button<StyledButtonProps>`
   margin-right: 10px;
   > img,
   span {
-    margin-right: 5px;
+    /* margin-right: 5px; */
   }
 `
 
