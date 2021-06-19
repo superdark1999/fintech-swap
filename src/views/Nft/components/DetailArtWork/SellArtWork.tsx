@@ -147,14 +147,12 @@ const DetaiArtWork = ({ id }: any) => {
     }
     if (!account) {
       return (
-
         <ButtonBuy onClick={onBuyItem}>Buy</ButtonBuy>
       )
     }
     if (userState?.isCanBuy) {
       return (
-        <div></div>
-        // <ButtonBuy onClick={onBuyItem}>Buy</ButtonBuy>
+        <ButtonBuy onClick={onBuyItem}>Buy</ButtonBuy>
       )
     }
     if (!userState?.isCanBuy) {
