@@ -13,6 +13,7 @@ import ViewMore from 'assets/images/view-more.svg'
 import Token from 'assets/images/token.svg'
 import { isMobile } from 'react-device-detect'
 import useLuckyServices from 'services/web3Services/LuckyServices'
+import BSCScanServices from 'services/axiosServices/BSCScanServices'
 import { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
@@ -20,7 +21,7 @@ import { Menu, Dropdown } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { chain } from 'lodash'
-import { SUPPORT_CHAIN_IDS } from 'utils'
+import { getPrice, SUPPORT_CHAIN_IDS } from 'utils'
 import { Modal, Input, Form } from 'antd'
 import useAuth from 'hooks/useAuth'
 interface TopBarProps {
@@ -89,10 +90,8 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
             })
         }
       })
-    } else {
-      userActions.clearUserInfo()
     }
-  }, [account, luckyMethod])
+  }, [account])
 
   const onChangeAnimation = (checked: any, e: any) => {
     configAction.updateConfig({ isUsingAnimation: checked })
@@ -147,14 +146,11 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
             <div className="connect-wallet">
               <Web3Status />
             </div>
-            <Dropdown className="create-nav-balance" overlay={menu} trigger={['click']}>
-              <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                <span className="number-balance">100</span>
-                <span className="label-balance">BNB</span>
-              </a>
-            </Dropdown>
           </>
         }
+        {!!account ? (
+          <UserBalance />
+        ) : null}
         {account ? (
           <div className="view-more">
             <ButtonBuy padding="10px" borderRadius="100px" height="40px" width="40px" >
@@ -211,12 +207,55 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
                       <Web3Status />
                     </div>
                   </div>
-                  <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Create</ButtonBuy></a></div>
-                  <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Swap</ButtonBuy></a></div>
+                  <div className="menu-item"><Link to={"/create/artwork"}><ButtonBuy>Create</ButtonBuy></Link></div>
+                  <div className="menu-item"><Link to={"/swap"}><ButtonBuy>Swap</ButtonBuy></Link></div>
                 </>
               }
+              <Link to="/my-profile/onsale/readyToSell">
+                <div className="menu-item">
+                  My profile
+                </div>
+              </Link>
+              <Link to="/my-profile/mycollection/all">
+                <div className="menu-item">
+                  My collection
+                </div>
+              </Link>
+              <Link to="/my-profile/settings">
+                <div className="menu-item">
+                  Settings
+                </div>
+              </Link>
+              {/* <Link to="/my-profile/login"> */}
+              <div className="menu-item" onClick={() => {
+                logout()
+                window.localStorage.removeItem('connectorId')
+              }}>
+                Log out
+              </div>
+              {/* </Link> */}
             </div>
           </div>
+        )
+        :
+        <div className="view-more">
+          <ButtonBuy padding="10px" borderRadius="100px" height="40px" width="40px" >
+            <img src={ViewMore} />
+          </ButtonBuy>
+          <div className="menu">
+            {isMobile &&
+              <>
+                <div className="menu-item">
+                  <div className="connect-wallet">
+                    <Web3Status />
+                  </div>
+                </div>
+                <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Create</ButtonBuy></a></div>
+                <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Swap</ButtonBuy></a></div>
+              </>
+            }
+          </div>
+        </div>
         }
       </div>
       <Modal
@@ -245,6 +284,39 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
         </Form>
       </Modal>
     </StyledTopBar>
+  )
+}
+
+const UserBalance = () => {
+  const { account, chainId } = useActiveWeb3React()
+  const [userState, userActions] = useUserStore()
+  const { getBNBBalance } = BSCScanServices()
+  const luckyMethod = useLuckyServices()
+  useEffect(() => {
+    if (luckyMethod && account) {
+      getBNBBalance(account).then(({ data, status }) => {
+        if (status == 200) {
+          userActions.updateUserBalance({ BNB: getPrice(data?.result || 0)?.toFixed(3) })
+        }
+      })
+      luckyMethod?.getLuckyBalance().then((data: any) => {
+        userActions.updateUserBalance({ LUCKY: getPrice(data?._hex || 0) })
+      })
+    }
+  }, [])
+  const menu = (
+    <Menu>
+      {/* <Menu.Divider /> */}
+      <Menu.Item key="3">{userState?.balance?.LUCKY || 0} LUCKY</Menu.Item>
+    </Menu>
+  );
+  return (
+    <Dropdown className="create-nav-balance" overlay={menu} trigger={['click']}>
+      <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+        <span className="number-balance">{userState?.balance?.BNB || 0}</span>
+        <span className="label-balance">BNB</span>
+      </a>
+    </Dropdown>
   )
 }
 

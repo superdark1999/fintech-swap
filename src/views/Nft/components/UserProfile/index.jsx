@@ -31,11 +31,10 @@ const UserProfile = () => {
   }, [])
 
   const history = useHistory()
-  const { tab, option } = useParams()
   const onChangeTab = (e) => {
     if (e === 'onsale') {
       history.push(`/user-profile/${match.params?.id}/onsale/readyToSell`)
-    } else if (e === 'mycollection') {
+    } else if (e === 'collection') {
       history.push(`/user-profile/${match.params?.id}/collection/all`)
     }
   }
@@ -96,7 +95,7 @@ const UserProfile = () => {
             </div>
           </div>
           <p className="description">{user?.biography}</p>
-          <Tabs defaultActiveKey={tab} onChange={onChangeTab}>
+          <Tabs defaultActiveKey={match.params?.tab} onChange={onChangeTab}>
             <TabPane tab="On sale" key="onsale">
               <TabOnSale />
             </TabPane>
@@ -155,6 +154,7 @@ const TabMyCollection = () => {
   const [renderData, setRenderData] = useState([])
   const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
+
   // useEffect(()=>{
   //   const query = {
   //     ownerWalletAddress: account,

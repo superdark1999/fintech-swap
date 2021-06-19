@@ -14,16 +14,16 @@ import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
 import TabSetting from './TabSetting'
 import TableHistory from './Table'
-import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
-import { HeartOutlined, CheckOutlined } from '@ant-design/icons'
-import { useParams, useHistory } from 'react-router-dom'
-const { TabPane } = Tabs
 
+import { HeartOutlined, CheckOutlined } from '@ant-design/icons'
+import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
+const { TabPane } = Tabs
 export default () => {
-  const [userState, userActions] = useUserStore()
+  const [userState] = useUserStore()
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const history = useHistory()
-  const { tab, option } = useParams()
+  const match = useRouteMatch()
+
   const onChangeTab = (e) => {
     if (e === 'onsale') {
       history.push(`/my-profile/onsale/all`)
@@ -93,7 +93,7 @@ export default () => {
             </div>
           </div>
           <p className="description">{userState?.biography}</p>
-          <Tabs defaultActiveKey={tab} onChange={onChangeTab}>
+          <Tabs activeKey={match.params.tab} onChange={onChangeTab}>
             <TabPane tab="On sale" key="onsale">
               <TabOnSale />
             </TabPane>
@@ -169,19 +169,11 @@ const TabMyCollection = () => {
       if (optionChecked === 'all') {
         delete query.status
       }
+      if (optionChecked === 'pending') {
+        query.status = ['pending', 'checkingReadyToSell', 'checkingBuying']
+      }
       getNFT(query).then(({ status, data }) => {
         if (status == 200) {
-          if (optionChecked == 'pending') {
-            return setRenderData(
-              data?.data?.filter((item) => {
-                return (
-                  item.status == 'pending' &&
-                  item.status == 'checkingReadyToSell' &&
-                  item.status == 'checkingBuying'
-                )
-              }) || [],
-            )
-          }
           setRenderData(data?.data || [])
         }
       })

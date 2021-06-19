@@ -18,7 +18,7 @@ const options = ["United States Dollar (USD)"]
 
 const Sidebar: React.FC<SidebarProps> = ({setShowSidebar,onShowSidebar}) => {
   const [select, setSelect] = React.useState<string | null>('United States Dollar (USD)');
-  const [configMenu, setConfigMenu] = React.useState<any| null>(['collection']);
+  const [configMenu, setConfigMenu] = React.useState<any| null>(['collection', 'price', 'tag']);
   const [ checkedList, setCheckedList] = React.useState<[string] | null>(['']);
 
 

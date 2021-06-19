@@ -132,6 +132,7 @@ const DetaiArtWork = ({ id }: any) => {
     if (!marketServicesMethod) return
     const bidPrice = price + step * nextStepOffer
     setIsProccessing(true)
+    console.log(isReadyBid)
     if (isReadyBid) {
       marketServicesMethod?.updateBidPrice(NFTDetail?.tokenId, bidPrice)
         .then(_.debounce(() => {
@@ -158,7 +159,7 @@ const DetaiArtWork = ({ id }: any) => {
           notification('error', { message: 'Error', description: err.message })
         })
     } else {
-      bidToken(NFTDetail?.tokenId, bidPrice)
+      marketServicesMethod?.bidToken(NFTDetail?.tokenId, bidPrice)
         .then(_.debounce(() => {
           notification('success', { message: 'Success', description: 'You bid NFT successful' })
           marketServicesMethod?.getBidsByTokenId(NFTDetail?.tokenId).then((bidsArr) => {
@@ -288,11 +289,13 @@ const DetaiArtWork = ({ id }: any) => {
 
           <p className="description">{NFTDetail?.description || ''}</p>
 
-          <p className="organize">
-            <img src={Luckyswap} />
-            <span className="name">LuckySwapStudio</span>
-            <img src={Checkmark} />
-          </p>
+          <Link to={userState.walletAddress === NFTDetail.ownerWalletAddress ? `/my-profile/onsale/readyToSell` : `/user-profile/${NFTDetail.ownerWalletAddress}/onsale/readyToSell`}>
+            <p className="organize">
+              <img src={Luckyswap} />
+              <span className="name">LuckySwapStudio</span>
+              <img src={Checkmark} />
+            </p>
+          </Link>
 
           <Tabs defaultActiveKey="1">
             <TabPane tab="Detail" key="1">
