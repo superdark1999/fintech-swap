@@ -147,6 +147,7 @@ export const StyledCart = styled.div<PropsStyled>`
         }
         .copy {
           font-size: 12px;
+          cursor: pointer;
           img {
             width: 18px;
             height: 18px;
