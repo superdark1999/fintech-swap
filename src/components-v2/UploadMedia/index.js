@@ -3,16 +3,43 @@ import { Button, Upload, Image } from 'antd'
 import { CloseCircleFilled } from '@ant-design/icons'
 import styled from 'styled-components'
 import { get } from 'lodash'
+import notification from 'components-v2/Alert'
+
+const typeInfo={
+  image:{
+    accept:'image/png, image/jpeg,image/jpg',
+    supportText:'Support: png / jpg Size: ≤ 5MB',
+    size:5
+  },
+  gif:{
+    accept:'image/gif',
+    supportText:'Support: gif Size: ≤ 15MB',
+    size:15
+  },
+  video:{
+    accept:'video/mp4',
+    supportText:'Support: mp4 Size: ≤ 40MB',
+    size:40
+  }
+}
+
+//configurations for the image uploader
 
 const UploadForm = (props) => {
   const { isFormData } = props
-  console.log('isFormData: ', isFormData)
   const [imageUrl, setUrlImage] = useState(false)
   const [type, setType] = useState(false)
   const [file, setFile] = useState(false)
 
   const beforeUpload = (file) => {
-    console.log('file: ', file.type)
+    const isLtSize = file.size / 1024 / 1024 < size;
+      if (!isLtSize) {
+        notification('error', {
+          message: 'Error',
+          description: `Image must smaller than ${size}MB!`,
+        })
+        return true
+    }
     getBase64(file)
     setType(file.type)
     setFile(file)
@@ -38,10 +65,11 @@ const UploadForm = (props) => {
   }
   const handleUpload = ({ fileList }) => {
     if (isFormData) {
-      console.log('form', get(fileList, '[0].originFileObj'))
       props.onChange(get(fileList, '[0].originFileObj'))
     }
   }
+
+  const {accept,supportText,size} = typeInfo[props?.type||'image']
 
   return (
     <UploadStyled>
@@ -66,13 +94,13 @@ const UploadForm = (props) => {
         onRemove={handleRemove}
         style={{ width: '100%' }}
         showUploadList={false}
-      >
+        accept={accept}
+        >
         {!imageUrl && (
           <div className="upload-image">
             <Button>Upload</Button>
             <p>
-              Support: png / jpg / gif/ MP4 Size: ≤ 10MB
-              {/* Suggested ratio: 1:1 */}
+              {supportText}
             </p>
           </div>
         )}

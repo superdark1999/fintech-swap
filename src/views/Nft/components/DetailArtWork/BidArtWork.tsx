@@ -50,14 +50,6 @@ const DetaiArtWork = ({ id }: any) => {
   const [userState, userActions] = useUserStore()
   const marketServicesMethod = useMarketServices()
   const [step,setStep] = useState(0)
-  const {
-    getTokenPrice,
-    bidToken,
-    getBidsByTokenId,
-    updateBidPrice,
-    getStepPrice,
-    getTokenBidPrice
-  } = useMarketServices()
   const luckyServicesMethod = useLuckyServices()
   const [isProcessing, setIsProccessing] = useState(false)
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
@@ -122,6 +114,36 @@ const DetaiArtWork = ({ id }: any) => {
   }
 
 
+  const refreshingBids = async()=>{
+    const bidsArr =await  marketServicesMethod?.getBidsByTokenId(NFTDetail?.tokenId)
+    const bidsData =
+          bidsArr?.map((item: any) => {
+          return {
+            key: item?.[1] || '',
+            address: item?.[0] || '',
+            price: Number(item?.[1]?._hex) / Number(1e18),
+          }
+        }) || []
+    const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
+    return {bidsData,maxPrice}
+  }
+
+  const refreshingAfterCancelBid = ()=>{
+    refreshingBids().then(({bidsData,maxPrice})=>{
+      notification('success',{message:'Success',description:'You cancel bid this NFT'})
+      if(maxPrice){
+        setPrice(maxPrice)
+      }
+      setIsProccessing(false)
+      setBidsData(bidsData)
+      setIsReadyBid(true)
+    })
+  }
+
+  const onSetProccessing = (value:boolean)=>{
+    setIsProccessing(value)
+  }
+
   const onBidItem = (e: any) => {
     if (!account) {
       return alert('Unblock your wallet to buy this item')
@@ -129,52 +151,35 @@ const DetaiArtWork = ({ id }: any) => {
     if(!marketServicesMethod) return
     const bidPrice = price + step * nextStepOffer
     setIsProccessing(true)
+    notification('warn',{message:'Your action is on processing', description:''})
     if (isReadyBid) {
       marketServicesMethod?.updateBidPrice(NFTDetail?.tokenId,bidPrice )
         .then(_.debounce(()=>{
-          marketServicesMethod?.getBidsByTokenId(NFTDetail?.tokenId).then((bidsArr) => {
-                notification('success',{message:'Success',description:'You bid NFT successful'})
-                const bidsData =
-                    bidsArr?.map((item: any) => {
-                    return {
-                      key: item?.[1] || '',
-                      address: item?.[0] || '',
-                      price: Number(item?.[1]?._hex) / Number(1e18),
-                    }
-                  }) || []
-                const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
-                if(maxPrice){
-                    setPrice(maxPrice)
-                }
-                setIsProccessing(false)
-                setBidsData(bidsData)
-              })
+          refreshingBids().then(({bidsData,maxPrice})=>{
+            notification('success',{message:'Success',description:'You bid NFT successful'})
+            if(maxPrice){
+              setPrice(maxPrice)
+            }
+            setIsProccessing(false)
+            setBidsData(bidsData)
+          })
         },30000))
         .catch((err) => {
           setIsProccessing(false)
           notification('error',{message:'Error',description:err.message})
         })
     } else {
-      bidToken(NFTDetail?.tokenId, bidPrice)
+      marketServicesMethod?.bidToken(NFTDetail?.tokenId, bidPrice)
         .then(_.debounce(()=>{
-          notification('success',{message:'Success',description:'You bid NFT successful'})
-          marketServicesMethod?.getBidsByTokenId(NFTDetail?.tokenId).then((bidsArr) => {
-                const bidsData =
-                    bidsArr?.map((item: any) => {
-                    return {
-                      key: item?.[1] || '',
-                      address: item?.[0] || '',
-                      price: Number(item?.[1]?._hex) / Number(1e18),
-                    }
-                  }) || []
-                const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
-                if(maxPrice){
-                    setPrice(maxPrice)
-                }
-                setIsProccessing(false)
-                setBidsData(bidsData)
-                setIsReadyBid(true)
-              })
+          refreshingBids().then(({bidsData,maxPrice})=>{
+            notification('success',{message:'Success',description:'You bid NFT successful'})
+            if(maxPrice){
+              setPrice(maxPrice)
+            }
+            setIsProccessing(false)
+            setBidsData(bidsData)
+            setIsReadyBid(true)
+          })
         },30000))
         .catch((err) => {
             setIsProccessing(false)
@@ -332,7 +337,7 @@ const DetaiArtWork = ({ id }: any) => {
               />
             </TabPane>
             <TabPane tab="Bidding" key="3">
-              <BiddingTable NFTInfo={NFTDetail} bids={bidsData} />
+              <BiddingTable NFTInfo={NFTDetail} bids={bidsData} refreshingAfterCancelBid={refreshingAfterCancelBid} onSetProccessing={onSetProccessing} />
             </TabPane>
             <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">
@@ -448,14 +453,28 @@ const DetaiArtWork = ({ id }: any) => {
   )
 }
 
-const BiddingTable = ({ NFTInfo, bids }: any) => {
+const BiddingTable = ({ NFTInfo, bids, refreshingAfterCancelBid, onSetProccessing }: any) => {
   const { account } = useActiveWeb3React()
   const [isProcessing,setIsProccessing] = useState(false)
   const { buyItem } = useArtworkServices()
+  const marketServicesMethod = useMarketServices()
   const history = useHistory();
-  const {
-    sellTokenToBidUser
-  } = useMarketServices()
+
+  const onCancelBidToken = (record:any) => ()=>{
+    setIsProccessing(true)
+    if(marketServicesMethod){
+      marketServicesMethod?.cancelBidToken(NFTInfo?.tokenId).then(
+        ()=>{
+          onSetProccessing(true)
+          _.debounce(()=>{
+            refreshingAfterCancelBid&&refreshingAfterCancelBid()
+          },30000)()
+        })
+      .catch(()=>{
+        setIsProccessing(false)
+      })
+    }
+  }
   const confirmSellToken =(record:any) =>()=>{
     if (!account) {
       return alert('Unblock your wallet to confirm this item')
@@ -464,7 +483,7 @@ const BiddingTable = ({ NFTInfo, bids }: any) => {
     setIsProccessing(true)
     const tokenId = NFTInfo?.tokenId
     if(tokenId&&record?.address){
-      sellTokenToBidUser(tokenId,record?.address).then((dt) => {
+      marketServicesMethod?.sellTokenToBidUser(tokenId,record?.address).then((dt) => {
         if (dt?.hash) {
           buyItem({
             id: NFTInfo?._id,
@@ -509,13 +528,17 @@ const BiddingTable = ({ NFTInfo, bids }: any) => {
           {
             title: 'Action',
             dataIndex: 'action',
-            render: (_: any, record: any) => (
+            render: (_: any, record: any) => {
+              if(isProcessing){
+                return   <ButtonProccesing/ >
+              }
+              return(
               <ButtonTrade
                 onClick={confirmSellToken(record)}
               >
-                {isProcessing?'Processing...':'Confirm'}
+                {'Confirm'}
               </ButtonTrade>
-            ),
+            )},
             width: 100,
           },
         ]
@@ -523,7 +546,7 @@ const BiddingTable = ({ NFTInfo, bids }: any) => {
           {
             title: 'Address',
             dataIndex: 'address',
-            width: 200,
+            width: 100,
             render: (address: String) => (
               <a className="value" href="/" target="_blank">
                 {address}
@@ -540,6 +563,25 @@ const BiddingTable = ({ NFTInfo, bids }: any) => {
                 <img src={Token} alt="" />
               </div>
             ),
+          },
+          {
+            title: 'Action',
+            dataIndex: 'action',
+            render: (_: any, record: any) => {
+              if(record?.key==account){
+                return(
+                  <>
+                  { isProcessing?
+                  <ButtonProccesing/ >:
+                  <ButtonTrade style={{background:'#FC636B'}} onClick={onCancelBidToken(record)}>
+                      Cancel
+                  </ButtonTrade>}
+                  </>
+                )
+              }
+              return null 
+          },
+            width: 100,
           },
         ]
   return (
