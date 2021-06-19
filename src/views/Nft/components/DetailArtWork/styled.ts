@@ -242,7 +242,7 @@ export const DetailStyled = styled.div`
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
-    background: linear-gradient(270deg,#19A3DD -16.5%,#BADEB7 117.25%);
+    background: #35A5FC;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 16px;
