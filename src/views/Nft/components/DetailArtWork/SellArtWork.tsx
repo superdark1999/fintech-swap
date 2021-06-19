@@ -198,10 +198,15 @@ const DetaiArtWork = ({ id }: any) => {
             </div>
           </div>
         </HeaderStyled>
-        <ImageStyled bgImage={NFTDetail?.contentUrl}>
-          <div className="bg-image"></div>
-          <img src={NFTDetail?.contentUrl} />
-        </ImageStyled>
+        {
+          NFTDetail?.type === 'video' ?
+            <video style={{}} width="100%" height="100%" autoPlay><source src={NFTDetail?.contentUrl} type="video/mp4" /></video>
+            : <ImageStyled bgImage={NFTDetail?.contentUrl}>
+              <div className="bg-image"></div>
+              {/* <img src={NFTDetail?.contentUrl} /> */}
+              <img className="avatar" src={NFTDetail?.contentUrl} alt="" loading="lazy" />
+            </ImageStyled>
+        }
       </Col>
       <Col
         className="gutter-row"

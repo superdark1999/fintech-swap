@@ -41,7 +41,7 @@ export const SidebarStyled = styled.div<PropsStyled>`
       }
     }
     &.on-sale{
-      background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+      background:#35A5FC;
       font-weight: 600;
       font-size: 20px;
       line-height: 32px;
@@ -49,10 +49,6 @@ export const SidebarStyled = styled.div<PropsStyled>`
       -webkit-text-fill-color: transparent;
       position: relative;
       cursor: pointer;
-      ::before {
-        padding: 2px; 
-        background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
-      }
     }
   }
   .group-menu {

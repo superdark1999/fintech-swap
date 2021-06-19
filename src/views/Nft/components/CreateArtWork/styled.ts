@@ -52,12 +52,7 @@ export const RadioButton= styled(Radio.Button)`
     border-radius:16px; 
     padding: 2px; 
     box-sizing: border-box;
-    background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
-    -webkit-mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: destination-out; 
-    mask-composite: exclude; 
+    border:2px solid #35A5FC;
   }
 &.ant-radio-button-wrapper-checked{
   span, > span > svg {
@@ -70,9 +65,7 @@ export const RadioButton= styled(Radio.Button)`
     width: -moz-fit-content;
     width: fit-content;
     font-weight: 500;
-    background: linear-gradient(
-    270deg
-    ,#19A3DD -16.5%,#BADEB7 117.25%);
+    background-color: #35A5FC;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: unset;
@@ -97,34 +90,10 @@ export const RadioButton= styled(Radio.Button)`
   position: relative;
   cursor: pointer;
   width: 172px;
-  /* height: 100px; */
-  :hover::before {
-    width: 172px;
-    /* height: 100px; */
-    content:"";
-    position:absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    border-radius:16px; 
-    padding: 2px; 
-    box-sizing: border-box;
-    background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
-    -webkit-mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: destination-out; 
-    mask-composite: exclude; 
-  }
-  
-
   :hover {
-    background: linear-gradient(
-      270deg
-      ,#19A3DD -16.5%,#BADEB7 117.25%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color:transparent;
+    border:1px solid #35A5FC;
+    background:#fff;
+    color:#35A5FC;
   }
 }
 `
