@@ -16,16 +16,17 @@ import TabSetting from './TabSetting'
 import TableHistory from './Table'
 
 import { HeartOutlined } from '@ant-design/icons';
-import {useParams,useHistory} from "react-router-dom";
+import {useParams,useHistory, useRouteMatch} from "react-router-dom";
 const { TabPane } = Tabs;
 
 
 export default () => {
-  const [userState, userActions] = useUserStore()
+  const [userState] = useUserStore()
   const history = useHistory();
-  const { tab, option } = useParams();
+  const match = useRouteMatch()
+
   const onChangeTab = (e)=>{
-    if(e==='onsale'){
+    if(e==='onsale'){   
       history.push(`/my-profile/onsale/all`)
     }else if(e === 'mycollection'){
       history.push(`/my-profile/mycollection/all`)
@@ -35,7 +36,7 @@ export default () => {
     }
     else if(e === 'history'){
       history.push(`/my-profile/history/#`)
-    }
+    } 
   }
   return (
     <UserProfileStyled urlCover={userState?.coverImage}>
@@ -68,7 +69,7 @@ export default () => {
             <p className="description">
                 {userState?.biography}
             </p>  
-          <Tabs defaultActiveKey={tab} onChange={onChangeTab}>
+          <Tabs activeKey={match.params.tab}   onChange={onChangeTab}>
             <TabPane tab="On sale" key="onsale"> 
               <TabOnSale />    
             </TabPane>
