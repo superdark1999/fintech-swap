@@ -14,6 +14,7 @@ import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
 import TabSetting from './TabSetting'
 import TableHistory from './Table'
+import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 
 import { HeartOutlined, CheckOutlined } from '@ant-design/icons'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'

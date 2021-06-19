@@ -21,7 +21,7 @@ import { Menu, Dropdown } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { chain } from 'lodash'
-import { getPrice, SUPPORT_CHAIN_IDS } from 'utils'
+import {getPrice, SUPPORT_CHAIN_IDS} from 'utils'
 import { Modal, Input, Form } from 'antd'
 import useAuth from 'hooks/useAuth'
 interface TopBarProps {
@@ -37,7 +37,7 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
   const [showMenuMobile, setShowMenuMobile] = useState(false)
   const { logout } = useAuth()
-  const { account, chainId } = useActiveWeb3React()
+  const { account,chainId } = useActiveWeb3React()
   const luckyMethod = useLuckyServices()
   const { login } = useUserServices()
   const [userState, userActions] = useUserStore()
@@ -52,11 +52,11 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
     }
   }
 
-  useEffect(() => {
-    if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)) {
+  useEffect(()=>{
+    if(chainId && !SUPPORT_CHAIN_IDS.includes(chainId)){
       setIsShowAlert(true)
     }
-  }, [chainId])
+  },[chainId])
 
   // useEffect(() => {
   //   window.addEventListener('scroll', handleScroll, { passive: true })
@@ -79,15 +79,15 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
         if (status === 200) {
           userActions.updateUserInfo(artistData)
         }
-        if (luckyMethod) {
+        if(luckyMethod){
           luckyMethod.checkApproveLevelAmount(MARKET_ADDRESS)
-            .then((dt: any) => {
-              const allowance = Number(dt?._hex || 0) > 0
-              userActions.updateUserInfo({ isCanBuy: allowance })
-            })
-            .catch(() => {
-              userActions.updateUserInfo({ isCanBuy: false })
-            })
+          .then((dt: any) => {
+            const allowance = Number(dt?._hex || 0) > 0
+            userActions.updateUserInfo({ isCanBuy: allowance })
+          })
+          .catch(() => {
+            userActions.updateUserInfo({ isCanBuy: false })
+          })
         }
       })
     }
@@ -96,12 +96,6 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   const onChangeAnimation = (checked: any, e: any) => {
     configAction.updateConfig({ isUsingAnimation: checked })
   }
-  const menu = (
-    <Menu>
-      {/* <Menu.Divider /> */}
-      <Menu.Item key="3">3rd menu item</Menu.Item>
-    </Menu>
-  );
   return (
     <StyledTopBar className={classtSicky}>
       {isMobile ? (
@@ -122,200 +116,154 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
         </a>
       )}
 
-      <div className="nav-bar-wrapper">
-        <Input placeholder="Search items, collections, and accounts" prefix={<SearchOutlined />} className="search-nav"></Input>
-        <Link to="/" className="home-nav">Home</Link>
-        {account ? (
-          <>
-            <Link to={"/create/artwork"} className="create-nav">Create</Link>
-            <Link to={"/swap"} className="create-nav">Swap</Link>
-          </>
-        ) : (
-          <>
-            <a onClick={() => { alert("Unblock your wallet before create NFT") }} className="create-nav" >Create</a>
-            <a onClick={() => { alert("Unblock your wallet before swap NFT") }} className="create-nav" >Swap</a>
-          </>
-        )}
-        {/* <Switch
+          <div className="nav-bar-wrapper">
+            <Input placeholder="Search items, collections, and accounts" prefix={<SearchOutlined/>} className="search-nav"></Input>
+            <Link to="/" className="home-nav">Home</Link>
+            {!!account?(
+              <>
+                <Link to={"/create/artwork"} className="create-nav">Create</Link>
+                <Link to={"/swap"} className="create-nav">Swap</Link>
+              </>
+            ):(
+              <a onClick={()=>{alert("Unblock your wallet before create NFT")}} className="create-nav" >Create</a>
+            )}
+            {/* <Switch
               checkedChildren="Animation"
               unCheckedChildren="Animation"
               onChange={onChangeAnimation}
             /> */}
-        {!isMobile &&
-          <>
-            <div className="connect-wallet">
-              <Web3Status />
-            </div>
-          </>
-        }
-        {!!account ? (
-          <UserBalance />
-        ) : null}
-        {account ? (
-          <div className="view-more">
-            <ButtonBuy padding="10px" borderRadius="100px" height="40px" width="40px" >
-              <img src={ViewMore} />
-            </ButtonBuy>
-            <div className="menu">
-              {isMobile &&
-                <>
-                  <div className="menu-item">
-                    <div className="connect-wallet">
-                      <Web3Status />
-                    </div>
-                  </div>
-                  <div className="menu-item"><Link to={"/create/artwork"}><ButtonBuy>Create</ButtonBuy></Link></div>
-                  <div className="menu-item"><Link to={"/swap"}><ButtonBuy>Swap</ButtonBuy></Link></div>
-                </>
-              }
-              <Link to="/my-profile/onsale/readyToSell">
-                <div className="menu-item">
-                  My profile
-                </div>
-              </Link>
-              <Link to="/my-profile/mycollection/all">
-                <div className="menu-item">
-                  My collection
-                </div>
-              </Link>
-              <Link to="/my-profile/settings">
-                <div className="menu-item">
-                  Settings
-                </div>
-              </Link>
-              {/* <Link to="/my-profile/login"> */}
-              <div className="menu-item" onClick={() => {
-                logout()
-                window.localStorage.removeItem('connectorId')
-              }}>
-                Log out
-              </div>
-              {/* </Link> */}
-            </div>
-          </div>
-        )
-          :
-          <div className="view-more">
-            <ButtonBuy padding="10px" borderRadius="100px" height="40px" width="40px" >
-              <img src={ViewMore} />
-            </ButtonBuy>
-            <div className="menu">
-              {isMobile &&
-                <>
-                  <div className="menu-item">
-                    <div className="connect-wallet">
-                      <Web3Status />
-                    </div>
-                  </div>
-                  <div className="menu-item"><Link to={"/create/artwork"}><ButtonBuy>Create</ButtonBuy></Link></div>
-                  <div className="menu-item"><Link to={"/swap"}><ButtonBuy>Swap</ButtonBuy></Link></div>
-                </>
-              }
-              <Link to="/my-profile/onsale/readyToSell">
-                <div className="menu-item">
-                  My profile
-                </div>
-              </Link>
-              <Link to="/my-profile/mycollection/all">
-                <div className="menu-item">
-                  My collection
-                </div>
-              </Link>
-              <Link to="/my-profile/settings">
-                <div className="menu-item">
-                  Settings
-                </div>
-              </Link>
-              {/* <Link to="/my-profile/login"> */}
-              <div className="menu-item" onClick={() => {
-                logout()
-                window.localStorage.removeItem('connectorId')
-              }}>
-                Log out
-              </div>
-              {/* </Link> */}
-            </div>
-          </div>
-        )
-        :
-        <div className="view-more">
-          <ButtonBuy padding="10px" borderRadius="100px" height="40px" width="40px" >
-            <img src={ViewMore} />
-          </ButtonBuy>
-          <div className="menu">
-            {isMobile &&
+            {!isMobile && 
               <>
-                <div className="menu-item">
-                  <div className="connect-wallet">
-                    <Web3Status />
-                  </div>
-                </div>
-                <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Create</ButtonBuy></a></div>
-                <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Swap</ButtonBuy></a></div>
+              <div className="connect-wallet">
+                <Web3Status />
+              </div>
               </>
             }
+             {!!account?(
+                <UserBalance/>
+             ):null}
+            {account ? (
+              <div  className="view-more">
+                <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" >
+                  <img src={ViewMore} />
+                </ButtonBuy>
+                <div className="menu">
+                    { isMobile &&
+                      <>
+                        <div className="menu-item">
+                          <div className="connect-wallet">
+                            <Web3Status />
+                          </div>
+                        </div>
+                        <div className="menu-item"><Link to={"/create/artwork"}><ButtonBuy>Create</ButtonBuy></Link></div>
+                        <div className="menu-item"><Link to={"/swap"}><ButtonBuy>Swap</ButtonBuy></Link></div>
+                      </>
+                      }
+                    <Link to="/my-profile/onsale/readyToSell">
+                      <div className="menu-item">
+                        My profile
+                      </div>
+                    </Link>
+                    <Link to="/my-profile/mycollection/all">
+                      <div className="menu-item">
+                        My collection
+                      </div>
+                    </Link>
+                    <Link to="/my-profile/settings">
+                      <div className="menu-item">
+                        Settings
+                      </div>
+                    </Link>
+                    {/* <Link to="/my-profile/login"> */}
+                      <div className="menu-item" onClick={()=>{
+                        logout()
+                        window.localStorage.removeItem('connectorId')
+                      }}>
+                        Log out
+                      </div>
+                    {/* </Link> */}
+                  </div>
+               </div>
+            )
+          :
+          <div className="view-more">
+            <ButtonBuy padding="10px"  borderRadius="100px" height="40px" width="40px" >
+              <img src={ViewMore} />
+            </ButtonBuy>
+            <div className="menu">
+                { isMobile &&
+                  <>
+                    <div className="menu-item">
+                      <div className="connect-wallet">
+                        <Web3Status />
+                      </div>
+                    </div>
+                    <div className="menu-item"><a onClick={()=>{alert("Unblock your wallet before create NFT")}} ><ButtonBuy>Create</ButtonBuy></a></div>
+                    <div className="menu-item"><a onClick={()=>{alert("Unblock your wallet before create NFT")}} ><ButtonBuy>Swap</ButtonBuy></a></div>
+                  </>
+                }
+                </div>
+            </div> 
+          }
           </div>
-        </div>
-        }
-      </div>
-      <Modal
-        title="Alert"
-        visible={isShowAlert}
-        footer={null}
-        width={400}
-      >
-        <Form onFinish={() => { window.location.reload() }}>
-          <Form.Item name="pricePlaceBid">
-            <label>
-              Please switch our support chainId
-            </label>
-          </Form.Item>
-          <Form.Item>
-            <div
-              style={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <ButtonTrade type="submit">Reload</ButtonTrade>
-            </div>
-          </Form.Item>
-        </Form>
-      </Modal>
+          <Modal
+                title="Alert"
+                visible={isShowAlert}
+                footer={null}
+                width={400}
+              >
+                <Form onFinish={() => {window.location.reload()}}>
+                  <Form.Item name="pricePlaceBid">
+                    <label>
+                     Please switch our support chainId 
+                    </label>
+                  </Form.Item>
+                  <Form.Item>
+                    <div
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <ButtonTrade type="submit">Reload</ButtonTrade>
+                    </div>
+                  </Form.Item>
+                </Form>
+              </Modal>
     </StyledTopBar>
   )
 }
 
-const UserBalance = () => {
-  const { account, chainId } = useActiveWeb3React()
+const UserBalance = ()=>{
+  const { account,chainId } = useActiveWeb3React()
   const [userState, userActions] = useUserStore()
-  const { getBNBBalance } = BSCScanServices()
+  const {getBNBBalance} = BSCScanServices()
   const luckyMethod = useLuckyServices()
-  useEffect(() => {
-    if (luckyMethod && account) {
-      getBNBBalance(account).then(({ data, status }) => {
-        if (status == 200) {
-          userActions.updateUserBalance({ BNB: getPrice(data?.result || 0)?.toFixed(3) })
+  useEffect(()=>{
+    if(luckyMethod&&account){
+      getBNBBalance(account).then(({data,status})=>{
+        if(status==200){
+          userActions.updateUserBalance({BNB:getPrice(data?.result||0)?.toFixed(3)})
         }
       })
-      luckyMethod?.getLuckyBalance().then((data: any) => {
-        userActions.updateUserBalance({ LUCKY: getPrice(data?._hex || 0) })
+      luckyMethod?.getLuckyBalance().then((data:any)=>{
+        userActions.updateUserBalance({LUCKY:getPrice(data?._hex||0)})
       })
     }
-  }, [])
+  },[])
   const menu = (
     <Menu>
       {/* <Menu.Divider /> */}
-      <Menu.Item key="3">{userState?.balance?.LUCKY || 0} LUCKY</Menu.Item>
+      <Menu.Item key="3">{userState?.balance?.LUCKY||0} LUCKY</Menu.Item>
     </Menu>
   );
-  return (
+  return(
     <Dropdown className="create-nav-balance" overlay={menu} trigger={['click']}>
-      <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-        <span className="number-balance">{userState?.balance?.BNB || 0}</span>
-        <span className="label-balance">BNB</span>
-      </a>
+              <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                <span className="number-balance">{userState?.balance?.BNB||0}</span>
+                <span className="label-balance">BNB</span>
+              </a>
     </Dropdown>
   )
 }
