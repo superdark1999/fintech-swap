@@ -284,11 +284,13 @@ const DetaiArtWork = ({ id }: any) => {
 
           <p className="description">{NFTDetail?.description || ''}</p>
 
-          <p className="organize">
-            <img src={Luckyswap} />
-            <span className="name">LuckySwapStudio</span>
-            <img src={Checkmark} />
-          </p>
+          <Link to={userState.walletAddress === NFTDetail.ownerWalletAddress ? `/my-profile/onsale/readyToSell` : `/user-profile/${NFTDetail.ownerWalletAddress}/onsale/readyToSell`}>
+            <p className="organize">
+              <img src={Luckyswap} />
+              <span className="name">LuckySwapStudio</span>
+              <img src={Checkmark} />
+            </p>
+          </Link>
 
           <Tabs defaultActiveKey="1">
             <TabPane tab="Detail" key="1">
