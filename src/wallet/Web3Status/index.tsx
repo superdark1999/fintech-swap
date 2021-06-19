@@ -71,8 +71,9 @@ const ButtonWallets = styled.button`
     right:0;
     bottom:0;
     border-radius:30px; 
-    padding:3px; 
-    background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%); 
+    padding:2px; 
+    background:#35A5FC;
+  border-radius: 100px; 
     -webkit-mask: 
       linear-gradient(#fff 0 0) content-box, 
       linear-gradient(#fff 0 0);
@@ -80,7 +81,7 @@ const ButtonWallets = styled.button`
     mask-composite: exclude; 
   }`
 const Web3StatusConnected = styled(Web3StatusGeneric)`
-  background-color:white;
+  background-color:#fff;
   font-weight: 500;
   align-items: center;
   justify-content: center;
@@ -95,7 +96,8 @@ const Web3StatusConnected = styled(Web3StatusGeneric)`
     bottom:0;
     border-radius:30px; 
     padding:2px; 
-    background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%); 
+    background:#35A5FC;
+    border-radius: 100px;
     -webkit-mask: 
       linear-gradient(#fff 0 0) content-box, 
       linear-gradient(#fff 0 0);
@@ -114,7 +116,8 @@ const Text = styled.p`
   font-size: 1rem;
   width: fit-content;
   font-weight: 500;
-  background: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+  background: #35A5FC;
+  border-radius: 100px;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `
@@ -131,7 +134,7 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 
 // eslint-disable-next-line react/prop-types
 function StatusIcon({ connector }: { connector: AbstractConnector }) {
-  const path =`https://luckyswap.finance/images/wallet`;
+  const path = `https://luckyswap.finance/images/wallet`;
   if (connector === injected) {
     return <Identicon />
   } else if (connector === walletconnect) {
@@ -143,19 +146,19 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
   } else if (connector === walletlink) {
     return (
       <IconWrapper size={25}>
-        <img width="25px" src={`${path}/walletConnectIcon.svg`}  alt={''} />
+        <img width="25px" src={`${path}/walletConnectIcon.svg`} alt={''} />
       </IconWrapper>
     )
   } else if (connector === portis) {
     return (
       <IconWrapper size={25}>
-        <img width="25px" src={`${path}/portisIcon.png`}  alt={''} />
+        <img width="25px" src={`${path}/portisIcon.png`} alt={''} />
       </IconWrapper>
     )
   } else if (connector === binanceconnect) {
     return (
       <IconWrapper size={25}>
-        <img width="25px" src={`${path}/binance.png`}  alt={''} />
+        <img width="25px" src={`${path}/binance.png`} alt={''} />
       </IconWrapper>
     )
   }
@@ -188,18 +191,18 @@ function Web3StatusInner() {
         onClick={toggleWalletModal}
       >
         <>
-        {hasPendingTransactions ? (
-          <React.Fragment>
-            <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
-          </React.Fragment>
-        ) : (
-          <>
-            <Text>{ENSName || shortenAddress(account)}</Text>
-          </>
-        )}
-        {!hasPendingTransactions && connector && (
-          <StatusIcon connector={connector} />
-        )}
+          {hasPendingTransactions ? (
+            <React.Fragment>
+              <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
+            </React.Fragment>
+          ) : (
+            <>
+              <Text>{ENSName || shortenAddress(account)}</Text>
+            </>
+          )}
+          {!hasPendingTransactions && connector && (
+            <StatusIcon connector={connector} />
+          )}
         </>
       </Web3StatusConnected>
     )
@@ -215,7 +218,7 @@ function Web3StatusInner() {
   } else {
     return (
       <ButtonWallets id="connect-wallet" onClick={toggleWalletModal}>
-        <Text>{t('Unblock Wallet')}</Text>
+        <Text>{t('Connect wallet')}</Text>
       </ButtonWallets>
     )
   }

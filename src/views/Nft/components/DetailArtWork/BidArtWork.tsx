@@ -51,7 +51,7 @@ const DetaiArtWork = ({ id }: any) => {
   const [bidsData, setBidsData] = useState([])
   const [userState, userActions] = useUserStore()
   const marketServicesMethod = useMarketServices()
-  const [step,setStep] = useState(0)
+  const [step, setStep] = useState(0)
   const luckyServicesMethod = useLuckyServices()
   const [isProcessing, setIsProccessing] = useState(false)
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
@@ -117,24 +117,24 @@ const DetaiArtWork = ({ id }: any) => {
   }
 
 
-  const refreshingBids = async()=>{
-    const bidsArr =await  marketServicesMethod?.getBidsByTokenId(NFTDetail?.tokenId)
+  const refreshingBids = async () => {
+    const bidsArr = await marketServicesMethod?.getBidsByTokenId(NFTDetail?.tokenId)
     const bidsData =
-          bidsArr?.map((item: any) => {
-          return {
-            key: item?.[1] || '',
-            address: item?.[0] || '',
-            price: Number(item?.[1]?._hex) / Number(1e18),
-          }
-        }) || []
-    const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
-    return {bidsData,maxPrice}
+      bidsArr?.map((item: any) => {
+        return {
+          key: item?.[1] || '',
+          address: item?.[0] || '',
+          price: Number(item?.[1]?._hex) / Number(1e18),
+        }
+      }) || []
+    const maxPrice = _.maxBy(bidsData, (item: any) => item?.price)?.price || 0
+    return { bidsData, maxPrice }
   }
 
-  const refreshingAfterCancelBid = ()=>{
-    refreshingBids().then(({bidsData,maxPrice})=>{
-      notification('success',{message:'Success',description:'You cancel bid this NFT'})
-      if(maxPrice){
+  const refreshingAfterCancelBid = () => {
+    refreshingBids().then(({ bidsData, maxPrice }) => {
+      notification('success', { message: 'Success', description: 'You cancel bid this NFT' })
+      if (maxPrice) {
         setPrice(maxPrice)
       }
       setIsProccessing(false)
@@ -143,7 +143,7 @@ const DetaiArtWork = ({ id }: any) => {
     })
   }
 
-  const onSetProccessing = (value:boolean)=>{
+  const onSetProccessing = (value: boolean) => {
     setIsProccessing(value)
   }
 
@@ -154,36 +154,36 @@ const DetaiArtWork = ({ id }: any) => {
     if (!marketServicesMethod) return
     const bidPrice = price + step * nextStepOffer
     setIsProccessing(true)
-    notification('warn',{message:'Your action is on processing', description:''})
+    notification('warn', { message: 'Your action is on processing', description: '' })
     if (isReadyBid) {
-      marketServicesMethod?.updateBidPrice(NFTDetail?.tokenId,bidPrice )
-        .then(_.debounce(()=>{
-          refreshingBids().then(({bidsData,maxPrice})=>{
-            notification('success',{message:'Success',description:'You bid NFT successful'})
-            if(maxPrice){
+      marketServicesMethod?.updateBidPrice(NFTDetail?.tokenId, bidPrice)
+        .then(_.debounce(() => {
+          refreshingBids().then(({ bidsData, maxPrice }) => {
+            notification('success', { message: 'Success', description: 'You bid NFT successful' })
+            if (maxPrice) {
               setPrice(maxPrice)
             }
             setIsProccessing(false)
             setBidsData(bidsData)
           })
-        },30000))
+        }, 30000))
         .catch((err) => {
           setIsProccessing(false)
           notification('error', { message: 'Error', description: err.message })
         })
     } else {
       marketServicesMethod?.bidToken(NFTDetail?.tokenId, bidPrice)
-        .then(_.debounce(()=>{
-          refreshingBids().then(({bidsData,maxPrice})=>{
-            notification('success',{message:'Success',description:'You bid NFT successful'})
-            if(maxPrice){
+        .then(_.debounce(() => {
+          refreshingBids().then(({ bidsData, maxPrice }) => {
+            notification('success', { message: 'Success', description: 'You bid NFT successful' })
+            if (maxPrice) {
               setPrice(maxPrice)
             }
             setIsProccessing(false)
             setBidsData(bidsData)
             setIsReadyBid(true)
           })
-        },30000))
+        }, 30000))
         .catch((err) => {
           setIsProccessing(false)
           notification('error', { message: 'Error', description: err.message })
@@ -255,10 +255,13 @@ const DetaiArtWork = ({ id }: any) => {
             </div>
           </div>
         </HeaderStyled>
-        <ImageStyled bgImage={NFTDetail?.contentUrl}>
-          <div className="bg-image"></div>
-          <img src={NFTDetail?.contentUrl} />
-        </ImageStyled>
+        {NFTDetail?.type === 'video' ?
+          <video style={{ height: 'calc(100vh - 300px)' }} width="100%" height="100%" autoPlay><source src={NFTDetail?.contentUrl} type="video/mp4" /></video>
+          : <ImageStyled bgImage={NFTDetail?.contentUrl}>
+            <div className="bg-image"></div>
+            {/* <img src={NFTDetail?.contentUrl} /> */}
+            <img className="avatar" src={NFTDetail?.contentUrl} alt="" loading="lazy" />
+          </ImageStyled>}
       </Col>
       <Col
         className="gutter-row"
@@ -467,30 +470,30 @@ const BiddingTable = ({ NFTInfo, bids, refreshingAfterCancelBid, onSetProccessin
   const marketServicesMethod = useMarketServices()
   const history = useHistory();
 
-  const onCancelBidToken = (record:any) => ()=>{
+  const onCancelBidToken = (record: any) => () => {
     setIsProccessing(true)
-    if(marketServicesMethod){
+    if (marketServicesMethod) {
       marketServicesMethod?.cancelBidToken(NFTInfo?.tokenId).then(
-        ()=>{
+        () => {
           onSetProccessing(true)
-          _.debounce(()=>{
-            refreshingAfterCancelBid&&refreshingAfterCancelBid()
-          },30000)()
+          _.debounce(() => {
+            refreshingAfterCancelBid && refreshingAfterCancelBid()
+          }, 30000)()
         })
-      .catch(()=>{
-        setIsProccessing(false)
-      })
+        .catch(() => {
+          setIsProccessing(false)
+        })
     }
   }
-  const confirmSellToken =(record:any) =>()=>{
+  const confirmSellToken = (record: any) => () => {
     if (!account) {
       return alert('Unblock your wallet to confirm this item')
     }
     if (isProcessing) return
     setIsProccessing(true)
     const tokenId = NFTInfo?.tokenId
-    if(tokenId&&record?.address){
-      marketServicesMethod?.sellTokenToBidUser(tokenId,record?.address).then((dt) => {
+    if (tokenId && record?.address) {
+      marketServicesMethod?.sellTokenToBidUser(tokenId, record?.address).then((dt) => {
         if (dt?.hash) {
           buyItem({
             id: NFTInfo?._id,
@@ -511,86 +514,87 @@ const BiddingTable = ({ NFTInfo, bids, refreshingAfterCancelBid, onSetProccessin
   const columnBidding =
     NFTInfo?.ownerWalletAddress === account
       ? [
-          {
-            title: 'Address',
-            dataIndex: 'address',
-            width: 100,
-            render: (address: String) => (
-              <a className="value" href="/" target="_blank">
-                {address}
-              </a>
-            ),
-          },
-          {
-            title: 'Price',
-            dataIndex: 'price',
-            width: 100,
-            render: (price: Number) => (
-              <div className="token">
-                {price} LUCKY
-                <img src={Token} alt="" />
-              </div>
-            ),
-          },
-          {
-            title: 'Action',
-            dataIndex: 'action',
-            render: (_: any, record: any) => {
-              if(isProcessing){
-                return   <ButtonProccesing/ >
-              }
-              return(
+        {
+          title: 'Address',
+          dataIndex: 'address',
+          width: 100,
+          render: (address: String) => (
+            <a className="value" href="/" target="_blank">
+              {address}
+            </a>
+          ),
+        },
+        {
+          title: 'Price',
+          dataIndex: 'price',
+          width: 100,
+          render: (price: Number) => (
+            <div className="token">
+              {price} LUCKY
+              <img src={Token} alt="" />
+            </div>
+          ),
+        },
+        {
+          title: 'Action',
+          dataIndex: 'action',
+          render: (_: any, record: any) => {
+            if (isProcessing) {
+              return <ButtonProccesing />
+            }
+            return (
               <ButtonTrade
                 onClick={confirmSellToken(record)}
               >
                 {'Confirm'}
               </ButtonTrade>
-            )},
-            width: 100,
+            )
           },
-        ]
+          width: 100,
+        },
+      ]
       : [
-          {
-            title: 'Address',
-            dataIndex: 'address',
-            width: 100,
-            render: (address: String) => (
-              <a className="value" href="/" target="_blank">
-                {address}
-              </a>
-            ),
-          },
-          {
-            title: 'Price',
-            dataIndex: 'price',
-            width: 100,
-            render: (price: Number) => (
-              <div className="token">
-                {price} LUCKY
-                <img src={Token} alt="" />
-              </div>
-            ),
-          },
-          {
-            title: 'Action',
-            dataIndex: 'action',
-            render: (_: any, record: any) => {
-              if(record?.key==account){
-                return(
-                  <>
-                  { isProcessing?
-                  <ButtonProccesing/ >:
-                  <ButtonTrade style={{background:'#FC636B'}} onClick={onCancelBidToken(record)}>
+        {
+          title: 'Address',
+          dataIndex: 'address',
+          width: 100,
+          render: (address: String) => (
+            <a className="value" href="/" target="_blank">
+              {address}
+            </a>
+          ),
+        },
+        {
+          title: 'Price',
+          dataIndex: 'price',
+          width: 100,
+          render: (price: Number) => (
+            <div className="token">
+              {price} LUCKY
+              <img src={Token} alt="" />
+            </div>
+          ),
+        },
+        {
+          title: 'Action',
+          dataIndex: 'action',
+          render: (_: any, record: any) => {
+            if (record?.key == account) {
+              return (
+                <>
+                  {isProcessing ?
+                    <ButtonProccesing /> :
+                    <ButtonTrade style={{ background: '#FC636B' }} onClick={onCancelBidToken(record)}>
                       Cancel
-                  </ButtonTrade>}
-                  </>
-                )
-              }
-              return null 
+                    </ButtonTrade>}
+                </>
+              )
+            }
+            return null
           },
-            width: 100,
-          },
-        ]
+          width: 100,
+        },
+      ]
   return (
     <Table
       columns={columnBidding}

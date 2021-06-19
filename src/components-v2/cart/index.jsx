@@ -11,17 +11,19 @@ import { Link } from 'react-router-dom'
 import { Rate } from 'antd'
 import { SwapOutlined } from '@ant-design/icons'
 import useNFTServices, { MARKET_ADDRESS } from 'services/NFTServices'
-import useMarketServices,{MARKET_ADDRESS} from 'services/web3Services/MarketServices'
+import useMarketServices, {
+  MARKET_ADDRESS,
+} from 'services/web3Services/MarketServices'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
-import {getPrice}  from 'utils'
+import { getPrice } from 'utils'
 import _ from 'lodash'
 import ReactFreezeframe from 'react-freezeframe'
-import Countdown from "react-countdown";
+import Countdown from 'react-countdown'
 export default function Cart({ data }) {
   const [loading, setLoading] = useState(true)
   const [price, setPrice] = useState(0)
-  const {getTokenPrice} = useMarketServices()
+  const { getTokenPrice } = useMarketServices()
   const [dayExp, setDayExp] = useState(false)
   useEffect(() => {
     if (data?.tokenId) {
@@ -44,10 +46,18 @@ export default function Cart({ data }) {
     <StyledCart>
       <Link to={`/artwork/detail/${data?.id}`} className="create-nav">
         <div className="card-art-work">
-            {!dayExp&&data.NFTType === 'auction'&&<div className="header-card-art-work">
-              <div className="date-time"><Countdown onComplete={()=>setDayExp(true)} date={Date.now() + Math.floor(Math.random()*10000000)}/> 🔥 </div>
-            </div>}
-            <img src={Copy} alt="" />
+          {!dayExp && data.NFTType === 'auction' && (
+            <div className="header-card-art-work">
+              <div className="date-time">
+                <Countdown
+                  onComplete={() => setDayExp(true)}
+                  date={Date.now() + Math.floor(Math.random() * 10000000)}
+                />{' '}
+                🔥{' '}
+              </div>
+            </div>
+          )}
+          <img src={Copy} alt="" />
           <div className="wrapper-image">
             <ReactFreezeframe className="avatar" src={data.contentUrl} />
             <img className="avatar" alt="" />
