@@ -97,10 +97,7 @@ const UserProfile = () => {
           <p className="description">{user?.biography}</p>
           <Tabs defaultActiveKey={match.params?.tab} onChange={onChangeTab}>
             <TabPane tab="On sale" key="onsale">
-              <TabOnSale />
-            </TabPane>
-            <TabPane tab="Collection" key="collection">
-              <TabMyCollection />
+              <TabOnSale userAddress={match.params?.id} />
             </TabPane>
           </Tabs>
         </Col>
@@ -110,22 +107,20 @@ const UserProfile = () => {
 }
 export default UserProfile
 
-const TabOnSale = () => {
-  const [loading, setLoading] = useState(true)
+const TabOnSale = ({userAddress}) => {
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
-  const { account } = useActiveWeb3React()
   useEffect(() => {
     const query = {
       status: 'readyToSell',
-      ownerWalletAddress: account,
+      ownerWalletAddress: userAddress,
     }
     getNFT(query).then(({ status, data }) => {
       if (status == 200) {
         setNFTs(data?.data || [])
       }
     })
-  }, [])
+  }, [userAddress])
   return (
     <>
       {/* <Row align="middle" justify="space-between">     
@@ -149,7 +144,6 @@ const TabOnSale = () => {
 
 const TabMyCollection = () => {
   const { option } = useParams()
-  console.log(option)
   const [optionChecked, setOptionChecked] = useState(option)
   const [renderData, setRenderData] = useState([])
   const { getNFT } = useArtworkServices()
@@ -168,7 +162,6 @@ const TabMyCollection = () => {
   // },[])
 
   useEffect(() => {
-    console.log(optionChecked)
     if (optionChecked) {
       const query = {
         ownerWalletAddress: account,

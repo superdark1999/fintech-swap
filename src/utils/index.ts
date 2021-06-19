@@ -56,5 +56,12 @@ export const getCompactString=(str:string, sepLen:number)=>{
   return `${str.slice(0,sepLen)} ... ${str.slice(strLen-sepLen-1,strLen-1)}`
 }
 
+export const embedTokenIdLinkBSCScan = (tokenId:number,contractAddress:string,chainId:ChainId)=>{
+  let url = ''
+  if(chainId==97){
+    url = 'https://testnet.bscscan.com/token/'
+  }
+  return `${url + contractAddress +'?a='+tokenId}`
+}
 
 export const SUPPORT_CHAIN_IDS:Array<ChainId> = [97]
