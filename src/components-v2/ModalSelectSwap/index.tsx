@@ -13,31 +13,44 @@ interface Props {
   data: any,
   multiSelect?: boolean,
   getItemSelected?: (data: any) => void
+  selectedItem?: any
 }
 export default function ModalSelectSwap(props: Props) {
 
-  const { multiSelect, getItemSelected, visible, data, setVisible} = props
-  const [selected, setSelected] = useState<any>([])
+  const { multiSelect, getItemSelected, visible, data, setVisible, selectedItem} = props
+  const [selectedMyItem, setSelectedMyItem] = useState<any>([])
+  const [selectedSwapItem, setSelectedSwapItem] = useState<any>([])
+
+
+  const arrItem = visible.value === 'my-item' ? selectedMyItem : selectedSwapItem
+  const setArrItem = visible.value === 'my-item' ? setSelectedMyItem : setSelectedSwapItem
 
   const checkItem = (item: any) => {
-    const checkItem = selected.find((x: any) => x.id === item.id )
+    const arrItem = visible.value === 'my-item' ? selectedMyItem : selectedSwapItem
+
+    const checkItem = arrItem.find((x: any) => x.id === item.id )
     return !!checkItem
   }
 
   const handleCheck = (item: any) => {
     if (multiSelect) { 
       if (checkItem(item)) {
-        const arrSelected = selected.filter((x: any) => x.id!== item.id)
-        setSelected(arrSelected)
+        const arrSelected = arrItem.filter((x: any) => x.id!== item.id)
+        setArrItem(arrSelected)
       }
-      else setSelected(selected.concat(item))
+      else setArrItem(arrItem.concat(item))
     } else {
-      setSelected([item])
+      setArrItem([item])
     }
   }
 
   const handleSubmit = () => {
-    getItemSelected(selected)
+    getItemSelected(arrItem)
+    setVisible(false)
+  }
+
+  const oncloseModal = () => {
+    setArrItem(selectedItem)
     setVisible(false)
   }
 
@@ -46,9 +59,9 @@ export default function ModalSelectSwap(props: Props) {
         title="SWAP STORE"
         centered
         visible={visible.isOpen}
-        onCancel={() => setVisible(false)}
+        onCancel={oncloseModal}
         width={1000}
-        footer={<Row justify="center"><ButtonTrade onClick={handleSubmit} width="200px"><SwapOutlined />{visible.value === 'my-item' ? "Select": "Swap" }  {multiSelect && `(${selected.length})`}</ButtonTrade></Row>}
+        footer={<Row justify="center"><ButtonTrade onClick={handleSubmit} width="200px"><SwapOutlined />{visible.value === 'my-item' ? "Select": "Swap" }  {multiSelect && `(${arrItem.length})`}</ButtonTrade></Row>}
       >
         <WrapperModalBody>
           {
