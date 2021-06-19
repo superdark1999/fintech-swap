@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useWeb3React } from '@web3-react/core'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Row, Col } from 'antd'
-import { BnbBalance } from 'hooks/useTokenBalance'
-import { getBalanceNumber } from 'utils/formatBalance'
+import useTokenBalance, { BnbBalance } from 'hooks/useTokenBalance'
+import { XLUCKY_TESTNET } from 'config'
+import bep20Abi from 'config/abi/erc20.json'
+import { useERC20, useContract } from 'hooks/useContract'
 import CardValue from './CardValue'
 
 const BlockNFT = () => {
+  const { account } = useWeb3React()
+  const [balanceToken, setBalanceToken] = useState(0)
   const balance = BnbBalance() //
+  const useContractTemp = useContract(XLUCKY_TESTNET, bep20Abi)
+  useEffect(() => {
+    if (useContractTemp) {
+      useContractTemp.balanceOf(account).then((data) => {
+        setBalanceToken(data / 1e18)
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account])
   return (
     <WrapNFT>
       <Row gutter={[24, 24]}>
@@ -19,7 +33,7 @@ const BlockNFT = () => {
                 <div className="box__item-number">
                   <img src="images/logo-icon.png" alt="" />
                   <div className="number">
-                    <CardValue color="" value={getBalanceNumber(balance)} decimals={3} fontSize="22px" />
+                    <CardValue color="" value={balanceToken} decimals={3} fontSize="22px" />
 
                     {/* <span>{(balance.toNumber() / 1e18).toFixed(3)}</span> */}
                   </div>
@@ -171,10 +185,9 @@ const WrapNFT = styled.div`
     display: flex;
     flex-wrap: wrap;
 
-    @media(min-width: 991px) {
+    @media (min-width: 991px) {
       padding-left: 20px;
     }
-      
 
     &__item {
       width: 50%;
