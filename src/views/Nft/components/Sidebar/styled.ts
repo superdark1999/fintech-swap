@@ -5,6 +5,7 @@ interface PropsStyled {
 }
 
 export const SidebarStyled = styled.div<PropsStyled>`
+  background:#fff;
   .collapse-menu {
     display: flex;
     justify-content: center;

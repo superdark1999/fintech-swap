@@ -256,7 +256,7 @@ const DetaiArtWork = ({ id }: any) => {
           </div>
         </HeaderStyled>
         {NFTDetail?.type === 'video' ?
-          <video style={{ height: 'calc(100vh - 300px)' }} width="100%" height="100%" autoPlay><source src={NFTDetail?.contentUrl} type="video/mp4" /></video>
+          <video style={{ height: 'calc(100vh - 300px)' }} width="100%" height="100%" autoPlay muted><source src={NFTDetail?.contentUrl} type="video/mp4" /></video>
           : <ImageStyled bgImage={NFTDetail?.contentUrl}>
             <div className="bg-image"></div>
             {/* <img src={NFTDetail?.contentUrl} /> */}
@@ -310,13 +310,13 @@ const DetaiArtWork = ({ id }: any) => {
                 <div className="group-info">
                   <div className="info">
                     <div className="title">NFT Contract ID:</div>
-                    <a className="value" href={embedTokenIdLinkBSCScan(NFTDetail.tokenId,NFTDetail?.contractAddress, chainId)} target="_blank">
+                    <a className="value" href={embedTokenIdLinkBSCScan(NFTDetail.tokenId, NFTDetail?.contractAddress, chainId)} target="_blank">
                       {getCompactString(NFTDetail?.contractAddress, 6)}
                     </a>
                   </div>
                   <div className="info">
                     <div className="title">Token ID:</div>
-                    <a className="value" href={embedTokenIdLinkBSCScan(NFTDetail.tokenId,NFTDetail?.contractAddress, chainId)} target="_blank">
+                    <a className="value" href={embedTokenIdLinkBSCScan(NFTDetail.tokenId, NFTDetail?.contractAddress, chainId)} target="_blank">
                       {NFTDetail && NFTDetail.tokenId}
                     </a>
                   </div>
