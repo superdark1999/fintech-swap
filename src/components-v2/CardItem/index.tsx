@@ -52,7 +52,10 @@ export default function CardItem(props?: { data?: any }) {
                 <div className="date-time"><Countdown onComplete={() => setDayExp(true)} date={Date.now() + Math.floor(Math.random() * 10000000)} /> 🔥 </div>
               </div>}
               {/* <ReactFreezeframe ref={useFrameGif} className="avatar"  src={data?.contentUrl}/>      */}
-              <img className="avatar" src={data?.contentUrl} alt="" loading="lazy" />
+              {data?.type === 'video' ?
+                <video width="300" height="450" autoPlay><source src={data?.contentUrl} type="video/mp4" /></video>
+                : <img className="avatar" src={data?.contentUrl} alt="" loading="lazy" />
+              }
             </div>
           </Link>
           <div className="wrapper-info">

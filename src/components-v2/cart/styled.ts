@@ -145,7 +145,7 @@ export const StyledCart = styled.div<PropsStyled>`
 
 export const ButtonStyle = styled.button`
   border: none;
-  background: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+  background-color: #35A5FC;
   border-radius: 100px;
   display: flex;
   justify-content: center;

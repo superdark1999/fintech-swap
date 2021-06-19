@@ -1,4 +1,4 @@
-import React ,{ useState } from 'react'
+import React, { useState } from 'react'
 import { Modal, Row } from 'antd'
 import CardItem from 'components-v2/CardItem/index'
 import styled from 'styled-components'
@@ -17,7 +17,7 @@ interface Props {
 }
 export default function ModalSelectSwap(props: Props) {
 
-  const { multiSelect, getItemSelected, visible, data, setVisible, selectedItem} = props
+  const { multiSelect, getItemSelected, visible, data, setVisible, selectedItem } = props
   const [selectedMyItem, setSelectedMyItem] = useState<any>([])
   const [selectedSwapItem, setSelectedSwapItem] = useState<any>([])
 
@@ -28,14 +28,14 @@ export default function ModalSelectSwap(props: Props) {
   const checkItem = (item: any) => {
     const arrItem = visible.value === 'my-item' ? selectedMyItem : selectedSwapItem
 
-    const checkItem = arrItem.find((x: any) => x.id === item.id )
+    const checkItem = arrItem.find((x: any) => x.id === item.id)
     return !!checkItem
   }
 
   const handleCheck = (item: any) => {
-    if (multiSelect) { 
+    if (multiSelect) {
       if (checkItem(item)) {
-        const arrSelected = arrItem.filter((x: any) => x.id!== item.id)
+        const arrSelected = arrItem.filter((x: any) => x.id !== item.id)
         setArrItem(arrSelected)
       }
       else setArrItem(arrItem.concat(item))
@@ -56,27 +56,27 @@ export default function ModalSelectSwap(props: Props) {
 
   return (
     <ModalStyled
-        title="SWAP STORE"
-        centered
-        visible={visible.isOpen}
-        onCancel={oncloseModal}
-        width={1000}
-        footer={<Row justify="center"><ButtonTrade onClick={handleSubmit} width="200px"><SwapOutlined />{visible.value === 'my-item' ? "Select": "Swap" }  {multiSelect && `(${arrItem.length})`}</ButtonTrade></Row>}
-      >
-        <WrapperModalBody>
-          {
-            data.map((item: any, index: number) => {
-              return (
-                <div key={item.id} className={checkItem(item) ? "card-item active" : "card-item"} onClick={()=>handleCheck(item)}>
-                    <div className="card">
-                      <CardItem data={item}/>
-                    </div>
-                </div>             
-              )
-            })
-          }
-        </WrapperModalBody>
-        
+      title="SWAP STORE"
+      centered
+      visible={visible.isOpen}
+      onCancel={oncloseModal}
+      width={1000}
+      footer={<Row justify="center"><ButtonTrade onClick={handleSubmit} width="200px"><SwapOutlined />{visible.value === 'my-item' ? "Select" : "Swap"}  {multiSelect && `(${arrItem.length})`}</ButtonTrade></Row>}
+    >
+      <WrapperModalBody>
+        {
+          data.map((item: any, index: number) => {
+            return (
+              <div key={item.id} className={checkItem(item) ? "card-item active" : "card-item"} onClick={() => handleCheck(item)}>
+                <div className="card">
+                  <CardItem data={item} />
+                </div>
+              </div>
+            )
+          })
+        }
+      </WrapperModalBody>
+
     </ModalStyled>
   )
 }
@@ -103,7 +103,7 @@ const WrapperModalBody = styled.div`
   .card-item {
     cursor: pointer;
     filter: 1;
-    margin: ${ isMobile ? '0 auto' : ' 10px'};  
+    margin: ${isMobile ? '0 auto' : ' 10px'};  
     box-sizing: border-box;
     position: relative;
     .card { pointer-events: none;}
@@ -119,9 +119,7 @@ const WrapperModalBody = styled.div`
         right: -3px;
         bottom: -3px;
         padding: 3px;
-        background: linear-gradient(
-    270deg
-    ,#19A3DD -16.5%,#BADEB7 117.25%);
+        background: #35A5FC;
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: destination-out;
       }

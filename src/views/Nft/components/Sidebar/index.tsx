@@ -99,9 +99,9 @@ const Sidebar: React.FC<SidebarProps> = ({setShowSidebar,onShowSidebar}) => {
           <img src={MoneyIcon} alt=""/>
           Price
         </div>
-        { checkRenderSubMenu('price') ? <CaretUpOutlined/> : <CaretDownOutlined /> }
+        {/* { checkRenderSubMenu('price') ? <CaretUpOutlined/> : <CaretDownOutlined /> } */}
       </div>
-      <div className={checkRenderSubMenu('price') ? 'show-sub-menu list-sub-menu' : 'list-sub-menu'}>
+      <div className={true? 'show-sub-menu list-sub-menu' : 'list-sub-menu'}>
         <Select onChange={setSelect} defaultValue={select}>
           {options.map((item) => (
               <Option  key={item} value={item}>{item}</Option>
@@ -127,9 +127,9 @@ const Sidebar: React.FC<SidebarProps> = ({setShowSidebar,onShowSidebar}) => {
             <TagFilled />
             Tag
           </div>
-          { checkRenderSubMenu('tag') ? <CaretUpOutlined/> : <CaretDownOutlined /> }
+          {/* { checkRenderSubMenu('tag') ? <CaretUpOutlined/> : <CaretDownOutlined /> } */}
         </div>
-        <div className={checkRenderSubMenu('tag') ? 'show-sub-menu list-sub-menu' : 'list-sub-menu'}>
+        <div className={true ? 'show-sub-menu list-sub-menu' : 'list-sub-menu'}>
           <div className="input-search">
             <SearchOutlined className="icon-search"/>
             <input placeholder="Search tag" />

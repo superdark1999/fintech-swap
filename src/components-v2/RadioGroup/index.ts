@@ -102,11 +102,9 @@ export const RadioButton= styled(Radio.Button)<StyledButtonProps>`
   }
   
   :hover:not(.ant-radio-button-wrapper-disabled) {
-    background: linear-gradient(
-      270deg
-      ,#19A3DD -16.5%,#BADEB7 117.25%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color:transparent;
+    border: 1px solid #35A5FC;
+    background:#fff;
+    color:#35A5FC;
   }
   &.ant-radio-button-wrapper-disabled:hover{
     :before{
