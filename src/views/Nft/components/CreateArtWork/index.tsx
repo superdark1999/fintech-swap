@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Form, Input, Button, Row, Col, Checkbox } from 'antd'
+import { Form, Input, Button, Row, Col, Checkbox, Progress } from 'antd'
 import UploadFile from 'components-v2/UploadMedia'
 import { EditOutlined,SyncOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
@@ -35,6 +35,9 @@ const CreateArtWork: React.FC = () => {
   const [form] = Form.useForm()
   const history = useHistory()
   const [checkPolicy,setCheckPolicy] = useState(false)
+  const [typeArtWork, setTypeArtWork] = useState('image')
+  const [isOnUpload,setIsOnUpload] = useState(false)
+  const [NFTInfo, setNFTInfo] = useState(null)
   const validateMessages = {
     required: '${label} is required!',
     types: {
@@ -77,9 +80,41 @@ const CreateArtWork: React.FC = () => {
     form.setFieldsValue({ artistName: userState.name })
   }, [userState.name])
 
+  const onGoToPendingArtWork = ()=>{
+    history.push('/my-profile/mycollection/pending')
+  }
+
+  useEffect(()=>{
+    if(isProccessing&&!isOnUpload&&NFTInfo){
+      const {url, NFTid} = NFTInfo
+      mintToken(url)
+      .then((mintData: any) => {
+        const txHash = mintData?.hash
+        updateHashInfoNFT({ NFTid, txHash }).then(({ status, data }) => {
+          if (status === 200) {
+            notification('success', {
+              message: 'Create NFT success',
+              description: '',
+            },onGoToPendingArtWork)
+          }
+        })
+      })
+      .catch((err: any) => {
+        setNFTInfo(null)
+        setIsProcessing(false)
+        notification('error', {
+          message:
+            err?.message || 'Something went wrong please try again',
+          description: '',
+        })
+      })
+    }
+  },[isProccessing,isOnUpload,NFTInfo])
+
   const onCreateNFT = async (values: any) => {
     if(checkPolicy){
     setIsProcessing(true)
+    setIsOnUpload(true)
     const mintData = {
       title: values?.artworkName || '',
       description: values?.introduction || '',
@@ -92,28 +127,7 @@ const CreateArtWork: React.FC = () => {
         if (status === 200) {
           const url = data?.data?.contentUrl || ''
           const NFTid = data?.data?._id || ''
-          notification('success', {
-            message: 'Create NFT success',
-            description: '',
-          })
-          mintToken(url)
-            .then((mintData: any) => {
-              const txHash = mintData?.hash
-
-              updateHashInfoNFT({ NFTid, txHash }).then(({ status, data }) => {
-                if (status === 200) {
-                  history.push('/my-profile/mycollection/pending')
-                }
-              })
-            })
-            .catch((err: any) => {
-              setIsProcessing(false)
-              notification('error', {
-                message:
-                  err?.message || 'Something went wrong please try again',
-                description: '',
-              })
-            })
+          setNFTInfo({url,NFTid})
         }
       })
       .catch((err: any) => {
@@ -127,6 +141,47 @@ const CreateArtWork: React.FC = () => {
   }
   const onCheckPolicy = (e:any) =>{
     setCheckPolicy(e.target.checked)
+  }
+  const onHandleTypeArtWork = (e:any)=>{
+    if(!e.target.value){
+      return notification('info', {
+        message: 'Announce',
+        description: 'This feature will be comming soon',
+      })
+    }
+    return setTypeArtWork(e.target.value) 
+  }
+
+  const renderGroupButton = ()=>{
+    if(isProccessing&&!isOnUpload){
+      return(
+        <ButtonStyle
+          type="submit"
+          style={{ width: 300, margin: '20px auto' }}
+        >
+          <div className="btn-submit">Processing    <SyncOutlined /></div>
+        </ButtonStyle>
+      )
+    }
+    if(!isProccessing&&!isOnUpload){
+      return(
+        <ButtonStyle
+          type="submit"
+          style={{ width: 300, margin: '20px auto' }}
+        >
+          Create
+        </ButtonStyle>
+      )
+    }
+    if(isOnUpload){
+      return ( 
+      <ButtonStyle
+          type="submit"
+          style={{ width: 300, margin: '20px auto' }}
+        >
+          <div>Processing <Proccessing timeProcess={5000} onEndProccess={()=>{setIsOnUpload(false)}}/></div>
+      </ButtonStyle>)
+    }
   }
   return (
     <Row gutter={24} style={{ justifyContent: 'center' }}>
@@ -148,19 +203,19 @@ const CreateArtWork: React.FC = () => {
               initialValue="image"
             >
               <GroupButton defaultValue="image">
-                <RadioButton style={{ height: 100 }} value="image">
+                <RadioButton style={{ height: 100 }} value="image" onChange={onHandleTypeArtWork} >
                   Picture
                 </RadioButton>
-                <RadioButton style={{ height: 100 }} value="gif">
+                <RadioButton style={{ height: 100 }} value="gif" onChange={onHandleTypeArtWork} >
                   Gif
                 </RadioButton>
-                <RadioButton style={{ height: 100 }} value="video">
+                <RadioButton style={{ height: 100 }} value="video" onChange={onHandleTypeArtWork} >
                   Video
                 </RadioButton>
-                <RadioButton style={{ height: 100 }} value="audio">
+                <RadioButton style={{ height: 100 }} onChange={onHandleTypeArtWork} >
                   Audio
                 </RadioButton>
-                <RadioButton style={{ height: 100 }} value="special">
+                <RadioButton style={{ height: 100 }} onChange={onHandleTypeArtWork} >
                   Special
                 </RadioButton>
               </GroupButton>
@@ -208,7 +263,7 @@ const CreateArtWork: React.FC = () => {
                     { required: true, message: 'This Field is required!' },
                   ]}
                 >
-                  <UploadFile isFormData />
+                  <UploadFile isFormData type={typeArtWork} />
                 </Form.Item>
               </Col>
 
@@ -282,12 +337,7 @@ const CreateArtWork: React.FC = () => {
               </Col>
             </Row>
 
-            <ButtonStyle
-              type="submit"
-              style={{ width: 300, margin: '20px auto' }}
-            >
-              {isProccessing ? <div className="btn-submit">Processing <SyncOutlined /></div> : `Create`}
-            </ButtonStyle>
+              {renderGroupButton()}
            
             <Row style={{ justifyContent: 'center' }}>
               <Col
@@ -315,6 +365,24 @@ const CreateArtWork: React.FC = () => {
   )
 }
 export default CreateArtWork
+
+const Proccessing = ({timeProcess,onEndProccess}:any)=>{
+  const [processPercent, setProcessPercent] = useState(0)
+  useEffect(()=>{
+    if(processPercent==100){
+      onEndProccess()
+    }
+    const timer = setInterval(()=>{
+      setProcessPercent(processPercent+1)
+    },timeProcess/100)
+    return()=>{
+      clearInterval(timer)
+    }
+  },[processPercent])
+  return(
+   <Progress width={20} strokeWidth={15} type="circle" percent={processPercent} showInfo={false} />
+  )
+}
 
 const ArtistInput = ({ value, setShowModalCreateArtist }: any) => {
   return (

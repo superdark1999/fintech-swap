@@ -7,7 +7,7 @@ import {
   MoreOutlined,
   MenuUnfoldOutlined,
 } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Link,useHistory } from 'react-router-dom'
 import { ButtonBuy, ButtonTrade } from 'components-v2/Button'
 import ViewMore from 'assets/images/view-more.svg'
 import Token from 'assets/images/token.svg'
@@ -43,6 +43,7 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   const [userState, userActions] = useUserStore()
   const [configState, configAction] = useConfigStore()
   const [isShowAlert, setIsShowAlert] = useState(false)
+  const history = useHistory();
   const handleScroll = () => {
     const position = window.pageYOffset
     if (position > 10) {
@@ -96,6 +97,10 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
   const onChangeAnimation = (checked: any, e: any) => {
     configAction.updateConfig({ isUsingAnimation: checked })
   }
+  
+  const onSearching =  (e:any)=>{
+    history.push(`/explore?search=${e.target.value}`)
+  }
   return (
     <StyledTopBar className={classtSicky}>
       {isMobile ? (
@@ -117,7 +122,12 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
       )}
 
           <div className="nav-bar-wrapper">
-            <Input placeholder="Search items, collections, and accounts" prefix={<SearchOutlined/>} className="search-nav"></Input>
+            <Input 
+            placeholder="Search items, collections, and accounts" 
+            prefix={<SearchOutlined/>} 
+            className="search-nav"
+            onPressEnter={onSearching}
+            ></Input>
             <Link to="/" className="home-nav">Home</Link>
             {!!account?(
               <>
