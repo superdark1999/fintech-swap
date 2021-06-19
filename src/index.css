@@ -25,6 +25,11 @@ body {
   color: #fff;
 }
 
+.style-color div,
+.style-color a div {
+  font-weight: 600;
+}
+
 .custome-line a {
   border: 1px solid #2b2c3a;
   color: #2b2c3a;
@@ -370,4 +375,10 @@ button.button-connect:hover {
 .logo-mobile {
   width: 100%;
   max-width: 40px;
+}
+
+.custom-btn {
+  height: 40px !important;
+  line-height: 36px !important;
+  padding: 0 5px 0 16px !important;
 }
