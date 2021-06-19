@@ -29,7 +29,7 @@ import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
-import { getPrice, getCompactString } from 'utils'
+import { getPrice, getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import _ from 'lodash'
 import { InputNumber } from 'antd'
 import Hammer from 'assets/images/hammer.svg'
@@ -43,7 +43,7 @@ const { TabPane } = Tabs
 const DetaiArtWork = ({ id }: any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
   const [isCopied, handleCopy] = useCopyToClipboard(3000);
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const [NFTDetail, setNFTDetail] = useState<any>({})
   const [loading, setLoading] = useState(true)
   const [isSelled, setIsSelled] = useState(false)
@@ -310,13 +310,13 @@ const DetaiArtWork = ({ id }: any) => {
                 <div className="group-info">
                   <div className="info">
                     <div className="title">NFT Contract ID:</div>
-                    <a className="value" href="/" target="_blank">
-                      {getCompactString(NFTDetail?.contractAddress, 10)}
+                    <a className="value" href={embedTokenIdLinkBSCScan(NFTDetail.tokenId,NFTDetail?.contractAddress, chainId)} target="_blank">
+                      {getCompactString(NFTDetail?.contractAddress, 6)}
                     </a>
                   </div>
                   <div className="info">
                     <div className="title">Token ID:</div>
-                    <a className="value" href="/" target="_blank">
+                    <a className="value" href={embedTokenIdLinkBSCScan(NFTDetail.tokenId,NFTDetail?.contractAddress, chainId)} target="_blank">
                       {NFTDetail && NFTDetail.tokenId}
                     </a>
                   </div>
@@ -324,14 +324,14 @@ const DetaiArtWork = ({ id }: any) => {
                 <div className="group-info">
                   <div className="info">
                     <div className="title">Creator's Adress:</div>
-                    <a className="value" href="/" target="_blank">
-                      {getCompactString(NFTDetail?.createdBy, 10)}
+                    <a className="value" href={`/user-profile/${NFTDetail?.createdBy}/onsale/readyToSell`} target="_blank">
+                      {getCompactString(NFTDetail?.createdBy, 6)}
                     </a>
                   </div>
                   <div className="info">
                     <div className="title">Owner Adress:</div>
-                    <a className="value" href="/" target="_blank">
-                      {getCompactString(NFTDetail?.ownerWalletAddress, 10)}
+                    <a className="value" href={`/user-profile/${NFTDetail?.ownerWalletAddress}/onsale/readyToSell`} target="_blank">
+                      {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
                     </a>
                   </div>
                 </div>
