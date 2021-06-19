@@ -171,9 +171,10 @@ const WrapNFT = styled.div`
     display: flex;
     flex-wrap: wrap;
 
-    @media (min-width: 991px) {
+    @media(min-width: 991px) {
       padding-left: 20px;
     }
+      
 
     &__item {
       width: 50%;
