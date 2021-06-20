@@ -166,7 +166,7 @@ export const CartStyled = styled.div`
           font-weight: bold;
           color:#fff;
           border-radius: 100px;
-          background: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+          background: #35A5FC;
         }
         .cancel-action{
           border:none;
@@ -228,7 +228,7 @@ export const CartStyled = styled.div`
       flex: 1;
       cursor: pointer;
       text-decoration:underline;
-      background: -webkit-linear-gradient(#19A3DD, #BADEB7);
+      background: #35A5FC;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 16px;

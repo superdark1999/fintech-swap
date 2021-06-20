@@ -61,6 +61,7 @@ position: relative;
         /* height:408px; */
         height:330px;
         border: 1px solid #E7EBEF;
+        background-color: #fff;
         box-sizing: border-box;
         border-radius: 24px;
         margin-right: 20px;
