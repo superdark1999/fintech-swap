@@ -24,16 +24,17 @@ import { getPrice, SUPPORT_CHAIN_IDS } from 'utils'
 import { Modal, Input, Form } from 'antd'
 import useAuth from 'hooks/useAuth'
 interface TopBarProps {
-  onPresentMobileMenu: (value: boolean) => void
-  mobileMenu: boolean
+  setMobileMenu?: (value: boolean) => void,
+  mobileMenu?: boolean
 }
 declare global {
   interface Window {
-    animation: any
+    animation: any,
+    
   }
 }
 const { SubMenu } = Menu;
-const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu, mobileMenu }) => {
+const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
   const { logout } = useAuth()
   const { account, chainId } = useActiveWeb3React()
@@ -97,11 +98,10 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu, mobileMenu }) => {
     <StyledTopBar className={classtSicky}>
       {isMobile ? (
         <div
-          onClick={() => onPresentMobileMenu(true)}
-          style={{ display: 'flex', alignItems: 'center', zIndex: 2}}
+          style={{ display: 'flex', alignItems: 'center', zIndex: 10}}
         >
-          <MenuUnfoldOutlined onClick={() => onPresentMobileMenu(true)}
-            style={{ marginLeft: 12, fontSize: 24, marginRight: 8 }}
+          <MenuUnfoldOutlined onClick={() => setMobileMenu(true)}
+            style={{ marginLeft: 12, fontSize: 24, marginRight: 12 }}
           />
           <Link to="/">
             <img src={Token} width="30px" />

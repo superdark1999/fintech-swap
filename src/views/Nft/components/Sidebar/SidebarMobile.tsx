@@ -12,34 +12,26 @@ const plainOptions = ['Apple', 'Pear', 'Orange'];
 const { Option } = Select
 const options = ["LUCKY TOKEN (LUCKY)"]
 
-const SidebarMobile = (props: any) => {
-  const { mobileMenu, onPresentMobileMenu } = props
+interface SideBarProps {
+  setMobileMenu?: (value: boolean) => void,
+  mobileMenu?: boolean
+}
+
+const SidebarMobile = (props: SideBarProps) => {
+  const { mobileMenu, setMobileMenu } = props
+  console.log('mobileMenudasda: ', mobileMenu)
   const [select, setSelect] = React.useState<string | null>('LUCKY TOKEN (LUCKY)');
-  const [configMenu, setConfigMenu] = React.useState<any | null>(['collection', 'price', 'tag']);
   const [checkedList, setCheckedList] = React.useState<[string] | null>(['']);
-
-
-  const onTogleMenu = (value: string) => {
-    if (!configMenu.find((menu: string) => value === menu)) setConfigMenu(configMenu.concat(value))
-    else setConfigMenu(configMenu.filter((item: string) => item !== value))
-  };
 
   const onChange = (list: any) => {
     setCheckedList(list);
   };
-  const checkRenderSubMenu = useCallback(
-    (subMenu: string) => {
-      if (configMenu.find((menu: string) => subMenu === menu)) return true
-      return false
-    },
-    [configMenu],
-  )
 
   return (
     <DrawerStyled
       placement="left"
-      closable={false}
-      onClose={() => onPresentMobileMenu(false)}
+      closable
+      onClose={() => setMobileMenu(false)}
       visible={mobileMenu}
       width="85%"
     >
@@ -55,7 +47,7 @@ const SidebarMobile = (props: any) => {
           </a>
 
           <div className="group-menu">
-            <div className="button menu" onClick={() => onTogleMenu('price')}>
+            <div className="button menu">
               <div className="group-title">
                 <img src={MoneyIcon} alt="" />
                 Price
@@ -83,7 +75,7 @@ const SidebarMobile = (props: any) => {
           </div>
 
           <div className="group-menu">
-            <div className="button menu" onClick={() => onTogleMenu('tag')}>
+            <div className="button menu">
               <div className="group-title">
                 <TagFilled />
                 Tag

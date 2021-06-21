@@ -13,23 +13,18 @@ import Collection from './components/Collection/index'
 import { isMobile } from 'react-device-detect'
 
 const NFTContainer = (props: any) => {
-  const { onPresentMobileMenu, mobileMenu } = props
   const [onShowSidebar, setShowSidebar] = useState(true)
   return (
     <Switch>
       <Page>
         <NFTContainerStyled onShowsidebar={onShowSidebar}>
           {
-            isMobile ? 
-            (
-              <SidebarMobile onPresentMobileMenu={onPresentMobileMenu} mobileMenu={mobileMenu}/>
-            )
-              :
+            !isMobile &&
             (
               <div className="left-sidebar">
                 <Sidebar setShowSidebar={setShowSidebar} onShowSidebar={onShowSidebar} />
               </div>
-            )
+            )        
           }
           <div className="main-nft">
             <div className="trending-nft">

@@ -28,6 +28,7 @@ import MyProfile from 'views/Nft/components/MyProfile'
 import Page404 from 'views/Nft/components/404'
 import Explore from 'views/Nft/components/Explore'
 import SwapStore from 'views/Nft/components/SwapStore'
+import SidebarMobile from 'views/Nft/components/Sidebar/SidebarMobile'
 // 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -69,11 +70,9 @@ function Updaters() {
   )
 }
 
-const App: React.FC = () => {
+const App = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
-  const handlePresentMobileMenu = useCallback((value) => {
-    setMobileMenu(value)
-  }, [setMobileMenu])
+  console.log('mobileMenu: ', mobileMenu)
 
   return (
     <Providers>
@@ -81,13 +80,19 @@ const App: React.FC = () => {
       <Router>
         <Web3ReactManager>
           <>
-            <TopBar onPresentMobileMenu={handlePresentMobileMenu} mobileMenu={mobileMenu}/>
+          {
+            isMobile &&
+            (
+              <SidebarMobile setMobileMenu={setMobileMenu} mobileMenu={mobileMenu}/>
+            )
+          }
+            <TopBar setMobileMenu={setMobileMenu} mobileMenu={mobileMenu}/>
             <Switch>
               <Route path="/" exact>
-                <Nft onPresentMobileMenu={handlePresentMobileMenu} mobileMenu={mobileMenu}/>
+                <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu}/>
               </Route>
               <Route path="/nfts">
-                <Nft onPresentMobileMenu={handlePresentMobileMenu} mobileMenu={mobileMenu}/>
+                <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu}/>
               </Route>
               <Route path="/create/artwork">
                 <CreateArtWork />
