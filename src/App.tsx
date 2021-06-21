@@ -19,7 +19,6 @@ import UserUpdater from './wallet/state/user/updater'
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import Nft from './views/Nft'
 import getLibrary from './wallet/utils/getLibrary'
-import { Layout } from 'antd';
 import CreateArtWork from 'views/Nft/components/CreateArtWork/index'
 import DetailArtWork from 'views/Nft/components/DetailArtWork'
 import TradeArtWork from 'views/Nft/components/TradeArtwork'
@@ -72,13 +71,8 @@ function Updaters() {
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
-
-  const handleDismissMobileMenu = useCallback(() => {
-    setMobileMenu(false)
-  }, [setMobileMenu])
-
-  const handlePresentMobileMenu = useCallback(() => {
-    setMobileMenu(true)
+  const handlePresentMobileMenu = useCallback((value) => {
+    setMobileMenu(value)
   }, [setMobileMenu])
 
   return (
@@ -87,13 +81,13 @@ const App: React.FC = () => {
       <Router>
         <Web3ReactManager>
           <>
-            <TopBar onPresentMobileMenu={handlePresentMobileMenu} />
+            <TopBar onPresentMobileMenu={handlePresentMobileMenu} mobileMenu={mobileMenu}/>
             <Switch>
               <Route path="/" exact>
-                <Nft />
+                <Nft onPresentMobileMenu={handlePresentMobileMenu} mobileMenu={mobileMenu}/>
               </Route>
               <Route path="/nfts">
-                <Nft />
+                <Nft onPresentMobileMenu={handlePresentMobileMenu} mobileMenu={mobileMenu}/>
               </Route>
               <Route path="/create/artwork">
                 <CreateArtWork />

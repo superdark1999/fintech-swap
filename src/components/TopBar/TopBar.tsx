@@ -4,7 +4,6 @@ import Web3Status from '../../wallet/Web3Status'
 import logo from '../../assets/img/logo-no-text.svg'
 import {
   SearchOutlined,
-  MoreOutlined,
   MenuUnfoldOutlined,
 } from '@ant-design/icons'
 import { Link, useHistory } from 'react-router-dom'
@@ -21,12 +20,12 @@ import useUserStore from 'store/userStore'
 import { Menu, Dropdown } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { chain } from 'lodash'
 import { getPrice, SUPPORT_CHAIN_IDS } from 'utils'
 import { Modal, Input, Form } from 'antd'
 import useAuth from 'hooks/useAuth'
 interface TopBarProps {
-  onPresentMobileMenu: () => void
+  onPresentMobileMenu: (value: boolean) => void
+  mobileMenu: boolean
 }
 declare global {
   interface Window {
@@ -34,9 +33,8 @@ declare global {
   }
 }
 const { SubMenu } = Menu;
-const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
+const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu, mobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
-  const [showMenuMobile, setShowMenuMobile] = useState(false)
   const { logout } = useAuth()
   const { account, chainId } = useActiveWeb3React()
   const luckyMethod = useLuckyServices()
@@ -59,13 +57,6 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
       setIsShowAlert(true)
     }
   }, [chainId])
-
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll, { passive: true })
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll)
-  //   }
-  // }, [])
 
   useEffect(() => {
     if (account) {
@@ -106,10 +97,10 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
     <StyledTopBar className={classtSicky}>
       {isMobile ? (
         <div
-          onClick={() => setShowMenuMobile(true)}
-          style={{ display: 'flex', alignItems: 'center' }}
+          onClick={() => onPresentMobileMenu(true)}
+          style={{ display: 'flex', alignItems: 'center', zIndex: 2}}
         >
-          <MenuUnfoldOutlined
+          <MenuUnfoldOutlined onClick={() => onPresentMobileMenu(true)}
             style={{ marginLeft: 12, fontSize: 24, marginRight: 8 }}
           />
           <Link to="/">

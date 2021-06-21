@@ -17,7 +17,6 @@ export const StyledCart = styled.div<PropsStyled>`
     /* border: 1px solid #E7EBEF; */
     box-sizing: border-box;
     overflow: hidden;
-    border-radius: 8px;
     /* :hover{ 
       box-shadow: 1px 4px 8px #ececec;
       -webkit-transition:  box-shadow .3s ease-in;
@@ -29,7 +28,7 @@ export const StyledCart = styled.div<PropsStyled>`
       border: 1px solid #E7EBEF;
       box-sizing: border-box;
       overflow: hidden;
-      border-radius: 8px;
+      border-radius: 24px;
       position: relative;
       .gradient-background {
         z-index: 1;
