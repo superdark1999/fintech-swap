@@ -5,22 +5,22 @@ import styled from 'styled-components'
 import { get } from 'lodash'
 import notification from 'components-v2/Alert'
 
-const typeInfo={
-  image:{
-    accept:'image/png, image/jpeg,image/jpg',
-    supportText:'Support: png / jpg Size: ≤ 5MB',
-    size:5
+const typeInfo = {
+  image: {
+    accept: 'image/png, image/jpeg,image/jpg',
+    supportText: 'Support: png / jpg Size: ≤ 5MB',
+    size: 5,
   },
-  gif:{
-    accept:'image/gif',
-    supportText:'Support: gif Size: ≤ 15MB',
-    size:15
+  gif: {
+    accept: 'image/gif',
+    supportText: 'Support: gif Size: ≤ 15MB',
+    size: 15,
   },
-  video:{
-    accept:'video/mp4',
-    supportText:'Support: mp4 Size: ≤ 40MB',
-    size:40
-  }
+  video: {
+    accept: 'video/mp4',
+    supportText: 'Support: mp4 Size: ≤ 40MB',
+    size: 40,
+  },
 }
 
 //configurations for the image uploader
@@ -32,13 +32,13 @@ const UploadForm = (props) => {
   const [file, setFile] = useState(false)
 
   const beforeUpload = (file) => {
-    const isLtSize = file.size / 1024 / 1024 < size;
-      if (!isLtSize) {
-        notification('error', {
-          message: 'Error',
-          description: `Image must smaller than ${size}MB!`,
-        })
-        return true
+    const isLtSize = file.size / 1024 / 1024 < size
+    if (!isLtSize) {
+      notification('error', {
+        message: 'Error',
+        description: `Image must smaller than ${size}MB!`,
+      })
+      return true
     }
     getBase64(file)
     setType(file.type)
@@ -69,7 +69,7 @@ const UploadForm = (props) => {
     }
   }
 
-  const {accept,supportText,size} = typeInfo[props?.type||'image']
+  const { accept, supportText, size } = typeInfo[props?.type || 'image']
 
   return (
     <UploadStyled>
@@ -77,7 +77,7 @@ const UploadForm = (props) => {
         <CloseCircleFilled className="remove-image" onClick={handleRemove} />
       )}
       {imageUrl && type.includes('video') ? (
-        <video width="100%" controls>
+        <video width="100%" controls muted>
           <source src={imageUrl} type={file.type} />
           Your browser does not support HTML5 video.
         </video>
@@ -95,13 +95,11 @@ const UploadForm = (props) => {
         style={{ width: '100%' }}
         showUploadList={false}
         accept={accept}
-        >
+      >
         {!imageUrl && (
           <div className="upload-image">
             <Button>Upload</Button>
-            <p>
-              {supportText}
-            </p>
+            <p>{supportText}</p>
           </div>
         )}
       </Upload>

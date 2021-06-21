@@ -4,7 +4,7 @@ import { ExploreCollectionStyled } from './styled'
 import Cart from 'components-v2/CardItem'
 import FilterBar from './filterBar'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-
+import BannerBar from '../../../components/BannerBar/index'
 // export const option: React.ReactElement<OptionProps> = Select.Option
 function ExploreCollection() {
   const [NFTs, setNFTs] = useState([])
@@ -28,13 +28,20 @@ function ExploreCollection() {
   return (
     <ExploreCollectionStyled>
       <div className="header-artists">
-        <div className="title-artists">Explore</div>
+        <div className="title-artists">Swap Store</div>
+      </div>
+      <div className="banner-nft">
+        <BannerBar />
       </div>
       <FilterBar searchParams={searchParams} />
       <div className="content-collect">
-        {NFTs.map((item) => (
-          <Cart width="320px" height="480px" data={item} />
-        ))}
+        {NFTs.map((item) => {
+          return (
+            // item?.NFTType === 'swap' && (
+            <Cart width="320px" height="480px" data={item} />
+            // )
+          )
+        })}
       </div>
       <div className="footer-section">
         <div className="wrapper-button">

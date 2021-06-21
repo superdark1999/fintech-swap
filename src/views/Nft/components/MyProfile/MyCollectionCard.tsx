@@ -143,8 +143,8 @@ export default function MyCollectionCard({ data, option }: any) {
           )}
           {approvingMarket && !isNFTCanSell && (
             <>
-              <ButtonTrade height="40px" style={{ background: '#BDBDBD' }}>Sell</ButtonTrade>
-              <ButtonTrade height="40px" style={{ background: '#BDBDBD' }}>Auction</ButtonTrade>
+              <ButtonTrade height="40px" className="disabled">Sell</ButtonTrade>
+              <ButtonTrade height="40px" className="disabled">Auction</ButtonTrade>
             </>
           )}
           {renderQRCode()}
@@ -208,7 +208,7 @@ export default function MyCollectionCard({ data, option }: any) {
           xxl={{ span: 8 }}
         >
           {data.type === 'video' ? (
-            <video width="100%" controls>
+            <video width="100%" controls muted>
               <source src={data?.contentUrl} type="video/mp4" />
               Your browser does not support HTML5 video.
             </video>

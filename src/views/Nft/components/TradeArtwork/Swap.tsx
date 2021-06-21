@@ -1,5 +1,5 @@
 import { Row, Col, Input, Select } from 'antd'
-import React, { useRef, useState, useEffect} from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { TradeArtWorkStyled, CardStyled, WrapperListCard, ListCard, StyledDefaultCart } from './styled'
 import TextGradient from 'components-v2/ID'
 import Token from 'assets/images/token.svg'
@@ -15,8 +15,8 @@ import Nfts from 'wallet/state/config/constants/nfts'
 
 const DefaultCard = (props: any) => {
   return (
-    <StyledDefaultCart onClick={() => props.setVisible({isOpen: true, value: props.value})}>
-      <img src={Plus} style={{margin: 'auto 40px'}}/> 
+    <StyledDefaultCart style={{ cursor: 'pointer' }} onClick={() => props.setVisible({ isOpen: true, value: props.value })}>
+      <img src={Plus} style={{ margin: 'auto 40px' }} />
     </StyledDefaultCart>
   )
 }
@@ -25,24 +25,24 @@ const DefaultCard = (props: any) => {
 const Trade: React.FC = () => {
   return (
     <Row justify="space-around">
-      <img src={Plus} style={{margin: 'auto 40px'}}/>
+      <img src={Plus} style={{ margin: 'auto 40px' }} />
       <CardStyled >
         <div className="name">Your offer</div>
-        <Input className="input" placeholder='Enter price' bordered/>
+        <Input className="input" placeholder='Enter price' bordered />
         <Row>
           <TextGradient id={true} width="auto">100K LUCKY</TextGradient>
           {' '}<img src={Token} />
         </Row>
       </CardStyled>
-      <img src={Swap} style={isMobile ? {transform: 'rotate(90deg)', margin: 'auto 40px'} : null}/>
+      <img src={Swap} style={isMobile ? { transform: 'rotate(90deg)', margin: 'auto 40px' } : null} />
     </Row>
   )
 }
 
 const OptionData = [
   {
-   label: 'Lucky',
-   value: 'Lucky',
+    label: 'Lucky',
+    value: 'Lucky',
   }
 ]
 const { Option } = Select;
@@ -50,7 +50,7 @@ const { Option } = Select;
 const SwapArtWork = (props: any) => {
   const [select, setSelect] = React.useState<string | null>('Lucky');
   const divRef = useRef(null)
-  const [visible, setVisible] = useState<any>({isOpen: false, value: "my-item"});
+  const [visible, setVisible] = useState<any>({ isOpen: false, value: "my-item" });
 
   const [myItems, setMyItems] = useState<any>([]);
 
@@ -60,11 +60,11 @@ const SwapArtWork = (props: any) => {
 
   const [NFTs, setNFTs] = useState([]);
   const { getNFT } = useArtworkServices()
-  
+
   useEffect(() => {
     getNFT({
       status: 'readyToSell',
-    }).then(({ status, data } : any) => {
+    }).then(({ status, data }: any) => {
       if (status === 200) {
         setNFTs(data?.data || [])
       }
@@ -90,9 +90,9 @@ const SwapArtWork = (props: any) => {
         <WrapperListCard>
           <ListCard ref={divRef} numOfItem={myItems.length}>
             {
-              myItems.map((card:any) => {
+              myItems.map((card: any) => {
                 return (
-                  <Card key={card.id} data={card}  className="card-item" />
+                  <Card key={card.id} data={card} className="card-item" />
                 )
               })
             }
@@ -113,56 +113,56 @@ const SwapArtWork = (props: any) => {
       return (
         <ListCard ref={divRef} numOfItem={myItems.length}>
           {
-              myItems.map((card:any) => {
-                return (
-                  <Card key={card.id} data={card}  className="card-item" />
-                )
-              })
-            }
+            myItems.map((card: any) => {
+              return (
+                <Card key={card.id} data={card} className="card-item" />
+              )
+            })
+          }
         </ListCard>
       )
-    } else if (myItems.length === 1) return <Card  data={myItems[0]}  className="card-item" />
-    else return <DefaultCard setVisible={setVisible} value='my-item'/>
+    } else if (myItems.length === 1) return <Card data={myItems[0]} className="card-item" />
+    else return <DefaultCard setVisible={setVisible} value='my-item' />
   }
 
   return (
     <TradeArtWorkStyled>
       <Select className="select" style={{ width: 120, borderRadius: 30, textAlign: 'center' }} onChange={setSelect} defaultValue={select}>
         {OptionData.map((item, i) => (
-            <Option  key={i} value={item.value}>{item.label} <img src={Token}/></Option>
+          <Option key={i} value={item.value}>{item.label} <img src={Token} /></Option>
         ))}
       </Select>
-      <Row align="middle" style={{marginTop: 30}}>
-        <Col xl={{ span: 8}} md={{ span:  24}} xs={{span: 24}}>
+      <Row align="middle" style={{ marginTop: 30 }}>
+        <Col xl={{ span: 8 }} md={{ span: 24 }} xs={{ span: 24 }}>
           {renderListCard()}
-          { myItems.length > 0 && <Row justify="center"><ButtonBuy onClick={() => setVisible({isOpen: true, value: 'my-item'})}>Edit</ButtonBuy></Row> }
+          {myItems.length > 0 && <Row justify="center"><ButtonBuy onClick={() => setVisible({ isOpen: true, value: 'my-item' })}>Edit</ButtonBuy></Row>}
         </Col>
-        <Col xl={{ span: 10}} md={{ span:  24}} xs={{span: 24}}>
-          <Trade/>
+        <Col xl={{ span: 10 }} md={{ span: 24 }} xs={{ span: 24 }}>
+          <Trade />
         </Col>
-        <Col xl={{ span: 6}} md={{ span:  24}} xs={{span: 24}}>
-        {itemSwap[0] ? <Card data={itemSwap[0]}/> : <DefaultCard setVisible={setVisible} value='item-swap'/>}
-        {itemSwap[0] && <Row justify="center"><ButtonBuy onClick={() => setVisible({isOpen: true, value: 'item-swap'})}>Edit</ButtonBuy></Row>       }
+        <Col xl={{ span: 6 }} md={{ span: 24 }} xs={{ span: 24 }}>
+          {itemSwap[0] ? <Card data={itemSwap[0]} /> : <DefaultCard setVisible={setVisible} value='item-swap' />}
+          {itemSwap[0] && <Row justify="center"><ButtonBuy onClick={() => setVisible({ isOpen: true, value: 'item-swap' })}>Edit</ButtonBuy></Row>}
         </Col>
       </Row>
       <Row className="footer">
-        <Col xl={{ span: 16}} md={{ span:  24}} xs={{span: 24}}>
-          <Input.TextArea style={{borderRadius: '16px', resize: 'none'}} placeholder="Note for author" maxLength={1000}/>  
-        </Col>     
-        <Col xl={{ span: 5}} md={{ span:  8}} xs={{span: 24}}>
+        <Col xl={{ span: 16 }} md={{ span: 24 }} xs={{ span: 24 }}>
+          <Input.TextArea style={{ borderRadius: '16px', resize: 'none' }} placeholder="Note for author" maxLength={1000} />
+        </Col>
+        <Col xl={{ span: 5 }} md={{ span: 8 }} xs={{ span: 24 }}>
           <ButtonTrade width="100%">
             Offer now
           </ButtonTrade>
         </Col>
       </Row>
-      <ModalSelectSwap 
-        visible={visible} 
-        setVisible={setVisible} 
-        data={visible.value === 'my-item' ? NFTs : []} 
-        getItemSelected={getItemSelected} 
+      <ModalSelectSwap
+        visible={visible}
+        setVisible={setVisible}
+        data={visible.value === 'my-item' ? NFTs : []}
+        getItemSelected={getItemSelected}
         multiSelect={visible.value === 'my-item'}
         selectedItem={visible.value === 'my-item' ? myItems : itemSwap}
-        />
+      />
     </TradeArtWorkStyled>
 
   )
