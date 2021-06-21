@@ -58,11 +58,12 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
   margin: auto;
   border: 1px solid rgba(0,0,0,0.2);  
   border-top: none;
-
+  background-color:#F9FAFB;
   .left-sidebar{
+    background-color: #fff;
     min-width: ${(props) => props.onShowsidebar ? '320px' : '80px'};
-    transition: 200ms;
-    height: ${(props) => props.onShowsidebar ? '100%' : '80px'};
+    transition: 300ms;
+    height: ${(props) => props.onShowsidebar ? '100%' : '100vh'};
     border-right: ${(props) => props.onShowsidebar && '1px solid rgba(0,0,0,0.2)'};
     max-height: 100vh;
     overflow-y: auto;
@@ -80,10 +81,14 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
     max-width: 1320px;
     margin: 0 auto;
     .trending-nft{
-      width:100%;
-      height:80px;
-      box-shadow: 0px 4px 16px -4px rgba(35, 35, 35, 0.06);
-      border-bottom: 1px solid rgba(0,0,0,.06);
+      width: 98%;
+      height: 80px;
+      margin: auto;
+      box-shadow: 0px 2px 9px 0px rgb(0 0 0 / 9%);
+      border-bottom: 1px solid rgb(0 0 0 / 0%);
+      background-color: #fff;
+      margin-top: 15px;
+      border-radius: 12px;
     }
     .banner-nft{
       height:240px;
@@ -91,6 +96,10 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
       margin: 40px auto;
       padding: 0 30px;
       max-width:1280px;
+      border-radius:12px;
+      img{
+        border-radius:12px;
+      }
     }
     .space-collection{
       /* height:600px; */

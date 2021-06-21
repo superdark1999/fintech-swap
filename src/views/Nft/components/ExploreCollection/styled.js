@@ -139,7 +139,7 @@ export const FilterBarStyled = styled.div`
       }
     }
     .ant-select {
-      margin-right: 16px;
+      margin-left: 16px;
       .ant-select-selector {
         border-radius: 30px;
         .ant-select-selection-item {

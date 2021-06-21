@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Select, Button } from 'antd'
+import { Button } from 'antd'
 import { ExploreCollectionStyled } from './styled'
 import Cart from 'components-v2/CardItem'
 import FilterBar from './filterBar'
