@@ -104,7 +104,7 @@ export const useLottery = () => {
   return useMemo(() => getLotteryContract(web3), [web3])
 }
 
-export const useLotteryTicket = () => {
+export const useLottery1Ticket = () => {
   const web3 = useWeb3()
   return useMemo(() => getLotteryTicketContract(web3), [web3])
 }
