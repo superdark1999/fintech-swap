@@ -28,6 +28,7 @@ import 'antd/dist/antd.css';
 import MyProfile from 'views/Nft/components/MyProfile'
 import Page404 from 'views/Nft/components/404'
 import Explore from 'views/Nft/components/Explore'
+import SwapStore from 'views/Nft/components/SwapStore'
 // 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -114,6 +115,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/swap">
                 <TradeArtWork />
+              </Route>
+              <Route path="/swap-store">
+                <SwapStore />
               </Route>
               <Route path="/explore">
                 <Explore />

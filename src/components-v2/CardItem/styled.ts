@@ -155,13 +155,17 @@ export const StyledCart = styled.div<PropsStyled>`
         }     
       }
       .number {
-        color: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
         font-weight: 600;
         font-size: 14px;
         line-height: 20px;
         margin: 3px 0px;
         display: flex;
         justify-content: space-between;
+        .btn-swap{
+          padding:0 16px !important;
+          line-height:23px !important;
+          background: linear-gradient(45deg, #1cace8, #07dce6);
+        }
         img {
           margin-top: -3px;
           margin-right: 5px;

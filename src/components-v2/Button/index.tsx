@@ -46,6 +46,11 @@ export const ButtonTrade = styled.button<StyledButtonProps>`
   color: #35A5FC;
   cursor: pointer;
   margin-right: 10px;
+  &.disabled{
+    background:#bdbdbd;
+    color: #fff;
+    border: 2px solid #fff;
+  } 
   > img,
   span {
     /* margin-right: 5px; */
@@ -67,7 +72,11 @@ export const ButtonBuy = styled.div<StyledButtonProps>`
   position: relative;
   cursor: pointer;
   color:#fff;
-
+  &.disabled{
+    background:#bdbdbd;
+    color: #fff;
+    border: 2px solid #fff;
+  } 
 `
 
 export const ButtonProccesing = styled.div<StyledButtonProps>`
