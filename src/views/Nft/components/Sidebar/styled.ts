@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import BuyLucky from 'assets/images/buy-lucky.svg'
+import { Drawer } from 'antd'
 interface PropsStyled {
   isMobile?: boolean
 }
@@ -40,8 +41,8 @@ export const SidebarStyled = styled.div<PropsStyled>`
         text-decoration: underline;
         color: #333435;
         font-weight: 600;
-        font-size: 12px;
-        text-align: center;
+        font-size: 16px;
+        line-height: 24px;
       }
     }
     &.on-sale{
@@ -208,5 +209,11 @@ export const SidebarStyled = styled.div<PropsStyled>`
         }
       }
     }
-    }
+  }
+`
+
+export const DrawerStyled = styled(Drawer)`
+.ant-drawer-body {
+  padding: 0
+}
 `

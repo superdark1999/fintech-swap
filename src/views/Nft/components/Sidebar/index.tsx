@@ -7,7 +7,7 @@ import Rocket from 'assets/images/Rocket.svg'
 import MoneyIcon from 'assets/images/money.svg'
 
 import { Button, Select, Input, Checkbox } from 'antd'
-import { PlusCircleOutlined, CaretUpOutlined, TagFilled, SearchOutlined, MenuUnfoldOutlined, CaretDownOutlined } from '@ant-design/icons'
+import { PlusCircleOutlined, CaretUpOutlined, TagFilled, SearchOutlined, MenuUnfoldOutlined, CaretDownOutlined, LeftOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 const plainOptions = ['Apple', 'Pear', 'Orange'];
 interface SidebarProps {
@@ -59,7 +59,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar }) => {
   return (
     <SidebarStyled>
       <div className="button button-collapse" onClick={() => setShowSidebar(!onShowSidebar)}>
-        {' < '}
+        <LeftOutlined />
         <div className="title">Collapse</div>
       </div>
       <Link className="button on-sale" to="/my-profile/onsale/readyToSell">

@@ -1,29 +1,31 @@
-import React, { useCallback, useState, useEffect } from 'react'
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Switch } from 'react-router-dom'
 import Page from './components/Page'
-import PageHeader from './components/PageHeader'
 import styled from 'styled-components'
 import Sidebar from './components/Sidebar/index'
+import SidebarMobile from './components/Sidebar/SidebarMobile'
 import TrendingBar from './components/TrendingBar/index'
 import BannerBar from './components/BannerBar/index'
 import HotArtists from './components/HotArtists/index'
 import HotArtWorks from './components/HotArtWorks/index'
 import HotSwap from './components/HotSwap/index'
 import Collection from './components/Collection/index'
-import ModalLucky from '../../components-v2/Modal'
 import { isMobile } from 'react-device-detect'
-const NFTContainer: React.FC = () => {
+
+const NFTContainer = (props: any) => {
   const [onShowSidebar, setShowSidebar] = useState(true)
   return (
     <Switch>
       <Page>
         <NFTContainerStyled onShowsidebar={onShowSidebar}>
           {
-            !isMobile && (
+            !isMobile &&
+            (
               <div className="left-sidebar">
                 <Sidebar setShowSidebar={setShowSidebar} onShowSidebar={onShowSidebar} />
               </div>
-            )}
+            )        
+          }
           <div className="main-nft">
             <div className="trending-nft">
               <TrendingBar />
