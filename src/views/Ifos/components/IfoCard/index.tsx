@@ -107,67 +107,13 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
           </FeaturedCardFooter>
 
           <BoxLink>
-            <Link to="/IfoDetail">Participate</Link>
+            <Link to={`/IfoDetail/${ifo._id}`}>Participate</Link>
           </BoxLink>
         </ItemContent>
       </Item>
 
-      <Item>
-        <ItemHead>
-          <section>
-            <span>Coming soon</span>
-          </section>
-        </ItemHead>
 
-        <ItemContent>
-          <BoxHead>
-            <h2>HCATS - Community</h2>
-            <p>1 BNB = ? HCATS</p>
-          </BoxHead>
-
-          <Total>
-            <span>Total Raise:</span>
-            <h2>0 BNB</h2>
-          </Total>
-
-          <BoxProgress>
-            <TitleProgress>Progress</TitleProgress>
-            <BoxProgressBar>
-              <ProgressBar></ProgressBar>
-            </BoxProgressBar>
-            <ProgressFooter>
-              <ProgressPercentage>100%</ProgressPercentage>
-              <FeaturedCardMinimum>(Min.0%)</FeaturedCardMinimum>
-              <FeaturedCardAmount>0/100</FeaturedCardAmount>
-            </ProgressFooter>
-          </BoxProgress>
-
-          <FeaturedCardFooter>
-            <CardColumn>
-              <p>Participants</p>
-              <h3>0</h3>
-            </CardColumn>
-
-            <CardColumn>
-              <p>
-                Max<span>BNB</span>
-              </p>
-              <h3>0.0</h3>
-            </CardColumn>
-
-            <CardColumn>
-              <p>Access</p>
-              <h3>Private</h3>
-            </CardColumn>
-          </FeaturedCardFooter>
-
-          <BoxLink>
-            <Link to="/IfoDetail">Participate</Link>
-          </BoxLink>
-        </ItemContent>
-      </Item>
-
-      <Item className="item-coming">
+      {/* <Item className="item-coming">
         <div className="item-coming-title">Upcoming Project !</div>
 
         <div className="item-coming-content">
@@ -176,7 +122,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
             <p>Something exciting is coming your way!</p>
           </div>
         </div>
-      </Item>
+      </Item> */}
     </>
   )
 }

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { useParams} from 'react-router-dom';
 import BigNumber from 'bignumber.js'
 import {
   AutoRenewIcon,
@@ -16,19 +17,44 @@ import useOldApproveConfirmTransaction from 'hooks/useOldApproveConfirmTransacti
 import { useERC20, useContract ,useIfoContract} from 'hooks/useContract'
 import getTimePeriods from 'utils/getTimePeriods'
 import { useToast } from 'state/hooks'
+import axios from 'axios';
 
 import ifoAbi from 'config/abi/ifo.json'
+import { useHookIFOs } from '../../Store';
 
-import { useBlockNumber } from '../../../../state/application/hooks';
+
+// import { useBlockNumber } from '../../../../state/application/hooks';
 
  const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
-const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
-
-const IfoTitle = () => {
+// const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
+const Check = () =>{
+  const [state, actions] = useHookIFOs();
+  const [activeIfo,setActiveIfo] = useState(null)
+  const param:any = useParams();
+  useEffect(() => {
+    const fetchIfo =async () => {
+      const url = `https://dashboard.luckyswap.exchange/launchpads/${param?.id}`;
+      const result = await axios.get(url).catch(() => console.log("axios error"));
+      if(result){
+        setActiveIfo(result.data);
+      }
+  
+    }
+    // actions.getLaunchpads()
+    fetchIfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  if(activeIfo){
+    return <IfoTitle activeIfo={activeIfo} />
+  }
+  return null
+}
+const IfoTitle = ({activeIfo}:any) => {
   const [balance, setBalance] = useState(0);
   const [isApproved, setIsApproved] = useState(false);
   const [value, setValue] = useState('')
+
   const { name, address, currency, currencyAddress} = activeIfo;
   const contract = useIfoContract(address);
   const { offeringAmount, raisingAmount, secondsUntilStart, secondsUntilEnd, status, totalAmount, startBlockNum } = useGetPublicIfoData(activeIfo)
@@ -48,7 +74,6 @@ const IfoTitle = () => {
   const priceRate = offeringAmount.toNumber() && raisingAmount.toNumber() ? `${offeringAmount.div(raisingAmount).toFixed(2)}` : "?"
 
   // const latestBlockNumber = useBlockNumber() 
-
 
   useEffect(() => {
     if (account){
@@ -123,15 +148,14 @@ const IfoTitle = () => {
 
   const handleConfirm = async () => {
     try {
-      const estimate = await raisingTokenContract
+      await raisingTokenContract
       .estimateGas
       .depositWithoutWhitelist(valueWithTokenDecimals.toString())
       // console.log("estimate", estimate)
     } catch(error){
-      console.log("err", error);
       toastError(error.data.message);
     }
-    const result = await raisingTokenContract.depositWithoutWhitelist(valueWithTokenDecimals.toString());  
+    await raisingTokenContract.depositWithoutWhitelist(valueWithTokenDecimals.toString());  
 
   }
 
@@ -145,7 +169,7 @@ const IfoTitle = () => {
       else
         toastSuccess("Huhu, You aren't member of Whitelist");
     } catch(err) {
-      console.log("err", err);
+      toastError("Wrong somethings");
     }
   }
 
@@ -244,7 +268,8 @@ const IfoTitle = () => {
               </div>
             </div>
           </div>
-          { (status === 'live' && !(isConfirmed || isConfirming || isApproved)) && (
+          { (status ==='live')  && (
+          (!(isConfirmed || isConfirming || isApproved)) ? (
           <Button
            className={`finished ${(isConfirmed || isConfirming || isApproved) && "disabled"}`} color="primary"
             disabled={isConfirmed || isConfirming || isApproved}
@@ -253,9 +278,8 @@ const IfoTitle = () => {
             isLoading={isApproving}
           >
           {TranslateString(564, 'Approve')}
-            </Button>)}
-         {(status === 'live' && !(!isApproved || isConfirmed ||
-          valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0))) &&
+          </Button>)
+         :
             (<Button
             className={`finished ${(!isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0)) && "disabled"}`} color="primary"
             onClick={handleConfirm}
@@ -266,7 +290,8 @@ const IfoTitle = () => {
             endIcon={isConfirming ? spinnerIcon : undefined}
             >
            { TranslateString(464, 'Confirm')}
-            </Button>)}
+            </Button>)
+          )}
           {status ==='finished' && (
             <Button  className="finished" color="primary" onClick={handleClaim}>Claim</Button>
           )}
@@ -547,7 +572,7 @@ const BoxForm = styled.div`
     cursor: pointer;
     position: relative;
     z-index: 1;
-    background: #f5c6064d;
+    background: #f5c506f9;
     color: rgb(255, 253, 250);
     cursor: auto;
     box-shadow: none;
@@ -560,7 +585,7 @@ const BoxForm = styled.div`
     /* cursor: not-allowed; */
   }
   button.disabled {
-    background:#1890ff66;
+    background:#f5c6064d;
     cursor: not-allowed;
 
   }
@@ -604,4 +629,4 @@ const BoxSocial = styled.div`
   }
 `
 
-export default IfoTitle
+export default Check

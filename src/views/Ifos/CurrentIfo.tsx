@@ -1,22 +1,33 @@
-import React from 'react'
+import React, {useEffect}from 'react'
 import styled from 'styled-components'
 import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, Image } from '@luckyswap/uikit'
 import { ifosConfig } from 'config/constants'
 import IfoCard from './components/IfoCard'
 import IfoCards from './components/IfoCards'
 
-
+import { useHookIFOs } from './Store'
 /**
  * Note: currently there should be only 1 active IFO at a time
  */
-const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
+// const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
 
 const Ifo = () => {
+  const [state, actions] = useHookIFOs();
+  const { launchpads } = state;
+  const activeIfos  = launchpads.filter(ifo => ifo.isActive === true);
+
+  useEffect(() => {
+    actions.getLaunchpads()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div>
       <IfoCards isSingle>
-        <IfoCard ifo={activeIfo} />
+        {activeIfos.map((activeIfo) =>
+          <IfoCard ifo={activeIfo} />
+        )}
+        
       </IfoCards>
 
       <BoxIDO>

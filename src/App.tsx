@@ -180,7 +180,7 @@ const App: React.FC = () => {
                 <Route path="/PoolCardsDetail">
                   <Poolls />
                 </Route>
-                <Route path="/IfoDetail">
+                <Route path="/IfoDetail/:id">
                   <IfoDetail />
                 </Route>
 

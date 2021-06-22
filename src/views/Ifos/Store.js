@@ -16,6 +16,13 @@ const Store = createStore({
             setState({ launchpads: response.data })
           })
       },
+    setLaunchPad:
+      (launchpads) =>
+      ({ getState, setState }) => {
+        const state = getState()
+        setState({...state,launchpads})
+      },
+    
   },
   name: 'IFOS Store',
 })
