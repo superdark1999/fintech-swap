@@ -219,7 +219,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         <Form onFinish={() => { window.location.reload() }}>
           <Form.Item name="pricePlaceBid">
             <label>
-              Please switch our support chainId
+            Please switch to BSC Testnet network
             </label>
           </Form.Item>
           <Form.Item>

@@ -27,7 +27,8 @@ export const RadioButton= styled(Radio.Button)<StyledButtonProps>`
     border-radius: ${props => props.borderRadius || '16px'};
     padding: 2px; 
     box-sizing: border-box;
-    background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+    background:#35A5FC;
+    outline: none;
     -webkit-mask: 
       linear-gradient(#fff 0 0) content-box, 
       linear-gradient(#fff 0 0);
@@ -44,14 +45,13 @@ export const RadioButton= styled(Radio.Button)<StyledButtonProps>`
     text-overflow: ellipsis;
     white-space: nowrap;
     margin: 0 0.5rem 0 0.25rem;
+    outline: none;
     font-size: 1rem;
     width: -webkit-fit-content;
     width: -moz-fit-content;
     width: fit-content;
     font-weight: 500;
-    background: linear-gradient(
-    270deg
-    ,#19A3DD -16.5%,#BADEB7 117.25%);
+    background: #35A5FC;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: unset;
@@ -92,7 +92,7 @@ export const RadioButton= styled(Radio.Button)<StyledButtonProps>`
     border-radius: ${props => props.borderRadius || '16px'};
     padding: 2px; 
     box-sizing: border-box;
-    background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+    background:#35A5FC;
     -webkit-mask: 
       linear-gradient(#fff 0 0) content-box, 
       linear-gradient(#fff 0 0);
