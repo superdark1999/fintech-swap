@@ -12,8 +12,8 @@ export const StyledCart = styled.div<PropsStyled>`
   align-items: center;
   position: relative;
   .card-art-work{
-    /* width: ${props => props.width || '300px'};
-    height: ${props => props.height || '530px'}; */
+    max-width: ${props => props.width || '300px'};
+    max-height: ${props => props.height || '530px'};
     /* border: 1px solid #E7EBEF; */
     box-sizing: border-box;
     overflow: hidden;
@@ -23,8 +23,8 @@ export const StyledCart = styled.div<PropsStyled>`
     } */
     
     .wrapper-image{
-      width: ${props => props.width || '300px'};
-      height: ${props => props.height || '450px'};
+      min-width: ${props => props.width || '300px'};
+      min-height: ${props => props.height || '450px'};
       border: 1px solid #E7EBEF;
       box-sizing: border-box;
       overflow: hidden;

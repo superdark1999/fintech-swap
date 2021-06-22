@@ -3,7 +3,6 @@ import { Switch } from 'react-router-dom'
 import Page from './components/Page'
 import styled from 'styled-components'
 import Sidebar from './components/Sidebar/index'
-import SidebarMobile from './components/Sidebar/SidebarMobile'
 import TrendingBar from './components/TrendingBar/index'
 import BannerBar from './components/BannerBar/index'
 import HotArtists from './components/HotArtists/index'
@@ -80,7 +79,7 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
       }
     height: 100%;
     overflow-y: auto;
-    max-width: 1320px;
+    max-width: 1344px;
     margin: 0 auto;
     .trending-nft{
       width: 98%;
