@@ -1,3 +1,3 @@
-export const formatNumber = (number: Number) => {
+export default (number: Number) => {
   return Intl.NumberFormat().format(+number)
 }
