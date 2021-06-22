@@ -22,6 +22,7 @@ import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { getPrice, SUPPORT_CHAIN_IDS } from 'utils'
 import { Modal, Input, Form } from 'antd'
+import formatNumber from 'utils/formatNumber'
 import useAuth from 'hooks/useAuth'
 interface TopBarProps {
   setMobileMenu?: (value: boolean) => void,
@@ -92,7 +93,8 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   }
 
   const onSearching = (e: any) => {
-    history.push(`/explore?search=${e.target.value}`)
+    //history.push(`/explore?search=${e.target.value}`)
+    window.location.replace(`/explore?search=${e.target.value}`)
   }
   return (
     <StyledTopBar className={classtSicky}>
@@ -248,11 +250,11 @@ const UserBalance = () => {
     if (luckyMethod && account) {
       getBNBBalance(account).then(({ data, status }) => {
         if (status == 200) {
-          userActions.updateUserBalance({ BNB: getPrice(data?.result || 0)?.toFixed(3) })
+          userActions.updateUserBalance({ BNB: formatNumber(getPrice(data?.result || 0) )})
         }
       })
       luckyMethod?.getLuckyBalance().then((data: any) => {
-        userActions.updateUserBalance({ LUCKY: getPrice(data?._hex || 0) })
+        userActions.updateUserBalance({ LUCKY: formatNumber(getPrice(data?._hex || 0) )})
       })
     }
   }, [])
