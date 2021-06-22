@@ -19,7 +19,6 @@ import UserUpdater from './wallet/state/user/updater'
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import Nft from './views/Nft'
 import getLibrary from './wallet/utils/getLibrary'
-import { Layout } from 'antd';
 import CreateArtWork from 'views/Nft/components/CreateArtWork/index'
 import DetailArtWork from 'views/Nft/components/DetailArtWork'
 import TradeArtWork from 'views/Nft/components/TradeArtwork'
@@ -28,6 +27,8 @@ import 'antd/dist/antd.css';
 import MyProfile from 'views/Nft/components/MyProfile'
 import Page404 from 'views/Nft/components/404'
 import Explore from 'views/Nft/components/Explore'
+import SwapStore from 'views/Nft/components/SwapStore'
+import SidebarMobile from 'views/Nft/components/Sidebar/SidebarMobile'
 // 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -69,16 +70,9 @@ function Updaters() {
   )
 }
 
-const App: React.FC = () => {
+const App = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
-
-  const handleDismissMobileMenu = useCallback(() => {
-    setMobileMenu(false)
-  }, [setMobileMenu])
-
-  const handlePresentMobileMenu = useCallback(() => {
-    setMobileMenu(true)
-  }, [setMobileMenu])
+  console.log('mobileMenu: ', mobileMenu)
 
   return (
     <Providers>
@@ -86,13 +80,19 @@ const App: React.FC = () => {
       <Router>
         <Web3ReactManager>
           <>
-            <TopBar onPresentMobileMenu={handlePresentMobileMenu} />
+          {
+            isMobile &&
+            (
+              <SidebarMobile setMobileMenu={setMobileMenu} mobileMenu={mobileMenu}/>
+            )
+          }
+            <TopBar setMobileMenu={setMobileMenu} mobileMenu={mobileMenu}/>
             <Switch>
               <Route path="/" exact>
-                <Nft />
+                <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu}/>
               </Route>
               <Route path="/nfts">
-                <Nft />
+                <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu}/>
               </Route>
               <Route path="/create/artwork">
                 <CreateArtWork />
@@ -114,6 +114,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/swap">
                 <TradeArtWork />
+              </Route>
+              <Route path="/swap-store">
+                <SwapStore />
               </Route>
               <Route path="/explore">
                 <Explore />

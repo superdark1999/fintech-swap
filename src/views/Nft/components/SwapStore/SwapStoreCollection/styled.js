@@ -5,15 +5,25 @@ export const ExploreCollectionStyled = styled.div`
   max-width: 1320px;
   padding: 20px 0;
   margin: auto;
+  .banner-nft {
+    margin: 30px 0;
+    border-radius: 12px;
+    img {
+      border-radius: 12px;
+    }
+  }
   .header-artists {
     height: 48px;
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
     .title-artists {
       font-weight: bold;
       text-align: center;
-      flex: 1;
+      background: -webkit-linear-gradient(45deg, #1cace8, #07dce6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       font-size: ${isMobile ? '20px' : '40px'};
     }
   }
@@ -63,6 +73,7 @@ export const ExploreCollectionStyled = styled.div`
     grid-gap: 24px;
     align-items: stretch;
     padding: 24px 0px;
+    margin: 30px 0;
   }
 
   .footer-section {

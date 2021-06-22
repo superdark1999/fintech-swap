@@ -1,47 +1,49 @@
-import React, {useState, useCallback} from 'react'
-import {SidebarStyled} from './styled'
+import React, { useState, useCallback } from 'react'
+import { SidebarStyled } from './styled'
 import NotifyIcon from 'assets/images/notify.svg'
 import Collection from 'assets/images/collection.svg'
+import Astronaut from 'assets/images/astronaut.svg'
+import Rocket from 'assets/images/Rocket.svg'
 import MoneyIcon from 'assets/images/money.svg'
 
 import { Button, Select, Input, Checkbox } from 'antd'
-import { PlusCircleOutlined, CaretUpOutlined, TagFilled, SearchOutlined, MenuUnfoldOutlined, CaretDownOutlined } from '@ant-design/icons'
-import {Link} from 'react-router-dom'
+import { PlusCircleOutlined, CaretUpOutlined, TagFilled, SearchOutlined, MenuUnfoldOutlined, CaretDownOutlined, LeftOutlined } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
 const plainOptions = ['Apple', 'Pear', 'Orange'];
 interface SidebarProps {
-    setShowSidebar:any;
-    onShowSidebar:any;
+  setShowSidebar: any;
+  onShowSidebar: any;
 }
 
 const { Option } = Select
-const options = ["United States Dollar (USD)"]
+const options = ["LUCKY TOKEN (LUCKY)"]
 
-const Sidebar: React.FC<SidebarProps> = ({setShowSidebar,onShowSidebar}) => {
-  const [select, setSelect] = React.useState<string | null>('United States Dollar (USD)');
-  const [configMenu, setConfigMenu] = React.useState<any| null>(['collection', 'price', 'tag']);
-  const [ checkedList, setCheckedList] = React.useState<[string] | null>(['']);
+const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar }) => {
+  const [select, setSelect] = React.useState<string | null>('LUCKY TOKEN (LUCKY)');
+  const [configMenu, setConfigMenu] = React.useState<any | null>(['collection', 'price', 'tag']);
+  const [checkedList, setCheckedList] = React.useState<[string] | null>(['']);
 
 
-  const onTogleMenu = (value : string) => {
-    if (!configMenu.find(( menu : string) => value ===  menu))  setConfigMenu(configMenu.concat(value))
-    else setConfigMenu(configMenu.filter((item: string)=> item !== value))
+  const onTogleMenu = (value: string) => {
+    if (!configMenu.find((menu: string) => value === menu)) setConfigMenu(configMenu.concat(value))
+    else setConfigMenu(configMenu.filter((item: string) => item !== value))
   };
 
-  const onChange = (list : any) => {
+  const onChange = (list: any) => {
     setCheckedList(list);
   };
   const checkRenderSubMenu = useCallback(
-    (subMenu : string) => {
-      if (configMenu.find(( menu : string) => subMenu ===  menu)) return true
+    (subMenu: string) => {
+      if (configMenu.find((menu: string) => subMenu === menu)) return true
       return false
     },
     [configMenu],
-  ) 
+  )
 
   if (!onShowSidebar) {
     return (
       <SidebarStyled>
-        <div className="collapse-menu button-collapse" onClick={()=>setShowSidebar(!onShowSidebar)}> 
+        <div className="collapse-menu button-collapse" onClick={() => setShowSidebar(!onShowSidebar)}>
           <MenuUnfoldOutlined />
         </div>
         {/* <div className="collapse-menu">
@@ -55,19 +57,21 @@ const Sidebar: React.FC<SidebarProps> = ({setShowSidebar,onShowSidebar}) => {
   }
 
   return (
-  <SidebarStyled>
-    <div className="button button-collapse" onClick={()=>setShowSidebar(!onShowSidebar)}> 
-      {' < '} 
-      <div className="title">Collapse</div>
-    </div>
-    <Link className="button on-sale" to="/my-profile/onsale/readyToSell">
-      <img src={NotifyIcon} alt=""/>
-      On sale
-    </Link>
-    <a className="button on-sale" target="_blank" href="https://luckyswap.finance/#/">
-      Buy LUCKY
-    </a>
-    {/* <div className="group-menu">
+    <SidebarStyled>
+      <div className="button button-collapse" onClick={() => setShowSidebar(!onShowSidebar)}>
+        <LeftOutlined />
+        <div className="title">Collapse</div>
+      </div>
+      <Link className="button on-sale" to="/my-profile/onsale/readyToSell">
+        <img src={NotifyIcon} alt="" style={{ marginRight: '10px' }} />
+        On sale
+        <span className="number-notify">5</span>
+      </Link>
+      <a className="button buy-lucky" target="_blank" href="https://luckyswap.finance/#/">
+        <img src={Rocket} alt="" style={{ marginRight: '10px' }} />
+        <span>Buy LUCKY</span>
+      </a>
+      {/* <div className="group-menu">
       <div className="button menu" onClick={() => onTogleMenu('collection')}>
         <div className="group-title">
           <img src={Collection} alt=""/>
@@ -93,35 +97,35 @@ const Sidebar: React.FC<SidebarProps> = ({setShowSidebar,onShowSidebar}) => {
       </div>
     </div> */}
 
-    <div className="group-menu">
-      <div className="button menu" onClick={() => onTogleMenu('price')}>
-        <div className="group-title">
-          <img src={MoneyIcon} alt=""/>
-          Price
+      <div className="group-menu">
+        <div className="button menu" onClick={() => onTogleMenu('price')}>
+          <div className="group-title">
+            <img src={MoneyIcon} alt="" />
+            Price
+          </div>
+          {/* { checkRenderSubMenu('price') ? <CaretUpOutlined/> : <CaretDownOutlined /> } */}
         </div>
-        {/* { checkRenderSubMenu('price') ? <CaretUpOutlined/> : <CaretDownOutlined /> } */}
-      </div>
-      <div className={true? 'show-sub-menu list-sub-menu' : 'list-sub-menu'}>
-        <Select onChange={setSelect} defaultValue={select}>
-          {options.map((item) => (
-              <Option  key={item} value={item}>{item}</Option>
-          ))}
-        </Select>
-        <div className="button group-input">
-          <Input placeholder="min"/>
+        <div className={true ? 'show-sub-menu list-sub-menu' : 'list-sub-menu'}>
+          <Select onChange={setSelect} defaultValue={select}>
+            {options.map((item) => (
+              <Option key={item} value={item}>{item}</Option>
+            ))}
+          </Select>
+          <div className="button group-input">
+            <Input placeholder="min" />
             to
-          <Input placeholder="max"/>
-        </div>
-        <div className="button sub-menu">
-          
-          <Button shape="round">
-            Apply
-          </Button>
+            <Input placeholder="max" />
+          </div>
+          <div className="button sub-menu">
+
+            <Button shape="round" style={{ fontWeight: 'bold' }}>
+              Apply
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div className="group-menu">
+      <div className="group-menu">
         <div className="button menu" onClick={() => onTogleMenu('tag')}>
           <div className="group-title">
             <TagFilled />
@@ -131,13 +135,13 @@ const Sidebar: React.FC<SidebarProps> = ({setShowSidebar,onShowSidebar}) => {
         </div>
         <div className={true ? 'show-sub-menu list-sub-menu' : 'list-sub-menu'}>
           <div className="input-search">
-            <SearchOutlined className="icon-search"/>
+            <SearchOutlined className="icon-search" />
             <input placeholder="Search tag" />
           </div>
           <Checkbox.Group options={plainOptions} value={checkedList} onChange={e => onChange(e)} />
         </div>
       </div>
-  </SidebarStyled>
+    </SidebarStyled>
   )
 }
 

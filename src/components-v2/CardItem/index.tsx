@@ -18,6 +18,7 @@ import { CheckOutlined } from '@ant-design/icons'
 // import {getPrice} from 'utils'
 import _ from 'lodash'
 import Countdown from "react-countdown";
+import { ButtonBuy } from 'components-v2/Button'
 const { Meta } = Card;
 export default function CardItem(props?: { data?: any }) {
   const [isCopied, handleCopy] = useCopyToClipboard(3000);
@@ -71,9 +72,10 @@ export default function CardItem(props?: { data?: any }) {
               </div>
             </div>
             <div className="number">
-              <div>
+              {data?.NFTType !== 'swap' ? <div>
                 {price} LUCKY {' '}
-                <img src={Token} alt="" /></div>
+                <img src={Token} alt="" />
+              </div> : <ButtonBuy className="btn-swap">Swap now</ButtonBuy>}
               <div>
                 4.8
                 {' '}
@@ -81,9 +83,9 @@ export default function CardItem(props?: { data?: any }) {
                 {' '}
                 <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5' }}>(15)</span>
                 {' '}
-                {data.NFTType === 'auction' && <img src={Hammer} alt="" />}
-                {data.NFTType === 'buy' && <img src={CartGrey} alt="" />}
-                {data.NFTType === 'swap' && <img src={Trade} alt="" />}
+                {data.NFTType === 'auction' && <img src={Hammer} alt="auction NFT" />}
+                {data.NFTType === 'buy' && <img src={CartGrey} alt="buy NFT" />}
+                {data.NFTType === 'swap' && <span></span>}
               </div>
             </div>
           </div>

@@ -1,7 +1,6 @@
-import React, { useCallback, useState, useEffect } from 'react'
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Switch } from 'react-router-dom'
 import Page from './components/Page'
-import PageHeader from './components/PageHeader'
 import styled from 'styled-components'
 import Sidebar from './components/Sidebar/index'
 import TrendingBar from './components/TrendingBar/index'
@@ -10,20 +9,22 @@ import HotArtists from './components/HotArtists/index'
 import HotArtWorks from './components/HotArtWorks/index'
 import HotSwap from './components/HotSwap/index'
 import Collection from './components/Collection/index'
-import ModalLucky from '../../components-v2/Modal'
 import { isMobile } from 'react-device-detect'
-const NFTContainer: React.FC = () => {
+
+const NFTContainer = (props: any) => {
   const [onShowSidebar, setShowSidebar] = useState(true)
   return (
     <Switch>
       <Page>
         <NFTContainerStyled onShowsidebar={onShowSidebar}>
           {
-            !isMobile && (
+            !isMobile &&
+            (
               <div className="left-sidebar">
                 <Sidebar setShowSidebar={setShowSidebar} onShowSidebar={onShowSidebar} />
               </div>
-            )}
+            )        
+          }
           <div className="main-nft">
             <div className="trending-nft">
               <TrendingBar />
@@ -58,11 +59,12 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
   margin: auto;
   border: 1px solid rgba(0,0,0,0.2);  
   border-top: none;
-
+  background-color:#F9FAFB;
   .left-sidebar{
+    background-color: #fff;
     min-width: ${(props) => props.onShowsidebar ? '320px' : '80px'};
-    transition: 200ms;
-    height: ${(props) => props.onShowsidebar ? '100%' : '80px'};
+    transition: 300ms;
+    height: ${(props) => props.onShowsidebar ? '100%' : '100vh'};
     border-right: ${(props) => props.onShowsidebar && '1px solid rgba(0,0,0,0.2)'};
     max-height: 100vh;
     overflow-y: auto;
@@ -77,13 +79,17 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
       }
     height: 100%;
     overflow-y: auto;
-    max-width: 1320px;
+    max-width: 1344px;
     margin: 0 auto;
     .trending-nft{
-      width:100%;
-      height:80px;
-      box-shadow: 0px 4px 16px -4px rgba(35, 35, 35, 0.06);
-      border-bottom: 1px solid rgba(0,0,0,.06);
+      width: 98%;
+      height: 80px;
+      margin: auto;
+      box-shadow: 0px 2px 9px 0px rgb(0 0 0 / 9%);
+      border-bottom: 1px solid rgb(0 0 0 / 0%);
+      background-color: #fff;
+      margin-top: 15px;
+      border-radius: 12px;
     }
     .banner-nft{
       height:240px;
@@ -91,6 +97,10 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
       margin: 40px auto;
       padding: 0 30px;
       max-width:1280px;
+      border-radius:12px;
+      img{
+        border-radius:12px;
+      }
     }
     .space-collection{
       /* height:600px; */

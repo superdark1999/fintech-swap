@@ -4,12 +4,12 @@ import Web3Status from '../../wallet/Web3Status'
 import logo from '../../assets/img/logo-no-text.svg'
 import {
   SearchOutlined,
-  MoreOutlined,
   MenuUnfoldOutlined,
 } from '@ant-design/icons'
 import { Link, useHistory } from 'react-router-dom'
 import { ButtonBuy, ButtonTrade } from 'components-v2/Button'
 import ViewMore from 'assets/images/view-more.svg'
+import BinanceCoin from 'assets/symbol/binance.png'
 import Token from 'assets/images/token.svg'
 import { isMobile } from 'react-device-detect'
 import useLuckyServices from 'services/web3Services/LuckyServices'
@@ -20,22 +20,22 @@ import useUserStore from 'store/userStore'
 import { Menu, Dropdown } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { chain } from 'lodash'
 import { getPrice, SUPPORT_CHAIN_IDS } from 'utils'
 import { Modal, Input, Form } from 'antd'
 import useAuth from 'hooks/useAuth'
 interface TopBarProps {
-  onPresentMobileMenu: () => void
+  setMobileMenu?: (value: boolean) => void,
+  mobileMenu?: boolean
 }
 declare global {
   interface Window {
-    animation: any
+    animation: any,
+    
   }
 }
-
-const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
+const { SubMenu } = Menu;
+const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
-  const [showMenuMobile, setShowMenuMobile] = useState(false)
   const { logout } = useAuth()
   const { account, chainId } = useActiveWeb3React()
   const luckyMethod = useLuckyServices()
@@ -58,13 +58,6 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
       setIsShowAlert(true)
     }
   }, [chainId])
-
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll, { passive: true })
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll)
-  //   }
-  // }, [])
 
   useEffect(() => {
     if (account) {
@@ -105,11 +98,10 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
     <StyledTopBar className={classtSicky}>
       {isMobile ? (
         <div
-          onClick={() => setShowMenuMobile(true)}
-          style={{ display: 'flex', alignItems: 'center' }}
+          style={{ display: 'flex', alignItems: 'center', zIndex: 10}}
         >
-          <MenuUnfoldOutlined
-            style={{ marginLeft: 12, fontSize: 24, marginRight: 8 }}
+          <MenuUnfoldOutlined onClick={() => setMobileMenu(true)}
+            style={{ marginLeft: 12, fontSize: 24, marginRight: 12 }}
           />
           <Link to="/">
             <img src={Token} width="30px" />
@@ -129,7 +121,8 @@ const TopBar: React.FC<TopBarProps> = ({ onPresentMobileMenu }) => {
           onPressEnter={onSearching}
         ></Input>
         <Link to="/" className="home-nav">Home</Link>
-        <Link to="/explore" className="explore-nav">Explore</Link>
+        <Link to="/explore" className="home-nav">Explore</Link>
+        <Link to="/swap-store" className="explore-nav">Swap Store</Link>
         {!!account ? (
           <>
             <Link to={"/create/artwork"} className="create-nav">Create</Link>
@@ -264,16 +257,19 @@ const UserBalance = () => {
     }
   }, [])
   const menu = (
-    <Menu>
-      {/* <Menu.Divider /> */}
-      <Menu.Item key="3">{userState?.balance?.LUCKY || 0} LUCKY</Menu.Item>
+    <Menu style={{ width: '200px', borderRadius: '8px' }}>
+      <SubMenu style={{ borderRadius: '8px', fontWeight: 'bold', padding: '12px' }} icon={<img src={Token} width="18px" />} key="3" title={`${userState?.balance?.LUCKY || 0} LUCKY`}>
+      </SubMenu>
+      <SubMenu style={{ borderRadius: '8px', fontWeight: 'bold', padding: '12px' }} icon={<img src={BinanceCoin} width="18px" />} key="3" title={`${userState?.balance?.BNB || 0} BNB`}>
+      </SubMenu>
     </Menu>
   );
   return (
     <Dropdown className="create-nav-balance" overlay={menu} trigger={['click']}>
       <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-        <span className="number-balance">{userState?.balance?.BNB || 0}</span>
-        <span className="label-balance">BNB</span>
+        <img src={Token} width="18px" style={{ marginRight: '6px' }} />
+        <span className="number-balance">{userState?.balance?.LUCKY || 0}</span>
+        <span className="label-balance"> LUCKY</span>
       </a>
     </Dropdown>
   )
@@ -360,7 +356,10 @@ const StyledTopBar = styled.div`
       position: relative;
       cursor: pointer;
       color:#35A5FC;
-      border:2px solid #35A5FC;
+      border:2px solid #35A5FC;   
+      .number-balance{
+        margin-right:4px;
+      }  
       @media (max-width: 756px) {
         display: none;
       }

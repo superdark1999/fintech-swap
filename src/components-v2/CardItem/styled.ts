@@ -12,24 +12,23 @@ export const StyledCart = styled.div<PropsStyled>`
   align-items: center;
   position: relative;
   .card-art-work{
-    /* width: ${props => props.width || '300px'};
-    height: ${props => props.height || '530px'}; */
+    max-width: ${props => props.width || '300px'};
+    max-height: ${props => props.height || '530px'};
     /* border: 1px solid #E7EBEF; */
     box-sizing: border-box;
     overflow: hidden;
-    border-radius: 8px;
     /* :hover{ 
       box-shadow: 1px 4px 8px #ececec;
       -webkit-transition:  box-shadow .3s ease-in;
     } */
     
     .wrapper-image{
-      width: ${props => props.width || '300px'};
-      height: ${props => props.height || '450px'};
+      min-width: ${props => props.width || '300px'};
+      min-height: ${props => props.height || '450px'};
       border: 1px solid #E7EBEF;
       box-sizing: border-box;
       overflow: hidden;
-      border-radius: 8px;
+      border-radius: 24px;
       position: relative;
       .gradient-background {
         z-index: 1;
@@ -155,13 +154,17 @@ export const StyledCart = styled.div<PropsStyled>`
         }     
       }
       .number {
-        color: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
         font-weight: 600;
         font-size: 14px;
         line-height: 20px;
         margin: 3px 0px;
         display: flex;
         justify-content: space-between;
+        .btn-swap{
+          padding:0 16px !important;
+          line-height:23px !important;
+          background: linear-gradient(45deg, #1cace8, #07dce6);
+        }
         img {
           margin-top: -3px;
           margin-right: 5px;
