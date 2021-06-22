@@ -12,6 +12,10 @@ const InterestHomeContainer = styled.div`
     line-height: 24px;
     color: white;
     margin-bottom: 15px;
+
+    @media (max-width: 991px) {
+      font-size: 18px;
+    }
   }
 `
 const coinsInfo = [
@@ -106,6 +110,11 @@ const InterestItemStyled = styled.div`
   line-height: 20px;
   border-radius: 20px;
 
+  @media (max-width: 991px) {
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .left {
     display: flex;
     align-items: center;
@@ -116,7 +125,7 @@ const InterestItemStyled = styled.div`
   }
 
   .label {
-    color: white;
+    color: #fff;
     align-items: center;
     font-weight: 700;
   }

@@ -25,9 +25,15 @@ body {
   color: #fff;
 }
 
+.style-color div,
+.style-color a div {
+  font-weight: 600;
+}
+
 .custome-line a {
   border: 1px solid #2b2c3a;
   color: #2b2c3a;
+  font-weight: 600;
 }
 
 .block-pool div,
@@ -115,7 +121,7 @@ input:focus {
   border-radius: 6px !important;
   border-width: 1px !important;
   border-color: transparent !important;
-  background: linear-gradient(90deg, #161522, #161522), linear-gradient(90deg, #1890ff, #29f4c4) !important;
+  background: linear-gradient(90deg, #161522, #161522), linear-gradient(90deg, #f5c606, #29f4c4) !important;
   background-clip: padding-box, border-box !important;
   background-origin: padding-box, border-box !important;
 }
@@ -126,7 +132,7 @@ input:focus {
 }
 
 .box-list-token div div div div:hover {
-  background-color: #1890ff;
+  background-color: #f5c606;
 }
 
 .box-list-token svg {
@@ -152,12 +158,13 @@ input:focus {
 }
 
 .button-h {
-  background-color: #1890ff !important;
+  background-color: #f5c606 !important;
   border-radius: 6px !important;
 }
 
 .btn-supply {
-  background-color: #1c90ff !important;
+  background-color: #f5c606 !important;
+  color: #2b2e2f !important;
   border-radius: 6px !important;
 }
 
@@ -188,7 +195,8 @@ input:focus {
 }
 
 button.btn-blue {
-  background-color: #1890ff;
+  background-color: #f5c606;
+  color: #2b2e2f !important;
 }
 
 @media (max-width: 768px) {
@@ -213,7 +221,7 @@ input.input-search {
   border-radius: 6px !important;
   padding: 0 10px !important;
   min-height: 37px;
-  background: -webkit-linear-gradient(#1890ff,#29F4C4);
+  background: -webkit-linear-gradient(#f5c606,#29F4C4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -240,7 +248,7 @@ input.input-search {
 }
 
 .modal-dialog .modal-footer .btn-primary {
-  background-color: #1890ff;
+  background-color: #f5c606;
 }
 
 .modal-dialog .modal-footer .btn-secondar {
@@ -293,7 +301,8 @@ button.button-connect:hover {
 }
 
 .custom-btn a#join-pool-button{
-  background-color: #1890ff;
+  background-color: #f5c606;
+  color: #2b2e2f !important;
   margin-top: 15px;
 }
 
@@ -308,15 +317,16 @@ button.button-connect:hover {
 }
 
 .bot-btn #swap-button{
-  background-color: #1890ff;
+  background-color: #f5c606;
+  color: #2b2e2f !important;
 }
 
 .custom-btn-farm button {
-  background-color: #1c90ff;
+  background-color: #f5c606;
 }
 
 .menu-button:hover {
-  color: #08a7da !important;
+  color: #ffdb4a !important;
 }
 
 .icon-hot a {
@@ -357,7 +367,18 @@ button.button-connect:hover {
   background: url('https://luckyswap.finance/images/incipia-coming-soon.png');
   background-repeat: no-repeat;
   background-size: contain;
-  width: 110px;
-  height: 90px;
+  width: 82px;
+  height: 82px;
   transition: 1s;
+}
+
+.logo-mobile {
+  width: 100%;
+  max-width: 40px;
+}
+
+.custom-btn {
+  height: 40px !important;
+  line-height: 36px !important;
+  padding: 0 5px 0 16px !important;
 }

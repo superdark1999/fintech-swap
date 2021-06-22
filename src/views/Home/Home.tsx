@@ -8,6 +8,7 @@ import BalanceHome from './components/BalanceHome'
 import ProfitHome from './components/ProfitHome'
 import InterestHome from './components/InterestHome'
 import ListArtHome from './components/ListArtHome'
+import BlockNFT from './components/BlockNFT'
 
 const Home: React.FC = () => {
   const TranslateString = useI18n()
@@ -16,7 +17,8 @@ const Home: React.FC = () => {
     <>
       <BannerHome />
       <Page>
-        <BalanceHome />
+        {/* <BalanceHome /> */}
+        <BlockNFT/>
         <ProfitHome />
         <InterestHome />
         <ListArtHome />

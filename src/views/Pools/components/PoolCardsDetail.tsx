@@ -152,7 +152,7 @@ const BoxButton = styled.div`
     cursor: pointer;
     position: relative;
     z-index: 1;
-    background-color: #1890ff;
+    background-color: #f5c606;
     color: rgb(255, 253, 250);
     font-family: "Baloo Da";
     padding: 0px 10px;
@@ -194,7 +194,7 @@ const BoxHead = styled.div`
   }
 
   h2 {
-    color: #1890ff;
+    color: #f5c606;
     font-size: 36px;
     font-weight: 600;
     margin-bottom: 10px;
@@ -258,7 +258,7 @@ const BoxDetail = styled.div`
       text-align: center;
 
       button {
-        background: #1890ff;
+        background: #f5c606;
         border-radius: 4px;
         font-weight: 600;
         width: 100%;

@@ -23,3 +23,6 @@ export const BASE_ADD_LIQUIDITY_URL = `${BASE_EXCHANGE_URL}/#/add`
 export const BASE_LIQUIDITY_POOL_URL = `${BASE_EXCHANGE_URL}/#/pool`
 export const LOTTERY_MAX_NUMBER_OF_TICKETS = 50
 export const LOTTERY_TICKET_PRICE = 1
+export const XLUCKY_TESTNET = "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a"
+
+

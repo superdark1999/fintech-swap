@@ -45,9 +45,12 @@ const Wrapper = styled.div`
     background-repeat: no-repeat;
     background-size: 1.5rem;
     background-position: right 1.2rem top 50%;
+    width: 100%;
+    max-width: 215px;
 
     @media (max-width: 768px) {
       width: 100%;
+      max-width: 100%;
       margin-bottom: 15px;
     }
 
@@ -67,6 +70,7 @@ const Wrapper = styled.div`
     box-sizing: border-box;
     display: flex;
     margin-left: 10px;
+    position: relative;
 
     @media (max-width: 768px) {
       margin-left: 0;
@@ -76,11 +80,15 @@ const Wrapper = styled.div`
     input{
       text-indent: 10px;
       height: 40px;
-      width: 100%;
+      width: 175px;
       border: 1px transparent solid;
       border-top-left-radius: 10px;
       border-bottom-left-radius: 10px;
       outline: none;
+
+      @media (max-width: 768px) {
+        width: 100%;
+      }
     }
 
     img {
@@ -89,7 +97,7 @@ const Wrapper = styled.div`
     }
 
     button {
-      background-color:#1890ff;
+      background-color:#f5c606;
       height: 40px;
       width: 40px;
       border:1px transparent solid;
@@ -98,10 +106,13 @@ const Wrapper = styled.div`
 
       @media (max-width: 768px) {
         width: 50px;
+        position: absolute;
+        top: 0;
+        right: 0;
       }
 
       &:hover {
-        opacity: 0.7;
+        background-color: #fbcf1a;
         height:40px;
         width:40px;
         border:1px transparent solid;
@@ -128,13 +139,13 @@ const IfoTabButtons = () => {
       <div className="custom-bt">
         <Dflex>
           <select>
-            <option>Type</option>
+            <option>All</option>
             <option>BEP-20</option>
             <option>NFT</option>
           </select>
 
           <select className="list-options">
-            <option>Status</option>
+            <option>All</option>
             <option>Open</option>
             <option>Close</option>
             <option>Coming Soon</option>

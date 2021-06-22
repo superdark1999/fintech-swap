@@ -90,7 +90,7 @@ function PoolCards() {
                     <span>Premium</span>
                   </HeadLine>
                   <figure>
-                    <img src="../images/lucky-logo.png" alt=""/>
+                    <img src="../images/logo-icon.png" alt=""/>
                   </figure>
 
                   <CardContent>
@@ -160,7 +160,7 @@ function PoolCards() {
                     <span>Premium</span>
                   </HeadLine>
                   <figure>
-                    <img src="../images/lucky-logo.png" alt=""/>
+                    <img src="../images/logo-icon.png" alt=""/>
                   </figure>
 
                   <CardContent>
@@ -196,7 +196,7 @@ function PoolCards() {
                     <span>Premium</span>
                   </HeadLine>
                   <figure>
-                    <img src="../images/lucky-logo.png" alt=""/>
+                    <img src="../images/logo-icon.png" alt=""/>
                   </figure>
 
                   <CardContent>
@@ -232,7 +232,7 @@ function PoolCards() {
                     <span>Premium</span>
                   </HeadLine>
                   <figure>
-                    <img src="../images/lucky-logo.png" alt=""/>
+                    <img src="../images/logo-icon.png" alt=""/>
                   </figure>
 
                   <CardContent>
@@ -268,7 +268,7 @@ function PoolCards() {
                     <span>Premium</span>
                   </HeadLine>
                   <figure>
-                    <img src="../images/lucky-logo.png" alt=""/>
+                    <img src="../images/logo-icon.png" alt=""/>
                   </figure>
 
                   <CardContent>
@@ -304,7 +304,7 @@ function PoolCards() {
                     <span>Premium</span>
                   </HeadLine>
                   <figure>
-                    <img src="../images/lucky-logo.png" alt=""/>
+                    <img src="../images/logo-icon.png" alt=""/>
                   </figure>
 
                   <CardContent>
@@ -340,7 +340,7 @@ function PoolCards() {
                     <span>Premium</span>
                   </HeadLine>
                   <figure>
-                    <img src="../images/lucky-logo.png" alt=""/>
+                    <img src="../images/logo-icon.png" alt=""/>
                   </figure>
 
                   <CardContent>
@@ -376,7 +376,7 @@ function PoolCards() {
                     <span>Premium</span>
                   </HeadLine>
                   <figure>
-                    <img src="../images/lucky-logo.png" alt=""/>
+                    <img src="../images/logo-icon.png" alt=""/>
                   </figure>
 
                   <CardContent>
@@ -412,7 +412,7 @@ function PoolCards() {
                     <span>Premium</span>
                   </HeadLine>
                   <figure>
-                    <img src="../images/lucky-logo.png" alt=""/>
+                    <img src="../images/logo-icon.png" alt=""/>
                   </figure>
 
                   <CardContent>
@@ -455,7 +455,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -491,7 +491,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -527,7 +527,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -563,7 +563,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -599,7 +599,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -635,7 +635,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -677,7 +677,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -713,7 +713,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -749,7 +749,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -785,7 +785,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -821,7 +821,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -863,7 +863,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -899,7 +899,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -935,7 +935,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -971,7 +971,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1013,7 +1013,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1049,7 +1049,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1085,7 +1085,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1121,7 +1121,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1155,7 +1155,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1195,7 +1195,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1229,7 +1229,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1263,7 +1263,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1303,7 +1303,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1337,7 +1337,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1371,7 +1371,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1405,7 +1405,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1439,7 +1439,7 @@ function PoolCards() {
                       <span>Premium</span>
                     </HeadLine>
                     <figure>
-                      <img src="../images/lucky-logo.png" alt=""/>
+                      <img src="../images/logo-icon.png" alt=""/>
                     </figure>
 
                     <CardContent>
@@ -1550,7 +1550,7 @@ const Boxbtn = styled.div`
   padding-top: 15px;
 
   button {
-    background: #1890ff;
+    background: #f5c606;
     font-weight: 600;
 
     &:hover {

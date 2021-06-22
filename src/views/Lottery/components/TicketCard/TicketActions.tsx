@@ -5,7 +5,7 @@ import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useLotteryAllowance } from 'hooks/useAllowance'
 import useTickets from 'hooks/useTickets'
-import useTokenBalance from 'hooks/useTokenBalance'
+import useTokenBalance from 'hooks/useTokenBalance' //
 import { getCakeAddress } from 'utils/addressHelpers'
 import { useApproval } from 'hooks/useApproval'
 import BuyTicketModal from './BuyTicketModal'

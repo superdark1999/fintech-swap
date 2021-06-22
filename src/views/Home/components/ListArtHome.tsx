@@ -72,6 +72,7 @@ const ArtItemStyled = styled.div`
   font-family: Source Sans Pro;
   border-radius: 20px;
   overflow: hidden;
+  min-height: 306px;
 
   .thumb-container {
     position: relative;
@@ -128,7 +129,7 @@ const ArtItemStyled = styled.div`
       width: 18px;
       height: 18px;
       padding: 2px;
-      background: #212628;
+      /* background: #212628; */
       border-radius: 4px;
 
       margin-right: 5px;
@@ -163,7 +164,7 @@ const ArtItem = ({data}) => {
       </div>
       <div className="footer">
         <div>
-          <img src="/images/lucky-logo.png" alt="lucky-coin" className="lucky-coin" />
+          <img src="/images/logo-icon.png" alt="lucky-coin" className="lucky-coin" />
           <span className="coin-value">+ {cost}</span>
         </div>
         <Button type="primary" href="#">Buy</Button>

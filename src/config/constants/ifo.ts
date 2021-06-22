@@ -3,7 +3,7 @@ import { Ifo } from './types'
 const ifos: Ifo[] = [
   {
     id: 'lucky',
-    address: '0xe7AD7887f841d220AC5B700AAF2c762Bd07d42A5', // Địa chỉ IFO mua bán
+    address: '0xcb3d66a983849E47F3D73C8Eb7020778D51C6767', // Địa chỉ IFO mua bán
     isActive: true,
     name: 'Luckyswap (LUCKY)',
     subTitle: 'AMM protocol incorporating multi-strategy yield optimization',

@@ -244,7 +244,7 @@ const IfoTitle = () => {
               </div>
             </div>
           </div>
-          { (status === 'live' && !(isConfirmed || isConfirming || isApproved)) ? (
+          { (status === 'live' && !(isConfirmed || isConfirming || isApproved)) && (
           <Button
            className={`finished ${(isConfirmed || isConfirming || isApproved) && "disabled"}`} color="primary"
             disabled={isConfirmed || isConfirming || isApproved}
@@ -253,8 +253,9 @@ const IfoTitle = () => {
             isLoading={isApproving}
           >
           {TranslateString(564, 'Approve')}
-         </Button>)
-         :
+            </Button>)}
+         {(status === 'live' && !(!isApproved || isConfirmed ||
+          valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0))) &&
             (<Button
             className={`finished ${(!isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0)) && "disabled"}`} color="primary"
             onClick={handleConfirm}
@@ -265,9 +266,8 @@ const IfoTitle = () => {
             endIcon={isConfirming ? spinnerIcon : undefined}
             >
            { TranslateString(464, 'Confirm')}
-            </Button>) 
-          }
-          {status ==='live' && (
+            </Button>)}
+          {status ==='finished' && (
             <Button  className="finished" color="primary" onClick={handleClaim}>Claim</Button>
           )}
 
@@ -547,7 +547,7 @@ const BoxForm = styled.div`
     cursor: pointer;
     position: relative;
     z-index: 1;
-    background: #1890ff;
+    background: #f5c6064d;
     color: rgb(255, 253, 250);
     cursor: auto;
     box-shadow: none;

@@ -410,12 +410,12 @@ const BoxLink = styled.div`
     font-size: 14px;
     color: rgb(255, 253, 250);
     text-align: center;
-    background: #1890ff;
+    background: #f5c606;
     border-radius: 10px;
     text-decoration: none;
 
     &:hover {
-      background-color: #40a9ff;
+      background-color: #e4bc17;
       transition: 0.5s;
       color: rgb(255, 253, 250);
     }

@@ -2636,15 +2636,16 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.50.0.tgz#29c6419e8379d496ab6d0426eadf3c4d100cd186"
   integrity sha512-swKHYCOZUGyVt4ge0u8a7AwNcA//h4nx5wIi0sruGye1IJ5Cva0GyK9L2/WdX+kWVTKp92ZiEo1df31lrWGPgA==
 
-"@luckyswap/uikit@0.13.6":
-  version "0.13.6"
-  resolved "https://registry.yarnpkg.com/@luckyswap/uikit/-/uikit-0.13.6.tgz#2ad5c8dd56ed72fdc24d96895fb8192f721468d4"
-  integrity sha512-jZz2emqvFbvV84waZKg/p3dOW9aPvFtXO2nvJbOe0f+2fbO01ZuDaDm8BfIOoCq3U6o015Pyov2FlaGqRkORmg==
+"@luckyswap/uikit@^0.13.7":
+  version "0.13.7"
+  resolved "https://registry.yarnpkg.com/@luckyswap/uikit/-/uikit-0.13.7.tgz#a85d5c2260da02d43caeaaf4b4fcc66fea19a187"
+  integrity sha512-S8kfVtYEXz22/Qm9uTaT8OIOxjQAkbQTdLcmy9DQVdDk4KNh2wk6aQ9vUMDC5D3U/XAgFlEGQ+yED4RDQceZ2Q==
   dependencies:
     "@rollup/plugin-url" "^6.0.0"
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"
     lodash "^4.17.20"
+    react-device-detect "^1.17.0"
     react-transition-group "^4.4.1"
     styled-system "^5.1.5"
 
