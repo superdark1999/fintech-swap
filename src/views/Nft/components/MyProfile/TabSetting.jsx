@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, Input, Row, Col } from 'antd'
 import UploadFile from 'components-v2/Upload'
 import { ButtonStyle } from 'components-v2/cart/styled'
@@ -6,18 +6,21 @@ import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import notification from 'components-v2/Alert'
+import ButtonProcessing from 'components-v2/Button/btnProcessing'
+import { ButtonBuy } from 'components-v2/Button'
 
 const TabSetting = () => {
   const { updateProfile } = useUserServices()
   const [userState, userActions] = useUserStore()
   const [form] = Form.useForm()
   const { account } = useActiveWeb3React()
-
+  const [isProccessing, setIsProcessing] = useState(false)
   useEffect(() => {
     form.setFieldsValue(userState)
   }, [userState])
 
   const handleUpdateProfile = (values) => {
+    setIsProcessing(true)
     const artistData = {
       walletAddress: account,
       coverImage: values?.coverImage,
@@ -33,11 +36,13 @@ const TabSetting = () => {
           message: 'Update information success',
           description: '',
         })
+        setIsProcessing(false)
       } else {
         notification('error', {
           message: 'Update information fail',
           description: '',
         })
+        setIsProcessing(false)
       }
     })
   }
@@ -95,13 +100,20 @@ const TabSetting = () => {
             />
           </Form.Item>
 
-          <ButtonStyle
-            type="submit"
-            // onClick={handleUpdateProfile}
-            style={{ width: 200, margin: '20px auto' }}
-          >
-            Update
-          </ButtonStyle>
+          {isProccessing ? (
+            <ButtonProcessing
+              style={{ width: 200, margin: '20px auto' }}
+              label="Updating"
+            />
+          ) : (
+            <ButtonStyle
+              type="submit"
+              // onClick={handleUpdateProfile}
+              style={{ width: 200, margin: '20px auto' }}
+            >
+              Update
+            </ButtonStyle>
+          )}
         </Col>
       </Row>
     </Form>

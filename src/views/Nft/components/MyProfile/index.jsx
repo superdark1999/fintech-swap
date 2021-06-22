@@ -130,7 +130,6 @@ const TabOnSale = () => {
       }
     })
   }, [])
-  console.log(NFTs)
   return (
     <>
       {/* <Row align="middle" justify="space-between">     

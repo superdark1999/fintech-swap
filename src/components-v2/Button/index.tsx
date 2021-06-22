@@ -10,7 +10,7 @@ interface StyledButtonProps {
 export const ButtonCancel = styled.button<StyledButtonProps>`
   width: ${(props) => props.width || 'max-content'};
   height: ${(props) => props.height || 'max-content'};
-  background: #FC636B;
+  background: #fc636b;
   border-radius: 100px;
   border: none;
   display: flex;
@@ -34,7 +34,7 @@ export const ButtonTrade = styled.button<StyledButtonProps>`
   height: ${(props) => props.height || 'max-content'};
   background: #fff;
   border-radius: 100px;
-  border: 2px solid #35A5FC;
+  border: 2px solid #35a5fc;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,14 +43,14 @@ export const ButtonTrade = styled.button<StyledButtonProps>`
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
-  color: #35A5FC;
+  color: #35a5fc;
   cursor: pointer;
   margin-right: 10px;
-  &.disabled{
-    background:#bdbdbd;
+  &.disabled {
+    background: #bdbdbd;
     color: #fff;
     border: 2px solid #fff;
-  } 
+  }
   > img,
   span {
     /* margin-right: 5px; */
@@ -60,7 +60,7 @@ export const ButtonTrade = styled.button<StyledButtonProps>`
 export const ButtonBuy = styled.div<StyledButtonProps>`
   width: ${(props) => props.width || 'max-content'};
   height: ${(props) => props.height || 'max-content'};
-  background: #35A5FC;
+  background: #35a5fc;
   border-radius: 100px;
   display: flex;
   justify-content: center;
@@ -71,18 +71,18 @@ export const ButtonBuy = styled.div<StyledButtonProps>`
   line-height: 24px;
   position: relative;
   cursor: pointer;
-  color:#fff;
-  &.disabled{
-    background:#bdbdbd;
+  color: #fff;
+  &.disabled {
+    background: #bdbdbd;
     color: #fff;
     border: 2px solid #fff;
-  } 
+  }
 `
 
 export const ButtonProccesing = styled.div<StyledButtonProps>`
   width: ${(props) => props.width || 'max-content'};
   height: ${(props) => props.height || 'max-content'};
-  background: linear-gradient(270deg, #19a3dd -16.5%, #badeb7 117.25%);
+  background: #35a5fc;
   border-radius: 100px;
   display: flex;
   justify-content: center;
@@ -95,16 +95,18 @@ export const ButtonProccesing = styled.div<StyledButtonProps>`
   -webkit-text-fill-color: transparent;
   position: relative;
   cursor: pointer;
-    span{
-      margin-left: 6px;
-      animation: mymove 5s infinite;
-      color: #19a3dd;
-      font-weight: 600;
-      font-size: 16px;
-      }
-      @keyframes mymove {
-        100% {transform: rotate(180deg);}
-      }
+  span {
+    margin-left: 6px;
+    animation: mymove 5s infinite;
+    color: #19a3dd;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  @keyframes mymove {
+    100% {
+      transform: rotate(180deg);
+    }
+  }
   ::before {
     content: '';
     position: absolute;
@@ -114,7 +116,7 @@ export const ButtonProccesing = styled.div<StyledButtonProps>`
     bottom: 0;
     border-radius: 50px;
     padding: 2px;
-    background: linear-gradient(270deg, #19a3dd -16.5%, #badeb7 117.25%);
+    background: #35a5fc;
     -webkit-mask: linear-gradient(#fff 0 0) content-box,
       linear-gradient(#fff 0 0);
     -webkit-mask-composite: destination-out;
