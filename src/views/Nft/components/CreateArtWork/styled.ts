@@ -68,6 +68,7 @@ export const RadioButton= styled(Radio.Button)`
     background-color: #35A5FC;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    outline: none;
     margin: unset;
   }
 }
