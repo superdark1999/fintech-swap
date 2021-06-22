@@ -74,7 +74,6 @@ export const ExploreCollectionStyled = styled.div`
     .wrapper-button {
       width: 120px;
       height: 34px;
-      background: #ffffff;
       position: absolute;
       left: 50%;
 
