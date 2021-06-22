@@ -17,14 +17,14 @@ const NFTContainer = (props: any) => {
     <Switch>
       <Page>
         <NFTContainerStyled onShowsidebar={onShowSidebar}>
-          {
-            !isMobile &&
-            (
-              <div className="left-sidebar">
-                <Sidebar setShowSidebar={setShowSidebar} onShowSidebar={onShowSidebar} />
-              </div>
-            )        
-          }
+          {!isMobile && (
+            <div className="left-sidebar">
+              <Sidebar
+                setShowSidebar={setShowSidebar}
+                onShowSidebar={onShowSidebar}
+              />
+            </div>
+          )}
           <div className="main-nft">
             <div className="trending-nft">
               <TrendingBar />
@@ -57,31 +57,32 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
   height: 100%;
   /* max-width:2200px; */
   margin: auto;
-  border: 1px solid rgba(0,0,0,0.2);  
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-top: none;
-  background-color:#F9FAFB;
-  .left-sidebar{
+  background-color: #f9fafb;
+  .left-sidebar {
     background-color: #fff;
-    min-width: ${(props) => props.onShowsidebar ? '320px' : '80px'};
+    min-width: ${(props) => (props.onShowsidebar ? '320px' : '80px')};
     transition: 300ms;
-    height: ${(props) => props.onShowsidebar ? '100%' : '100vh'};
-    border-right: ${(props) => props.onShowsidebar && '1px solid rgba(0,0,0,0.2)'};
+    height: ${(props) => (props.onShowsidebar ? '100%' : 'calc(100vh - 80px)')};
+    border-right: ${(props) =>
+      props.onShowsidebar && '1px solid rgba(0,0,0,0.2)'};
     max-height: 100vh;
     overflow-y: auto;
     ::-webkit-scrollbar {
       display: none;
     }
   }
-  .main-nft{
-    flex: ${(props: any) => props.onShowsidebar ? 1 : '1 240px'};
+  .main-nft {
+    flex: ${(props: any) => (props.onShowsidebar ? 1 : '1 240px')};
     ::-webkit-scrollbar {
-        display: none;
-      }
+      display: none;
+    }
     height: 100%;
     overflow-y: auto;
     max-width: 1344px;
     margin: 0 auto;
-    .trending-nft{
+    .trending-nft {
       width: 98%;
       height: 80px;
       margin: auto;
@@ -91,28 +92,28 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
       margin-top: 15px;
       border-radius: 12px;
     }
-    .banner-nft{
-      height:240px;
-      width:100%;
+    .banner-nft {
+      height: 240px;
+      width: 100%;
       margin: 40px auto;
       padding: 0 30px;
-      max-width:1280px;
-      border-radius:12px;
-      img{
-        border-radius:12px;
+      max-width: 1280px;
+      border-radius: 12px;
+      img {
+        border-radius: 12px;
       }
     }
-    .space-collection{
+    .space-collection {
       /* height:600px; */
-      width:100%;
+      width: 100%;
       /* margin-bottom:60px; */
       padding: 0 30px;
     }
-    .hot-artists-nft{
+    .hot-artists-nft {
     }
-    .hot-artworks-nft{
+    .hot-artworks-nft {
     }
-    .collection-nft{
+    .collection-nft {
     }
   }
 `
