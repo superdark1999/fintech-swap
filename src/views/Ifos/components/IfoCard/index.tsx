@@ -41,10 +41,15 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
 
 const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
   const { id, name, subTitle } = ifo
-  const publicIfoData = useGetPublicIfoData(ifo)
+  const { offeringAmount, raisingAmount, totalAmount, getAddressListLength, status } = useGetPublicIfoData(ifo)
   const { account } = useWeb3React()
   const TranslateString = useI18n()
-  const Ribbon = getRibbonComponent(publicIfoData.status, TranslateString)
+  const Ribbon = getRibbonComponent(status, TranslateString)
+
+  const priceRate = offeringAmount.toNumber() && raisingAmount.toNumber() ? `${offeringAmount.div(raisingAmount).toFixed(2)}` : "?"
+  const processRate = totalAmount.toNumber() && raisingAmount.toNumber() ? `${totalAmount.multipliedBy(100).div(raisingAmount).toFixed(2)}` : "0"
+
+
 
   return (
     // <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={publicIfoData.status === 'live'}>
@@ -60,13 +65,14 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
         <ItemContent>
           <BoxHead>
-            <h2>HCATS - Guaranteed</h2>
-            <p>1 BNB = ? HCATS</p>
+            <h2>{name} - Guaranteed</h2>
+            <p>1 LP = {priceRate} Lucky</p>
+
           </BoxHead>
 
           <Total>
-            <span>Total Raise:</span>
-            <h2>0 BNB</h2>
+            <span>Total Raise: {totalAmount.div(1e18).toFixed(2)}</span>
+            <h2>0 LP</h2>
           </Total>
 
           <BoxProgress>
@@ -75,7 +81,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
               <ProgressBar></ProgressBar>
             </BoxProgressBar>
             <ProgressFooter>
-              <ProgressPercentage>100%</ProgressPercentage>
+              <ProgressPercentage>{processRate}%</ProgressPercentage>
               <FeaturedCardMinimum>(Min.0%)</FeaturedCardMinimum>
               <FeaturedCardAmount>0/100</FeaturedCardAmount>
             </ProgressFooter>
@@ -84,12 +90,14 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
           <FeaturedCardFooter>
             <CardColumn>
               <p>Participants</p>
-              <h3>0</h3>
+              <h3>{getAddressListLength}</h3>
             </CardColumn>
 
             <CardColumn>
-              <p>Max<span>BNB</span></p>
-              <h3>0.0</h3>
+              <p>
+                Max<span>LP</span>
+              </p>
+              <h3>{raisingAmount.div(1e18).toFixed(2)}</h3>
             </CardColumn>
 
             <CardColumn>
@@ -141,7 +149,9 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
             </CardColumn>
 
             <CardColumn>
-              <p>Max<span>BNB</span></p>
+              <p>
+                Max<span>BNB</span>
+              </p>
               <h3>0.0</h3>
             </CardColumn>
 
@@ -158,9 +168,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
       </Item>
 
       <Item className="item-coming">
-        <div className="item-coming-title">
-          Upcoming Project !
-        </div>
+        <div className="item-coming-title">Upcoming Project !</div>
 
         <div className="item-coming-content">
           <div>
@@ -172,8 +180,6 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     </>
   )
 }
-
-
 
 const BoxProgress = styled.div`
   margin-bottom: 16px;
@@ -219,12 +225,12 @@ const ProgressBar = styled.div`
   text-align: center;
   white-space: nowrap;
   background-color: #4ea7a5;
-  transition: width .6s ease;
+  transition: width 0.6s ease;
 `
 
 const FeaturedCardFooter = styled.div`
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 16px;
   margin-bottom: 16px;
 `
@@ -325,37 +331,37 @@ const BoxHead = styled.div`
 `
 
 const ItemHead = styled.div`
-position: relative;
-width: 100%;
-height: 106px;
-background-image: url('../images/hyfi.png');
-background-size: cover;
-color: rgb(255, 255, 255);
-
-@media (min-width: 768px) {
+  position: relative;
   width: 100%;
-}
+  height: 106px;
+  background-image: url('../images/hyfi.png');
+  background-size: cover;
+  color: rgb(255, 255, 255);
 
-section {
-  position: absolute;
-  top: 16px;
-  left: 0px;
-  background: rgb(165, 165, 165);
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-  color: rgb(255, 253, 250);
-  font-family: "Baloo Da";
-  font-weight: 400;
-  padding: 6px 12px;
-
-  span {
-    box-sizing: border-box;
-    margin: 0px;
-    min-width: 0px;
-    font-size: 12px;
-    font-weight: 600;
+  @media (min-width: 768px) {
+    width: 100%;
   }
-}
+
+  section {
+    position: absolute;
+    top: 16px;
+    left: 0px;
+    background: rgb(165, 165, 165);
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    color: rgb(255, 253, 250);
+    font-family: 'Baloo Da';
+    font-weight: 400;
+    padding: 6px 12px;
+
+    span {
+      box-sizing: border-box;
+      margin: 0px;
+      min-width: 0px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
 `
 
 const Total = styled.div`
@@ -386,7 +392,7 @@ const ItemContent = styled.div`
     min-width: 0px;
     font-weight: bold;
     font-size: 24px;
-    color:  rgb(37 37 53);
+    color: rgb(37 37 53);
     line-height: 28px;
   }
 `
@@ -394,7 +400,7 @@ const ItemContent = styled.div`
 const BoxLink = styled.div`
   display: flex;
   justify-content: center;
-  
+
   a {
     display: block;
     width: 232px;
@@ -417,4 +423,3 @@ const BoxLink = styled.div`
 `
 
 export default IfoCard
-

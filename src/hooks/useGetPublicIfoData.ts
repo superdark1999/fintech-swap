@@ -1,10 +1,12 @@
 import BigNumber from 'bignumber.js'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
-import { useBlock } from 'state/hooks'
 import { useIfoContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
+
+import { useBlockNumber } from '../state/application/hooks';
+
 
 export interface PublicIfoState {
   status: IfoStatus
@@ -13,7 +15,9 @@ export interface PublicIfoState {
   progress: number
   secondsUntilEnd: number
   raisingAmount: BigNumber
+  offeringAmount: BigNumber
   totalAmount: BigNumber
+  getAddressListLength: number
   startBlockNum: number
   endBlockNum: number
 }
@@ -52,21 +56,27 @@ const useGetPublicIfoData = (ifo: Ifo) => {
     progress: 5,
     secondsUntilEnd: 0,
     raisingAmount: new BigNumber(0),
+    offeringAmount: new BigNumber(0),
     totalAmount: new BigNumber(0),
+    getAddressListLength: 0,
     startBlockNum: 0,
     endBlockNum: 0,
   })
-  const { currentBlock } = useBlock()
+
+  const currentBlock = useBlockNumber();
+
   const contract = useIfoContract(address)
 
   useEffect(() => {
     const fetchProgress = async () => {
-      const [startBlock, endBlock, raisingAmount, totalAmount] = (await makeBatchRequest([
+      const [startBlock, endBlock, raisingAmount, offeringAmount, totalAmount, getAddressListLength] = (await makeBatchRequest([
         contract.methods.startBlock().call,
         contract.methods.endBlock().call,
         contract.methods.raisingAmount().call,
+        contract.methods.offeringAmount().call,
         contract.methods.totalAmount().call,
-      ])) as [string, string, string, string]
+        contract.methods.getAddressListLength().call,
+      ])) as [string, string, string, string, string, string]
 
       const startBlockNum = parseInt(startBlock, 10)
       const endBlockNum = parseInt(endBlock, 10)
@@ -85,7 +95,9 @@ const useGetPublicIfoData = (ifo: Ifo) => {
         secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
         secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
         raisingAmount: new BigNumber(raisingAmount),
+        offeringAmount: new BigNumber(offeringAmount),
         totalAmount: new BigNumber(totalAmount),
+        getAddressListLength: parseInt(getAddressListLength),
         status,
         progress,
         blocksRemaining,
