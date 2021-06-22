@@ -23,6 +23,7 @@ import ifoAbi from 'config/abi/ifo.json'
 import { useHookIFOs } from '../../Store';
 
 
+
 // import { useBlockNumber } from '../../../../state/application/hooks';
 
  const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
@@ -33,20 +34,21 @@ const Check = () =>{
   const [activeIfo,setActiveIfo] = useState(null)
   const param:any = useParams();
   useEffect(() => {
-    const fetchIfo =async () => {
-      const url = `https://dashboard.luckyswap.exchange/launchpads/${param?.id}`;
-      const result = await axios.get(url).catch(() => console.log("axios error"));
-      if(result){
-        setActiveIfo(result.data);
-      }
-  
-    }
-    // actions.getLaunchpads()
-    fetchIfo();
+    actions.getDetailLaunch(param?.id);
+    setActiveIfo(state.detailLaunchpad);
+    // const fetchIfo =async () => {
+    //   const url = `https://dashboard.luckyswap.exchange/launchpads/${param?.id}`;
+    //   const result = await axios.get(url).catch(() => console.log("axios error"));
+    //   if(result){
+    //     setActiveIfo(result.data);
+    //   }
+    // }
+    // fetchIfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   if(activeIfo){
-    return <IfoTitle activeIfo={activeIfo} />
+    console.log("active", activeIfo)
+    return <IfoTitle activeIfo={state.detailLaunchpad} />
   }
   return null
 }
@@ -57,7 +59,7 @@ const IfoTitle = ({activeIfo}:any) => {
 
   const { name, address, currency, currencyAddress} = activeIfo;
   const contract = useIfoContract(address);
-  const { offeringAmount, raisingAmount, secondsUntilStart, secondsUntilEnd, status, totalAmount, startBlockNum } = useGetPublicIfoData(activeIfo)
+  const { offeringAmount, raisingAmount, secondsUntilStart, secondsUntilEnd, status, startBlockNum } = useGetPublicIfoData(activeIfo)
   const { account } = useWeb3React()
   const LPContract = useContract(currencyAddress, bep20Abi)
   const raisingTokenContract = useContract(address, ifoAbi)
@@ -73,7 +75,6 @@ const IfoTitle = ({activeIfo}:any) => {
 
   const priceRate = offeringAmount.toNumber() && raisingAmount.toNumber() ? `${offeringAmount.div(raisingAmount).toFixed(2)}` : "?"
 
-  // const latestBlockNumber = useBlockNumber() 
 
   useEffect(() => {
     if (account){
