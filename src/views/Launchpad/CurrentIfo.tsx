@@ -22,7 +22,7 @@ const Ifo = ({ ifos }) => {
         <div className="content">
           <h4>How to launch your own IDO ?</h4>
           <p>Launch your project with LuckySwap, LuckySwap is a decentralized trading platform that uses the automatic market maker (AMM) model. At the same time LuckySwap is the 1st AMM+NFT exchange on Binance Smart Chain.Various data indicate the rapid growth of LuckySwap in the DEFI ecosystem</p>
-          <a href="/">Apply Now</a>
+          <a rel="noreferrer"  href="https://docs.google.com/forms/u/3/d/e/1FAIpQLSdeFTnAHObS3CWDxB4b8c3zFRsj9DXb1MJ_vqE7YLUO4BeChg/viewform" target="_blank">Apply Now</a>
         </div>
       </BoxIDO>
     </div>
