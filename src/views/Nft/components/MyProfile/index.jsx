@@ -36,7 +36,7 @@ export default () => {
       history.push(`/my-profile/history/#`)
     }
   }
-  console.log('userState: ', userState)
+
   return (
     <UserProfileStyled urlCover={userState?.coverImage}>
       <Row className="section header-profile">
@@ -94,7 +94,11 @@ export default () => {
             </div>
           </div>
           <p className="description">{userState?.biography}</p>
-          <Tabs activeKey={match.params.tab} onChange={onChangeTab}>
+          <Tabs
+            className="tabs-profile"
+            activeKey={match.params.tab}
+            onChange={onChangeTab}
+          >
             <TabPane tab="On sale" key="onsale">
               <TabOnSale />
             </TabPane>

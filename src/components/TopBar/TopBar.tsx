@@ -31,7 +31,7 @@ interface TopBarProps {
 declare global {
   interface Window {
     animation: any,
-    
+
   }
 }
 const { SubMenu } = Menu;
@@ -100,7 +100,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
     <StyledTopBar className={classtSicky}>
       {isMobile ? (
         <div
-          style={{ display: 'flex', alignItems: 'center', zIndex: 10}}
+          style={{ display: 'flex', alignItems: 'center', zIndex: 10 }}
         >
           <MenuUnfoldOutlined onClick={() => setMobileMenu(true)}
             style={{ marginLeft: 12, fontSize: 24, marginRight: 12 }}
@@ -124,7 +124,8 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         ></Input>
         <Link to="/" className="home-nav">Home</Link>
         <Link to="/explore" className="home-nav">Explore</Link>
-        <Link to="/swap-store" className="explore-nav">Swap Store</Link>
+        <Link to="/swap-store" className="swap-nav">Swap Store</Link>
+        <span className="explore-nav"></span>
         {!!account ? (
           <>
             <Link to={"/create/artwork"} className="create-nav">Create</Link>
@@ -217,11 +218,12 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         visible={isShowAlert}
         footer={null}
         width={400}
+        style={{ borderRadius: '12px' }}
       >
         <Form onFinish={() => { window.location.reload() }}>
           <Form.Item name="pricePlaceBid">
             <label>
-            Please switch to BSC Testnet network
+              Please switch to BSC Testnet network
             </label>
           </Form.Item>
           <Form.Item>
@@ -250,16 +252,16 @@ const UserBalance = () => {
     if (luckyMethod && account) {
       getBNBBalance(account).then(({ data, status }) => {
         if (status == 200) {
-          userActions.updateUserBalance({ BNB: formatNumber(getPrice(data?.result || 0) )})
+          userActions.updateUserBalance({ BNB: formatNumber(getPrice(data?.result || 0)) })
         }
       })
       luckyMethod?.getLuckyBalance().then((data: any) => {
-        userActions.updateUserBalance({ LUCKY: formatNumber(getPrice(data?._hex || 0) )})
+        userActions.updateUserBalance({ LUCKY: formatNumber(getPrice(data?._hex || 0)) })
       })
     }
   }, [])
   const menu = (
-    <Menu style={{ width: '200px', borderRadius: '8px' }}>
+    <Menu style={{ maxWidth: '220px', padding: '0 6px', borderRadius: '8px' }}>
       <SubMenu style={{ borderRadius: '8px', fontWeight: 'bold', padding: '12px' }} icon={<img src={Token} width="18px" />} key="3" title={`${userState?.balance?.LUCKY || 0} LUCKY`}>
       </SubMenu>
       <SubMenu style={{ borderRadius: '8px', fontWeight: 'bold', padding: '12px' }} icon={<img src={BinanceCoin} width="18px" />} key="3" title={`${userState?.balance?.BNB || 0} BNB`}>
@@ -299,6 +301,17 @@ const StyledTopBar = styled.div`
     }
     .home-nav {
       width:80px;
+      background-color: #35A5FC;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 16px;
+      font-weight: 600;
+      @media (max-width: 756px) {
+        display: none;
+      }
+    }
+    .swap-nav {
+      width:100px;
       background-color: #35A5FC;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;

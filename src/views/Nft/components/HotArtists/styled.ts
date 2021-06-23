@@ -17,7 +17,7 @@ export const HotArtistsStyled = styled.div`
       font-weight: ${isMobile ? '500' : '700'};
       font-size: ${isMobile ? '16px' : '20px'};
       text-align: ${isMobile && 'right'};
-      width: 108px;
+      width: 120px;
       text-decoration: underline;
       cursor: pointer;
     }
@@ -75,6 +75,7 @@ export const HotArtistsStyled = styled.div`
         border-radius: 50%;
         margin-bottom: 24px;
         margin-bottom: 24px;
+        object-fit: cover;
       }
       .name-artists {
         font-weight: 600;

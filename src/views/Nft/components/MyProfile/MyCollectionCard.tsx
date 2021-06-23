@@ -278,7 +278,7 @@ export default function MyCollectionCard({ data, option }: any) {
       </Modal>
 
       <Modal
-        title="Set price"
+        title="Set Price Auction"
         visible={ruleAuctionModal}
         onCancel={() => setRuleAuctionModal(false)}
         footer={null}

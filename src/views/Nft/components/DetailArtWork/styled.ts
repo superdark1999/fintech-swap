@@ -19,7 +19,7 @@ position: relative;
         font-weight: ${isMobile ? '500' : '700'};
         font-size: ${isMobile ? '16px' : '20px'};
         text-align: ${isMobile && 'right'};
-        width: 108px;
+        width: 120px;
         text-decoration: underline;
         cursor: pointer;
     }
@@ -76,6 +76,7 @@ position: relative;
           background-color: gray;
           border-radius: 50%;
           margin-bottom: 24px;
+          object-fit: cover;
         }
         .name-artists {
           font-weight: 600;

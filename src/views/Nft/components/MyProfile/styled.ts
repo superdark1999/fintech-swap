@@ -3,6 +3,19 @@ interface Props {
   urlCover?: string
 }
 export const UserProfileStyled = styled.div<Props>`
+  .ant-tabs-tab{
+      color:#AFBAC5;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+      color:#333435;
+      font-size: 20px;
+      font-weight: 600;
+    }
+  .ant-tabs-ink-bar{
+      background:#333435;
+    }
   .section {
     width: 100%;
     justify-content: center;
@@ -41,6 +54,7 @@ export const UserProfileStyled = styled.div<Props>`
           font-size: 28px;
           line-height: 40px;
           color: #333435;
+          font-weight: 600;
         }
         .copy {
           span {
@@ -248,13 +262,13 @@ export const CartStyled = styled.div`
     }
     .organize {
       font-weight: 600;
-      font-size: 14px;
       line-height: 20px;
       color: #333435;
       display: flex;
       align-items: center;
       > .name {
         margin: 0px 6px;
+        font-size: 14px;
       }
     }
     .group-button {
