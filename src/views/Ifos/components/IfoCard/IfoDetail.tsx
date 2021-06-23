@@ -74,6 +74,7 @@ const IfoTitle = ({activeIfo}:any) => {
     //     console.log("on newValue",  newValue)
     //     console.log("on event", event)
     // })
+    // LPContract.on('')
   }
     
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -40,9 +40,8 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
 }
 
 const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
-  const { id, name, subTitle } = ifo
+  const { id, name, currency } = ifo
   const { offeringAmount, raisingAmount, totalAmount, getAddressListLength, status } = useGetPublicIfoData(ifo)
-  const { account } = useWeb3React()
   const TranslateString = useI18n()
   const Ribbon = getRibbonComponent(status, TranslateString)
 
@@ -65,14 +64,14 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
         <ItemContent>
           <BoxHead>
-            <h2>{name} - Guaranteed</h2>
-            <p>1 LP = {priceRate} Lucky</p>
+            <h2>{name}</h2>
+            <p>1 {currency} = {priceRate} Lucky</p>
 
           </BoxHead>
 
           <Total>
-            <span>Total Raise: {totalAmount.div(1e18).toFixed(2)}</span>
-            <h2>0 LP</h2>
+            <span>Total Raise</span>
+            <h2>{totalAmount.div(1e18).toFixed(2)} LP</h2>
           </Total>
 
           <BoxProgress>

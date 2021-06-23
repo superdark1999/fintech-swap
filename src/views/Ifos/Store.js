@@ -13,12 +13,33 @@ const stateDefault = {
   detailLaunchpad: null,
   filterStatus: STATUS.OPEN
 }
+
+const filterIfoByStatus = (status, ifos) => {
+  let filteredIfos;
+  switch(status) {
+    case STATUS.ALL: {
+      filteredIfos = ifos;
+      break;
+    }
+    case STATUS.OPEN: {
+      filteredIfos = ifos.filter(ifo => ifo.isActive)
+      break;
+    }
+    case STATUS.CLOSE: {
+      filteredIfos = ifos.filter(ifo => !ifo.isActive)
+      break;
+    }
+  }
+
+  return filteredIfos;
+}
 const Store = createStore({
   initialState: { ...stateDefault },
   actions: {
     getLaunchpads:
       () =>
       ({ setState, getState }) => {
+        if (getState().launchpads.length ===0)
         axios
           .get('https://dashboard.luckyswap.exchange/launchpads')
           .then((response) => {
@@ -50,21 +71,7 @@ const Store = createStore({
     }, 
     filterLaunchWithStatus: 
     (status) => async({setState, getState}) => {
-      let filteredIfos;
-      switch(status) {
-        case STATUS.ALL: {
-          filteredIfos = getState().launchpads;
-          break;
-        }
-        case STATUS.OPEN: {
-          filteredIfos = getState().launchpads.filter(ifo => ifo.isActive)
-          break;
-        }
-        case STATUS.CLOSE: {
-          filteredIfos = getState().launchpads.filter(ifo => !ifo.isActive)
-          break;
-        }
-      }
+      const filteredIfos =  filterIfoByStatus(status, getState().launchpads);
 
       setState({...getState(), filterStatus: status, filterLaunchpads: filteredIfos})
     }

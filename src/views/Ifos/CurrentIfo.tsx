@@ -8,7 +8,6 @@ import IfoCards from './components/IfoCards'
  */
 
 const Ifo = ({ ifos }) => {
-  console.log("ifos", ifos);
 
   return (
     <div>

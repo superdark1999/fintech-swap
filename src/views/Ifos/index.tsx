@@ -11,12 +11,10 @@ const Ifos = () => {
   const { path } = useRouteMatch()
   // const [status, setStatus] = useState('open');
   const [state, actions] = useHookIFOs();
-  const { launchpads, filterStatus, filterLaunchpads } = state;
-  const [ifos, setIfos] = useState([]);
+  const { filterStatus, filterLaunchpads } = state;
 
   useEffect(() => {
     actions.getLaunchpads()
-    actions.filterLaunchWithStatus(filterStatus);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
