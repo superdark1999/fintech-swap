@@ -16,11 +16,13 @@ export default function ProcessBar(props: {step: Number}) {
 
 
 const Styled = styled.div`
-margin-top: 40px;
 width: 100%;
+margin: 40px auto;
 
 .progressbar {
   counter-reset: step;
+  display: flex;
+  justify-content: center;
 }
 .progressbar li {
   list-style: none;

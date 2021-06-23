@@ -7,6 +7,7 @@ import { ProcessBar } from './components'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 
 import { Container } from './styled'
+import Confirm from './Confirm'
 
 export default  () => {
   const [step, setStep] = useState<Number>(1)
@@ -37,6 +38,9 @@ export default  () => {
       }
       case 2: {
         return <MarketOffer nextStep={nextStep}/>
+      }
+      case 3: {
+        return <Confirm />
       }
     }
   }

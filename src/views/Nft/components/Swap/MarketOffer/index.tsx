@@ -35,7 +35,6 @@ export default function (props: Props) {
 
   const [visible, setVisible] = useState<any>({ isOpen: false, value: "my-item" });
   const [myItems, setMyItems] = useState<any>([]);
-  console.log('myItems: ', myItems)
   const [itemSwap, setItemSwap] = useState<any>([]);
 
   const divRef = useRef(null)
@@ -70,6 +69,7 @@ export default function (props: Props) {
   const renderListCard = () => {
     if (myItems.length > 3) {
       return (
+        <>
         <WrapperListCard>
           <ListCard ref={divRef} numOfItem={myItems.length}>
             {
@@ -91,6 +91,7 @@ export default function (props: Props) {
             style={{ fontSize: 24 }}
           />
         </WrapperListCard>
+        </>
       )
     } else if (myItems.length === 2 || myItems.length === 3) {
       return (
@@ -146,16 +147,14 @@ export default function (props: Props) {
           ))}    
         </Select>
         <div style={{width: '100%', flexWrap: 'wrap', display: 'flex', justifyContent: "center"}} >
-
             {renderMethodSwap(selectMetodSwap)}
-
+            
             <img src={Swap} style={isMobile ? { transform: 'rotate(90deg)'} : null} />
 
             {itemSwap[0] ? <CardSwap data={itemSwap[0]} /> : <CardDefault setVisible={setVisible} value='item-swap' />}
-
         </div>
         <Row justify="center" style={{marginTop: 40}}>
-          <ButtonBuy width="300px">Offer now</ButtonBuy>
+          <ButtonBuy width="300px" onClick={() => props.nextStep(3)}>Offer now</ButtonBuy>
         </Row> 
       </OfferStyled>
 

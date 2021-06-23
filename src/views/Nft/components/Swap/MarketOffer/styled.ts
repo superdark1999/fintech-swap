@@ -11,6 +11,7 @@ export const OfferStyled = styled.div`
   border: 2px solid #E7EBEF;
   box-sizing: border-box;
   border-radius: 32px;
+  background: #F9FAFB;
   .ant-select {
     margin-bottom: 20px;
     .ant-select-selector {
