@@ -1,53 +1,56 @@
-import React, {useState, useEffect} from 'react'
-import { useParams} from 'react-router-dom';
+import React, { useMemo, useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
-import {
-  AutoRenewIcon,
-} from '@luckyswap/uikit'
+import { AutoRenewIcon } from '@luckyswap/uikit'
 import { ethers } from 'ethers'
 import styled from 'styled-components'
-import { Button } from 'reactstrap';
+import { Button } from 'reactstrap'
 import { useWeb3React } from '@web3-react/core'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import bep20Abi from 'config/abi/erc20.json'
 import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
 import useOldApproveConfirmTransaction from 'hooks/useOldApproveConfirmTransaction'
-import { useERC20, useContract ,useIfoContract} from 'hooks/useContract'
+import { useERC20, useContract, useIfoContract } from 'hooks/useContract'
 import getTimePeriods from 'utils/getTimePeriods'
 import { useToast } from 'state/hooks'
-
+import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
+import { TransactionDetails } from 'state/transactions/reducer'
 import ifoAbi from 'config/abi/ifo.json'
-import { useHookIFOs } from '../../Store';
+import { useHookIFOs } from '../../Store'
+// we want the latest one to come first, so return negative if a is after b
+function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
+  return b.addedTime - a.addedTime
+}
 
- const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
+const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
 // const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
-const LoadingIfo = () =>{
-  const [state, actions] = useHookIFOs();
+const LoadingIfo = () => {
+  const [state, actions] = useHookIFOs()
   // const [activeIfo,setActiveIfo] = useState(null)
-  const param:any = useParams();
+  const param: any = useParams()
   useEffect(() => {
-    actions.getDetailLaunch(param?.id);
+    actions.getDetailLaunch(param?.id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  if(state.detailLaunchpad){
+  if (state.detailLaunchpad) {
     return <IfoTitle activeIfo={state.detailLaunchpad} />
   }
   return <div>loading</div>
 }
-const IfoTitle = ({activeIfo}:any) => {
-  const [balance, setBalance] = useState(0);
-  const [isApproved, setIsApproved] = useState(false);
+const IfoTitle = ({ activeIfo }: any) => {
+  const [balance, setBalance] = useState(0)
+  const [isApproved, setIsApproved] = useState(false)
   const [value, setValue] = useState('')
 
-  const { description,name, address, currency, currencyAddress} = activeIfo;
-  const contract = useIfoContract(address);
-  const { offeringAmount, raisingAmount, secondsUntilStart, secondsUntilEnd, status, startBlockNum } = useGetPublicIfoData(activeIfo)
+  const { description, name, address, currency, currencyAddress } = activeIfo
+  const contract = useIfoContract(address)
+  const { offeringAmount, raisingAmount, secondsUntilStart, secondsUntilEnd, status, startBlockNum } =
+    useGetPublicIfoData(activeIfo)
   const { account } = useWeb3React()
   const LPContract = useContract(currencyAddress, bep20Abi)
   const raisingTokenContract = useContract(address, ifoAbi)
-
 
   const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
   const TranslateString = useI18n()
@@ -56,43 +59,44 @@ const IfoTitle = ({activeIfo}:any) => {
 
   const timeUntil = getTimePeriods(countdownToUse)
 
+  const priceRate =
+    offeringAmount.toNumber() && raisingAmount.toNumber() ? `${offeringAmount.div(raisingAmount).toFixed(2)}` : '?'
 
-  const priceRate = offeringAmount.toNumber() && raisingAmount.toNumber() ? `${offeringAmount.div(raisingAmount).toFixed(2)}` : "?"
-
+  const addTransaction = useTransactionAdder()
 
   useEffect(() => {
-    if (account){
+    if (account) {
       LPContract.balanceOf(account).then((data) => {
         setBalance(parseFloat((data / 1e18).toFixed(4)))
       })
-    //   const filter = LPContract.filters.Approval(account);
+      //   const filter = LPContract.filters.Approval(account);
 
-    //   LPContract.on(filter, (author, oldValue, newValue, event) => {
-    //     console.log("on filter", filter)
-    //     console.log("on author", author)
-    //     console.log("on oldValue",  oldValue)
-    //     console.log("on newValue",  newValue)
-    //     console.log("on event", event)
-    // })
-    // LPContract.on('')
-  }
-    
+      //   LPContract.on(filter, (author, oldValue, newValue, event) => {
+      //     console.log("on filter", filter)
+      //     console.log("on author", author)
+      //     console.log("on oldValue",  oldValue)
+      //     console.log("on newValue",  newValue)
+      //     console.log("on event", event)
+      // })
+      // LPContract.on('')
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account])
 
-  useEffect( () => {
+  useEffect(() => {
     const fetchApprovalData = async () => {
-      if (account && LPContract){
+      if (account && LPContract) {
         try {
           const response = await LPContract.allowance(account, contract.options.address)
-          setIsApproved(response.toString() !== '0');
+          setIsApproved(response.toString() !== '0')
         } catch (error) {
-          console.log(" error fetchApprovalData", error)
-        }  
+          console.log(' error fetchApprovalData', error)
+        }
       }
     }
-   
-    fetchApprovalData();
+
+    fetchApprovalData()
   }, [account, contract.options.address, LPContract])
 
   const { toastSuccess, toastError } = useToast()
@@ -116,15 +120,15 @@ const IfoTitle = ({activeIfo}:any) => {
         })
         return response.toString() !== '0'
       } catch (error) {
-        return false 
+        return false
       }
     },
     onApprove: async () => {
       return LPContract.approve(contract.options.address, ethers.constants.MaxUint256)
     },
-   
+
     onConfirm: () => {
-      return raisingTokenContract.depositWithoutWhitelist(valueWithTokenDecimals.toString());
+      return raisingTokenContract.depositWithoutWhitelist(valueWithTokenDecimals.toString())
     },
     onSuccess: async () => {
       // onDismiss()
@@ -134,36 +138,41 @@ const IfoTitle = ({activeIfo}:any) => {
 
   const handleConfirm = async () => {
     try {
-      await raisingTokenContract
-      .estimateGas
-      .depositWithoutWhitelist(valueWithTokenDecimals.toString())
+      await raisingTokenContract.estimateGas.depositWithoutWhitelist(valueWithTokenDecimals.toString())
       // console.log("estimate", estimate)
-    } catch(error){
-      toastError(error.data.message);
+    } catch (error) {
+      toastError(error.data.message)
     }
-    await raisingTokenContract.depositWithoutWhitelist(valueWithTokenDecimals.toString());  
-
+    await raisingTokenContract.depositWithoutWhitelist(valueWithTokenDecimals.toString()).then((response) => {
+      addTransaction(response, {
+        summary: 'Deposit successfully!',
+      })
+    })
   }
 
   const handleWhitelistCheck = async () => {
     try {
-      const result = await raisingTokenContract.whitelist(account);
+      const result = await raisingTokenContract.whitelist(account)
 
       // new BigNumber(result._hex).toNumber()
-      if (result._hex !== '0x00' ) // amount for whitelist member = !0 
-        toastSuccess('Yeah!, You are a member of Whitelist');
-      else
-        toastSuccess("Huhu, You aren't member of Whitelist");
-    } catch(err) {
-      toastError("Wrong somethings");
+      if (result._hex !== '0x00')
+        // amount for whitelist member = !0
+        toastSuccess('Yeah!, You are a member of Whitelist')
+      else toastSuccess("Huhu, You aren't member of Whitelist")
+    } catch (err) {
+      toastError('Wrong somethings')
     }
   }
 
   const handleClaim = async () => {
     try {
-      await raisingTokenContract.harvest();
-    } catch(err) {
-      toastError("Not thing to claim")
+      await raisingTokenContract.harvest().then((response) => {
+        addTransaction(response, {
+          summary: 'Claim successfully!',
+        })
+      })
+    } catch (err) {
+      toastError('Not thing to claim')
     }
   }
 
@@ -171,125 +180,199 @@ const IfoTitle = ({activeIfo}:any) => {
   // console.log( valueWithTokenDecimals.isNaN());
   // console.log("valueWithTokenDecimals.eq(0)", valueWithTokenDecimals.eq(0))
 
+  const allTransactions = useAllTransactions()
+
+  const sortedRecentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions)
+    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
+  }, [allTransactions])
+
+  const getStatus = () => {
+    const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+    return !!pending.length
+  }
   return (
     <>
-    <TitleDetail>
-      <h2>{name}</h2>
-    </TitleDetail>
-    <BoxIfoDetail>
-      <img src="../images/hyfi-detail.png" alt=""/>
+      <TitleDetail>
+        <h2>{name}</h2>
+      </TitleDetail>
+      <BoxIfoDetail>
+        <img src="../images/hyfi-detail.png" alt="" />
 
-      <BoxContent>
-        <div className="two-column">
-          <div className="two-column-left">
-            <h3>{name}</h3>
-            
-            <BoxSocial>
-              <a href="/">
-              <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xmlSpace="preserve">
-                    <path style={{fill: '#03A9F4'}} d="M512,97.248c-19.04,8.352-39.328,13.888-60.48,16.576c21.76-12.992,38.368-33.408,46.176-58.016
+        <BoxContent>
+          <div className="two-column">
+            <div className="two-column-left">
+              <h3>{name}</h3>
+
+              <BoxSocial>
+                <a href="/">
+                  <svg
+                    version="1.1"
+                    id="Capa_1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlnsXlink="http://www.w3.org/1999/xlink"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 512 512"
+                    xmlSpace="preserve"
+                  >
+                    <path
+                      style={{ fill: '#03A9F4' }}
+                      d="M512,97.248c-19.04,8.352-39.328,13.888-60.48,16.576c21.76-12.992,38.368-33.408,46.176-58.016
               c-20.288,12.096-42.688,20.64-66.56,25.408C411.872,60.704,384.416,48,354.464,48c-58.112,0-104.896,47.168-104.896,104.992
               c0,8.32,0.704,16.32,2.432,23.936c-87.264-4.256-164.48-46.08-216.352-109.792c-9.056,15.712-14.368,33.696-14.368,53.056
               c0,36.352,18.72,68.576,46.624,87.232c-16.864-0.32-33.408-5.216-47.424-12.928c0,0.32,0,0.736,0,1.152
               c0,51.008,36.384,93.376,84.096,103.136c-8.544,2.336-17.856,3.456-27.52,3.456c-6.72,0-13.504-0.384-19.872-1.792
               c13.6,41.568,52.192,72.128,98.08,73.12c-35.712,27.936-81.056,44.768-130.144,44.768c-8.608,0-16.864-0.384-25.12-1.44
               C46.496,446.88,101.6,464,161.024,464c193.152,0,298.752-160,298.752-298.688c0-4.64-0.16-9.12-0.384-13.568
-              C480.224,136.96,497.728,118.496,512,97.248z" /></svg>
-              </a>
-              <a href="/">
-                <svg id="Bold" enableBackground="new 0 0 24 24" height={512} viewBox="0 0 24 24" width={512} xmlns="http://www.w3.org/2000/svg"><path d="m22.085 4.733 1.915-1.832v-.401h-6.634l-4.728 11.768-5.379-11.768h-6.956v.401l2.237 2.693c.218.199.332.49.303.783v10.583c.069.381-.055.773-.323 1.05l-2.52 3.054v.396h7.145v-.401l-2.52-3.049c-.273-.278-.402-.663-.347-1.05v-9.154l6.272 13.659h.729l5.393-13.659v10.881c0 .287 0 .346-.188.534l-1.94 1.877v.402h9.412v-.401l-1.87-1.831c-.164-.124-.249-.332-.214-.534v-13.467c-.035-.203.049-.411.213-.534z" /></svg>
-              </a>
-              <a href="/">
-                <svg enableBackground="new 0 0 24 24" height={512} viewBox="0 0 24 24" width={512} xmlns="http://www.w3.org/2000/svg"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z" fill="#039be5" /></svg>
-              </a>
-            </BoxSocial>
-          </div>
+              C480.224,136.96,497.728,118.496,512,97.248z"
+                    />
+                  </svg>
+                </a>
+                <a href="/">
+                  <svg
+                    id="Bold"
+                    enableBackground="new 0 0 24 24"
+                    height={512}
+                    viewBox="0 0 24 24"
+                    width={512}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="m22.085 4.733 1.915-1.832v-.401h-6.634l-4.728 11.768-5.379-11.768h-6.956v.401l2.237 2.693c.218.199.332.49.303.783v10.583c.069.381-.055.773-.323 1.05l-2.52 3.054v.396h7.145v-.401l-2.52-3.049c-.273-.278-.402-.663-.347-1.05v-9.154l6.272 13.659h.729l5.393-13.659v10.881c0 .287 0 .346-.188.534l-1.94 1.877v.402h9.412v-.401l-1.87-1.831c-.164-.124-.249-.332-.214-.534v-13.467c-.035-.203.049-.411.213-.534z" />
+                  </svg>
+                </a>
+                <a href="/">
+                  <svg
+                    enableBackground="new 0 0 24 24"
+                    height={512}
+                    viewBox="0 0 24 24"
+                    width={512}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"
+                      fill="#039be5"
+                    />
+                  </svg>
+                </a>
+              </BoxSocial>
+            </div>
 
-          <div className="two-column-right">
-            <Dflex>
-              <div>IDO Amount:</div>
-              <div className="font-bold">{offeringAmount.div(1e18).toNumber()} Lucky</div>
-            </Dflex>
+            <div className="two-column-right">
+              <Dflex>
+                <div>IDO Amount:</div>
+                <div className="font-bold">{offeringAmount.div(1e18).toNumber()} Lucky</div>
+              </Dflex>
 
-            <Dflex>
-              <div>Supported Coin:</div>
-              <div className="font-bold">{currency}</div>
-            </Dflex>
+              <Dflex>
+                <div>Supported Coin:</div>
+                <div className="font-bold">{currency}</div>
+              </Dflex>
 
-            <Dflex>
-              <div>Price:</div>
-              <div className="font-bold">{priceRate} {currency}</div>
-            </Dflex>
+              <Dflex>
+                <div>Price:</div>
+                <div className="font-bold">
+                  {priceRate} {currency}
+                </div>
+              </Dflex>
 
-            <Dflex>
-              <div> Start Block:</div>
-              <div className="font-bold">{startBlockNum}</div>
-              {/* <div className="font-bold">{`${timeStart.days}d, ${timeStart.hours}h, ${timeStart.minutes}m until Start`}</div> */}
-            </Dflex>
+              <Dflex>
+                <div> Start Block:</div>
+                <div className="font-bold">{startBlockNum}</div>
+                {/* <div className="font-bold">{`${timeStart.days}d, ${timeStart.hours}h, ${timeStart.minutes}m until Start`}</div> */}
+              </Dflex>
 
-            <Dflex>
-              <div>Time:</div>
-              <div className="font-bold">{`${timeUntil.days}d, ${timeUntil.hours}h, ${timeUntil.minutes}m until ${suffix}`}</div>
-            </Dflex>
-          </div>
-        </div>
-      </BoxContent>
-
-      <BoxForm>
-        <button className="whitelist" type="submit" onClick={handleWhitelistCheck}>Whitelist Check</button>
-        <div className="box-input">
-          <div className="d-flex">
-            <div className="box-max">
-              <div className="balance">Balance: {balance} {currency}</div>
-              <input className="input-max"
-               type="text" pattern="^[0-9]*[.,]?[0-9]*$"
-               placeholder="0.0"
-               value={value}
-               onChange={(e) => setValue(e.currentTarget.value)}/>
-              <button className="max-btn" type="submit" onClick={() => setValue(balance.toString())}>Max</button>
-              <div className="line"></div>
-              <div className="box-bnb">
-                <p>{currency}</p>
-                <input type="text" />
-              </div>
+              <Dflex>
+                <div>Time:</div>
+                <div className="font-bold">{`${timeUntil.days}d, ${timeUntil.hours}h, ${timeUntil.minutes}m until ${suffix}`}</div>
+              </Dflex>
             </div>
           </div>
-          { (status ==='live')  && (
-          (!(isConfirmed || isConfirming || isApproved)) ? (
-          <Button
-           className={`finished ${(isConfirmed || isConfirming || isApproved) && "disabled"}`} color="primary"
-            disabled={isConfirmed || isConfirming || isApproved}
-            onClick={handleApprove}
-            endIcon={isApproving ? spinnerIcon : undefined}
-            isLoading={isApproving}
-          >
-          {TranslateString(564, 'Approve')}
-          </Button>)
-         :
-            (<Button
-            className={`finished ${(!isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0)) && "disabled"}`} color="primary"
-            onClick={handleConfirm}
-            disabled={
-             !isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0)
-            }
-            isLoading={isConfirming}
-            endIcon={isConfirming ? spinnerIcon : undefined}
-            >
-           { TranslateString(464, 'Confirm')}
-            </Button>)
-          )}
-          {status ==='finished' && (
-            <Button  className="finished" color="primary" onClick={handleClaim}>Claim</Button>
-          )}
+        </BoxContent>
 
-          {/* <Button type="submit" className="finished" color="primary" disabled>Coming soon</Button> */}
-        </div>
+        <BoxForm>
+          <button className="whitelist" type="submit" onClick={handleWhitelistCheck}>
+            Whitelist Check
+          </button>
+          <div className="box-input">
+            <div className="d-flex">
+              <div className="box-max">
+                <div className="balance">
+                  Balance: {balance} {currency}
+                </div>
+                <input
+                  disabled={getStatus()}
+                  className="input-max"
+                  type="text"
+                  pattern="^[0-9]*[.,]?[0-9]*$"
+                  placeholder="0.0"
+                  value={value}
+                  onChange={(e) => setValue(e.currentTarget.value)}
+                />
+                <button className="max-btn" type="submit" onClick={() => setValue(balance.toString())}>
+                  Max
+                </button>
+                <div className="line"></div>
+                <div className="box-bnb">
+                  <p>{currency}</p>
+                  <input type="text" />
+                </div>
+              </div>
+            </div>
+            {status === 'live' &&
+              (!(isConfirmed || isConfirming || isApproved) ? (
+                <Button
+                  className={`finished ${(isConfirmed || isConfirming || isApproved) && 'disabled'}`}
+                  color="primary"
+                  disabled={getStatus() || isConfirmed || isConfirming || isApproved}
+                  onClick={() =>
+                    handleApprove().then((response: any) => {
+                      addTransaction(response, {
+                        summary: 'Approve successfully!',
+                      })
+                    })
+                  }
+                  endIcon={isApproving ? spinnerIcon : undefined}
+                  isLoading={isApproving}
+                >
+                  {getStatus() && spinnerIcon}
+                  {TranslateString(564, 'Approve')}
+                </Button>
+              ) : (
+                <Button
+                  className={`
+                  finished ${
+                    (!isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0)) &&
+                    'disabled'
+                  }`}
+                  color="primary"
+                  onClick={handleConfirm}
+                  disabled={
+                    getStatus() ||
+                    !isApproved ||
+                    isConfirmed ||
+                    valueWithTokenDecimals.isNaN() ||
+                    valueWithTokenDecimals.eq(0)
+                  }
+                  isLoading={getStatus()}
+                >
+                  {getStatus() && spinnerIcon}
+                  {TranslateString(464, 'Deposit')}
+                </Button>
+              ))}
+            {status === 'finished' && (
+              <Button className="finished" color="primary" disabled={getStatus()} onClick={handleClaim}>
+                {getStatus() && spinnerIcon}
+                Claim
+              </Button>
+            )}
 
-        <TextBot>
-          {description}
-        </TextBot>
-      </BoxForm>
-    </BoxIfoDetail>
+            {/* <Button type="submit" className="finished" color="primary" disabled>Coming soon</Button> */}
+          </div>
+
+          <TextBot>{description}</TextBot>
+        </BoxForm>
+      </BoxIfoDetail>
     </>
   )
 }
@@ -336,7 +419,7 @@ const BoxIfoDetail = styled.div`
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
     color: rgb(255, 253, 250);
-    font-family: "Baloo Da";
+    font-family: 'Baloo Da';
     font-weight: 400;
     padding: 8px 24px;
 
@@ -440,7 +523,7 @@ const BoxForm = styled.div`
     height: 36px;
     box-sizing: border-box;
     border-radius: 8px;
-    font-family: "Yuanti SC";
+    font-family: 'Yuanti SC';
     font-weight: bold;
     font-size: 14px;
     background: rgb(255, 253, 250);
@@ -451,7 +534,7 @@ const BoxForm = styled.div`
   .box-input {
     margin: 48px 0px 0px;
     padding-bottom: 40px;
-    border-bottom: 1px solid rgb(43 44 58)
+    border-bottom: 1px solid rgb(43 44 58);
   }
 
   .d-flex {
@@ -571,9 +654,8 @@ const BoxForm = styled.div`
     /* cursor: not-allowed; */
   }
   button.disabled {
-    background:#f5c6064d;
+    background: #f5c6064d;
     cursor: not-allowed;
-
   }
 `
 
