@@ -1,22 +1,21 @@
-import React from 'react'
+import React, {useEffect}from 'react'
 import styled from 'styled-components'
 import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, Image } from '@luckyswap/uikit'
-import { ifosConfig } from 'config/constants'
 import IfoCard from './components/IfoCard'
 import IfoCards from './components/IfoCards'
-
-
 /**
  * Note: currently there should be only 1 active IFO at a time
  */
-const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
 
-const Ifo = () => {
+const Ifo = ({ ifos }) => {
 
   return (
     <div>
       <IfoCards isSingle>
-        <IfoCard ifo={activeIfo} />
+        {ifos.map((ifo) =>
+          <IfoCard ifo={ifo} />
+        )}
+        
       </IfoCards>
 
       <BoxIDO>

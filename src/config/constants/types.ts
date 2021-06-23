@@ -3,6 +3,7 @@ import { TranslatableText } from 'state/types'
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 
 export interface Ifo {
+  _id: string,
   id: string
   isActive: boolean
   address: string

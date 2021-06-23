@@ -131,8 +131,10 @@ const Dflex = styled.div`
   }
 `
 
-const IfoTabButtons = () => {
+const IfoTabButtons = ({onFilterWithStatus, status}) => {
   const { url, isExact } = useRouteMatch()
+
+  
 
   return (
     <Wrapper>
@@ -144,11 +146,11 @@ const IfoTabButtons = () => {
             <option>NFT</option>
           </select>
 
-          <select className="list-options">
-            <option>All</option>
-            <option>Open</option>
-            <option>Close</option>
-            <option>Coming Soon</option>
+          <select className="list-options" value={status} onChange={(e) => onFilterWithStatus(e)}>
+            <option value='all'>All</option>
+            <option value='open'>Open</option>
+            <option value='close'>Close</option>
+            <option value='comingsoon'>Coming Soon</option>
           </select>
 
           <form>

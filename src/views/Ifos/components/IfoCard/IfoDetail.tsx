@@ -1,17 +1,180 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import { useParams} from 'react-router-dom';
+import BigNumber from 'bignumber.js'
+import {
+  AutoRenewIcon,
+} from '@luckyswap/uikit'
+import { ethers } from 'ethers'
 import styled from 'styled-components'
 import { Button } from 'reactstrap';
+import { useWeb3React } from '@web3-react/core'
+import { getBalanceNumber } from 'utils/formatBalance'
+import useI18n from 'hooks/useI18n'
+import bep20Abi from 'config/abi/erc20.json'
+import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
+import useOldApproveConfirmTransaction from 'hooks/useOldApproveConfirmTransaction'
+import { useERC20, useContract ,useIfoContract} from 'hooks/useContract'
+import getTimePeriods from 'utils/getTimePeriods'
+import { useToast } from 'state/hooks'
 
-/**
- * Note: currently there should be only 1 active IFO at a time
- */
+import ifoAbi from 'config/abi/ifo.json'
+import { useHookIFOs } from '../../Store';
 
-const IfoTitle = () => {
+ const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
+
+// const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
+const LoadingIfo = () =>{
+  const [state, actions] = useHookIFOs();
+  // const [activeIfo,setActiveIfo] = useState(null)
+  const param:any = useParams();
+  useEffect(() => {
+    actions.getDetailLaunch(param?.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  if(state.detailLaunchpad){
+    return <IfoTitle activeIfo={state.detailLaunchpad} />
+  }
+  return <div>loading</div>
+}
+const IfoTitle = ({activeIfo}:any) => {
+  const [balance, setBalance] = useState(0);
+  const [isApproved, setIsApproved] = useState(false);
+  const [value, setValue] = useState('')
+
+  const { name, address, currency, currencyAddress} = activeIfo;
+  const contract = useIfoContract(address);
+  const { offeringAmount, raisingAmount, secondsUntilStart, secondsUntilEnd, status, startBlockNum } = useGetPublicIfoData(activeIfo)
+  const { account } = useWeb3React()
+  const LPContract = useContract(currencyAddress, bep20Abi)
+  const raisingTokenContract = useContract(address, ifoAbi)
+
+
+  const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
+  const TranslateString = useI18n()
+  const countdownToUse = status === 'coming_soon' ? secondsUntilStart : secondsUntilEnd
+  const suffix = status === 'coming_soon' ? 'start' : 'finish'
+
+  const timeUntil = getTimePeriods(countdownToUse)
+
+
+  const priceRate = offeringAmount.toNumber() && raisingAmount.toNumber() ? `${offeringAmount.div(raisingAmount).toFixed(2)}` : "?"
+
+
+  useEffect(() => {
+    if (account){
+      LPContract.balanceOf(account).then((data) => {
+        setBalance(parseFloat((data / 1e18).toFixed(4)))
+      })
+    //   const filter = LPContract.filters.Approval(account);
+
+    //   LPContract.on(filter, (author, oldValue, newValue, event) => {
+    //     console.log("on filter", filter)
+    //     console.log("on author", author)
+    //     console.log("on oldValue",  oldValue)
+    //     console.log("on newValue",  newValue)
+    //     console.log("on event", event)
+    // })
+    // LPContract.on('')
+  }
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account])
+
+  useEffect( () => {
+    const fetchApprovalData = async () => {
+      if (account && LPContract){
+        try {
+          const response = await LPContract.allowance(account, contract.options.address)
+          setIsApproved(response.toString() !== '0');
+        } catch (error) {
+          console.log(" error fetchApprovalData", error)
+        }  
+      }
+    }
+   
+    fetchApprovalData();
+  }, [account, contract.options.address, LPContract])
+
+  const { toastSuccess, toastError } = useToast()
+
+  const handleContributeSuccess = (amount: BigNumber) => {
+    toastSuccess('Success!', `You have contributed ${getBalanceNumber(amount)} CAKE-BNB LP tokens to this IFO!`)
+    // addUserContributedAmount(amount)
+  }
+
+  const {
+    isApproving,
+    isConfirmed,
+    isConfirming,
+    handleApprove,
+    // handleConfirm,
+  } = useOldApproveConfirmTransaction({
+    onRequiresApproval: async () => {
+      try {
+        const response = await LPContract.allowance(account, contract.options.address).then((data) => {
+          return data
+        })
+        return response.toString() !== '0'
+      } catch (error) {
+        return false 
+      }
+    },
+    onApprove: async () => {
+      return LPContract.approve(contract.options.address, ethers.constants.MaxUint256)
+    },
+   
+    onConfirm: () => {
+      return raisingTokenContract.depositWithoutWhitelist(valueWithTokenDecimals.toString());
+    },
+    onSuccess: async () => {
+      // onDismiss()
+      handleContributeSuccess(valueWithTokenDecimals)
+    },
+  })
+
+  const handleConfirm = async () => {
+    try {
+      await raisingTokenContract
+      .estimateGas
+      .depositWithoutWhitelist(valueWithTokenDecimals.toString())
+      // console.log("estimate", estimate)
+    } catch(error){
+      toastError(error.data.message);
+    }
+    await raisingTokenContract.depositWithoutWhitelist(valueWithTokenDecimals.toString());  
+
+  }
+
+  const handleWhitelistCheck = async () => {
+    try {
+      const result = await raisingTokenContract.whitelist(account);
+
+      // new BigNumber(result._hex).toNumber()
+      if (result._hex !== '0x00' ) // amount for whitelist member = !0 
+        toastSuccess('Yeah!, You are a member of Whitelist');
+      else
+        toastSuccess("Huhu, You aren't member of Whitelist");
+    } catch(err) {
+      toastError("Wrong somethings");
+    }
+  }
+
+  const handleClaim = async () => {
+    try {
+      await raisingTokenContract.harvest();
+    } catch(err) {
+      toastError("Not thing to claim")
+    }
+  }
+
+  // console.log({myIsApproved, isConfirmed })
+  // console.log( valueWithTokenDecimals.isNaN());
+  // console.log("valueWithTokenDecimals.eq(0)", valueWithTokenDecimals.eq(0))
 
   return (
     <>
     <TitleDetail>
-      <h2>Hcats</h2>
+      <h2>{name}</h2>
     </TitleDetail>
     <BoxIfoDetail>
       <img src="../images/hyfi-detail.png" alt=""/>
@@ -19,7 +182,7 @@ const IfoTitle = () => {
       <BoxContent>
         <div className="two-column">
           <div className="two-column-left">
-            <h3>Hcats</h3>
+            <h3>{name}</h3>
             
             <BoxSocial>
               <a href="/">
@@ -45,50 +208,81 @@ const IfoTitle = () => {
           <div className="two-column-right">
             <Dflex>
               <div>IDO Amount:</div>
-              <div className="font-bold">0,000 HCATS</div>
+              <div className="font-bold">{offeringAmount.div(1e18).toNumber()} Lucky</div>
             </Dflex>
 
             <Dflex>
               <div>Supported Coin:</div>
-              <div className="font-bold">BNB</div>
+              <div className="font-bold">{currency}</div>
             </Dflex>
 
             <Dflex>
               <div>Price:</div>
-              <div className="font-bold">0.000 BNB</div>
+              <div className="font-bold">{priceRate} {currency}</div>
             </Dflex>
 
             <Dflex>
-              <div>Start Block:</div>
-              <div className="font-bold">000</div>
+              <div> Start Block:</div>
+              <div className="font-bold">{startBlockNum}</div>
+              {/* <div className="font-bold">{`${timeStart.days}d, ${timeStart.hours}h, ${timeStart.minutes}m until Start`}</div> */}
             </Dflex>
 
             <Dflex>
               <div>Time:</div>
-              <div className="font-bold">Around 00.00 0:00 AM UTC</div>
+              <div className="font-bold">{`${timeUntil.days}d, ${timeUntil.hours}h, ${timeUntil.minutes}m until ${suffix}`}</div>
             </Dflex>
           </div>
         </div>
       </BoxContent>
 
       <BoxForm>
-        <button className="whitelist" type="submit">Whitelist Check</button>
-
+        <button className="whitelist" type="submit" onClick={handleWhitelistCheck}>Whitelist Check</button>
         <div className="box-input">
           <div className="d-flex">
             <div className="box-max">
-              <div className="balance">Balance: 0 BNB</div>
-              <input className="input-max" type="text" pattern="^[0-9]*[.,]?[0-9]*$" placeholder="0.0" />
-              <button className="max-btn" type="submit">Max</button>
+              <div className="balance">Balance: {balance} {currency}</div>
+              <input className="input-max"
+               type="text" pattern="^[0-9]*[.,]?[0-9]*$"
+               placeholder="0.0"
+               value={value}
+               onChange={(e) => setValue(e.currentTarget.value)}/>
+              <button className="max-btn" type="submit" onClick={() => setValue(balance.toString())}>Max</button>
               <div className="line"></div>
               <div className="box-bnb">
-                <p>BNB</p>
+                <p>{currency}</p>
                 <input type="text" />
               </div>
             </div>
           </div>
+          { (status ==='live')  && (
+          (!(isConfirmed || isConfirming || isApproved)) ? (
+          <Button
+           className={`finished ${(isConfirmed || isConfirming || isApproved) && "disabled"}`} color="primary"
+            disabled={isConfirmed || isConfirming || isApproved}
+            onClick={handleApprove}
+            endIcon={isApproving ? spinnerIcon : undefined}
+            isLoading={isApproving}
+          >
+          {TranslateString(564, 'Approve')}
+          </Button>)
+         :
+            (<Button
+            className={`finished ${(!isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0)) && "disabled"}`} color="primary"
+            onClick={handleConfirm}
+            disabled={
+             !isApproved || isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0)
+            }
+            isLoading={isConfirming}
+            endIcon={isConfirming ? spinnerIcon : undefined}
+            >
+           { TranslateString(464, 'Confirm')}
+            </Button>)
+          )}
+          {status ==='finished' && (
+            <Button  className="finished" color="primary" onClick={handleClaim}>Claim</Button>
+          )}
 
-          <Button type="submit" className="finished" color="primary" disabled>Coming soon</Button>
+          {/* <Button type="submit" className="finished" color="primary" disabled>Coming soon</Button> */}
         </div>
 
         <TextBot>
@@ -364,7 +558,7 @@ const BoxForm = styled.div`
     cursor: pointer;
     position: relative;
     z-index: 1;
-    background: #f5c6064d;
+    background: #f5c506f9;
     color: rgb(255, 253, 250);
     cursor: auto;
     box-shadow: none;
@@ -374,7 +568,12 @@ const BoxForm = styled.div`
     width: 240px;
     height: 48px;
     margin: 32px auto 0px;
+    /* cursor: not-allowed; */
+  }
+  button.disabled {
+    background:#f5c6064d;
     cursor: not-allowed;
+
   }
 `
 
@@ -416,4 +615,4 @@ const BoxSocial = styled.div`
   }
 `
 
-export default IfoTitle
+export default LoadingIfo
