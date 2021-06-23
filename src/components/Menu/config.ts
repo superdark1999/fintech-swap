@@ -30,12 +30,12 @@ const config: MenuEntry[] = [
     href: '/farms',
     calloutClass: 'style-color',
   },
-  // {
-  //   label: 'Pools',
-  //   icon: 'PoolIcon',
-  //   href: '/pools',
-  //   calloutClass: 'style-color',
-  // },
+  {
+    label: 'Pools',
+    icon: 'PoolIcon',
+    href: '/pools',
+    calloutClass: 'style-color',
+  },
   // {
   //   label: 'Analytics',
   //   icon: 'InfoIcon',

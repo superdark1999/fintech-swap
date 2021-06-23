@@ -114,7 +114,7 @@ function PoolCards() {
 
                   <Boxbtn>
                     <Button color="primary">
-                      <Link to="/PoolCardsDetail">Select</Link>
+                      <Link to="/PoolCardsDetail">Join</Link>
                     </Button>
                   </Boxbtn>
                 </BoxPool>
@@ -148,7 +148,7 @@ function PoolCards() {
 
                   <Boxbtn>
                     <Button color="primary">
-                      <Link to="/PoolCardsDetail">Select</Link>
+                      <Link to="/PoolCardsDetail">Join</Link>
                     </Button>
                   </Boxbtn>
                 </BoxPool>
