@@ -16,12 +16,12 @@ function BannerBar() {
 
 const BannerBarStyled = styled.div`
     border-radius: 24px;
-    height: 300px;
+    height: 380px;
     .banner-body{
-        height: 300px;
+        height: 380px;
         width:100%;
         img{ 
-            height: 300px;
+            height: 380px;
         }
     }
 `

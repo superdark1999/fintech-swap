@@ -26,9 +26,9 @@ const NFTContainer = (props: any) => {
             </div>
           )}
           <div className="main-nft">
-            <div className="trending-nft">
+            {/* <div className="trending-nft">
               <TrendingBar />
-            </div>
+            </div> */}
             {/* <ModalLucky/> */}
             <div className="banner-nft">
               <BannerBar />
@@ -93,7 +93,7 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
       border-radius: 12px;
     }
     .banner-nft {
-      height: 300px;
+      height: 380px;
       width: 100%;
       margin: 40px auto;
       padding: 0 30px;
