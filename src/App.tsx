@@ -24,7 +24,7 @@ import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from 
 import './index.css'
 import 'antd/dist/antd.css'
 import Poolls from './views/Pools/components/PoolCardsDetail'
-import IfoDetail from './views/Ifos/components/IfoCard/IfoDetail'
+import IfoDetail from './views/Launchpad/components/IfoCard/IfoDetail'
 
 import { LanguageContext } from './hooks/LanguageContext'
 import { TranslationsContext } from './hooks/TranslationsContext'
@@ -36,7 +36,7 @@ import Popups from './components/Popups'
 const Home = lazy(() => import('./views/Home'))
 const Farms = lazy(() => import('./views/Farms'))
 const Lottery = lazy(() => import('./views/Lottery'))
-const Ifos = lazy(() => import('./views/Ifos'))
+const Ifos = lazy(() => import('./views/Launchpad'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const Collectibles = lazy(() => import('./views/Collectibles'))
 const Teams = lazy(() => import('./views/Teams'))

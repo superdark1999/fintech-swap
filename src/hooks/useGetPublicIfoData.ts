@@ -20,6 +20,7 @@ export interface PublicIfoState {
   getAddressListLength: number
   startBlockNum: number
   endBlockNum: number
+  description?:string
 }
 
 const getStatus = (currentBlock: number, startBlock: number, endBlock: number): IfoStatus => {
