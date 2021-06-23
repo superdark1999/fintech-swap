@@ -45,7 +45,7 @@ const CardSelectStyled = styled.div`
     :first-child{
       border-bottom: 1px solid #E7EBEF;
     }
-    padding: 40px;
+    padding: 22px;
     .button-offer {
       border: 1px solid #333435;
       box-sizing: border-box;

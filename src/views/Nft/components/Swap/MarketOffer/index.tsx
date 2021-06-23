@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { OfferStyled, CardStyled, WrapperListCard, ListCard } from './styled'
+import { OfferStyled, TableStyled, WrapperListCard, ListCard, Container} from './styled'
 import { Select, Row } from 'antd'
 import Swap from 'assets/images/swap.svg'
 import Token from 'assets/images/token.svg'
@@ -7,7 +7,7 @@ import Plus from 'assets/images/plus.svg'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import ModalSelectSwap from 'components-v2/ModalSelectSwap'
 import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
-
+import { data, column } from './mock'
 import { isMobile } from 'react-device-detect'
 import { ButtonBuy } from 'components-v2/Button'
 import { CardSwap, CardSelect, CardOffer, CardDefault} from '../components/index'
@@ -159,6 +159,13 @@ export default function (props: Props) {
         </Row> 
       </OfferStyled>
 
+      <TableStyled
+        columns={column} 
+        dataSource={data} 
+        size="middle"
+        scroll={{ x: 300 }}
+        style={{width: '1100px', margin: 'auto'}}
+      />            
       <ModalSelectSwap
         visible={visible}
         setVisible={setVisible}

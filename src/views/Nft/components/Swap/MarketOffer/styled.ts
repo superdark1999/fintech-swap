@@ -211,7 +211,6 @@ export const ListCard = styled.div<PropsListCard>`
     -webkit-transition: 0.5s;
     transition: 0.5s;
     margin-left: -200px;
-    margin-top: 40px;
   }
   :hover {
     >div {
