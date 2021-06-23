@@ -11,7 +11,7 @@ export const SidebarStyled = styled.div<PropsStyled>`
     display: flex;
     justify-content: center;
     /* align-items: center; */
-    margin-left: 20px;
+    margin-left: 14px;
     flex-direction: column;
     >img, span {
       margin-top: 20px;

@@ -3,6 +3,7 @@ interface Props {
   urlCover?: string
 }
 export const UserProfileStyled = styled.div<Props>`
+  background:#F9FAFB;
   .ant-radio-button-wrapper-checked span{
     background-color:#fff !important;
   }
@@ -50,7 +51,7 @@ export const UserProfileStyled = styled.div<Props>`
       height: 160px;
       position: relative;
       justify-content: center;
-      background: ${(props) => `url(${props.urlCover})`};
+      background: ${props => props.urlCover?`url(${props.urlCover})` : '#F9FAFB'};
       background-repeat: no-repeat;
       background-size: cover;
       .header-profile-col {
@@ -66,7 +67,7 @@ export const UserProfileStyled = styled.div<Props>`
         }
       }
     }
-    &.content-profile {
+    &.content-profile {      
       .content {
         max-width: 1320px;
       }
@@ -143,6 +144,7 @@ export const CartStyled = styled.div`
   border: 1px solid #e7ebef;
   box-sizing: border-box;
   border-radius: 24px;
+  background:#fff;
   .avatar {
     width: 210px;
     height: 210px;
