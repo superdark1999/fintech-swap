@@ -194,6 +194,7 @@ const TabMyCollection = () => {
         <GroupButton defaultValue={option}>
           <RadioButton
             width="auto"
+            className="btn-filter"
             borderRadius="10px"
             value="all"
             onChange={onHandleOptionCheck}
@@ -203,6 +204,7 @@ const TabMyCollection = () => {
           </RadioButton>
           <RadioButton
             width="auto"
+            className="btn-filter"
             borderRadius="10px"
             value="pending"
             onChange={onHandleOptionCheck}
@@ -212,6 +214,7 @@ const TabMyCollection = () => {
           </RadioButton>
           <RadioButton
             width="auto"
+            className="btn-filter"
             borderRadius="10px"
             value="approved"
             onChange={onHandleOptionCheck}
@@ -221,6 +224,7 @@ const TabMyCollection = () => {
           </RadioButton>
           <RadioButton
             width="auto"
+            className="btn-filter"
             borderRadius="10px"
             value="reject"
             onChange={onHandleOptionCheck}

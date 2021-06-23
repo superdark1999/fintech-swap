@@ -3,6 +3,33 @@ interface Props {
   urlCover?: string
 }
 export const UserProfileStyled = styled.div<Props>`
+  .ant-radio-button-wrapper-checked span{
+    background-color:#fff !important;
+  }
+  .btn-filter{
+    background:#fff;
+    color:#333534;
+    :hover{
+      background: #333534 !important;
+      color: #fff !important;
+      border:1px solid #333534 !important;
+    }
+  }
+  .ant-radio-button-wrapper{
+    :hover{
+      ::before{
+        background: #333534 !important;
+      }
+    }
+  }
+  .ant-radio-button-wrapper-checked ::before{
+    background: #333534 !important;
+  }
+  .ant-radio-button-wrapper-checked{
+    background: #333534 !important;
+    border:none !important;
+    color: #fff !important;
+  }
   .ant-tabs-tab{
       color:#AFBAC5;
       font-size: 20px;
@@ -242,7 +269,7 @@ export const CartStyled = styled.div`
       flex: 1;
       cursor: pointer;
       text-decoration: underline;
-      background: #35a5fc;
+      background: #35A5FC;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 16px;
