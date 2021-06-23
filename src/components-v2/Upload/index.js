@@ -8,6 +8,7 @@ import { CloseCircleFilled } from '@ant-design/icons'
 const UploadStyled = styled.div`
   max-height: ${(props) => props.maxHeight || '350px'};
   min-height: 350px;
+  width: 100%;
   max-width: ${(props) => props.maxWidth || '480px'};
   background-color: #fff;
   border: 1px dashed #e7ebef;

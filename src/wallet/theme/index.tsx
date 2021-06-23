@@ -618,8 +618,7 @@ body {
         position: fixed;
       }
     }
-  }
- 
+  }  
 
   &.fix {
     .menu-fix {

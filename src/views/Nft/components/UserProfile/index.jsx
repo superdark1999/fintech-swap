@@ -19,6 +19,7 @@ const { TabPane } = Tabs
 
 const UserProfile = () => {
   const [user, setUser] = useState()
+  console.log('user: ', user)
   const match = useRouteMatch()
   const { getUserDetail } = useArtworkService()
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
@@ -62,7 +63,7 @@ const UserProfile = () => {
           <div className="info-detail">
             <div>
               <div className="name">
-                <span>{user?.name}</span>
+                <span>{user?.name ? user?.name : user?.walletAddress}</span>
                 <img src={Checkmark} />
               </div>
               <div className="rank">
@@ -107,7 +108,7 @@ const UserProfile = () => {
 }
 export default UserProfile
 
-const TabOnSale = ({userAddress}) => {
+const TabOnSale = ({ userAddress }) => {
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
   useEffect(() => {
