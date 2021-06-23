@@ -18,6 +18,8 @@ import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'st
 import { TransactionDetails } from 'state/transactions/reducer'
 import ifoAbi from 'config/abi/ifo.json'
 import { useHookIFOs } from '../../Store'
+import CardValue from '../../../Home/components/CardValue'
+
 // we want the latest one to come first, so return negative if a is after b
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
@@ -261,7 +263,17 @@ const IfoTitle = ({ activeIfo }: any) => {
             <div className="two-column-right">
               <Dflex>
                 <div>IDO Amount:</div>
-                <div className="font-bold">{offeringAmount.div(1e18).toNumber()} Lucky</div>
+                <div className="font-bold">
+                  <CardValue
+                    bold
+                    color=""
+                    value={offeringAmount.div(1e18).toNumber()}
+                    decimals={0}
+                    fontSize="10px"
+                    text={currency}
+                    fontWeight="600"
+                  ></CardValue>
+                </div>
               </Dflex>
 
               <Dflex>
@@ -298,7 +310,16 @@ const IfoTitle = ({ activeIfo }: any) => {
             <div className="d-flex">
               <div className="box-max">
                 <div className="balance">
-                  Balance: {balance} {currency}
+                  Balance:{' '}
+                  <CardValue
+                    bold
+                    color=""
+                    value={balance}
+                    decimals={0}
+                    fontSize="10px"
+                    fontWeight="600"
+                  ></CardValue>
+                  {currency}
                 </div>
                 <input
                   disabled={getStatus()}
@@ -495,7 +516,6 @@ const Dflex = styled.div`
   padding: 6px 0px;
   align-items: center;
   justify-content: space-between;
-
   div {
     box-sizing: border-box;
     margin: 0px;
@@ -554,13 +574,16 @@ const BoxForm = styled.div`
     position: relative;
     width: 100%;
 
-    .balance {
+    .balance  {
       position: absolute;
       top: -32px;
       right: 0px;
       color: rgb(48 48 65);
       font-size: 14px;
       font-weight: 700;
+      div{
+
+      }
     }
 
     .input-max {
