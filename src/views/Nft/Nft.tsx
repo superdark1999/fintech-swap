@@ -12,7 +12,7 @@ import Collection from './components/Collection/index'
 import { isMobile } from 'react-device-detect'
 
 const NFTContainer = (props: any) => {
-  const [onShowSidebar, setShowSidebar] = useState(true)
+  const [onShowSidebar, setShowSidebar] = useState(false)
   return (
     <Switch>
       <Page>
@@ -62,11 +62,11 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
   background-color: #f9fafb;
   .left-sidebar {
     background-color: #fff;
-    min-width: ${(props) => (props.onShowsidebar ? '320px' : '80px')};
+    min-width: ${(props) => (props.onShowsidebar ? '320px' : '60px')};
     transition: 300ms;
     height: ${(props) => (props.onShowsidebar ? '100%' : 'calc(100vh - 80px)')};
     border-right: ${(props) =>
-      props.onShowsidebar && '1px solid rgba(0,0,0,0.2)'};
+    props.onShowsidebar && '1px solid rgba(0,0,0,0.2)'};
     max-height: 100vh;
     overflow-y: auto;
     ::-webkit-scrollbar {
@@ -93,7 +93,7 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
       border-radius: 12px;
     }
     .banner-nft {
-      height: 240px;
+      height: 300px;
       width: 100%;
       margin: 40px auto;
       padding: 0 30px;

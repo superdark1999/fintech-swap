@@ -214,7 +214,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         }
       </div>
       <Modal
-        title="Alert"
+        title="Notification"
         visible={isShowAlert}
         footer={null}
         width={400}
@@ -223,7 +223,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         <Form onFinish={() => { window.location.reload() }}>
           <Form.Item name="pricePlaceBid">
             <label>
-              Please switch to BSC Testnet network
+              Currently selected chain is not supported, please check provider window to change to 'Binance Smart Chain Testnet Network'
             </label>
           </Form.Item>
           <Form.Item>

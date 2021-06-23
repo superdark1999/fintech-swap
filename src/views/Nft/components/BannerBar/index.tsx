@@ -7,8 +7,8 @@ function BannerBar() {
     return (
         <BannerBarStyled>
             <Carousel className="banner-body" autoplay>
-            <img src={banner1} alt="banner-1"/>
-                <img src={banner2} alt="banner-2"/>
+                <img src={banner1} alt="banner-1" />
+                <img src={banner2} alt="banner-2" />
             </Carousel>
         </BannerBarStyled>
     )
@@ -16,12 +16,12 @@ function BannerBar() {
 
 const BannerBarStyled = styled.div`
     border-radius: 24px;
-    height: 240px;
+    height: 300px;
     .banner-body{
-        height: 240px;
+        height: 300px;
         width:100%;
         img{ 
-            height:240px;
+            height: 300px;
         }
     }
 `

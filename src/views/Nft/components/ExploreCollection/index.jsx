@@ -31,6 +31,7 @@ function ExploreCollection() {
         <div className="title-artists">Explore</div>
       </div>
       <FilterBar searchParams={searchParams} />
+      <h1 style={{ fontWeight: 'bold' }}>8 results for "lucky swap studio"</h1>
       <div className="content-collect">
         {NFTs.map((item) => (
           <Cart width="320px" height="480px" data={item} />
