@@ -8,7 +8,6 @@ import { ethers } from 'ethers'
 import styled from 'styled-components'
 import { Button } from 'reactstrap';
 import { useWeb3React } from '@web3-react/core'
-import { ifosConfig } from 'config/constants'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import bep20Abi from 'config/abi/erc20.json'
@@ -17,40 +16,25 @@ import useOldApproveConfirmTransaction from 'hooks/useOldApproveConfirmTransacti
 import { useERC20, useContract ,useIfoContract} from 'hooks/useContract'
 import getTimePeriods from 'utils/getTimePeriods'
 import { useToast } from 'state/hooks'
-import axios from 'axios';
 
 import ifoAbi from 'config/abi/ifo.json'
 import { useHookIFOs } from '../../Store';
 
-
-
-// import { useBlockNumber } from '../../../../state/application/hooks';
-
  const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
 // const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
-const Check = () =>{
+const LoadingIfo = () =>{
   const [state, actions] = useHookIFOs();
-  const [activeIfo,setActiveIfo] = useState(null)
+  // const [activeIfo,setActiveIfo] = useState(null)
   const param:any = useParams();
   useEffect(() => {
     actions.getDetailLaunch(param?.id);
-    setActiveIfo(state.detailLaunchpad);
-    // const fetchIfo =async () => {
-    //   const url = `https://dashboard.luckyswap.exchange/launchpads/${param?.id}`;
-    //   const result = await axios.get(url).catch(() => console.log("axios error"));
-    //   if(result){
-    //     setActiveIfo(result.data);
-    //   }
-    // }
-    // fetchIfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  if(activeIfo){
-    console.log("active", activeIfo)
+  if(state.detailLaunchpad){
     return <IfoTitle activeIfo={state.detailLaunchpad} />
   }
-  return null
+  return <div>loading</div>
 }
 const IfoTitle = ({activeIfo}:any) => {
   const [balance, setBalance] = useState(0);
@@ -630,4 +614,4 @@ const BoxSocial = styled.div`
   }
 `
 
-export default Check
+export default LoadingIfo

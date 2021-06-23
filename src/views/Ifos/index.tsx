@@ -1,25 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState} from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import Container from 'components/layout/Container'
 import IfoTabButtons from './components/IfoTabButtons'
 import Hero from './components/Hero'
 import CurrentIfo from './CurrentIfo'
-import PastIfo from './PastIfo'
+import { useHookIFOs } from './Store'
+
 
 const Ifos = () => {
   const { path } = useRouteMatch()
+  // const [status, setStatus] = useState('open');
+  const [state, actions] = useHookIFOs();
+  const { launchpads, filterStatus, filterLaunchpads } = state;
+  const [ifos, setIfos] = useState([]);
+
+  useEffect(() => {
+    actions.getLaunchpads()
+    actions.filterLaunchWithStatus(filterStatus);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleFilterWithStatus = async (e) => {
+    actions.filterLaunchWithStatus(e.target.value);
+  }
 
   return (
     <>
       <Hero />
       <Container>
-        <IfoTabButtons />
+        <IfoTabButtons onFilterWithStatus={handleFilterWithStatus} status={filterStatus} />
         <Route exact path={`${path}`}>
-          <CurrentIfo />
+          <CurrentIfo ifos={filterLaunchpads} />
         </Route>
-        <Route path={`${path}/history`}>
+        {/* <Route path={`${path}/history`}>
         <CurrentIfo />
-        </Route>
+        </Route> */}
       </Container>
     </>
   )
