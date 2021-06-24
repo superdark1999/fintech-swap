@@ -149,6 +149,9 @@ export const CartStyled = styled.div`
     border-radius: 8px;
     margin-right: 40px;
   }
+  .btn-swap{
+    background: linear-gradient(45deg, #1cace8, #07dce6);
+  }
   .description {
     width: 100%;
     margin-top: 0px !important;

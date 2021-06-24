@@ -19,9 +19,14 @@ import { CheckOutlined } from '@ant-design/icons'
 import _ from 'lodash'
 import Countdown from "react-countdown";
 import { ButtonBuy } from 'components-v2/Button'
+import { useHistory } from 'react-router-dom'
+
+
+
 const { Meta } = Card;
 export default function CardItem(props?: { data?: any }) {
   const [isCopied, handleCopy] = useCopyToClipboard(3000);
+  const history = useHistory()
   const { data } = props
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -37,11 +42,10 @@ export default function CardItem(props?: { data?: any }) {
     }
     getTokenPrice()
   }, [data?.tokenId])
-  // 
-  // useEffect(()=>{
-  //   configState.isUsingAnimation&&useFrameGif.current.start()
-  //    !configState.isUsingAnimation&&useFrameGif.current.stop()
-  // },[configState.isUsingAnimation])
+  
+  const onSwapItem = ()=>{
+    history.push(`/swap/${data?.id}`)
+  }
   return (
     <div className="create-nav">
       <StyledCart src={data?.contentUrl}>
@@ -72,10 +76,10 @@ export default function CardItem(props?: { data?: any }) {
               </div>
             </div>
             <div className="number">
-              {data?.NFTType !== 'swap' ? <div>
+              {false ? <div>
                 {price} LUCKY {' '}
                 <img src={Token} alt="" />
-              </div> : <ButtonBuy className="btn-swap">Swap now</ButtonBuy>}
+              </div> : <ButtonBuy className="btn-swap" onClick={onSwapItem}>Swap now</ButtonBuy>}
               <div>
                 4.8
                 {' '}

@@ -21,7 +21,7 @@ import Nft from './views/Nft'
 import getLibrary from './wallet/utils/getLibrary'
 import CreateArtWork from 'views/Nft/components/CreateArtWork/index'
 import DetailArtWork from 'views/Nft/components/DetailArtWork'
-import Swap from 'views/Nft/components/Swap'
+import Swap from 'views/Nft/components/SwapCopy'
 import UserProfile from 'views/Nft/components/UserProfile'
 import 'antd/dist/antd.css';
 import MyProfile from 'views/Nft/components/MyProfile'
@@ -112,7 +112,7 @@ const App = () => {
               <Route path="/my-profile/:tab">
                 <MyProfile />
               </Route>
-              <Route path="/swap">
+              <Route path="/swap/:id">
                 <Swap />
               </Route>
               <Route path="/swap-store">
