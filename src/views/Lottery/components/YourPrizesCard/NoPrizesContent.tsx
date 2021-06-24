@@ -41,7 +41,7 @@ const NoPrizesContent: React.FC = () => {
       <TextWrapper>
         <StyledText color="textDisabled">{TranslateString(726, 'Sorry, no prizes to collect')}</StyledText>
         <StyledButton variant="text" onClick={onPresentMyTickets}>
-          {TranslateString(432, 'View your tickets')}
+          {TranslateString(432, 'View your tickets and NFTs')}
         </StyledButton>
       </TextWrapper>
     </Wrapper>

@@ -50,6 +50,12 @@ const ExpandingWrapper = styled.div<{ showFooter: boolean }>`
     height: 100%;
   }
 `
+const CardBodyNew = styled.div`
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
+  border-radius: 1.25rem;
+  padding: 24px;
+`
 
 const TotalPrizesCard = () => {
   const TranslateString = useI18n()
@@ -78,7 +84,7 @@ const TotalPrizesCard = () => {
         <CardHeading>
           <Left>
             <IconWrapper>
-              <PancakeRoundIcon />
+              <img width="35px" alt="" src="/images/logo-icon.png"/>
             </IconWrapper>
             <PrizeCountWrapper>
               <Text fontSize="14px" color="textSubtle">
