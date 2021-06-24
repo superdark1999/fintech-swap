@@ -22,6 +22,8 @@ export interface Ifo {
   tokenSymbol: string
   releaseBlockNumber: number
   campaignId?: string
+  banner?:string
+  typePool?:string
 }
 
 export enum PoolCategory {

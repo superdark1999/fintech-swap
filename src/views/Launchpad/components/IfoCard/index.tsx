@@ -6,6 +6,7 @@ import { Card, CardBody, CardRibbon } from '@luckyswap/uikit'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
+import { BASE_API_ADMIN } from 'config'
 import UnlockButton from 'components/UnlockButton'
 import IfoCardHeader from './IfoCardHeader'
 import IfoCardDetails from './IfoCardDetails'
@@ -40,7 +41,7 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
 }
 
 const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
-  const { id, name, currency } = ifo
+  const { typePool,banner, id, name, currency } = ifo
   const { offeringAmount, raisingAmount, totalAmount, getAddressListLength, status } = useGetPublicIfoData(ifo)
   const TranslateString = useI18n()
   const Ribbon = getRibbonComponent(status, TranslateString)
@@ -51,13 +52,14 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     totalAmount.toNumber() && raisingAmount.toNumber()
       ? `${totalAmount.multipliedBy(100).div(raisingAmount).toFixed(2)}`
       : '0'
+  console.log('banner.>', banner)
   return (
     // <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={publicIfoData.status === 'live'}>
     //   <IfoCardDetails ifo={ifo} publicIfoData={publicIfoData} />
     // </StyledIfoCard>
     <>
       <Item>
-        <ItemHead>
+        <ItemHead img={banner}>
           <section>
             <span>{status}</span>
           </section>
@@ -103,7 +105,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
             <CardColumn>
               <p>Access</p>
-              <h3>Private</h3>
+              <h3>{typePool}</h3>
             </CardColumn>
           </FeaturedCardFooter>
 
@@ -276,11 +278,16 @@ const BoxHead = styled.div`
   }
 `
 
-const ItemHead = styled.div`
+const ItemHead = styled(Card)<{ img: string }>`
+  ${({ img }) =>
+    img &&
+    `
+  background-image: url(${BASE_API_ADMIN + img});
+
+  `}
   position: relative;
   width: 100%;
   height: 106px;
-  background-image: url('../images/hyfi.png');
   background-size: cover;
   color: rgb(255, 255, 255);
 

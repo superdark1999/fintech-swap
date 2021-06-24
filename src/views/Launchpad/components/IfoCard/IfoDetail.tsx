@@ -14,6 +14,7 @@ import useOldApproveConfirmTransaction from 'hooks/useOldApproveConfirmTransacti
 import { useERC20, useContract, useIfoContract } from 'hooks/useContract'
 import getTimePeriods from 'utils/getTimePeriods'
 import { useToast } from 'state/hooks'
+import { BASE_API_ADMIN } from 'config'
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
 import ifoAbi from 'config/abi/ifo.json'
@@ -46,7 +47,7 @@ const IfoTitle = ({ activeIfo }: any) => {
   const [isApproved, setIsApproved] = useState(false)
   const [value, setValue] = useState('')
 
-  const { sympol,description, name, address, currency, currencyAddress } = activeIfo
+  const {banner, sympol, description, name, address, currency, currencyAddress } = activeIfo
   const contract = useIfoContract(address)
   const { offeringAmount, raisingAmount, secondsUntilStart, secondsUntilEnd, status, startBlockNum } =
     useGetPublicIfoData(activeIfo)
@@ -199,7 +200,7 @@ const IfoTitle = ({ activeIfo }: any) => {
         <h2>{name}</h2>
       </TitleDetail>
       <BoxIfoDetail>
-        <img src="../images/hyfi-detail.png" alt="" />
+        <img src={BASE_API_ADMIN + banner} alt="" />
 
         <BoxContent>
           <div className="two-column">
@@ -311,14 +312,7 @@ const IfoTitle = ({ activeIfo }: any) => {
               <div className="box-max">
                 <div className="balance">
                   Balance:{' '}
-                  <CardValue
-                    bold
-                    color=""
-                    value={balance}
-                    decimals={0}
-                    fontSize="10px"
-                    fontWeight="600"
-                  ></CardValue>
+                  <CardValue bold color="" value={balance} decimals={0} fontSize="10px" fontWeight="600"></CardValue>
                   {currency}
                 </div>
                 <input
@@ -574,15 +568,14 @@ const BoxForm = styled.div`
     position: relative;
     width: 100%;
 
-    .balance  {
+    .balance {
       position: absolute;
       top: -32px;
       right: 0px;
       color: rgb(48 48 65);
       font-size: 14px;
       font-weight: 700;
-      div{
-
+      div {
       }
     }
 
