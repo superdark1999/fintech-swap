@@ -5,10 +5,12 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
 import { Card } from 'antd'
 import { Link } from 'react-router-dom'
+import useConfigStore from 'store/configStore'
 
 function HotArtWorks() {
   const divRef = useRef(null)
   const [loading, setLoading] = useState(true)
+  const [configState, configAction] = useConfigStore()
   const scrollLeft = () => {
     divRef.current.scrollLeft += 260
   }
@@ -18,13 +20,19 @@ function HotArtWorks() {
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
   useEffect(() => {
-    getNFT({
-      status: 'readyToSell',
-    })
+    getNFT(
+      {
+        status: 'readyToSell',
+      },
+      true,
+    )
       .then(({ status, data }) => {
         if (status == 200) {
           setNFTs(data?.data || [])
           setLoading(false)
+          configAction.updateConfig({
+            showLoading: false,
+          })
         }
       })
       .catch((err) => {

@@ -1,19 +1,23 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { OfferStyled, TableStyled, WrapperListCard, ListCard, Container} from './styled'
 import { Select, Row } from 'antd'
 import Swap from 'assets/images/swap.svg'
 import Token from 'assets/images/token.svg'
 import Plus from 'assets/images/plus.svg'
-import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import ModalSelectSwap from 'components-v2/ModalSelectSwap'
 import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
 import { data, column } from './mock'
 import { isMobile } from 'react-device-detect'
 import { ButtonBuy } from 'components-v2/Button'
 import { CardSwap, CardSelect, CardOffer, CardDefault} from '../components/index'
+import {isEmpty} from 'lodash'
 
 interface Props {
   nextStep: (step: number) => void,
+  myItems: any,
+  itemSwap: any
+  setVisible: (value: boolean) => void
+  setSelectMethod: (value: number) => void
+  selectMetodSwap: number
 }
 
 const OptionData = [
@@ -29,28 +33,11 @@ const METHOD_SWAP= {
 }
 
 export default function (props: Props) {
+  const {
+    myItems, setVisible, itemSwap, selectMetodSwap, setSelectMethod
+  } = props
   const [select, setSelect] = useState<string | null>('Lucky');
-
-  const [selectMetodSwap, setSelectMethod] = useState<Number | null>()
-
-  const [visible, setVisible] = useState<any>({ isOpen: false, value: "my-item" });
-  const [myItems, setMyItems] = useState<any>([]);
-  const [itemSwap, setItemSwap] = useState<any>([]);
-
   const divRef = useRef(null)
-
-  const [NFTs, setNFTs] = useState([]);
-  const { getNFT } = useArtworkServices()
-
-  useEffect(() => {
-    getNFT({
-      status: 'readyToSell',
-    }).then(({ status, data }: any) => {
-      if (status === 200) {
-        setNFTs(data?.data || [])
-      }
-    })
-  }, [])
 
   const scrollLeft = () => {
     divRef.current.scrollLeft += 260
@@ -58,14 +45,6 @@ export default function (props: Props) {
   const scrollRight = () => {
     divRef.current.scrollLeft -= 260
   }
-
-  const getItemSelected = (data?: any) => {
-    if (visible.value === 'my-item') {
-      setMyItems(data)
-    } else setItemSwap(data)
-  }
-
-
   const renderListCard = () => {
     if (myItems.length > 3) {
       return (
@@ -75,7 +54,7 @@ export default function (props: Props) {
             {
               myItems.map((card: any) => {
                 return (
-                  <CardSwap data={card}/>
+                  <CardSwap data={card} setVisible={setVisible} value='my-item'/>
                 )
               })
             }
@@ -99,13 +78,13 @@ export default function (props: Props) {
           {
             myItems.map((card: any) => {
               return (
-                <CardSwap data={card}/>
+                <CardSwap data={card} setVisible={setVisible} value='my-item'/>
               )
             })
           }
         </ListCard>
       )
-    } else if (myItems.length === 1) return <CardSwap data={myItems[0]}/>
+    } else if (myItems.length === 1) return <CardSwap data={myItems[0]} setVisible={setVisible} value='my-item'/>
     else return <CardDefault setVisible={setVisible} value='my-item'/>
   }
 
@@ -126,7 +105,7 @@ export default function (props: Props) {
         <>
          {renderListCard()}
          <img src={Plus} style={{ margin: 'auto 20px' }} />
-         <CardOffer type={METHOD_SWAP.NFT_TOKEN}/>
+         <CardOffer type={METHOD_SWAP.NFT_TOKEN} />
         </>
       )
     }
@@ -136,6 +115,12 @@ export default function (props: Props) {
       </>
 
     )
+  }
+
+  const handleNextStep = () => {
+    if (!(isEmpty(itemSwap) && isEmpty(myItems))) {
+      props.nextStep(3)
+    }
   }
 
   return (
@@ -151,10 +136,10 @@ export default function (props: Props) {
             
             <img src={Swap} style={isMobile ? { transform: 'rotate(90deg)'} : null} />
 
-            {itemSwap[0] ? <CardSwap data={itemSwap[0]} /> : <CardDefault setVisible={setVisible} value='item-swap' />}
+            {itemSwap?.[0] ? <CardSwap data={itemSwap?.[0]} /> : <CardDefault setVisible={setVisible} value='item-swap' />}
         </div>
         <Row justify="center" style={{marginTop: 40}}>
-          <ButtonBuy width="300px" onClick={() => props.nextStep(3)}>Offer now</ButtonBuy>
+           <ButtonBuy width="300px" onClick={handleNextStep}>Offer now</ButtonBuy>
         </Row> 
       </OfferStyled>
 
@@ -165,14 +150,14 @@ export default function (props: Props) {
         scroll={{ x: 300 }}
         style={{width: '1100px', margin: 'auto'}}
       />            
-      <ModalSelectSwap
+      {/* <ModalSelectSwap
         visible={visible}
         setVisible={setVisible}
         data={visible.value === 'my-item' ? NFTs : []}
         getItemSelected={getItemSelected}
         multiSelect={visible.value === 'my-item'}
         selectedItem={visible.value === 'my-item' ? myItems : itemSwap}
-      />
+      /> */}
     </>
 
   )
