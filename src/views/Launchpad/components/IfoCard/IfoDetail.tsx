@@ -86,17 +86,31 @@ const IfoTitle = ({ activeIfo }: any) => {
         .catch((error) => {
           console.log('Error fetching balance')
         })
-      //   const filter = LPContract.filters.Approval(account);
+       
+      }
 
-      //   LPContract.on(filter, (author, oldValue, newValue, event) => {
-      //     console.log("on filter", filter)
-      //     console.log("on author", author)
-      //     console.log("on oldValue",  oldValue)
-      //     console.log("on newValue",  newValue)
-      //     console.log("on event", event)
-      // })
-      // LPContract.on('')
-    }
+      LPContract.on("Approval", async(oldValue, newValue, event) => {
+        try {
+          const result = await LPContract?.allowance?.(account, contract.options.address)
+          console.log("result ",result);
+          setIsApproved(result.toString() !== '0')
+        } catch (error) {
+          console.log('Error fetch approval data')
+        }
+      })   
+
+      raisingTokenContract.on("Deposit", (oldValue, newValue, event) => {
+        if (account) {
+          LPContract.balanceOf(account)
+          .then((data) => {
+            setBalance(parseFloat((data / 1e18).toFixed(4)))
+          })
+          .catch(error => {
+            console.log("Error fetching balance")
+          })
+        }
+  
+      })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account])
@@ -146,21 +160,18 @@ const IfoTitle = ({ activeIfo }: any) => {
           summary: 'Approve successfully!',
         })
         
-        
+        // LPContract.on("Approval", async(oldValue, newValue, event) => {
+        //   console.log("approval event");
+        //   try {
+        //     const result = await LPContract?.allowance?.(account, contract.options.address)
+        //     console.log("result ",result);
+        //     setIsApproved(result.toString() !== '0')
+        //   } catch (error) {
+        //     console.log('Error fetch approval data')
+        //   }
+    
+        // })   
       })
-      LPContract.on("Approval", async(oldValue, newValue, event) => {
-        console.log("approval event");
-        try {
-          const result = await LPContract?.allowance?.(account, contract.options.address)
-          console.log("result ",result);
-          setIsApproved(result.toString() !== '0')
-        } catch (error) {
-          console.log('Error fetch approval data')
-        }
-  
-      })
-
-      
 
 
     },
@@ -187,18 +198,19 @@ const IfoTitle = ({ activeIfo }: any) => {
       })
     })
 
-    raisingTokenContract.on("Deposit", (oldValue, newValue, event) => {
-      if (account) {
-        LPContract.balanceOf(account)
-        .then((data) => {
-          setBalance(parseFloat((data / 1e18).toFixed(4)))
-        })
-        .catch(error => {
-          console.log("Error fetching balance")
-        })
-      }
+    // raisingTokenContract.on("Deposit", (oldValue, newValue, event) => {
+    //   if (account) {
+    //     console.log("deposit");
+    //     LPContract.balanceOf(account)
+    //     .then((data) => {
+    //       setBalance(parseFloat((data / 1e18).toFixed(4)))
+    //     })
+    //     .catch(error => {
+    //       console.log("Error fetching balance")
+    //     })
+    //   }
 
-    })
+    // })
 
 
   }
