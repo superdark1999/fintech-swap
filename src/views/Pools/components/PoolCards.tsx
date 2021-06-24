@@ -1495,6 +1495,7 @@ const HeadLine = styled.div`
 
 const BoxPool = styled.div`
   background: rgb(41 41 41);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
   box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
   border-radius: 20px;
   padding: 24px 15px 15px;

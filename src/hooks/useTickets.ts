@@ -39,7 +39,7 @@ export const useTotalRewards = () => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await getTotalRewards(lotteryContract)
+      const res =  0 // TODO: await getTotalRewards(lotteryContract)
       setRewards(new BigNumber(res))
     }
 
@@ -81,8 +81,8 @@ export const useWinningNumbers = () => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const rewards = await getWinningNumbers(lotteryContract)
-      setWinningNumbers(rewards)
+      // TODO: const rewards =  await getWinningNumbers(lotteryContract)
+      // setWinningNumbers(rewards)
     }
 
     if (lotteryContract) {

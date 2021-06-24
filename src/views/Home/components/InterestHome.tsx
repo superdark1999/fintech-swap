@@ -109,7 +109,7 @@ const InterestItemStyled = styled.div`
   font-size: 14px;
   line-height: 20px;
   border-radius: 20px;
-
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
   @media (max-width: 991px) {
     flex-direction: column;
     justify-content: center;

@@ -39,7 +39,7 @@ const Lottery: React.FC = () => {
 
   useEffect(() => {
     const getInitialLotteryIndex = async () => {
-      const index = await getLotteryIssueIndex(lotteryContract)
+      const index =1;  // TODO: await getLotteryIssueIndex(lotteryContract)
       const previousLotteryNumber = index - 1
 
       setCurrentLotteryNumber(index)

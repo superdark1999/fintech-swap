@@ -30,6 +30,7 @@ const CardProfitStyled = styled.div`
     height: 233px;
     padding-left: 50px;
     margin-bottom: 0;
+    border: 0.0625rem solid rgba(255, 255, 255, 0.2);
   }
 
   .top-profit {

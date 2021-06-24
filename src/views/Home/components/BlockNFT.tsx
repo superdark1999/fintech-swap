@@ -169,6 +169,7 @@ const WrapNFT = styled.div`
     box-shadow: 0px 0px 11px 0px rgb(16 16 16 / 57%);
     border-radius: 20px;
     padding: 20px 20px 0;
+    border: 0.0625rem solid rgba(255, 255, 255, 0.2);
   }
 
   .right {

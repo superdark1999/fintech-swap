@@ -6,6 +6,7 @@ import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useLotteryAllowance } from 'hooks/useAllowance'
 import useTickets from 'hooks/useTickets'
 import useTokenBalance from 'hooks/useTokenBalance' //
+import BigNumber from 'bignumber.js'
 import { getCakeAddress } from 'utils/addressHelpers'
 import { useApproval } from 'hooks/useApproval'
 import BuyTicketModal from './BuyTicketModal'
@@ -24,9 +25,9 @@ const CardActions = styled.div`
 
 const TicketCard: React.FC = () => {
   const TranslateString = useI18n()
-  const allowance = useLotteryAllowance()
+  const allowance =new BigNumber(0) // useLotteryAllowance()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
-  const cakeBalance = useTokenBalance(getCakeAddress())
+  const cakeBalance = new BigNumber(0) // useTokenBalance(getCakeAddress())
   const tickets = useTickets()
   const ticketsLength = tickets.length
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
