@@ -44,6 +44,7 @@ const LoadingIfo = () => {
 const IfoTitle = ({ activeIfo }: any) => {
   const [balance, setBalance] = useState(0)
   const [isApproved, setIsApproved] = useState(false)
+  const [isWaningAllowedDepositAmount,setIsWaningAllowedDepositAmount ] = useState(false);
   const [value, setValue] = useState('')
 
   const {banner,social, sympol, description, name, address, currency, currencyAddress } = activeIfo
@@ -55,6 +56,7 @@ const IfoTitle = ({ activeIfo }: any) => {
   const raisingTokenContract = useContract(address, ifoAbi)
 
   const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
+  const maxDeposit = maxDepositAmount.div(1e18).toNumber() - depositedAmount.div(1e18).toNumber();
   const TranslateString = useI18n()
   const countdownToUse = status === 'coming_soon' ? secondsUntilStart : secondsUntilEnd
   const suffix = status === 'coming_soon' ? 'start' : 'finish'
@@ -182,6 +184,14 @@ const IfoTitle = ({ activeIfo }: any) => {
     }
   }
 
+  const handleChangeAmount = (e) => {
+    if (e.target.value > maxDeposit)
+      setIsWaningAllowedDepositAmount(true);
+    else
+      setIsWaningAllowedDepositAmount(false)
+    setValue(e.target.value);
+  }
+
   const allTransactions = useAllTransactions()
 
   const sortedRecentTransactions = useMemo(() => {
@@ -295,8 +305,8 @@ const IfoTitle = ({ activeIfo }: any) => {
               </Dflex>
 
               <Dflex>
-                <div>Maximum Amount Deposit:</div>
-                <div className="font-bold">{maxDepositAmount.div(1e18).toNumber() - depositedAmount.div(1e18).toNumber()} {currency}</div>
+                <div>Max Deposit:</div>
+                <div className="font-bold">{maxDeposit} {currency}</div>
               </Dflex>
               <Dflex>
                 <div>Your claim amount:</div>
@@ -329,7 +339,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                   pattern="^[0-9]*[.,]?[0-9]*$"
                   placeholder="0.0"
                   value={value}
-                  onChange={(e) => setValue(e.currentTarget.value)}
+                  onChange={(e) => handleChangeAmount(e)}
                 />
                 <button className="max-btn" type="submit" onClick={() => setValue(balance.toString())}>
                   Max
@@ -341,6 +351,10 @@ const IfoTitle = ({ activeIfo }: any) => {
                 </div>
               </div>
             </div>
+            {isWaningAllowedDepositAmount && (
+            <div className="waning">
+              Too High Amount
+            </div>)}
             {status === 'live' &&
               (!(isConfirmed || isConfirming || isApproved) ? (
                 <Button
@@ -680,6 +694,13 @@ const BoxForm = styled.div`
     background: #f5c6064d;
     cursor: not-allowed;
   }
+  .waning {
+    color: red !important;
+    margin-top: 16px;
+    font-size: 20px;
+    font-weight: bold;
+    }
+  
 `
 
 const TextBot = styled.div`
