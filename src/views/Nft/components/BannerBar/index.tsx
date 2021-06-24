@@ -7,8 +7,8 @@ function BannerBar() {
     return (
         <BannerBarStyled>
             <Carousel className="banner-body" autoplay>
-                <img src={banner2} alt="banner-1" />
-                <img src={banner1} alt="banner-2" />
+                <img src={banner1} alt="banner-1" />
+                <img src={banner2} alt="banner-2" />
             </Carousel>
         </BannerBarStyled>
     )
