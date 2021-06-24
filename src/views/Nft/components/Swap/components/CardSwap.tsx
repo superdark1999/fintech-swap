@@ -3,22 +3,10 @@ import styled from 'styled-components'
 import { CheckCircleFilled } from '@ant-design/icons'
 import Lucky from 'assets/images/token.svg'
 import TextGradient from 'components-v2/ID'
-{/* <CardStyled center>
-      <div className="avatar">
-        <img src={data?.contentUrl}/>
-      </div>
-      <div className="name">{data?.title}</div>
-      <div className="organize">
-        LuckySwapStudio
-        {' '}
-        <img src={CheckMark}/>
-      </div>
-      <TextGradient>{data?.ownerWalletAddress}</TextGradient>
-    </CardStyled> */}
 
-export default function CardSwap(props: { data: any}) {
+export default function CardSwap(props: any) {
   return (
-    <CardSwapStyled>
+    <CardSwapStyled style={{...props.style}}>
       <img src={props.data?.contentUrl}/>
       <div className="filter">
         <div className="title">{props.data?.title}</div>
@@ -34,6 +22,9 @@ export default function CardSwap(props: { data: any}) {
           <TextGradient>{props.data?.ownerWalletAddress}</TextGradient>
         }
       </div>
+      {
+        (props.value && props.setVisible) && <div className="edit" onClick={() => props?.setVisible({ isOpen: true, value: props.value })}>Edit</div>
+      }
     </CardSwapStyled>
   )
 }
@@ -70,5 +61,17 @@ const CardSwapStyled = styled.div`
       font-weight: 600;
       font-size: 14px;
     }
+  }
+  .edit {
+    border: 1px solid #E7EBEF;
+    box-sizing: border-box;
+    border-radius: 100px;
+    padding: 8px 20px;
+    text-align: center;
+    background: #FFFFFF;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
   }
 `

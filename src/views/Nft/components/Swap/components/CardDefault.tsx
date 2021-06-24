@@ -5,7 +5,7 @@ import Plus from 'assets/images/plus.svg'
 
 export default (props: any) => {
   return (
-    <StyledDefaultCart style={{ cursor: 'pointer' }} onClick={() => props.setVisible({ isOpen: true, value: props.value })}>
+    <StyledDefaultCart style={{...props?.style, cursor: 'pointer' }} onClick={() => props.setVisible({ isOpen: true, value: props.value })}>
       <img src={Plus} style={{ margin: 'auto 40px' }} />
     </StyledDefaultCart>
   )
@@ -18,6 +18,8 @@ const StyledDefaultCart = styled.div`
     justify-content: center;
     align-items: center;
     border: 1px solid #E7EBEF;
+    background: #ffffff;
     box-sizing: border-box;
     border-radius: 24px;
+    z-index: 1;
 `

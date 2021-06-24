@@ -13,10 +13,11 @@ const STATUS = {
   CANCELED: "canceled"
 }
 
-export default () => {
-
+export default (props: {itemSwap: any, myItems: any}) => {
+const {
+  itemSwap, myItems,
+} = props
   const renderStatus = (status: any) => {
-    console.log('status: ', status)
     switch (status) {
       case status === STATUS.SUCCESS : {
         return (
@@ -33,9 +34,9 @@ export default () => {
     <ConfirmStyled>
         {renderStatus("success")}
         <Row justify="center">
-          <img className="nft-image" src="https://lucky-swap.s3.ap-southeast-1.amazonaws.com/artwork/1624374232949"/>
+          <img className="nft-image" src={itemSwap?.[0]?.contentUrl}/>
           <img src={Swap} style={isMobile ? { transform: 'rotate(90deg)'} : null} />
-          <img className="nft-image" src="https://lucky-swap.s3.ap-southeast-1.amazonaws.com/artwork/1624374232949"/>
+          <img className="nft-image" src={myItems?.[0].contentUrl}/>
         </Row>
         <div className="content">
           <div className="row-content">
