@@ -8,12 +8,13 @@ import useI18n from 'hooks/useI18n'
 import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
 import { BASE_API_ADMIN } from 'config'
 import UnlockButton from 'components/UnlockButton'
+import CardValue from '../../../Home/components/CardValue'
+
 import IfoCardHeader from './IfoCardHeader'
 import IfoCardDetails from './IfoCardDetails'
 import IfoCardActions from './IfoCardActions'
 import IfoCardProgress from './IfoCardProgress'
 import IfoCardTime from './IfoCardTime'
-
 
 export interface IfoCardProps {
   ifo: Ifo
@@ -42,7 +43,7 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
 }
 
 const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
-  const { sympol,typePool,banner, id, name, currency } = ifo
+  const { sympol, typePool, banner, id, name, currency } = ifo
   const { offeringAmount, raisingAmount, totalAmount, getAddressListLength, status } = useGetPublicIfoData(ifo)
   const TranslateString = useI18n()
   const Ribbon = getRibbonComponent(status, TranslateString)
@@ -69,13 +70,24 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
         <ItemContent>
           <BoxHead>
             <h2>{name}</h2>
-            <p>1 {currency} = {priceRate} {sympol}</p>
-
+            <p>
+              1 {currency} = {priceRate} {sympol}
+            </p>
           </BoxHead>
 
           <Total>
             <span>Total Raise</span>
-            <h2>{offeringAmount.div(1e18).toFixed(2)} {currency}</h2>
+            <h2>
+              <CardValue
+                bold
+                color=""
+                value={parseFloat(offeringAmount.div(1e18).toFixed(2))}
+                decimals={0}
+                fontSize="10px"
+                fontWeight="600"
+              ></CardValue>
+              {currency}
+            </h2>
           </Total>
 
           <BoxProgress>
@@ -100,7 +112,16 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
               <p>
                 Max<span>{` ${currency}`}</span>
               </p>
-              <h3>{raisingAmount.div(1e18).toFixed(2)}</h3>
+              <h3>
+                <CardValue
+                  bold
+                  color=""
+                  value={parseFloat(raisingAmount.div(1e18).toFixed(2))}
+                  decimals={0}
+                  fontSize="10px"
+                  fontWeight="600"
+                ></CardValue>
+              </h3>
             </CardColumn>
 
             <CardColumn>
