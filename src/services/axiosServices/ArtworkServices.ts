@@ -13,8 +13,8 @@ export default function useArtworkService() {
     return PUT(`/artwork/${NFTid}/hash`, { TXHash: txHash }, false, false)
   }, [])
 
-  const getNFT = useCallback((query) => {
-    return GET('/artwork', query, false, false)
+  const getNFT = useCallback((query, showLoading:boolean|undefined=false) => {
+    return GET('/artwork', query, showLoading, false)
   }, [])
 
   const getDetailNFT = (query: any) => {

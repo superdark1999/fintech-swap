@@ -1,7 +1,9 @@
 import axios, { Method } from 'axios'
 import { useCallback } from 'react'
 import _ from 'lodash'
+import useConfigStore  from 'store/configStore'
 const qs = require('qs')
+
 
 export default function AxiosServices(baseUrl: string = '') {
   const headers = {
@@ -9,6 +11,7 @@ export default function AxiosServices(baseUrl: string = '') {
     'Content-Type': 'application/json; charset=UTF-8',
     //'Access-Control-Allow-Origin': '*',
   }
+  const [configState,configAction] = useConfigStore()
 
   function fetch(
     url: string,
@@ -46,7 +49,7 @@ export default function AxiosServices(baseUrl: string = '') {
     }
 
     if (showLoading) {
-      //Show loading full screen
+      configAction.updateConfig({showLoading: true})
     }
     if (showError) {
       //Show error

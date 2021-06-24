@@ -17,12 +17,11 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useNFTServices from 'services/web3Services/NFTServices'
 import { useActiveWeb3React } from 'wallet/hooks'
 import useUserStore from 'store/userStore'
-
 import { GroupButton, RadioButton } from './styled'
 import axios from 'axios'
-
+import { RegexWebsiteURL } from '../../constants'
 const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
-  const formArtistRef = React.useRef() 
+  const formArtistRef = React.useRef()
 
   return (
     <Modal
@@ -71,7 +70,13 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
             <Form.Item
               name="name"
               label="Name"
-              rules={[{ required: true, message: 'This Field is required!' }]}
+              rules={[
+                { required: true, message: 'This Field is required' },
+                {
+                  maxLength: 20,
+                  message: 'Value should be less than 20 character',
+                },
+              ]}
             >
               <Input
                 style={{ borderRadius: '100px' }}
@@ -81,7 +86,13 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
             <Form.Item
               name="socialMediaLink"
               label="Social media/Portfolio link "
-              rules={[{ required: true, message: 'This Field is required!' }]}
+              rules={[
+                { required: true, message: 'This Field is required' },
+                {
+                  pattern: RegexWebsiteURL,
+                  message: 'This URL is not correct.',
+                },
+              ]}
             >
               <Input
                 style={{ borderRadius: '100px' }}
@@ -91,7 +102,7 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
             <Form.Item
               name={'biography'}
               label="bio"
-              rules={[{ required: true, message: 'This Field is required!' }]}
+              rules={[{ required: true, message: 'This Field is required' }]}
             >
               <Input.TextArea
                 style={{ borderRadius: '16px' }}

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
-import { Row, Col, Tabs, Modal, Input, Form, Button, Radio, Menu, Dropdown } from 'antd'
+import { Row, Col, Tabs, Modal, Input, Form, Button, Radio, Menu, Dropdown, InputNumber } from 'antd'
 import { DownOutlined, SyncOutlined, CheckOutlined } from '@ant-design/icons';
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import Loadmore from 'components-v2/Loadmore'
@@ -20,6 +20,7 @@ import _ from 'lodash'
 import { Alert } from 'antd'
 import notification from 'components-v2/Alert';
 import { getCompactString } from 'utils'
+import { RegexNumber100000 } from '../../constants'
 
 export default function MyCollectionCard({ data, option }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(false)
@@ -287,7 +288,7 @@ export default function MyCollectionCard({ data, option }: any) {
       </Row>
 
       <Modal
-        title="Set price"
+        title="Set price sell"
         visible={isShowModalSetPrice}
         onCancel={() => setShowModalsetPrice(false)}
         footer={null}
@@ -296,11 +297,19 @@ export default function MyCollectionCard({ data, option }: any) {
         <Form ref={formRef} onFinish={onSellItem}>
           <Form.Item
             name="lucky"
-            label="Price"
-            rules={[{ required: true, message: 'This Field is required!' }]}
+            label="Price sell"
+            rules={[
+              { required: true, message: 'This Field is required' },
+              {
+                pattern: RegexNumber100000,
+                message: 'The price must be less than 100,000',
+              }
+            ]}
+            validateTrigger='onBlur'
           >
-            <Input
-              style={{ borderRadius: '16px', overflow: 'hidden' }}
+            <InputNumber
+              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              style={{ borderRadius: '16px', overflow: 'hidden', width: '100%' }}
               placeholder="Enter price"
             />
           </Form.Item>
@@ -331,20 +340,35 @@ export default function MyCollectionCard({ data, option }: any) {
           <Form.Item
             label="Price"
             name="price"
-            rules={[{ required: true, message: 'This Field is required' }]}
+            rules={[
+              { required: true, message: 'This Field is required' },
+              {
+                pattern: RegexNumber100000,
+                message: 'The price must be less than 100,000',
+              }
+            ]}
           >
-            <Input
-              style={{ borderRadius: '16px', overflow: 'hidden' }}
+            <InputNumber
+              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              style={{ borderRadius: '16px', overflow: 'hidden', width: '100%' }}
               placeholder="Enter NFT auction price"
             />
           </Form.Item>
           <Form.Item
             name="stepPrice"
             label="Price Step"
-            rules={[{ required: true, message: 'This Field is required' }]}
+            rules={[
+              { required: true, message: 'This Field is required' },
+              {
+                pattern: RegexNumber100000,
+                message: 'The price must be less than 100,000',
+              }
+            ]}
+            validateTrigger='onBlur'
           >
-            <Input
-              style={{ borderRadius: '16px', overflow: 'hidden' }}
+            <InputNumber
+              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              style={{ borderRadius: '16px', overflow: 'hidden', width: '100%' }}
               placeholder="Enter step price of NFT"
             />
           </Form.Item>

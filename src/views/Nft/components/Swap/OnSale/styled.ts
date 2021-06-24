@@ -17,6 +17,7 @@ export const OnSaleStyled = styled.div<Props>`
   flex-wrap: wrap;
   position: relative;
   .background {
+    background: #000000c4;
     background-image: ${props => props.background && `url(${props.background})`};
     background-repeat: no-repeat;
         filter: blur(8px);
