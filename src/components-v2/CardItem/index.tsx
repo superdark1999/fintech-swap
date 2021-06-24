@@ -19,10 +19,12 @@ import { CheckOutlined } from '@ant-design/icons'
 import _ from 'lodash'
 import Countdown from "react-countdown";
 import { ButtonBuy } from 'components-v2/Button'
+import { useActiveWeb3React } from 'wallet/hooks'
 const { Meta } = Card;
 export default function CardItem(props?: { data?: any }) {
   const [isCopied, handleCopy] = useCopyToClipboard(3000);
   const { data } = props
+  const {account} = useActiveWeb3React()
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
   const [dayExp, setDayExp] = useState(false)
@@ -61,7 +63,7 @@ export default function CardItem(props?: { data?: any }) {
           </Link>
           <div className="wrapper-info">
             <div className="title">
-              <Link to={`/user-profile/${data.createdBy}/onsale/readyToSell`}>
+              <Link to={account==data.createdBy?'/my-profile/onstore/all':`/user-profile/${data.createdBy}/onsale/readyToSell`}>
                 <div className="name-artist">
                   LuckySwapStudio {' '}
                   <img src={Checkmark} alt="" />
