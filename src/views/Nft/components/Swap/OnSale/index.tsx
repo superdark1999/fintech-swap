@@ -28,7 +28,7 @@ export default function (props: Props) {
   }
 
   return (
-    <OnSaleStyled background="https://lucky-swap.s3.ap-southeast-1.amazonaws.com/artwork/1624374232949">
+    <OnSaleStyled background={props?.itemSwap?.contentUrl}>
         <div className="background"/>
 
         {
