@@ -11,7 +11,7 @@ import useI18n from 'hooks/useI18n'
 import bep20Abi from 'config/abi/erc20.json'
 import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
 import useOldApproveConfirmTransaction from 'hooks/useOldApproveConfirmTransaction'
-import { useERC20, useContract, useIfoContract } from 'hooks/useContract'
+import { useContract, useIfoContract } from 'hooks/useContract'
 import getTimePeriods from 'utils/getTimePeriods'
 import { useToast } from 'state/hooks'
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
@@ -30,7 +30,6 @@ const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 // const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
 const LoadingIfo = () => {
   const [state, actions] = useHookIFOs()
-  // const [activeIfo,setActiveIfo] = useState(null)
   const param: any = useParams()
   useEffect(() => {
     actions.getDetailLaunch(param?.id)
@@ -68,8 +67,12 @@ const IfoTitle = ({ activeIfo }: any) => {
 
   useEffect(() => {
     if (account) {
-      LPContract.balanceOf(account).then((data) => {
+      LPContract.balanceOf(account)
+      .then((data) => {
         setBalance(parseFloat((data / 1e18).toFixed(4)))
+      })
+      .catch(error => {
+        console.log("Error fetching balance")
       })
       //   const filter = LPContract.filters.Approval(account);
 
@@ -90,10 +93,10 @@ const IfoTitle = ({ activeIfo }: any) => {
     const fetchApprovalData = async () => {
       if (account && LPContract) {
         try {
-          const response = await LPContract.allowance(account, contract.options.address)
+          const response = await LPContract?.allowance?.(account, contract.options.address)
           setIsApproved(response.toString() !== '0')
         } catch (error) {
-          console.log(' error fetchApprovalData', error)
+          console.log(' error fetch approval data')
         }
       }
     }
@@ -177,10 +180,6 @@ const IfoTitle = ({ activeIfo }: any) => {
       toastError('Not thing to claim')
     }
   }
-
-  // console.log({myIsApproved, isConfirmed })
-  // console.log( valueWithTokenDecimals.isNaN());
-  // console.log("valueWithTokenDecimals.eq(0)", valueWithTokenDecimals.eq(0))
 
   const allTransactions = useAllTransactions()
 

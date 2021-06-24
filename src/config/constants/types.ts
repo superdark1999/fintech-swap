@@ -21,7 +21,8 @@ export interface Ifo {
   tokenDecimals: number
   tokenSymbol: string
   releaseBlockNumber: number
-  campaignId?: string
+  campaignId?: string,
+  sympol: string,
 }
 
 export enum PoolCategory {

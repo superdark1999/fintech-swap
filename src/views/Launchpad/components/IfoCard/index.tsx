@@ -13,6 +13,7 @@ import IfoCardActions from './IfoCardActions'
 import IfoCardProgress from './IfoCardProgress'
 import IfoCardTime from './IfoCardTime'
 
+
 export interface IfoCardProps {
   ifo: Ifo
 }
@@ -40,7 +41,7 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
 }
 
 const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
-  const { id, name, currency } = ifo
+  const { id, name, currency, sympol } = ifo
   const { offeringAmount, raisingAmount, totalAmount, getAddressListLength, status } = useGetPublicIfoData(ifo)
   const TranslateString = useI18n()
   const Ribbon = getRibbonComponent(status, TranslateString)
@@ -66,14 +67,13 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
         <ItemContent>
           <BoxHead>
             <h2>{name}</h2>
-            <p>
-              1 {currency} = {priceRate} Lucky
-            </p>
+            <p>1 {currency} = {priceRate} {sympol}</p>
+
           </BoxHead>
 
           <Total>
             <span>Total Raise</span>
-            <h2>{totalAmount.div(1e18).toFixed(2)} LP</h2>
+            <h2>{offeringAmount.div(1e18).toFixed(2)} {sympol}</h2>
           </Total>
 
           <BoxProgress>
