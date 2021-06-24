@@ -61,7 +61,7 @@ export default function CardItem(props?: { data?: any }) {
           </Link>
           <div className="wrapper-info">
             <div className="title">
-              <Link to="/user-profile/:id/onsale/readyToSell">
+              <Link to={`/user-profile/${data?.ownerWalletAddress}/onsale/readyToSell`}>
                 <div className="name-artist">
                   LuckySwapStudio {' '}
                   <img src={Checkmark} alt="" />
