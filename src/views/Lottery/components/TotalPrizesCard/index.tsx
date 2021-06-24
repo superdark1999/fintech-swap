@@ -50,6 +50,12 @@ const ExpandingWrapper = styled.div<{ showFooter: boolean }>`
     height: 100%;
   }
 `
+const CardBodyNew = styled.div`
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
+  border-radius: 1.25rem;
+  padding: 24px;
+`
 
 const TotalPrizesCard = () => {
   const TranslateString = useI18n()
@@ -78,13 +84,15 @@ const TotalPrizesCard = () => {
         <CardHeading>
           <Left>
             <IconWrapper>
-              <PancakeRoundIcon />
+              <img width="35px" alt="" src="/images/logo-icon.png" />
             </IconWrapper>
             <PrizeCountWrapper>
               <Text fontSize="14px" color="textSubtle">
                 {TranslateString(722, 'Total Pot:')}
               </Text>
-              <Heading size="lg">{lotteryPrizeWithCommaSeparators} CAKE</Heading>
+              <Heading style={{ 'textShadow': 'rgb(255 214 0) 0px 0px 25px' }} size="lg">
+                {lotteryPrizeWithCommaSeparators} LUCKY
+              </Heading>
               {lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}
             </PrizeCountWrapper>
           </Left>

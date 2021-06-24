@@ -54,7 +54,6 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     totalAmount.toNumber() && raisingAmount.toNumber()
       ? `${totalAmount.multipliedBy(100).div(raisingAmount).toFixed(2)}`
       : '0'
-  console.log('banner.>', banner)
   return (
     // <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={publicIfoData.status === 'live'}>
     //   <IfoCardDetails ifo={ifo} publicIfoData={publicIfoData} />

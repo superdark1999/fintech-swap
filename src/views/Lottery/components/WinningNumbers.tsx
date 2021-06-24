@@ -17,98 +17,70 @@ const WinningNumbers: React.FC = () => {
 
   return (
     <CardWrapper>
-      <Card>
-        <CardBody>
-          <StyledCardContentInner>
-            <StyledCardHeader>
-              <Title>
-                {account && lotteryHasDrawn
-                  ? `🥳${TranslateString(570, 'Winning Numbers This Round')}🥳`
-                  : TranslateString(440, 'Latest Winning Numbers')}
-              </Title>
-              <br />
-            </StyledCardHeader>
-            <Row>
-              {winNumbers.map((number, index) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <TicketNumberBox key={index}>
-                  <CenteredText>{number}</CenteredText>
-                </TicketNumberBox>
-              ))}
-            </Row>
-            <RabbitRow>
-              <RabbitBox>
-                <CardImageFirst>
-                  <Image src="/images/sign bunny 1@2x.png" alt="Number 1" width={200} height={150} responsive />
-                </CardImageFirst>
-              </RabbitBox>
-              <RabbitBox>
-                <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <Image src="/images/sign bunny 2@2x.png" alt="Number 2" width={200} height={150} responsive />
-                </CardImage>
-              </RabbitBox>
-              <RabbitBox>
-                <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <Image src="/images/sign bunny 3@2x.png" alt="Number 3" width={200} height={150} responsive />
-                </CardImage>
-              </RabbitBox>
-              <RabbitBox>
-                <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <Image src="/images/sign bunny 4@2x.png" alt="Number 4" width={200} height={150} responsive />
-                </CardImage>
-              </RabbitBox>
-            </RabbitRow>
-            <RabbitRowSmall>
-              <RabbitBoxSmall>
-                <CardImageFirst>
-                  <Image src="/images/sign bunny 1@2x.png" alt="Number 1" width={200} height={150} responsive />
-                </CardImageFirst>
-              </RabbitBoxSmall>
-              <RabbitBoxSmall>
-                <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <Image src="/images/sign bunny 2@2x.png" alt="Number 2" width={200} height={150} responsive />
-                </CardImage>
-              </RabbitBoxSmall>
-              <RabbitBoxSmall>
-                <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <Image src="/images/sign bunny 3@2x.png" alt="Number 3" width={200} height={150} responsive />
-                </CardImage>
-              </RabbitBoxSmall>
-              <RabbitBoxSmall>
-                <CardImage style={{ marginLeft: '-1.2em' }}>
-                  <Image src="/images/sign bunny 4@2x.png" alt="Number 4" width={200} height={150} responsive />
-                </CardImage>
-              </RabbitBoxSmall>
-            </RabbitRowSmall>
-            <Column>
-              <RowNoPadding>
-                <CenteredTextWithPadding>{TranslateString(442, 'Tickets matching 4 numbers:')}</CenteredTextWithPadding>
-                <CenteredTextWithPadding>
-                  <strong>{MatchedNumber4}</strong>
-                </CenteredTextWithPadding>
-              </RowNoPadding>
-              <RowNoPadding>
-                <CenteredTextWithPadding>{TranslateString(444, 'Tickets matching 3 numbers:')}</CenteredTextWithPadding>
-                <CenteredTextWithPadding>
-                  <strong>{MatchedNumber3}</strong>
-                </CenteredTextWithPadding>
-              </RowNoPadding>
-              <RowNoPadding>
-                <CenteredTextWithPadding>{TranslateString(446, 'Tickets matching 2 numbers:')}</CenteredTextWithPadding>
-                <CenteredTextWithPadding>
-                  <strong>{MatchedNumber2}</strong>
-                </CenteredTextWithPadding>
-              </RowNoPadding>
-            </Column>
-            <Link href="https://api.pancakeswap.com/api/lottery?page=0&pageSize=25" target="_blank">
-              {TranslateString(448, 'Export recent winning numbers')}
-            </Link>
-          </StyledCardContentInner>
-        </CardBody>
-      </Card>
+      <CardBodyNew>
+        <StyledCardContentInner>
+          <StyledCardHeader>
+            <Title style={{ color: 'rgb(243, 193, 17)' }}>
+              {account && lotteryHasDrawn
+                ? `🥳${TranslateString(570, 'Winning Numbers This Round')}🥳`
+                : TranslateString(440, 'Latest Winning Numbers')}
+            </Title>
+          </StyledCardHeader>
+          <Row>
+            {/* <img
+              alt=""
+              src="https://merlinlab.com/static/media/leftGoldenCoin.6aef3b76.svg"
+              className="sc-iCfLBT sc-ezbkgU gvyEtt jElfkq"
+            />
+            <img
+              alt=""
+              src="https://merlinlab.com/static/media/rightGoldenCoin.e795d41c.svg"
+              className="sc-iCfLBT sc-ezbkgU KkWOV jElfkq"
+            /> */}
+            {winNumbers.map((number, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <TicketNumberBox key={index}>
+                <CenteredText>{number}</CenteredText>
+              </TicketNumberBox>
+            ))}
+          </Row>
+          <Column>
+            <RowNoPadding>
+              <CenteredTextWithPadding style={{color:'white'}}>{TranslateString(442, 'Tickets matching 4 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding>
+                <strong style={{color:'yellow'}}>{MatchedNumber4}</strong>
+              </CenteredTextWithPadding>
+            </RowNoPadding>
+            <RowNoPadding>
+              <CenteredTextWithPadding style={{color:'white'}}>{TranslateString(444, 'Tickets matching 3 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding>
+                <strong style={{color:'yellow'}}>{MatchedNumber3}</strong>
+              </CenteredTextWithPadding>
+            </RowNoPadding>
+            <RowNoPadding>
+              <CenteredTextWithPadding style={{color:'white'}}>{TranslateString(446, 'Tickets matching 2 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding>
+                <strong style={{color:'yellow'}}>{MatchedNumber2}</strong>
+              </CenteredTextWithPadding>
+            </RowNoPadding>
+          </Column>
+
+          <Link href="/" target="_blank">
+            {TranslateString(448, 'Export recent winning numbers')}
+          </Link>
+        </StyledCardContentInner>
+      </CardBodyNew>
     </CardWrapper>
   )
 }
+
+const CardBodyNew = styled.div`
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
+  border-radius: 1.25rem;
+  padding: 24px;
+`
+
 const Link = styled.a`
   margin-top: 1em;
   text-decoration: none;
@@ -185,7 +157,8 @@ const CenteredTextWithPadding = styled.div`
 const TicketNumberBox = styled.div`
   padding: 10px;
   border-radius: 12px;
-  background: linear-gradient(180deg, #54dade 0%, #24c7d6 76.22%);
+  text-shadow: rgb(255 214 0) 0px 0px 12px;
+  // background: linear-gradient(180deg, #54dade 0%, #24c7d6 76.22%);
   color: white;
   font-size: 20px;
   font-weight: 900;

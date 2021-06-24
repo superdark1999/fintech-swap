@@ -6,7 +6,7 @@ import Container from 'components/layout/Container'
 import LotteryProgress from './LotteryProgress'
 
 const Title = styled(Heading).attrs({ as: 'h1', size: 'xl' })`
-  color: ${({ theme }) => theme.colors.secondary};
+  color: rgb(243, 193, 17);
   margin-bottom: 24px;
 `
 
@@ -17,9 +17,12 @@ const Blurb = styled(Text)`
 `
 
 const StyledHero = styled.div`
-  background-image: linear-gradient(180deg,#f5bf7a 0%,#2b2c3a 100%);
-  padding-bottom: 40px;
-  padding-top: 40px;
+  // background: url('../images/large-pc.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 60px;
+  padding-top: 60px;
+  background-color:#0000001a
 `
 
 const StyledContainer = styled(Container)`
@@ -70,8 +73,8 @@ const Hero = () => {
     <StyledHero>
       <StyledContainer>
         <LeftWrapper>
-          <Title>{TranslateString(708, 'The CAKE Lottery')}</Title>
-          <Blurb>{TranslateString(710, 'Buy tickets with CAKE')}</Blurb>
+          <Title>{TranslateString(708, 'The LUCKY Lottery')}</Title>
+          <Blurb>{TranslateString(710, 'Buy tickets with LUCKY for collect more NFTs')}</Blurb>
           <Blurb>{TranslateString(712, 'Win if 2, 3, or 4 of your ticket numbers match!')}</Blurb>
         </LeftWrapper>
         <RightWrapper>

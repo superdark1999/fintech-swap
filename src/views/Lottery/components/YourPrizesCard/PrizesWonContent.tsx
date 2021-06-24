@@ -5,6 +5,7 @@ import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useMultiClaimLottery } from 'hooks/useBuyLottery'
 import useTickets, { useTotalClaim } from 'hooks/useTickets'
+import { useTransactionAdder } from 'state/transactions/hooks'
 import Loading from '../Loading'
 import MyTicketsModal from '../TicketCard/UserTicketsModal'
 
@@ -45,11 +46,15 @@ const PrizesWonContent: React.FC = () => {
   const { onMultiClaim } = useMultiClaimLottery()
   const tickets = useTickets()
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
+  const addTransaction = useTransactionAdder()
 
   const handleClaim = useCallback(async () => {
     try {
       setRequestedClaim(true)
       const txHash = await onMultiClaim()
+      addTransaction(txHash, {
+        summary: 'Claim successfully!',
+      })
       // user rejected tx or didn't go thru
       if (txHash) {
         setRequestedClaim(false)
@@ -57,6 +62,7 @@ const PrizesWonContent: React.FC = () => {
     } catch (e) {
       console.error(e)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onMultiClaim, setRequestedClaim])
 
   const winnings = getBalanceNumber(claimAmount).toFixed(2)
@@ -77,13 +83,13 @@ const PrizesWonContent: React.FC = () => {
               {winnings}
             </Heading>
             <Heading as="h4" size="lg">
-              CAKE
+              LUCKY
             </Heading>
           </WinningsWrapper>
         </>
       )}
       <StyledCardActions>
-        <Button width="100%" disabled={requestedClaim} onClick={handleClaim}>
+        <Button variant="secondary" width="100%" disabled={requestedClaim} onClick={handleClaim}>
           {TranslateString(1056, 'Collect')}
         </Button>
       </StyledCardActions>

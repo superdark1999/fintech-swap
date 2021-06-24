@@ -36,6 +36,7 @@ const config: MenuEntry[] = [
     href: '/pools',
     calloutClass: 'style-color',
   },
+
   // {
   //   label: 'Analytics',
   //   icon: 'InfoIcon',
@@ -76,6 +77,19 @@ const config: MenuEntry[] = [
     calloutClass: 'style-color icon-hot',
   },
   {
+    label: 'Gamefi',
+    icon: 'TicketIcon',
+    href: '#',
+    calloutClass: 'style-color ',
+    items: [
+      {
+        label: 'Lottery',
+        href: '/lottery',
+        calloutClass: 'style-color',
+      }
+    ],
+  },
+  {
     label: 'Channel',
     icon: 'MoreIcon',
     calloutClass: 'style-color',
@@ -94,7 +108,7 @@ const config: MenuEntry[] = [
         label: 'Telegram',
         href: 'https://t.me/luckyswap_official_ENG',
         calloutClass: 'style-color',
-      }
+      },
     ],
   },
 ]
