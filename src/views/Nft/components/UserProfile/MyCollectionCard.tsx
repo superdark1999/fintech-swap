@@ -21,8 +21,8 @@ import _ from 'lodash'
 export default function MyCollectionCard({ data }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(false)
   const [isProcessing, setIsPrcessing] = useState(true)
-  const { isTokenReadyToSell, approveTokenToMarket } =useNFTServices()
-  const {setTokenPrice} = useMarketServices()
+  const { isTokenReadyToSell, approveTokenToMarket } = useNFTServices()
+  const { setTokenPrice } = useMarketServices()
   const { updateNFTInfo, setPrice } = useArtworkServices()
   useEffect(() => {
     if (data?.tokenId) {

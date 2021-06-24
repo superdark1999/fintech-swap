@@ -19,10 +19,13 @@ import { CheckOutlined } from '@ant-design/icons'
 import _ from 'lodash'
 import Countdown from "react-countdown";
 import { ButtonBuy } from 'components-v2/Button'
+import { useActiveWeb3React } from 'wallet/hooks'
+import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 const { Meta } = Card;
 export default function CardItem(props?: { data?: any }) {
   const [isCopied, handleCopy] = useCopyToClipboard(3000);
   const { data } = props
+  const { account, chainId } = useActiveWeb3React()
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
   const [dayExp, setDayExp] = useState(false)
@@ -61,15 +64,20 @@ export default function CardItem(props?: { data?: any }) {
           </Link>
           <div className="wrapper-info">
             <div className="title">
-              <Link to="/user-profile/:id/onsale/readyToSell">
+              <Link to={account == data.createdBy ? '/my-profile/onstore/all' : `/user-profile/${data.createdBy}/onsale/readyToSell`}>
                 <div className="name-artist">
-                  LuckySwapStudio {' '}
+                  <span style={{ fontSize: '10px' }}>Creator by</span> LuckySwapStudio {' '}
                   <img src={Checkmark} alt="" />
                 </div>
               </Link>
               <div className="copy" onClick={() => handleCopy(`${window.location.href}artwork/detail/${data?.NFTType || 'buy'}/${data?.id}`)}>
                 {isCopied ? <span><CheckOutlined /> copied</span> : <><img src={Copy} alt="copy-artwork" /> Copy</>}
               </div>
+            </div>
+            <div className="name-artist">
+              <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#333435' }}>
+                Owner by</span>
+              <a href={embedTokenIdLinkBSCScan(data.tokenId, data?.contractAddress, chainId)}> {getCompactString(data?.ownerWalletAddress, 5)}</a>
             </div>
             <div className="number">
               {data?.NFTType !== 'swap' ? <div>

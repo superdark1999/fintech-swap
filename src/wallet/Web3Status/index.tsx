@@ -62,6 +62,7 @@ const ButtonWallets = styled.button`
   font-weight: 500;
   width: unset;
   height: 38px;
+  cursor: pointer;
   position: relative;
   :before {
     content:"";

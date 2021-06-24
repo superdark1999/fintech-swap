@@ -36,7 +36,7 @@ export default () => {
       history.push(`/my-profile/history/#`)
     }
   }
-  console.log('userState: ', userState)
+
   return (
     <UserProfileStyled urlCover={userState?.coverImage}>
       <Row className="section header-profile">
@@ -94,7 +94,11 @@ export default () => {
             </div>
           </div>
           <p className="description">{userState?.biography}</p>
-          <Tabs activeKey={match.params.tab} onChange={onChangeTab}>
+          <Tabs
+            className="tabs-profile"
+            activeKey={match.params.tab}
+            onChange={onChangeTab}
+          >
             <TabPane tab="On sale" key="onsale">
               <TabOnSale />
             </TabPane>
@@ -190,6 +194,7 @@ const TabMyCollection = () => {
         <GroupButton defaultValue={option}>
           <RadioButton
             width="auto"
+            className="btn-filter"
             borderRadius="10px"
             value="all"
             onChange={onHandleOptionCheck}
@@ -199,6 +204,7 @@ const TabMyCollection = () => {
           </RadioButton>
           <RadioButton
             width="auto"
+            className="btn-filter"
             borderRadius="10px"
             value="pending"
             onChange={onHandleOptionCheck}
@@ -208,6 +214,7 @@ const TabMyCollection = () => {
           </RadioButton>
           <RadioButton
             width="auto"
+            className="btn-filter"
             borderRadius="10px"
             value="approved"
             onChange={onHandleOptionCheck}
@@ -217,6 +224,7 @@ const TabMyCollection = () => {
           </RadioButton>
           <RadioButton
             width="auto"
+            className="btn-filter"
             borderRadius="10px"
             value="reject"
             onChange={onHandleOptionCheck}

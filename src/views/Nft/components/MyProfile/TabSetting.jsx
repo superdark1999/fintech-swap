@@ -80,6 +80,7 @@ const TabSetting = () => {
         <Col xl={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
           <Form.Item name="name" label="Name">
             <Input
+              disabled
               style={{ borderRadius: '100px' }}
               placeholder="Your full name or nickname or bussiness name"
             />

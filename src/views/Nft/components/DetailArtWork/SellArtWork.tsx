@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Rate, Table, Modal, Input, Form } from 'antd'
+import { Row, Col, Rate, Table, Modal, Input, Form, Image } from 'antd'
 import Copy from 'assets/images/copy.svg'
 import Facebook from 'assets/images/facebook.svg'
 import Telegram from 'assets/images/telegram.svg'

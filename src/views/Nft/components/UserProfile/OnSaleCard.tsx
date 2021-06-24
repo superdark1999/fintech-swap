@@ -7,30 +7,45 @@ import Token from 'assets/images/token.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
 import useMarketServices from 'services/web3Services/MarketServices'; 
 import _ from 'lodash'
+import {getPrice} from 'utils'
 
-const getPrice = (price:number)=>{
-    if(price?.toString()?.length<24){
-      const priceString = _.replace(price?.toString(),'000000000000000000','')
-      return Number(priceString)
-    }
-    return -1
-  }
 export default function OnSaleCard({data,}:any){
     const [loading, setLoading] = useState(true)
     const [price,setPrice] = useState(0)
-    const { getTokenPrice} = useMarketServices()
+    const marketService = useMarketServices()
   
-    useEffect(()=>{
-      if(data?.tokenId){
-        getTokenPrice(data?.tokenId).then(data=>{
-          const price = getPrice(Number(data?._hex))
-          if(price!=-1){
-            setLoading(false)
+    useEffect(() => {
+
+      const getPriceToken = async () => {
+        if (data?.tokenId&&marketService) {
+          if (data?.NFTType == 'buy') {
+            const unitPrice = await marketService?.getTokenPrice?.(data?.tokenId)
+            const price = getPrice(Number(unitPrice?._hex))
+            console.log(unitPrice?._hex)
             setPrice(price)
+          } else {
+            const bidsArr = await marketService?.getBidsByTokenId?.(data?.tokenId)
+            const bidsData = bidsArr?.map((item: any) => {
+              return {
+                key: item?.[0] || '',
+                address: item?.[0] || '',
+                price: Number(item?.[1]?._hex) / Number(1e18),
+              }
+            }) || []
+            const maxPrice = _.maxBy(bidsData, (item: any) => item?.price)?.price || 0
+            const unitPrice = await marketService?.getTokenBidPrice(data?.tokenId)
+            const price = getPrice(unitPrice?._hex)
+            if (price > maxPrice) {
+              setPrice(price)
+            } else {
+              setPrice(maxPrice)
+            }
           }
-      })
-    }
-    },[data?.tokenId])
+        }
+      }
+      setLoading(false)
+      getPriceToken()
+    }, [data?.tokenId])
   
   
     if(loading){

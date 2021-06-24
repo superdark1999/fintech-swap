@@ -15,10 +15,14 @@ import useArtworkService from 'services/axiosServices/UserServices'
 import { HeartOutlined, CheckOutlined } from '@ant-design/icons'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
+import useUserStore from 'store/userStore'
+
 const { TabPane } = Tabs
 
 const UserProfile = () => {
   const [user, setUser] = useState()
+  const [userState] = useUserStore()
+
   const match = useRouteMatch()
   const { getUserDetail } = useArtworkService()
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
@@ -26,6 +30,7 @@ const UserProfile = () => {
     getUserDetail(match.params?.id).then(({ data, status }) => {
       if (status === 200) {
         setUser(data)
+        if (data.walletAddress === userState.walletAddress) history.push(`/my-profile/${match.params?.id}/onsale/readyToSell`)
       }
     })
   }, [])
@@ -62,7 +67,7 @@ const UserProfile = () => {
           <div className="info-detail">
             <div>
               <div className="name">
-                <span>{user?.name}</span>
+                <span>{user?.name ? user?.name : user?.walletAddress}</span>
                 <img src={Checkmark} />
               </div>
               <div className="rank">
@@ -107,7 +112,7 @@ const UserProfile = () => {
 }
 export default UserProfile
 
-const TabOnSale = ({userAddress}) => {
+const TabOnSale = ({ userAddress }) => {
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
   useEffect(() => {

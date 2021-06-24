@@ -22,7 +22,7 @@ import { GroupButton, RadioButton } from './styled'
 import axios from 'axios'
 
 const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
-  const formArtistRef = React.useRef() 
+  const formArtistRef = React.useRef()
 
   return (
     <Modal
@@ -71,7 +71,7 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
             <Form.Item
               name="name"
               label="Name"
-              rules={[{ required: true, message: 'This Field is required!' }]}
+              rules={[{ required: true, message: 'This Field is required' }]}
             >
               <Input
                 style={{ borderRadius: '100px' }}
@@ -81,7 +81,7 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
             <Form.Item
               name="socialMediaLink"
               label="Social media/Portfolio link "
-              rules={[{ required: true, message: 'This Field is required!' }]}
+              rules={[{ required: true, message: 'This Field is required' }]}
             >
               <Input
                 style={{ borderRadius: '100px' }}
@@ -91,7 +91,7 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
             <Form.Item
               name={'biography'}
               label="bio"
-              rules={[{ required: true, message: 'This Field is required!' }]}
+              rules={[{ required: true, message: 'This Field is required' }]}
             >
               <Input.TextArea
                 style={{ borderRadius: '16px' }}

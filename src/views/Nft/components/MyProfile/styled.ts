@@ -3,6 +3,47 @@ interface Props {
   urlCover?: string
 }
 export const UserProfileStyled = styled.div<Props>`
+  background:#F9FAFB;
+  .ant-radio-button-wrapper-checked span{
+    background-color:#fff !important;
+  }
+  .btn-filter{
+    background:#fff;
+    color:#333534;
+    :hover{
+      background: #333534 !important;
+      color: #fff !important;
+      border:1px solid #333534 !important;
+    }
+  }
+  .ant-radio-button-wrapper{
+    :hover{
+      ::before{
+        background: #333534 !important;
+      }
+    }
+  }
+  .ant-radio-button-wrapper-checked ::before{
+    background: #333534 !important;
+  }
+  .ant-radio-button-wrapper-checked{
+    background: #333534 !important;
+    border:none !important;
+    color: #fff !important;
+  }
+  .ant-tabs-tab{
+      color:#AFBAC5;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+      color:#333435;
+      font-size: 20px;
+      font-weight: 600;
+    }
+  .ant-tabs-ink-bar{
+      background:#333435;
+    }
   .section {
     width: 100%;
     justify-content: center;
@@ -10,7 +51,7 @@ export const UserProfileStyled = styled.div<Props>`
       height: 160px;
       position: relative;
       justify-content: center;
-      background: ${(props) => `url(${props.urlCover})`};
+      background: ${props => props.urlCover?`url(${props.urlCover})` : '#F9FAFB'};
       background-repeat: no-repeat;
       background-size: cover;
       .header-profile-col {
@@ -26,7 +67,7 @@ export const UserProfileStyled = styled.div<Props>`
         }
       }
     }
-    &.content-profile {
+    &.content-profile {      
       .content {
         max-width: 1320px;
       }
@@ -41,6 +82,7 @@ export const UserProfileStyled = styled.div<Props>`
           font-size: 28px;
           line-height: 40px;
           color: #333435;
+          font-weight: 600;
         }
         .copy {
           span {
@@ -102,6 +144,7 @@ export const CartStyled = styled.div`
   border: 1px solid #e7ebef;
   box-sizing: border-box;
   border-radius: 24px;
+  background:#fff;
   .avatar {
     width: 210px;
     height: 210px;
@@ -228,7 +271,7 @@ export const CartStyled = styled.div`
       flex: 1;
       cursor: pointer;
       text-decoration: underline;
-      background: #35a5fc;
+      background: #35A5FC;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 16px;
@@ -248,13 +291,13 @@ export const CartStyled = styled.div`
     }
     .organize {
       font-weight: 600;
-      font-size: 14px;
       line-height: 20px;
       color: #333435;
       display: flex;
       align-items: center;
       > .name {
         margin: 0px 6px;
+        font-size: 14px;
       }
     }
     .group-button {

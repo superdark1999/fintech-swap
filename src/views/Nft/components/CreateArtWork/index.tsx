@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Form, Input, Button, Row, Col, Checkbox, Progress } from 'antd'
 import UploadFile from 'components-v2/UploadMedia'
-import { EditOutlined,SyncOutlined } from '@ant-design/icons'
+import { EditOutlined, SyncOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
 import { ButtonStyle } from 'components-v2/cart/styled'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
@@ -34,9 +34,9 @@ const CreateArtWork: React.FC = () => {
   const [userState, userActions] = useUserStore()
   const [form] = Form.useForm()
   const history = useHistory()
-  const [checkPolicy,setCheckPolicy] = useState(false)
+  const [checkPolicy, setCheckPolicy] = useState(false)
   const [typeArtWork, setTypeArtWork] = useState('image')
-  const [isOnUpload,setIsOnUpload] = useState(false)
+  const [isOnUpload, setIsOnUpload] = useState(false)
   const [NFTInfo, setNFTInfo] = useState(null)
   const validateMessages = {
     required: '${label} is required!',
@@ -80,81 +80,82 @@ const CreateArtWork: React.FC = () => {
     form.setFieldsValue({ artistName: userState.name })
   }, [userState.name])
 
-  const onGoToPendingArtWork = ()=>{
+  const onGoToPendingArtWork = () => {
     history.push('/my-profile/mycollection/pending')
   }
 
-  useEffect(()=>{
-    if(isProccessing&&!isOnUpload&&NFTInfo){
-      const {url, NFTid} = NFTInfo
+  useEffect(() => {
+    if (isProccessing && !isOnUpload && NFTInfo) {
+      const { url, NFTid } = NFTInfo
       mintToken(url)
-      .then((mintData: any) => {
-        const txHash = mintData?.hash
-        updateHashInfoNFT({ NFTid, txHash }).then(({ status, data }) => {
-          if (status === 200) {
-            notification('success', {
-              message: 'Create NFT success',
-              description: '',
-            },onGoToPendingArtWork)
-          }
+        .then((mintData: any) => {
+          const txHash = mintData?.hash
+          updateHashInfoNFT({ NFTid, txHash }).then(({ status, data }) => {
+            if (status === 200) {
+              notification('open', {
+                message: 'Create NFT success,you can check NFT on pending collection',
+                description: '',
+                titleBtn: 'View detail'
+              }, onGoToPendingArtWork)
+            }
+          })
         })
-      })
-      .catch((err: any) => {
-        setNFTInfo(null)
-        setIsProcessing(false)
-        notification('error', {
-          message:
-            err?.message || 'Something went wrong please try again',
-          description: '',
+        .catch((err: any) => {
+          setNFTInfo(null)
+          setIsProcessing(false)
+          notification('error', {
+            message:
+              err?.message || 'Something went wrong please try again',
+            description: '',
+          })
         })
-      })
     }
-  },[isProccessing,isOnUpload,NFTInfo])
+  }, [isProccessing, isOnUpload, NFTInfo])
 
   const onCreateNFT = async (values: any) => {
-    if(checkPolicy){
-    setIsProcessing(true)
-    setIsOnUpload(true)
-    const mintData = {
-      title: values?.artworkName || '',
-      description: values?.introduction || '',
-      type: values?.[`type`] || 'image',
-      content: values?.[`content`] || '',
-      ownerWalletAddress: account || '',
-    }
-    createNFT(mintData)
-      .then(({ data, status }) => {
-        if (status === 200) {
-          const url = data?.data?.contentUrl || ''
-          const NFTid = data?.data?._id || ''
-          setNFTInfo({url,NFTid})
-        }
-      })
-      .catch((err: any) => {
-        setIsProcessing(false)
-        notification('error', {
-          message: 'Something went wrong please try again',
-          description: '',
+    if (checkPolicy) {
+      setIsProcessing(true)
+      setIsOnUpload(true)
+      const mintData = {
+        title: values?.artworkName || '',
+        description: values?.introduction || '',
+        type: values?.[`type`] || 'image',
+        content: values?.[`content`] || '',
+        ownerWalletAddress: account || '',
+      }
+      createNFT(mintData)
+        .then(({ data, status }) => {
+          if (status === 200) {
+            const url = data?.data?.contentUrl || ''
+            const NFTid = data?.data?._id || ''
+            setNFTInfo({ url, NFTid })
+          }
         })
-      })
+        .catch((err: any) => {
+          setIsProcessing(false)
+          notification('error', {
+            message: 'Something went wrong please try again',
+            description: '',
+          })
+        })
     }
   }
-  const onCheckPolicy = (e:any) =>{
+  const onCheckPolicy = (e: any) => {
     setCheckPolicy(e.target.checked)
   }
-  const onHandleTypeArtWork = (e:any)=>{
-    if(!e.target.value){
+  const onHandleTypeArtWork = (e: any) => {
+    if (!e.target.value) {
       return notification('info', {
         message: 'Announce',
         description: 'This feature will be comming soon',
       })
     }
-    return setTypeArtWork(e.target.value) 
+    return setTypeArtWork(e.target.value)
   }
 
-  const renderGroupButton = ()=>{
-    if(isProccessing&&!isOnUpload){
-      return(
+  const renderGroupButton = () => {
+    if (isProccessing && !isOnUpload) {
+      return (
         <ButtonStyle
           type="submit"
           style={{ width: 300, margin: '20px auto' }}
@@ -163,8 +164,8 @@ const CreateArtWork: React.FC = () => {
         </ButtonStyle>
       )
     }
-    if(!isProccessing&&!isOnUpload){
-      return(
+    if (!isProccessing && !isOnUpload) {
+      return (
         <ButtonStyle
           type="submit"
           style={{ width: 300, margin: '20px auto' }}
@@ -173,14 +174,19 @@ const CreateArtWork: React.FC = () => {
         </ButtonStyle>
       )
     }
-    if(isOnUpload){
-      return ( 
-      <ButtonStyle
+    if (isOnUpload) {
+      const timeUpload: any = {
+        'image': 2000,
+        'gif': 4000,
+        'video': 7500
+      }
+      return (
+        <ButtonStyle
           type="submit"
           style={{ width: 300, margin: '20px auto' }}
         >
-          <div>Processing <Proccessing timeProcess={5000} onEndProccess={()=>{setIsOnUpload(false)}}/></div>
-      </ButtonStyle>)
+          <div>Processing <Proccessing timeProcess={typeArtWork ? timeUpload[typeArtWork] : 3000} onEndProccess={() => { setIsOnUpload(false) }} /></div>
+        </ButtonStyle>)
     }
   }
   return (
@@ -212,10 +218,10 @@ const CreateArtWork: React.FC = () => {
                 <RadioButton style={{ height: 100 }} value="video" onChange={onHandleTypeArtWork} >
                   Video
                 </RadioButton>
-                <RadioButton style={{ height: 100 }} onChange={onHandleTypeArtWork} >
+                <RadioButton style={{ height: 100, background: '#f3f3f3', opacity: '.5' }} onChange={onHandleTypeArtWork} >
                   Audio
                 </RadioButton>
-                <RadioButton style={{ height: 100 }} onChange={onHandleTypeArtWork} >
+                <RadioButton style={{ height: 100, background: '#f3f3f3', opacity: '.5' }} onChange={onHandleTypeArtWork} >
                   Special
                 </RadioButton>
               </GroupButton>
@@ -305,12 +311,12 @@ const CreateArtWork: React.FC = () => {
                 <Form.Item name={'introduction'} label="Introduction">
                   <TextAreaStyled
                     placeholder="Enter the brief introduction"
-                    maxLength={1000}
+                    maxLength={200}
                     showCount={true}
                     autoSize={false}
                   />
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                   name={['user', 'portfolio']}
                   label="Social media/Portfolio link"
                 >
@@ -318,7 +324,7 @@ const CreateArtWork: React.FC = () => {
                     style={{ borderRadius: '100px' }}
                     placeholder="Personal website, Instagram, Twitter, ect."
                   />
-                </Form.Item>
+                </Form.Item> */}
               </Col>
             </Row>
 
@@ -329,7 +335,7 @@ const CreateArtWork: React.FC = () => {
                 xs={{ span: 24 }}
                 xxl={{ span: 12 }}
               >
-                <Checkbox style={{ textAlign: 'center',color:checkPolicy?'':'red' }} onChange={onCheckPolicy}>
+                <Checkbox style={{ textAlign: 'center', color: checkPolicy ? '' : 'red' }} onChange={onCheckPolicy}>
                   I declare that this is an original artwork. I understand that
                   no plagiarism is allowed, and that the artwork can be removed
                   anytime if detected.
@@ -337,8 +343,8 @@ const CreateArtWork: React.FC = () => {
               </Col>
             </Row>
 
-              {renderGroupButton()}
-           
+            {renderGroupButton()}
+
             <Row style={{ justifyContent: 'center' }}>
               <Col
                 xl={{ span: 12 }}
@@ -346,10 +352,10 @@ const CreateArtWork: React.FC = () => {
                 xs={{ span: 24 }}
                 xxl={{ span: 12 }}
               >
-                  <p style={{ textAlign: 'center', fontWeight: 500 }}>
-                    <span style={{color:'red'}}>*</span>Mint an NFT charges 0.01BNB Please do not upload any
-                    sensitive content
-                  </p>
+                <p style={{ textAlign: 'center', fontWeight: 500 }}>
+                  <span style={{ color: 'red' }}>*</span>Mint an NFT charges 0.01BNB Please do not upload any
+                  sensitive content
+                </p>
               </Col>
             </Row>
           </Form>
@@ -366,21 +372,21 @@ const CreateArtWork: React.FC = () => {
 }
 export default CreateArtWork
 
-const Proccessing = ({timeProcess,onEndProccess}:any)=>{
+const Proccessing = ({ timeProcess, onEndProccess }: any) => {
   const [processPercent, setProcessPercent] = useState(0)
-  useEffect(()=>{
-    if(processPercent==100){
+  useEffect(() => {
+    if (processPercent == 100) {
       onEndProccess()
     }
-    const timer = setInterval(()=>{
-      setProcessPercent(processPercent+1)
-    },timeProcess/100)
-    return()=>{
+    const timer = setInterval(() => {
+      setProcessPercent(processPercent + 1)
+    }, timeProcess / 100)
+    return () => {
       clearInterval(timer)
     }
-  },[processPercent])
-  return(
-   <Progress width={20} strokeWidth={15} type="circle" percent={processPercent} showInfo={false} />
+  }, [processPercent])
+  return (
+    <Progress width={20} strokeWidth={15} type="circle" percent={processPercent} showInfo={false} />
   )
 }
 

@@ -202,10 +202,10 @@ export default function MyCollectionCard({ data, option }: any) {
     <CartStyled>
       <Row gutter={24}>
         <Col
-          xl={{ span: 8 }}
+          xl={{ span: 7 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 8 }}
+          xxl={{ span: 7 }}
         >
           {data.type === 'video' ? (
             <video width="100%" controls muted>
@@ -278,7 +278,7 @@ export default function MyCollectionCard({ data, option }: any) {
       </Modal>
 
       <Modal
-        title="Set price"
+        title="Set Price Auction"
         visible={ruleAuctionModal}
         onCancel={() => setRuleAuctionModal(false)}
         footer={null}
