@@ -12,17 +12,18 @@ import { getPrice, getCompactString } from 'utils'
 export default function OnSaleCard({ data, }: any) {
   const [loading, setLoading] = useState(true)
   const [price, setPrice] = useState(0)
-  const { getTokenPrice, getBidsByTokenId, getTokenBidPrice } = usrMarketServices()
+  const marketService = usrMarketServices()
 
   useEffect(() => {
+
     const getPriceToken = async () => {
-      if (data?.tokenId) {
+      if (data?.tokenId&&marketService) {
         if (data?.NFTType == 'buy') {
-          const unitPrice = await getTokenPrice(data?.tokenId)
+          const unitPrice = await marketService?.getTokenPrice?.(data?.tokenId)
           const price = getPrice(Number(unitPrice?._hex))
           setPrice(price)
         } else {
-          const bidsArr = await getBidsByTokenId(data?.tokenId)
+          const bidsArr = await marketService?.getBidsByTokenId?.(data?.tokenId)
           const bidsData = bidsArr?.map((item: any) => {
             return {
               key: item?.[0] || '',
@@ -31,7 +32,7 @@ export default function OnSaleCard({ data, }: any) {
             }
           }) || []
           const maxPrice = _.maxBy(bidsData, (item: any) => item?.price)?.price || 0
-          const unitPrice = await getTokenBidPrice(data?.tokenId)
+          const unitPrice = await marketService?.getTokenBidPrice(data?.tokenId)
           const price = getPrice(unitPrice?._hex)
           if (price > maxPrice) {
             setPrice(price)

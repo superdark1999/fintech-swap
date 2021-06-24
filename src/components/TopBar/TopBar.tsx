@@ -193,13 +193,13 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           </div>
         )
           :
-          <div className="view-more">
+          <>
+          {isMobile?(
+            <div className="view-more">
             <ButtonTrade padding="10px" borderRadius="100px" height="40px" width="40px" >
               <img src={ViewMore} />
             </ButtonTrade>
             <div className="menu">
-              {isMobile &&
-                <>
                   <div className="menu-item">
                     <div className="connect-wallet">
                       <Web3Status />
@@ -207,10 +207,10 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
                   </div>
                   <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Create</ButtonBuy></a></div>
                   <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Swap</ButtonBuy></a></div>
-                </>
-              }
             </div>
           </div>
+          ):null}
+          </>
         }
       </div>
       <Modal
