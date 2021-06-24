@@ -116,12 +116,21 @@ export default function MyCollectionCard({ data, option }: any) {
     setRuleAuctionModal(false)
   }
   const onSubmitSwapItem = ()=>{
+    setPrice({ id: data?._id, NFTType: 'swap' }).then(({ status }) => {
+      if (status == 200) {
+        history.push('/my-profile/mycollection/checkingToSell')
+      } else {
+        notification('error', { message: 'Error', description: 'Something when wrong, please try again later.' })
+        setIsPrcessing(false)
+      }
+    })
+    return
     const tokenId = data?.tokenId
     setIsPrcessing(true)
     marketServicesMethod?.listNFTToSWap(tokenId)
       .then((dt) => {
         if (dt?.hash) {
-          setPrice({ id: data?.id, NFTType: 'swap' }).then(({ status }) => {
+          setPrice({ id: data?._id, NFTType: 'swap' }).then(({ status }) => {
             if (status == 200) {
               history.push('/my-profile/mycollection/checkingToSell')
             } else {
@@ -139,11 +148,19 @@ export default function MyCollectionCard({ data, option }: any) {
   }
 
   const onCancelItemOnMarket = ()=>{
+    cancelSellNFT({id:data?._id}).then(({status})=>{
+      if (status == 200) {
+        history.push('/my-profile/mycollection/checkingToSell')
+      } else {
+        notification('error', { message: 'Error', description: 'Something when wrong, please try again later.' })
+        setIsPrcessing(false)
+      }
+    })
     if(marketServicesMethod){
       if(data?.NFTType==='buy'||data?.NFTType==='auction'){
         setIsPrcessing(true)
         marketServicesMethod?.cancelSellToken(data?.tokenId).then((data)=>{
-          cancelSellNFT({id:data?.id}).then(({status})=>{
+          cancelSellNFT({id:data?._id}).then(({status})=>{
             if (status == 200) {
               history.push('/my-profile/mycollection/checkingToSell')
             } else {

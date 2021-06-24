@@ -36,24 +36,24 @@ export default function CardItem(props?: { data?: any }) {
   const [dayExp, setDayExp] = useState(false)
   const marketServiceMethod = useMarketServices()
   useEffect(() => {
-    const getTokenPrice = async () => {
-      if (marketServiceMethod && data?.tokenId && data?.NFTType) {
-        const price = await marketServiceMethod?.getHighestBidAndPrice(data?.tokenId, data?.NFTType)
-        setPrice(price)
-        setLoading(false)
+      const getTokenPrice = async () => {
+        if (marketServiceMethod && data?.tokenId && data?.NFTType!=='swap') {
+          const price = await marketServiceMethod?.getHighestBidAndPrice(data?.tokenId, data?.NFTType)
+          setPrice(price)
+          setLoading(false)
+        }
       }
-    }
-    getTokenPrice()
+      getTokenPrice()
   }, [data?.tokenId])
   
   const onSwapItem = ()=>{
-    history.push(`/swap/${data?.id}`)
+    history.push(`/swap/${data?._id}/step=1`)
   }
   return (
     <div className="create-nav">
       <StyledCart src={data?.contentUrl}>
         <div className="card-art-work">
-          <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?.id}`}>
+          <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
             <div className="wrapper-image">
               <div className="gradient-background"><div className="title">{data?.title}</div></div>
               {!dayExp && data.NFTType === 'auction' && <div className="header-card-art-work">
@@ -68,9 +68,9 @@ export default function CardItem(props?: { data?: any }) {
           </Link>
           <div className="wrapper-info">
             <div className="title">
-              <Link to={account == data.createdBy ? '/my-profile/onstore/all' : `/user-profile/${data.createdBy}/onsale/readyToSell`}>
+              <Link to={`/user-profile/${data.createdBy?.walletAddress}/onstore/readyToSell`}>
                 <div className="name-artist">
-                  <span style={{ fontSize: '10px' }}>Creator by</span> LuckySwapStudio {' '}
+                  <span style={{ fontSize: '10px' }}>Creator by</span>  {data.createdBy?.name}
                   <img src={Checkmark} alt="" />
                 </div>
               </Link>
@@ -84,7 +84,7 @@ export default function CardItem(props?: { data?: any }) {
               <a target="_blank" href={embedTokenIdLinkBSCScan(data.tokenId, data?.contractAddress, chainId)}> {getCompactString(data?.ownerWalletAddress, 5)}</a>
             </div>
             <div className="number">
-              {false ? <div>
+              {data?.NFTType!=='swap' ? <div>
                 {price} LUCKY {' '}
                 <img src={Token} alt="" />
               </div> : <ButtonBuy className="btn-swap" onClick={onSwapItem}>Swap now</ButtonBuy>}

@@ -62,7 +62,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar }) => {
         <LeftOutlined />
         <div className="title">Collapse</div>
       </div>
-      <Link className="button on-sale" to="/my-profile/onsale/readyToSell">
+      <Link className="button on-sale" to="/my-profile/onstore/readyToSell">
         <img src={NotifyIcon} alt="" style={{ marginRight: '10px' }} />
         On sale
         <span className="number-notify">5</span>

@@ -75,7 +75,7 @@ export default function OnSaleCard({ data, }: any) {
           </div>
           <div style={{ display: "flex" }}>
             <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
-            <div className="number">{getCompactString(data?.TXHash, 10)}</div>
+            <div className="number">{getCompactString(data?.TXHash, 6)}</div>
           </div>
 
           {data?.description && <div className="content">

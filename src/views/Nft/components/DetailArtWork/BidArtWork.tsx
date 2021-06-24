@@ -296,10 +296,10 @@ const DetaiArtWork = ({ id }: any) => {
 
           <p className="description">{NFTDetail?.description || ''}</p>
 
-          <Link to={userState.walletAddress === NFTDetail.ownerWalletAddress ? `/my-profile/onsale/readyToSell` : `/user-profile/${NFTDetail.ownerWalletAddress}/onsale/readyToSell`}>
+          <Link to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}>
             <p className="organize">
               <img src={Luckyswap} />
-              <span className="name">LuckySwapStudio</span>
+              <span className="name">{NFTDetail?.createdBy?.name}</span>
               <img src={Checkmark} />
             </p>
           </Link>
@@ -324,13 +324,13 @@ const DetaiArtWork = ({ id }: any) => {
                 <div className="group-info">
                   <div className="info">
                     <div className="title">Creator's Adress:</div>
-                    <a className="value" href={`/user-profile/${NFTDetail?.createdBy}/onsale/readyToSell`} target="_blank">
-                      {getCompactString(NFTDetail?.createdBy, 6)}
+                    <a className="value" href={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`} target="_blank">
+                      {getCompactString(NFTDetail?.createdBy?.walletAddress, 6)}
                     </a>
                   </div>
                   <div className="info">
                     <div className="title">Owner Adress:</div>
-                    <a className="value" href={`/user-profile/${NFTDetail?.ownerWalletAddress}/onsale/readyToSell`} target="_blank">
+                    <a className="value" href={`/user-profile/${NFTDetail?.ownerWalletAddress}/onstore/readyToSell`} target="_blank">
                       {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
                     </a>
                   </div>
