@@ -77,7 +77,7 @@ export default function CardItem(props?: { data?: any }) {
             <div className="name-artist">
               <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#333435' }}>
                 Owner by</span>
-              <a href={embedTokenIdLinkBSCScan(data.tokenId, data?.contractAddress, chainId)}> {getCompactString(data?.ownerWalletAddress, 5)}</a>
+              <a target="_blank" href={embedTokenIdLinkBSCScan(data.tokenId, data?.contractAddress, chainId)}> {getCompactString(data?.ownerWalletAddress, 5)}</a>
             </div>
             <div className="number">
               {data?.NFTType !== 'swap' ? <div>

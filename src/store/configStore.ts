@@ -5,6 +5,7 @@ import { createStore, createHook } from 'react-sweet-state';
 const configStore = createStore({
   initialState: {
     isUsingAnimation:false,
+    showLoading:false
   },
   
   actions: {
@@ -15,6 +16,7 @@ const configStore = createStore({
     clearConfig: ()=>({getState, setState})=>{
         setState({
         isUsingAnimation:false,
+        showLoading:false
         })
     },
   },

@@ -194,27 +194,27 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         )
           :
           <>
-          
-          <div className="view-more">
-           {isMobile&&(<>
-            <ButtonTrade padding="10px" borderRadius="100px" height="40px" width="40px" >
-              <img src={ViewMore} />
-            </ButtonTrade>
-            <div className="menu">
-              {isMobile &&
-                <>
-                  <div className="menu-item">
-                    <div className="connect-wallet">
-                      <Web3Status />
-                    </div>
-                  </div>
-                  <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Create</ButtonBuy></a></div>
-                  <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Swap</ButtonBuy></a></div>
-                </>
-              }
+
+            <div className="view-more">
+              {isMobile && (<>
+                <ButtonTrade padding="10px" borderRadius="100px" height="40px" width="40px" >
+                  <img src={ViewMore} />
+                </ButtonTrade>
+                <div className="menu">
+                  {isMobile &&
+                    <>
+                      <div className="menu-item">
+                        <div className="connect-wallet">
+                          <Web3Status />
+                        </div>
+                      </div>
+                      <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Create</ButtonBuy></a></div>
+                      <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Swap</ButtonBuy></a></div>
+                    </>
+                  }
+                </div>
+              </>)}
             </div>
-            </>)}
-          </div>
           </>
         }
       </div>
@@ -415,9 +415,8 @@ const StyledTopBar = styled.div`
           font-size: 16px;
           color: #333333;
           :hover {
-            background: #35A5FC;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #35A5FC;
+            background-color: #ffffff;
           }
         }
       }
