@@ -75,11 +75,12 @@ const useGetPublicIfoData = (ifo: Ifo) => {
   const currentBlock = useBlockNumber();
   const { account } = useWeb3React()
 
-
   const contract = useIfoContract(address)
 
   useEffect(() => {
     const fetchProgress = async () => {
+      if (!account)
+        return;
       const [startBlock, endBlock, raisingAmount, offeringAmount, maxDepositAmount, claimAmount, depositedAmount, totalAmount, getAddressListLength] = (await makeBatchRequest([
         contract.methods.startBlock().call,
         contract.methods.endBlock().call,
