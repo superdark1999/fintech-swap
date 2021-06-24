@@ -46,7 +46,7 @@ const IfoTitle = ({ activeIfo }: any) => {
   const [isApproved, setIsApproved] = useState(false)
   const [value, setValue] = useState('')
 
-  const { description, name, address, currency, currencyAddress } = activeIfo
+  const { sympol,description, name, address, currency, currencyAddress } = activeIfo
   const contract = useIfoContract(address)
   const { offeringAmount, raisingAmount, secondsUntilStart, secondsUntilEnd, status, startBlockNum } =
     useGetPublicIfoData(activeIfo)
@@ -270,7 +270,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                     value={offeringAmount.div(1e18).toNumber()}
                     decimals={0}
                     fontSize="10px"
-                    text={currency}
+                    text={sympol}
                     fontWeight="600"
                   ></CardValue>
                 </div>

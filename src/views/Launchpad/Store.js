@@ -1,4 +1,5 @@
 import { createStore, createHook, createContainer, createSubscriber } from 'react-sweet-state'
+import {BASE_API_ADMIN} from 'config'
 import axios from 'axios'
 
 const STATUS = {
@@ -41,7 +42,7 @@ const Store = createStore({
       ({ setState, getState }) => {
         if (getState().launchpads.length ===0)
         axios
-          .get('https://dashboard.luckyswap.exchange/launchpads')
+          .get(`${BASE_API_ADMIN}/launchpads`)
           .then((response) => {
             setState({
               ...getState(), 
@@ -60,7 +61,7 @@ const Store = createStore({
 
     getDetailLaunch:
     (id) => async ({setState, getState}) => {
-      const url = `https://dashboard.luckyswap.exchange/launchpads/${id}`;
+      const url = `${BASE_API_ADMIN}/launchpads/${id}`;
       const result = await axios.get(url).catch(() => console.log("axios error"));
       setState({...getState(), detailLaunchpad: result.data});
     },

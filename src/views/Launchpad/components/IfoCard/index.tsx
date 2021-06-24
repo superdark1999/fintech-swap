@@ -45,8 +45,12 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
   const TranslateString = useI18n()
   const Ribbon = getRibbonComponent(status, TranslateString)
 
-  const priceRate = offeringAmount.toNumber() && raisingAmount.toNumber() ? `${offeringAmount.div(raisingAmount).toFixed(2)}` : "?"
-  const processRate = totalAmount.toNumber() && raisingAmount.toNumber() ? `${totalAmount.multipliedBy(100).div(raisingAmount).toFixed(2)}` : "0"
+  const priceRate =
+    offeringAmount.toNumber() && raisingAmount.toNumber() ? `${offeringAmount.div(raisingAmount).toFixed(2)}` : '?'
+  const processRate =
+    totalAmount.toNumber() && raisingAmount.toNumber()
+      ? `${totalAmount.multipliedBy(100).div(raisingAmount).toFixed(2)}`
+      : '0'
   return (
     // <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={publicIfoData.status === 'live'}>
     //   <IfoCardDetails ifo={ifo} publicIfoData={publicIfoData} />
@@ -62,8 +66,9 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
         <ItemContent>
           <BoxHead>
             <h2>{name}</h2>
-            <p>1 {currency} = {priceRate} Lucky</p>
-
+            <p>
+              1 {currency} = {priceRate} Lucky
+            </p>
           </BoxHead>
 
           <Total>
@@ -78,7 +83,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
             </BoxProgressBar>
             <ProgressFooter>
               <ProgressPercentage>{processRate}%</ProgressPercentage>
-              <FeaturedCardMinimum style={{marginLeft:"10px"}}>{` (Min.0%)`}</FeaturedCardMinimum>
+              <FeaturedCardMinimum style={{ marginLeft: '10px' }}>{` (Min.0%)`}</FeaturedCardMinimum>
               <FeaturedCardAmount>0/100</FeaturedCardAmount>
             </ProgressFooter>
           </BoxProgress>
@@ -91,7 +96,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
             <CardColumn>
               <p>
-                Max<span>LP</span>
+                Max<span>{` ${currency}`}</span>
               </p>
               <h3>{raisingAmount.div(1e18).toFixed(2)}</h3>
             </CardColumn>
@@ -107,7 +112,6 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
           </BoxLink>
         </ItemContent>
       </Item>
-
 
       {/* <Item className="item-coming">
         <div className="item-coming-title">Upcoming Project !</div>
