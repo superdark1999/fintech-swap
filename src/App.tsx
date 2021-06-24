@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { ThemeProvider } from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 import TopBar from './components/TopBar'
 import ModalsProvider from './contexts/Modals'
 import TransactionProvider from './contexts/Transactions'
@@ -30,7 +30,13 @@ import Explore from 'views/Nft/components/Explore'
 import SwapStore from 'views/Nft/components/SwapStore'
 import SidebarMobile from 'views/Nft/components/Sidebar/SidebarMobile'
 import useUserStore from 'store/userStore'
-// 
+import useConfigStore from 'store/configStore'
+import Lucky from 'assets/icon/lucky.svg'
+import Lucky1 from 'assets/icon/lucky-1.svg'
+import Lucky2 from 'assets/icon/lucky-2.svg'
+import Lucky3 from 'assets/icon/lucky-3.svg'
+import Lottie from 'react-lottie';
+import LogoAnimation from "assets/animation/Logo_animation.json";
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if ('ethereum' in window) {
@@ -73,13 +79,42 @@ function Updaters() {
 
 const App = () => {
   const [userState] = useUserStore()
-  console.log('userState: ', userState);
   const [mobileMenu, setMobileMenu] = useState(false)
-
+  const [timeLoading, setTimeLoading] = useState(true)
+  const [configState, configAction] = useConfigStore()
+  useEffect(() => {
+    setTimeout(() => {
+      setTimeLoading(false)
+    }, 2500);
+  }, [])
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: LogoAnimation,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+    }
+  };
   return (
     <Providers>
       <Updaters />
       <Router>
+        {/* {(configState?.showLoading || timeLoading) && */}
+        <LoadingPage>
+          <Lottie options={defaultOptions}
+            height={200}
+            width={200}
+            style={{ marginBottom: '40px' }}
+          />
+          <div className="loader">
+            <span className=""></span>
+            <span className=""></span>
+            <span className=""></span>
+            <span className=""></span>
+            <span className=""></span>
+          </div>
+        </LoadingPage>
+        {/* } */}
         <Web3ReactManager>
           <>
             {
@@ -133,6 +168,7 @@ const App = () => {
 }
 
 const Providers: React.FC = ({ children }) => {
+
   return (
     <ThemeProvider theme={theme as any}>
       <Web3ReactProvider getLibrary={getLibrary}>
@@ -148,3 +184,84 @@ const Providers: React.FC = ({ children }) => {
   )
 }
 export default App
+
+const LoadingPage = styled.div`
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  background: #323e48;
+  flex-direction: column;
+  .loader {
+  text-align: center;
+  vertical-align: middle;
+  position: relative;
+  display: flex;
+    span {
+      display: block;
+      width: 30px;
+      height: 30px;
+      background: url(${Lucky}) no-repeat center;
+      border-radius: 50%;
+      margin: 0 5px;      
+      :nth-child(2) {
+        background: url(${Lucky1}) no-repeat center;
+      }
+
+      :nth-child(3) {
+        background: url(${Lucky2}) no-repeat center;
+      }
+
+      :nth-child(4) {
+        background: url(${Lucky3}) no-repeat center;
+      }
+
+      :not(:last-child) {
+        animation: animate 1.5s linear infinite;
+      }
+      :last-child {
+        animation: jump 1.5s ease-in-out infinite;
+      }
+    }
+    
+  }
+  @keyframes animate {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(30px);
+    }
+  }
+  @keyframes jump {
+    0% {
+      transform: translate(0, 0);
+    }
+    10% {
+      transform: translate(10px, -10px);
+    }
+    20% {
+      transform: translate(20px, 10px);
+    }
+    30% {
+      transform: translate(30px, -50px);
+    }
+    70% {
+      transform: translate(-180px, -50px);
+    }
+    80% {
+      transform: translate(-170px, 10px);
+    }
+    90% {
+      transform: translate(-160px, -10px);
+    }
+    100% {
+      transform: translate(-155px, -10px);
+    }
+  }
+
+`

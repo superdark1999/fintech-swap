@@ -8,7 +8,7 @@ import { useActiveWeb3React } from 'wallet/hooks'
 import notification from 'components-v2/Alert'
 import ButtonProcessing from 'components-v2/Button/btnProcessing'
 import { ButtonBuy } from 'components-v2/Button'
-
+import { RegexWebsiteURL } from '../../constants'
 const TabSetting = () => {
   const { updateProfile } = useUserServices()
   const [userState, userActions] = useUserStore()
@@ -78,9 +78,18 @@ const TabSetting = () => {
           </Form.Item>
         </Col>
         <Col xl={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
-          <Form.Item name="name" label="Name">
+          <Form.Item
+            name="name"
+            label="Name"
+            rules={[
+              { required: true, message: 'This Field is required' },
+              {
+                maxLength: 20,
+                message: 'Value should be less than 20 character',
+              },
+            ]}
+          >
             <Input
-              disabled
               style={{ borderRadius: '100px' }}
               placeholder="Your full name or nickname or bussiness name"
             />
@@ -88,6 +97,9 @@ const TabSetting = () => {
           <Form.Item
             name="socialMediaLink"
             label="Social media/Portfolio link "
+            rules={[
+              { pattern: RegexWebsiteURL, message: 'This URL is not correct.' },
+            ]}
           >
             <Input
               style={{ borderRadius: '100px' }}
