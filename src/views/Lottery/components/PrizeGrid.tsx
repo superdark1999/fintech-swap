@@ -76,7 +76,9 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       </GridItem>
       {/* 4 matches row */}
       <GridItem>
-        <Heading size="md">4</Heading>
+        <Heading style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }} size="md">
+          4
+        </Heading>
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem>
@@ -90,7 +92,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         </RightAlignedHeading>
       </GridItem>
       {/* 3 matches row */}
-      <GridItem>
+      <GridItem style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }}>
         <Text bold>3</Text>
       </GridItem>
       {pastDraw && (
@@ -105,7 +107,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         </RightAlignedText>
       </GridItem>
       {/* 2 matches row */}
-      <GridItem>
+      <GridItem style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }}>
         <Text>2</Text>
       </GridItem>
       {pastDraw && (

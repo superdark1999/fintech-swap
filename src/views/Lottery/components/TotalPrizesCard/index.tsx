@@ -84,13 +84,15 @@ const TotalPrizesCard = () => {
         <CardHeading>
           <Left>
             <IconWrapper>
-              <img width="35px" alt="" src="/images/logo-icon.png"/>
+              <img width="35px" alt="" src="/images/logo-icon.png" />
             </IconWrapper>
             <PrizeCountWrapper>
               <Text fontSize="14px" color="textSubtle">
                 {TranslateString(722, 'Total Pot:')}
               </Text>
-              <Heading size="lg">{lotteryPrizeWithCommaSeparators} CAKE</Heading>
+              <Heading style={{ 'textShadow': 'rgb(255 214 0) 0px 0px 25px' }} size="lg">
+                {lotteryPrizeWithCommaSeparators} LUCKY
+              </Heading>
               {lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}
             </PrizeCountWrapper>
           </Left>

@@ -78,7 +78,7 @@ const config: MenuEntry[] = [
   },
   {
     label: 'Gamefi',
-    icon: 'NftIcon',
+    icon: 'TicketIcon',
     href: '#',
     calloutClass: 'style-color ',
     items: [

@@ -22,6 +22,7 @@ const StyledHero = styled.div`
   background-size: cover;
   padding-bottom: 60px;
   padding-top: 60px;
+  background-color:#0000001a
 `
 
 const StyledContainer = styled(Container)`

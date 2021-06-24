@@ -70,6 +70,7 @@ const LotteryCard = () => {
     try {
       setRequestedClaim(true)
       const txHash = await onMultiClaim()
+      
       // user rejected tx or didn't go thru
       if (txHash) {
         setRequestedClaim(false)

@@ -4,8 +4,11 @@ import { ButtonMenu, ButtonMenuItem } from '@luckyswap/uikit'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import { getLotteryIssueIndex } from 'utils/lotteryUtils'
 import useI18n from 'hooks/useI18n'
-import { useLottery } from 'hooks/useContract'
 import Page from 'components/layout/Page'
+import { useLottery, useContract } from 'hooks/useContract'
+import { getLotteryAddress } from 'utils/addressHelpers'
+import lotteryAbi from 'config/abi/lottery.json'
+
 import Hero from './components/Hero'
 import Divider from './components/Divider'
 import NextDrawPage from './NextDrawPage'
@@ -20,7 +23,8 @@ const Wrapper = styled.div`
 `
 
 const Lottery: React.FC = () => {
-  const lotteryContract = useLottery()
+  const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
+
   const TranslateString = useI18n()
   const [activeIndex, setActiveIndex] = useState(0)
   const [historyData, setHistoryData] = useState([])
@@ -39,7 +43,7 @@ const Lottery: React.FC = () => {
 
   useEffect(() => {
     const getInitialLotteryIndex = async () => {
-      const index =1;  // TODO: await getLotteryIssueIndex(lotteryContract)
+      const index = await getLotteryIssueIndex(lotteryContract)
       const previousLotteryNumber = index - 1
 
       setCurrentLotteryNumber(index)

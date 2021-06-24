@@ -20,7 +20,11 @@ const WinningNumbers: React.FC = () => {
       <CardBodyNew>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <Title style={{ color: 'rgb(243, 193, 17)' }}>{TranslateString(440, 'Latest Winning Numbers')}</Title>
+            <Title style={{ color: 'rgb(243, 193, 17)' }}>
+              {account && lotteryHasDrawn
+                ? `🥳${TranslateString(570, 'Winning Numbers This Round')}🥳`
+                : TranslateString(440, 'Latest Winning Numbers')}
+            </Title>
           </StyledCardHeader>
           <Row>
             {/* <img
@@ -40,6 +44,26 @@ const WinningNumbers: React.FC = () => {
               </TicketNumberBox>
             ))}
           </Row>
+          <Column>
+            <RowNoPadding>
+              <CenteredTextWithPadding style={{color:'white'}}>{TranslateString(442, 'Tickets matching 4 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding>
+                <strong style={{color:'yellow'}}>{MatchedNumber4}</strong>
+              </CenteredTextWithPadding>
+            </RowNoPadding>
+            <RowNoPadding>
+              <CenteredTextWithPadding style={{color:'white'}}>{TranslateString(444, 'Tickets matching 3 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding>
+                <strong style={{color:'yellow'}}>{MatchedNumber3}</strong>
+              </CenteredTextWithPadding>
+            </RowNoPadding>
+            <RowNoPadding>
+              <CenteredTextWithPadding style={{color:'white'}}>{TranslateString(446, 'Tickets matching 2 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding>
+                <strong style={{color:'yellow'}}>{MatchedNumber2}</strong>
+              </CenteredTextWithPadding>
+            </RowNoPadding>
+          </Column>
 
           <Link href="/" target="_blank">
             {TranslateString(448, 'Export recent winning numbers')}
