@@ -53,7 +53,7 @@ export const getCompactString=(str:string, sepLen:number)=>{
     return ''
   }
   const strLen = str.length || 0
-  return `${str.slice(0,sepLen)} ... ${str.slice(strLen-sepLen-1,strLen-1)}`
+  return `${str.slice(0,sepLen)}...${str.slice(strLen-sepLen-1,strLen-1)}`
 }
 
 export const embedTokenIdLinkBSCScan = (tokenId:number,contractAddress:string,chainId:ChainId)=>{
