@@ -6,7 +6,7 @@ import styled from 'styled-components'
 //1: only token
 //2: NFT + token
 
-export default function CardSelect(props: { setSelectMethod: (value: Number) => void } ) {
+export default function CardSelect(props: { setSelectMethod?: (value: number) => void } ) {
   return (
     <CardSelectStyled>
       <div className="option-offer">
