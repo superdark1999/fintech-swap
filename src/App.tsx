@@ -99,22 +99,22 @@ const App = () => {
     <Providers>
       <Updaters />
       <Router>
-        {/* {(configState?.showLoading || timeLoading) && */}
-        <LoadingPage>
-          <Lottie options={defaultOptions}
-            height={200}
-            width={200}
-            style={{ marginBottom: '40px' }}
-          />
-          <div className="loader">
-            <span className=""></span>
-            <span className=""></span>
-            <span className=""></span>
-            <span className=""></span>
-            <span className=""></span>
-          </div>
-        </LoadingPage>
-        {/* } */}
+        {(configState?.showLoading || timeLoading) &&
+          <LoadingPage>
+            <Lottie options={defaultOptions}
+              height={200}
+              width={200}
+              style={{ marginBottom: '40px' }}
+            />
+            <div className="loader">
+              <span className=""></span>
+              <span className=""></span>
+              <span className=""></span>
+              <span className=""></span>
+              <span className=""></span>
+            </div>
+          </LoadingPage>
+        }
         <Web3ReactManager>
           <>
             {
