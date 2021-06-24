@@ -45,29 +45,31 @@ function HotArtists() {
       />
       <div className="content-artists" ref={divRef}>
         {users.map((item, i) => (
-          <div className="card-artists" key={i}>
-            <img
-              className="avatar-artists"
-              src={item.avatarImage}
-              alt=""
-            />
-            {/* gắn ID user ở đây */}
-            <Link to={userState.walletAddress === item.id ? `/my-profile/onsale/readyToSell` : `/user-profile/${item.id}/onsale/readyToSell`}>
+          <Link to={userState.walletAddress === item.id ? `/my-profile/onsale/readyToSell` : `/user-profile/${item.id}/onsale/readyToSell`}>
+            <div className="card-artists" key={i}>
+              <img
+                className="avatar-artists"
+                src={item.avatarImage}
+                alt=""
+              />
+              {/* gắn ID user ở đây */}
               <div className="name-artists">
                 {item.name} <img src={Checkmark} />
               </div>
-            </Link>
-            <div className="rank-artists">
-              <img src={Crown} /> GOLD ARTIST
-            </div>
-            {/* <div className="line" />
+
+              <div className="rank-artists">
+                <img src={Crown} /> GOLD ARTIST
+              </div>
+
+              {/* <div className="line" />
                     <div className="list-image">
                       { item.images.map((img) => (
                          <div className="wrapper-image"> <img src={img} className="image" /></div>
                       ))
                       }
                     </div> */}
-          </div>
+            </div>
+          </Link>
         ))}
       </div>
     </HotArtistsStyled>
