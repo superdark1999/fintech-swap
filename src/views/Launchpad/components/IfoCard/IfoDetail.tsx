@@ -44,19 +44,28 @@ const LoadingIfo = () => {
 const IfoTitle = ({ activeIfo }: any) => {
   const [balance, setBalance] = useState(0)
   const [isApproved, setIsApproved] = useState(false)
-  const [isWaningAllowedDepositAmount,setIsWaningAllowedDepositAmount ] = useState(false);
+  const [isWaningAllowedDepositAmount, setIsWaningAllowedDepositAmount] = useState(false)
   const [value, setValue] = useState('')
 
-  const {banner,social, sympol, description, name, address, currency, currencyAddress } = activeIfo
+  const { banner, social, sympol, description, name, address, currency, currencyAddress } = activeIfo
   const contract = useIfoContract(address)
-  const { offeringAmount, raisingAmount, secondsUntilStart, maxDepositAmount, depositedAmount, claimAmount, secondsUntilEnd, status, startBlockNum } =
-    useGetPublicIfoData(activeIfo)
+  const {
+    offeringAmount,
+    raisingAmount,
+    secondsUntilStart,
+    maxDepositAmount,
+    depositedAmount,
+    claimAmount,
+    secondsUntilEnd,
+    status,
+    startBlockNum,
+  } = useGetPublicIfoData(activeIfo)
   const { account } = useWeb3React()
   const LPContract = useContract(currencyAddress, bep20Abi)
   const raisingTokenContract = useContract(address, ifoAbi)
 
   const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
-  const maxDeposit = maxDepositAmount.div(1e18).toNumber() - depositedAmount.div(1e18).toNumber();
+  const maxDeposit = maxDepositAmount.div(1e18).toNumber() - depositedAmount.div(1e18).toNumber()
   const TranslateString = useI18n()
   const countdownToUse = status === 'coming_soon' ? secondsUntilStart : secondsUntilEnd
   const suffix = status === 'coming_soon' ? 'start' : 'finish'
@@ -71,12 +80,12 @@ const IfoTitle = ({ activeIfo }: any) => {
   useEffect(() => {
     if (account) {
       LPContract.balanceOf(account)
-      .then((data) => {
-        setBalance(parseFloat((data / 1e18).toFixed(4)))
-      })
-      .catch(error => {
-        console.log("Error fetching balance")
-      })
+        .then((data) => {
+          setBalance(parseFloat((data / 1e18).toFixed(4)))
+        })
+        .catch((error) => {
+          console.log('Error fetching balance')
+        })
       //   const filter = LPContract.filters.Approval(account);
 
       //   LPContract.on(filter, (author, oldValue, newValue, event) => {
@@ -185,11 +194,9 @@ const IfoTitle = ({ activeIfo }: any) => {
   }
 
   const handleChangeAmount = (e) => {
-    if (e.target.value > maxDeposit)
-      setIsWaningAllowedDepositAmount(true);
-    else
-      setIsWaningAllowedDepositAmount(false)
-    setValue(e.target.value);
+    if (e.target.value > maxDeposit) setIsWaningAllowedDepositAmount(true)
+    else setIsWaningAllowedDepositAmount(false)
+    setValue(e.target.value)
   }
 
   const allTransactions = useAllTransactions()
@@ -306,11 +313,22 @@ const IfoTitle = ({ activeIfo }: any) => {
 
               <Dflex>
                 <div>Max Deposit:</div>
-                <div className="font-bold">{maxDeposit} {currency}</div>
+                <div className="font-bold">
+                  {maxDeposit} {currency}
+                </div>
               </Dflex>
               <Dflex>
                 <div>Your claim amount:</div>
-                <div className="font-bold">{claimAmount.div(1e18).toNumber()} {sympol}</div>
+                <div style={{ color: 'red' }} className="font-bold">
+                  <CardValue
+                    bold
+                    value={claimAmount.div(1e18).toNumber()}
+                    decimals={2}
+                    fontSize="10px"
+                    fontWeight="600"
+                    text={sympol}
+                  ></CardValue>
+                </div>
               </Dflex>
               <Dflex>
                 <div>Time:</div>
@@ -351,10 +369,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                 </div>
               </div>
             </div>
-            {isWaningAllowedDepositAmount && (
-            <div className="waning">
-              Too High Amount
-            </div>)}
+            {isWaningAllowedDepositAmount && <div className="waning">Current amount exceeds the limit!</div>}
             {status === 'live' &&
               (!(isConfirmed || isConfirming || isApproved) ? (
                 <Button
@@ -699,8 +714,7 @@ const BoxForm = styled.div`
     margin-top: 16px;
     font-size: 20px;
     font-weight: bold;
-    }
-  
+  }
 `
 
 const TextBot = styled.div`
