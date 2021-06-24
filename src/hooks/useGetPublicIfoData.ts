@@ -4,6 +4,8 @@ import { Ifo, IfoStatus } from 'config/constants/types'
 import { useIfoContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
+import { useWeb3React } from '@web3-react/core'
+
 
 import { useBlockNumber } from '../state/application/hooks';
 
@@ -17,6 +19,9 @@ export interface PublicIfoState {
   raisingAmount: BigNumber
   offeringAmount: BigNumber
   totalAmount: BigNumber
+  maxDepositAmount: BigNumber,
+  depositedAmount: BigNumber,
+  claimAmount: BigNumber,
   getAddressListLength: number
   startBlockNum: number
   endBlockNum: number
@@ -59,25 +64,34 @@ const useGetPublicIfoData = (ifo: Ifo) => {
     raisingAmount: new BigNumber(0),
     offeringAmount: new BigNumber(0),
     totalAmount: new BigNumber(0),
+    maxDepositAmount: new BigNumber(0),
+    depositedAmount: new BigNumber(0),
+    claimAmount: new BigNumber(0),
     getAddressListLength: 0,
     startBlockNum: 0,
     endBlockNum: 0,
   })
 
   const currentBlock = useBlockNumber();
+  const { account } = useWeb3React()
+
 
   const contract = useIfoContract(address)
 
   useEffect(() => {
     const fetchProgress = async () => {
-      const [startBlock, endBlock, raisingAmount, offeringAmount, totalAmount, getAddressListLength] = (await makeBatchRequest([
+      const [startBlock, endBlock, raisingAmount, offeringAmount, maxDepositAmount, claimAmount, depositedAmount, totalAmount, getAddressListLength] = (await makeBatchRequest([
         contract.methods.startBlock().call,
         contract.methods.endBlock().call,
         contract.methods.raisingAmount().call,
         contract.methods.offeringAmount().call,
+        contract.methods.maxTokenForCommunityUser().call,
+        contract.methods.getOfferingAmount(account).call,
+        contract.methods.userInfo(account).call,
         contract.methods.totalAmount().call,
         contract.methods.getAddressListLength().call,
-      ])) as [string, string, string, string, string, string]
+      ])) as [string, string, string, string, string, string, string, string, string]
+
 
       const startBlockNum = parseInt(startBlock, 10)
       const endBlockNum = parseInt(endBlock, 10)
@@ -98,6 +112,9 @@ const useGetPublicIfoData = (ifo: Ifo) => {
         raisingAmount: new BigNumber(raisingAmount),
         offeringAmount: new BigNumber(offeringAmount),
         totalAmount: new BigNumber(totalAmount),
+        maxDepositAmount: new BigNumber(maxDepositAmount),
+        depositedAmount: new BigNumber(depositedAmount[0]),
+        claimAmount: new BigNumber(claimAmount),
         getAddressListLength: parseInt(getAddressListLength),
         status,
         progress,
@@ -108,7 +125,7 @@ const useGetPublicIfoData = (ifo: Ifo) => {
     }
 
     fetchProgress()
-  }, [address, currentBlock, contract, releaseBlockNumber, setState])
+  }, [address, currentBlock, contract, releaseBlockNumber, setState, account])
 
   return state
 }

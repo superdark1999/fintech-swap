@@ -48,7 +48,7 @@ const IfoTitle = ({ activeIfo }: any) => {
 
   const {banner,social, sympol, description, name, address, currency, currencyAddress } = activeIfo
   const contract = useIfoContract(address)
-  const { offeringAmount, raisingAmount, secondsUntilStart, secondsUntilEnd, status, startBlockNum } =
+  const { offeringAmount, raisingAmount, secondsUntilStart, maxDepositAmount, depositedAmount, claimAmount, secondsUntilEnd, status, startBlockNum } =
     useGetPublicIfoData(activeIfo)
   const { account } = useWeb3React()
   const LPContract = useContract(currencyAddress, bep20Abi)
@@ -294,6 +294,14 @@ const IfoTitle = ({ activeIfo }: any) => {
                 {/* <div className="font-bold">{`${timeStart.days}d, ${timeStart.hours}h, ${timeStart.minutes}m until Start`}</div> */}
               </Dflex>
 
+              <Dflex>
+                <div>Maximum Amount Deposit:</div>
+                <div className="font-bold">{maxDepositAmount.div(1e18).toNumber() - depositedAmount.div(1e18).toNumber()} {currency}</div>
+              </Dflex>
+              <Dflex>
+                <div>Your claim amount:</div>
+                <div className="font-bold">{claimAmount.div(1e18).toNumber()} {sympol}</div>
+              </Dflex>
               <Dflex>
                 <div>Time:</div>
                 <div className="font-bold">{`${timeUntil.days}d, ${timeUntil.hours}h, ${timeUntil.minutes}m until ${suffix}`}</div>
