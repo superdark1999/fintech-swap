@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react'
+import React, { useEffect} from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import Container from 'components/layout/Container'
 import IfoTabButtons from './components/IfoTabButtons'
@@ -9,7 +9,6 @@ import { useHookIFOs } from './Store'
 
 const Ifos = () => {
   const { path } = useRouteMatch()
-  // const [status, setStatus] = useState('open');
   const [state, actions] = useHookIFOs();
   const { filterStatus, filterLaunchpads } = state;
 

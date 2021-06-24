@@ -24,6 +24,7 @@ export interface Ifo {
   campaignId?: string
   banner?:string
   typePool?:string
+  sympol?:string
 }
 
 export enum PoolCategory {

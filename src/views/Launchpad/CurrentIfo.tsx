@@ -13,7 +13,7 @@ const Ifo = ({ ifos }) => {
     <div>
       <IfoCards isSingle>
         {ifos.map((ifo) =>
-          <IfoCard ifo={ifo} />
+          <IfoCard key={ifo._id} ifo={ifo} />
         )}
         
       </IfoCards>

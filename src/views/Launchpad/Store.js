@@ -51,6 +51,7 @@ const Store = createStore({
               filterLaunchpads: response.data.filter(ifo => ifo.isActive)
             })
           })
+          .catch(error => console.log('error fetching launchpads data'))
       },
     setLaunchPad:
       (launchpads) =>
@@ -71,7 +72,7 @@ const Store = createStore({
       setState({...getState(), filterStatus: status});
     }, 
     filterLaunchWithStatus: 
-    (status) => async({setState, getState}) => {
+    (status) => ({setState, getState}) => {
       const filteredIfos =  filterIfoByStatus(status, getState().launchpads);
 
       setState({...getState(), filterStatus: status, filterLaunchpads: filteredIfos})
