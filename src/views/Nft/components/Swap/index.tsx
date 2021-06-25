@@ -27,11 +27,12 @@ export default  () => {
 
   const history = useHistory()
   const [NFTs, setNFTs] = useState([]);
-  const { getNFT } = useArtworkServices()
+  const { getNFT, getDetailNFT } = useArtworkServices()
+  const {id} = useParams()
 
   const nextStep = (step: number) => {
     setStep(step)
-    history.push(`/swap/step=${step}/${itemSwap?.[0].ownerWalletAddress}`)
+    history.push(`/swap/${id}/step=${step}`)
   }
 
   const [visible, setVisible] = useState<any>({ isOpen: false, value: "my-item" });
@@ -46,7 +47,12 @@ export default  () => {
         setNFTs(data?.data || [])
       }
     })
+    getDetailNFT({ id }).then(({ status, data }) => {
+      setItemSwap([data?.data])
+    })
   }, [])
+
+
 
   const getItemSelected = (data?: any) => {
     if (visible.value === 'my-item') {
@@ -98,6 +104,7 @@ export default  () => {
        { renderStep(+step) }
        <ModalSelectSwap
         visible={visible}
+        title={visible.value === 'my-item'?'YOUR COLLECTION':'SWAP MINI STORE'}
         setVisible={setVisible}
         data={visible.value === 'my-item' ? NFTs : NFTs} // chỗ này viết lại nha, là hiện nft swap thôi (call api => itemSwapp)
         getItemSelected={getItemSelected}

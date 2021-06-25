@@ -13,11 +13,12 @@ interface Props {
   data: any,
   multiSelect?: boolean,
   getItemSelected?: (data: any) => void
-  selectedItem?: any
+  selectedItem?: any,
+  title:string
 }
 export default function ModalSelectSwap(props: Props) {
 
-  const { multiSelect, getItemSelected, visible, data, setVisible, selectedItem } = props
+  const { multiSelect, getItemSelected, visible, data, setVisible, selectedItem, title } = props
   const [selectedMyItem, setSelectedMyItem] = useState<any>([])
   const [selectedSwapItem, setSelectedSwapItem] = useState<any>([])
 
@@ -56,7 +57,7 @@ export default function ModalSelectSwap(props: Props) {
 
   return (
     <ModalStyled
-      title="SWAP MINI STORE"
+      title={title}
       centered
       visible={visible.isOpen}
       onCancel={oncloseModal}
