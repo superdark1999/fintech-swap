@@ -59,7 +59,7 @@ export default function OnSaleCard({ data, }: any) {
         <Col className="description" xl={{ span: 16 }} md={{ span: 24 }} xs={{ span: 24 }} xxl={{ span: 16 }}>
           <div className="header-card" style={{ marginTop: 10 }}>
             <div className="status">
-              Ready to Sell
+             {data?.NFTType?.toUpperCase()}
             </div>
             <div className="cancel">
               Cancel

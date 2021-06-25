@@ -49,7 +49,6 @@ export default  () => {
   }, [])
 
   const getItemSelected = (data?: any) => {
-    console.log(data)
     if (visible.value === 'my-item') {
       setMyItems(data)
     } else {

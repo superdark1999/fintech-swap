@@ -54,7 +54,7 @@ export default function MyCollectionCard({ data, option }: any) {
     marketServicesMethod?.setTokenPrice(tokenId, value.lucky)
       .then((dt) => {
         if (dt?.hash) {
-          setPrice({ id: data?.id, NFTType: 'buy' }).then(({ status }) => {
+          setPrice({ id: data?._id, NFTType: 'buy' }).then(({ status }) => {
             if (status == 200) {
               history.push('/my-profile/mycollection/checkingToSell')
             } else {
@@ -99,7 +99,7 @@ export default function MyCollectionCard({ data, option }: any) {
     marketServicesMethod?.setTokenBidInfo(tokenId, value.price, value.stepPrice)
       .then((dt) => {
         if (dt?.hash) {
-          setPrice({ id: data?.id, NFTType: 'auction' }).then(({ status }) => {
+          setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
             if (status == 200) {
               history.push('/my-profile/mycollection/checkingToSell')
             } else {
@@ -116,15 +116,6 @@ export default function MyCollectionCard({ data, option }: any) {
     setRuleAuctionModal(false)
   }
   const onSubmitSwapItem = ()=>{
-    setPrice({ id: data?._id, NFTType: 'swap' }).then(({ status }) => {
-      if (status == 200) {
-        history.push('/my-profile/mycollection/checkingToSell')
-      } else {
-        notification('error', { message: 'Error', description: 'Something when wrong, please try again later.' })
-        setIsPrcessing(false)
-      }
-    })
-    return
     const tokenId = data?.tokenId
     setIsPrcessing(true)
     marketServicesMethod?.listNFTToSWap(tokenId)
@@ -148,14 +139,6 @@ export default function MyCollectionCard({ data, option }: any) {
   }
 
   const onCancelItemOnMarket = ()=>{
-    cancelSellNFT({id:data?._id}).then(({status})=>{
-      if (status == 200) {
-        history.push('/my-profile/mycollection/checkingToSell')
-      } else {
-        notification('error', { message: 'Error', description: 'Something when wrong, please try again later.' })
-        setIsPrcessing(false)
-      }
-    })
     if(marketServicesMethod){
       if(data?.NFTType==='buy'||data?.NFTType==='auction'){
         setIsPrcessing(true)

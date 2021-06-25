@@ -92,7 +92,7 @@ const SwapArtWork = (props: any) => {
             {
               myItems.map((card: any) => {
                 return (
-                  <Card key={card.id} data={card} className="card-item" />
+                  <Card key={card._id} data={card} className="card-item" />
                 )
               })
             }
@@ -115,7 +115,7 @@ const SwapArtWork = (props: any) => {
           {
             myItems.map((card: any) => {
               return (
-                <Card key={card.id} data={card} className="card-item" />
+                <Card key={card._id} data={card} className="card-item" />
               )
             })
           }

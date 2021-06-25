@@ -23,7 +23,7 @@ export default  () => {
 
   useEffect(() => {
     getDetailNFT({
-      id:param?.id
+      id:param?._id
     }).then(({ status, data }: any) => {
       if (status === 200) {
         setNFT(data?.data || [])

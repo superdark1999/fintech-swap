@@ -123,29 +123,33 @@ function useMarketServiceChain97(){
         },[marketContract,userState.balance.BNB])
 
         const getHighestBidAndPrice = useCallback(async(tokenId:string|undefined, NFTType:string)=>{
-          if(tokenId){
-            if(NFTType=='buy'){
-              const unitPrice =  await getTokenPrice(tokenId)
-              const price = getPrice(Number(unitPrice?._hex))
-              return price
-            }else{
-              const bidsArr = await getBidsByTokenId(tokenId)
-              const bidsData = bidsArr?.map((item: any) => {
-                    return {
-                      key: item?.[0] || '',
-                      address: item?.[0] || '',
-                      price: Number(item?.[1]?._hex) / Number(1e18),
-                    }
-                  }) || []
-              const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
-              const unitPrice = await getTokenBidPrice(tokenId)
-              const price = getPrice(unitPrice?._hex)
-              if(price>maxPrice){
+          try {
+            if(tokenId){
+              if(NFTType=='buy'){
+                const unitPrice =  await getTokenPrice(tokenId)
+                const price = getPrice(Number(unitPrice?._hex))
                 return price
               }else{
-                return maxPrice
+                const bidsArr = await getBidsByTokenId(tokenId)
+                const bidsData = bidsArr?.map((item: any) => {
+                      return {
+                        key: item?.[0] || '',
+                        address: item?.[0] || '',
+                        price: Number(item?.[1]?._hex) / Number(1e18),
+                      }
+                    }) || []
+                const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
+                const unitPrice = await getTokenBidPrice(tokenId)
+                const price = getPrice(unitPrice?._hex)
+                if(price>maxPrice){
+                  return price
+                }else{
+                  return maxPrice
+                }
               }
             }
+          } catch (error) {
+            throw(error)
           }
         },[marketContract])
 

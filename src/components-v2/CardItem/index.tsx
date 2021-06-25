@@ -74,7 +74,7 @@ export default function CardItem(props?: { data?: any }) {
                   <img src={Checkmark} alt="" />
                 </div>
               </Link>
-              <div className="copy" onClick={() => handleCopy(`${window.location.href}artwork/detail/${data?.NFTType || 'buy'}/${data?.id}`)}>
+              <div className="copy" onClick={() => handleCopy(`${window.location.href}artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`)}>
                 {isCopied ? <span><CheckOutlined /> copied</span> : <><img src={Copy} alt="copy-artwork" /> Copy</>}
               </div>
             </div>

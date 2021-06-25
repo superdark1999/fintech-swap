@@ -150,7 +150,7 @@ const TabOnSale = () => {
       </Row>  */}
       <ListCart className="list-artwork">
         {NFTs.map((item) => {
-          return <OnsSaleCard key={item?.id} data={item} />
+          return <OnsSaleCard key={item?._id} data={item} />
         })}
       </ListCart>
       {/* <Loadmore/>  */}
@@ -242,7 +242,7 @@ const TabMyCollection = () => {
         {renderData.map((item) => {
           return (
             <MyCollectionCard
-              key={item?.id}
+              key={item?._id}
               data={item}
               option={optionChecked}
             />
