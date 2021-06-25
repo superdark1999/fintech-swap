@@ -167,8 +167,9 @@ export const CartStyled = styled.div`
         border: 1px solid #19a3dd;
         box-sizing: border-box;
         border-radius: 100px;
-        padding: 2px 8px;
+        padding: 2px 16px;
         color: #19a3dd;
+        text-transform: capitalize;
       }
       .cancel {
         width: 98px;

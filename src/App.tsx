@@ -91,9 +91,6 @@ const App = () => {
     loop: true,
     autoplay: true,
     animationData: LogoAnimation,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
   };
   return (
     <Providers>
@@ -102,8 +99,8 @@ const App = () => {
         {(configState?.showLoading || timeLoading) &&
           <LoadingPage>
             <Lottie options={defaultOptions}
-              height={200}
-              width={200}
+              height={150}
+              width={150}
               style={{ marginBottom: '40px' }}
             />
             <div className="loader">
@@ -196,7 +193,7 @@ const LoadingPage = styled.div`
   display: flex;
   justify-content:center;
   align-items: center;
-  background: #323e48;
+  background: #212223;
   flex-direction: column;
   .loader {
   text-align: center;
@@ -223,47 +220,28 @@ const LoadingPage = styled.div`
       }
 
       :not(:last-child) {
-        animation: animate 1.5s linear infinite;
+        animation: animate 2.5s infinite;
       }
       :last-child {
-        animation: jump 1.5s ease-in-out infinite;
+        animation: animate 2.5s infinite;
       }
     }
     
   }
   @keyframes animate {
     0% {
-      transform: translateX(0);
+      opacity: 1;
+    }
+    25% {
+      opacity: .75;
+    }
+
+    50% {
+      opacity: .5;
     }
 
     100% {
-      transform: translateX(30px);
-    }
-  }
-  @keyframes jump {
-    0% {
-      transform: translate(0, 0);
-    }
-    10% {
-      transform: translate(10px, -10px);
-    }
-    20% {
-      transform: translate(20px, 10px);
-    }
-    30% {
-      transform: translate(30px, -50px);
-    }
-    70% {
-      transform: translate(-180px, -50px);
-    }
-    80% {
-      transform: translate(-170px, 10px);
-    }
-    90% {
-      transform: translate(-160px, -10px);
-    }
-    100% {
-      transform: translate(-155px, -10px);
+      opacity: .25;
     }
   }
 

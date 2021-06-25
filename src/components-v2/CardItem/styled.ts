@@ -10,7 +10,7 @@ export const StyledCart = styled.div<PropsStyled>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
+  position: relative;  
   .card-art-work{
     max-width: ${props => props.width || '300px'};
     max-height: ${props => props.height || '530px'};
@@ -147,6 +147,7 @@ export const StyledCart = styled.div<PropsStyled>`
         .copy {
           font-size: 12px;
           cursor: pointer;
+          
           img {
             width: 18px;
             height: 18px;
