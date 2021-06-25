@@ -48,7 +48,7 @@ const IfoTitle = ({ activeIfo }: any) => {
   const [isWaningAllowedDepositAmount, setIsWaningAllowedDepositAmount] = useState(false)
   const [value, setValue] = useState('')
 
-  const { banner, social, sympol, description, name, address, currency, currencyAddress } = activeIfo
+  const { typePool, banner, social, sympol, description, name, address, currency, currencyAddress } = activeIfo
   const contract = useIfoContract(address)
   const {
     offeringAmount,
@@ -87,33 +87,28 @@ const IfoTitle = ({ activeIfo }: any) => {
         .catch((error) => {
           console.log('Error fetching balance')
         })
-       
 
-      LPContract.on("Approval", async(oldValue, newValue, event) => {
+      LPContract.on('Approval', async (oldValue, newValue, event) => {
         try {
           const result = await LPContract?.allowance?.(account, contract.options.address)
-          console.log("result ",result);
           setIsApproved(result.toString() !== '0')
         } catch (error) {
           console.log('Error fetch approval data')
         }
-      })   
-
-      raisingTokenContract.on("Deposit", (oldValue, newValue, event) => {
-        if (account) {
-          LPContract.balanceOf(account)
-          .then((data) => {
-            setBalance(parseFloat((data / 1e18).toFixed(4)))
-          })
-          .catch(error => {
-            console.log("Error fetching balance")
-          })
-        }
       })
 
-
+      raisingTokenContract.on('Deposit', (oldValue, newValue, event) => {
+        if (account) {
+          LPContract.balanceOf(account)
+            .then((data) => {
+              setBalance(parseFloat((data / 1e18).toFixed(4)))
+            })
+            .catch((error) => {
+              console.log('Error fetching balance')
+            })
+        }
+      })
     }
-
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account])
@@ -158,11 +153,11 @@ const IfoTitle = ({ activeIfo }: any) => {
       }
     },
     onApprove: async () => {
-        LPContract.approve(contract.options.address, ethers.constants.MaxUint256).then(async(response) =>{
+      LPContract.approve(contract.options.address, ethers.constants.MaxUint256).then(async (response) => {
         addTransaction(response, {
           summary: 'Approve successfully!',
         })
-        
+
         // LPContract.on("Approval", async(oldValue, newValue, event) => {
         //   console.log("approval event");
         //   try {
@@ -172,11 +167,9 @@ const IfoTitle = ({ activeIfo }: any) => {
         //   } catch (error) {
         //     console.log('Error fetch approval data')
         //   }
-    
-        // })   
+
+        // })
       })
-
-
     },
 
     onConfirm: () => {
@@ -214,8 +207,6 @@ const IfoTitle = ({ activeIfo }: any) => {
     //   }
 
     // })
-
-
   }
 
   const handleWhitelistCheck = async () => {
@@ -251,11 +242,8 @@ const IfoTitle = ({ activeIfo }: any) => {
   }
 
   const handleMaxAmount = () => {
-    if ( maxDeposit > balance)
-      setValue(balance.toString());
-    else
-      setValue(maxDeposit.toString());
-
+    if (maxDeposit > balance) setValue(balance.toString())
+    else setValue(maxDeposit.toString())
   }
 
   const allTransactions = useAllTransactions()
@@ -373,7 +361,14 @@ const IfoTitle = ({ activeIfo }: any) => {
               <Dflex>
                 <div>Max Deposit:</div>
                 <div className="font-bold">
-                  {maxDeposit} {currency}
+                  <CardValue
+                    bold
+                    value={maxDeposit}
+                    decimals={2}
+                    fontSize="10px"
+                    fontWeight="600"
+                    text={currency}
+                  ></CardValue>
                 </div>
               </Dflex>
               <Dflex>
@@ -398,9 +393,23 @@ const IfoTitle = ({ activeIfo }: any) => {
         </BoxContent>
 
         <BoxForm>
-          <button className="whitelist" type="submit" onClick={handleWhitelistCheck}>
-            Whitelist Check
-          </button>
+          {typePool === 'Whitelisted' ? (
+            <button
+              type="submit"
+              className="whitelist"
+              onClick={() => {
+                window.open(
+                  'https://docs.google.com/spreadsheets/d/1KAw4VjsVwHNC-aju9har2txNJc7N1dNe-J7ROLf6e0Y/edit#gid=0',
+                  '_blank', // <- This is what makes it open in a new window.
+                )
+              }}
+            >
+              Whitelist Check
+            </button>
+          ) : (
+            ''
+          )}
+
           <div className="box-input">
             <div className="d-flex">
               <div className="box-max">
@@ -435,9 +444,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                   className={`finished ${(isConfirmed || isConfirming || isApproved) && 'disabled'}`}
                   color="primary"
                   disabled={getStatus() || isConfirmed || isConfirming || isApproved}
-                  onClick={() =>
-                    handleApprove()
-                  }
+                  onClick={() => handleApprove()}
                   endIcon={isApproving ? spinnerIcon : undefined}
                   isLoading={isApproving}
                 >

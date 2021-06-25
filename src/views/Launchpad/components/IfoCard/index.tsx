@@ -125,7 +125,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
             <CardColumn>
               <p>Access</p>
-              <h3>{typePool}</h3>
+              <h5>{typePool}</h5>
             </CardColumn>
           </FeaturedCardFooter>
 
