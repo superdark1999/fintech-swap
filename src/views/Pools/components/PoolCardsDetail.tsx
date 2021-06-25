@@ -5,6 +5,11 @@ import { Row, Col } from 'antd'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 // import { Row, Col } from 'antd'
 
+const staking = {
+  depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
+  rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a",
+  
+}
 
 function PoolCardsDetail(this: any) {
   const [modal, setModal] = useState(false);

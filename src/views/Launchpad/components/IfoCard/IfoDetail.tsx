@@ -31,6 +31,7 @@ const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 // const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
 const LoadingIfo = () => {
   const [state, actions] = useHookIFOs()
+
   const param: any = useParams()
   useEffect(() => {
     actions.getDetailLaunch(param?.id)
@@ -86,17 +87,33 @@ const IfoTitle = ({ activeIfo }: any) => {
         .catch((error) => {
           console.log('Error fetching balance')
         })
-      //   const filter = LPContract.filters.Approval(account);
+       
 
-      //   LPContract.on(filter, (author, oldValue, newValue, event) => {
-      //     console.log("on filter", filter)
-      //     console.log("on author", author)
-      //     console.log("on oldValue",  oldValue)
-      //     console.log("on newValue",  newValue)
-      //     console.log("on event", event)
-      // })
-      // LPContract.on('')
+      LPContract.on("Approval", async(oldValue, newValue, event) => {
+        try {
+          const result = await LPContract?.allowance?.(account, contract.options.address)
+          console.log("result ",result);
+          setIsApproved(result.toString() !== '0')
+        } catch (error) {
+          console.log('Error fetch approval data')
+        }
+      })   
+
+      raisingTokenContract.on("Deposit", (oldValue, newValue, event) => {
+        if (account) {
+          LPContract.balanceOf(account)
+          .then((data) => {
+            setBalance(parseFloat((data / 1e18).toFixed(4)))
+          })
+          .catch(error => {
+            console.log("Error fetching balance")
+          })
+        }
+      })
+
+
     }
+
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account])
@@ -141,7 +158,25 @@ const IfoTitle = ({ activeIfo }: any) => {
       }
     },
     onApprove: async () => {
-      return LPContract.approve(contract.options.address, ethers.constants.MaxUint256)
+        LPContract.approve(contract.options.address, ethers.constants.MaxUint256).then(async(response) =>{
+        addTransaction(response, {
+          summary: 'Approve successfully!',
+        })
+        
+        // LPContract.on("Approval", async(oldValue, newValue, event) => {
+        //   console.log("approval event");
+        //   try {
+        //     const result = await LPContract?.allowance?.(account, contract.options.address)
+        //     console.log("result ",result);
+        //     setIsApproved(result.toString() !== '0')
+        //   } catch (error) {
+        //     console.log('Error fetch approval data')
+        //   }
+    
+        // })   
+      })
+
+
     },
 
     onConfirm: () => {
@@ -165,6 +200,22 @@ const IfoTitle = ({ activeIfo }: any) => {
         summary: 'Deposit successfully!',
       })
     })
+
+    // raisingTokenContract.on("Deposit", (oldValue, newValue, event) => {
+    //   if (account) {
+    //     console.log("deposit");
+    //     LPContract.balanceOf(account)
+    //     .then((data) => {
+    //       setBalance(parseFloat((data / 1e18).toFixed(4)))
+    //     })
+    //     .catch(error => {
+    //       console.log("Error fetching balance")
+    //     })
+    //   }
+
+    // })
+
+
   }
 
   const handleWhitelistCheck = async () => {
@@ -197,6 +248,14 @@ const IfoTitle = ({ activeIfo }: any) => {
     if (e.target.value > maxDeposit) setIsWaningAllowedDepositAmount(true)
     else setIsWaningAllowedDepositAmount(false)
     setValue(e.target.value)
+  }
+
+  const handleMaxAmount = () => {
+    if ( maxDeposit > balance)
+      setValue(balance.toString());
+    else
+      setValue(maxDeposit.toString());
+
   }
 
   const allTransactions = useAllTransactions()
@@ -359,7 +418,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                   value={value}
                   onChange={(e) => handleChangeAmount(e)}
                 />
-                <button className="max-btn" type="submit" onClick={() => setValue(balance.toString())}>
+                <button className="max-btn" type="submit" onClick={handleMaxAmount}>
                   Max
                 </button>
                 <div className="line"></div>
@@ -377,11 +436,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                   color="primary"
                   disabled={getStatus() || isConfirmed || isConfirming || isApproved}
                   onClick={() =>
-                    handleApprove().then((response: any) => {
-                      addTransaction(response, {
-                        summary: 'Approve successfully!',
-                      })
-                    })
+                    handleApprove()
                   }
                   endIcon={isApproving ? spinnerIcon : undefined}
                   isLoading={isApproving}
