@@ -198,9 +198,10 @@ const DetaiArtWork = ({ id }: any) => {
     //       console.log('res.>',res)
     //   })
     fetch(
-      'https://testnet.bscscan.com/token/generic-tokentxns2?m=normal&contractAddress=0xa75556c5b07e88119d7979761d00b8a55a1bc315&a=165&sid=5dbc6e01798504aa14f0a7ee04d60c0a&p=1'
+      'https://testnet.bscscan.com/token/generic-tokentxns2?m=normal&contractAddress=0xa75556c5b07e88119d7979761d00b8a55a1bc315&a=165&sid=5dbc6e01798504aa14f0a7ee04d60c0a&p=1',
     )
       .then(function (response) {
+        console.log('response,', response)
         return response.text()
       })
       .then(function (string) {
