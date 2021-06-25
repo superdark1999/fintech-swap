@@ -43,7 +43,8 @@ const LoadingIfo = () => {
   return <div>loading</div>
 }
 const IfoTitle = ({ activeIfo }: any) => {
-  const [balance, setBalance] = useState(0)
+  const [originBalance, setOriginBalance] = useState(0)
+  const [balance, setBalance] = useState(0);
   const [isApproved, setIsApproved] = useState(false)
   const [isWaningAllowedDepositAmount, setIsWaningAllowedDepositAmount] = useState(false)
   const [value, setValue] = useState('')
@@ -82,6 +83,7 @@ const IfoTitle = ({ activeIfo }: any) => {
     if (account) {
       LPContract.balanceOf(account)
         .then((data) => {
+          setOriginBalance(parseFloat((data / 1e18).toFixed(4)))
           setBalance(parseFloat((data / 1e18).toFixed(4)))
         })
         .catch((error) => {
@@ -103,7 +105,7 @@ const IfoTitle = ({ activeIfo }: any) => {
         if (account) {
           LPContract.balanceOf(account)
           .then((data) => {
-            setBalance(parseFloat((data / 1e18).toFixed(4)))
+            setOriginBalance(parseFloat((data / 1e18).toFixed(4)))
           })
           .catch(error => {
             console.log("Error fetching balance")
@@ -161,22 +163,8 @@ const IfoTitle = ({ activeIfo }: any) => {
         LPContract.approve(contract.options.address, ethers.constants.MaxUint256).then(async(response) =>{
         addTransaction(response, {
           summary: 'Approve successfully!',
-        })
-        
-        // LPContract.on("Approval", async(oldValue, newValue, event) => {
-        //   console.log("approval event");
-        //   try {
-        //     const result = await LPContract?.allowance?.(account, contract.options.address)
-        //     console.log("result ",result);
-        //     setIsApproved(result.toString() !== '0')
-        //   } catch (error) {
-        //     console.log('Error fetch approval data')
-        //   }
-    
-        // })   
+        })   
       })
-
-
     },
 
     onConfirm: () => {
@@ -191,7 +179,7 @@ const IfoTitle = ({ activeIfo }: any) => {
   const handleConfirm = async () => {
     try {
       await raisingTokenContract.estimateGas.depositWithoutWhitelist(valueWithTokenDecimals.toString())
-      // console.log("estimate", estimate)
+
     } catch (error) {
       toastError(error.data.message)
     }
@@ -200,29 +188,13 @@ const IfoTitle = ({ activeIfo }: any) => {
         summary: 'Deposit successfully!',
       })
     })
-
-    // raisingTokenContract.on("Deposit", (oldValue, newValue, event) => {
-    //   if (account) {
-    //     console.log("deposit");
-    //     LPContract.balanceOf(account)
-    //     .then((data) => {
-    //       setBalance(parseFloat((data / 1e18).toFixed(4)))
-    //     })
-    //     .catch(error => {
-    //       console.log("Error fetching balance")
-    //     })
-    //   }
-
-    // })
-
+    setValue('0');
 
   }
 
   const handleWhitelistCheck = async () => {
     try {
       const result = await raisingTokenContract.whitelist(account)
-
-      // new BigNumber(result._hex).toNumber()
       if (result._hex !== '0x00')
         // amount for whitelist member = !0
         toastSuccess('Yeah!, You are a member of Whitelist')
@@ -247,12 +219,17 @@ const IfoTitle = ({ activeIfo }: any) => {
   const handleChangeAmount = (e) => {
     if (e.target.value > maxDeposit) setIsWaningAllowedDepositAmount(true)
     else setIsWaningAllowedDepositAmount(false)
+    if (originBalance - e.target.value < 0)
+      setBalance(0);
+    else 
+      setBalance(originBalance - e.target.value);
+
     setValue(e.target.value)
   }
 
   const handleMaxAmount = () => {
-    if ( maxDeposit > balance)
-      setValue(balance.toString());
+    if ( maxDeposit > originBalance)
+      setValue(originBalance.toString());
     else
       setValue(maxDeposit.toString());
 
