@@ -149,7 +149,8 @@ function useMarketServiceChain97(){
               }
             }
           } catch (error) {
-            throw(error)
+            console.log(error)
+            return 0
           }
         },[marketContract])
 

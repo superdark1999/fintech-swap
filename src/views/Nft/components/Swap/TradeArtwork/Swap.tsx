@@ -156,6 +156,7 @@ const SwapArtWork = (props: any) => {
         </Col>
       </Row>
       <ModalSelectSwap
+        title={'SWAP MINI STORE'}
         visible={visible}
         setVisible={setVisible}
         data={visible.value === 'my-item' ? NFTs : []}
