@@ -36,17 +36,17 @@ export default function CardItem(props?: { data?: any }) {
   const [dayExp, setDayExp] = useState(false)
   const marketServiceMethod = useMarketServices()
   useEffect(() => {
-      const getTokenPrice = async () => {
-        if (marketServiceMethod && data?.tokenId && data?.NFTType!=='swap') {
-          const price = await marketServiceMethod?.getHighestBidAndPrice(data?.tokenId, data?.NFTType)
-          setPrice(price)
-          setLoading(false)
-        }
+    const getTokenPrice = async () => {
+      if (marketServiceMethod && data?.tokenId && data?.NFTType !== 'swap') {
+        const price = await marketServiceMethod?.getHighestBidAndPrice(data?.tokenId, data?.NFTType)
+        setPrice(price)
+        setLoading(false)
       }
-      getTokenPrice()
+    }
+    getTokenPrice()
   }, [data?.tokenId])
-  
-  const onSwapItem = ()=>{
+
+  const onSwapItem = () => {
     history.push(`/swap/${data?._id}/step=1`)
   }
   return (
@@ -71,10 +71,10 @@ export default function CardItem(props?: { data?: any }) {
               <Link to={`/user-profile/${data.createdBy?.walletAddress}/onstore/readyToSell`}>
                 <div className="name-artist">
                   <span style={{ fontSize: '10px' }}>Creator by</span>  {data.createdBy?.name}
-                  <img src={Checkmark} alt="" />
+                  {/* <img src={Checkmark} alt="" /> */}
                 </div>
               </Link>
-              <div className="copy" onClick={() => handleCopy(`${window.location.href}artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`)}>
+              <div className="copy" title="copy" onClick={() => handleCopy(`${window.location.href}artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`)}>
                 {isCopied ? <span><CheckOutlined /> copied</span> : <><img src={Copy} alt="copy-artwork" /> Copy</>}
               </div>
             </div>
@@ -84,7 +84,7 @@ export default function CardItem(props?: { data?: any }) {
               <a target="_blank" href={embedTokenIdLinkBSCScan(data.tokenId, data?.contractAddress, chainId)}> {getCompactString(data?.ownerWalletAddress, 5)}</a>
             </div>
             <div className="number">
-              {data?.NFTType!=='swap' ? <div>
+              {data?.NFTType !== 'swap' ? <div>
                 {price} LUCKY {' '}
                 <img src={Token} alt="" />
               </div> : <ButtonBuy className="btn-swap" onClick={onSwapItem}>Swap now</ButtonBuy>}
@@ -95,9 +95,8 @@ export default function CardItem(props?: { data?: any }) {
                 {' '}
                 <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5' }}>(15)</span>
                 {' '}
-                {data.NFTType === 'auction' && <img src={Hammer} alt="auction NFT" />}
-                {data.NFTType === 'buy' && <img src={CartGrey} alt="buy NFT" />}
-                {data.NFTType === 'swap' && <span></span>}
+                {data.NFTType === 'auction' && <img src={Hammer} alt="auction NFT" title="auction" />}
+                {data.NFTType === 'buy' && <img src={CartGrey} alt="buy NFT" title="buy" />}
               </div>
             </div>
           </div>
