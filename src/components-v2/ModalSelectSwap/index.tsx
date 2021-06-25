@@ -56,7 +56,7 @@ export default function ModalSelectSwap(props: Props) {
 
   return (
     <ModalStyled
-      title="SWAP STORE"
+      title="SWAP MINI STORE"
       centered
       visible={visible.isOpen}
       onCancel={oncloseModal}
