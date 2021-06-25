@@ -16,9 +16,13 @@ export const ConfirmStyled = styled.div`
   .nft-image {
     width: 180px;
     height: 180px;
-    object-fit: cover;
     border-radius: 24px;
-
+    > img {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 24px;
+    }
   }
   .content {
     display: flex;

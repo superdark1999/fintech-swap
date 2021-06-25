@@ -132,7 +132,7 @@ export const StyledCart = styled.div<PropsStyled>`
     } */
 
     .wrapper-info{
-      margin-top: 12px;
+      margin-top: 10px;
       color: #333435;
       .title {
         display: flex;
@@ -164,6 +164,9 @@ export const StyledCart = styled.div<PropsStyled>`
           padding:0 16px !important;
           line-height:23px !important;
           background: linear-gradient(45deg, #1cace8, #07dce6);
+          a{
+            color:#ffffff;
+          }
         }
         img {
           margin-top: -3px;
