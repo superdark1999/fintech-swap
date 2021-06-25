@@ -7,7 +7,7 @@ import Token from 'assets/images/token.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
 import useMarketServices from 'services/web3Services/MarketServices'; 
 import _ from 'lodash'
-import {getPrice} from 'utils'
+import {getPrice, getCompactString} from 'utils'
 
 export default function OnSaleCard({data,}:any){
     const [loading, setLoading] = useState(true)
@@ -75,8 +75,8 @@ export default function OnSaleCard({data,}:any){
                 <img src={Token} alt=""/>
               </div> 
               <div style={{display: "flex"}}>
-                <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
-                <div className="number">{data?.TXHash} </div>
+                <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </div>
+                <div className="number"> {' ' + getCompactString(data?.TXHash,6)}</div>
               </div> 
               
               <div className="content">

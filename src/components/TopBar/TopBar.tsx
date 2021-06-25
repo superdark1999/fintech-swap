@@ -129,7 +129,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         {!!account ? (
           <>
             <Link to={"/create/artwork"} className="create-nav">Create</Link>
-            <Link to={"/swap"} className="create-nav">Swap</Link>
+            <Link to={"/swap/step=1"} className="create-nav">Swap</Link>
           </>
         ) : (
           <a onClick={() => { alert("Unblock your wallet before create NFT") }} className="create-nav" >Create</a>
@@ -163,10 +163,10 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
                     </div>
                   </div>
                   <div className="menu-item"><Link to={"/create/artwork"}><ButtonBuy>Create</ButtonBuy></Link></div>
-                  <div className="menu-item"><Link to={"/swap"}><ButtonBuy>Swap</ButtonBuy></Link></div>
+                  <div className="menu-item"><Link to={"/swap/step=1"}><ButtonBuy>Swap</ButtonBuy></Link></div>
                 </>
               }
-              <Link to="/my-profile/onsale/readyToSell">
+              <Link to="/my-profile/onstore/readyToSell">
                 <div className="menu-item">
                   My profile
                 </div>

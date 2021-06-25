@@ -36,6 +36,11 @@ export default function useArtworkService() {
     return POST('/artwork/buy', body, false, false)
   }
 
+  const cancelSellNFT = (data: any)=>{
+    const id = data?.id
+    return POST(`/artwork/${id}/cancel-sell`, {}, false, false)
+  }
+
   return {
     createNFT,
     getNFT,
@@ -44,5 +49,6 @@ export default function useArtworkService() {
     updateNFTInfo,
     setPrice,
     buyItem,
+    cancelSellNFT
   }
 }

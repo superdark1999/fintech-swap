@@ -53,16 +53,6 @@ function useMarketServiceChain97(){
             return marketContract.getStepByTokenId(tokenId)      
         },[marketContract])
 
-        const cancelSellToken = useCallback(async(tokenId:string|undefined)=>{
-            const estimatedGas = await marketContract.estimateGas.cancelBidToken(tokenId)
-            if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
-              throw new Error(OUT_OF_BNB)
-            }
-            return marketContract.cancelBidToken(tokenId, {
-              gasLimit: estimatedGas,
-            })
-        },[marketContract,userState.balance.BNB])
-
         const buyToken = useCallback(async(tokenId:string|undefined,price:number|undefined)=>{
           if(userState.balance.LUCKY<price){
             throw new Error(OUT_OF_LUCKY)
@@ -133,33 +123,67 @@ function useMarketServiceChain97(){
         },[marketContract,userState.balance.BNB])
 
         const getHighestBidAndPrice = useCallback(async(tokenId:string|undefined, NFTType:string)=>{
-          if(tokenId){
-            if(NFTType=='buy'){
-              const unitPrice =  await getTokenPrice(tokenId)
-              const price = getPrice(Number(unitPrice?._hex))
-              return price
-            }else{
-              const bidsArr = await getBidsByTokenId(tokenId)
-              const bidsData = bidsArr?.map((item: any) => {
-                    return {
-                      key: item?.[0] || '',
-                      address: item?.[0] || '',
-                      price: Number(item?.[1]?._hex) / Number(1e18),
-                    }
-                  }) || []
-              const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
-              const unitPrice = await getTokenBidPrice(tokenId)
-              const price = getPrice(unitPrice?._hex)
-              if(price>maxPrice){
+          try {
+            if(tokenId){
+              if(NFTType=='buy'){
+                const unitPrice =  await getTokenPrice(tokenId)
+                const price = getPrice(Number(unitPrice?._hex))
                 return price
               }else{
-                return maxPrice
+                const bidsArr = await getBidsByTokenId(tokenId)
+                const bidsData = bidsArr?.map((item: any) => {
+                      return {
+                        key: item?.[0] || '',
+                        address: item?.[0] || '',
+                        price: Number(item?.[1]?._hex) / Number(1e18),
+                      }
+                    }) || []
+                const maxPrice = _.maxBy(bidsData,(item:any)=> item?.price)?.price||0
+                const unitPrice = await getTokenBidPrice(tokenId)
+                const price = getPrice(unitPrice?._hex)
+                if(price>maxPrice){
+                  return price
+                }else{
+                  return maxPrice
+                }
               }
             }
+          } catch (error) {
+            throw(error)
           }
         },[marketContract])
 
-    return {cancelSellToken,getTokenPrice,setTokenPrice, buyToken, getBidsByUser,getBidsByTokenId,bidToken,updateBidPrice,cancelBidToken,sellTokenToBidUser, setTokenBidInfo,getStepPrice, getTokenBidPrice, getHighestBidAndPrice}
+        const cancelSellToken = useCallback(async(tokenId:string|undefined)=>{
+          const estimatedGas = await marketContract.estimateGas.cancelSellToken(tokenId)
+          if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
+            throw new Error(OUT_OF_BNB)
+          }
+          return marketContract.cancelSellToken(tokenId, {
+            gasLimit: estimatedGas,
+          })
+      },[marketContract,userState.balance.BNB])
+
+      const listNFTToSWap = useCallback(async(tokenId:string|undefined)=>{
+        const estimatedGas = await marketContract.estimateGas.listNFT(tokenId)
+        if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
+          throw new Error(OUT_OF_BNB)
+        }
+        return marketContract.listNFT(tokenId, {
+          gasLimit: estimatedGas,
+        })
+    },[marketContract,userState.balance.BNB])
+
+      const cancelListNFT = useCallback(async(tokenId:string|undefined)=>{
+        const estimatedGas = await marketContract.estimateGas.cancelListNFT(tokenId)
+        if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
+          throw new Error(OUT_OF_BNB)
+        }
+        return marketContract.cancelListNFT(tokenId, {
+          gasLimit: estimatedGas,
+        })
+    },[marketContract,userState.balance.BNB])
+
+    return {cancelListNFT,cancelSellToken,getTokenPrice,setTokenPrice,listNFTToSWap, buyToken, getBidsByUser,getBidsByTokenId,bidToken,updateBidPrice,cancelBidToken,sellTokenToBidUser, setTokenBidInfo,getStepPrice, getTokenBidPrice, getHighestBidAndPrice}
 }
 
 

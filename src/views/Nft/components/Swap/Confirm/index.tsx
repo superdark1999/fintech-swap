@@ -34,9 +34,15 @@ const {
     <ConfirmStyled>
         {renderStatus("success")}
         <Row justify="center">
-          <img className="nft-image" src={itemSwap?.[0]?.contentUrl}/>
+          <div className="nft-image">
+            <img  src={myItems?.[0]?.contentUrl}/>
+          </div>
+
           <img src={Swap} style={isMobile ? { transform: 'rotate(90deg)'} : null} />
-          <img className="nft-image" src={myItems?.[0].contentUrl}/>
+
+          <div className="nft-image">
+            <img className="nft-image" src={itemSwap?.[0].contentUrl}/>
+          </div>
         </Row>
         <div className="content">
           <div className="row-content">

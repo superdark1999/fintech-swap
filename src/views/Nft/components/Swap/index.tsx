@@ -6,7 +6,7 @@ import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
 import { ProcessBar } from './components'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import ModalSelectSwap from 'components-v2/ModalSelectSwap'
-
+import {get} from 'lodash'
 import { Container } from './styled'
 import Confirm from './Confirm'
 
@@ -21,7 +21,8 @@ import Confirm from './Confirm'
 // bước 3 xác nhận: 2 loại tương ứng 2 loại swap
 
 export default  () => {
-  const [step, setStep] = useState<number>(1)
+  const match = useRouteMatch()
+  const [step, setStep] = useState<number>(get(match, 'params.step', 1))
   const [selectMetodSwap, setSelectMethod] = useState<number | null>()
 
   const history = useHistory()
@@ -30,7 +31,7 @@ export default  () => {
 
   const nextStep = (step: number) => {
     setStep(step)
-    history.push(`/swap/${step}`)
+    history.push(`/swap/step=${step}/${itemSwap?.[0].ownerWalletAddress}`)
   }
 
   const [visible, setVisible] = useState<any>({ isOpen: false, value: "my-item" });
@@ -50,7 +51,10 @@ export default  () => {
   const getItemSelected = (data?: any) => {
     if (visible.value === 'my-item') {
       setMyItems(data)
-    } else setItemSwap(data)
+    } else {
+      setItemSwap(data)
+      history.push(`/swap/step=${step}/${data?.[0].ownerWalletAddress}`)
+    }
   }
 
   // useEffect(() => {

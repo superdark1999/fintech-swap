@@ -26,8 +26,8 @@ export default () => {
   const match = useRouteMatch()
 
   const onChangeTab = (e) => {
-    if (e === 'onsale') {
-      history.push(`/my-profile/onsale/all`)
+    if (e === 'onstore') {
+      history.push(`/my-profile/onstore/all`)
     } else if (e === 'mycollection') {
       history.push(`/my-profile/mycollection/all`)
     } else if (e === 'settings') {
@@ -77,7 +77,7 @@ export default () => {
                 className="copy"
                 onClick={() =>
                   handleCopy(
-                    `${window.location.origin}/user-profile/${userState?.walletAddress}/onsale/readyToSell`,
+                    `${window.location.origin}/user-profile/${userState?.walletAddress}/onstore/readyToSell`,
                   )
                 }
               >
@@ -99,7 +99,7 @@ export default () => {
             activeKey={match.params.tab}
             onChange={onChangeTab}
           >
-            <TabPane tab="On sale" key="onsale">
+            <TabPane tab="On Store" key="onstore">
               <TabOnSale />
             </TabPane>
             <TabPane tab="My Collection" key="mycollection">
@@ -123,17 +123,20 @@ const TabOnSale = () => {
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
+  const {tab} = useParams()
   useEffect(() => {
-    const query = {
-      status: 'readyToSell',
-      ownerWalletAddress: account,
-    }
-    getNFT(query).then(({ status, data }) => {
-      if (status == 200) {
-        setNFTs(data?.data || [])
+    if(tab=='onstore'){
+      const query = {
+        status: 'readyToSell',
+        ownerWalletAddress: account,
       }
-    })
-  }, [])
+      getNFT(query).then(({ status, data }) => {
+        if (status == 200) {
+          setNFTs(data?.data || [])
+        }
+      }) 
+    }
+  }, [tab])
   return (
     <>
       {/* <Row align="middle" justify="space-between">     
@@ -147,7 +150,7 @@ const TabOnSale = () => {
       </Row>  */}
       <ListCart className="list-artwork">
         {NFTs.map((item) => {
-          return <OnsSaleCard key={item?.id} data={item} />
+          return <OnsSaleCard key={item?._id} data={item} />
         })}
       </ListCart>
       {/* <Loadmore/>  */}
@@ -239,7 +242,7 @@ const TabMyCollection = () => {
         {renderData.map((item) => {
           return (
             <MyCollectionCard
-              key={item?.id}
+              key={item?._id}
               data={item}
               option={optionChecked}
             />

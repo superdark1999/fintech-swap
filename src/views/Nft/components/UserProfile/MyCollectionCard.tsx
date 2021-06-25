@@ -44,7 +44,7 @@ export default function MyCollectionCard({ data }: any) {
     setTokenPrice(tokenId, 100)
       .then((dt) => {
         if (dt?.hash) {
-          setPrice({ id: data?.id }).then(({ status }) => {
+          setPrice({ id: data?._id }).then(({ status }) => {
             if (status == 200) {
               setIsPrcessing(false)
             }
@@ -58,7 +58,7 @@ export default function MyCollectionCard({ data }: any) {
 
   const onAllowSellItem = () => {
     setIsPrcessing(true)
-    setPrice({ id: data?.id }).then(({ status }) => {
+    setPrice({ id: data?._id }).then(({ status }) => {
       if (status == 200) {
         setIsPrcessing(false)
       }

@@ -149,7 +149,10 @@ const App = () => {
               <Route path="/my-profile/:tab">
                 <MyProfile />
               </Route>
-              <Route path="/swap">
+              <Route path="/swap/:id/step=:step">
+                <Swap />
+              </Route>
+              <Route path="/swap/step=:step">
                 <Swap />
               </Route>
               <Route path="/swap-store">

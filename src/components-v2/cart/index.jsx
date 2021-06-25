@@ -44,7 +44,7 @@ export default function Cart({ data }) {
   }
   return (
     <StyledCart>
-      <Link to={`/artwork/detail/${data?.id}`} className="create-nav">
+      <Link to={`/artwork/detail/${data?._id}`} className="create-nav">
         <div className="card-art-work">
           {!dayExp && data.NFTType === 'auction' && (
             <div className="header-card-art-work">

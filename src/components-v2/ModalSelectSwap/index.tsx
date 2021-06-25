@@ -28,14 +28,14 @@ export default function ModalSelectSwap(props: Props) {
   const checkItem = (item: any) => {
     const arrItem = visible.value === 'my-item' ? selectedMyItem : selectedSwapItem
 
-    const checkItem = arrItem.find((x: any) => x.id === item.id)
+    const checkItem = arrItem.find((x: any) => x._id === item._id)
     return !!checkItem
   }
 
   const handleCheck = (item: any) => {
     if (multiSelect) {
       if (checkItem(item)) {
-        const arrSelected = arrItem.filter((x: any) => x.id !== item.id)
+        const arrSelected = arrItem.filter((x: any) => x._id !== item._id)
         setArrItem(arrSelected)
       }
       else setArrItem(arrItem.concat(item))
@@ -56,7 +56,7 @@ export default function ModalSelectSwap(props: Props) {
 
   return (
     <ModalStyled
-      title="SWAP STORE"
+      title="SWAP MINI STORE"
       centered
       visible={visible.isOpen}
       onCancel={oncloseModal}
@@ -67,7 +67,7 @@ export default function ModalSelectSwap(props: Props) {
         {
           data.map((item: any, index: number) => {
             return (
-              <div key={item.id} className={checkItem(item) ? "card-item active" : "card-item"} onClick={() => handleCheck(item)}>
+              <div key={item._id} className={checkItem(item) ? "card-item active" : "card-item"} onClick={() => handleCheck(item)}>
                 <div className="card">
                   <CardItem data={item} />
                 </div>

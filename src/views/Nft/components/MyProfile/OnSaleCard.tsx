@@ -59,7 +59,7 @@ export default function OnSaleCard({ data, }: any) {
         <Col className="description" xl={{ span: 16 }} md={{ span: 24 }} xs={{ span: 24 }} xxl={{ span: 16 }}>
           <div className="header-card" style={{ marginTop: 10 }}>
             <div className="status">
-              Ready to Sell
+             {data?.NFTType?.toUpperCase()}
             </div>
             <div className="cancel">
               Cancel
@@ -75,7 +75,7 @@ export default function OnSaleCard({ data, }: any) {
           </div>
           <div style={{ display: "flex" }}>
             <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
-            <div className="number">{getCompactString(data?.TXHash, 10)}</div>
+            <div className="number">{getCompactString(data?.TXHash, 6)}</div>
           </div>
 
           {data?.description && <div className="content">

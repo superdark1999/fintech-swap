@@ -49,7 +49,7 @@ export const getPriceFromEstimateGas = (price:number) => {
 }
 
 export const getCompactString=(str:string, sepLen:number)=>{
-  if(!str){
+  if(!str||typeof str !== 'string'){
     return ''
   }
   const strLen = str.length || 0

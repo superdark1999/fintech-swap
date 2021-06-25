@@ -36,7 +36,7 @@ const SidebarMobile = (props: SideBarProps) => {
       width="85%"
     >
         <SidebarStyled>
-          <Link className="button on-sale" to="/my-profile/onsale/readyToSell">
+          <Link className="button on-sale" to="/my-profile/onstore/readyToSell">
             <img src={NotifyIcon} alt="" style={{ marginRight: '10px' }} />
             On sale
             <span className="number-notify">5</span>

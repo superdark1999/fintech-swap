@@ -27,18 +27,21 @@ const UserProfile = () => {
   const { getUserDetail } = useArtworkService()
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   useEffect(() => {
-    getUserDetail(match.params?.id).then(({ data, status }) => {
-      if (status === 200) {
-        setUser(data)
-        if (data.walletAddress === userState.walletAddress) history.push(`/my-profile/${match.params?.id}/onsale/readyToSell`)
-      }
-    })
+    if(match.params?.id=== userState.walletAddress){
+      history.push(`/my-profile/${match.params?.id}/onstore/readyToSell`)
+    }else{
+      getUserDetail(match.params?.id).then(({ data, status }) => {
+        if (status === 200) {
+          setUser(data)
+        }
+      })
+    }
   }, [])
 
   const history = useHistory()
   const onChangeTab = (e) => {
-    if (e === 'onsale') {
-      history.push(`/user-profile/${match.params?.id}/onsale/readyToSell`)
+    if (e === 'onstore') {
+      history.push(`/user-profile/${match.params?.id}/onstore/readyToSell`)
     } else if (e === 'collection') {
       history.push(`/user-profile/${match.params?.id}/collection/all`)
     }
@@ -83,7 +86,7 @@ const UserProfile = () => {
                 className="copy"
                 onClick={() =>
                   handleCopy(
-                    `${window.location.origin}/user-profile/${user?.walletAddress}/onsale/readyToSell`,
+                    `${window.location.origin}/user-profile/${user?.walletAddress}/onstore/readyToSell`,
                   )
                 }
               >
@@ -101,7 +104,7 @@ const UserProfile = () => {
           </div>
           <p className="description">{user?.biography}</p>
           <Tabs defaultActiveKey={match.params?.tab} onChange={onChangeTab}>
-            <TabPane tab="On sale" key="onsale">
+            <TabPane tab="On store" key="onstore">
               <TabOnSale userAddress={match.params?.id} />
             </TabPane>
           </Tabs>
@@ -139,7 +142,7 @@ const TabOnSale = ({ userAddress }) => {
       </Row>  */}
       <ListCart className="list-artwork">
         {NFTs.map((item) => {
-          return <OnsSaleCard key={item?.id} data={item} />
+          return <OnsSaleCard key={item?._id} data={item} />
         })}
       </ListCart>
       {/* <Loadmore/>  */}
@@ -232,7 +235,7 @@ const TabMyCollection = () => {
       </Row>
       <ListCart className="list-artwork">
         {renderData.map((item) => {
-          return <MyCollectionCard key={item?.id} data={item} />
+          return <MyCollectionCard key={item?._id} data={item} />
         })}
       </ListCart>
       {/* <Loadmore/>  */}
