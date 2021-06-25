@@ -84,7 +84,7 @@ const IfoTitle = ({ activeIfo }: any) => {
       LPContract.balanceOf(account)
         .then((data) => {
           setOriginBalance(parseFloat((data / 1e18).toFixed(4)))
-          setBalance(parseFloat((data / 1e18).toFixed(4)))
+          setBalance(parseFloat((data / 1e18).toFixed(4)) - parseFloat(value !=='' ? value : "0"))
         })
         .catch((error) => {
           console.log('Error fetching balance')
@@ -219,8 +219,16 @@ const IfoTitle = ({ activeIfo }: any) => {
   }
 
   const handleMaxAmount = () => {
-    if (maxDeposit > originBalance) setValue(originBalance.toString())
-    else setValue(maxDeposit.toString())
+    if ( maxDeposit > originBalance){
+      setValue(originBalance.toString());
+      setBalance(0);
+    }
+    else{
+      setValue(maxDeposit.toString());
+      setBalance(originBalance - maxDeposit);
+    }
+
+
   }
 
   const allTransactions = useAllTransactions()

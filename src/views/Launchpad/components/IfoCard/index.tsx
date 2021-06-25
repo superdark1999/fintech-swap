@@ -194,7 +194,7 @@ const ProgressBar = styled.div`
   justify-content: center;
   text-align: center;
   white-space: nowrap;
-  background-color: #4ea7a5;
+  background-color: #cecece;
   transition: width 0.6s ease;
 `
 
@@ -335,6 +335,7 @@ const ItemHead = styled(Card)<{ img: string }>`
       min-width: 0px;
       font-size: 12px;
       font-weight: 600;
+      text-transform: capitalize;
     }
   }
 `
