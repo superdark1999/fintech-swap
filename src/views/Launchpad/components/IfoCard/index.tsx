@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import { Card, CardBody, CardRibbon } from '@luckyswap/uikit'
+import { Progress } from 'antd';
 import { Ifo, IfoStatus } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
@@ -93,9 +94,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
           <BoxProgress>
             <TitleProgress>Progress</TitleProgress>
-            <BoxProgressBar>
-              <ProgressBar></ProgressBar>
-            </BoxProgressBar>
+            <Progress percent={parseFloat(processRate)} status="active" showInfo={false}/>
             <ProgressFooter>
               <ProgressPercentage>{processRate}%</ProgressPercentage>
               <FeaturedCardMinimum style={{ marginLeft: '10px' }}>{` (Min.0%)`}</FeaturedCardMinimum>
@@ -194,7 +193,7 @@ const ProgressBar = styled.div`
   justify-content: center;
   text-align: center;
   white-space: nowrap;
-  background-color: #cecece;
+  background-color: #861818;
   transition: width 0.6s ease;
 `
 
