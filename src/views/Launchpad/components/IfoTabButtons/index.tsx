@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useRouteMatch, Link } from 'react-router-dom'
-import { ButtonMenu, ButtonMenuItem } from '@luckyswap/uikit'
+import { useHookIFOs } from '../../Store'
 
 const Wrapper = styled.div`
   /* display: flex;
@@ -29,13 +29,13 @@ const Wrapper = styled.div`
     }
   }
 
-  select{
+  select {
     padding: 12px 56px 12px 14px;
     margin: 0 7px;
     background-color: #4a4873;
     font-size: 21px;
     color: #dcbd6b;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     cursor: pointer;
     border: none;
     appearance: none;
@@ -59,14 +59,13 @@ const Wrapper = styled.div`
     }
   }
 
-  select:hover, 
-  select:focus{
+  select:hover,
+  select:focus {
     background-size: 2rem;
     outline: none;
   }
 
-
-  form{
+  form {
     box-sizing: border-box;
     display: flex;
     margin-left: 10px;
@@ -77,7 +76,7 @@ const Wrapper = styled.div`
       width: 100%;
     }
 
-    input{
+    input {
       text-indent: 10px;
       height: 40px;
       width: 175px;
@@ -97,10 +96,10 @@ const Wrapper = styled.div`
     }
 
     button {
-      background-color:#f5c606;
+      background-color: #f5c606;
       height: 40px;
       width: 40px;
-      border:1px transparent solid;
+      border: 1px transparent solid;
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
 
@@ -113,9 +112,9 @@ const Wrapper = styled.div`
 
       &:hover {
         background-color: #fbcf1a;
-        height:40px;
-        width:40px;
-        border:1px transparent solid;
+        height: 40px;
+        width: 40px;
+        border: 1px transparent solid;
       }
     }
   }
@@ -131,10 +130,9 @@ const Dflex = styled.div`
   }
 `
 
-const IfoTabButtons = ({onFilterWithStatus, status}) => {
+const IfoTabButtons = () => {
   const { url, isExact } = useRouteMatch()
-
-  
+  const [state, actions] = useHookIFOs()
 
   return (
     <Wrapper>
@@ -146,15 +144,27 @@ const IfoTabButtons = ({onFilterWithStatus, status}) => {
             <option>NFT</option>
           </select>
 
-          <select className="list-options" value={status} onChange={(e) => onFilterWithStatus(e)}>
-            <option value='all'>All</option>
-            <option value='open'>Open</option>
-            <option value='close'>Close</option>
-            <option value='comingsoon'>Coming Soon</option>
+          <select
+            className="list-options"
+            value={state.statusCombo}
+            onChange={(e) => actions.filterLaunchWithStatus(e.target.value)}
+          >
+            {state.statuss.map((item) => {
+              return (
+                <option key={item.key} value={item.key}>
+                  {item.name}
+                </option>
+              )
+            })}
           </select>
 
           <form>
-            <input type="search" placeholder="search"/>
+            <input
+              type="search"
+              value={state.keySearch}
+              placeholder="search"
+              onChange={(e) => actions.changeKeySearch(e.target.value)}
+            />
             <button type="submit" aria-label="Save" value="search">
               <img src="../images/icon-search.svg" alt=""></img>
             </button>

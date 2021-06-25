@@ -5,10 +5,9 @@ import { useIfoContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
 import { useWeb3React } from '@web3-react/core'
+import { useHookIFOs } from '../views/Launchpad/Store'
 
-
-import { useBlockNumber } from '../state/application/hooks';
-
+import { useBlockNumber } from '../state/application/hooks'
 
 export interface PublicIfoState {
   status: IfoStatus
@@ -19,23 +18,17 @@ export interface PublicIfoState {
   raisingAmount: BigNumber
   offeringAmount: BigNumber
   totalAmount: BigNumber
-  maxDepositAmount: BigNumber,
-  depositedAmount: BigNumber,
-  claimAmount: BigNumber,
+  maxDepositAmount: BigNumber
+  depositedAmount: BigNumber
+  claimAmount: BigNumber
   getAddressListLength: number
   startBlockNum: number
   endBlockNum: number
-  description?:string
+  description?: string
 }
 
 const getStatus = (currentBlock: number, startBlock: number, endBlock: number): IfoStatus => {
-  // Add an extra check to currentBlock because it takes awhile to fetch so the initial value is 0
-  // making the UI change to an inaccurate status
-  if (currentBlock === 0) {
-    return 'idle'
-  }
-
-  if (currentBlock < startBlock) {
+  if (currentBlock < startBlock || currentBlock === 0) {
     return 'coming_soon'
   }
 
@@ -47,16 +40,17 @@ const getStatus = (currentBlock: number, startBlock: number, endBlock: number): 
     return 'finished'
   }
 
-  return 'idle'
+  return 'coming_soon'
 }
 
 /**
  * Gets all public data of an IFO
  */
 const useGetPublicIfoData = (ifo: Ifo) => {
+  const [stateIFO, actionsIFO] = useHookIFOs()
   const { address, releaseBlockNumber } = ifo
   const [state, setState] = useState<PublicIfoState>({
-    status: 'idle',
+    status: 'coming_soon',
     blocksRemaining: 0,
     secondsUntilStart: 0,
     progress: 5,
@@ -71,17 +65,26 @@ const useGetPublicIfoData = (ifo: Ifo) => {
     startBlockNum: 0,
     endBlockNum: 0,
   })
-
-  const currentBlock = useBlockNumber();
   const { account } = useWeb3React()
 
+  const currentBlock = useBlockNumber()
   const contract = useIfoContract(address)
 
   useEffect(() => {
     const fetchProgress = async () => {
-      if (!account)
-        return;
-      const [startBlock, endBlock, raisingAmount, offeringAmount, maxDepositAmount, claimAmount, depositedAmount, totalAmount, getAddressListLength] = (await makeBatchRequest([
+      if (!account || address === '0x0000000000000000000000000000000000000000') return
+      
+      const [
+        startBlock,
+        endBlock,
+        raisingAmount,
+        offeringAmount,
+        maxDepositAmount,
+        claimAmount,
+        depositedAmount,
+        totalAmount,
+        getAddressListLength,
+      ] = (await makeBatchRequest([
         contract.methods.startBlock().call,
         contract.methods.endBlock().call,
         contract.methods.raisingAmount().call,
@@ -92,7 +95,6 @@ const useGetPublicIfoData = (ifo: Ifo) => {
         contract.methods.totalAmount().call,
         contract.methods.getAddressListLength().call,
       ])) as [string, string, string, string, string, string, string, string, string]
-
 
       const startBlockNum = parseInt(startBlock, 10)
       const endBlockNum = parseInt(endBlock, 10)
@@ -106,6 +108,7 @@ const useGetPublicIfoData = (ifo: Ifo) => {
         currentBlock > startBlockNum
           ? ((currentBlock - startBlockNum) / totalBlocks) * 100
           : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
+      actionsIFO.updateStatusLaunchPad(ifo && ifo.id, status)
 
       setState({
         secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
@@ -126,6 +129,7 @@ const useGetPublicIfoData = (ifo: Ifo) => {
     }
 
     fetchProgress()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, currentBlock, contract, releaseBlockNumber, setState, account])
 
   return state

@@ -44,7 +44,7 @@ const LoadingIfo = () => {
 }
 const IfoTitle = ({ activeIfo }: any) => {
   const [originBalance, setOriginBalance] = useState(0)
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(0)
   const [isApproved, setIsApproved] = useState(false)
   const [isWaningAllowedDepositAmount, setIsWaningAllowedDepositAmount] = useState(false)
   const [value, setValue] = useState('')
@@ -102,12 +102,12 @@ const IfoTitle = ({ activeIfo }: any) => {
       raisingTokenContract.on('Deposit', (oldValue, newValue, event) => {
         if (account) {
           LPContract.balanceOf(account)
-          .then((data) => {
-            setOriginBalance(parseFloat((data / 1e18).toFixed(4)))
-          })
-          .catch(error => {
-            console.log("Error fetching balance")
-          })
+            .then((data) => {
+              setOriginBalance(parseFloat((data / 1e18).toFixed(4)))
+            })
+            .catch((error) => {
+              console.log('Error fetching balance')
+            })
         }
       })
     }
@@ -158,7 +158,7 @@ const IfoTitle = ({ activeIfo }: any) => {
       LPContract.approve(contract.options.address, ethers.constants.MaxUint256).then(async (response) => {
         addTransaction(response, {
           summary: 'Approve successfully!',
-        })   
+        })
       })
     },
 
@@ -174,7 +174,6 @@ const IfoTitle = ({ activeIfo }: any) => {
   const handleConfirm = async () => {
     try {
       await raisingTokenContract.estimateGas.depositWithoutWhitelist(valueWithTokenDecimals.toString())
-
     } catch (error) {
       toastError(error.data.message)
     }
@@ -183,8 +182,7 @@ const IfoTitle = ({ activeIfo }: any) => {
         summary: 'Deposit successfully!',
       })
     })
-    setValue('0');
-
+    setValue('0')
   }
 
   const handleWhitelistCheck = async () => {
@@ -214,20 +212,15 @@ const IfoTitle = ({ activeIfo }: any) => {
   const handleChangeAmount = (e) => {
     if (e.target.value > maxDeposit) setIsWaningAllowedDepositAmount(true)
     else setIsWaningAllowedDepositAmount(false)
-    if (originBalance - e.target.value < 0)
-      setBalance(0);
-    else 
-      setBalance(originBalance - e.target.value);
+    if (originBalance - e.target.value < 0) setBalance(0)
+    else setBalance(originBalance - e.target.value)
 
     setValue(e.target.value)
   }
 
   const handleMaxAmount = () => {
-    if ( maxDeposit > originBalance)
-      setValue(originBalance.toString());
-    else
-      setValue(maxDeposit.toString());
-
+    if (maxDeposit > originBalance) setValue(originBalance.toString())
+    else setValue(maxDeposit.toString())
   }
 
   const allTransactions = useAllTransactions()
@@ -356,7 +349,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                 </div>
               </Dflex>
               <Dflex>
-                <div>Your claim amount:</div>
+                <div>Your allocation:</div>
                 <div style={{ color: 'red' }} className="font-bold">
                   <CardValue
                     bold
@@ -399,11 +392,11 @@ const IfoTitle = ({ activeIfo }: any) => {
               <div className="box-max">
                 <div className="balance">
                   Balance:{' '}
-                  <CardValue bold color="" value={balance} decimals={0} fontSize="10px" fontWeight="600"></CardValue>
+                  <CardValue bold color="" value={balance} decimals={2} fontSize="10px" fontWeight="600"></CardValue>
                   {currency}
                 </div>
                 <input
-                  disabled={getStatus()}
+                  disabled={getStatus() || status === 'finished' || maxDeposit === 0}
                   className="input-max"
                   type="text"
                   pattern="^[0-9]*[.,]?[0-9]*$"
@@ -458,7 +451,12 @@ const IfoTitle = ({ activeIfo }: any) => {
                 </Button>
               ))}
             {status === 'finished' && (
-              <Button className="finished" color="primary" disabled={getStatus()} onClick={handleClaim}>
+              <Button
+                className="finished"
+                color="primary"
+                disabled={getStatus() || status === 'finished'}
+                onClick={handleClaim}
+              >
                 {getStatus() && spinnerIcon}
                 Claim
               </Button>

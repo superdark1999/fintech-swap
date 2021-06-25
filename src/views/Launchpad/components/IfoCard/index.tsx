@@ -8,6 +8,7 @@ import useI18n from 'hooks/useI18n'
 import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
 import { BASE_API_ADMIN } from 'config'
 import UnlockButton from 'components/UnlockButton'
+import { useHookIFOs } from '../../Store'
 import CardValue from '../../../Home/components/CardValue'
 
 import IfoCardHeader from './IfoCardHeader'
@@ -43,10 +44,11 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
 }
 
 const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
-  const { sympol, typePool, banner, id, name, currency } = ifo
+  const { address, isActive, sympol, typePool, banner, id, name, currency } = ifo
   const { offeringAmount, raisingAmount, totalAmount, getAddressListLength, status } = useGetPublicIfoData(ifo)
   const TranslateString = useI18n()
   const Ribbon = getRibbonComponent(status, TranslateString)
+  const [state, actions] = useHookIFOs()
 
   const priceRate =
     offeringAmount.toNumber() && raisingAmount.toNumber() ? `${offeringAmount.div(raisingAmount).toFixed(2)}` : '?'
@@ -54,10 +56,10 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
     totalAmount.toNumber() && raisingAmount.toNumber()
       ? `${totalAmount.multipliedBy(100).div(raisingAmount).toFixed(2)}`
       : '0'
+  if (status !== state.statusCombo && state.statusCombo !== 'all') {
+    return <></>
+  }
   return (
-    // <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={publicIfoData.status === 'live'}>
-    //   <IfoCardDetails ifo={ifo} publicIfoData={publicIfoData} />
-    // </StyledIfoCard>
     <>
       <Item>
         <ItemHead img={banner}>
@@ -136,15 +138,15 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
       </Item>
 
       {/* <Item className="item-coming">
-        <div className="item-coming-title">Upcoming Project !</div>
-
-        <div className="item-coming-content">
-          <div>
-            <h2>Stay tuned !</h2>
-            <p>Something exciting is coming your way!</p>
-          </div>
-        </div>
-      </Item> */}
+            <div className="item-coming-title">Upcoming Project !</div>
+    
+            <div className="item-coming-content">
+              <div>
+                <h2>Stay tuned !</h2>
+                <p>Something exciting is coming your way!</p>
+              </div>
+            </div>
+          </Item> */}
     </>
   )
 }
