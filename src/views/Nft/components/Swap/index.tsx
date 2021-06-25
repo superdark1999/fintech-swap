@@ -6,6 +6,8 @@ import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
 import { ProcessBar } from './components'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import ModalSelectSwap from 'components-v2/ModalSelectSwap'
+import useNFTServices from 'services/web3Services/NFTServices'
+import { useActiveWeb3React } from 'wallet/hooks'
 import {get} from 'lodash'
 import { Container } from './styled'
 import Confirm from './Confirm'
@@ -27,6 +29,7 @@ export default  () => {
 
   const history = useHistory()
   const [NFTs, setNFTs] = useState([]);
+  const [userNFTs, setUserNFTs] = useState([])
   const { getNFT, getDetailNFT } = useArtworkServices()
   const {id} = useParams()
 
@@ -34,23 +37,46 @@ export default  () => {
     setStep(step)
     history.push(`/swap/${id}/step=${step}`)
   }
+  const { account, chainId } = useActiveWeb3React()
 
   const [visible, setVisible] = useState<any>({ isOpen: false, value: "my-item" });
   const [myItems, setMyItems] = useState<any>([]);
   const [itemSwap, setItemSwap] = useState<any>([]);
+  const NFTServicesMethod = useNFTServices()
 
   useEffect(() => {
-    getNFT({
-      status: 'readyToSell',
-    }).then(({ status, data }: any) => {
-      if (status === 200) {
-        setNFTs(data?.data || [])
+    if(account){
+      getNFT({
+        status: 'readyToSell',
+        NFTType: 'swap-store'
+      }).then(({ status, data }: any) => {
+        if (status === 200) {
+          setNFTs(data?.data || [])
+        }
+      })
+      if(id){
+        getDetailNFT({ id }).then(({ status, data }) => {
+          setItemSwap([data?.data])
+        })
       }
-    })
-    getDetailNFT({ id }).then(({ status, data }) => {
-      setItemSwap([data?.data])
-    })
-  }, [])
+      getNFT({
+        status:'approved',
+        ownerWalletAddress:account
+      }).then(({status, data}:any)=>{
+        if (status === 200) {
+          const userNFTsRaw = data?.data||[]
+          const NFTsListSellPromise = userNFTs.map((item:any)=>{
+            return  NFTServicesMethod?.isTokenReadyToSell(item?.tokenId)
+          })
+          Promise.all(NFTsListSellPromise).then(data=>{
+            const  userNFTs = data?.map?.((it,i)=>{ return it?userNFTsRaw[i]:null})?.filter?.(i=>i)||[]
+            setUserNFTs(userNFTs)
+          })
+        }
+      })
+    }
+  }, [account,id])
+  
 
 
 
@@ -59,7 +85,7 @@ export default  () => {
       setMyItems(data)
     } else {
       setItemSwap(data)
-      history.push(`/swap/step=${step}/${data?.[0].ownerWalletAddress}`)
+      history.push(`/swap/${data?.[0]._id}/step=${step}`)
     }
   }
 
@@ -106,7 +132,7 @@ export default  () => {
         visible={visible}
         title={visible.value === 'my-item'?'YOUR COLLECTION':'SWAP MINI STORE'}
         setVisible={setVisible}
-        data={visible.value === 'my-item' ? NFTs : NFTs} // chỗ này viết lại nha, là hiện nft swap thôi (call api => itemSwapp)
+        data={visible.value === 'my-item' ? userNFTs : NFTs} // chỗ này viết lại nha, là hiện nft swap thôi (call api => itemSwapp)
         getItemSelected={getItemSelected}
         // multiSelect={visible.value === 'my-item'} chọn nhiều
         selectedItem={visible.value === 'my-item' ? myItems : itemSwap}

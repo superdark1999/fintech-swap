@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { OfferStyled, TableStyled, WrapperListCard, ListCard, Container} from './styled'
 import { Select, Row } from 'antd'
 import Swap from 'assets/images/swap.svg'
@@ -8,8 +8,11 @@ import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
 import { data, column } from './mock'
 import { isMobile } from 'react-device-detect'
 import { ButtonBuy } from 'components-v2/Button'
+import useMarketService from 'services/web3Services/MarketServices'
 import { CardSwap, CardSelect, CardOffer, CardDefault} from '../components/index'
 import {isEmpty} from 'lodash'
+import { useActiveWeb3React } from 'wallet/hooks'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
 
 interface Props {
   nextStep: (step: number) => void,
@@ -37,6 +40,15 @@ export default function (props: Props) {
     myItems, setVisible, itemSwap, selectMetodSwap, setSelectMethod
   } = props
   const [select, setSelect] = useState<string | null>('Lucky');
+  const [offerPrice, setOfferPrice] = useState<number>(0)
+  const { setPrice, cancelSellNFT } = useArtworkServices()
+
+  const [offerData, setOfferData] = useState([])
+
+  const marketServiceMethod  = useMarketService()
+
+  const {account} = useActiveWeb3React()
+
   const divRef = useRef(null)
 
   const scrollLeft = () => {
@@ -88,6 +100,12 @@ export default function (props: Props) {
     else return <CardDefault setVisible={setVisible} value='my-item'/>
   }
 
+  useEffect(()=>{
+    const {marketContract} =  marketServiceMethod
+    marketContract.on('OfferNFTs',(author, oldValue, newValue, event)=>{
+      console.log(author, oldValue, newValue, event)
+    })
+  },[])
 
 
   const renderMethodSwap = (method: Number) => {
@@ -96,7 +114,7 @@ export default function (props: Props) {
         <>
           {renderListCard()}
           <img src={Plus} style={{ margin: 'auto 20px' }} />
-         <CardOffer type={METHOD_SWAP.NFT_ONLY}/>
+         <CardOffer type={METHOD_SWAP.NFT_ONLY} />
         </>
       )
     }
@@ -105,7 +123,7 @@ export default function (props: Props) {
         <>
          {renderListCard()}
          <img src={Plus} style={{ margin: 'auto 20px' }} />
-         <CardOffer type={METHOD_SWAP.NFT_TOKEN} />
+         <CardOffer type={METHOD_SWAP.NFT_TOKEN} onChangePrice={(price:number)=>{setOfferPrice(price)}} />
         </>
       )
     }
@@ -121,7 +139,24 @@ export default function (props: Props) {
     if (!(isEmpty(itemSwap) && isEmpty(myItems))) {
       props.nextStep(3)
     }
+}
+
+  const onOfferItem = ()=>{
+    if(marketServiceMethod && itemSwap?.[0]?.ownerWalletAddress === account){
+      if(myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId){
+        const { offerSwapNFT} = marketServiceMethod
+        offerSwapNFT(myItems?.[0]?.tokenId,itemSwap?.[0]?.tokenId,offerPrice).then((data)=>{
+          setPrice({ id: myItems?.[0]?._id, NFTType: 'swap-personal'}).then(()=>{
+
+          })
+        })  
+      }
+    }
+    if(marketServiceMethod && itemSwap?.[0]?.ownerWalletAddress !== account ){
+
+    }
   }
+
 
   return (
     <>
@@ -139,7 +174,7 @@ export default function (props: Props) {
             {itemSwap?.[0] ? <CardSwap data={itemSwap?.[0]} /> : <CardDefault setVisible={setVisible} value='item-swap' />}
         </div>
         <Row justify="center" style={{marginTop: 40}}>
-           <ButtonBuy width="300px" onClick={handleNextStep}>Offer now</ButtonBuy>
+           <ButtonBuy width="300px" onClick={onOfferItem}>Offer now</ButtonBuy>
         </Row> 
       </OfferStyled>
 
