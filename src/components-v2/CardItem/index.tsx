@@ -37,7 +37,7 @@ export default function CardItem(props?: { data?: any }) {
   const marketServiceMethod = useMarketServices()
   useEffect(() => {
     const getTokenPrice = async () => {
-      if (marketServiceMethod && data?.tokenId && data?.NFTType !== 'swap') {
+      if (marketServiceMethod && data?.tokenId && data?.NFTType !== 'swap-store') {
         const price = await marketServiceMethod?.getHighestBidAndPrice(data?.tokenId, data?.NFTType)
         setPrice(price)
         setLoading(false)
@@ -84,7 +84,7 @@ export default function CardItem(props?: { data?: any }) {
               <a target="_blank" href={embedTokenIdLinkBSCScan(data.tokenId, data?.contractAddress, chainId)}> {getCompactString(data?.ownerWalletAddress, 5)}</a>
             </div>
             <div className="number">
-              {data?.NFTType !== 'swap' ? <div>
+              {data?.NFTType!=='swap-store' ? <div>
                 {price} LUCKY {' '}
                 <img src={Token} alt="" />
               </div> : <ButtonBuy className="btn-swap" onClick={onSwapItem}>Swap now</ButtonBuy>}

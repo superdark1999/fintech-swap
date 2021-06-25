@@ -4,14 +4,18 @@ import React from 'react'
 import styled from 'styled-components'
 import Lucky from 'assets/images/token.svg'
 
-export default function CardOffer(props: { type: Number }) {
+export default function CardOffer(props:any) {
+  const { type, onChangePrice, onChangeNote } = props
+  const onChangeInputPrice = (event:any)=>{
+    onChangePrice&&onChangePrice(event.target.value)
+  }
   return (
     <CardOfferStyled>
-      { props.type === 2 &&
+      { type === 2 &&
         <div className="option-offer">
           <div className="input-offer">
             <label>Your offer</label>
-            <input placeholder="Enter price" />
+            <input placeholder="Enter price" onChange={onChangeInputPrice} />
           </div>
           <div className="balance">
             Balance: <div>100 {' '}</div> <img src={Lucky}/>
