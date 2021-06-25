@@ -33,9 +33,13 @@ function ExploreCollection() {
       <FilterBar searchParams={searchParams} />
       <h1 style={{ fontWeight: 'bold' }}>8 results for "lucky swap studio"</h1>
       <div className="content-collect">
-        {NFTs.map((item) => (
-          <Cart width="320px" height="480px" data={item} />
-        ))}
+        {NFTs.map((item) => {
+          return (
+            item?.NFTType !== 'swap' && (
+              <Cart width="320px" height="480px" data={item} />
+            )
+          )
+        })}
       </div>
       <div className="footer-section">
         <div className="wrapper-button">

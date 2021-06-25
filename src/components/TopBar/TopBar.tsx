@@ -129,7 +129,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         {!!account ? (
           <>
             <Link to={"/create/artwork"} className="create-nav">Create</Link>
-            <Link to={"/swap"} className="create-nav">Swap</Link>
+            <Link to={"/swap/step=1"} className="create-nav">Swap</Link>
           </>
         ) : (
           <a onClick={() => { alert("Unblock your wallet before create NFT") }} className="create-nav" >Create</a>

@@ -83,7 +83,7 @@ export default function CardItem(props?: { data?: any }) {
               {data?.NFTType !== 'swap' ? <div>
                 {price} LUCKY {' '}
                 <img src={Token} alt="" />
-              </div> : <ButtonBuy className="btn-swap">Swap now</ButtonBuy>}
+              </div> : <ButtonBuy className="btn-swap"><Link to={`/swap/step=1/${data?.contractAddress}`}>Swap now</Link></ButtonBuy>}
               <div>
                 4.8
                 {' '}
