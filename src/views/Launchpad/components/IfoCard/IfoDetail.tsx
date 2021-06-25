@@ -31,6 +31,7 @@ const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 // const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
 const LoadingIfo = () => {
   const [state, actions] = useHookIFOs()
+
   const param: any = useParams()
   useEffect(() => {
     actions.getDetailLaunch(param?.id)
@@ -87,7 +88,6 @@ const IfoTitle = ({ activeIfo }: any) => {
           console.log('Error fetching balance')
         })
        
-      }
 
       LPContract.on("Approval", async(oldValue, newValue, event) => {
         try {
@@ -109,8 +109,11 @@ const IfoTitle = ({ activeIfo }: any) => {
             console.log("Error fetching balance")
           })
         }
-  
       })
+
+
+    }
+
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account])
