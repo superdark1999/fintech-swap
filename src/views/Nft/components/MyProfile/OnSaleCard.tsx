@@ -17,7 +17,7 @@ export default function OnSaleCard({ data, }: any) {
   useEffect(() => {
 
     const getPriceToken = async () => {
-      if (data?.tokenId&&marketService) {
+      if (data?.tokenId && marketService) {
         if (data?.NFTType == 'buy') {
           const unitPrice = await marketService?.getTokenPrice?.(data?.tokenId)
           const price = getPrice(Number(unitPrice?._hex))
@@ -59,7 +59,7 @@ export default function OnSaleCard({ data, }: any) {
         <Col className="description" xl={{ span: 16 }} md={{ span: 24 }} xs={{ span: 24 }} xxl={{ span: 16 }}>
           <div className="header-card" style={{ marginTop: 10 }}>
             <div className="status">
-             {data?.NFTType?.toUpperCase()}
+              {data?.NFTType}
             </div>
             <div className="cancel">
               Cancel
