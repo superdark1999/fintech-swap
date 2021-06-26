@@ -55,8 +55,8 @@ export default () => {
           className="content"
           xxl={{ span: 24 }}
           xl={{ span: 20 }}
-          md={{ span: 20 }}
-          xs={{ span: 20 }}
+          md={{ span: 22 }}
+          xs={{ span: 22 }}
         >
           <div className="info-detail">
             <div>
