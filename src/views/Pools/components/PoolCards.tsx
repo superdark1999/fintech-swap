@@ -1553,6 +1553,8 @@ const Boxbtn = styled.div`
   button {
     background: #f5c606;
     font-weight: 600;
+    border-color: transparent;
+
 
     &:hover {
       background-color: #40a9ff;

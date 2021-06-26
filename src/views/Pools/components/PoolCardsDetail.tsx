@@ -3,16 +3,65 @@ import styled from 'styled-components'
 import Page from 'components/layout/Page'
 import { Row, Col } from 'antd'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { useERC20, useStakingContract } from 'hooks/useContract'
+import { Pool } from 'state/types'
+
 // import { Row, Col } from 'antd'
+
+// export interface Pool extends PoolConfig {
+//   totalStaked?: BigNumber
+//   startBlock?: number
+//   endBlock?: number
+//   userData?: {
+//     allowance: BigNumber
+//     stakingTokenBalance: BigNumber
+//     stakedBalance: BigNumber
+//     pendingReward: BigNumber
+//   }
+// }
+
+// export interface PoolConfig {
+//   sousId: number
+//   earningToken: Token
+//   stakingToken: Token
+//   stakingLimit?: number
+//   contractAddress: Address
+//   poolCategory: PoolCategory
+//   tokenPerBlock: string
+//   sortOrder?: number
+//   harvest?: boolean
+//   isFinished?: boolean
+// }
+
+const pool = {
+  earningToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a",  // XLUCKY 2
+  stakingToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6",   // XLUCKY
+  startBlock: 10000000,
+  endBlock: 13000000,
+  totalStaked: 1000000000000,
+  contractAddress: 0x699fAC70A58aeD04078Acf3aE10Af95506BfC45f,
+  
+}
+
+
 
 const staking = {
   depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
   rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a",
+  stakingContract: "0x83add5725E1fD30c4bd6f3D087138A6C508aF353",
   
 }
 
-function PoolCardsDetail(this: any) {
+function PoolCardsDetail() {
   const [modal, setModal] = useState(false);
+  const [balance, setBalance] = useState(0);
+  const stakingContract = useStakingContract(staking.stakingContract);
+
+  // console.log("stakingContract", stakingContract);
+
+  // const handleDeposit = () => {
+  //   console.log("handle deposit")
+  // }
 
   const toggle = () => setModal(!modal);
 
@@ -58,7 +107,7 @@ function PoolCardsDetail(this: any) {
                 </div>
 
                 <div className="box__footer">
-                  <Button color="danger" onClick={toggle}>Harvest</Button>
+                  <Button color="danger" onClick={toggle}>Deposit</Button>
                 </div>
               </div>
             </Col>
