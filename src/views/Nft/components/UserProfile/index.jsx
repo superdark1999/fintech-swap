@@ -16,6 +16,7 @@ import { HeartOutlined, CheckOutlined } from '@ant-design/icons'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import useUserStore from 'store/userStore'
+import {getCompactString} from 'utils'
 
 const { TabPane } = Tabs
 
@@ -70,7 +71,7 @@ const UserProfile = () => {
           <div className="info-detail">
             <div>
               <div className="name">
-                <span>{user?.name ? user?.name : user?.walletAddress}</span>
+                <span>{user?.name ? user?.name : getCompactString(user?.walletAddress,6)}</span>
                 <img src={Checkmark} />
               </div>
               <div className="rank">
