@@ -121,7 +121,8 @@ const App = () => {
               )
             }
             <TopBar setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
-            <Switch>
+            {/* <div style={{marginTop: 80}}> */}
+            <Switch >
               <Route path="/" exact>
                 <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
               </Route>
@@ -160,6 +161,8 @@ const App = () => {
               </Route>
               <Route component={Page404} />
             </Switch>
+            {/* </div> */}
+            
           </>
         </Web3ReactManager>
       </Router>

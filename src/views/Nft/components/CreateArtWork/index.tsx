@@ -29,7 +29,7 @@ const CreateArtWork: React.FC = () => {
   const { createNFT, updateHashInfoNFT } = useArtworkServices()
   const { updateProfile } = useUserServices()
   const { account } = useActiveWeb3React()
-  const { mintToken } = useNFTServices()
+  const NFTServiceMethod = useNFTServices()
   const [isProccessing, setIsProcessing] = useState(false)
   const [userState, userActions] = useUserStore()
   const [form] = Form.useForm()
@@ -85,8 +85,9 @@ const CreateArtWork: React.FC = () => {
   }
 
   useEffect(() => {
-    if (isProccessing && !isOnUpload && NFTInfo) {
+    if (isProccessing && !isOnUpload && NFTInfo && NFTServiceMethod) {
       const { url, NFTid } = NFTInfo
+      const { mintToken } = NFTServiceMethod
       mintToken(url)
         .then((mintData: any) => {
           const txHash = mintData?.hash

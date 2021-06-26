@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { isMobile } from 'react-device-detect'
 interface Props {
   urlCover?: string
 }
@@ -33,12 +34,12 @@ export const UserProfileStyled = styled.div<Props>`
   }
   .ant-tabs-tab{
       color:#AFBAC5;
-      font-size: 20px;
+      font-size: ${isMobile ? "16px" : "20px"};
       font-weight: 600;
     }
     .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
       color:#333435;
-      font-size: 20px;
+      font-size: ${isMobile ? "16px" : "20px"};
       font-weight: 600;
     }
   .ant-tabs-ink-bar{
@@ -69,7 +70,10 @@ export const UserProfileStyled = styled.div<Props>`
     }
     &.content-profile {      
       .content {
-        max-width: 1320px;
+        max-width: ${!isMobile && '1320px'};
+        .ant-tabs{
+          overflow: inherit !important;
+        }
       }
       margin: 80px auto;
       padding-bottom: 80px;
