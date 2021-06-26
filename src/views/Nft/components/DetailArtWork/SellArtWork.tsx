@@ -284,6 +284,7 @@ const DetaiArtWork = ({ id }: any) => {
         xl={{ span: 8 }}
         md={{ span: 24 }}
         sm={{ span: 24 }}
+        style={{ width: '100%' }}
       >
         <DetailStyled>
           <p className="title">{NFTDetail?.title}</p>

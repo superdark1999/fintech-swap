@@ -13,7 +13,7 @@ import { ApplicationModal } from '../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../state/application/hooks'
 import AccountDetails from '../AccountDetails'
 // import useAuth from 'hooks/useAuth'
-import Modal from '../Modal'
+import {Modal, Row} from 'antd'
 import Option from './Option'
 import PendingView from './PendingView'
 import { connectorLocalStorageKey, ConnectorNames } from '@luckyswap/uikit'
@@ -21,7 +21,6 @@ import { connectorLocalStorageKey, ConnectorNames } from '@luckyswap/uikit'
 const CloseIcon = styled.div`
   position: absolute;
   right: 1rem;
-  top: 14px;
   &:hover {
     cursor: pointer;
     opacity: 0.6;
@@ -43,7 +42,6 @@ const Wrapper = styled.div`
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
-  padding: 1rem 1rem;
   font-weight: 500;
   color: ${(props) =>
     props.color === 'blue' ? ({ theme }) => theme.text1 : 'inherit'};
@@ -51,7 +49,7 @@ const HeaderRow = styled.div`
 
 const ContentWrapper = styled.div`
   background-color: ${({ theme }) => theme.bg2};
-  padding: 2rem;
+  padding: 0px 20px 10px 20px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 `
@@ -228,8 +226,7 @@ export default function WalletModal({
               link={option.href}
               header={option.name}
               subheader={null}
-              icon={`${path}/${option.iconName}`}
-            />
+              icon={require('assets/images/' + option.iconName)}            />
           )
         }
         return null
@@ -294,9 +291,6 @@ export default function WalletModal({
     if (error) {
       return (
         <UpperSection>
-          <CloseIcon onClick={toggleWalletModal}>
-            <CloseColor />
-          </CloseIcon>
           <HeaderRow>
             {error instanceof UnsupportedChainIdError
               ? 'Wrong Network'
@@ -366,10 +360,9 @@ export default function WalletModal({
   }
   return (
     <Modal
-      isOpen={walletModalOpen}
-      onDismiss={toggleWalletModal}
-      minHeight={false}
-      maxHeight={90}
+      visible={walletModalOpen}
+      footer={null}
+      closable={null}
     >
       <Wrapper>{getModalContent()}</Wrapper>
     </Modal>
