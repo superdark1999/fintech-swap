@@ -44,15 +44,27 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   const [userState, userActions] = useUserStore()
   const [configState, configAction] = useConfigStore()
   const [isShowAlert, setIsShowAlert] = useState(false)
-  const history = useHistory();
-  const handleScroll = () => {
-    const position = window.pageYOffset
-    if (position > 10) {
-      setClassSticky('fixed')
-    } else {
-      setClassSticky('')
-    }
-  }
+
+  var prevScrollpos = window.pageYOffset;
+
+  // const handleScroll = () => {
+  //   const currentScrollPos = window.pageYOffset
+  //   if (prevScrollpos > currentScrollPos) {
+  //     setClassSticky('fixed')
+  //     console.log('fixed: ')
+  //   } else {
+  //     setClassSticky('hidden')
+  //   }
+  //   prevScrollpos = currentScrollPos;
+  // }
+
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll);
+
+  //   return () => {
+  //     window.removeEventListener('scroll', () => handleScroll);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)) {
@@ -437,7 +449,13 @@ const StyledTopBar = styled.div`
   background: #ffffff;
   box-shadow: 0px 4px 16px -4px rgba(35, 35, 35, 0.06);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  position: sticky;
+  &.hidden {
+    height: 0px;
+    overflow: hidden;
+  }
   &.fixed {
+    height: 80px;
     position: fixed;
     padding-bottom: 5px;
     left: 0;

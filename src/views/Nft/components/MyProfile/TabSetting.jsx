@@ -90,6 +90,7 @@ const TabSetting = () => {
             ]}
           >
             <Input
+              disabled={userState.name ? true : false}
               style={{ borderRadius: '100px' }}
               placeholder="Your full name or nickname or bussiness name"
             />

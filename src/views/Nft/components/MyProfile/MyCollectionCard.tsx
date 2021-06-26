@@ -121,7 +121,7 @@ export default function MyCollectionCard({ data, option }: any) {
     marketServicesMethod?.listNFTToSWap(tokenId)
       .then((dt) => {
         if (dt?.hash) {
-          setPrice({ id: data?._id, NFTType: 'swap' }).then(({ status }) => {
+          setPrice({ id: data?._id, NFTType: 'swap-store' }).then(({ status }) => {
             if (status == 200) {
               history.push('/my-profile/mycollection/checkingToSell')
             } else {

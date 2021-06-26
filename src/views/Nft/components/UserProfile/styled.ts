@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { isMobile } from 'react-device-detect'
 interface Props {
   urlCover?: string
 }
@@ -29,7 +30,10 @@ export const UserProfileStyled = styled.div<Props>`
     }
     &.content-profile {      
       .content {
-        max-width: 1320px;
+        max-width: ${!isMobile && '1320px'};
+        .ant-tabs{
+          overflow: inherit !important;
+        }
       }
       margin: 80px auto;
       padding-bottom: 80px;
@@ -39,7 +43,7 @@ export const UserProfileStyled = styled.div<Props>`
         display: flex;
         justify-content: space-between;
         .name {
-        font-size: 28px;
+        font-size: ${isMobile? "16px" : "28px"};
         line-height: 40px;
         color: #333435;
         }
@@ -107,10 +111,11 @@ export const CartStyled = styled.div`
   border-radius: 24px;
   background:#fff;
   .avatar, video {
-    width: 300px;
-    height: 300px;
+    width: ${isMobile ? '280px' : '300px'};
+    height: ${isMobile ? '280px' : '300px'};
     border-radius: 8px;
     margin-right: 40px;
+    object-fit: cover;
   }
   .description{
     width: 100%;
@@ -148,7 +153,7 @@ export const CartStyled = styled.div`
     }
     .name {
       font-weight: bold;
-      font-size: 28px;
+      font-size: ${isMobile? "16px" : "28px"};
       line-height: 40px;
       color: #333435;
       opacity: 0.9;
