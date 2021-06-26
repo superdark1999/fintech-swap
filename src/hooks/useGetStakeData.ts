@@ -19,7 +19,7 @@ const useGetStateData = (staking) => {
 
   useEffect(() => {
     const fetchStakingData = async () => {
-      if (contract){
+      if (contract && account){
         const userAmount = await contract.userInfo(account).catch(error => {console.log("error pending reward")});
         const pendingReward = await contract.pendingReward(account).catch(error => {console.log("error pending reward")});
 

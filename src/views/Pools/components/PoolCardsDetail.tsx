@@ -22,7 +22,7 @@ const pool = {
 const staking = {
   depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
   rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a",
-  stakingContract: "0x83add5725E1fD30c4bd6f3D087138A6C508aF353",
+  stakingContract: "0xF49987840871DC552014893C4625359FD1447D95",
   
 }
 
@@ -149,7 +149,9 @@ function PoolCardsDetail() {
         </ModalBody>
 
         <ModalFooter>
+          <CancelButton>
           <Button color="primary" onClick={depositToggle}>Cancel</Button>
+          </CancelButton>
           <Button color="secondary" onClick={handleDeposit} disabled={false}>Deposit</Button>
         </ModalFooter>
       </Modal>
@@ -176,7 +178,9 @@ function PoolCardsDetail() {
           </ModalBody>
 
           <ModalFooter>
-            <Button color="primary" onClick={withdrawToggle}>Cancel</Button>
+            <CancelButton>
+              <Button color="primary" onClick={withdrawToggle}>Cancel</Button>
+            </CancelButton>
             <Button color="secondary" onClick={handleWithdraw} disabled={false}>Harvest</Button>
           </ModalFooter>
         </Modal>
@@ -208,7 +212,7 @@ const BoxInput = styled.div`
     width: 0px;
     background: none;
     border: 0px;
-    color: rgb(114, 47, 13);
+    color: #fff;
     font-size: 18px;
     height: 56px;
     margin: 0px;
@@ -225,6 +229,18 @@ const BoxLink = styled.div`
   font-weight: 600;
   font-size: 14px;
   text-transform: uppercase;
+`
+
+const CancelButton = styled.div`
+  button {
+    color: #2b2e2f;
+    border: none;
+    :hover{
+      opacity: .8;
+      color: #2b2e2f;
+    }
+  }
+
 `
 
 const BoxButton = styled.div`
@@ -246,7 +262,7 @@ const BoxButton = styled.div`
     position: relative;
     z-index: 1;
     background-color: #f5c606;
-    color: rgb(255, 253, 250);
+    color: #2b2e2f;
     font-family: "Baloo Da";
     padding: 0px 10px;
     height: 40px;

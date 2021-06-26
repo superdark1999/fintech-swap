@@ -375,6 +375,7 @@ const ItemContent = styled.div`
 const BoxLink = styled.div`
   display: flex;
   justify-content: center;
+  color: #2b2e2f;
 
   a {
     display: block;
@@ -383,7 +384,7 @@ const BoxLink = styled.div`
     line-height: 40px;
     font-weight: bold;
     font-size: 14px;
-    color: rgb(255, 253, 250);
+    color: #2b2e2f;
     text-align: center;
     background: #f5c606;
     border-radius: 10px;
@@ -392,7 +393,7 @@ const BoxLink = styled.div`
     &:hover {
       background-color: #e4bc17;
       transition: 0.5s;
-      color: rgb(255, 253, 250);
+      color: #2b2e2f;
     }
   }
 `

@@ -422,7 +422,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                 </div>
               </div>
             </div>
-            {isWaningAllowedDepositAmount && <div className="waning">Current amount exceeds the limit!</div>}
+            {isWaningAllowedDepositAmount && <div className="waning">Current amount exceeds the limit</div>}
             {status === 'live' &&
               (!(isConfirmed || isConfirming || isApproved) ? (
                 <Button
@@ -746,7 +746,7 @@ const BoxForm = styled.div`
     position: relative;
     z-index: 1;
     background: #f5c506f9;
-    color: rgb(255, 253, 250);
+    color: #2b2e2f;
     cursor: auto;
     box-shadow: none;
     border: 1px solid transparent;
@@ -755,17 +755,17 @@ const BoxForm = styled.div`
     width: 240px;
     height: 48px;
     margin: 32px auto 0px;
-    /* cursor: not-allowed; */
+    cursor: pointer;
   }
   button.disabled {
-    background: #f5c6064d;
+    opacity: 0.3;
     cursor: not-allowed;
   }
   .waning {
     color: red !important;
     margin-top: 16px;
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 600;
   }
 `
 
