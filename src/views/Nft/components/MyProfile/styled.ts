@@ -4,47 +4,47 @@ interface Props {
   urlCover?: string
 }
 export const UserProfileStyled = styled.div<Props>`
-  background:#F9FAFB;
-  .ant-radio-button-wrapper-checked span{
-    background-color:#fff !important;
+  background: #f9fafb;
+  .ant-radio-button-wrapper-checked span {
+    background-color: #fff !important;
   }
-  .btn-filter{
-    background:#fff;
-    color:#333534;
-    :hover{
+  .btn-filter {
+    background: #fff;
+    color: #333534;
+    :hover {
       background: #333534 !important;
       color: #fff !important;
-      border:1px solid #333534 !important;
+      border: 1px solid #333534 !important;
     }
   }
-  .ant-radio-button-wrapper{
-    :hover{
-      ::before{
+  .ant-radio-button-wrapper {
+    :hover {
+      ::before {
         background: #333534 !important;
       }
     }
   }
-  .ant-radio-button-wrapper-checked ::before{
+  .ant-radio-button-wrapper-checked ::before {
     background: #333534 !important;
   }
-  .ant-radio-button-wrapper-checked{
+  .ant-radio-button-wrapper-checked {
     background: #333534 !important;
-    border:none !important;
+    border: none !important;
     color: #fff !important;
   }
-  .ant-tabs-tab{
-      color:#AFBAC5;
-      font-size: ${isMobile ? "16px" : "20px"};
-      font-weight: 600;
-    }
-    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
-      color:#333435;
-      font-size: ${isMobile ? "16px" : "20px"};
-      font-weight: 600;
-    }
-  .ant-tabs-ink-bar{
-      background:#333435;
-    }
+  .ant-tabs-tab {
+    color: #afbac5;
+    font-size: ${isMobile ? '16px' : '20px'};
+    font-weight: 600;
+  }
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #333435;
+    font-size: ${isMobile ? '16px' : '20px'};
+    font-weight: 600;
+  }
+  .ant-tabs-ink-bar {
+    background: #333435;
+  }
   .section {
     width: 100%;
     justify-content: center;
@@ -52,7 +52,8 @@ export const UserProfileStyled = styled.div<Props>`
       height: 160px;
       position: relative;
       justify-content: center;
-      background: ${props => props.urlCover?`url(${props.urlCover})` : '#F9FAFB'};
+      background: ${(props) =>
+        props.urlCover ? `url(${props.urlCover})` : '#F9FAFB'};
       background-repeat: no-repeat;
       background-size: cover;
       .header-profile-col {
@@ -68,10 +69,10 @@ export const UserProfileStyled = styled.div<Props>`
         }
       }
     }
-    &.content-profile {      
+    &.content-profile {
       .content {
         max-width: ${!isMobile && '1320px'};
-        .ant-tabs{
+        .ant-tabs {
           overflow: inherit !important;
         }
       }
@@ -148,14 +149,14 @@ export const CartStyled = styled.div`
   border: 1px solid #e7ebef;
   box-sizing: border-box;
   border-radius: 24px;
-  background:#fff;
+  background: #fff;
   .avatar {
     width: 210px;
     height: 210px;
     border-radius: 8px;
     margin-right: 40px;
   }
-  .btn-swap{
+  .btn-swap {
     background: linear-gradient(45deg, #1cace8, #07dce6);
   }
   .description {
@@ -279,7 +280,7 @@ export const CartStyled = styled.div`
       flex: 1;
       cursor: pointer;
       text-decoration: underline;
-      background: #35A5FC;
+      background: #35a5fc;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 16px;
