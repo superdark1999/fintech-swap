@@ -47,7 +47,6 @@ export default function (props: Props) {
   const [offerPrice, setOfferPrice] = useState<number>(0)
   const { setPrice, getNFT } = useArtworkServices()
   const [isProccessing, setIsProcessing] = useState<boolean>(false)
-  const [canGoNextStep,setCanGoNextStep] = useState<boolean>(false)
   const [offerData, setOfferData] = useState([])
 
   const marketServiceMethod  = useMarketService()
@@ -139,27 +138,13 @@ export default function (props: Props) {
     getSwapOffers(itemSwap?.[0]?.tokenId)
   },[itemSwap?.[0]?.tokenId])
 
-  useEffect(()=>{
-    if(marketServiceMethod&&itemSwap?.[0]?.tokenId&&myItems?.[0]?.tokenId){
-      const {marketContract} =  marketServiceMethod
-      marketContract.on('OfferNFTs',(author, oldValue, newValue, event)=>{
-        if(author==account&& myItems?.[0]?.tokenId ==Number(oldValue) && itemSwap?.[0]?.tokenId == Number(newValue) &&offerPrice == getPrice( Number(event)))
-        setPrice({ id: myItems?.[0]?._id, NFTType: 'swap-personal'}).then(({data,status})=>{
-          setCanGoNextStep(true)
-          getSwapOffers(itemSwap?.[0]?.tokenId)
-        })
-      })
-    }
-  },[marketServiceMethod,itemSwap?.[0]?.tokenId,myItems?.[0]?.tokenId])
-
-
   const renderMethodSwap = (method: Number) => {
     if (method === METHOD_SWAP.NFT_ONLY) {
       return (
         <>
           {renderListCard()}
           <img src={Plus} style={{ margin: 'auto 20px' }} />
-         <CardOffer type={METHOD_SWAP.NFT_ONLY} />
+         <CardOffer type={METHOD_SWAP.NFT_ONLY} onChangeSwapMethod={setSelectMethod} />
         </>
       )
     }
@@ -168,7 +153,7 @@ export default function (props: Props) {
         <>
          {renderListCard()}
          <img src={Plus} style={{ margin: 'auto 20px' }} />
-         <CardOffer type={METHOD_SWAP.NFT_TOKEN} onChangePrice={(price:number)=>{setOfferPrice(price)}} />
+         <CardOffer type={METHOD_SWAP.NFT_TOKEN} onChangePrice={(price:number)=>{setOfferPrice(price)}} onChangeSwapMethod={setSelectMethod} />
         </>
       )
     }
@@ -193,12 +178,28 @@ export default function (props: Props) {
         })
       }
     }
-    if(marketServiceMethod && itemSwap?.[0]?.ownerWalletAddress !== account ){
-
+    if(marketServiceMethod && itemSwap?.[0]?.ownerWalletAddress === account ){
+      if(myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId){
+        console.log(itemSwap?.[0]?.tokenId,myItems?.[0]?.tokenId,myItems?.[0]?.ownerWalletAddress)
+        setIsProcessing(true)
+        const { confirmSwapNFT} = marketServiceMethod
+        confirmSwapNFT(itemSwap?.[0]?.tokenId,myItems?.[0]?.tokenId,myItems?.[0]?.ownerWalletAddress).then((data)=>{
+          nextStep&&nextStep(3)
+        }).catch((err)=>{
+          setIsProcessing(false)
+          console.log(err)
+        })
+      }
     }
   }
 
   const chooseOffer = (data:any)=>{
+    if(data?.price>0){
+      setSelectMethod(2)
+    }else {
+      setSelectMethod(1)
+    }
+    
     setMyItems([data])
   }
 
@@ -218,7 +219,13 @@ export default function (props: Props) {
             {itemSwap?.[0] ? <CardSwap data={itemSwap?.[0]} /> : <CardDefault setVisible={setVisible} value='item-swap' />}
         </div>
         <Row justify="center" style={{marginTop: 40}}>
-          {isProccessing?<ButtonProccesing/>:<ButtonBuy width="300px" onClick={onOfferItem}>Offer now</ButtonBuy>}
+          {isProccessing?
+          <ButtonProccesing/>
+          :(<ButtonBuy width="300px" 
+          onClick={onOfferItem} 
+          className={myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId?'':'disabled'} 
+          >{itemSwap?.[0]?.ownerWalletAddress !== account?"Offer now":"Confirm"}
+          </ButtonBuy>)}
         </Row> 
       </OfferStyled>
       <OfferTable offerData={offerData} isRenderAction={itemSwap?.[0]?.ownerWalletAddress === account} chooseOffer={chooseOffer} />  
@@ -244,7 +251,6 @@ const OfferTable = ({offerData, isRenderAction, chooseOffer}:any) =>{
     {
       title: 'Price',
       render: (record:any) => {
-
        return (
         <div>
           {record?.price>0&&(<Row>
@@ -271,8 +277,10 @@ const OfferTable = ({offerData, isRenderAction, chooseOffer}:any) =>{
     },
     {
       title: 'Action',
-      dataIndex: 'note',
-    render: (record:any) => <> {isRenderAction?<ButtonBuy onClick={()=>{chooseOffer(record)}}>Choose</ButtonBuy>:null }</>
+    render: (record:any) =>{ 
+      return(<> 
+      {isRenderAction?<ButtonBuy onClick={()=>{chooseOffer(record)}}>Choose</ButtonBuy>:null }
+    </>)}
     },
   ];
   return (

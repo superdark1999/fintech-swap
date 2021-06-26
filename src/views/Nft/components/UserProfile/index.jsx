@@ -121,6 +121,7 @@ const TabOnSale = ({ userAddress }) => {
   useEffect(() => {
     const query = {
       status: 'readyToSell',
+      NFTType: ['buy','auction','swap-store'],
       ownerWalletAddress: userAddress,
     }
     getNFT(query).then(({ status, data }) => {

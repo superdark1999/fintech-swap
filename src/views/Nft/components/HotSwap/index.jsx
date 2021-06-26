@@ -19,6 +19,7 @@ function HotSwap() {
   useEffect(() => {
     getNFT({
       status: 'readyToSell',
+      NFTType: ['swap-store']
     })
       .then(({ status, data }) => {
         if (status == 200) {
