@@ -31,6 +31,7 @@ export default  () => {
   const history = useHistory()
   const [NFTs, setNFTs] = useState([]);
   const [status, setStatus] = useState<string>('processing')
+
   const [userNFTs, setUserNFTs] = useState([])
   const { getNFT, getDetailNFT, setPrice, buyItem } = useArtworkServices()
   const {id} = useParams()
@@ -92,19 +93,15 @@ export default  () => {
           })
         }
       })
-      marketContract.on('SwapNFTs',(author, oldValue, newValue, event)=>{
-        console.log(author, oldValue, newValue,)
-        buyItem({ id: [myItems?.[0]?._id,itemSwap?.[0]?._id]}).then(({data,status})=>{
-          setStatus('success')
-        })
-        // if(author==account&& myItems?.[0]?.tokenId ==Number(oldValue) && itemSwap?.[0]?.tokenId == Number(newValue)){
-        //   buyItem({ id: [myItems?.[0]?._id,itemSwap?.[0]?._id]}).then(({data,status})=>{
-        //     setStatus('success')
-        //   })
-        // }
+      marketContract.on('SwapNFTs',(tokenIdA, tokenIdB, accountB, event)=>{
+        if(itemSwap?.[0]?.ownerWalletAddress==accountB&& myItems?.[0]?.tokenId ==Number(tokenIdB) && itemSwap?.[0]?.tokenId == Number(tokenIdA)){
+          buyItem({ id: [myItems?.[0]?._id,itemSwap?.[0]?._id]}).then(({data,status})=>{
+            setStatus('success')
+          })
+        }
       })
     }
-  },[marketServiceMethod,itemSwap?.[0]?.tokenId,myItems?.[0]?.tokenId])
+  },[marketServiceMethod,account,itemSwap?.[0]?.tokenId,myItems?.[0]?.tokenId])
 
 
   const getItemSelected = (data?: any) => {

@@ -87,7 +87,6 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
               name="socialMediaLink"
               label="Social media/Portfolio link "
               rules={[
-                { required: true, message: 'This Field is required' },
                 {
                   pattern: RegexWebsiteURL,
                   message: 'This URL is not correct.',
@@ -102,7 +101,6 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
             <Form.Item
               name={'biography'}
               label="bio"
-              rules={[{ required: true, message: 'This Field is required' }]}
             >
               <Input.TextArea
                 style={{ borderRadius: '16px' }}

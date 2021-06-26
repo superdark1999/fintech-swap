@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ConfirmStyled } from './styled'
-import { CheckOutlined } from '@ant-design/icons'
+import { CheckOutlined, SyncOutlined } from '@ant-design/icons'
 import Swap from 'assets/images/swap.svg'
 import { Row } from 'antd'
 import isMobile  from 'react-device-detect'
 import { ButtonBuy } from 'components-v2/Button'
+import { useActiveWeb3React } from 'wallet/hooks'
 
 
 const STATUS = {
@@ -17,13 +18,34 @@ export default (props: {itemSwap: any, myItems: any, status:string}) => {
 const {
   itemSwap, myItems,status
 } = props
+
+  const [isOwner, setIsOwner] = useState<boolean>(false)
+  const { account, chainId } = useActiveWeb3React()
+  useEffect(()=>{
+    if(itemSwap?.[0]?.tokenId){
+      setIsOwner(itemSwap?.[0]?.ownerWalletAddress==account)
+    }
+  },[itemSwap?.[0]?.tokenId,account])
+
   const renderStatus = (status: any) => {
     switch (status) {
       case STATUS.PROCESSING : {
         return (
-          <div>
-            <CheckOutlined style={{width: 52, height: 52, color: '#F0B90B'}}/>
+          <div style={{margin:'auto',textAlign:'center'}}>
+            <SyncOutlined className={'rotate'} style={{fontSize: '30px',padding:'18px',color: '#FFFFFF',background:'#F0B90B', borderRadius:'100px'}} />
             <p style={{fontWeight: 'bold', fontSize: 32}}>Processing...</p>
+          </div>
+        )
+      }
+      case STATUS.SUCCESS : {
+        return (
+          <div style={{margin:'auto',textAlign:'center'}}>
+            {isOwner?(
+              <CheckOutlined style={{fontSize: '30px',padding:'18px',color: '#FFFFFF',background:'#84C87E', borderRadius:'100px'}} />
+            ):(
+              <SyncOutlined className={'rotate'} style={{fontSize: '30px',padding:'18px',color: '#FFFFFF',background:'#F0B90B', borderRadius:'100px'}} />
+            )}
+            <p style={{fontWeight: 'bold', fontSize: 32}}>{isOwner?'Swap successfully!':'Offer Success, Please wait owner confirm.'}</p>
           </div>
         )
       }

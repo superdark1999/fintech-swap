@@ -79,7 +79,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           walletAddress: account,
           coverImage: data?.data?.coverImage,
           avatarImage: data?.data?.avatarImage,
-          name: data?.data?.name,
+          name: data?.data?.name||account,
           socialMediaLink: data?.data?.socialLink,
           biography: data?.data?.biography,
         }
