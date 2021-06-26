@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import {isMobile} from 'react-device-detect'
 import { Interface } from 'ethers/lib/utils'
+import { Table } from 'antd'
 
 
 export const HotArtistsStyled = styled.div`
@@ -263,7 +264,27 @@ export const DetailStyled = styled.div`
       margin: 0px 6px;
     }
   }
-  
+  .bid-info {
+    display: flex;
+    flex-wrap: wrap;
+    .group-item-bid {
+      width: 120px;
+      margin-bottom: 12px;
+      .label {
+        color: #AFBAC5;
+        font-weight: 600;
+      }
+      .value {
+        font-weight: 600;
+        color: #333435;
+        &.your-bid {
+          font-weight: 600;
+          font-size: 20px;
+          color: #FC636B;
+        }
+      }
+    }
+  }
 `
 
 export const ReviewStyled = styled.div`
@@ -298,9 +319,9 @@ export const ScrollReview = styled.div`
 `;
 
 export const FooterStyled = styled.div`
-  /* position: absolute; */
+  position: ${isMobile ? 'fixed' : 'absolute'};
   width: 100%;
-  height: 80px;
+  /* height: 80px; */
   left: 0px;
   right: 0px;
   bottom: 0px;
@@ -310,15 +331,25 @@ export const FooterStyled = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 42px 32px;
-  >div {
-    width: 48%;
+  padding: 24px 32px;
+  > input {
+    border: 1px solid #E7EBEF;
+    box-sizing: border-box;
+    border-radius: 16px;
+    padding : 10px;
+    width: 100%;
+    height: 40px;
+    margin-right: 10px;
+    :focus {
+      outline: none;
+    }
   }
 `
 
 export const DetailTabpane = styled.div`
   border: 1px solid #f0f0f0;
   padding: 12px;
+  border-radius: 16px;
   .group-info {     
     :not(:last-child){
       border-bottom: 1px solid #f0f0f0;
@@ -401,6 +432,35 @@ export const HeaderStyled = styled.div`
         width: ${isMobile? '16px' : '24px'};
         height: ${isMobile? '16px' : '24px'};
       }
+    }
+    &.mobile {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+    }
+  }
+`
+
+export const TableStyled = styled(Table)`
+  .ant-table {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #E7EBEF;
+    .ant-table-thead > tr > th {
+      text-align: left;
+      background: #FFFFFF;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 12px 20px !important;
+      color: #AFBAC5;
+      ::before{
+        width: 0 !important;
+      }
+    }
+    .ant-table-tbody > tr > td {
+      text-align: left;
+      background: #FFFFFF;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 12px 20px !important;
     }
   }
 `
