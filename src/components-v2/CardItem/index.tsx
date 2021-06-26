@@ -15,14 +15,12 @@ import { Card, Avatar } from 'antd';
 import { SwapOutlined, StarFilled } from '@ant-design/icons'
 import useMarketServices from 'services/web3Services/MarketServices'
 import { CheckOutlined } from '@ant-design/icons'
+import ReactPlayer from 'react-player'
 // import {getPrice} from 'utils'
 import _ from 'lodash'
 import Countdown from "react-countdown";
 import { ButtonBuy } from 'components-v2/Button'
 import { useHistory } from 'react-router-dom'
-
-
-
 import { useActiveWeb3React } from 'wallet/hooks'
 import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 const { Meta } = Card;
@@ -61,7 +59,7 @@ export default function CardItem(props?: { data?: any }) {
               </div>}
               {/* <ReactFreezeframe ref={useFrameGif} className="avatar"  src={data?.contentUrl}/>      */}
               {data?.type === 'video' ?
-                <video width="300" height="450" autoPlay muted><source src={data?.contentUrl} type="video/mp4" /></video>
+                <ReactPlayer controls loop width="300px" height="450px" url={data?.contentUrl} muted />
                 : <img className="avatar" src={data?.contentUrl} alt="" loading="lazy" />
               }
             </div>
@@ -84,7 +82,7 @@ export default function CardItem(props?: { data?: any }) {
               <a target="_blank" href={embedTokenIdLinkBSCScan(data.tokenId, data?.contractAddress, chainId)}> {getCompactString(data?.ownerWalletAddress, 5)}</a>
             </div>
             <div className="number">
-              {data?.NFTType!=='swap-store' ? <div>
+              {data?.NFTType !== 'swap-store' ? <div>
                 {price} LUCKY {' '}
                 <img src={Token} alt="" />
               </div> : <ButtonBuy className="btn-swap" onClick={onSwapItem}>Swap now</ButtonBuy>}

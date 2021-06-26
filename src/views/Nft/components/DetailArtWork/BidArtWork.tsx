@@ -256,7 +256,7 @@ const DetaiArtWork = ({ id }: any) => {
           </div>
         </HeaderStyled>
         {NFTDetail?.type === 'video' ?
-          <video style={{ height: 'calc(100vh - 300px)' }} width="100%" height="100%" autoPlay muted><source src={NFTDetail?.contentUrl} type="video/mp4" /></video>
+          <video style={{ height: 'calc(100vh - 300px)' }} width="100%" height="100%" muted><source src={NFTDetail?.contentUrl} type="video/mp4" /></video>
           : <ImageStyled bgImage={NFTDetail?.contentUrl}>
             <div className="bg-image"></div>
             {/* <img src={NFTDetail?.contentUrl} /> */}

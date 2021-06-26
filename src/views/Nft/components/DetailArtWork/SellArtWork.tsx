@@ -35,6 +35,7 @@ import { useHistory } from 'react-router-dom'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import _ from 'lodash'
+import { isMobile } from 'react-device-detect'
 const { TabPane } = Tabs
 const DetaiArtWork = ({ id }: any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
@@ -198,7 +199,7 @@ const DetaiArtWork = ({ id }: any) => {
         </HeaderStyled>
         {
           NFTDetail?.type === 'video' ?
-            <video style={{}} width="100%" height="100%" controls autoPlay muted><source src={NFTDetail?.contentUrl} type="video/mp4" /></video>
+            <video style={{}} width="100%" height="100%" controls muted><source src={NFTDetail?.contentUrl} type="video/mp4" /></video>
             : <ImageStyled bgImage={NFTDetail?.contentUrl}>
               <div className="bg-image"></div>
               {/* <img src={NFTDetail?.contentUrl} /> */}
