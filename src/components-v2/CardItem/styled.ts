@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
 interface PropsStyled {
-  width?: string;
-  height?: string;
+  width?: string
+  height?: string
   src?: string
 }
 
@@ -10,10 +10,13 @@ export const StyledCart = styled.div<PropsStyled>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;  
-  .card-art-work{
-    max-width: ${props => props.width || '300px'};
-    /* max-height: ${props => props.height || '530px'}; */
+  position: relative;
+  video {
+    object-fit: cover;
+  }
+  .card-art-work {
+    max-width: ${(props) => props.width || '300px'};
+    /* max-height: ${(props) => props.height || '530px'}; */
     /* border: 1px solid #E7EBEF; */
     box-sizing: border-box;
     overflow: hidden;
@@ -21,11 +24,11 @@ export const StyledCart = styled.div<PropsStyled>`
       box-shadow: 1px 4px 8px #ececec;
       -webkit-transition:  box-shadow .3s ease-in;
     } */
-    
-    .wrapper-image{
-      min-width: ${props => props.width || '300px'};
-      min-height: ${props => props.height || '450px'};
-      border: 1px solid #E7EBEF;
+
+    .wrapper-image {
+      min-width: ${(props) => props.width || '300px'};
+      min-height: ${(props) => props.height || '450px'};
+      border: 1px solid #e7ebef;
       box-sizing: border-box;
       overflow: hidden;
       border-radius: 24px;
@@ -37,7 +40,11 @@ export const StyledCart = styled.div<PropsStyled>`
         right: 0;
         top: 0;
         bottom: 0;
-        background: linear-gradient(181.09deg, rgba(0, 0, 0, 0) 57.15%, #000000 110.73%);
+        background: linear-gradient(
+          181.09deg,
+          rgba(0, 0, 0, 0) 57.15%,
+          #000000 110.73%
+        );
         display: none;
         :hover {
           display: flex;
@@ -48,12 +55,11 @@ export const StyledCart = styled.div<PropsStyled>`
           padding: 20px;
           font-weight: 600;
           font-size: 20px;
-          
         }
       }
       .ff-responsive {
-        width:300px !important;
-        height:450px !important;
+        width: 300px !important;
+        height: 450px !important;
       }
       .header-card-art-work {
         display: flex;
@@ -66,7 +72,7 @@ export const StyledCart = styled.div<PropsStyled>`
         .date-time {
           font-weight: 600;
           font-size: 14px;
-          background-color: #FC636B;
+          background-color: #fc636b;
           color: #ffffff;
           /* border: 2px solid #FC636B; */
           border-radius: 30px;
@@ -75,21 +81,21 @@ export const StyledCart = styled.div<PropsStyled>`
           width: max-content;
           height: 24px;
         }
-        >img {
+        > img {
           width: 36px;
           height: 36px;
           margin-top: -6px;
           cursor: pointer;
-          }
         }
+      }
       /* padding-top: 100%; */
-      /* background-image: ${props => `url(${props.src})`};
+      /* background-image: ${(props) => `url(${props.src})`};
       background-size: contain;
       background-repeat: no-repeat;
       [data-animation] {
       animation: var(--animn, none) var(--animdur, 0s) var(--animtf, linear) var(--animdel, 0s) var(--animic, infinite) var(--animdir, alternate) var(--animfm, none) var(--animps, running);
        }  */
-       .avatar {
+      .avatar {
         width: 100%;
         height: 100%;
         position: absolute;
@@ -107,11 +113,15 @@ export const StyledCart = styled.div<PropsStyled>`
           right: 0;
           top: 0;
           bottom: 0;
-          background: linear-gradient(181.09deg, rgba(0, 0, 0, 0) 57.15%, #000000 110.73%);
-          display: none;     
+          background: linear-gradient(
+            181.09deg,
+            rgba(0, 0, 0, 0) 57.15%,
+            #000000 110.73%
+          );
+          display: none;
           display: flex;
           flex-direction: column;
-          justify-content: flex-end;   
+          justify-content: flex-end;
           .title {
             padding: 20px;
             font-weight: 600;
@@ -120,9 +130,8 @@ export const StyledCart = styled.div<PropsStyled>`
           }
         }
       }
-      
     }
-  
+
     /* .name {
       font-weight: 600;
       font-size: 16px;
@@ -131,7 +140,7 @@ export const StyledCart = styled.div<PropsStyled>`
       cursor: pointer;
     } */
 
-    .wrapper-info{
+    .wrapper-info {
       margin-top: 10px;
       color: #333435;
       .title {
@@ -147,12 +156,12 @@ export const StyledCart = styled.div<PropsStyled>`
         .copy {
           font-size: 12px;
           cursor: pointer;
-          
+
           img {
             width: 18px;
             height: 18px;
           }
-        }     
+        }
       }
       .number {
         font-weight: 600;
@@ -161,12 +170,12 @@ export const StyledCart = styled.div<PropsStyled>`
         margin: 3px 0px;
         display: flex;
         justify-content: space-between;
-        .btn-swap{
-          padding:0 16px !important;
-          line-height:23px !important;
+        .btn-swap {
+          padding: 0 16px !important;
+          line-height: 23px !important;
           background: linear-gradient(45deg, #1cace8, #07dce6);
-          a{
-            color:#ffffff;
+          a {
+            color: #ffffff;
           }
         }
         img {
@@ -177,11 +186,10 @@ export const StyledCart = styled.div<PropsStyled>`
       }
     }
   }
-
 `
 
 export const ButtonStyle = styled.div`
-  background: linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+  background: linear-gradient(270deg, #19a3dd -16.5%, #badeb7 117.25%);
   border-radius: 100px;
   display: flex;
   justify-content: center;
@@ -192,13 +200,14 @@ export const ButtonStyle = styled.div`
   line-height: 24px;
   color: #ffffff;
   cursor: pointer;
-  >img, span {
+  > img,
+  span {
     margin-right: 5px;
   }
-`;
+`
 
 export const ButtonBuyStyle = styled.div`
-  background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
+  background: linear-gradient(270deg, #19a3dd -16.5%, #badeb7 117.25%);
   border-radius: 100px;
   display: flex;
   justify-content: center;
@@ -212,19 +221,18 @@ export const ButtonBuyStyle = styled.div`
   position: relative;
   cursor: pointer;
   ::before {
-    content:"";
-    position:absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    border-radius:50px; 
-    padding: 2px; 
-    background:linear-gradient(270deg, #19A3DD -16.5%, #BADEB7 117.25%);
-    -webkit-mask: 
-      linear-gradient(#fff 0 0) content-box, 
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50px;
+    padding: 2px;
+    background: linear-gradient(270deg, #19a3dd -16.5%, #badeb7 117.25%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
       linear-gradient(#fff 0 0);
-    -webkit-mask-composite: destination-out; 
-    mask-composite: exclude; 
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
   }
-`;
+`

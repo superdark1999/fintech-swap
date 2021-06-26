@@ -23,7 +23,8 @@ import {
   ImageStyled,
   DetailTabpane,
   HeaderStyled,
-  TableStyled
+  TableStyled,
+  VideoStyled,
 } from './styled'
 import { isMobile } from 'react-device-detect'
 import { dataHistory, columnHistory } from './Mock'
@@ -238,18 +239,40 @@ const DetaiArtWork = ({ id }: any) => {
             </div>
           </Row>
 
-          {!isMobile && <div className="social-icon">
-            <div className="icon"><img src={Facebook} alt="" /></div>
-            <div className="icon"><img src={Telegram} alt="" /></div>
-            <div className="icon" onClick={() => handleCopy(`${window.location.origin}/artwork/detail/${NFTDetail?.NFTType}/${NFTDetail?._id}`)}>
-              {isCopied ? <span><CheckOutlined /></span> : <img src={Copy} alt="copy-artwork" />}
+          {!isMobile && (
+            <div className="social-icon">
+              <div className="icon">
+                <img src={Facebook} alt="" />
+              </div>
+              <div className="icon">
+                <img src={Telegram} alt="" />
+              </div>
+              <div
+                className="icon"
+                onClick={() =>
+                  handleCopy(
+                    `${window.location.origin}/artwork/detail/${NFTDetail?.NFTType}/${NFTDetail?._id}`,
+                  )
+                }
+              >
+                {isCopied ? (
+                  <span>
+                    <CheckOutlined />
+                  </span>
+                ) : (
+                  <img src={Copy} alt="copy-artwork" />
+                )}
+              </div>
             </div>
-          </div>}
+          )}
         </HeaderStyled>
         {NFTDetail?.type === 'video' ? (
-          <video style={{}} width="100%" height="100%" controls autoPlay muted>
-            <source src={NFTDetail?.contentUrl} type="video/mp4" />
-          </video>
+          <VideoStyled>
+            <div className="bg-image"></div>
+            <video autoPlay muted controls>
+              <source src={NFTDetail?.contentUrl} type="video/mp4" />
+            </video>
+          </VideoStyled>
         ) : (
           <ImageStyled bgImage={NFTDetail?.contentUrl}>
             <div className="bg-image"></div>
@@ -408,11 +431,11 @@ const DetaiArtWork = ({ id }: any) => {
                   <div className="comment">This is amazing</div>
                   <div className="time">30 minutes ago</div>
                 </ReviewStyled>
-                
-                <FooterStyled>
-                <input placeholder="Write a comment"/> <ButtonTrade>Send</ButtonTrade>
-                </FooterStyled>
 
+                <FooterStyled>
+                  <input placeholder="Write a comment" />{' '}
+                  <ButtonTrade>Send</ButtonTrade>
+                </FooterStyled>
               </ScrollReview>
             </TabPane>
           </Tabs>

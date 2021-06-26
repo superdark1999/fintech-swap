@@ -2,8 +2,20 @@ import React, { useEffect, useState, useRef } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
-import { Row, Col, Tabs, Modal, Input, Form, Button, Radio, Menu, Dropdown, InputNumber } from 'antd'
-import { DownOutlined, SyncOutlined, CheckOutlined } from '@ant-design/icons';
+import {
+  Row,
+  Col,
+  Tabs,
+  Modal,
+  Input,
+  Form,
+  Button,
+  Radio,
+  Menu,
+  Dropdown,
+  InputNumber,
+} from 'antd'
+import { DownOutlined, SyncOutlined, CheckOutlined } from '@ant-design/icons'
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import Loadmore from 'components-v2/Loadmore'
 import StatusBar from 'components-v2/StatusBar'
@@ -18,7 +30,7 @@ import { useActiveWeb3React } from '../../../../wallet/hooks'
 import OnsSaleCard from './OnSaleCard'
 import _ from 'lodash'
 import { Alert } from 'antd'
-import notification from 'components-v2/Alert';
+import notification from 'components-v2/Alert'
 import { getCompactString } from 'utils'
 import { RegexNumber100000 } from '../../constants'
 
@@ -51,14 +63,18 @@ export default function MyCollectionCard({ data, option }: any) {
     setIsPrcessing(true)
     const tokenId = data?.tokenId
     setIsPrcessing(true)
-    marketServicesMethod?.setTokenPrice(tokenId, value.lucky)
+    marketServicesMethod
+      ?.setTokenPrice(tokenId, value.lucky)
       .then((dt) => {
         if (dt?.hash) {
           setPrice({ id: data?._id, NFTType: 'buy' }).then(({ status }) => {
             if (status == 200) {
               history.push('/my-profile/mycollection/checkingToSell')
             } else {
-              notification('error', { message: 'Error', description: 'Something when wrong, please try again later.' })
+              notification('error', {
+                message: 'Error',
+                description: 'Something when wrong, please try again later.',
+              })
               setIsPrcessing(false)
             }
           })
@@ -79,12 +95,13 @@ export default function MyCollectionCard({ data, option }: any) {
       .then(
         _.debounce(async (dt) => {
           if (dt.hash) {
-            const tempIsNFTCanSell = await NFTServicesMethod?.isTokenReadyToSell(tokenId)
+            const tempIsNFTCanSell =
+              await NFTServicesMethod?.isTokenReadyToSell(tokenId)
             setIsNFTCanSell(tempIsNFTCanSell)
             setIsPrcessing(false)
             setApprovingMarket(false)
           }
-        }, 20000)
+        }, 20000),
       )
       .catch((err) => {
         notification('error', { message: 'Error', description: err?.message })
@@ -96,14 +113,18 @@ export default function MyCollectionCard({ data, option }: any) {
   const onSubmitRuleAuction = (value: any) => {
     const tokenId = data?.tokenId
     setIsPrcessing(true)
-    marketServicesMethod?.setTokenBidInfo(tokenId, value.price, value.stepPrice)
+    marketServicesMethod
+      ?.setTokenBidInfo(tokenId, value.price, value.stepPrice)
       .then((dt) => {
         if (dt?.hash) {
           setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
             if (status == 200) {
               history.push('/my-profile/mycollection/checkingToSell')
             } else {
-              notification('error', { message: 'Error', description: 'Something when wrong, please try again later.' })
+              notification('error', {
+                message: 'Error',
+                description: 'Something when wrong, please try again later.',
+              })
               setIsPrcessing(false)
             }
           })
@@ -115,20 +136,26 @@ export default function MyCollectionCard({ data, option }: any) {
       })
     setRuleAuctionModal(false)
   }
-  const onSubmitSwapItem = ()=>{
+  const onSubmitSwapItem = () => {
     const tokenId = data?.tokenId
     setIsPrcessing(true)
-    marketServicesMethod?.listNFTToSWap(tokenId)
+    marketServicesMethod
+      ?.listNFTToSWap(tokenId)
       .then((dt) => {
         if (dt?.hash) {
-          setPrice({ id: data?._id, NFTType: 'swap-store' }).then(({ status }) => {
-            if (status == 200) {
-              history.push('/my-profile/mycollection/checkingToSell')
-            } else {
-              notification('error', { message: 'Error', description: 'Something when wrong, please try again later.' })
-              setIsPrcessing(false)
-            }
-          })
+          setPrice({ id: data?._id, NFTType: 'swap-store' }).then(
+            ({ status }) => {
+              if (status == 200) {
+                history.push('/my-profile/mycollection/checkingToSell')
+              } else {
+                notification('error', {
+                  message: 'Error',
+                  description: 'Something when wrong, please try again later.',
+                })
+                setIsPrcessing(false)
+              }
+            },
+          )
         }
       })
       .catch((err) => {
@@ -138,22 +165,25 @@ export default function MyCollectionCard({ data, option }: any) {
     setRuleAuctionModal(false)
   }
 
-  const onCancelItemOnMarket = ()=>{
-    if(marketServicesMethod){
-      if(data?.NFTType==='buy'||data?.NFTType==='auction'){
+  const onCancelItemOnMarket = () => {
+    if (marketServicesMethod) {
+      if (data?.NFTType === 'buy' || data?.NFTType === 'auction') {
         setIsPrcessing(true)
-        marketServicesMethod?.cancelSellToken(data?.tokenId).then((data)=>{
-          cancelSellNFT({id:data?._id}).then(({status})=>{
+        marketServicesMethod?.cancelSellToken(data?.tokenId).then((data) => {
+          cancelSellNFT({ id: data?._id }).then(({ status }) => {
             if (status == 200) {
               history.push('/my-profile/mycollection/checkingToSell')
             } else {
-              notification('error', { message: 'Error', description: 'Something when wrong, please try again later.' })
+              notification('error', {
+                message: 'Error',
+                description: 'Something when wrong, please try again later.',
+              })
               setIsPrcessing(false)
             }
           })
         })
-      }else{
-        marketServicesMethod?.cancelListNFT(data?.tokenId).then((data)=>{
+      } else {
+        marketServicesMethod?.cancelListNFT(data?.tokenId).then((data) => {
           console.log(data)
         })
       }
@@ -178,20 +208,22 @@ export default function MyCollectionCard({ data, option }: any) {
           )}
           {isNFTCanSell && !isProcessing && (
             <>
-            <Dropdown className="dropdown-action" overlay={menu}>
-             <ButtonBuy>
-               Sell  <DownOutlined style={{marginLeft:10}} />
-             </ButtonBuy>
-           </Dropdown>
-           <ButtonBuy className="btn-swap" onClick={onSubmitSwapItem}>Swap</ButtonBuy>
+              <Dropdown className="dropdown-action" overlay={menu}>
+                <ButtonBuy>
+                  Sell <DownOutlined style={{ marginLeft: 10 }} />
+                </ButtonBuy>
+              </Dropdown>
+              <ButtonBuy className="btn-swap" onClick={onSubmitSwapItem}>
+                Swap
+              </ButtonBuy>
             </>
           )}
           {approvingMarket && !isNFTCanSell && (
             <>
               <ButtonBuy className="disabled">
-               Sell  <DownOutlined style={{marginLeft:10}} />
-             </ButtonBuy>
-             <ButtonBuy className="disabled">Swap</ButtonBuy>
+                Sell <DownOutlined style={{ marginLeft: 10 }} />
+              </ButtonBuy>
+              <ButtonBuy className="disabled">Swap</ButtonBuy>
             </>
           )}
           {renderQRCode()}
@@ -200,7 +232,9 @@ export default function MyCollectionCard({ data, option }: any) {
     } else if (status === 'readyToSell') {
       return (
         <div className="group-button">
-          <ButtonCancel height="40px" onClick={onCancelItemOnMarket} >Cancel</ButtonCancel>
+          <ButtonCancel height="40px" onClick={onCancelItemOnMarket}>
+            Cancel
+          </ButtonCancel>
           {renderQRCode()}
         </div>
       )
@@ -212,9 +246,13 @@ export default function MyCollectionCard({ data, option }: any) {
   const renderActionItem = () => {
     return (
       <div className="group-btn-action">
-        {(isProcessing || option === 'pending' || approvingMarket) && (<StatusBar type='processing' label="processing" />)}
+        {(isProcessing || option === 'pending' || approvingMarket) && (
+          <StatusBar type="processing" label="processing" />
+        )}
         {!isNFTCanSell && !approvingMarket && data?.status == 'approved' && (
-           <ButtonBuy height="40px" onClick={onAllowSellItem}>Public NFT</ButtonBuy>
+          <ButtonBuy height="40px" onClick={onAllowSellItem}>
+            Public NFT
+          </ButtonBuy>
         )}
       </div>
     )
@@ -222,24 +260,18 @@ export default function MyCollectionCard({ data, option }: any) {
   const handleMenuClick = (dt: any) => {
     if (dt.key === 'sell') {
       setShowModalsetPrice(true)
-    } else if(dt.key === 'aution') {
+    } else if (dt.key === 'aution') {
       setRuleAuctionModal(true)
     }
   }
   // menu dropdown choose allow to sell
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="sell" >
-        Sell
-      </Menu.Item>
-      <Menu.Item key="aution" >
-        Aution
-      </Menu.Item>
+      <Menu.Item key="sell">Sell</Menu.Item>
+      <Menu.Item key="aution">Aution</Menu.Item>
     </Menu>
-  );
-  const onCancel = () => {
-
-  }
+  )
+  const onCancel = () => {}
   //render status from API
   return (
     <CartStyled>
@@ -273,13 +305,19 @@ export default function MyCollectionCard({ data, option }: any) {
             </div>
             {data?.TXHash && (
               <div style={{ display: 'flex', marginBottom: 10 }}>
-                <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
-                  ID: {' '}
-                </div>
-                <a href="#" target="_blank" className="number">{getCompactString(data?.TXHash, 10)}</a>
+                <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </div>
+                <a href="#" target="_blank" className="number">
+                  {getCompactString(data?.TXHash, 10)}
+                </a>
               </div>
             )}
-            <div style={{ color: '#AFBAC5', fontWeight: 600, textTransform: 'capitalize' }}>
+            <div
+              style={{
+                color: '#AFBAC5',
+                fontWeight: 600,
+                textTransform: 'capitalize',
+              }}
+            >
               Type: {data?.type}
             </div>
           </div>
@@ -303,13 +341,19 @@ export default function MyCollectionCard({ data, option }: any) {
               {
                 pattern: RegexNumber100000,
                 message: 'The price must be less than 100,000',
-              }
+              },
             ]}
-            validateTrigger='onBlur'
+            validateTrigger="onBlur"
           >
             <InputNumber
-              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              style={{ borderRadius: '16px', overflow: 'hidden', width: '100%' }}
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+              }
+              style={{
+                borderRadius: '16px',
+                overflow: 'hidden',
+                width: '100%',
+              }}
               placeholder="Enter price"
             />
           </Form.Item>
@@ -345,12 +389,18 @@ export default function MyCollectionCard({ data, option }: any) {
               {
                 pattern: RegexNumber100000,
                 message: 'The price must be less than 100,000',
-              }
+              },
             ]}
           >
             <InputNumber
-              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              style={{ borderRadius: '16px', overflow: 'hidden', width: '100%' }}
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+              }
+              style={{
+                borderRadius: '16px',
+                overflow: 'hidden',
+                width: '100%',
+              }}
               placeholder="Enter NFT auction price"
             />
           </Form.Item>
@@ -362,18 +412,30 @@ export default function MyCollectionCard({ data, option }: any) {
               {
                 pattern: RegexNumber100000,
                 message: 'The price must be less than 100,000',
-              }
+              },
             ]}
-            validateTrigger='onBlur'
+            validateTrigger="onBlur"
           >
             <InputNumber
-              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              style={{ borderRadius: '16px', overflow: 'hidden', width: '100%' }}
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+              }
+              style={{
+                borderRadius: '16px',
+                overflow: 'hidden',
+                width: '100%',
+              }}
               placeholder="Enter step price of NFT"
             />
           </Form.Item>
-          <p><span style={{ color: 'red' }}>*</span> <b>Note</b>:The price step is the way to calculate the price increase for each offer NFT</p>
-          <p>Example: NFT has a current price of 300 LUCKY and a price step of 100 LUCKY</p>
+          <p>
+            <span style={{ color: 'red' }}>*</span> <b>Note</b>:The price step
+            is the way to calculate the price increase for each offer NFT
+          </p>
+          <p>
+            Example: NFT has a current price of 300 LUCKY and a price step of
+            100 LUCKY
+          </p>
           <p>then the purchase price after that is 400 LUCKY</p>
           <Form.Item>
             <div
