@@ -18,6 +18,7 @@ import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 
 import { HeartOutlined, CheckOutlined } from '@ant-design/icons'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
+import { getCompactString} from 'utils'
 const { TabPane } = Tabs
 export default () => {
   const [userState] = useUserStore()
@@ -61,7 +62,7 @@ export default () => {
           <div className="info-detail">
             <div>
               <div className="name">
-                <span>{userState?.name}</span>
+                <span>{userState?.name||getCompactString(userState?.walletAddress,6)}</span>
                 <img src={Checkmark} />
               </div>
               <div className="rank">
