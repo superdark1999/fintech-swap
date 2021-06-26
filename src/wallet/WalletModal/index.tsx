@@ -228,7 +228,7 @@ export default function WalletModal({
               link={option.href}
               header={option.name}
               subheader={null}
-              icon={`${path}/${option.iconName}`}
+              icon={require('assets/images/' + option.iconName)}
             />
           )
         }
@@ -248,7 +248,7 @@ export default function WalletModal({
                 header={'Install Metamask'}
                 subheader={null}
                 link={'https://metamask.io/'}
-                icon={require('../../assets/images/' + option.iconName)}
+                icon={require('assets/images/' + option.iconName)}
               />
             )
           } else {
@@ -282,8 +282,8 @@ export default function WalletModal({
             link={option.href}
             header={option.name}
             subheader={null} //use option.descriptio to bring back multi-line
-            icon={require('../../assets/images/' + option.iconName)}
-            //icon={""}
+            icon={require('assets/images/' + option.iconName)}
+          //icon={""}
           />
         )
       )
