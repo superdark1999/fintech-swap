@@ -185,15 +185,15 @@ function useMarketServiceChain97(){
     },[marketContract,userState.balance.BNB])
 
     const offerSwapNFT = useCallback(async(offerTokenId:string|undefined,targetTokenId:string|undefined,price:number|undefined=0 )=>{
-      let unitPrice =0
+      let unitPrice='0'
       if(price){
-        unitPrice = Number(price) * 1e18
+        unitPrice = (Number(price) * 1e18).toString()
       }
-      const estimatedGas = await marketContract.estimateGas.offerNFT(offerTokenId,targetTokenId,unitPrice)
+       const estimatedGas = await marketContract.estimateGas.offerNFT(offerTokenId,targetTokenId,unitPrice)
       if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
         throw new Error(OUT_OF_BNB)
       }
-      return marketContract.estimateGas.offferNFT(offerTokenId,targetTokenId,unitPrice)
+      return marketContract.offerNFT(offerTokenId,targetTokenId,unitPrice)
   },[marketContract,userState.balance.BNB])
 
   const confirmSwapNFT  = useCallback(async(offerTokenId:string|undefined,targetTokenId:string|undefined, address:string|undefined )=>{
@@ -201,8 +201,12 @@ function useMarketServiceChain97(){
     if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
       throw new Error(OUT_OF_BNB)
     }
-    return marketContract.estimateGas.offferNFT(offerTokenId,targetTokenId,address)
+    return marketContract.estimateGas.offerNFT(offerTokenId,targetTokenId,address)
   },[marketContract,userState.balance.BNB])
+
+  const getSwapOffers = useCallback((tokenId:string|undefined)=>{
+    return marketContract.getOffers(tokenId)
+  },[marketContract])
 
     return {
       offerSwapNFT,
@@ -223,6 +227,7 @@ function useMarketServiceChain97(){
       getTokenBidPrice,
       getHighestBidAndPrice,
       confirmSwapNFT,
+      getSwapOffers,
       marketContract
     }
 }

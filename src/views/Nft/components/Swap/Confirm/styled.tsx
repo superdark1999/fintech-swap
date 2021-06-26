@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const ConfirmStyled = styled.div`
+export const ConfirmStyled = styled.div<{isGrayFilter:any}>`
   width: 100%;
   max-width: 1100px;
   margin: 40px auto;
@@ -12,7 +12,7 @@ export const ConfirmStyled = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  filter: grayscale(100%);
+  filter: ${props=> props.isGrayFilter ? 'grayscale(100%)':''} ;
   .nft-image {
     width: 180px;
     height: 180px;

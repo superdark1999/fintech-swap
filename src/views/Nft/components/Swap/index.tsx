@@ -11,6 +11,7 @@ import { useActiveWeb3React } from 'wallet/hooks'
 import {get} from 'lodash'
 import { Container } from './styled'
 import Confirm from './Confirm'
+import useMarketService from 'services/web3Services/MarketServices'
 
 //handle modal :
 // 2 loại, mở của mình (value === 'my-item') và mở chọn sp mình swap (value === 'item-swap')
@@ -29,8 +30,9 @@ export default  () => {
 
   const history = useHistory()
   const [NFTs, setNFTs] = useState([]);
+  const [status, setStatus] = useState<string>('processing')
   const [userNFTs, setUserNFTs] = useState([])
-  const { getNFT, getDetailNFT } = useArtworkServices()
+  const { getNFT, getDetailNFT, setPrice } = useArtworkServices()
   const {id} = useParams()
 
   const nextStep = (step: number) => {
@@ -44,28 +46,30 @@ export default  () => {
   const [itemSwap, setItemSwap] = useState<any>([]);
   const NFTServicesMethod = useNFTServices()
 
+  const marketServiceMethod  = useMarketService()
+
   useEffect(() => {
-    if(account){
-      getNFT({
-        status: 'readyToSell',
-        NFTType: 'swap-store'
-      }).then(({ status, data }: any) => {
-        if (status === 200) {
-          setNFTs(data?.data || [])
-        }
+    if(id){
+      getDetailNFT({ id }).then(({ status, data }) => {
+        setItemSwap([data?.data])
       })
-      if(id){
-        getDetailNFT({ id }).then(({ status, data }) => {
-          setItemSwap([data?.data])
-        })
+    }
+    getNFT({
+      status: 'readyToSell',
+      NFTType: 'swap-store'
+    }).then(({ status, data }: any) => {
+      if (status === 200) {
+        setNFTs(data?.data || [])
       }
+    })
+    if(account){
       getNFT({
         status:'approved',
         ownerWalletAddress:account
       }).then(({status, data}:any)=>{
         if (status === 200) {
           const userNFTsRaw = data?.data||[]
-          const NFTsListSellPromise = userNFTs.map((item:any)=>{
+          const NFTsListSellPromise = userNFTsRaw.map((item:any)=>{
             return  NFTServicesMethod?.isTokenReadyToSell(item?.tokenId)
           })
           Promise.all(NFTsListSellPromise).then(data=>{
@@ -78,6 +82,17 @@ export default  () => {
   }, [account,id])
   
 
+  useEffect(()=>{
+    if(marketServiceMethod&&itemSwap?.[0]?.tokenId&&myItems?.[0]?.tokenId){
+      const {marketContract} =  marketServiceMethod
+      marketContract.on('OfferNFTs',(author, oldValue, newValue, event)=>{
+        if(author==account&& myItems?.[0]?.tokenId ==Number(oldValue) && itemSwap?.[0]?.tokenId == Number(newValue))
+        setPrice({ id: myItems?.[0]?._id, NFTType: 'swap-personal'}).then(({data,status})=>{
+          setStatus('success')
+        })
+      })
+    }
+  },[marketServiceMethod,itemSwap?.[0]?.tokenId,myItems?.[0]?.tokenId])
 
 
   const getItemSelected = (data?: any) => {
@@ -112,13 +127,14 @@ export default  () => {
           setVisible={setVisible} 
           itemSwap={itemSwap} 
           myItems={myItems}
+          setMyItems={setMyItems}
           selectMetodSwap={selectMetodSwap} 
           setSelectMethod={setSelectMethod}
         />
         )
       }
       case 3: {
-        return <Confirm itemSwap={itemSwap} myItems={myItems}/>
+        return <Confirm itemSwap={itemSwap} myItems={myItems} status={status}/>
       }
     }
   }
