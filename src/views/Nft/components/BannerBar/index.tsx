@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { Carousel } from 'antd';
 import styled from 'styled-components'
-import {useHookAirdrop } from  '../../Store'
-// import banner1 from '../../../../assets/images/banner-NFT-1.jpg'
-// import banner2 from '../../../../assets/images/banner-NFT-2.jpg'
+import { isMobile } from 'react-device-detect'
 
 export interface Banner {
     name: string,
@@ -16,8 +14,6 @@ export interface BannerProps {
 
 }
 const BannerBar:React.FC<BannerProps> = ({banners}) => {
-
-    console.log()
     return (
         <BannerBarStyled>
             <Carousel className="banner-body" autoplay>
@@ -32,12 +28,12 @@ const BannerBar:React.FC<BannerProps> = ({banners}) => {
 
 const BannerBarStyled = styled.div`
     border-radius: 24px;
-    height: 380px;
+    height: ${isMobile ? '110px' : '380px'};
     .banner-body{
-        height: 380px;
+        height: ${isMobile ? '110px' : '380px'};
         width:100%;
         img{ 
-            height: 380px;
+         height: ${isMobile ? '110px' : '380px'};
         }
     }
 `

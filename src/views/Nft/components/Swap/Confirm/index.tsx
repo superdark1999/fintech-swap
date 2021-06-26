@@ -13,13 +13,13 @@ const STATUS = {
   CANCELED: "canceled"
 }
 
-export default (props: {itemSwap: any, myItems: any}) => {
+export default (props: {itemSwap: any, myItems: any, status:string}) => {
 const {
-  itemSwap, myItems,
+  itemSwap, myItems,status
 } = props
   const renderStatus = (status: any) => {
     switch (status) {
-      case status === STATUS.SUCCESS : {
+      case STATUS.PROCESSING : {
         return (
           <div>
             <CheckOutlined style={{width: 52, height: 52, color: '#F0B90B'}}/>
@@ -29,10 +29,10 @@ const {
       }
     }
   }
-
   return (
-    <ConfirmStyled>
-        {renderStatus("success")}
+    <ConfirmStyled isGrayFilter={status!==STATUS.SUCCESS}>
+        {renderStatus(status)}
+        
         <Row justify="center">
           <div className="nft-image">
             <img  src={myItems?.[0]?.contentUrl}/>
@@ -41,7 +41,7 @@ const {
           <img src={Swap} style={isMobile ? { transform: 'rotate(90deg)'} : null} />
 
           <div className="nft-image">
-            <img className="nft-image" src={itemSwap?.[0].contentUrl}/>
+            <img className="nft-image" src={itemSwap?.[0]?.contentUrl}/>
           </div>
         </Row>
         <div className="content">
@@ -57,10 +57,10 @@ const {
             <div className="label"> New owner </div>
             <div> 26 </div>
           </div>
-          <div className="row-content">
+          {/* <div className="row-content">
             <div className="label"> Note </div>
             <div> I’ll give you some additional tokens (5 lucky) for this nft</div>
-          </div>
+          </div> */}
         </div>
         <Row justify="center"><ButtonBuy>Go to My collection</ButtonBuy></Row>
     </ConfirmStyled>

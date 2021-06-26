@@ -79,9 +79,12 @@ export default function OnSaleCard({data,}:any){
                 <div className="number"> {' ' + getCompactString(data?.TXHash,6)}</div>
               </div> 
               
-              <div className="content">
-              {data?.description}
-              </div>  
+              {
+                data?.description&&
+                  <div className="content">
+                  {data?.description}
+                </div>  
+              }
   
               <div className="organize">
                 <img src={Luckyswap} /> 
