@@ -83,7 +83,7 @@ export default function CardItem(props?: { data?: any }) {
                   height="450"
                   muted
                   controls
-                  autoPlay={playVideo}
+                  autoPlay={isMobile ? false : true}
                   loop
                 >
                   <source src={data?.contentUrl} type="video/mp4" />
