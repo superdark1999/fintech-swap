@@ -20,7 +20,6 @@ import {
   HeaderStyled,
   TableStyled
 } from './styled'
-import { isMobile } from 'react-device-detect'
 import { dataHistory, columnHistory } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices, { MARKET_ADDRESS } from 'services/web3Services/MarketServices';
@@ -330,9 +329,9 @@ const DetaiArtWork = ({ id }: any) => {
                   <div className="comment">This is amazing</div>
                   <div className="time">30 minutes ago</div>
                 </ReviewStyled>
-                
+
                 <FooterStyled>
-                <input placeholder="Write a comment"/> <ButtonTrade>Send</ButtonTrade>
+                  <input placeholder="Write a comment" /> <ButtonTrade>Send</ButtonTrade>
                 </FooterStyled>
 
               </ScrollReview>
