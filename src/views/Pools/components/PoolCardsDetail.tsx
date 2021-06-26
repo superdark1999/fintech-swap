@@ -3,35 +3,11 @@ import styled from 'styled-components'
 import Page from 'components/layout/Page'
 import { Row, Col } from 'antd'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import BigNumber from 'bignumber.js'
 import { useERC20, useStakingContract } from 'hooks/useContract'
+import useGetStateData from 'hooks/useGetStakeData';
 import { Pool } from 'state/types'
 
-// import { Row, Col } from 'antd'
-
-// export interface Pool extends PoolConfig {
-//   totalStaked?: BigNumber
-//   startBlock?: number
-//   endBlock?: number
-//   userData?: {
-//     allowance: BigNumber
-//     stakingTokenBalance: BigNumber
-//     stakedBalance: BigNumber
-//     pendingReward: BigNumber
-//   }
-// }
-
-// export interface PoolConfig {
-//   sousId: number
-//   earningToken: Token
-//   stakingToken: Token
-//   stakingLimit?: number
-//   contractAddress: Address
-//   poolCategory: PoolCategory
-//   tokenPerBlock: string
-//   sortOrder?: number
-//   harvest?: boolean
-//   isFinished?: boolean
-// }
 
 const pool = {
   earningToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a",  // XLUCKY 2
@@ -43,8 +19,6 @@ const pool = {
   
 }
 
-
-
 const staking = {
   depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
   rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a",
@@ -53,17 +27,52 @@ const staking = {
 }
 
 function PoolCardsDetail() {
-  const [modal, setModal] = useState(false);
+  const [depositModal, setDepositModal] = useState(false);
+  const [withdrawModal, setWithdrawModel] = useState(false);
+
   const [balance, setBalance] = useState(0);
+  const [value, setValue] = useState('');
   const stakingContract = useStakingContract(staking.stakingContract);
+  const {pendingReward, userAmount, userRewardDebt} = useGetStateData(staking);
 
-  // console.log("stakingContract", stakingContract);
+  console.log("userRewardDebt", pendingReward.toNumber());
+  const handleDeposit = async () => {
+    if (stakingContract) {
+      const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
+      const gasAm = await stakingContract.estimateGas.deposit(...args)
+      .catch(() => console.log("Fail estimate gas deposit"));
+      await stakingContract
+        .deposit(...args, { gasLimit: gasAm })
+        .then((response: any) => {
+          console.log('>>>>', response)
+        })
+        .catch((error: any) => {
+          console.log(error)
+        })
+    }
+  }
 
-  // const handleDeposit = () => {
-  //   console.log("handle deposit")
-  // }
+  const handleWithdraw = async () => {
+    if (stakingContract) {
+      const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
+      const gasAm = await stakingContract.estimateGas.deposit(...args)
+      .catch(() => console.log("Fail estimate gas"));
 
-  const toggle = () => setModal(!modal);
+      console.log("gas: ", gasAm);
+      await stakingContract
+        .withdraw(...args, { gasLimit: gasAm })
+        .then((response: any) => {
+          console.log('>>>>', response)
+        })
+        .catch((error: any) => {
+          console.log(error)
+        })
+    }
+  
+  }
+
+  const depositToggle = () => setDepositModal(!depositModal);
+  const withdrawToggle = () => setWithdrawModel(!withdrawModal);
 
   return (
     <>
@@ -85,12 +94,12 @@ function PoolCardsDetail() {
                 </figure>
 
                 <div className="content">
-                  <h3 className="content__title">0.000</h3>
+                  <h3 className="content__title">{userRewardDebt.div(1e18).toNumber()}</h3>
                   <span className="content__des">LUCKY earned</span>
                 </div>
 
                 <div className="box__footer">
-                  <Button color="danger" onClick={toggle}>Harvest</Button>
+                  <Button color="danger" onClick={withdrawToggle}>Harvest</Button>
                 </div>
               </div>
             </Col>
@@ -102,12 +111,12 @@ function PoolCardsDetail() {
                 </figure>
 
                 <div className="content">
-                  <h3 className="content__title">0.000</h3>
+                  <h3 className="content__title">{userAmount.div(1e18).toNumber()}</h3>
                   <span className="content__des">LuckySwap</span>
                 </div>
 
                 <div className="box__footer">
-                  <Button color="danger" onClick={toggle}>Deposit</Button>
+                  <Button color="danger" onClick={depositToggle}>Deposit</Button>
                 </div>
               </div>
             </Col>
@@ -118,15 +127,18 @@ function PoolCardsDetail() {
       </Page>
 
       <div>
-      <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle}></ModalHeader>
+      <Modal isOpen={depositModal} toggle={depositToggle}>
+        <ModalHeader toggle={depositToggle}></ModalHeader>
 
         <ModalBody>
           <Title>Deposit LuckySwap Tokens</Title>
           <Available>0 Lucky Available</Available>
 
           <BoxInput>
-            <input type="text" id="fname" name="fname" placeholder="0.000"/>
+            <input type="text" id="fname" name="fname" placeholder="0.000"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              />
             <BoxLink>
               <span className="text-lucky">lucky</span>
               <BoxButton>
@@ -137,11 +149,38 @@ function PoolCardsDetail() {
         </ModalBody>
 
         <ModalFooter>
-          <Button color="primary" onClick={toggle}>Cancel</Button>
-          <Button color="secondary" onClick={toggle} disabled>Confirm</Button>
+          <Button color="primary" onClick={depositToggle}>Cancel</Button>
+          <Button color="secondary" onClick={handleDeposit} disabled={false}>Deposit</Button>
         </ModalFooter>
       </Modal>
-    </div>
+      </div>
+      <div>
+        <Modal isOpen={withdrawModal} toggle={withdrawToggle}>
+          <ModalHeader toggle={withdrawToggle}></ModalHeader>
+
+          <ModalBody>
+            <Title>Withdraw LuckySwap Tokens</Title>
+            <Available>0 Lucky Available</Available>
+
+            <BoxInput>
+              <input type="text" id="fname" name="fname" placeholder="0.000"
+                value={value}
+               onChange={(e) => setValue(e.target.value)}/>
+              <BoxLink>
+                <span className="text-lucky">lucky</span>
+                <BoxButton>
+                  <Button>Max</Button>
+                </BoxButton>
+              </BoxLink>
+            </BoxInput>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button color="primary" onClick={withdrawToggle}>Cancel</Button>
+            <Button color="secondary" onClick={handleWithdraw} disabled={false}>Harvest</Button>
+          </ModalFooter>
+        </Modal>
+      </div>
     </>
   )
 }
@@ -319,6 +358,8 @@ const BoxDetail = styled.div`
         max-width: 200px;
         min-height: 40px;
         border-color: transparent;
+        color: #2b2e2f;
+
 
         &:hover {
           opacity: 0.7;
