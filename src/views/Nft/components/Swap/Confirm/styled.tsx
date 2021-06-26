@@ -24,6 +24,14 @@ export const ConfirmStyled = styled.div<{isGrayFilter:any}>`
       border-radius: 24px;
     }
   }
+  .rotate{
+    animation: mymove 5s infinite;
+    @keyframes mymove {
+    100% {
+      transform: rotate(180deg);
+    }
+  }
+  }
   .content {
     display: flex;
     flex-direction: column;
