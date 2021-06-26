@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { Collapse, Button, CardBody, Card, Table } from 'reactstrap'
-import { useHookAuseHookNTFirdrop } from '../Store'
+import { useHookNTF } from '../Store'
 import styled from 'styled-components'
 import moment from 'moment'
 const History: React.FC = () => {

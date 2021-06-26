@@ -18,7 +18,7 @@ function Collection() {
   useEffect(() => {
     getNFT({
       status: 'readyToSell',
-      limit:100
+      NFTType: ['buy','auction','swap-store'],
     }).then(({ status, data }) => {
       if (status == 200) {
         setNFTs(data?.data || [])

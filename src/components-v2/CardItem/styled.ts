@@ -13,7 +13,7 @@ export const StyledCart = styled.div<PropsStyled>`
   position: relative;  
   .card-art-work{
     max-width: ${props => props.width || '300px'};
-    max-height: ${props => props.height || '530px'};
+    /* max-height: ${props => props.height || '530px'}; */
     /* border: 1px solid #E7EBEF; */
     box-sizing: border-box;
     overflow: hidden;

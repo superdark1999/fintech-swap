@@ -3,14 +3,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import Lucky from 'assets/images/token.svg'
+import { CloseOutlined } from '@ant-design/icons'
 
 export default function CardOffer(props:any) {
-  const { type, onChangePrice, onChangeNote } = props
+  const { type, onChangePrice, onChangeNote, onChangeSwapMethod } = props
   const onChangeInputPrice = (event:any)=>{
     onChangePrice&&onChangePrice(event.target.value)
   }
   return (
     <CardOfferStyled>
+       <CloseOutlined style={{position:'absolute',top:10}} onClick={()=>onChangeSwapMethod(null)} />
       { type === 2 &&
         <div className="option-offer">
           <div className="input-offer">
@@ -25,7 +27,7 @@ export default function CardOffer(props:any) {
 
       <div className="option-offer">
         <div className="input-offer">
-          <label>Note for author</label>
+            <label>Note for author</label>
           <textarea placeholder="Enter note" />
           </div>
       </div>

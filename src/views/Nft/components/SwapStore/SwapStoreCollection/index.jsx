@@ -20,6 +20,7 @@ function ExploreCollection() {
     setSearchParams(name)
     getNFT({
       status: 'readyToSell',
+      NFTType: ['buy','auction','swap-store'],
     }).then(({ status, data }) => {
       if (status == 200) {
         setNFTs(data?.data || [])
