@@ -40,9 +40,9 @@ const {
 
           <img src={Swap} style={isMobile ? { transform: 'rotate(90deg)'} : null} />
 
-          {/* <div className="nft-image">
-            <img className="nft-image" src={itemSwap?.[0].contentUrl}/>
-          </div> */}
+          <div className="nft-image">
+            <img className="nft-image" src={itemSwap?.[0]?.contentUrl}/>
+          </div>
         </Row>
         <div className="content">
           <div className="row-content">
