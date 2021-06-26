@@ -23,6 +23,7 @@ function HotArtWorks() {
     getNFT(
       {
         status: 'readyToSell',
+        NFTType: ['buy','auction'],
       },
       true,
     )

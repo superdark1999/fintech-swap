@@ -128,6 +128,7 @@ const TabOnSale = () => {
     if(tab=='onstore'){
       const query = {
         status: 'readyToSell',
+        NFTType: ['buy','auction','swap-store'],
         ownerWalletAddress: account,
       }
       getNFT(query).then(({ status, data }) => {

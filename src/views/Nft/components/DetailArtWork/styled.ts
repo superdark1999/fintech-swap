@@ -200,6 +200,12 @@ export const DetailStyled = styled.div`
       }
     }
   }
+  .btn-swap{
+          background: linear-gradient(45deg, #1cace8, #07dce6);
+          a{
+            color:#ffffff;
+          }
+    }
   /* overflow: auto; */
   .header-detail {
     display: flex;
