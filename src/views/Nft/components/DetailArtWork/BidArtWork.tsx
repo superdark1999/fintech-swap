@@ -9,7 +9,7 @@ import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
 import { ButtonStyle, ButtonBuyStyle } from 'components-v2/cart/styled'
-import { SwapOutlined, CloseOutlined, StarFilled, CheckOutlined } from '@ant-design/icons'
+import { SwapOutlined, CloseOutlined, StarFilled, CheckOutlined, PlusCircleFilled, MinusCircleFilled} from '@ant-design/icons'
 import {
   DetailStyled,
   ReviewStyled,
@@ -17,8 +17,10 @@ import {
   FooterStyled,
   ImageStyled,
   DetailTabpane,
-  HeaderStyled
+  HeaderStyled,
+  TableStyled
 } from './styled'
+import {isMobile} from 'react-device-detect'
 import { dataHistory, columnHistory } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices, {
@@ -247,13 +249,16 @@ const DetaiArtWork = ({ id }: any) => {
             </div>
           </Row>
 
-          <div className="social-icon">
-            <div className="icon"><img src={Facebook} alt="" /></div>
-            <div className="icon"><img src={Telegram} alt="" /></div>
-            <div className="icon" onClick={() => handleCopy(`${window.location.origin}/artwork/detail/${NFTDetail?.NFTType}/${NFTDetail?._id}`)}>
-              {isCopied ? <span><CheckOutlined /></span> : <img src={Copy} alt="copy-artwork" />}
-            </div>
-          </div>
+          {
+            !isMobile &&
+              <div className="social-icon">
+                <div className="icon"><img src={Facebook} alt="" /></div>
+                <div className="icon"><img src={Telegram} alt="" /></div>
+                <div className="icon" onClick={() => handleCopy(`${window.location.origin}/artwork/detail/${NFTDetail?.NFTType}/${NFTDetail?._id}`)}>
+                  {isCopied ? <span><CheckOutlined /></span> : <img src={Copy} alt="copy-artwork" />}
+                </div>
+              </div>
+            }
         </HeaderStyled>
         {NFTDetail?.type === 'video' ?
           <video style={{ height: 'calc(100vh - 300px)' }} width="100%" height="100%" autoPlay muted><source src={NFTDetail?.contentUrl} type="video/mp4" /></video>
@@ -262,7 +267,18 @@ const DetaiArtWork = ({ id }: any) => {
             {/* <img src={NFTDetail?.contentUrl} /> */}
             <img className="avatar" src={NFTDetail?.contentUrl} alt="" loading="lazy" />
           </ImageStyled>}
+          {/* {
+            isMobile &&
+            <div className={isMobile ? "social-icon mobile" : "social-icon"}>
+              <div className="icon"><img src={Facebook} alt="" /></div>
+              <div className="icon"><img src={Telegram} alt="" /></div>
+              <div className="icon" onClick={() => handleCopy(`${window.location.origin}/artwork/detail/${NFTDetail?.NFTType}/${NFTDetail?._id}`)}>
+                {isCopied ? <span><CheckOutlined /></span> : <img src={Copy} alt="copy-artwork" />}
+              </div>
+            </div>
+          } */}
       </Col>
+  
       <Col
         className="gutter-row"
         // style={{position: 'relative'}}
@@ -273,7 +289,7 @@ const DetaiArtWork = ({ id }: any) => {
       >
         <DetailStyled>
 
-          <p className="title">{NFTDetail?.title}</p>
+          {/* <p className="title">{NFTDetail?.title}</p>
           <div className="token">
             Current Bid:{price} LUCKY
             <img src={Token} alt="" />
@@ -291,7 +307,47 @@ const DetaiArtWork = ({ id }: any) => {
                 onChange={(e: any) => setStepNextOffer(e)}
               />
             </div>
-            {renderButton()}
+            
+          </Row> */}
+           <p className="title">{NFTDetail?.title}</p>
+          <Row>
+           
+            <Col 
+              xl={{ span: 12 }}
+              md={{ span: 12 }}
+              sm={{ span: 24 }}
+              className="bid-info"
+              // style={{ width: '100%', display: 'flex', flexWrap: 'wrap'}}
+              >
+                <div className="group-item-bid">
+                  <div className="label">Current bid</div>
+                  <div className="value">{price}</div>
+                </div>
+                <div className="group-item-bid">
+                  <div className="label">Jump step</div>
+                  <div className="value">{step}</div>
+                </div>
+                <div className="group-item-bid">
+                  <div className="label">Your step</div>
+                  <div className="value">
+                      <MinusCircleFilled style={nextStepOffer <= 1 ? { pointerEvents: 'none', opacity: 0.6 } : {}} onClick={() => setStepNextOffer(nextStepOffer-1)}/> 
+                        <span style={{padding: '0 5px'}}>{nextStepOffer}</span>
+                      <PlusCircleFilled onClick={() => setStepNextOffer(nextStepOffer+1)}/>
+                  </div>
+                </div>
+                <div className="group-item-bid">
+                  <div className="label">Your bid</div>
+                  <div className="value your-bid">{price + step * nextStepOffer} <img src={Token} /></div>
+                </div>
+            </Col>
+            <Col
+              xl={{ span: 12 }}
+              md={{ span: 12 }}
+              sm={{ span: 24 }}
+              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: isMobile ? 'center' : 'flex-end'}}
+            >
+              {renderButton()}
+            </Col>
           </Row>
 
 
@@ -340,11 +396,11 @@ const DetaiArtWork = ({ id }: any) => {
             </TabPane>
 
             <TabPane tab="History" key="2">
-              <Table
+              <TableStyled
                 columns={columnHistory}
                 dataSource={dataHistory}
                 size="middle"
-                scroll={{ x: 'calc(300px + 50%)', y: 240 }}
+                scroll={{ x: 'calc(300px + 50%)', y: 500 }}
               />
             </TabPane>
             <TabPane tab="Bidding" key="3">
@@ -399,6 +455,11 @@ const DetaiArtWork = ({ id }: any) => {
                   <div className="comment">This is amazing</div>
                   <div className="time">30 minutes ago</div>
                 </ReviewStyled>
+
+              <FooterStyled>
+                <input placeholder="Write a comment"/> <ButtonTrade>Send</ButtonTrade>
+              </FooterStyled>
+
               </ScrollReview>
             </TabPane>
           </Tabs>
@@ -597,7 +658,7 @@ const BiddingTable = ({ NFTInfo, bids, refreshingAfterCancelBid, onSetProccessin
         },
       ]
   return (
-    <Table
+    <TableStyled
       columns={columnBidding}
       dataSource={bids}
       size="middle"

@@ -23,7 +23,9 @@ import {
   ImageStyled,
   DetailTabpane,
   HeaderStyled,
+  TableStyled
 } from './styled'
+import { isMobile } from 'react-device-detect'
 import { dataHistory, columnHistory } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices, {
@@ -236,30 +238,13 @@ const DetaiArtWork = ({ id }: any) => {
             </div>
           </Row>
 
-          <div className="social-icon">
-            <div className="icon">
-              <img src={Facebook} alt="" />
+          {!isMobile && <div className="social-icon">
+            <div className="icon"><img src={Facebook} alt="" /></div>
+            <div className="icon"><img src={Telegram} alt="" /></div>
+            <div className="icon" onClick={() => handleCopy(`${window.location.origin}/artwork/detail/${NFTDetail?.NFTType}/${NFTDetail?._id}`)}>
+              {isCopied ? <span><CheckOutlined /></span> : <img src={Copy} alt="copy-artwork" />}
             </div>
-            <div className="icon">
-              <img src={Telegram} alt="" />
-            </div>
-            <div
-              className="icon"
-              onClick={() =>
-                handleCopy(
-                  `${window.location.origin}/artwork/detail/${NFTDetail?.NFTType}/${NFTDetail?._id}`,
-                )
-              }
-            >
-              {isCopied ? (
-                <span>
-                  <CheckOutlined />
-                </span>
-              ) : (
-                <img src={Copy} alt="copy-artwork" />
-              )}
-            </div>
-          </div>
+          </div>}
         </HeaderStyled>
         {NFTDetail?.type === 'video' ? (
           <video style={{}} width="100%" height="100%" controls autoPlay muted>
@@ -367,7 +352,7 @@ const DetaiArtWork = ({ id }: any) => {
             </TabPane>
 
             <TabPane tab="History" key="2">
-              <Table
+              <TableStyled
                 columns={columnHistory}
                 dataSource={dataHistory}
                 size="middle"
@@ -423,6 +408,11 @@ const DetaiArtWork = ({ id }: any) => {
                   <div className="comment">This is amazing</div>
                   <div className="time">30 minutes ago</div>
                 </ReviewStyled>
+                
+                <FooterStyled>
+                <input placeholder="Write a comment"/> <ButtonTrade>Send</ButtonTrade>
+                </FooterStyled>
+
               </ScrollReview>
             </TabPane>
           </Tabs>
