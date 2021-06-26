@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Switch } from 'react-router-dom'
 import Page from './components/Page'
 import styled from 'styled-components'
@@ -10,9 +10,14 @@ import HotArtWorks from './components/HotArtWorks/index'
 import HotSwap from './components/HotSwap/index'
 import Collection from './components/Collection/index'
 import { isMobile } from 'react-device-detect'
+import {useHookAirdrop } from  './Store'
 
 const NFTContainer = (props: any) => {
   const [onShowSidebar, setShowSidebar] = useState(false)
+  const [stateBanner, actions] = useHookAirdrop()
+    useEffect(()=>{
+      actions.getBanner('home-nft')
+    },[])
   return (
     <Switch>
       <Page>
@@ -31,7 +36,7 @@ const NFTContainer = (props: any) => {
             </div> */}
             {/* <ModalLucky/> */}
             <div className="banner-nft">
-              <BannerBar />
+              <BannerBar banners ={stateBanner.banner}/>
             </div>
             <div className="hot-artists-nft space-collection">
               <HotArtists />

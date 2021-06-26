@@ -1,14 +1,30 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Carousel } from 'antd';
 import styled from 'styled-components'
-import banner1 from '../../../../assets/images/banner-NFT-1.jpg'
-import banner2 from '../../../../assets/images/banner-NFT-2.jpg'
-function BannerBar() {
+import {useHookAirdrop } from  '../../Store'
+// import banner1 from '../../../../assets/images/banner-NFT-1.jpg'
+// import banner2 from '../../../../assets/images/banner-NFT-2.jpg'
+
+export interface Banner {
+    name: string,
+    link: string,
+    type: string,
+}
+
+export interface BannerProps {
+    banners: Banner[]
+
+}
+const BannerBar:React.FC<BannerProps> = ({banners}) => {
+
+    console.log()
     return (
         <BannerBarStyled>
             <Carousel className="banner-body" autoplay>
-                <img src={banner1} alt="banner-1" />
-                <img src={banner2} alt="banner-2" />
+                {banners.length !== 0 && banners.map((src) => (
+                       <img src={`https://dashboard.luckyswap.exchange/${src.link}`} alt="banner" />
+                  ))
+                } 
             </Carousel>
         </BannerBarStyled>
     )

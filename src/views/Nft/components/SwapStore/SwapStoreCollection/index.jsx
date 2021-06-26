@@ -5,6 +5,8 @@ import Cart from 'components-v2/CardItem'
 import FilterBar from './filterBar'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import BannerBar from '../../../components/BannerBar/index'
+import {useHookAirdrop } from  '../../../Store'
+
 // export const option: React.ReactElement<OptionProps> = Select.Option
 function ExploreCollection() {
   const [NFTs, setNFTs] = useState([])
@@ -25,13 +27,19 @@ function ExploreCollection() {
     })
   }, [])
 
+  const [onShowSidebar, setShowSidebar] = useState(false)
+  const [stateBanner, actions] = useHookAirdrop()
+    useEffect(()=>{
+      actions.getBanner('swap')
+    },[])
+
   return (
     <ExploreCollectionStyled>
       <div className="header-artists">
         <div className="title-artists">Swap Store</div>
       </div>
       <div className="banner-nft">
-        <BannerBar />
+        <BannerBar banners={stateBanner.banner} />
       </div>
       <FilterBar searchParams={searchParams} />
       <div className="content-collect">

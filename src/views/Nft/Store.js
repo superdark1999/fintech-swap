@@ -43,8 +43,9 @@ const stateDefault = {
   objCol: {},
   historys: []
 }
+const banner = []
 const Store = createStore({
-  initialState: { ...stateDefault },
+  initialState: { ...stateDefault, banner },
   actions: {
    
     getHistorys: () => ({ setState, getState }) => {
@@ -53,7 +54,12 @@ const Store = createStore({
         setState({ historys: operations })
       })
     },
-    
+    getBanner: (type) => ({ setState, getState }) => {
+      axios(`https://dashboard.luckyswap.exchange/banner${type ? "/"+ type : ""}`).then((res) => {
+        console.log(res.data)
+        setState({banner: res.data})
+      })
+    },
   },
   name: 'Sale Store',
 })
