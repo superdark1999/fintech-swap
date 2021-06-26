@@ -10,11 +10,11 @@ import HotArtWorks from './components/HotArtWorks/index'
 import HotSwap from './components/HotSwap/index'
 import Collection from './components/Collection/index'
 import { isMobile } from 'react-device-detect'
-import {useHookAirdrop } from  './Store'
+import {useHookNTF } from  './Store'
 
 const NFTContainer = (props: any) => {
   const [onShowSidebar, setShowSidebar] = useState(false)
-  const [stateBanner, actions] = useHookAirdrop()
+  const [stateBanner, actions] = useHookNTF()
     useEffect(()=>{
       actions.getBanner('home-nft')
     },[])

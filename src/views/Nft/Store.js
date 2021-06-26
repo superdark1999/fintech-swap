@@ -63,7 +63,7 @@ const Store = createStore({
   },
   name: 'Sale Store',
 })
-export const useHookAirdrop = createHook(Store)
+export const useHookNTF = createHook(Store)
 export const Container = createContainer(Store, {
   onInit: () => ({ setState }, props) => {
     setState({ ...props })

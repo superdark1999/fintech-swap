@@ -5,7 +5,7 @@ import Cart from 'components-v2/CardItem'
 import FilterBar from './filterBar'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import BannerBar from '../../../components/BannerBar/index'
-import {useHookAirdrop } from  '../../../Store'
+import {useHookNTF } from  '../../../Store'
 
 // export const option: React.ReactElement<OptionProps> = Select.Option
 function ExploreCollection() {
@@ -28,7 +28,7 @@ function ExploreCollection() {
   }, [])
 
   const [onShowSidebar, setShowSidebar] = useState(false)
-  const [stateBanner, actions] = useHookAirdrop()
+  const [stateBanner, actions] = useHookNTF()
     useEffect(()=>{
       actions.getBanner('swap')
     },[])
