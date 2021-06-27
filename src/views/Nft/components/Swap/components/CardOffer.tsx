@@ -12,11 +12,13 @@ export default function CardOffer(props:any) {
   }
   return (
     <CardOfferStyled>
-       <CloseOutlined style={{position:'absolute',top:10}} onClick={()=>onChangeSwapMethod(null)} />
       { type === 2 &&
         <div className="option-offer">
           <div className="input-offer">
-            <label>Your offer</label>
+            <div className='row-content'>
+            <label>Your offer</label>      
+            <CloseOutlined onClick={()=>onChangeSwapMethod(null)} />
+            </div>
             <input placeholder="Enter price" onChange={onChangeInputPrice} />
           </div>
           <div className="balance">
@@ -27,7 +29,10 @@ export default function CardOffer(props:any) {
 
       <div className="option-offer">
         <div className="input-offer">
+          <div className='row-content'>
             <label>Note for author</label>
+           {type === 2 ? null : <CloseOutlined onClick={()=>onChangeSwapMethod(null)} />}
+          </div>
           <textarea placeholder="Enter note" />
           </div>
       </div>
@@ -54,6 +59,11 @@ const CardOfferStyled = styled.div`
     .input-offer {
       display: flex;
       flex-direction: column;
+      .row-content{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
       >label {
         font-weight: 600;
         font-size: 16px;

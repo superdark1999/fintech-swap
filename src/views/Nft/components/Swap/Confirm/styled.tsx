@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { isMobile } from 'react-device-detect'
 
 export const ConfirmStyled = styled.div<{isGrayFilter:any}>`
   width: 100%;
@@ -51,5 +52,46 @@ export const ConfirmStyled = styled.div<{isGrayFilter:any}>`
         font-size: 16px;
       }
     }
+  }
+`
+
+export const VideoStyled = styled.div`
+  position: relative;
+  height: ${isMobile ? 'calc(100vh - 200px)' : 'calc(100vh - 80px)'};
+  width: 100%;
+  overflow: hidden;
+  .bg-image {
+    /* The image used */
+    background: #1d1d1d;
+    /* Add the blur effect */
+    filter: blur(8px);
+    -webkit-filter: blur(60px);
+
+    /* Full height */
+    height: 100%;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  > video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    max-width: calc(100% - 100px);
+    max-height: calc(100vh - 330px);
+    border-radius: 16px;
+  }
+  .img-artwork {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    max-width: calc(100% - 100px);
+    max-height: calc(100vh - 330px);
+    border-radius: 16px;
   }
 `

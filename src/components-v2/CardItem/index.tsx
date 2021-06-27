@@ -21,7 +21,7 @@ import { isMobile } from 'react-device-detect'
 export default function CardItem(props?: any ) {
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const history = useHistory()
-  const { data, isLazy = false, srcSet } = props
+  const { data, isLazy = false, srcSet,isHideButton } = props
   const { account, chainId } = useActiveWeb3React()
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -186,7 +186,7 @@ export default function CardItem(props?: any ) {
                 <div>
                   {price} LUCKY <img src={Token} alt="" />
                 </div>
-              ) : (
+              ) : isHideButton ? null: (
                 <ButtonBuy className="btn-swap" onClick={onSwapItem}>
                   Swap now
                 </ButtonBuy>

@@ -72,6 +72,19 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
     }
   }, [chainId])
 
+  useEffect(()=>{
+    if(luckyMethod){
+      const {LuckyTokenContract} = luckyMethod
+      const filter = LuckyTokenContract.filters.Approval(account);
+
+      LuckyTokenContract.on(filter, (author, allowAddress, value) => {
+        if(author===account&&allowAddress===MARKET_ADDRESS){
+          userActions.updateUserInfo({ isCanBuy: true, isProcessingCanBuy:false })
+        }
+      })
+    }
+  },[luckyMethod,account])
+
   useEffect(() => {
     if (account) {
       login({ walletAddress: account }).then(({ data, status }) => {
@@ -90,7 +103,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           luckyMethod.checkApproveLevelAmount(MARKET_ADDRESS)
             .then((dt: any) => {
               const allowance = Number(dt?._hex || 0) > 0
-              userActions.updateUserInfo({ isCanBuy: allowance })
+              //userActions.updateUserInfo({ isCanBuy: allowance })
             })
             .catch(() => {
               userActions.updateUserInfo({ isCanBuy: false })

@@ -59,19 +59,16 @@ export default function (props: Props) {
                
         { props.itemSwap ?
             <div className="wrapper-info">
-              <div className="title">CRYPTOCARD 001 - THE ETHEREUM GOLD</div>
+              <div className="title">{props?.itemSwap?.title}</div>
               <div className="description">
                 <p>
-                  A few years ago, the crypto world was for chosen one. And now cryptocurrency is everywhere A few years ago, the crypto world was for chosen one. 
-                </p>
-                <p>
-                  And now cryptocurrency is everywhere A few years ago, the crypto world was for chosen one. And now cryptocurrency is everywhere! 
+                  {props?.itemSwap?.description}
                 </p>
               </div>
 
               <p className="organize">
                 <img src="/static/media/luckyswap.8109f13c.svg"/>
-                <span className="name">LuckySwapStudio</span>
+                <span className="name">{props?.itemSwap?.createdBy?.name}</span>
                 <img src="/static/media/checkmark.76da7af5.svg"/>
               </p>
               <Row justify="space-between" align="middle">

@@ -88,31 +88,12 @@ const DetaiArtWork = ({ id }: any) => {
   }, [])
 
   const onApproveBuyOnMarket = () => {
-    setIsProccessing(true)
-
+    userActions?.updateUserInfo({isProcessingCanBuy:true})
     if (luckyServiceMethod) {
-      luckyServiceMethod
-        ?.approveLevelAmount(MARKET_ADDRESS)
-        .then(
-          _.debounce(() => {
-            checkApproveLevelAmount(MARKET_ADDRESS)
-              .then((dt: any) => {
-                const allowance = Number(dt?._hex || 0) > 0
-                notification('success', {
-                  message: 'Success',
-                  description: 'You can buy this NFT',
-                })
-                userActions.updateUserInfo({ isCanBuy: allowance })
-              })
-              .catch((err: string) => {
-                notification('error', { message: 'Error', description: err })
-                userActions.updateUserInfo({ isCanBuy: false })
-              })
-            setIsProccessing(false)
-          }, 25000),
-        )
+      luckyServiceMethod?.approveLevelAmount(MARKET_ADDRESS)
+        .then()
         .catch(() => {
-          setIsProccessing(false)
+          userActions?.updateUserInfo({isProcessingCanBuy:false})
         })
     }
   }
@@ -175,7 +156,7 @@ const DetaiArtWork = ({ id }: any) => {
 
   const renderButton = () => {
     if (isSelled) return null
-    if (isProcessing) {
+    if (isProcessing||userState?.isProcessingCanBuy) {
       return <ButtonProccesing />
     }
     if (!account) {

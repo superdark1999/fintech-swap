@@ -39,7 +39,7 @@ function HotArtWorks() {
         }
       })
       .catch((err) => {
-        setLoading(false)
+        // setLoading(false)
       })
   }, [])
 
@@ -86,7 +86,8 @@ function HotArtWorks() {
         style={{ fontSize: 24 }}
       />
       <div className="content-artwork" ref={divRef}>
-        {loading
+        {/* {
+          loading
           ? [1, 2].map((item) => (
               <Card
                 style={{
@@ -99,9 +100,15 @@ function HotArtWorks() {
                 loading={true}
               ></Card>
             ))
-          : NFTs.map((item) => (
+          : 
+          NFTs.map((item) => (
             <Cart width="320px" height="480px" data={item} isLazy/>
-            ))}
+            ))} */}
+            {
+              NFTs.map((item) => (
+            <Cart width="320px" height="480px" data={item} isLazy/>
+            ))
+            }
       </div>
     </HotArtWorksStyled>
   )
