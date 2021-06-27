@@ -17,7 +17,7 @@ import OnsSaleCard from './OnSaleCard'
 import { HeartOutlined } from '@ant-design/icons'
 import { margin } from 'polished'
 import _ from 'lodash'
-
+import { isMobile } from 'react-device-detect'
 export default function MyCollectionCard({ data }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(false)
   const [isProcessing, setIsPrcessing] = useState(true)
@@ -126,7 +126,24 @@ export default function MyCollectionCard({ data }: any) {
           xs={{ span: 24 }}
           xxl={{ span: 8 }}
         >
-          <img className="avatar" src={data?.contentUrl} />
+          {data?.type === 'video' ? (
+            <video
+              muted
+              controls
+              autoPlay={isMobile ? false : true}
+              loop
+              className="avatar"
+            >
+              <source src={`${data?.contentUrl}#t=0.1`} type="video/mp4" />
+            </video>
+          ) : (
+            <img
+              className="avatar"
+              src={data?.contentUrl}
+              alt=""
+              loading="lazy"
+            />
+          )}
         </Col>
         <Col
           className="description space-vehicle"

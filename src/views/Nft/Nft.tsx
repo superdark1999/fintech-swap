@@ -60,7 +60,6 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
   display: flex;
   width: 100%;
   height: 100%;
-  /* max-width:2200px; */
   margin: auto;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-top: none;
@@ -101,7 +100,7 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
       height: ${isMobile ? '110px' : '380px'};
       width: 100%;
       margin: 40px auto;
-      padding: 0 30px;
+      /* padding: 0 30px; */
       max-width: 1280px;
       border-radius: 12px;
       img {
@@ -109,16 +108,8 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
       }
     }
     .space-collection {
-      /* height:600px; */
       width: 100%;
-      /* margin-bottom:60px; */
       padding: 0 30px;
-    }
-    .hot-artists-nft {
-    }
-    .hot-artworks-nft {
-    }
-    .collection-nft {
     }
   }
 `

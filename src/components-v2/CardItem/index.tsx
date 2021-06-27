@@ -1,33 +1,27 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { StyledCart, ButtonBuyStyle, ButtonStyle } from './styled'
+import React, { useState, useEffect } from 'react'
+import { StyledCart} from './styled'
 import Copy from 'assets/images/copy.svg'
-import Checkmark from 'assets/images/checkmark.svg'
 import Token from 'assets/images/token.svg'
-// import Hammer from 'assets/images/hammer.svg'
 import Hammer from 'assets/images/hammer.svg'
 import CartGrey from 'assets/icon/cart-grey.svg'
-import Trade from 'assets/icon/trade.svg'
-// import ReactFreezeframe from 'react-freezeframe';
 import { Link } from 'react-router-dom'
-// import useConfigStore from 'store/configStore'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
-import { Card, Avatar } from 'antd'
-import { SwapOutlined, StarFilled } from '@ant-design/icons'
+import { StarFilled } from '@ant-design/icons'
 import useMarketServices from 'services/web3Services/MarketServices'
 import { CheckOutlined } from '@ant-design/icons'
-// import {getPrice} from 'utils'
 import _ from 'lodash'
 import Countdown from 'react-countdown'
 import { ButtonBuy } from 'components-v2/Button'
 import { useHistory } from 'react-router-dom'
 import { useActiveWeb3React } from 'wallet/hooks'
+import Loading from 'assets/images/loading.gif'
+
 import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import { isMobile } from 'react-device-detect'
-const { Meta } = Card
-export default function CardItem(props:any) {
-  const { data, isHideButton } = props
+export default function CardItem(props?: any ) {
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const history = useHistory()
+  const { data, isLazy = false, srcSet,isHideButton } = props
   const { account, chainId } = useActiveWeb3React()
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -56,6 +50,36 @@ export default function CardItem(props:any) {
     history.push(`/swap/${data?._id}/step=1`)
   }
 
+
+  const renderMedia = () => {
+    switch (data?.type) {
+      case "video": {
+        return (
+          <video            
+            width="300" height="450" controls 
+            muted
+            className={isLazy ? "lazy" : ""}
+            src={isLazy ? Loading : `${data?.contentUrl}#t=0.1`} 
+            data-srcset={srcSet}
+            data-src={data?.contentUrl}
+            autoPlay={isMobile ? false : true}
+            loop
+          />
+        )
+      }
+      default: return (
+        <img 
+          src={isLazy ? Loading : data?.contentUrl}
+          className={isLazy ? "avatar lazy" : "avatar"}
+          alt="" 
+          srcSet={isLazy ? "" : srcSet}
+          data-srcset={srcSet}
+          data-src={data?.contentUrl}
+        />
+      )
+    }
+  }
+
   return (
     <div className="create-nav">
       <StyledCart src={data?.contentUrl}>
@@ -77,25 +101,7 @@ export default function CardItem(props:any) {
                 </div>
               )}
               {/* <ReactFreezeframe ref={useFrameGif} className="avatar"  src={data?.contentUrl}/>      */}
-              {data?.type === 'video' ? (
-                <video
-                  width="300"
-                  height="450"
-                  muted
-                  controls
-                  autoPlay={isMobile ? false : true}
-                  loop
-                >
-                  <source src={data?.contentUrl} type="video/mp4" />
-                </video>
-              ) : (
-                <img
-                  className="avatar"
-                  src={data?.contentUrl}
-                  alt=""
-                  loading="lazy"
-                />
-              )}
+              {renderMedia()}
             </div>
           </Link>
           <div className="wrapper-info">

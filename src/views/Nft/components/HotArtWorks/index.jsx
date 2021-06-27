@@ -6,6 +6,8 @@ import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
 import { Card } from 'antd'
 import { Link } from 'react-router-dom'
 import useConfigStore from 'store/configStore'
+import useIO from 'hooks/useIo'
+
 
 function HotArtWorks() {
   const divRef = useRef(null)
@@ -40,6 +42,31 @@ function HotArtWorks() {
         setLoading(false)
       })
   }, [])
+
+
+  const [observer, setElements, entries] = useIO({
+    threshold: 0.25,
+    root: null
+  });
+
+  useEffect(() => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        let lazyImage = entry.target;
+        lazyImage.src = lazyImage.dataset.src;
+        lazyImage.classList.remove("lazy");
+        observer.unobserve(lazyImage);
+      }
+    });
+  }, [entries, observer]);
+
+  useEffect(() => {
+    if (NFTs.length) {
+      let img = Array.from(document.getElementsByClassName("lazy"));
+      setElements(img);
+    }
+  }, [NFTs, setElements]);
+
   return (
     <HotArtWorksStyled>
       <div className="header-artists">
@@ -73,7 +100,7 @@ function HotArtWorks() {
               ></Card>
             ))
           : NFTs.map((item) => (
-              <Cart width="320px" height="480px" data={item} />
+            <Cart width="320px" height="480px" data={item} isLazy/>
             ))}
       </div>
     </HotArtWorksStyled>
