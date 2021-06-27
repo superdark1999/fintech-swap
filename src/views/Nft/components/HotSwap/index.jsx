@@ -5,32 +5,51 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
 import { Card } from 'antd'
 import { Link } from 'react-router-dom'
+import useIO from 'hooks/useIo'
+
 function HotSwap() {
+
+  const [observer, setElements, entries] = useIO({
+    threshold: 0.25,
+    root: null
+  });
+
   const divRef = useRef(null)
   const [loading, setLoading] = useState(true)
   const scrollLeft = () => {
-    divRef.current.scrollLeft += 260
+    divRef.current.scrollLeft += 300
   }
   const scrollRight = () => {
-    divRef.current.scrollLeft -= 260
+    divRef.current.scrollLeft -= 360
   }
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
+
   useEffect(() => {
     getNFT({
       status: 'readyToSell',
       NFTType: ['swap-store']
     })
-      .then(({ status, data }) => {
-        if (status == 200) {
-          setNFTs(data?.data || [])
-          setLoading(false)
-        }
-      })
-      .catch((err) => {
-        setLoading(false)
-      })
   }, [])
+  
+  useEffect(() => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        let lazyImage = entry.target;
+        lazyImage.src = lazyImage.dataset.src;
+        lazyImage.classList.remove("lazy");
+        observer.unobserve(lazyImage);
+      }
+    });
+  }, [entries, observer]);
+
+  useEffect(() => {
+    if (NFTs.length) {
+      let img = Array.from(document.getElementsByClassName("lazy"));
+      setElements(img);
+    }
+  }, [NFTs, setElements]);
+
   return (
     <HotArtWorksStyled>
       <div className="header-artists">
@@ -50,25 +69,11 @@ function HotSwap() {
         style={{ fontSize: 24 }}
       />
       <div className="content-artwork" ref={divRef}>
-        {loading
-          ? [1, 2].map((item) => (
-              <Card
-                style={{
-                  width: 300,
-                  height: 450,
-                  margin: '0 8px',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(0,0,0,.05)',
-                }}
-                loading={true}
-              ></Card>
-            ))
-          : NFTs.map((item) => (
-              <Cart width="320px" height="480px" data={item} />
+        { NFTs.map((item) => (
+            <Cart width="320px" height="480px" data={item} isLazy/>
             ))}
       </div>
     </HotArtWorksStyled>
   )
 }
-
 export default HotSwap

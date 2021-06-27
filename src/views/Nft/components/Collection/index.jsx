@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Select, Button } from 'antd'
 import { CollectionStyled } from './styled'
 import Cart from 'components-v2/CardItem'
+import useIO from 'hooks/useIo'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 const OptionData = ['All items', 'Image', 'Gif', 'Video']
 const OptionSort = ['new', 'old']
@@ -15,6 +16,12 @@ function Collection() {
   const [selectSort, setSelectSort] = useState('new')
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
+
+  const [observer, setElements, entries] = useIO({
+    threshold: 0.25,
+    root: null
+  });
+
   useEffect(() => {
     getNFT({
       status: 'readyToSell',
@@ -25,6 +32,24 @@ function Collection() {
       }
     })
   }, [])
+
+  useEffect(() => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        let lazyImage = entry.target;
+        lazyImage.src = lazyImage.dataset.src;
+        lazyImage.classList.remove("lazy");
+        observer.unobserve(lazyImage);
+      }
+    });
+  }, [entries, observer]);
+
+  useEffect(() => {
+    if (NFTs.length) {
+      let img = Array.from(document.getElementsByClassName("lazy"));
+      setElements(img);
+    }
+  }, [NFTs, setElements]);
 
   return (
     <CollectionStyled>
@@ -57,7 +82,7 @@ function Collection() {
       </div>
       <div className="content-collect">
         {NFTs.map((item) => (
-          <Cart width="320px" height="480px" data={item} />
+          <Cart width="320px" height="480px" data={item} isLazy/>
         ))}
       </div>
       <div className="footer-section">
