@@ -112,37 +112,15 @@ const DetaiArtWork = ({ id }: any) => {
   }, [])
 
   const onApproveBuyOnMarket = () => {
-    setIsProccessing(true)
-    luckyServicesMethod
-      ?.approveLevelAmount?.(MARKET_ADDRESS)
-      .then(
-        _.debounce(() => {
-          luckyServicesMethod
-            ?.checkApproveLevelAmount?.(MARKET_ADDRESS)
-            .then((dt: any) => {
-              const allowance = Number(dt?._hex || 0) > 0
-              notification('success', {
-                message: 'Success',
-                description: 'You can bid this NFT',
-              })
-              userActions.updateUserInfo({ isCanBuy: allowance })
-            })
-            .catch(() => {
-              notification('error', {
-                message: 'Error',
-                description: `Something went wrong please try again`,
-              })
-              userActions.updateUserInfo({ isCanBuy: false })
-            })
-          setIsProccessing(false)
-        }, 25000),
-      )
+    userActions?.updateUserInfo({isProcessingCanBuy:true})
+    luckyServicesMethod?.approveLevelAmount?.(MARKET_ADDRESS)
+      .then()
       .catch(() => {
         notification('error', {
           message: 'Error',
           description: `Something went wrong please try again`,
         })
-        setIsProccessing(false)
+        userActions?.updateUserInfo({isProcessingCanBuy:false})
       })
   }
 
@@ -244,7 +222,7 @@ const DetaiArtWork = ({ id }: any) => {
 
   const renderButton = () => {
     if (isSelled || account === NFTDetail.ownerWalletAddress) return null
-    if (isProcessing) {
+    if (isProcessing||userState?.isProcessingCanBuy) {
       return <ButtonProccesing />
     }
     if (!account) {

@@ -9,6 +9,7 @@ const userStore = createStore({
     socialMediaLink:'',
     biography:'',
     isCanBuy:false,
+    isProcessingCanBuy:false,
     balance:{
       BNB:0,
       LUCKY:0

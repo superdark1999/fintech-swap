@@ -42,7 +42,7 @@ function useLuckyServiceChain97(){
            return LuckyTokenContract.balanceOf(account)
         }
 
-        return { approveLevelAmount, checkApproveLevelAmount,getLuckyBalance}
+        return { approveLevelAmount, checkApproveLevelAmount,getLuckyBalance, LuckyTokenContract}
 }
 
 

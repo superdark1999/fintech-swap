@@ -169,7 +169,7 @@ export default function MyCollectionCard({ data, option }: any) {
     if (marketServicesMethod) {
       if (data?.NFTType === 'buy' || data?.NFTType === 'auction') {
         setIsPrcessing(true)
-        marketServicesMethod?.cancelSellToken(data?.tokenId).then((data) => {
+        marketServicesMethod?.cancelSellToken(data?.tokenId).then((dt) => {
           cancelSellNFT({ id: data?._id }).then(({ status }) => {
             if (status == 200) {
               history.push('/my-profile/mycollection/checkingToSell')

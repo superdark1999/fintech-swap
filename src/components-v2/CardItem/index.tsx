@@ -24,10 +24,10 @@ import { useActiveWeb3React } from 'wallet/hooks'
 import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import { isMobile } from 'react-device-detect'
 const { Meta } = Card
-export default function CardItem(props?: { data?: any }) {
+export default function CardItem(props:any) {
+  const { data, isHideButton } = props
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const history = useHistory()
-  const { data } = props
   const { account, chainId } = useActiveWeb3React()
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -180,7 +180,7 @@ export default function CardItem(props?: { data?: any }) {
                 <div>
                   {price} LUCKY <img src={Token} alt="" />
                 </div>
-              ) : (
+              ) : isHideButton ? null: (
                 <ButtonBuy className="btn-swap" onClick={onSwapItem}>
                   Swap now
                 </ButtonBuy>
