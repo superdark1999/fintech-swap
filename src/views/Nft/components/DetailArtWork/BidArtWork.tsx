@@ -48,6 +48,7 @@ import { useHistory } from 'react-router-dom'
 import notification from 'components-v2/Alert'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
+import TableHistory from './TableHistory'
 const { TabPane } = Tabs
 
 const DetaiArtWork = ({ id }: any) => {
@@ -67,6 +68,7 @@ const DetaiArtWork = ({ id }: any) => {
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
   const [isReadyBid, setIsReadyBid] = useState(false)
   const [nextStepOffer, setStepNextOffer] = useState<number>(1)
+
   useEffect(() => {
     getDetailNFT({ id }).then(({ status, data }) => {
       if (status == 200) {
@@ -112,15 +114,16 @@ const DetaiArtWork = ({ id }: any) => {
   }, [])
 
   const onApproveBuyOnMarket = () => {
-    userActions?.updateUserInfo({isProcessingCanBuy:true})
-    luckyServicesMethod?.approveLevelAmount?.(MARKET_ADDRESS)
+    userActions?.updateUserInfo({ isProcessingCanBuy: true })
+    luckyServicesMethod
+      ?.approveLevelAmount?.(MARKET_ADDRESS)
       .then()
       .catch(() => {
         notification('error', {
           message: 'Error',
           description: `Something went wrong please try again`,
         })
-        userActions?.updateUserInfo({isProcessingCanBuy:false})
+        userActions?.updateUserInfo({ isProcessingCanBuy: false })
       })
   }
 
@@ -222,7 +225,7 @@ const DetaiArtWork = ({ id }: any) => {
 
   const renderButton = () => {
     if (isSelled || account === NFTDetail.ownerWalletAddress) return null
-    if (isProcessing||userState?.isProcessingCanBuy) {
+    if (isProcessing || userState?.isProcessingCanBuy) {
       return <ButtonProccesing />
     }
     if (!account) {
@@ -250,7 +253,6 @@ const DetaiArtWork = ({ id }: any) => {
       return <ButtonBuy onClick={onApproveBuyOnMarket}>Allow to buy</ButtonBuy>
     }
   }
-
   return (
     <Row>
       <Col
@@ -493,12 +495,7 @@ const DetaiArtWork = ({ id }: any) => {
             </TabPane>
 
             <TabPane tab="History" key="2">
-              <TableStyled
-                columns={columnHistory}
-                dataSource={dataHistory}
-                size="middle"
-                scroll={{ x: 'calc(300px + 50%)', y: 500 }}
-              />
+              <TableHistory tokenId={NFTDetail.tokenId} />
             </TabPane>
             <TabPane tab="Bidding" key="3">
               <BiddingTable

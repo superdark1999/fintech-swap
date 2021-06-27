@@ -13,12 +13,7 @@ export const columnHistory = [
   {
     title: 'Event',
     dataIndex: 'event',
-    width: 100,
-  },
-  {
-    title: 'Price',
-    dataIndex: 'price',
-    width: 100,
+    width: 150,
   },
   {
     title: 'From',

@@ -45,6 +45,8 @@ import { useHistory } from 'react-router-dom'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import _ from 'lodash'
+import TableHistory from './TableHistory'
+
 const { TabPane } = Tabs
 const DetaiArtWork = ({ id }: any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
@@ -88,12 +90,13 @@ const DetaiArtWork = ({ id }: any) => {
   }, [])
 
   const onApproveBuyOnMarket = () => {
-    userActions?.updateUserInfo({isProcessingCanBuy:true})
+    userActions?.updateUserInfo({ isProcessingCanBuy: true })
     if (luckyServiceMethod) {
-      luckyServiceMethod?.approveLevelAmount(MARKET_ADDRESS)
+      luckyServiceMethod
+        ?.approveLevelAmount(MARKET_ADDRESS)
         .then()
         .catch(() => {
-          userActions?.updateUserInfo({isProcessingCanBuy:false})
+          userActions?.updateUserInfo({ isProcessingCanBuy: false })
         })
     }
   }
@@ -156,7 +159,7 @@ const DetaiArtWork = ({ id }: any) => {
 
   const renderButton = () => {
     if (isSelled) return null
-    if (isProcessing||userState?.isProcessingCanBuy) {
+    if (isProcessing || userState?.isProcessingCanBuy) {
       return <ButtonProccesing />
     }
     if (!account) {
@@ -356,12 +359,7 @@ const DetaiArtWork = ({ id }: any) => {
             </TabPane>
 
             <TabPane tab="History" key="2">
-              <TableStyled
-                columns={columnHistory}
-                dataSource={dataHistory}
-                size="middle"
-                scroll={{ x: 'calc(300px + 50%)', y: 700 }}
-              />
+              <TableHistory tokenId={NFTDetail.tokenId} />
             </TabPane>
             <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">
