@@ -196,7 +196,7 @@ function useMarketServiceChain97(){
     const offerSwapNFT = useCallback(async(offerTokenId:string|undefined,targetTokenId:string|undefined,price:number|undefined=0 )=>{
       let unitPrice='0'
       if(price){
-        unitPrice = (Number(price) * 1e18).toString()
+        unitPrice = price + '000000000000000000'
       }
        const estimatedGas = await marketContract.estimateGas.offerNFT(offerTokenId,targetTokenId,unitPrice)
       if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){

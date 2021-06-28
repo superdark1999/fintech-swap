@@ -16,6 +16,7 @@ import { useActiveWeb3React } from 'wallet/hooks'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import { getCompactString, getPrice } from 'utils'
+import formatNumber from 'utils/formatNumber'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import notification from 'components-v2/Alert'
@@ -280,7 +281,7 @@ const OfferTable = ({ offerData, isRenderAction, chooseOffer }: any) => {
         return (
           <div>
             {record?.price > 0 && (<Row>
-              <TextGradient width="auto" fontSize="14px">{record?.price} </TextGradient>
+              <TextGradient width="auto" fontSize="14px">{formatNumber(record?.price)} </TextGradient>
               {' '}<img src={Token} />
             </Row>)}
            { record?.type!='video'?

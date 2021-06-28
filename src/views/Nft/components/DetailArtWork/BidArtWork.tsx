@@ -40,6 +40,7 @@ import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import { getPrice, getCompactString, embedTokenIdLinkBSCScan } from 'utils'
+import formatNumber from 'utils/formatNumber'
 import _ from 'lodash'
 import { InputNumber } from 'antd'
 import Hammer from 'assets/images/hammer.svg'
@@ -379,7 +380,7 @@ const DetaiArtWork = ({ id }: any) => {
             >
               <div className="group-item-bid">
                 <div className="label">Current bid</div>
-                <div className="value">{price}</div>
+                <div className="value">{formatNumber(price)}</div>
               </div>
               <div className="group-item-bid">
                 <div className="label">Jump step</div>
@@ -702,7 +703,7 @@ const BiddingTable = ({
           width: 100,
           render: (price: Number) => (
             <div className="token">
-              {price} LUCKY
+              {formatNumber(price)} LUCKY
               <img src={Token} alt="" />
             </div>
           ),
@@ -740,7 +741,7 @@ const BiddingTable = ({
           width: 100,
           render: (price: Number) => (
             <div className="token">
-              {price} LUCKY
+              {formatNumber(price)} LUCKY
               <img src={Token} alt="" />
             </div>
           ),

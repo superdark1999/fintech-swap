@@ -4,6 +4,7 @@ import { ButtonTrade } from "components-v2/Button";
 import useMarketServices from 'services/web3Services/MarketServices'
 import { useActiveWeb3React } from 'wallet/hooks'
 import {getPrice} from 'utils'
+import formatNumber from 'utils/formatNumber'
 import _ from 'lodash'
 export const columnHistory = [
   {
@@ -63,7 +64,7 @@ export default () => {
         return{
           key:Number(item[0]._hex),
           tokenId:Number(item[0]._hex),
-          price:getPrice(item[1]._hex)
+          price:formatNumber(getPrice(item[1]._hex)) 
         }
       }))
     })
@@ -77,7 +78,7 @@ export default () => {
           return{
             key:Number(item[0]._hex),
             tokenId:Number(item[0]._hex),
-            price:getPrice(item[1]._hex)
+            price:formatNumber(getPrice(item[1]._hex)) 
           }
         }))
         setIsProcessing(false)
