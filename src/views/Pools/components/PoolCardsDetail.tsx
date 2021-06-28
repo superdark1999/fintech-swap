@@ -8,7 +8,7 @@ import BigNumber from 'bignumber.js'
 import { useERC20, useStakingContract } from 'hooks/useContract'
 import useGetStateData from 'hooks/useGetStakeData';
 import useUtilityToken from 'hooks/useUtilityToken';
-import { Pool } from 'state/types'
+import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
 
 
 const pool = {
@@ -42,6 +42,9 @@ function PoolCardsDetail() {
   const {pendingReward, userAmount, userRewardDebt} = useGetStateData(staking);
   const {balanceOf, approve, allowance} =  useUtilityToken(staking.depositToken);
 
+  const addTransaction = useTransactionAdder()
+
+
   useEffect(() => {
     const fetchBalance = async () => {
       const bal = await balanceOf(account);
@@ -73,7 +76,9 @@ function PoolCardsDetail() {
       await stakingContract
         .deposit(...args, { gasLimit: gasAm })
         .then((response: any) => {
-          console.log('>>>>', response)
+          addTransaction(response, {
+            summary: 'Deposit successfully!',
+          })
         })
         .catch((error: any) => {
           console.log(error)
@@ -90,7 +95,9 @@ function PoolCardsDetail() {
       await stakingContract
         .deposit(...args, { gasLimit: gasAm })
         .then((response: any) => {
-          console.log('>>>>', response)
+          addTransaction(response, {
+            summary: 'Withdraw successfully!',
+          })
         })
         .catch((error: any) => {
           console.log(error)
@@ -98,7 +105,7 @@ function PoolCardsDetail() {
     }
   }
 
-  const handleUnState = async () => {
+  const handleUnStake = async () => {
     if (stakingContract) {
       const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
       const gasAm = await stakingContract.estimateGas.deposit(...args)
@@ -107,7 +114,9 @@ function PoolCardsDetail() {
       await stakingContract
         .withdraw(...args, { gasLimit: gasAm })
         .then((response: any) => {
-          console.log('>>>>', response)
+          addTransaction(response, {
+            summary: 'Unstake successfully!',
+          })
         })
         .catch((error: any) => {
           console.log(error)
@@ -234,7 +243,7 @@ function PoolCardsDetail() {
             <CancelButton>
               <Button color="primary" onClick={unStakeToggle}>Cancel</Button>
             </CancelButton>
-            <Button color="secondary" onClick={handleUnState} disabled={false}>UnStake</Button>
+            <Button color="secondary" onClick={handleUnStake} disabled={false}>UnStake</Button>
           </ModalFooter>
         </Modal>
       </div>
