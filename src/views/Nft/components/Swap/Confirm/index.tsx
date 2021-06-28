@@ -66,8 +66,21 @@ const {
         
         <Row justify="center">
           <div className="nft-image">
-            <img  src={myItems?.[0]?.contentUrl}/>
+          { itemSwap?.[0]?.type !='video' ? 
+            <img  src={myItems?.[0]?.contentUrl}/>:
+            <video
+            className="nft-image"
+            style={{objectFit:'cover'}}
+            playsInline
+            controls
+            muted
+            src={`${myItems?.[0]?.contentUrl}`}
+            data-srcset={myItems?.[0]?.contentUrl}
+            data-src={`${myItems?.[0]?.contentUrl}#t=0.1`}
+            loop
+          />}
           </div>
+          
 
           <img src={Swap} style={isMobile ? { transform: 'rotate(90deg)'} : null} />
 
