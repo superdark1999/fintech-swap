@@ -397,7 +397,7 @@ const ArtistInput = ({ value, setShowModalCreateArtist }: any) => {
       <Input
         value={value}
         style={{ borderRadius: '100px', marginBottom: '20px' }}
-        placeholder="The artist name"
+        placeholder="Please create artist before create NFT"
         disabled
       />
       {!value && (

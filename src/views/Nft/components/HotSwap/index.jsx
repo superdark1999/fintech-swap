@@ -6,6 +6,7 @@ import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
 import { Card } from 'antd'
 import { Link } from 'react-router-dom'
 import useIO from 'hooks/useIo'
+import useConfigStore from 'store/configStore'
 
 function HotSwap() {
 
@@ -16,6 +17,7 @@ function HotSwap() {
 
   const divRef = useRef(null)
   const [loading, setLoading] = useState(true)
+  const [configState, configAction] = useConfigStore()
   const scrollLeft = () => {
     divRef.current.scrollLeft += 300
   }
@@ -28,7 +30,18 @@ function HotSwap() {
   useEffect(() => {
     getNFT({
       status: 'readyToSell',
-      NFTType: ['swap-store']
+      NFTType: 'swap-store'
+    },true).then(({ status, data }) => {
+      if (status == 200) {
+        setNFTs(data?.data || [])
+        setLoading(false)
+        configAction.updateConfig({
+          showLoading: false,
+        })
+      }
+    })
+    .catch((err) => {
+      // setLoading(false)
     })
   }, [])
   
