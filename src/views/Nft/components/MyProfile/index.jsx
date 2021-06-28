@@ -179,7 +179,7 @@ const TabMyCollection = () => {
         delete query.status
       }
       if (optionChecked === 'pending') {
-        query.status = ['pending', 'checkingReadyToSell', 'checkingBuying']
+        query.status = ['pending', 'checkingReadyToSell', 'checkingBuying', 'checkingCancelling']
       }
       getNFT(query).then(({ status, data }) => {
         if (status == 200) {

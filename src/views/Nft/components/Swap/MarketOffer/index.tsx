@@ -197,7 +197,16 @@ export default function (props: Props) {
   }
 
   const renderButon = ()=>{
-    if(userState?.isProcessingCanBuy||isProccessing){
+    if(!account){
+     return( <ButtonBuy width="300px" onClick={()=>{
+        notification('error', {
+          message: 'Error',
+          description: `Unblock your wallet to offer`,
+        })
+      }} >
+        Offer now
+      </ButtonBuy>)
+    }else if(userState?.isProcessingCanBuy||isProccessing){
       return( <ButtonProccesing/>)
     }else if(userState?.isCanBuy){
       return(

@@ -133,9 +133,9 @@ export default  () => {
               })
             if(_.find(offerData,item=>item.ownerWalletAddress===account)){
               setMyItems([_.find(offerData,item=>item.ownerWalletAddress===account)])
-              // history.push(`/swap/${id}/step=3`)
-              // setStep(3)
-              // setStatus('success')
+              history.push(`/swap/${id}/step=3`)
+              setStep(3)
+              setStatus('success')
             }
             setOfferData(offerData)
             }
@@ -147,7 +147,7 @@ export default  () => {
 
   useEffect(()=>{
     getSwapOffers(itemSwap?.[0]?.tokenId,account)
-    if(itemSwap?.[0]?.ownerWalletAddress==account){
+    if(account&&itemSwap?.[0]?.ownerWalletAddress==account){
       history.push(`/swap/${id}/step=2`)
       setStep(2)
     }

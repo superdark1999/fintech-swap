@@ -103,7 +103,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           luckyMethod.checkApproveLevelAmount(MARKET_ADDRESS)
             .then((dt: any) => {
               const allowance = Number(dt?._hex || 0) > 0
-              //userActions.updateUserInfo({ isCanBuy: allowance })
+              userActions.updateUserInfo({ isCanBuy: allowance })
             })
             .catch(() => {
               userActions.updateUserInfo({ isCanBuy: false })
@@ -154,11 +154,11 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         {!!account ? (
           <>
             <Link to={"/create/artwork"} className="create-nav">Create</Link>
-            <Link to={"/swap/step=1"} className="create-nav">Swap</Link>
           </>
         ) : (
           <a onClick={() => { alert("Unblock your wallet before create NFT") }} className="create-nav" >Create</a>
         )}
+         <Link to={"/swap/step=1"} className="create-nav">Swap</Link>
         {/* <Switch
               checkedChildren="Animation"
               unCheckedChildren="Animation"
@@ -286,7 +286,7 @@ const UserBalance = () => {
         }
       })
       luckyMethod?.getLuckyBalance().then((data: any) => {
-        userActions.updateUserBalance({ LUCKY: formatNumber(getPrice(data?._hex || 0)) })
+        userActions.updateUserBalance({ LUCKY: formatNumber(getPrice(data?._hex || 0))})
       })
     }
   }, [])
