@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from 'react'
 import { Collapse, Button, CardBody, Card, Table } from 'reactstrap'
-import { useHookAirdrop } from '../Store'
+import { useHookNTF } from '../Store'
 import styled from 'styled-components'
 import moment from 'moment'
 const History: React.FC = () => {
-  const [state, actions] = useHookAirdrop();
+  const [state, actions] = useHookNTF();
   let listADY: any = [];
   const isLoading: any = false;
   useEffect(() => {

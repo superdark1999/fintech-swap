@@ -1,0 +1,33 @@
+
+server {
+      server_name     mkp.luckyswap.center www.mkp.luckyswap.center;
+    root /home/luckyswap/luckyswap-nft-marketplace/build;
+location / {
+                    try_files $uri $uri/ /index.html;
+        }
+    listen 443 ssl; # managed by Certbot
+   ssl_certificate /etc/letsencrypt/live/mkp.luckyswap.center/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/mkp.luckyswap.center/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+server {
+    if ($host = mkp.luckyswap.center) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+listen          80;
+        listen          [::]:80;
+        server_name    mkp.luckyswap.center www.mkp.luckyswap.center;
+    return 404; # managed by Certbot
+}
+
+
+
+rm /etc/nginx/sites-enabled/mkp.luckyswap.center.conf
+rm /etc/nginx/sites-available/mkp.luckyswap.center.conf
+
+nano /etc/nginx/sites-available/mkp.luckyswap.center.conf
+
+sudo ln -s /etc/nginx/sites-available/mkp.luckyswap.center.conf /etc/nginx/sites-enabled/mkp.luckyswap.center.conf
+
+sudo certbot --nginx -d mkp.luckyswap.center 

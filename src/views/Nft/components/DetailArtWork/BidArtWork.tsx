@@ -9,7 +9,14 @@ import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
 import { ButtonStyle, ButtonBuyStyle } from 'components-v2/cart/styled'
-import { SwapOutlined, CloseOutlined, StarFilled, CheckOutlined, PlusCircleFilled, MinusCircleFilled} from '@ant-design/icons'
+import {
+  SwapOutlined,
+  CloseOutlined,
+  StarFilled,
+  CheckOutlined,
+  PlusCircleFilled,
+  MinusCircleFilled,
+} from '@ant-design/icons'
 import {
   DetailStyled,
   ReviewStyled,
@@ -18,9 +25,10 @@ import {
   ImageStyled,
   DetailTabpane,
   HeaderStyled,
-  TableStyled
+  TableStyled,
+  VideoStyled,
 } from './styled'
-import {isMobile} from 'react-device-detect'
+import { isMobile } from 'react-device-detect'
 import { dataHistory, columnHistory } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices, {
@@ -36,15 +44,16 @@ import _ from 'lodash'
 import { InputNumber } from 'antd'
 import Hammer from 'assets/images/hammer.svg'
 import { Link } from 'react-router-dom'
-import { useHistory } from "react-router-dom";
-import notification from 'components-v2/Alert';
+import { useHistory } from 'react-router-dom'
+import notification from 'components-v2/Alert'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
+import TableHistory from './TableHistory'
 const { TabPane } = Tabs
 
 const DetaiArtWork = ({ id }: any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
-  const [isCopied, handleCopy] = useCopyToClipboard(3000);
+  const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const { account, chainId } = useActiveWeb3React()
   const [NFTDetail, setNFTDetail] = useState<any>({})
   const [loading, setLoading] = useState(true)
@@ -59,24 +68,33 @@ const DetaiArtWork = ({ id }: any) => {
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
   const [isReadyBid, setIsReadyBid] = useState(false)
   const [nextStepOffer, setStepNextOffer] = useState<number>(1)
+
   useEffect(() => {
     getDetailNFT({ id }).then(({ status, data }) => {
       if (status == 200) {
         if (data?.data?.tokenId && marketServicesMethod) {
           //get highest bid price
           const getBidInfoToken = async () => {
-            const bidsArr = await marketServicesMethod?.getBidsByTokenId?.(data?.data?.tokenId)
-            const stepPriceUnit = await marketServicesMethod?.getStepPrice?.(data?.data?.tokenId)
+            const bidsArr = await marketServicesMethod?.getBidsByTokenId?.(
+              data?.data?.tokenId,
+            )
+            const stepPriceUnit = await marketServicesMethod?.getStepPrice?.(
+              data?.data?.tokenId,
+            )
             setStep(getPrice(stepPriceUnit._hex))
-            const bidsData = bidsArr?.map((item: any) => {
-              return {
-                key: item?.[0] || '',
-                address: item?.[0] || '',
-                price: Number(item?.[1]?._hex) / Number(1e18),
-              }
-            }) || []
-            const maxPrice = _.maxBy(bidsData, (item: any) => item?.price)?.price || 0
-            const unitPrice = await marketServicesMethod?.getTokenBidPrice?.(data?.data?.tokenId)
+            const bidsData =
+              bidsArr?.map((item: any) => {
+                return {
+                  key: item?.[0] || '',
+                  address: item?.[0] || '',
+                  price: Number(item?.[1]?._hex) / Number(1e18),
+                }
+              }) || []
+            const maxPrice =
+              _.maxBy(bidsData, (item: any) => item?.price)?.price || 0
+            const unitPrice = await marketServicesMethod?.getTokenBidPrice?.(
+              data?.data?.tokenId,
+            )
             const price = getPrice(unitPrice?._hex)
             setBidsData(bidsData.filter((it: any) => it.price > price))
             if (price > maxPrice) {
@@ -84,43 +102,35 @@ const DetaiArtWork = ({ id }: any) => {
             } else {
               setPrice(maxPrice)
             }
-            if (account) setIsReadyBid(!!bidsData.find((it: any) => it.address == account))
+            if (account)
+              setIsReadyBid(!!bidsData.find((it: any) => it.address == account))
           }
           setLoading(false)
           getBidInfoToken()
-
         }
         setNFTDetail(data?.data)
       }
     })
   }, [])
 
-
   const onApproveBuyOnMarket = () => {
-    setIsProccessing(true)
-    luckyServicesMethod?.approveLevelAmount?.(MARKET_ADDRESS)
-      .then(_.debounce(() => {
-        luckyServicesMethod?.checkApproveLevelAmount?.(MARKET_ADDRESS)
-          .then((dt: any) => {
-            const allowance = Number(dt?._hex || 0) > 0
-            notification('success', { message: 'Success', description: 'You can bid this NFT' })
-            userActions.updateUserInfo({ isCanBuy: allowance })
-          })
-          .catch(() => {
-            notification('error', { message: 'Error', description: `Something went wrong please try again` })
-            userActions.updateUserInfo({ isCanBuy: false })
-          })
-        setIsProccessing(false)
-      }, 25000))
+    userActions?.updateUserInfo({ isProcessingCanBuy: true })
+    luckyServicesMethod
+      ?.approveLevelAmount?.(MARKET_ADDRESS)
+      .then()
       .catch(() => {
-        notification('error', { message: 'Error', description: `Something went wrong please try again` })
-        setIsProccessing(false)
+        notification('error', {
+          message: 'Error',
+          description: `Something went wrong please try again`,
+        })
+        userActions?.updateUserInfo({ isProcessingCanBuy: false })
       })
   }
 
-
   const refreshingBids = async () => {
-    const bidsArr = await marketServicesMethod?.getBidsByTokenId(NFTDetail?.tokenId)
+    const bidsArr = await marketServicesMethod?.getBidsByTokenId(
+      NFTDetail?.tokenId,
+    )
     const bidsData =
       bidsArr?.map((item: any) => {
         return {
@@ -135,7 +145,10 @@ const DetaiArtWork = ({ id }: any) => {
 
   const refreshingAfterCancelBid = () => {
     refreshingBids().then(({ bidsData, maxPrice }) => {
-      notification('success', { message: 'Success', description: 'You cancel bid this NFT' })
+      notification('success', {
+        message: 'Success',
+        description: 'You cancel bid this NFT',
+      })
       if (maxPrice) {
         setPrice(maxPrice)
       }
@@ -156,36 +169,51 @@ const DetaiArtWork = ({ id }: any) => {
     if (!marketServicesMethod) return
     const bidPrice = price + step * nextStepOffer
     setIsProccessing(true)
-    notification('warn', { message: 'Your action is on processing', description: '' })
+    notification('warn', {
+      message: 'Your action is on processing',
+      description: '',
+    })
     if (isReadyBid) {
-      marketServicesMethod?.updateBidPrice(NFTDetail?.tokenId, bidPrice)
-        .then(_.debounce(() => {
-          refreshingBids().then(({ bidsData, maxPrice }) => {
-            notification('success', { message: 'Success', description: 'You bid NFT successful' })
-            if (maxPrice) {
-              setPrice(maxPrice)
-            }
-            setIsProccessing(false)
-            setBidsData(bidsData)
-          })
-        }, 30000))
+      marketServicesMethod
+        ?.updateBidPrice(NFTDetail?.tokenId, bidPrice)
+        .then(
+          _.debounce(() => {
+            refreshingBids().then(({ bidsData, maxPrice }) => {
+              notification('success', {
+                message: 'Success',
+                description: 'You bid NFT successful',
+              })
+              if (maxPrice) {
+                setPrice(maxPrice)
+              }
+              setIsProccessing(false)
+              setBidsData(bidsData)
+            })
+          }, 30000),
+        )
         .catch((err) => {
           setIsProccessing(false)
           notification('error', { message: 'Error', description: err.message })
         })
     } else {
-      marketServicesMethod?.bidToken(NFTDetail?.tokenId, bidPrice)
-        .then(_.debounce(() => {
-          refreshingBids().then(({ bidsData, maxPrice }) => {
-            notification('success', { message: 'Success', description: 'You bid NFT successful' })
-            if (maxPrice) {
-              setPrice(maxPrice)
-            }
-            setIsProccessing(false)
-            setBidsData(bidsData)
-            setIsReadyBid(true)
-          })
-        }, 30000))
+      marketServicesMethod
+        ?.bidToken(NFTDetail?.tokenId, bidPrice)
+        .then(
+          _.debounce(() => {
+            refreshingBids().then(({ bidsData, maxPrice }) => {
+              notification('success', {
+                message: 'Success',
+                description: 'You bid NFT successful',
+              })
+              if (maxPrice) {
+                setPrice(maxPrice)
+              }
+              setIsProccessing(false)
+              setBidsData(bidsData)
+              setIsReadyBid(true)
+            })
+          }, 30000),
+        )
         .catch((err) => {
           setIsProccessing(false)
           notification('error', { message: 'Error', description: err.message })
@@ -197,14 +225,19 @@ const DetaiArtWork = ({ id }: any) => {
 
   const renderButton = () => {
     if (isSelled || account === NFTDetail.ownerWalletAddress) return null
-    if (isProcessing) {
-      return (
-        <ButtonProccesing />
-      )
+    if (isProcessing || userState?.isProcessingCanBuy) {
+      return <ButtonProccesing />
     }
     if (!account) {
       return (
-        <ButtonTrade onClick={() => notification('error', { message: 'Error', description: `Unblock your wallet to bid this item` })}>
+        <ButtonTrade
+          onClick={() =>
+            notification('error', {
+              message: 'Error',
+              description: `Unblock your wallet to bid this item`,
+            })
+          }
+        >
           <SwapOutlined /> Play Bid
         </ButtonTrade>
       )
@@ -217,14 +250,9 @@ const DetaiArtWork = ({ id }: any) => {
       )
     }
     if (!userState?.isCanBuy) {
-      return (
-        <ButtonBuy onClick={onApproveBuyOnMarket}>
-          Allow to buy
-        </ButtonBuy>
-      )
+      return <ButtonBuy onClick={onApproveBuyOnMarket}>Allow to buy</ButtonBuy>
     }
   }
-
   return (
     <Row>
       <Col
@@ -236,38 +264,70 @@ const DetaiArtWork = ({ id }: any) => {
       >
         <HeaderStyled className="header-detail">
           <Row align="middle">
-            <div className="social-icon"><Link to="/"><CloseOutlined className="icon" /></Link></div>
+            <div className="social-icon">
+              <Link to="/">
+                <CloseOutlined className="icon" />
+              </Link>
+            </div>
             <div className="date-time">02h 31m 04s left 🔥 </div>
             <div className="rating">
-              4.8
-              {' '}
-              <StarFilled style={{ color: '#fadb14' }} />
-              {' '}
-              <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5' }}>(15)</span>
-              {' '}
+              4.8 <StarFilled style={{ color: '#fadb14' }} />{' '}
+              <span
+                style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5' }}
+              >
+                (15)
+              </span>{' '}
               <img src={Hammer} alt="" />
             </div>
           </Row>
 
-          {
-            !isMobile &&
-              <div className="social-icon">
-                <div className="icon"><img src={Facebook} alt="" /></div>
-                <div className="icon"><img src={Telegram} alt="" /></div>
-                <div className="icon" onClick={() => handleCopy(`${window.location.origin}/artwork/detail/${NFTDetail?.NFTType}/${NFTDetail?._id}`)}>
-                  {isCopied ? <span><CheckOutlined /></span> : <img src={Copy} alt="copy-artwork" />}
-                </div>
+          {!isMobile && (
+            <div className="social-icon">
+              <div className="icon">
+                <img src={Facebook} alt="" />
               </div>
-            }
+              <div className="icon">
+                <img src={Telegram} alt="" />
+              </div>
+              <div
+                className="icon"
+                onClick={() =>
+                  handleCopy(
+                    `${window.location.origin}/artwork/detail/${NFTDetail?.NFTType}/${NFTDetail?._id}`,
+                  )
+                }
+              >
+                {isCopied ? (
+                  <span>
+                    <CheckOutlined />
+                  </span>
+                ) : (
+                  <img src={Copy} alt="copy-artwork" />
+                )}
+              </div>
+            </div>
+          )}
         </HeaderStyled>
-        {NFTDetail?.type === 'video' ?
-          <video style={{ height: 'calc(100vh - 300px)' }} width="100%" height="100%" muted><source src={NFTDetail?.contentUrl} type="video/mp4" /></video>
-          : <ImageStyled bgImage={NFTDetail?.contentUrl}>
+        {NFTDetail?.type === 'video' ? (
+          <VideoStyled>
+            <div className="bg-image"></div>
+            <video autoPlay muted controls>
+              <source src={NFTDetail?.contentUrl} type="video/mp4" />
+            </video>
+          </VideoStyled>
+        ) : (
+          <ImageStyled bgImage={NFTDetail?.contentUrl}>
             <div className="bg-image"></div>
             {/* <img src={NFTDetail?.contentUrl} /> */}
-            <img className="avatar" src={NFTDetail?.contentUrl} alt="" loading="lazy" />
-          </ImageStyled>}
-          {/* {
+            <img
+              className="avatar"
+              src={NFTDetail?.contentUrl}
+              alt=""
+              loading="lazy"
+            />
+          </ImageStyled>
+        )}
+        {/* {
             isMobile &&
             <div className={isMobile ? "social-icon mobile" : "social-icon"}>
               <div className="icon"><img src={Facebook} alt="" /></div>
@@ -278,7 +338,7 @@ const DetaiArtWork = ({ id }: any) => {
             </div>
           } */}
       </Col>
-  
+
       <Col
         className="gutter-row"
         // style={{position: 'relative'}}
@@ -288,7 +348,6 @@ const DetaiArtWork = ({ id }: any) => {
         style={{ width: '100%' }}
       >
         <DetailStyled>
-
           {/* <p className="title">{NFTDetail?.title}</p>
           <div className="token">
             Current Bid:{price} LUCKY
@@ -309,51 +368,67 @@ const DetaiArtWork = ({ id }: any) => {
             </div>
             
           </Row> */}
-           <p className="title">{NFTDetail?.title}</p>
+          <p className="title">{NFTDetail?.title}</p>
           <Row>
-           
-            <Col 
+            <Col
               xl={{ span: 12 }}
               md={{ span: 12 }}
               sm={{ span: 24 }}
               className="bid-info"
-              // style={{ width: '100%', display: 'flex', flexWrap: 'wrap'}}
-              >
-                <div className="group-item-bid">
-                  <div className="label">Current bid</div>
-                  <div className="value">{price}</div>
+            // style={{ width: '100%', display: 'flex', flexWrap: 'wrap'}}
+            >
+              <div className="group-item-bid">
+                <div className="label">Current bid</div>
+                <div className="value">{price}</div>
+              </div>
+              <div className="group-item-bid">
+                <div className="label">Jump step</div>
+                <div className="value">{step}</div>
+              </div>
+              <div className="group-item-bid">
+                <div className="label">Your step</div>
+                <div className="value">
+                  <MinusCircleFilled
+                    style={
+                      nextStepOffer <= 1
+                        ? { pointerEvents: 'none', opacity: 0.6 }
+                        : {}
+                    }
+                    onClick={() => setStepNextOffer(nextStepOffer - 1)}
+                  />
+                  <span style={{ padding: '0 5px' }}>{nextStepOffer}</span>
+                  <PlusCircleFilled
+                    onClick={() => setStepNextOffer(nextStepOffer + 1)}
+                  />
                 </div>
-                <div className="group-item-bid">
-                  <div className="label">Jump step</div>
-                  <div className="value">{step}</div>
+              </div>
+              <div className="group-item-bid">
+                <div className="label">Your bid</div>
+                <div className="value your-bid">
+                  {price + step * nextStepOffer} <img src={Token} />
                 </div>
-                <div className="group-item-bid">
-                  <div className="label">Your step</div>
-                  <div className="value">
-                      <MinusCircleFilled style={nextStepOffer <= 1 ? { pointerEvents: 'none', opacity: 0.6 } : {}} onClick={() => setStepNextOffer(nextStepOffer-1)}/> 
-                        <span style={{padding: '0 5px'}}>{nextStepOffer}</span>
-                      <PlusCircleFilled onClick={() => setStepNextOffer(nextStepOffer+1)}/>
-                  </div>
-                </div>
-                <div className="group-item-bid">
-                  <div className="label">Your bid</div>
-                  <div className="value your-bid">{price + step * nextStepOffer} <img src={Token} /></div>
-                </div>
+              </div>
             </Col>
             <Col
               xl={{ span: 12 }}
               md={{ span: 12 }}
               sm={{ span: 24 }}
-              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: isMobile ? 'center' : 'flex-end'}}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: isMobile ? 'center' : 'flex-end',
+              }}
             >
               {renderButton()}
             </Col>
           </Row>
 
-
           <p className="description">{NFTDetail?.description || ''}</p>
 
-          <Link to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}>
+          <Link
+            to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
+          >
             <p className="organize">
               <img src={Luckyswap} />
               <span className="name">{NFTDetail?.createdBy?.name}</span>
@@ -367,13 +442,29 @@ const DetaiArtWork = ({ id }: any) => {
                 <div className="group-info">
                   <div className="info">
                     <div className="title">NFT Contract ID:</div>
-                    <a className="value" href={embedTokenIdLinkBSCScan(NFTDetail.tokenId, NFTDetail?.contractAddress, chainId)} target="_blank">
+                    <a
+                      className="value"
+                      href={embedTokenIdLinkBSCScan(
+                        NFTDetail.tokenId,
+                        NFTDetail?.contractAddress,
+                        chainId,
+                      )}
+                      target="_blank"
+                    >
                       {getCompactString(NFTDetail?.contractAddress, 6)}
                     </a>
                   </div>
                   <div className="info">
                     <div className="title">Token ID:</div>
-                    <a className="value" href={embedTokenIdLinkBSCScan(NFTDetail.tokenId, NFTDetail?.contractAddress, chainId)} target="_blank">
+                    <a
+                      className="value"
+                      href={embedTokenIdLinkBSCScan(
+                        NFTDetail.tokenId,
+                        NFTDetail?.contractAddress,
+                        chainId,
+                      )}
+                      target="_blank"
+                    >
                       {NFTDetail && NFTDetail.tokenId}
                     </a>
                   </div>
@@ -381,13 +472,21 @@ const DetaiArtWork = ({ id }: any) => {
                 <div className="group-info">
                   <div className="info">
                     <div className="title">Creator's Adress:</div>
-                    <a className="value" href={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`} target="_blank">
+                    <a
+                      className="value"
+                      href={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
+                      target="_blank"
+                    >
                       {getCompactString(NFTDetail?.createdBy?.walletAddress, 6)}
                     </a>
                   </div>
                   <div className="info">
                     <div className="title">Owner Adress:</div>
-                    <a className="value" href={`/user-profile/${NFTDetail?.ownerWalletAddress}/onstore/readyToSell`} target="_blank">
+                    <a
+                      className="value"
+                      href={`/user-profile/${NFTDetail?.ownerWalletAddress}/onstore/readyToSell`}
+                      target="_blank"
+                    >
                       {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
                     </a>
                   </div>
@@ -396,15 +495,15 @@ const DetaiArtWork = ({ id }: any) => {
             </TabPane>
 
             <TabPane tab="History" key="2">
-              <TableStyled
-                columns={columnHistory}
-                dataSource={dataHistory}
-                size="middle"
-                scroll={{ x: 'calc(300px + 50%)', y: 500 }}
-              />
+              <TableHistory tokenId={NFTDetail.tokenId} />
             </TabPane>
             <TabPane tab="Bidding" key="3">
-              <BiddingTable NFTInfo={NFTDetail} bids={bidsData} refreshingAfterCancelBid={refreshingAfterCancelBid} onSetProccessing={onSetProccessing} />
+              <BiddingTable
+                NFTInfo={NFTDetail}
+                bids={bidsData}
+                refreshingAfterCancelBid={refreshingAfterCancelBid}
+                onSetProccessing={onSetProccessing}
+              />
             </TabPane>
             <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">
@@ -456,10 +555,10 @@ const DetaiArtWork = ({ id }: any) => {
                   <div className="time">30 minutes ago</div>
                 </ReviewStyled>
 
-              <FooterStyled>
-                <input placeholder="Write a comment"/> <ButtonTrade>Send</ButtonTrade>
-              </FooterStyled>
-
+                <FooterStyled>
+                  <input placeholder="Write a comment" />{' '}
+                  <ButtonTrade>Send</ButtonTrade>
+                </FooterStyled>
               </ScrollReview>
             </TabPane>
           </Tabs>
@@ -525,18 +624,24 @@ const DetaiArtWork = ({ id }: any) => {
   )
 }
 
-const BiddingTable = ({ NFTInfo, bids, refreshingAfterCancelBid, onSetProccessing }: any) => {
+const BiddingTable = ({
+  NFTInfo,
+  bids,
+  refreshingAfterCancelBid,
+  onSetProccessing,
+}: any) => {
   const { account } = useActiveWeb3React()
   const [isProcessing, setIsProccessing] = useState(false)
   const { buyItem } = useArtworkServices()
   const marketServicesMethod = useMarketServices()
-  const history = useHistory();
+  const history = useHistory()
 
   const onCancelBidToken = (record: any) => () => {
     setIsProccessing(true)
     if (marketServicesMethod) {
-      marketServicesMethod?.cancelBidToken(NFTInfo?.tokenId).then(
-        () => {
+      marketServicesMethod
+        ?.cancelBidToken(NFTInfo?.tokenId)
+        .then(() => {
           onSetProccessing(true)
           _.debounce(() => {
             refreshingAfterCancelBid && refreshingAfterCancelBid()
@@ -555,22 +660,27 @@ const BiddingTable = ({ NFTInfo, bids, refreshingAfterCancelBid, onSetProccessin
     setIsProccessing(true)
     const tokenId = NFTInfo?.tokenId
     if (tokenId && record?.address) {
-      marketServicesMethod?.sellTokenToBidUser(tokenId, record?.address).then((dt) => {
-        if (dt?.hash) {
-          buyItem({
-            id: NFTInfo?._id,
-            walletAddress: record?.address,
-          }).then(({ status }) => {
-            if (status == 200) {
-              history.push('/my-profile/mycollection/checkingReadyToBuy')
-            }
-          }).catch(() => {
-            setIsProccessing(false)
-          })
-        }
-      }).catch(() => {
-        setIsProccessing(false)
-      })
+      marketServicesMethod
+        ?.sellTokenToBidUser(tokenId, record?.address)
+        .then((dt) => {
+          if (dt?.hash) {
+            buyItem({
+              id: NFTInfo?._id,
+              walletAddress: record?.address,
+            })
+              .then(({ status }) => {
+                if (status == 200) {
+                  history.push('/my-profile/mycollection/checkingReadyToBuy')
+                }
+              })
+              .catch(() => {
+                setIsProccessing(false)
+              })
+          }
+        })
+        .catch(() => {
+          setIsProccessing(false)
+        })
     }
   }
   const columnBidding =
@@ -605,9 +715,7 @@ const BiddingTable = ({ NFTInfo, bids, refreshingAfterCancelBid, onSetProccessin
               return <ButtonProccesing />
             }
             return (
-              <ButtonTrade
-                onClick={confirmSellToken(record)}
-              >
+              <ButtonTrade onClick={confirmSellToken(record)}>
                 {'Confirm'}
               </ButtonTrade>
             )
@@ -644,11 +752,16 @@ const BiddingTable = ({ NFTInfo, bids, refreshingAfterCancelBid, onSetProccessin
             if (record?.key == account) {
               return (
                 <>
-                  {isProcessing ?
-                    <ButtonProccesing /> :
-                    <ButtonTrade style={{ background: '#FC636B' }} onClick={onCancelBidToken(record)}>
+                  {isProcessing ? (
+                    <ButtonProccesing />
+                  ) : (
+                    <ButtonTrade
+                      style={{ background: '#FC636B' }}
+                      onClick={onCancelBidToken(record)}
+                    >
                       Cancel
-                    </ButtonTrade>}
+                    </ButtonTrade>
+                  )}
                 </>
               )
             }

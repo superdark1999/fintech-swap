@@ -70,7 +70,7 @@ export default function ModalSelectSwap(props: Props) {
             return (
               <div key={item._id} className={checkItem(item) ? "card-item active" : "card-item"} onClick={() => handleCheck(item)}>
                 <div className="card">
-                  <CardItem data={item} />
+                  <CardItem data={item} isHideButton={true} />
                 </div>
               </div>
             )

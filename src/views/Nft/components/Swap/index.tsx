@@ -12,6 +12,8 @@ import {get} from 'lodash'
 import { Container } from './styled'
 import Confirm from './Confirm'
 import useMarketService from 'services/web3Services/MarketServices'
+import {getPrice} from 'utils'
+import _ from 'lodash'
 
 //handle modal :
 // 2 loại, mở của mình (value === 'my-item') và mở chọn sp mình swap (value === 'item-swap')
@@ -31,9 +33,12 @@ export default  () => {
   const history = useHistory()
   const [NFTs, setNFTs] = useState([]);
   const [status, setStatus] = useState<string>('processing')
+
   const [userNFTs, setUserNFTs] = useState([])
+  const [offerData, setOfferData] = useState([])
   const { getNFT, getDetailNFT, setPrice, buyItem } = useArtworkServices()
   const {id} = useParams()
+
 
   const nextStep = (step: number) => {
     setStep(step)
@@ -92,20 +97,61 @@ export default  () => {
           })
         }
       })
-      marketContract.on('SwapNFTs',(author, oldValue, newValue, event)=>{
-        console.log(author, oldValue, newValue,)
-        buyItem({ id: [myItems?.[0]?._id,itemSwap?.[0]?._id]}).then(({data,status})=>{
-          setStatus('success')
-        })
-        // if(author==account&& myItems?.[0]?.tokenId ==Number(oldValue) && itemSwap?.[0]?.tokenId == Number(newValue)){
-        //   buyItem({ id: [myItems?.[0]?._id,itemSwap?.[0]?._id]}).then(({data,status})=>{
-        //     setStatus('success')
-        //   })
-        // }
+      marketContract.on('SwapNFTs',(tokenIdA, tokenIdB, accountB, event)=>{
+        if(itemSwap?.[0]?.ownerWalletAddress==accountB&& myItems?.[0]?.tokenId ==Number(tokenIdB) && itemSwap?.[0]?.tokenId == Number(tokenIdA)){
+          buyItem({ id: [myItems?.[0]?._id,itemSwap?.[0]?._id]}).then(({data,status})=>{
+            setStatus('success')
+          })
+        }
       })
     }
-  },[marketServiceMethod,itemSwap?.[0]?.tokenId,myItems?.[0]?.tokenId])
+  },[marketServiceMethod,account,itemSwap?.[0]?.tokenId,myItems?.[0]?.tokenId])
 
+
+  const getSwapOffers = (tokenId:string, account:string)=>{
+    if(marketServiceMethod&&tokenId){
+      const {getSwapOffers} =  marketServiceMethod
+      getSwapOffers(tokenId).then((data:any)=>{
+        const rawNFTs = data?.map((item:any)=>{
+          return {
+            ownerWalletAddress: item[0],
+            tokenId: Number(item[1]),
+            price: getPrice(Number(item[2]))
+          }
+        })
+        if(!_.isEmpty(rawNFTs)){
+          getNFT({
+            tokenId: rawNFTs.map((it:any)=>it.tokenId)
+          }).then(({status,data})=>{
+            if(status==200){
+             const offerData = data?.data?.map((item:any)=>{
+                const rawNFTByTokenId = rawNFTs.find((it:any)=>item?.tokenId==it?.tokenId)||{}
+                return {
+                  ...rawNFTByTokenId,
+                  ...item
+                }
+              })
+            if(_.find(offerData,item=>item.ownerWalletAddress===account)){
+              setMyItems([_.find(offerData,item=>item.ownerWalletAddress===account)])
+              // history.push(`/swap/${id}/step=3`)
+              // setStep(3)
+              // setStatus('success')
+            }
+            setOfferData(offerData)
+            }
+          })
+        }
+      })
+  }
+  }
+
+  useEffect(()=>{
+    getSwapOffers(itemSwap?.[0]?.tokenId,account)
+    if(itemSwap?.[0]?.ownerWalletAddress==account){
+      history.push(`/swap/${id}/step=2`)
+      setStep(2)
+    }
+  },[itemSwap?.[0]?.tokenId,account])
 
   const getItemSelected = (data?: any) => {
     if (visible.value === 'my-item') {
@@ -142,6 +188,7 @@ export default  () => {
           setMyItems={setMyItems}
           selectMetodSwap={selectMetodSwap} 
           setSelectMethod={setSelectMethod}
+          offerData={offerData}
         />
         )
       }

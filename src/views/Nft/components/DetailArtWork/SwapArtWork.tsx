@@ -8,7 +8,7 @@ import Luckyswap from 'assets/images/luckyswap.svg'
 import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
-import {  CloseOutlined, StarFilled, CheckOutlined } from '@ant-design/icons'
+import { CloseOutlined, StarFilled, CheckOutlined } from '@ant-design/icons'
 import {
   DetailStyled,
   ReviewStyled,
@@ -16,6 +16,7 @@ import {
   ImageStyled,
   DetailTabpane,
   HeaderStyled,
+  VideoStyled,
 } from './styled'
 import { dataHistory, columnHistory } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
@@ -30,7 +31,7 @@ import _ from 'lodash'
 const { TabPane } = Tabs
 const DetaiArtWork = ({ id }: any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
-  const [isCopied, handleCopy] = useCopyToClipboard(3000);
+  const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const { account, chainId } = useActiveWeb3React()
   const [NFTDetail, setNFTDetail] = useState<any>({})
   const [loading, setLoading] = useState(true)
@@ -45,16 +46,16 @@ const DetaiArtWork = ({ id }: any) => {
     })
   }, [])
 
-
   const onSwapItem = () => {
-     history.push(`/swap/${id}/step=1`)
+    history.push(`/swap/${id}/step=1`)
   }
 
-
   const renderButton = () => {
-   return(
-    <ButtonBuy onClick={onSwapItem} className="btn-swap">Swap now</ButtonBuy>
-   )
+    return (
+      <ButtonBuy onClick={onSwapItem} className="btn-swap">
+        Swap now
+      </ButtonBuy>
+    )
   }
 
   return (
@@ -68,36 +69,67 @@ const DetaiArtWork = ({ id }: any) => {
       >
         <HeaderStyled className="header-detail">
           <Row align="middle">
-            <div className="social-icon"><Link to="/"><CloseOutlined className="icon" /></Link></div>
+            <div className="social-icon">
+              <Link to="/">
+                <CloseOutlined className="icon" />
+              </Link>
+            </div>
             <div className="date-time">02h 31m 04s left 🔥 </div>
             <div className="rating">
-              4.8
-              {' '}
-              <StarFilled style={{ color: '#fadb14' }} />
-              {' '}
-              <span style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5' }}>(15)</span>
-              {' '}
+              4.8 <StarFilled style={{ color: '#fadb14' }} />{' '}
+              <span
+                style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5' }}
+              >
+                (15)
+              </span>{' '}
               <img src={Hammer} alt="" />
             </div>
           </Row>
 
           <div className="social-icon">
-            <div className="icon"><img src={Facebook} alt="" /></div>
-            <div className="icon"><img src={Telegram} alt="" /></div>
-            <div className="icon" onClick={() => handleCopy(`${window.location.origin}/artwork/detail/${NFTDetail?.NFTType}/${NFTDetail?._id}`)}>
-              {isCopied ? <span><CheckOutlined /></span> : <img src={Copy} alt="copy-artwork" />}
+            <div className="icon">
+              <img src={Facebook} alt="" />
+            </div>
+            <div className="icon">
+              <img src={Telegram} alt="" />
+            </div>
+            <div
+              className="icon"
+              onClick={() =>
+                handleCopy(
+                  `${window.location.origin}/artwork/detail/${NFTDetail?.NFTType}/${NFTDetail?._id}`,
+                )
+              }
+            >
+              {isCopied ? (
+                <span>
+                  <CheckOutlined />
+                </span>
+              ) : (
+                <img src={Copy} alt="copy-artwork" />
+              )}
             </div>
           </div>
         </HeaderStyled>
-        {
-          NFTDetail?.type === 'video' ?
-            <video style={{}} width="100%" height="100%" controls autoPlay muted><source src={NFTDetail?.contentUrl} type="video/mp4" /></video>
-            : <ImageStyled bgImage={NFTDetail?.contentUrl}>
-              <div className="bg-image"></div>
-              {/* <img src={NFTDetail?.contentUrl} /> */}
-              <img className="avatar" src={NFTDetail?.contentUrl} alt="" loading="lazy" />
-            </ImageStyled>
-        }
+        {NFTDetail?.type === 'video' ? (
+          <VideoStyled>
+            <div className="bg-image"></div>
+            <video autoPlay muted controls>
+              <source src={NFTDetail?.contentUrl} type="video/mp4" />
+            </video>
+          </VideoStyled>
+        ) : (
+          <ImageStyled bgImage={NFTDetail?.contentUrl}>
+            <div className="bg-image"></div>
+            {/* <img src={NFTDetail?.contentUrl} /> */}
+            <img
+              className="avatar"
+              src={NFTDetail?.contentUrl}
+              alt=""
+              loading="lazy"
+            />
+          </ImageStyled>
+        )}
       </Col>
       <Col
         className="gutter-row"
@@ -108,16 +140,16 @@ const DetaiArtWork = ({ id }: any) => {
         style={{ width: '100%' }}
       >
         <DetailStyled>
-
           <p className="title">{NFTDetail?.title}</p>
 
           <Row align="middle" justify="space-between">
             {renderButton()}
           </Row>
 
-
           <p className="description">{NFTDetail?.description || ''}</p>
-          <Link to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}>
+          <Link
+            to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
+          >
             <p className="organize">
               <img src={Luckyswap} />
               <span className="name">{NFTDetail?.createdBy?.name}</span>
@@ -131,13 +163,29 @@ const DetaiArtWork = ({ id }: any) => {
                 <div className="group-info">
                   <div className="info">
                     <div className="title">NFT Contract ID:</div>
-                    <a className="value" href={embedTokenIdLinkBSCScan(NFTDetail.tokenId, NFTDetail?.contractAddress, chainId)} target="_blank">
+                    <a
+                      className="value"
+                      href={embedTokenIdLinkBSCScan(
+                        NFTDetail.tokenId,
+                        NFTDetail?.contractAddress,
+                        chainId,
+                      )}
+                      target="_blank"
+                    >
                       {getCompactString(NFTDetail?.contractAddress, 6)}
                     </a>
                   </div>
                   <div className="info">
                     <div className="title">Token ID:</div>
-                    <a className="value" href={embedTokenIdLinkBSCScan(NFTDetail.tokenId, NFTDetail?.contractAddress, chainId)} target="_blank">
+                    <a
+                      className="value"
+                      href={embedTokenIdLinkBSCScan(
+                        NFTDetail.tokenId,
+                        NFTDetail?.contractAddress,
+                        chainId,
+                      )}
+                      target="_blank"
+                    >
                       {NFTDetail && NFTDetail.tokenId}
                     </a>
                   </div>
@@ -145,13 +193,21 @@ const DetaiArtWork = ({ id }: any) => {
                 <div className="group-info">
                   <div className="info">
                     <div className="title">Creator's Adress:</div>
-                    <a className="value" href={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`} target="_blank">
+                    <a
+                      className="value"
+                      href={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
+                      target="_blank"
+                    >
                       {getCompactString(NFTDetail?.createdBy?.walletAddress, 6)}
                     </a>
                   </div>
                   <div className="info">
                     <div className="title">Owner Adress:</div>
-                    <a className="value" href={`/user-profile/${NFTDetail?.ownerWalletAddress}/onstore/readyToSell`} target="_blank">
+                    <a
+                      className="value"
+                      href={`/user-profile/${NFTDetail?.ownerWalletAddress}/onstore/readyToSell`}
+                      target="_blank"
+                    >
                       {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
                     </a>
                   </div>
@@ -249,7 +305,7 @@ const DetaiArtWork = ({ id }: any) => {
           </Row>
         </DetailStyled>
       </Col>
-    </Row >
+    </Row>
   )
 }
 
