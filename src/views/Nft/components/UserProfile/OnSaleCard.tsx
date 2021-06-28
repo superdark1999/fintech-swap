@@ -19,7 +19,6 @@ export default function OnSaleCard({ data }: any) {
         if (data?.NFTType == 'buy') {
           const unitPrice = await marketService?.getTokenPrice?.(data?.tokenId)
           const price = getPrice(Number(unitPrice?._hex))
-          console.log(unitPrice?._hex)
           setPrice(price)
         } else {
           const bidsArr = await marketService?.getBidsByTokenId?.(data?.tokenId)
@@ -66,6 +65,7 @@ export default function OnSaleCard({ data }: any) {
               autoPlay={isMobile ? false : true}
               loop
               className="avatar"
+              style={{ objectFit: 'cover' }}
             >
               <source src={`${data?.contentUrl}#t=0.1`} type="video/mp4" />
             </video>
@@ -85,12 +85,12 @@ export default function OnSaleCard({ data }: any) {
           xs={{ span: 24 }}
           xxl={{ span: 16 }}
         >
-          <div className="header-card" style={{ marginTop: 10 }}>
+          {/* <div className="header-card" style={{ marginTop: 10 }}>
             <div className="status">Ready to Sell</div>
-            {/* <div className="cancel">
+            <div className="cancel">
                   Cancel
-                </div> */}
-          </div>
+                </div>
+          </div> */}
 
           <div className="name">{data?.title}</div>
           <div className="number">
@@ -107,11 +107,11 @@ export default function OnSaleCard({ data }: any) {
           {data?.description && (
             <div className="content">{data?.description}</div>
           )}
-
           <div className="organize">
-            <img src={Luckyswap} />
-            <span className="name">LuckySwapStudio</span>
-            <img src={Checkmark} />
+            <span style={{ fontSize: '12px', fontWeight: 500 }}>Creator by</span>
+            {/* <img style={{ width: '40px', borderRadius: '100px' }} src={data?.createdBy?.avatarImage} /> */}
+            <a className="name" href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`} target="_blank">{data?.createdBy?.name ? data?.createdBy?.name : data?.createdBy?.walletAddress}</a>
+            {/* <img src={Checkmark} /> */}
           </div>
         </Col>
       </Row>

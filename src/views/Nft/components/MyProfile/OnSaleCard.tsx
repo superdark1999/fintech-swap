@@ -85,7 +85,7 @@ export default function OnSaleCard({ data }: any) {
           xxl={{ span: 16 }}
         >
           <div className="header-card" style={{ marginTop: 10 }}>
-            <div className="status">{data?.NFTType}</div>
+            <div className="status">{data?.NFTType === 'swap-store' ? 'Swap Store' : data?.NFTType}</div>
             <div className="cancel">Cancel</div>
           </div>
 
@@ -103,9 +103,10 @@ export default function OnSaleCard({ data }: any) {
           )}
 
           <div className="organize">
-            <img src={Luckyswap} />
-            <span className="name">LuckySwapStudio</span>
-            <img src={Checkmark} />
+            <span style={{ fontSize: '12px', fontWeight: 500 }}>Creator by</span>
+            {/* <img style={{ width: '40px', borderRadius: '100px' }} src={data?.createdBy?.avatarImage} /> */}
+            <a className="name" href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`} target="_blank">{data?.createdBy?.name ? data?.createdBy?.name : data?.createdBy?.walletAddress}</a>
+            {/* <img src={Checkmark} /> */}
           </div>
         </Col>
       </Row>
