@@ -84,13 +84,13 @@ export default function Pool() {
 
               {!account ? (
                 <LightCard padding="40px">
-                  <Text color="#2b2e2f" textAlign="center">
+                  <Text className="color-dark" textAlign="center">
                     Connect to a wallet to view your liquidity.
                   </Text>
                 </LightCard>
               ) : v2IsLoading ? (
                 <LightCard padding="40px">
-                  <Text color="#2b2e2f" textAlign="center">
+                  <Text className="color-dark" textAlign="center">
                     <Dots>Loading</Dots>
                   </Text>
                 </LightCard>

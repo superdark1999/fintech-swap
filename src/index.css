@@ -382,3 +382,7 @@ button.button-connect:hover {
   line-height: 36px !important;
   padding: 0 5px 0 16px !important;
 }
+
+.color-dark {
+  color: #2b2e2f !important;
+}
