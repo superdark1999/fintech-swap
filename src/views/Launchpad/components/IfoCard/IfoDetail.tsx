@@ -253,7 +253,7 @@ const IfoTitle = ({ activeIfo }: any) => {
         <BoxContent>
           <div className="two-column">
             <div className="two-column-left">
-              <h3>{name}</h3>
+              <h3><span><img src="images/logo-test.png" alt=""/></span>{name}</h3>
 
               <BoxSocial>
                 <a rel="noreferrer" target="_blank" href={social && social.twitter}>
@@ -573,6 +573,23 @@ const BoxContent = styled.div`
         font-size: 26px;
         color: rgb(48 48 65);
         font-weight: 600;
+        display: flex;
+        align-items: center;
+
+        span {
+          width: 40px;
+          height: 40px;
+          line-height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 5px;
+
+          img {
+            width: 40px;
+          }
+        }
       }
     }
 

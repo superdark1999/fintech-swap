@@ -71,7 +71,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
         <ItemContent>
           <BoxHead>
-            <h2>{name}</h2>
+            <h2><span><img src="images/logo-test.png" alt=""/></span>{name}</h2>
             <p>
               1 {currency} = {priceRate} {sympol}
             </p>
@@ -296,6 +296,23 @@ const BoxHead = styled.div`
     line-height: 34px;
     font-weight: 600;
     margin-bottom: 0;
+    display: flex;
+    align-items: center;
+
+    span {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 5px;
+
+      img {
+        width: 40px;
+      }
+    }
   }
 `
 
