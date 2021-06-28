@@ -49,7 +49,7 @@ export const UserProfileStyled = styled.div<Props>`
     width: 100%;
     justify-content: center;
     &.header-profile {
-      height: 160px;
+      height: 300px;
       position: relative;
       justify-content: center;
       background: ${(props) =>
@@ -61,7 +61,7 @@ export const UserProfileStyled = styled.div<Props>`
         > .avatar {
           width: 140px;
           height: 140px;
-          top: 85px;
+          top: 230px;
           border: 5px solid #ffffff;
           box-sizing: border-box;
           border-radius: 80px;
