@@ -196,15 +196,24 @@ export default function (props: Props) {
     setMyItems([data])
   }
 
-  const renderButon = () => {
-    if (userState?.isProcessingCanBuy || isProccessing) {
-      return (<ButtonProccesing />)
-    } else if (userState?.isCanBuy) {
-      return (
-        <ButtonBuy width="300px"
-          onClick={onOfferItem}
-          className={myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId ? '' : 'disabled'}
-        >{itemSwap?.[0]?.ownerWalletAddress !== account ? "Offer now" : "Confirm"}
+  const renderButon = ()=>{
+    if(!account){
+     return( <ButtonBuy width="300px" onClick={()=>{
+        notification('error', {
+          message: 'Error',
+          description: `Unblock your wallet to offer`,
+        })
+      }} >
+        Offer now
+      </ButtonBuy>)
+    }else if(userState?.isProcessingCanBuy||isProccessing){
+      return( <ButtonProccesing/>)
+    }else if(userState?.isCanBuy){
+      return(
+        <ButtonBuy width="300px" 
+          onClick={onOfferItem} 
+          className={myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId?'':'disabled'} 
+          >{itemSwap?.[0]?.ownerWalletAddress !== account?"Offer now":"Confirm"}
         </ButtonBuy>
       )
     }
