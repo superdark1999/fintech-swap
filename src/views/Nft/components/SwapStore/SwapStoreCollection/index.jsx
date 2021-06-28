@@ -46,7 +46,7 @@ function ExploreCollection() {
       <div className="content-collect">
         {NFTs.map((item) => {
           return (
-            item?.NFTType === 'swap' && (
+            item?.NFTType === 'swap-store' && (
               <Cart width="320px" height="480px" data={item} />
             )
           )
