@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { OfferStyled, TableStyled, WrapperListCard, ListCard, Container} from './styled'
+import { OfferStyled, TableStyled, WrapperListCard, ListCard, Container } from './styled'
 import TextGradient from 'components-v2/ID'
 import { Select, Row, Image } from 'antd'
 import Swap from 'assets/images/swap.svg'
@@ -10,12 +10,12 @@ import { data, column } from './mock'
 import { isMobile } from 'react-device-detect'
 import { ButtonBuy } from 'components-v2/Button'
 import useMarketService from 'services/web3Services/MarketServices'
-import { CardSwap, CardSelect, CardOffer, CardDefault} from '../components/index'
-import _, {isEmpty} from 'lodash'
+import { CardSwap, CardSelect, CardOffer, CardDefault } from '../components/index'
+import _, { isEmpty } from 'lodash'
 import { useActiveWeb3React } from 'wallet/hooks'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
-import {getCompactString, getPrice} from 'utils'
+import { getCompactString, getPrice } from 'utils'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import notification from 'components-v2/Alert'
@@ -29,7 +29,7 @@ interface Props {
   itemSwap: any
   setVisible: (value: boolean) => void
   setSelectMethod: (value: number) => void
-  setMyItems: (data:any) => void
+  setMyItems: (data: any) => void
   selectMetodSwap: number,
   offerData: any
 }
@@ -41,23 +41,23 @@ const OptionData = [
   }
 ]
 const { Option } = Select;
-const METHOD_SWAP= {
+const METHOD_SWAP = {
   NFT_ONLY: 1,
   NFT_TOKEN: 2,
 }
 
 export default function (props: Props) {
   const {
-    myItems, setVisible, itemSwap, selectMetodSwap, setSelectMethod,nextStep, setMyItems, offerData
+    myItems, setVisible, itemSwap, selectMetodSwap, setSelectMethod, nextStep, setMyItems, offerData
   } = props
   const [select, setSelect] = useState<string | null>('Lucky');
   const [offerPrice, setOfferPrice] = useState<number>(0)
   const [isProccessing, setIsProcessing] = useState<boolean>(false)
   const [userState, userActions] = useUserStore()
 
-  const marketServiceMethod  = useMarketService()
+  const marketServiceMethod = useMarketService()
 
-  const {account} = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
 
   const divRef = useRef(null)
 
@@ -73,27 +73,27 @@ export default function (props: Props) {
     if (myItems.length > 3) {
       return (
         <>
-        <WrapperListCard>
-          <ListCard ref={divRef} numOfItem={myItems.length}>
-            {
-              myItems.map((card: any) => {
-                return (
-                  <CardSwap data={card} setVisible={setVisible} value='my-item'/>
-                )
-              })
-            }
-          </ListCard>
-          <RightCircleOutlined
-            className="scroll-left"
-            onClick={scrollLeft}
-            style={{ fontSize: 24 }}
-          />
-          <LeftCircleOutlined
-            className="scroll-right"
-            onClick={scrollRight}
-            style={{ fontSize: 24 }}
-          />
-        </WrapperListCard>
+          <WrapperListCard>
+            <ListCard ref={divRef} numOfItem={myItems.length}>
+              {
+                myItems.map((card: any) => {
+                  return (
+                    <CardSwap data={card} setVisible={setVisible} value='my-item' />
+                  )
+                })
+              }
+            </ListCard>
+            <RightCircleOutlined
+              className="scroll-left"
+              onClick={scrollLeft}
+              style={{ fontSize: 24 }}
+            />
+            <LeftCircleOutlined
+              className="scroll-right"
+              onClick={scrollRight}
+              style={{ fontSize: 24 }}
+            />
+          </WrapperListCard>
         </>
       )
     } else if (myItems.length === 2 || myItems.length === 3) {
@@ -102,14 +102,14 @@ export default function (props: Props) {
           {
             myItems.map((card: any) => {
               return (
-                <CardSwap data={card} setVisible={setVisible} value='my-item'/>
+                <CardSwap data={card} setVisible={setVisible} value='my-item' />
               )
             })
           }
         </ListCard>
       )
-    } else if (myItems.length === 1) return <CardSwap data={myItems[0]} setVisible={setVisible} value='my-item'/>
-    else return <CardDefault setVisible={setVisible} value='my-item'/>
+    } else if (myItems.length === 1) return <CardSwap data={myItems[0]} setVisible={setVisible} value='my-item' />
+    else return <CardDefault setVisible={setVisible} value='my-item' />
   }
 
 
@@ -119,35 +119,35 @@ export default function (props: Props) {
         <>
           {renderListCard()}
           <img src={Plus} style={{ margin: 'auto 20px' }} />
-         <CardOffer type={METHOD_SWAP.NFT_ONLY} onChangeSwapMethod={setSelectMethod} />
+          <CardOffer type={METHOD_SWAP.NFT_ONLY} onChangeSwapMethod={setSelectMethod} />
         </>
       )
     }
     if (method === METHOD_SWAP.NFT_TOKEN) {
       return (
         <>
-         {renderListCard()}
-         <img src={Plus} style={{ margin: 'auto 20px' }} />
-         <CardOffer type={METHOD_SWAP.NFT_TOKEN} onChangePrice={(price:number)=>{setOfferPrice(price)}} onChangeSwapMethod={setSelectMethod} />
+          {renderListCard()}
+          <img src={Plus} style={{ margin: 'auto 20px' }} />
+          <CardOffer type={METHOD_SWAP.NFT_TOKEN} onChangePrice={(price: number) => { setOfferPrice(price) }} onChangeSwapMethod={setSelectMethod} />
         </>
       )
     }
     return (
       <>
-        <CardSelect setSelectMethod={setSelectMethod}/>
+        <CardSelect setSelectMethod={setSelectMethod} />
       </>
 
     )
   }
 
-  const onOfferItem = ()=>{
-    if(marketServiceMethod && itemSwap?.[0]?.ownerWalletAddress !== account){
-      if(myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId){
+  const onOfferItem = () => {
+    if (marketServiceMethod && itemSwap?.[0]?.ownerWalletAddress !== account) {
+      if (myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId) {
         setIsProcessing(true)
-        const { offerSwapNFT} = marketServiceMethod
-        offerSwapNFT(myItems?.[0]?.tokenId,itemSwap?.[0]?.tokenId,offerPrice).then((data)=>{
-          nextStep&&nextStep(3)
-        }).catch((err)=>{
+        const { offerSwapNFT } = marketServiceMethod
+        offerSwapNFT(myItems?.[0]?.tokenId, itemSwap?.[0]?.tokenId, offerPrice).then((data) => {
+          nextStep && nextStep(3)
+        }).catch((err) => {
           setIsProcessing(false)
           notification('error', {
             message: 'Error',
@@ -156,13 +156,13 @@ export default function (props: Props) {
         })
       }
     }
-    if(marketServiceMethod && itemSwap?.[0]?.ownerWalletAddress === account ){
-      if(myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId){
+    if (marketServiceMethod && itemSwap?.[0]?.ownerWalletAddress === account) {
+      if (myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId) {
         setIsProcessing(true)
-        const { confirmSwapNFT} = marketServiceMethod
-        confirmSwapNFT(itemSwap?.[0]?.tokenId,myItems?.[0]?.tokenId,myItems?.[0]?.ownerWalletAddress).then((data)=>{
-          nextStep&&nextStep(3)
-        }).catch((err)=>{
+        const { confirmSwapNFT } = marketServiceMethod
+        confirmSwapNFT(itemSwap?.[0]?.tokenId, myItems?.[0]?.tokenId, myItems?.[0]?.ownerWalletAddress).then((data) => {
+          nextStep && nextStep(3)
+        }).catch((err) => {
           setIsProcessing(false)
           notification('error', {
             message: 'Error',
@@ -174,7 +174,7 @@ export default function (props: Props) {
   }
 
   const onApproveBuyOnMarket = () => {
-    userActions?.updateUserInfo({isProcessingCanBuy:true})
+    userActions?.updateUserInfo({ isProcessingCanBuy: true })
     luckyServicesMethod?.approveLevelAmount?.(MARKET_ADDRESS)
       .then()
       .catch(() => {
@@ -182,33 +182,33 @@ export default function (props: Props) {
           message: 'Error',
           description: `Something went wrong please try again`,
         })
-        userActions?.updateUserInfo({isProcessingCanBuy:false})
+        userActions?.updateUserInfo({ isProcessingCanBuy: false })
       })
   }
 
-  const chooseOffer = (data:any)=>{
-    if(data?.price>0){
+  const chooseOffer = (data: any) => {
+    if (data?.price > 0) {
       setSelectMethod(2)
-    }else {
+    } else {
       setSelectMethod(1)
     }
-    
+
     setMyItems([data])
   }
 
-  const renderButon = ()=>{
-    if(userState?.isProcessingCanBuy||isProccessing){
-      return( <ButtonProccesing/>)
-    }else if(userState?.isCanBuy){
-      return(
-        <ButtonBuy width="300px" 
-          onClick={onOfferItem} 
-          className={myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId?'':'disabled'} 
-          >{itemSwap?.[0]?.ownerWalletAddress !== account?"Offer now":"Confirm"}
+  const renderButon = () => {
+    if (userState?.isProcessingCanBuy || isProccessing) {
+      return (<ButtonProccesing />)
+    } else if (userState?.isCanBuy) {
+      return (
+        <ButtonBuy width="300px"
+          onClick={onOfferItem}
+          className={myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId ? '' : 'disabled'}
+        >{itemSwap?.[0]?.ownerWalletAddress !== account ? "Offer now" : "Confirm"}
         </ButtonBuy>
       )
     }
-    return(
+    return (
       <ButtonBuy onClick={onApproveBuyOnMarket}>
         Allow to offer
       </ButtonBuy>
@@ -221,21 +221,21 @@ export default function (props: Props) {
         <Select className="select" style={{ width: 120, borderRadius: 30, textAlign: 'center' }} onChange={setSelect} defaultValue={select}>
           {OptionData.map((item, i) => (
             <Option key={i} value={item.value}>{item.label} <img src={Token} /></Option>
-          ))}    
+          ))}
         </Select>
-        <div style={{width: '100%', flexWrap: 'wrap', display: 'flex', justifyContent: "center"}} >
-            {renderMethodSwap(selectMetodSwap)}
-            
-            <img src={Swap} style={isMobile ? { transform: 'rotate(90deg)'} : null} />
+        <div style={{ width: '100%', flexWrap: 'wrap', display: 'flex', justifyContent: "center" }} >
+          {renderMethodSwap(selectMetodSwap)}
 
-            {itemSwap?.[0] ? <CardSwap data={itemSwap?.[0]} /> : <CardDefault setVisible={setVisible} value='item-swap' />}
+          <img src={Swap} style={isMobile ? { transform: 'rotate(90deg)' } : null} />
+
+          {itemSwap?.[0] ? <CardSwap data={itemSwap?.[0]} /> : <CardDefault setVisible={setVisible} value='item-swap' />}
         </div>
-        <Row justify="center" style={{marginTop: 40, alignItems:'center'}}>
-          <LeftCircleOutlined style={{fontSize: '30px',marginRight:'20px'}} onClick={()=>{nextStep(1)}}/>
+        <Row justify="center" style={{ marginTop: 40, alignItems: 'center' }}>
+          <span className="btn-back" onClick={() => { nextStep(1) }}>Back</span>
           {renderButon()}
-        </Row> 
+        </Row>
       </OfferStyled>
-      <OfferTable offerData={offerData} isRenderAction={itemSwap?.[0]?.ownerWalletAddress === account} chooseOffer={chooseOffer} />  
+      <OfferTable offerData={offerData} isRenderAction={itemSwap?.[0]?.ownerWalletAddress === account} chooseOffer={chooseOffer} />
       {/* <ModalSelectSwap
         visible={visible}
         setVisible={setVisible}
@@ -249,32 +249,32 @@ export default function (props: Props) {
   )
 }
 
-const OfferTable = ({offerData, isRenderAction, chooseOffer}:any) =>{
+const OfferTable = ({ offerData, isRenderAction, chooseOffer }: any) => {
   const column = [
     {
       title: 'Buyer',
-      render: (record:any) => {
+      render: (record: any) => {
         return (
-         <div>
-           {record?.ownerWalletAddress>0&&(
-             <TextGradient width="auto" fontSize="14px">{getCompactString(record?.ownerWalletAddress,6)} </TextGradient>
-           )}
-         </div>
+          <div>
+            {record?.ownerWalletAddress > 0 && (
+              <TextGradient width="auto" fontSize="14px">{getCompactString(record?.ownerWalletAddress, 6)} </TextGradient>
+            )}
+          </div>
         )
-       }
+      }
     },
     {
       title: 'Item',
-      render: (record:any) => {
-       return (
-        <div>
-          {record?.price>0&&(<Row>
-            <TextGradient width="auto" fontSize="14px">{record?.price} </TextGradient>
-            {' '}<img src={Token} />
-          </Row>)}
-          <Image style={{width: 80, height: 80, borderRadius: '8px' }}  src={record?.contentUrl} />
-        </div>
-       )
+      render: (record: any) => {
+        return (
+          <div>
+            {record?.price > 0 && (<Row>
+              <TextGradient width="auto" fontSize="14px">{record?.price} </TextGradient>
+              {' '}<img src={Token} />
+            </Row>)}
+            <Image style={{ width: 80, height: 80, borderRadius: '8px' }} src={record?.contentUrl} />
+          </div>
+        )
       }
     },
     {
@@ -283,13 +283,13 @@ const OfferTable = ({offerData, isRenderAction, chooseOffer}:any) =>{
     },
     {
       title: 'Created By',
-      render: (record:any) => {
+      render: (record: any) => {
         return (
-         <div>
-             <TextGradient width="auto" fontSize="14px">{record?.createdBy?.name} </TextGradient>
-         </div>
+          <div>
+            <TextGradient width="auto" fontSize="14px">{record?.createdBy?.name} </TextGradient>
+          </div>
         )
-       }
+      }
     },
     {
       title: 'Note',
@@ -297,20 +297,21 @@ const OfferTable = ({offerData, isRenderAction, chooseOffer}:any) =>{
     },
     {
       title: 'Action',
-    render: (record:any) =>{ 
-      return(<> 
-      {isRenderAction?<ButtonBuy onClick={()=>{chooseOffer(record)}}>Choose</ButtonBuy>:null }
-    </>)}
+      render: (record: any) => {
+        return (<>
+          {isRenderAction ? <ButtonBuy onClick={() => { chooseOffer(record) }}>Choose</ButtonBuy> : null}
+        </>)
+      }
     },
   ];
   return (
     <TableStyled
-        columns={column} 
-        dataSource={offerData} 
-        size="middle"
-        scroll={{ x: 300 }}
-        style={{width: '1100px', margin: 'auto'}}
-    />   
+      columns={column}
+      dataSource={offerData}
+      size="middle"
+      scroll={{ x: 300 }}
+      style={{ width: '1100px', margin: 'auto' }}
+    />
   )
 }
 

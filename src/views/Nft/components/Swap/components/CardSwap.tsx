@@ -1,22 +1,34 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { CheckCircleFilled } from '@ant-design/icons'
 import Lucky from 'assets/images/token.svg'
 import TextGradient from 'components-v2/ID'
-
+import RenderMedia from './renderMedia'
 export default function CardSwap(props: any) {
+  const [playVideo, setplayVideo] = React.useState(false)
+  const videoRef = React.useRef<HTMLVideoElement>();
+  useEffect(() => {
+    if (videoRef) {
+      if (playVideo) {
+        videoRef.current && videoRef.current.play()
+      } else {
+        videoRef.current && videoRef.current.pause()
+      }
+    }
+  }, [playVideo])
   return (
-    <CardSwapStyled style={{...props.style}}>
-      <img src={props.data?.contentUrl}/>
+    <CardSwapStyled style={{ ...props.style }} onMouseEnter={() => setplayVideo(true)} onMouseLeave={() => setplayVideo(false)}>
+      {/* <img src={props.data?.contentUrl}/> */}
+      <RenderMedia videoRef={videoRef} {...props} />
       <div className="filter">
         <div className="title">{props.data?.title}</div>
         <div className="artist-name">
           LuckySwapStudio {' '}
-          <CheckCircleFilled style={{color:"#84C87E"}}/>
+          <CheckCircleFilled style={{ color: "#84C87E" }} />
         </div>
-        { !props.data?.ownerWalletAddress ?
+        {!props.data?.ownerWalletAddress ?
           <div className="price">
-          21 {' '} <img src={Lucky} />
+            21 {' '} <img src={Lucky} />
           </div>
           :
           <TextGradient>{props.data?.ownerWalletAddress}</TextGradient>

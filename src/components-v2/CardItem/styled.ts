@@ -152,7 +152,7 @@ export const StyledCart = styled.div<PropsStyled>`
           color: #333435;
           opacity: 0.75;
           font-weight: 600;
-        }
+        }        
         .copy {
           font-size: 12px;
           cursor: pointer;
@@ -163,6 +163,14 @@ export const StyledCart = styled.div<PropsStyled>`
           }
         }
       }
+      .name-artist-2 {
+          display: flex;
+          justify-content: space-between;
+          font-size: 14px;
+          line-height: 20px;
+          color: #333435;
+          opacity: 0.75;
+        }
       .number {
         font-weight: 600;
         font-size: 14px;
