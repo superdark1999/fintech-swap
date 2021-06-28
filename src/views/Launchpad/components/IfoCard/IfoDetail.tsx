@@ -508,6 +508,7 @@ const BoxIfoDetail = styled.div`
   border-radius: 50px;
   overflow: hidden;
   background: rgb(255, 253, 250);
+  margin-bottom: 40px;
 
   @media (max-width: 768px) {
     width: auto;
