@@ -375,7 +375,7 @@ const DetaiArtWork = ({ id }: any) => {
               md={{ span: 12 }}
               sm={{ span: 24 }}
               className="bid-info"
-              // style={{ width: '100%', display: 'flex', flexWrap: 'wrap'}}
+            // style={{ width: '100%', display: 'flex', flexWrap: 'wrap'}}
             >
               <div className="group-item-bid">
                 <div className="label">Current bid</div>
@@ -430,7 +430,7 @@ const DetaiArtWork = ({ id }: any) => {
             to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
           >
             <p className="organize">
-              <img src={Luckyswap} />
+              <img style={{ borderRadius: '100px' }} width="40px" src={NFTDetail?.createdBy ? NFTDetail?.createdBy?.avatarImage : Luckyswap} />
               <span className="name">{NFTDetail?.createdBy?.name}</span>
               <img src={Checkmark} />
             </p>
@@ -686,90 +686,90 @@ const BiddingTable = ({
   const columnBidding =
     NFTInfo?.ownerWalletAddress === account
       ? [
-          {
-            title: 'Address',
-            dataIndex: 'address',
-            width: 100,
-            render: (address: String) => (
-              <a className="value" href="/" target="_blank">
-                {address}
-              </a>
-            ),
+        {
+          title: 'Address',
+          dataIndex: 'address',
+          width: 100,
+          render: (address: String) => (
+            <a className="value" href="/" target="_blank">
+              {address}
+            </a>
+          ),
+        },
+        {
+          title: 'Price',
+          dataIndex: 'price',
+          width: 100,
+          render: (price: Number) => (
+            <div className="token">
+              {price} LUCKY
+              <img src={Token} alt="" />
+            </div>
+          ),
+        },
+        {
+          title: 'Action',
+          dataIndex: 'action',
+          render: (_: any, record: any) => {
+            if (isProcessing) {
+              return <ButtonProccesing />
+            }
+            return (
+              <ButtonTrade onClick={confirmSellToken(record)}>
+                {'Confirm'}
+              </ButtonTrade>
+            )
           },
-          {
-            title: 'Price',
-            dataIndex: 'price',
-            width: 100,
-            render: (price: Number) => (
-              <div className="token">
-                {price} LUCKY
-                <img src={Token} alt="" />
-              </div>
-            ),
-          },
-          {
-            title: 'Action',
-            dataIndex: 'action',
-            render: (_: any, record: any) => {
-              if (isProcessing) {
-                return <ButtonProccesing />
-              }
-              return (
-                <ButtonTrade onClick={confirmSellToken(record)}>
-                  {'Confirm'}
-                </ButtonTrade>
-              )
-            },
-            width: 100,
-          },
-        ]
+          width: 100,
+        },
+      ]
       : [
-          {
-            title: 'Address',
-            dataIndex: 'address',
-            width: 100,
-            render: (address: String) => (
-              <a className="value" href="/" target="_blank">
-                {address}
-              </a>
-            ),
+        {
+          title: 'Address',
+          dataIndex: 'address',
+          width: 100,
+          render: (address: String) => (
+            <a className="value" href="/" target="_blank">
+              {address}
+            </a>
+          ),
+        },
+        {
+          title: 'Price',
+          dataIndex: 'price',
+          width: 100,
+          render: (price: Number) => (
+            <div className="token">
+              {price} LUCKY
+              <img src={Token} alt="" />
+            </div>
+          ),
+        },
+        {
+          title: 'Action',
+          dataIndex: 'action',
+          render: (_: any, record: any) => {
+            if (record?.key == account) {
+              return (
+                <>
+                  {isProcessing ? (
+                    <ButtonProccesing />
+                  ) : (
+                    <ButtonTrade
+                      style={{ background: '#FC636B' }}
+                      onClick={onCancelBidToken(record)}
+                    >
+                      Cancel
+                    </ButtonTrade>
+                  )}
+                </>
+              )
+            }
+            return null
           },
-          {
-            title: 'Price',
-            dataIndex: 'price',
-            width: 100,
-            render: (price: Number) => (
-              <div className="token">
-                {price} LUCKY
-                <img src={Token} alt="" />
-              </div>
-            ),
-          },
-          {
-            title: 'Action',
-            dataIndex: 'action',
-            render: (_: any, record: any) => {
-              if (record?.key == account) {
-                return (
-                  <>
-                    {isProcessing ? (
-                      <ButtonProccesing />
-                    ) : (
-                      <ButtonTrade
-                        style={{ background: '#FC636B' }}
-                        onClick={onCancelBidToken(record)}
-                      >
-                        Cancel
-                      </ButtonTrade>
-                    )}
-                  </>
-                )
-              }
-              return null
-            },
-            width: 100,
-          },
-        ]
+          width: 100,
+        },
+      ]
   return (
     <TableStyled
       columns={columnBidding}

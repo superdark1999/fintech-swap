@@ -167,7 +167,7 @@ export default function MyCollectionCard({ data, option }: any) {
 
   const onCancelItemOnMarket = () => {
     if (marketServicesMethod) {
-      if (data?.NFTType === 'buy' || data?.NFTType === 'auction') {
+      if (data?.NFTType === 'buy') {
         setIsPrcessing(true)
         marketServicesMethod?.cancelSellToken(data?.tokenId).then((dt) => {
           cancelSellNFT({ id: data?._id }).then(({ status }) => {
@@ -181,10 +181,63 @@ export default function MyCollectionCard({ data, option }: any) {
               setIsPrcessing(false)
             }
           })
+        }).catch(err=>{
+          console.log(err)
+          setIsPrcessing(false)
         })
-      } else {
-        marketServicesMethod?.cancelListNFT(data?.tokenId).then((data) => {
-          console.log(data)
+      }else if(data?.NFTType === 'auction'){
+        setIsPrcessing(true)
+        marketServicesMethod?.revokeBidToken(data?.tokenId).then((dt) => {
+          cancelSellNFT({ id: data?._id }).then(({ status }) => {
+            if (status == 200) {
+              history.push('/my-profile/mycollection/checkingToSell')
+            } else {
+              notification('error', {
+                message: 'Error',
+                description: 'Something when wrong, please try again later.',
+              })
+              setIsPrcessing(false)
+            }
+          })
+        }).catch(err=>{
+          console.log(err)
+          setIsPrcessing(false)
+        })
+      }else if(data?.NFTType === 'swap-store'){
+        setIsPrcessing(true)
+        marketServicesMethod?.cancelListNFT(data?.tokenId).then((dt) => {
+          cancelSellNFT({ id: data?._id }).then(({ status }) => {
+            if (status == 200) {
+              history.push('/my-profile/mycollection/checkingToSell')
+            } else {
+              notification('error', {
+                message: 'Error',
+                description: 'Something when wrong, please try again later.',
+              })
+              setIsPrcessing(false)
+            }
+          })
+        }).catch(err=>{
+          console.log(err)
+          setIsPrcessing(false)
+        })
+      }else if(data?.NFTType === 'swap-personal'){
+        setIsPrcessing(true)
+        marketServicesMethod?.cancelOfferSwapNFT(data?.tokenId).then((dt) => {
+          cancelSellNFT({ id: data?._id }).then(({ status }) => {
+            if (status == 200) {
+              history.push('/my-profile/mycollection/checkingToSell')
+            } else {
+              notification('error', {
+                message: 'Error',
+                description: 'Something when wrong, please try again later.',
+              })
+              setIsPrcessing(false)
+            }
+          })
+        }).catch(err=>{
+          console.log(err)
+          setIsPrcessing(false)
         })
       }
     }
@@ -246,7 +299,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const renderActionItem = () => {
     return (
       <div className="group-btn-action">
-        {(isProcessing || option === 'pending' || approvingMarket) && (
+        {(isProcessing || option === 'pending' || approvingMarket&&data?.status == 'pending'||data?.status == 'checkingReadyToSell'||data?.status == 'checkingBuying'||data?.status == 'checkingCancelling') && (
           <StatusBar type="processing" label="processing" />
         )}
         {!isNFTCanSell && !approvingMarket && data?.status == 'approved' && (

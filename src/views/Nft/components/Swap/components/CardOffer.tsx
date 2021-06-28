@@ -4,9 +4,14 @@ import React from 'react'
 import styled from 'styled-components'
 import Lucky from 'assets/images/token.svg'
 import { CloseOutlined } from '@ant-design/icons'
+import useUserStore from 'store/userStore'
+import formatNumber from 'utils/formatNumber'
+import { getPrice } from 'utils'
 
 export default function CardOffer(props:any) {
   const { type, onChangePrice, onChangeNote, onChangeSwapMethod } = props
+  const [userState,userAction] = useUserStore()
+
   const onChangeInputPrice = (event:any)=>{
     onChangePrice&&onChangePrice(event.target.value)
   }
@@ -22,7 +27,7 @@ export default function CardOffer(props:any) {
             <input placeholder="Enter price" onChange={onChangeInputPrice} />
           </div>
           <div className="balance">
-            Balance: <div>100 {' '}</div> <img src={Lucky}/>
+            Balance: <div>{userState?.balance?.LUCKY || 0}</div> <img src={Lucky}/>
           </div>
         </div>
       }

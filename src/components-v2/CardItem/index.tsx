@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { StyledCart} from './styled'
+import React, { useState, useEffect, useRef } from 'react'
+import { StyledCart } from './styled'
 import Copy from 'assets/images/copy.svg'
 import Token from 'assets/images/token.svg'
 import Hammer from 'assets/images/hammer.svg'
@@ -18,15 +18,16 @@ import Loading from 'assets/images/loading.gif'
 
 import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import { isMobile } from 'react-device-detect'
-export default function CardItem(props?: any ) {
+export default function CardItem(props?: any) {
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const history = useHistory()
-  const { data, isLazy = false, srcSet,isHideButton } = props
+  const { data, isLazy = false, srcSet, isHideButton } = props
   const { account, chainId } = useActiveWeb3React()
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
   const [dayExp, setDayExp] = useState(false)
-  const [playVideo, setplayVideo] = useState(true)
+  const [playVideo, setplayVideo] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>();
   const marketServiceMethod = useMarketServices()
   useEffect(() => {
     const getTokenPrice = async () => {
@@ -49,29 +50,29 @@ export default function CardItem(props?: any ) {
   const onSwapItem = () => {
     history.push(`/swap/${data?._id}/step=1`)
   }
-
-
   const renderMedia = () => {
     switch (data?.type) {
       case "video": {
         return (
-          <video            
-            width="300" height="450" controls 
+          <video
+            playsInline
+            width="300px" height="450px"
+            controls
             muted
+            ref={videoRef}
             className={isLazy ? "lazy" : ""}
-            src={isLazy ? Loading : `${data?.contentUrl}#t=0.1`} 
+            src={`${data?.contentUrl}`}
             data-srcset={srcSet}
-            data-src={data?.contentUrl}
-            autoPlay={isMobile ? false : true}
+            data-src={`${data?.contentUrl}#t=0.1`}
             loop
           />
         )
       }
       default: return (
-        <img 
+        <img
           src={isLazy ? Loading : data?.contentUrl}
           className={isLazy ? "avatar lazy" : "avatar"}
-          alt="" 
+          alt=""
           srcSet={isLazy ? "" : srcSet}
           data-srcset={srcSet}
           data-src={data?.contentUrl}
@@ -79,13 +80,21 @@ export default function CardItem(props?: any ) {
       )
     }
   }
-
+  useEffect(() => {
+    if (videoRef) {
+      if (playVideo) {
+        videoRef.current && videoRef.current.play()
+      } else {
+        videoRef.current && videoRef.current.pause()
+      }
+    }
+  }, [playVideo])
   return (
     <div className="create-nav">
       <StyledCart src={data?.contentUrl}>
         <div className="card-art-work">
           <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
-            <div className="wrapper-image">
+            <div className="wrapper-image" onMouseEnter={() => setplayVideo(true)} onMouseLeave={() => setplayVideo(false)}>
               <div className="gradient-background">
                 <div className="title">{data?.title}</div>
               </div>
@@ -142,8 +151,7 @@ export default function CardItem(props?: any ) {
                 title="copy"
                 onClick={() =>
                   handleCopy(
-                    `${window.location.href}artwork/detail/${
-                      data?.NFTType || 'buy'
+                    `${window.location.href}artwork/detail/${data?.NFTType || 'buy'
                     }/${data?._id}`,
                   )
                 }
@@ -159,34 +167,37 @@ export default function CardItem(props?: any ) {
                 )}
               </div>
             </div>
-            <div className="name-artist">
-              <span
-                style={{
-                  fontSize: '10px',
-                  fontWeight: 'bold',
-                  color: '#333435',
-                }}
-              >
-                Owner by
-              </span>
-              <a
-                target="_blank"
-                href={embedTokenIdLinkBSCScan(
-                  data.tokenId,
-                  data?.contractAddress,
-                  chainId,
-                )}
-              >
-                {' '}
-                {getCompactString(data?.ownerWalletAddress, 5)}
-              </a>
+            <div className="name-artist-2">
+              <div>
+                <span
+                  style={{
+                    fontSize: '10px',
+                    fontWeight: 'bold',
+                    color: '#333435',
+                  }}
+                >
+                  Owner by
+                </span>
+                <a
+                  target="_blank"
+                  href={embedTokenIdLinkBSCScan(
+                    data.tokenId,
+                    data?.contractAddress,
+                    chainId,
+                  )}
+                >
+                  {' '}
+                  {getCompactString(data?.ownerWalletAddress, 5)}
+                </a>
+              </div>
+              <span>2000x2000</span>
             </div>
             <div className="number">
               {data?.NFTType !== 'swap-store' ? (
                 <div>
                   {price} LUCKY <img src={Token} alt="" />
                 </div>
-              ) : isHideButton ? null: (
+              ) : isHideButton ? null : (
                 <ButtonBuy className="btn-swap" onClick={onSwapItem}>
                   Swap now
                 </ButtonBuy>
