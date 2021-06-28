@@ -298,6 +298,7 @@ const BoxHead = styled.div`
     margin-bottom: 0;
     display: flex;
     align-items: center;
+    min-height: 68px;
 
     span {
       width: 40px;
