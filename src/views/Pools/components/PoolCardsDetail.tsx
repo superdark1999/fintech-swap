@@ -1,11 +1,13 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'
 import { Row, Col } from 'antd'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useERC20, useStakingContract } from 'hooks/useContract'
 import useGetStateData from 'hooks/useGetStakeData';
+import useUtilityToken from 'hooks/useUtilityToken';
 import { Pool } from 'state/types'
 
 
@@ -20,22 +22,49 @@ const pool = {
 }
 
 const staking = {
+  depositSymbol: 'XLUCKY2',
+  rewardSymbol: 'XLUCKY1',
   depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
   rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a",
-  stakingContract: "0xF49987840871DC552014893C4625359FD1447D95",
+  stakingContract: "0x1dde4Fc6ca8121Cb11E988b524B275855F98aAA6",
   
 }
 
 function PoolCardsDetail() {
   const [depositModal, setDepositModal] = useState(false);
   const [withdrawModal, setWithdrawModel] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+  const { account } = useWeb3React()
 
   const [balance, setBalance] = useState(0);
   const [value, setValue] = useState('');
   const stakingContract = useStakingContract(staking.stakingContract);
   const {pendingReward, userAmount, userRewardDebt} = useGetStateData(staking);
+  const {balanceOf, approve, allowance} =  useUtilityToken(staking.depositToken);
 
-  console.log("userRewardDebt", pendingReward.toNumber());
+  useEffect(() => {
+    const fetchBalance = async () => {
+      const bal = await balanceOf(account);
+      setBalance(parseFloat((bal /1e18).toFixed(4)));
+    }
+    if (account)
+      fetchBalance()
+  },[account, balanceOf])
+
+  useEffect(() => {
+    const fetchApproval = async() => {
+      const data = await allowance(account, staking.stakingContract);
+      setIsApproved(data.toString() !== '0')
+    }
+    if (account) {
+      fetchApproval();
+    }
+  },[account, allowance])
+
+  const handleAprrove = async () => {
+    await approve(staking.stakingContract);
+  }
+
   const handleDeposit = async () => {
     if (stakingContract) {
       const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
@@ -54,11 +83,27 @@ function PoolCardsDetail() {
 
   const handleWithdraw = async () => {
     if (stakingContract) {
+      const args = [new BigNumber(0).times(new BigNumber(10).pow(18)).toString()]
+      const gasAm = await stakingContract.estimateGas.deposit(...args)
+      .catch(() => console.log("Fail estimate gas"));
+
+      await stakingContract
+        .deposit(...args, { gasLimit: gasAm })
+        .then((response: any) => {
+          console.log('>>>>', response)
+        })
+        .catch((error: any) => {
+          console.log(error)
+        })
+    }
+  }
+
+  const handleUnState = async () => {
+    if (stakingContract) {
       const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
       const gasAm = await stakingContract.estimateGas.deposit(...args)
       .catch(() => console.log("Fail estimate gas"));
 
-      console.log("gas: ", gasAm);
       await stakingContract
         .withdraw(...args, { gasLimit: gasAm })
         .then((response: any) => {
@@ -68,11 +113,10 @@ function PoolCardsDetail() {
           console.log(error)
         })
     }
-  
   }
 
   const depositToggle = () => setDepositModal(!depositModal);
-  const withdrawToggle = () => setWithdrawModel(!withdrawModal);
+  const unStakeToggle = () => setWithdrawModel(!withdrawModal);
 
   return (
     <>
@@ -99,7 +143,7 @@ function PoolCardsDetail() {
                 </div>
 
                 <div className="box__footer">
-                  <Button color="danger" onClick={withdrawToggle}>Harvest</Button>
+                  <Button color="danger" onClick={handleWithdraw}>Harvest</Button>
                 </div>
               </div>
             </Col>
@@ -116,7 +160,16 @@ function PoolCardsDetail() {
                 </div>
 
                 <div className="box__footer">
-                  <Button color="danger" onClick={depositToggle}>Deposit</Button>
+                  {!isApproved ? (
+                    <Button color="danger" onClick={handleAprrove}>Approve</Button>
+                  ) :
+                  (
+                    <div>
+                      <Button color="danger" onClick={unStakeToggle}>UnStake</Button>
+                      <Button color="danger" onClick={depositToggle}>Deposit</Button>
+                    </div>
+                  )
+                  }
                 </div>
               </div>
             </Col>
@@ -132,7 +185,7 @@ function PoolCardsDetail() {
 
         <ModalBody>
           <Title>Deposit LuckySwap Tokens</Title>
-          <Available>0 Lucky Available</Available>
+          <Available>{balance} {staking.depositSymbol}</Available>
 
           <BoxInput>
             <input type="text" id="fname" name="fname" placeholder="0.000"
@@ -140,7 +193,7 @@ function PoolCardsDetail() {
               onChange={(e) => setValue(e.target.value)}
               />
             <BoxLink>
-              <span className="text-lucky">lucky</span>
+              <span className="text-lucky">{staking.depositSymbol}</span>
               <BoxButton>
                 <Button>Max</Button>
               </BoxButton>
@@ -157,11 +210,11 @@ function PoolCardsDetail() {
       </Modal>
       </div>
       <div>
-        <Modal isOpen={withdrawModal} toggle={withdrawToggle}>
-          <ModalHeader toggle={withdrawToggle}></ModalHeader>
+        <Modal isOpen={withdrawModal} toggle={unStakeToggle}>
+          <ModalHeader toggle={unStakeToggle}></ModalHeader>
 
           <ModalBody>
-            <Title>Withdraw LuckySwap Tokens</Title>
+            <Title>UnStake LuckySwap Tokens</Title>
             <Available>0 Lucky Available</Available>
 
             <BoxInput>
@@ -179,9 +232,9 @@ function PoolCardsDetail() {
 
           <ModalFooter>
             <CancelButton>
-              <Button color="primary" onClick={withdrawToggle}>Cancel</Button>
+              <Button color="primary" onClick={unStakeToggle}>Cancel</Button>
             </CancelButton>
-            <Button color="secondary" onClick={handleWithdraw} disabled={false}>Harvest</Button>
+            <Button color="secondary" onClick={handleUnState} disabled={false}>UnStake</Button>
           </ModalFooter>
         </Modal>
       </div>
@@ -368,6 +421,7 @@ const BoxDetail = styled.div`
 
       button {
         background: #f5c606;
+        margin-right: 20px;
         border-radius: 4px;
         font-weight: 600;
         width: 100%;
