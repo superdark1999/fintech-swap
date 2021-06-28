@@ -12,6 +12,29 @@ export const OfferStyled = styled.div`
   box-sizing: border-box;
   border-radius: 32px;
   background: #F9FAFB;
+  .btn-back{
+    height: max-content;
+    background: transparent;
+    border-radius: 100px;
+    border:1px solid #333435;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 8px 24px;
+    margin-right:10px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    position: relative;
+    cursor: pointer;
+    color: #333435;
+  }
   .ant-select {
     margin-bottom: 20px;
     .ant-select-selector {
