@@ -329,6 +329,7 @@ const ItemHead = styled(Card)<{ img: string }>`
   height: 106px;
   background-size: cover;
   color: rgb(255, 255, 255);
+  margin: 0;
 
   @media (min-width: 768px) {
     width: 100%;
