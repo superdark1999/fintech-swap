@@ -7,7 +7,7 @@ import { useActiveWeb3React } from 'wallet/hooks'
 import {getPrice, SUPPORT_CHAIN_IDS, getPriceFromEstimateGas} from 'utils'
 import useUserStore from 'store/userStore'
 
-export const MARKET_ADDRESS = '0xB9412809E3eBB0C309ce57358192d85855F99Cd6';
+export const MARKET_ADDRESS = '0x89a1C14c0EcB74AE01849E52AB969AA324CAF530';
 
 const OUT_OF_BNB = `Insufficient balance of BNB`
 const OUT_OF_LUCKY = `Insufficient balance of LUCKY`

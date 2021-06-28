@@ -156,14 +156,16 @@ export default function (props: Props) {
         })
       }
     }
-    if (marketServiceMethod && itemSwap?.[0]?.ownerWalletAddress === account) {
+  if (marketServiceMethod && itemSwap?.[0]?.ownerWalletAddress === account) {
       if (myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId) {
         setIsProcessing(true)
         const { confirmSwapNFT } = marketServiceMethod
+        console.log(itemSwap?.[0]?.tokenId, myItems?.[0]?.tokenId, myItems?.[0]?.ownerWalletAddress)
         confirmSwapNFT(itemSwap?.[0]?.tokenId, myItems?.[0]?.tokenId, myItems?.[0]?.ownerWalletAddress).then((data) => {
           nextStep && nextStep(3)
         }).catch((err) => {
           setIsProcessing(false)
+          console.log(err)
           notification('error', {
             message: 'Error',
             description: err.message,
@@ -281,7 +283,21 @@ const OfferTable = ({ offerData, isRenderAction, chooseOffer }: any) => {
               <TextGradient width="auto" fontSize="14px">{record?.price} </TextGradient>
               {' '}<img src={Token} />
             </Row>)}
-            <Image style={{ width: 80, height: 80, borderRadius: '8px' }} src={record?.contentUrl} />
+           { record?.type!='video'?
+           <Image style={{ width: 80, height: 80, borderRadius: '8px' }} src={record?.contentUrl} />:
+            <video
+            className="nft-image"
+            width='80px'
+            height='80px'
+            style={{objectFit:'cover'}}
+            playsInline
+            controls
+            muted
+            src={`${record?.contentUrl}`}
+            data-srcset={record?.contentUrl}
+            data-src={`${record?.contentUrl}#t=0.1`}
+            loop
+          />}
           </div>
         )
       }
@@ -308,7 +324,7 @@ const OfferTable = ({ offerData, isRenderAction, chooseOffer }: any) => {
       title: 'Action',
       render: (record: any) => {
         return (<>
-          {isRenderAction ? <ButtonBuy onClick={() => { chooseOffer(record) }}>Choose</ButtonBuy> : null}
+          {isRenderAction ? <ButtonBuy onClick={() => { chooseOffer(record) }}>View</ButtonBuy> : null}
         </>)
       }
     },

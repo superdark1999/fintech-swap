@@ -13,7 +13,7 @@ import {MARKET_ADDRESS} from './MarketServices'
 import { BigNumber } from 'Jus'
 import { getPrice , getPriceFromEstimateGas} from 'utils'
 
-export const NFT_ADDRESS = '0xa75556C5b07e88119d7979761D00b8a55A1Bc315';
+export const NFT_ADDRESS = '0x969a82989D9e410ed0ae36C12479552421C93eB2';
 const payableAmountDefault = '10000000000000000'
 
 const BNB_ERROR = `You don't have enough BNB`

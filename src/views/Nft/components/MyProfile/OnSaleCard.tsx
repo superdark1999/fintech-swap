@@ -20,7 +20,7 @@ export default function OnSaleCard({ data }: any) {
           const unitPrice = await marketService?.getTokenPrice?.(data?.tokenId)
           const price = getPrice(Number(unitPrice?._hex))
           setPrice(price)
-        } else {
+        } else if (data?.NFTType == 'auction') {
           const bidsArr = await marketService?.getBidsByTokenId?.(data?.tokenId)
           const bidsData =
             bidsArr?.map((item: any) => {
@@ -90,9 +90,9 @@ export default function OnSaleCard({ data }: any) {
           </div>
 
           <div className="name">{data?.title}</div>
-          <div className="number">
+          {(data?.NFTType=='buy'||data?.NFTType==='auction') &&<div className="number">
             {price} LUCKY <img src={Token} alt="" />
-          </div>
+          </div>}
           <div style={{ display: 'flex' }}>
             <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
             <div className="number">{getCompactString(data?.TXHash, 6)}</div>
