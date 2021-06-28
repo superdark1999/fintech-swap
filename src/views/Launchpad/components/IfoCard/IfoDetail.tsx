@@ -62,12 +62,12 @@ const IfoTitle = ({ activeIfo }: any) => {
     secondsUntilEnd,
     status,
     startBlockNum,
+    hasHarvest
   } = useGetPublicIfoData(activeIfo)
   const { account } = useWeb3React()
   const LPContract = useContract(currencyAddress, bep20Abi)
   const raisingTokenContract = useContract(address, ifoAbi)
   const {balanceOf, approve, allowance} =  useUtilityToken(currencyAddress);
-
 
   const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
   const maxDeposit = maxDepositAmount.div(1e18).toNumber() - depositedAmount.div(1e18).toNumber()
@@ -474,7 +474,7 @@ const IfoTitle = ({ activeIfo }: any) => {
               <Button
                 className="finished"
                 color="primary"
-                disabled={getStatus() || status === 'finished'}
+                disabled={getStatus() || hasHarvest || depositedAmount.toNumber() === 0}
                 onClick={handleClaim}
               >
                 {getStatus() && spinnerIcon}
