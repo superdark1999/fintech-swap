@@ -156,7 +156,7 @@ const TicketCard: React.FC = () => {
         >
           {TranslateString(432, 'View your tickets')}
         </Button>
-        <Button disabled={!getStatus()} variant="secondary" id="lottery-buy-start" width="100%" onClick={onPresentBuy}>
+        <Button variant="secondary" id="lottery-buy-start" width="100%" onClick={onPresentBuy}>
           {getStatus() ? spinnerIcon : ''}
           {TranslateString(430, 'Buy ticket')}
         </Button>

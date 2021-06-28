@@ -133,7 +133,7 @@ export const getTotalClaim = async (lotteryContract, ticketsContract, account) =
     const claimedStatus = await multiCall(ticketAbi, calls3)
 
     const drawed = await getLotteryStatus(lotteryContract)
-
+    
     const finalTokenIds = []
     ticketIssues.forEach(async (ticketIssue, i) => {
       // eslint-disable-next-line no-empty
