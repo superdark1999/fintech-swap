@@ -26,7 +26,6 @@ import {
   TableStyled,
   VideoStyled,
 } from './styled'
-import { isMobile } from 'react-device-detect'
 import { dataHistory, columnHistory } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices, {
@@ -45,6 +44,7 @@ import { useHistory } from 'react-router-dom'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import _ from 'lodash'
+import { isMobile } from 'react-device-detect'
 import TableHistory from './TableHistory'
 
 const { TabPane } = Tabs
@@ -412,7 +412,7 @@ const DetaiArtWork = ({ id }: any) => {
                 </ReviewStyled>
 
                 <FooterStyled>
-                  <input placeholder="Write a comment" />{' '}
+                  <input placeholder="Write a comment" />
                   <ButtonTrade>Send</ButtonTrade>
                 </FooterStyled>
               </ScrollReview>
@@ -453,7 +453,7 @@ const DetaiArtWork = ({ id }: any) => {
             footer={null}
             width={400}
           >
-            <Form onFinish={() => {}}>
+            <Form onFinish={() => { }}>
               <Form.Item
                 name="lucky"
                 label="Price"
@@ -480,7 +480,7 @@ const DetaiArtWork = ({ id }: any) => {
           </Modal>
         </DetailStyled>
       </Col>
-    </Row>
+    </Row >
   )
 }
 

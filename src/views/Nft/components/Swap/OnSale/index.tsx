@@ -29,79 +29,78 @@ export default function (props: Props) {
 
   return (
     <OnSaleStyled background={props?.itemSwap?.contentUrl}>
-        <div className="background"/>
-
-        {
-          props.itemSwap ?
-          <CardSwap 
+      <div className="background" />
+      {
+        props.itemSwap ?
+          <CardSwap
             style={{
               minWidth: 380,
               height: 530,
               margin: 10,
               zIndex: 1,
-            }} 
-            data={props.itemSwap} 
-            setVisible={props.setVisible }
+            }}
+            data={props.itemSwap}
+            setVisible={props.setVisible}
             value='item-swap'
           />
           :
-          <CardDefault 
-            setVisible={props.setVisible} 
+          <CardDefault
+            setVisible={props.setVisible}
             value='item-swap'
             style={{
               minWidth: 380,
               height: 530,
               margin: 10,
               zIndex: 1,
-            }} 
+            }}
           />
-        }
-               
-        { props.itemSwap ?
-            <div className="wrapper-info">
-              <div className="title">{props?.itemSwap?.title}</div>
-              <div className="description">
-                <p>
-                  {props?.itemSwap?.description}
-                </p>
-              </div>
+      }
 
-              <p className="organize">
-                <img src="/static/media/luckyswap.8109f13c.svg"/>
-                <span className="name">{props?.itemSwap?.createdBy?.name}</span>
-                <img src="/static/media/checkmark.76da7af5.svg"/>
-              </p>
-              <Row justify="space-between" align="middle">
-                <ButtonBuy width="300px" onClick={handleNextStep}>Offer now</ButtonBuy>
-                <div className="social-icon">
-                <div className="icon"><img src={Facebook} alt="" /></div>
-                <div className="icon"><img src={Telegram} alt="" /></div>
-                <div className="icon" onClick={() => handleCopy(`${window.location.origin}/swap`)}>
-                  {isCopied ? <span><CheckOutlined /></span> : <img src={Copy} alt="copy-artwork" />}
-                </div>
-              </div>
-              </Row>
-            </div>
-          :
-            <div className="wrapper-info">
-              <div className="title">Swap NFTs for Better Prices!</div>
-              <div className="description">
-                <p>
-                  The history of NFTs has shown that a very small percentage of NFTs stay relevant over time, with most NFTs losing their value after a few months. NFTs quickly become illiquid and therefore holder can't sell.
-                </p>
-                <p>
-                  Using NFTSwaps, any one can deposit their NFT to the NFTSwaps required pool and obtain BEP20 token derivatives that can be exchanged directly on PancakeSwap and BakerySwap from the NFTSwaps UI. 
-                </p>
-              </div>
+      {props.itemSwap ?
+        <div className="wrapper-info">
+          <div className="title">{props?.itemSwap?.title}</div>
+          <div className="description">
+            <p>
+              {props?.itemSwap?.description}
+            </p>
+          </div>
 
-              <Row justify="space-between" align="middle">
-                <div className="social-icon">
-                <div className="icon"><img src={Facebook} alt="" /></div>
-                <div className="icon"><img src={Telegram} alt="" /></div>
+          <p className="organize">
+            <img src="/static/media/luckyswap.8109f13c.svg" />
+            <span className="name">{props?.itemSwap?.createdBy?.name}</span>
+            <img src="/static/media/checkmark.76da7af5.svg" />
+          </p>
+          <Row justify="space-between" align="middle">
+            <ButtonBuy width="300px" onClick={handleNextStep}>Offer now</ButtonBuy>
+            <div className="social-icon">
+              <div className="icon"><img src={Facebook} alt="facebook" /></div>
+              <div className="icon"><img src={Telegram} alt="telegram" /></div>
+              <div className="icon" onClick={() => handleCopy(`${window.location.origin}/swap`)}>
+                {isCopied ? <span><CheckOutlined /></span> : <img src={Copy} alt="copy-artwork" />}
               </div>
-              </Row>
             </div>
-          }
+          </Row>
+        </div>
+        :
+        <div className="wrapper-info">
+          <div className="title">Swap NFTs for Better Prices!</div>
+          <div className="description">
+            <p>
+              The history of NFTs has shown that a very small percentage of NFTs stay relevant over time, with most NFTs losing their value after a few months. NFTs quickly become illiquid and therefore holder can't sell.
+            </p>
+            <p>
+              Using NFTSwaps, any one can deposit their NFT to the NFTSwaps required pool and obtain BEP20 token derivatives that can be exchanged directly on PancakeSwap and BakerySwap from the NFTSwaps UI.
+            </p>
+          </div>
+
+          <Row justify="space-between" align="middle">
+            <div className="social-icon">
+              <div className="icon"><img src={Facebook} alt="facebook" /></div>
+              <div className="icon"><img src={Telegram} alt="telegram" /></div>
+            </div>
+          </Row>
+        </div>
+      }
     </OnSaleStyled>
   )
 }
