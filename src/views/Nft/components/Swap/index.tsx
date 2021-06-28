@@ -108,7 +108,8 @@ export default  () => {
   },[marketServiceMethod,account,itemSwap?.[0]?.tokenId,myItems?.[0]?.tokenId])
 
 
-  const getSwapOffers = (tokenId:string, account:string)=>{
+  const getSwapOffers = (itemSwap:any, account:string)=>{
+    const tokenId = itemSwap?.[0]?.tokenId;
     if(marketServiceMethod&&tokenId){
       const {getSwapOffers} =  marketServiceMethod
       getSwapOffers(tokenId).then((data:any)=>{
@@ -146,7 +147,7 @@ export default  () => {
   }
 
   useEffect(()=>{
-    getSwapOffers(itemSwap?.[0]?.tokenId,account)
+    getSwapOffers(itemSwap,account)
     if(account&&itemSwap?.[0]?.ownerWalletAddress==account){
       history.push(`/swap/${id}/step=2`)
       setStep(2)

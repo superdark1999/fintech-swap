@@ -119,7 +119,7 @@ export default function (props: Props) {
         <>
           {renderListCard()}
           <img src={Plus} style={{ margin: 'auto 20px' }} />
-          <CardOffer type={METHOD_SWAP.NFT_ONLY} onChangeSwapMethod={setSelectMethod} />
+          <CardOffer type={METHOD_SWAP.NFT_ONLY} onChangeSwapMethod={setSelectMethod}  />
         </>
       )
     }
@@ -132,9 +132,9 @@ export default function (props: Props) {
         </>
       )
     }
-    return (
+    return (   
       <>
-        <CardSelect setSelectMethod={setSelectMethod} />
+        <CardSelect setSelectMethod={setSelectMethod} isShowOption={itemSwap?.[0]?.ownerWalletAddress === account} />
       </>
 
     )
@@ -227,11 +227,11 @@ export default function (props: Props) {
   return (
     <>
       <OfferStyled >
-        <Select className="select" style={{ width: 120, borderRadius: 30, textAlign: 'center' }} onChange={setSelect} defaultValue={select}>
+        {/* <Select className="select" style={{ width: 120, borderRadius: 30, textAlign: 'center' }} onChange={setSelect} defaultValue={select}>
           {OptionData.map((item, i) => (
             <Option key={i} value={item.value}>{item.label} <img src={Token} /></Option>
           ))}
-        </Select>
+        </Select> */}
         <div style={{ width: '100%', flexWrap: 'wrap', display: 'flex', justifyContent: "center" }} >
           {renderMethodSwap(selectMetodSwap)}
 

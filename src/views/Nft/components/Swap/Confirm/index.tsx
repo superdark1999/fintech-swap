@@ -72,8 +72,21 @@ const {
           <img src={Swap} style={isMobile ? { transform: 'rotate(90deg)'} : null} />
 
           <div className="nft-image">
-            <img className="nft-image" src={itemSwap?.[0]?.contentUrl}/>
+          { itemSwap?.[0]?.type !='video' ? <img className="nft-image" src={itemSwap?.[0]?.contentUrl}/>:
+            <video
+            className="nft-image"
+            style={{objectFit:'cover'}}
+            playsInline
+            controls
+            muted
+            // className={isLazy ? "lazy" : ""}
+            src={`${itemSwap?.[0]?.contentUrl}`}
+            data-srcset={itemSwap?.[0]?.contentUrl}
+            data-src={`${itemSwap?.[0]?.contentUrl}#t=0.1`}
+            loop
+          />}
           </div>
+          
           
         </Row>
         <div className="content">

@@ -22,17 +22,6 @@ export default function CardSwap(props: any) {
       <RenderMedia videoRef={videoRef} {...props} />
       <div className="filter">
         <div className="title">{props.data?.title}</div>
-        <div className="artist-name">
-          LuckySwapStudio {' '}
-          <CheckCircleFilled style={{ color: "#84C87E" }} />
-        </div>
-        {!props.data?.ownerWalletAddress ?
-          <div className="price">
-            21 {' '} <img src={Lucky} />
-          </div>
-          :
-          <TextGradient>{props.data?.ownerWalletAddress}</TextGradient>
-        }
       </div>
       {
         (props.value && props.setVisible) && <div className="edit" onClick={() => props?.setVisible({ isOpen: true, value: props.value })}>Edit</div>
