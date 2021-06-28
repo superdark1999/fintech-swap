@@ -6,8 +6,7 @@ import { useContract } from 'wallet/hooks/useContract'
 import { useCallback } from 'react'
 import { ethers } from 'ethers'
 import _ from 'lodash'
-import { ChainId } from '@juiceswap/v2-sdk'
-export const LUCKY_TOKEN_ADDRESS = '0x969a82989D9e410ed0ae36C12479552421C93eB2';
+export const LUCKY_TOKEN_ADDRESS = '0x5C2AaAdD1FcE223baaEFB1cF41ce872e9d8B986A';
 
 function useLuckyServiceChain97(){
         const { account, chainId } = useActiveWeb3React()
