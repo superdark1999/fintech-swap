@@ -462,7 +462,7 @@ const IfoTitle = ({ activeIfo }: any) => {
               <Button
                 className="finished"
                 color="primary"
-                disabled={getStatus() || status === 'finished'}
+                disabled={getStatus()}
                 onClick={handleClaim}
               >
                 {getStatus() && spinnerIcon}
