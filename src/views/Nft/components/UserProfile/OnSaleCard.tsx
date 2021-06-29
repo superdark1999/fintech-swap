@@ -51,12 +51,12 @@ export default function OnSaleCard({ data }: any) {
   }
   return (
     <CartStyled>
-      <Row gutter={24}>
+      <Row gutter={24} align={"middle"}>
         <Col
-          xl={{ span: 8 }}
+          xl={{ span: 7 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 8 }}
+          xxl={{ span: 7 }}
         >
           {data?.type === 'video' ? (
             <video

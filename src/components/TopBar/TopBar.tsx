@@ -72,18 +72,18 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
     }
   }, [chainId])
 
-  useEffect(()=>{
-    if(luckyMethod){
-      const {LuckyTokenContract} = luckyMethod
+  useEffect(() => {
+    if (luckyMethod) {
+      const { LuckyTokenContract } = luckyMethod
       const filter = LuckyTokenContract.filters.Approval(account);
 
       LuckyTokenContract.on(filter, (author, allowAddress, value) => {
-        if(author===account&&allowAddress===MARKET_ADDRESS){
-          userActions.updateUserInfo({ isCanBuy: true, isProcessingCanBuy:false })
+        if (author === account && allowAddress === MARKET_ADDRESS) {
+          userActions.updateUserInfo({ isCanBuy: true, isProcessingCanBuy: false })
         }
       })
     }
-  },[luckyMethod,account])
+  }, [luckyMethod, account])
 
   useEffect(() => {
     if (account) {
@@ -93,7 +93,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           coverImage: data?.data?.coverImage,
           avatarImage: data?.data?.avatarImage,
           name: data?.data?.name,
-          socialMediaLink: data?.data?.socialLink,
+          socialMediaLink: data?.data?.socialMediaLink,
           biography: data?.data?.biography,
         }
         if (status === 200) {
@@ -158,7 +158,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         ) : (
           <a onClick={() => { alert("Unblock your wallet before create NFT") }} className="create-nav" >Create</a>
         )}
-         <Link to={"/swap/step=1"} className="create-nav">Swap</Link>
+        <Link to={"/swap/step=1"} className="create-nav">Swap</Link>
         {/* <Switch
               checkedChildren="Animation"
               unCheckedChildren="Animation"
@@ -286,7 +286,7 @@ const UserBalance = () => {
         }
       })
       luckyMethod?.getLuckyBalance().then((data: any) => {
-        userActions.updateUserBalance({ LUCKY: formatNumber(getPrice(data?._hex || 0))})
+        userActions.updateUserBalance({ LUCKY: formatNumber(getPrice(data?._hex || 0)) })
       })
     }
   }, [])

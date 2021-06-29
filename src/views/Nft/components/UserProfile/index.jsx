@@ -16,8 +16,10 @@ import { HeartOutlined, CheckOutlined } from '@ant-design/icons'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import useUserStore from 'store/userStore'
-import {getCompactString} from 'utils'
-
+import { getCompactString } from 'utils'
+import { isMobile } from 'react-device-detect'
+import GetTypeSocial from 'components-v2/GetTypeSocial'
+import { isEmpty } from 'lodash'
 const { TabPane } = Tabs
 
 const UserProfile = () => {
@@ -28,9 +30,9 @@ const UserProfile = () => {
   const { getUserDetail } = useArtworkService()
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   useEffect(() => {
-    if(match.params?.id=== userState.walletAddress){
+    if (match.params?.id === userState.walletAddress) {
       history.push(`/my-profile/${match.params?.id}/onstore/readyToSell`)
-    }else{
+    } else {
       getUserDetail(match.params?.id).then(({ data, status }) => {
         if (status === 200) {
           setUser(data)
@@ -71,7 +73,11 @@ const UserProfile = () => {
           <div className="info-detail">
             <div>
               <div className="name">
-                <span>{user?.name ? user?.name : getCompactString(user?.walletAddress,6)}</span>
+                <span>
+                  {user?.name
+                    ? user?.name
+                    : getCompactString(user?.walletAddress, 6)}
+                </span>
                 <img src={Checkmark} />
               </div>
               <div className="rank">
@@ -79,6 +85,15 @@ const UserProfile = () => {
               </div>
             </div>
             <div className="button-right">
+              <a
+                target="_blank"
+                href={`https://bscscan.com/address/${userState?.walletAddress}`}
+                title={userState?.walletAddress}
+              >
+                {isMobile
+                  ? getCompactString(userState?.walletAddress, 6)
+                  : getCompactString(userState?.walletAddress, 10)}
+              </a>
               <ButtonStyle className="btn-donate">
                 <HeartOutlined />
                 Donate
@@ -104,6 +119,21 @@ const UserProfile = () => {
             </div>
           </div>
           <p className="description">{user?.biography}</p>
+          <div className="description">
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span>Social media/Portfolio link:</span>
+              <GetTypeSocial
+                string="website"
+                url={`${window.location.origin}/user-profile/${userState?.walletAddress}/onstore/readyToSell`}
+              />
+              {!isEmpty(userState?.socialMediaLink) && (
+                <GetTypeSocial
+                  string={userState?.socialMediaLink}
+                  url={userState?.socialMediaLink}
+                />
+              )}
+            </div>
+          </div>
           <Tabs defaultActiveKey={match.params?.tab} onChange={onChangeTab}>
             <TabPane tab="On store" key="onstore">
               <TabOnSale userAddress={match.params?.id} />
@@ -122,7 +152,7 @@ const TabOnSale = ({ userAddress }) => {
   useEffect(() => {
     const query = {
       status: 'readyToSell',
-      NFTType: ['buy','auction','swap-store'],
+      NFTType: ['buy', 'auction', 'swap-store'],
       ownerWalletAddress: userAddress,
     }
     getNFT(query).then(({ status, data }) => {

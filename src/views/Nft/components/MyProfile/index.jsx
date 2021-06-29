@@ -18,7 +18,10 @@ import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 
 import { HeartOutlined, CheckOutlined } from '@ant-design/icons'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
-import { getCompactString} from 'utils'
+import { getCompactString } from 'utils'
+import { isMobile } from 'react-device-detect'
+import GetTypeSocial from 'components-v2/GetTypeSocial'
+import { isEmpty } from 'lodash'
 const { TabPane } = Tabs
 export default () => {
   const [userState] = useUserStore()
@@ -37,7 +40,7 @@ export default () => {
       history.push(`/my-profile/history/#`)
     }
   }
-
+  console.log('userState: ', userState)
   return (
     <UserProfileStyled urlCover={userState?.coverImage}>
       <Row className="section header-profile">
@@ -62,14 +65,26 @@ export default () => {
           <div className="info-detail">
             <div>
               <div className="name">
-                <span>{userState?.name||getCompactString(userState?.walletAddress,6)}</span>
-                <img src={Checkmark} />
+                <span className="wallet-address">
+                  {userState?.name ||
+                    getCompactString(userState?.walletAddress, 6)}
+                </span>
+                {/* <img src={Checkmark} /> */}
               </div>
               <div className="rank">
                 <img src={Crown} /> GOLD ARTIST
               </div>
             </div>
             <div className="button-right">
+              <a
+                target="_blank"
+                href={`https://bscscan.com/address/${userState?.walletAddress}`}
+                title={userState?.walletAddress}
+              >
+                {isMobile
+                  ? getCompactString(userState?.walletAddress, 6)
+                  : getCompactString(userState?.walletAddress, 10)}
+              </a>
               <ButtonStyle className="btn-donate">
                 <HeartOutlined />
                 Donate
@@ -95,6 +110,21 @@ export default () => {
             </div>
           </div>
           <p className="description">{userState?.biography}</p>
+          <div className="description">
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span>Social media/Portfolio link:</span>
+              <GetTypeSocial
+                string="website"
+                url={`${window.location.origin}/user-profile/${userState?.walletAddress}/onstore/readyToSell`}
+              />
+              {!isEmpty(userState?.socialMediaLink) && (
+                <GetTypeSocial
+                  string={userState?.socialMediaLink}
+                  url={userState?.socialMediaLink}
+                />
+              )}
+            </div>
+          </div>
           <Tabs
             className="tabs-profile"
             activeKey={match.params.tab}
@@ -124,19 +154,19 @@ const TabOnSale = () => {
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
-  const {tab} = useParams()
+  const { tab } = useParams()
   useEffect(() => {
-    if(tab=='onstore'){
+    if (tab == 'onstore') {
       const query = {
         status: 'readyToSell',
-        NFTType: ['buy','auction','swap-store'],
+        NFTType: ['buy', 'auction', 'swap-store'],
         ownerWalletAddress: account,
       }
       getNFT(query).then(({ status, data }) => {
         if (status == 200) {
           setNFTs(data?.data || [])
         }
-      }) 
+      })
     }
   }, [tab])
   return (
@@ -179,7 +209,12 @@ const TabMyCollection = () => {
         delete query.status
       }
       if (optionChecked === 'pending') {
-        query.status = ['pending', 'checkingReadyToSell', 'checkingBuying', 'checkingCancelling']
+        query.status = [
+          'pending',
+          'checkingReadyToSell',
+          'checkingBuying',
+          'checkingCancelling',
+        ]
       }
       getNFT(query).then(({ status, data }) => {
         if (status == 200) {
