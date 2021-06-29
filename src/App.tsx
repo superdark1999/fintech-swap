@@ -37,6 +37,7 @@ import Lucky2 from 'assets/icon/lucky-2.svg'
 import Lucky3 from 'assets/icon/lucky-3.svg'
 import Lottie from 'react-lottie';
 import LogoAnimation from "assets/animation/Logo_animation.json";
+import InoEvent from 'views/Nft/components/InoEvent'
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if ('ethereum' in window) {
@@ -159,10 +160,13 @@ const App = () => {
               <Route path="/explore">
                 <Explore />
               </Route>
+              <Route path="/ino">
+                <InoEvent />
+              </Route>
               <Route component={Page404} />
             </Switch>
             {/* </div> */}
-            
+
           </>
         </Web3ReactManager>
       </Router>

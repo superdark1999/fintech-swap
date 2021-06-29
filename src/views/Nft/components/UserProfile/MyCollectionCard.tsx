@@ -119,12 +119,12 @@ export default function MyCollectionCard({ data }: any) {
   }
   return (
     <CartStyled>
-      <Row gutter={24}>
+      <Row gutter={24} align={"middle"}>
         <Col
-          xl={{ span: 8 }}
+          xl={{ span: 7 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 8 }}
+          xxl={{ span: 7 }}
         >
           {data?.type === 'video' ? (
             <video
@@ -147,10 +147,10 @@ export default function MyCollectionCard({ data }: any) {
         </Col>
         <Col
           className="description space-vehicle"
-          xl={{ span: 16 }}
+          xl={{ span: 17 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 16 }}
+          xxl={{ span: 17 }}
         >
           <div>
             <div className="name">{data?.title}</div>

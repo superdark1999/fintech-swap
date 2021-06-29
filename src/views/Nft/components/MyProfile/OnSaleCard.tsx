@@ -9,7 +9,7 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import _ from 'lodash'
 import { getPrice, getCompactString } from 'utils'
 import formatNumber from 'utils/formatNumber'
-import useMarketServices,{MARKET_ADDRESS} from 'services/web3Services/MarketServices'
+import useMarketServices, { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import notification from 'components-v2/Alert'
 import { isMobile } from 'react-device-detect'
 import { useHistory } from 'react-router-dom'
@@ -21,7 +21,7 @@ export default function OnSaleCard({ data }: any) {
   const [loading, setLoading] = useState(true)
   const [price, setPrice] = useState(0)
   const { cancelSellNFT } = useArtworkServices()
-  const [isProcessing,setIsProcessing] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
   const history = useHistory()
   const marketService = usrMarketServices()
   const marketServicesMethod = useMarketServices()
@@ -75,14 +75,14 @@ export default function OnSaleCard({ data }: any) {
               setIsProcessing(false)
             }
           })
-        }).catch(err=>{
+        }).catch(err => {
           notification('error', {
             message: 'Error',
             description: err.message,
           })
           setIsProcessing(false)
         })
-      }else if(data?.NFTType === 'auction'){
+      } else if (data?.NFTType === 'auction') {
         setIsProcessing(true)
         marketServicesMethod?.revokeBidToken(data?.tokenId).then((dt) => {
           cancelSellNFT({ id: data?._id }).then(({ status }) => {
@@ -96,14 +96,14 @@ export default function OnSaleCard({ data }: any) {
               setIsProcessing(false)
             }
           })
-        }).catch(err=>{
+        }).catch(err => {
           notification('error', {
             message: 'Error',
             description: err.message,
           })
           setIsProcessing(false)
         })
-      }else if(data?.NFTType === 'swap-store'){
+      } else if (data?.NFTType === 'swap-store') {
         setIsProcessing(true)
         marketServicesMethod?.cancelListNFT(data?.tokenId).then((dt) => {
           cancelSellNFT({ id: data?._id }).then(({ status }) => {
@@ -117,7 +117,7 @@ export default function OnSaleCard({ data }: any) {
               setIsProcessing(false)
             }
           })
-        }).catch(err=>{
+        }).catch(err => {
           notification('error', {
             message: 'Error',
             description: err.message,
@@ -128,12 +128,12 @@ export default function OnSaleCard({ data }: any) {
     }
   }
 
-  const getStatusByNFTType = (status:string)=>{
-    switch(status){
+  const getStatusByNFTType = (status: string) => {
+    switch (status) {
       case 'buy':
-        return 'On store - Buy';
+        return 'On store | Sell';
       case 'auction':
-          return 'On store - Auction';
+        return 'On store - Auction';
       case 'swap-store':
         return 'On swap store';
       case 'swap-personal':
@@ -148,7 +148,7 @@ export default function OnSaleCard({ data }: any) {
   }
   return (
     <CartStyled>
-      <Row gutter={24}>
+      <Row gutter={24} align={"middle"}>
         <Col
           xl={{ span: 7 }}
           md={{ span: 24 }}
@@ -176,15 +176,15 @@ export default function OnSaleCard({ data }: any) {
         </Col>
         <Col
           className="description"
-          xl={{ span: 16 }}
+          xl={{ span: 17 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 16 }}
+          xxl={{ span: 17 }}
         >
           <div className="header-card" style={{ marginTop: 10 }}>
             <div className="nfttype-status">{getStatusByNFTType(data?.NFTType)}</div>
-            {isProcessing?   
-             <StatusBar type="processing" label={'On Cacelling'} />:
+            {isProcessing ?
+              <StatusBar type="processing" label={'On Cacelling'} /> :
               <ButtonCancel height="40px" onClick={onCancelItemOnMarket}>
                 Cancel
               </ButtonCancel>
@@ -192,7 +192,7 @@ export default function OnSaleCard({ data }: any) {
           </div>
 
           <div className="name">{data?.title}</div>
-          {(data?.NFTType=='buy'||data?.NFTType==='auction') &&<div className="number">
+          {(data?.NFTType == 'buy' || data?.NFTType === 'auction') && <div className="number">
             {formatNumber(price)} LUCKY <img src={Token} alt="" />
           </div>}
           <div style={{ display: 'flex' }}>

@@ -5,27 +5,29 @@ import styled from 'styled-components'
 import Lucky from 'assets/images/token.svg'
 import { CloseOutlined } from '@ant-design/icons'
 import useUserStore from 'store/userStore'
+import { Input } from 'antd';
 
-export default function CardOffer(props:any) {
+const { TextArea } = Input;
+export default function CardOffer(props: any) {
   const { type, onChangePrice, onChangeNote, onChangeSwapMethod } = props
-  const [userState,userAction] = useUserStore()
+  const [userState, userAction] = useUserStore()
 
-  const onChangeInputPrice = (event:any)=>{
-    onChangePrice&&onChangePrice(event.target.value)
+  const onChangeInputPrice = (event: any) => {
+    onChangePrice && onChangePrice(event.target.value)
   }
   return (
     <CardOfferStyled>
-      { type === 2 &&
+      {type === 2 &&
         <div className="option-offer">
           <div className="input-offer">
             <div className='row-content'>
-            <label>Your offer</label>      
-            <CloseOutlined onClick={()=>onChangeSwapMethod(null)} />
+              <label>Your offer</label>
+              <CloseOutlined onClick={() => onChangeSwapMethod(null)} />
             </div>
             <input placeholder="Enter price" onChange={onChangeInputPrice} />
           </div>
           <div className="balance">
-            Balance: <div>{userState?.balance?.LUCKY || 0}</div> <img src={Lucky}/>
+            Balance: <div>{userState?.balance?.LUCKY || 0}</div> <img src={Lucky} />
           </div>
         </div>
       }
@@ -34,10 +36,10 @@ export default function CardOffer(props:any) {
         <div className="input-offer">
           <div className='row-content'>
             <label>Note for author</label>
-           {type === 2 ? null : <CloseOutlined onClick={()=>onChangeSwapMethod(null)} />}
+            {type === 2 ? null : <CloseOutlined onClick={() => onChangeSwapMethod(null)} />}
           </div>
-          <textarea placeholder="Enter note" />
-          </div>
+          <TextArea className="note-input" autoSize={{ minRows: 3, maxRows: 7 }} placeholder="Enter note" maxLength={200} showCount={true} />
+        </div>
       </div>
     </CardOfferStyled>
   )
@@ -53,8 +55,9 @@ const CardOfferStyled = styled.div`
   display: flex;
   flex-direction: column;
   /* align-items: center; */
-  /* justify-content: space-around; */
+  /* justify-content: space-around; */  
   .option-offer {
+    cursor: pointer;
     :first-child{
       border-bottom: 1px solid #E7EBEF;
       margin-bottom: 16px;
@@ -62,6 +65,11 @@ const CardOfferStyled = styled.div`
     .input-offer {
       display: flex;
       flex-direction: column;
+      textarea{
+        height:170px !important;
+        width:100% !important;
+        border-radius: 12px !important;
+      }
       .row-content{
         display: flex;
         align-items: center;

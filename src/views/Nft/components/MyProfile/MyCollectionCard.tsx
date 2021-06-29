@@ -23,7 +23,7 @@ import { ButtonTrade, ButtonBuy, ButtonCancel } from 'components-v2/Button'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import QRCode from 'assets/images/qr-code.svg'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import useMarketServices,{MARKET_ADDRESS} from 'services/web3Services/MarketServices'
+import useMarketServices, { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import useNFTServices from 'services/web3Services/NFTServices'
 import { useHistory } from 'react-router-dom'
 import OnsSaleCard from './OnSaleCard'
@@ -50,29 +50,29 @@ export default function MyCollectionCard({ data, option }: any) {
 
   useEffect(() => {
     if (data?.tokenId && NFTServicesMethod) {
-      const {isTokenReadyToSell} = NFTServicesMethod
+      const { isTokenReadyToSell } = NFTServicesMethod
       isTokenReadyToSell(data?.tokenId)
         .then((data) => {
           setIsNFTCanSell(data)
         })
-      .catch((err) => console.log(err))      
+        .catch((err) => console.log(err))
     }
-  }, [data?.tokenId,NFTServicesMethod])
+  }, [data?.tokenId, NFTServicesMethod])
 
-  useEffect(()=>{
-    if(data?.ownerWalletAddress===account && NFTServicesMethod && !isNFTCanSell){
-      const {nftContract} = NFTServicesMethod
+  useEffect(() => {
+    if (data?.ownerWalletAddress === account && NFTServicesMethod && !isNFTCanSell) {
+      const { nftContract } = NFTServicesMethod
       const filter = nftContract.filters.Approval(data?.ownerWalletAddress);
-      nftContract.on(filter,(userAddress,marketAddress, tokenId)=>{
-        console.log(userAddress,tokenId)
-        if(Number(tokenId)==data?.tokenId&&userAddress==account){
+      nftContract.on(filter, (userAddress, marketAddress, tokenId) => {
+        console.log(userAddress, tokenId)
+        if (Number(tokenId) == data?.tokenId && userAddress == account) {
           setIsNFTCanSell(true)
           setApprovingMarket(false)
           setIsPrcessing(false)
         }
       })
     }
-  },[isNFTCanSell,data?.tokenId,NFTServicesMethod,account])
+  }, [isNFTCanSell, data?.tokenId, NFTServicesMethod, account])
 
   const onSellItem = (value: any) => {
     setIsPrcessing(true)
@@ -184,14 +184,14 @@ export default function MyCollectionCard({ data, option }: any) {
               setIsPrcessing(false)
             }
           })
-        }).catch(err=>{
+        }).catch(err => {
           notification('error', {
             message: 'Error',
             description: err.message,
           })
           setIsPrcessing(false)
         })
-      }else if(data?.NFTType === 'auction'){
+      } else if (data?.NFTType === 'auction') {
         setIsPrcessing(true)
         marketServicesMethod?.revokeBidToken(data?.tokenId).then((dt) => {
           cancelSellNFT({ id: data?._id }).then(({ status }) => {
@@ -205,14 +205,14 @@ export default function MyCollectionCard({ data, option }: any) {
               setIsPrcessing(false)
             }
           })
-        }).catch(err=>{
+        }).catch(err => {
           notification('error', {
             message: 'Error',
             description: err.message,
           })
           setIsPrcessing(false)
         })
-      }else if(data?.NFTType === 'swap-store'){
+      } else if (data?.NFTType === 'swap-store') {
         setIsPrcessing(true)
         marketServicesMethod?.cancelListNFT(data?.tokenId).then((dt) => {
           cancelSellNFT({ id: data?._id }).then(({ status }) => {
@@ -226,7 +226,7 @@ export default function MyCollectionCard({ data, option }: any) {
               setIsPrcessing(false)
             }
           })
-        }).catch(err=>{
+        }).catch(err => {
           notification('error', {
             message: 'Error',
             description: err.message,
@@ -249,9 +249,7 @@ export default function MyCollectionCard({ data, option }: any) {
       return (
         <div className="group-button">
           {!isNFTCanSell && !approvingMarket && (
-            <>
-              <ButtonBuy height="40px">Transfer</ButtonBuy>
-            </>
+            <ButtonBuy height="40px">Transfer</ButtonBuy>
           )}
           {isNFTCanSell && !isProcessing && (
             <>
@@ -276,7 +274,7 @@ export default function MyCollectionCard({ data, option }: any) {
           {renderQRCode()}
         </div>
       )
-    } else if (status === 'readyToSell'&&data?.NFTType !== 'swap-personal') {
+    } else if (status === 'readyToSell' && data?.NFTType !== 'swap-personal') {
       return (
         <div className="group-button">
           <ButtonCancel height="40px" onClick={onCancelItemOnMarket}>
@@ -291,15 +289,15 @@ export default function MyCollectionCard({ data, option }: any) {
   }
 
   const renderActionItem = () => {
-    if(isProcessing || approvingMarket || data?.status == 'pending'||data?.status == 'checkingReadyToSell'||data?.status == 'checkingBuying'||data?.status == 'checkingCancelling'){
-      const getLabel = (status:string)=>{
-        switch(status){
+    if (isProcessing || approvingMarket || data?.status == 'pending' || data?.status == 'checkingReadyToSell' || data?.status == 'checkingBuying' || data?.status == 'checkingCancelling') {
+      const getLabel = (status: string) => {
+        switch (status) {
           case 'pending':
             return 'Processing';
           case 'checkingReadyToSell':
-            if(data?.NFTType == 'buy'){
+            if (data?.NFTType == 'buy') {
               return 'On checking to buy Token'
-            }else if(data?.NFTType){
+            } else if (data?.NFTType) {
               return 'On checking to auction Token'
             }
             return 'Processing';
@@ -311,26 +309,26 @@ export default function MyCollectionCard({ data, option }: any) {
             return 'Processing';
         }
       }
-      return(
+      return (
         <div className="group-btn-action">
-        <StatusBar type="processing" label={getLabel(data?.status)} />
+          <StatusBar type="processing" label={getLabel(data?.status)} />
         </div>
       )
-    }else if(!isNFTCanSell && !approvingMarket && data?.status == 'approved' ){
-      return(
+    } else if (!isNFTCanSell && !approvingMarket && data?.status == 'approved') {
+      return (
         <div className="group-btn-action">
-        <ButtonBuy height="40px" onClick={onAllowSellItem}>
-          Public NFT
-        </ButtonBuy>
+          <ButtonBuy height="40px" onClick={onAllowSellItem}>
+            Public NFT
+          </ButtonBuy>
         </div>
       )
-    }else if(data?.status == 'readyToSell'){
-      const getStatusByNFTType = (status:string)=>{
-        switch(status){
+    } else if (data?.status == 'readyToSell') {
+      const getStatusByNFTType = (status: string) => {
+        switch (status) {
           case 'buy':
-            return 'On store | Buy';
+            return 'On store | Sell';
           case 'auction':
-              return 'On store | Aution';
+            return 'On store | Aution';
           case 'swap-store':
             return 'On swap store';
           case 'swap-personal':
@@ -359,7 +357,7 @@ export default function MyCollectionCard({ data, option }: any) {
   //render status from API
   return (
     <CartStyled>
-      <Row gutter={24}>
+      <Row gutter={24} align={"middle"}>
         <Col
           xl={{ span: 7 }}
           md={{ span: 24 }}
@@ -377,10 +375,10 @@ export default function MyCollectionCard({ data, option }: any) {
         </Col>
         <Col
           className="description space-vehicle"
-          xl={{ span: 16 }}
+          xl={{ span: 17 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 16 }}
+          xxl={{ span: 17 }}
         >
           <div>
             <div className="header-card">
