@@ -29,7 +29,14 @@ const useUtilityToken = (tokenAddress) => {
 
       return result;
   }
-  return { approve, allowance, balanceOf }
+
+  const listenApproveEvent = async (action) => {
+    if (contract)
+      contract.on('Approval', async () => {
+        action();
+      })
+  }
+  return { approve, allowance, balanceOf, listenApproveEvent }
 
 }
 

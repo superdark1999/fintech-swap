@@ -1,10 +1,9 @@
 import React, {useState, useEffect}from 'react'
 import styled from 'styled-components'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-
 import BigNumber from 'bignumber.js'
 
-
+import useUtilityToken from 'hooks/useUtilityToken';
 
 export default function DepositModal({ 
   depositModal, 
@@ -14,10 +13,11 @@ export default function DepositModal({
   onChangeValue,
   stakingContract,
   addTransaction,
-  balanceOf,
-  account
+  account,
+  stakingData
 }) {
   const [balance, setBalance] = useState(0);
+  const {balanceOf, approve, allowance} =  useUtilityToken(stakingData.depositToken);
 
 
   useEffect(() => {

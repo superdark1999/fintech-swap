@@ -5,14 +5,13 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useERC20, useStakingContract } from 'hooks/useContract'
 import useGetStateData from 'hooks/useGetStakeData';
-import useUtilityToken from 'hooks/useUtilityToken';
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
 import UnStakeModal from './UnStakeModal';
 import DepositModal from './DepositModal';
 import PoolCardDetails from './PoolCardDetails';
 
 
-const staking = {
+const stakingData = {
   depositSymbol: 'XLUCKY2',
   rewardSymbol: 'XLUCKY1',
   depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
@@ -27,9 +26,8 @@ function PoolCardsDetail() {
   const { account } = useWeb3React()
 
   const [value, setValue] = useState('');
-  const stakingContract = useStakingContract(staking.stakingContract);
-  const {pendingReward, userAmount, userRewardDebt} = useGetStateData(staking);
-  const {balanceOf, approve, allowance} =  useUtilityToken(staking.depositToken);
+  const stakingContract = useStakingContract(stakingData.stakingContract);
+  const {pendingReward, userAmount, userRewardDebt} = useGetStateData(stakingData);
 
   const addTransaction = useTransactionAdder()
 
@@ -57,9 +55,7 @@ function PoolCardsDetail() {
             stakingContract={stakingContract}
             addTransaction={addTransaction}
             account={account}
-            allowance={allowance}
-            approve={approve}
-            staking={staking}
+            stakingData={stakingData}
           />
 
           <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>
@@ -71,14 +67,13 @@ function PoolCardsDetail() {
       <DepositModal 
         depositModal={depositModal}
         depositToggle={depositToggle}
-        depositSymbol={staking.depositSymbol}
+        depositSymbol={stakingData.depositSymbol}
         value={value}
         onChangeValue={(e) => setValue(e.target.value)}
         stakingContract={stakingContract}
         addTransaction={addTransaction}
         account={account}
-        balanceOf={balanceOf}
-
+        stakingData={stakingData}
       />
 
       <UnStakeModal 

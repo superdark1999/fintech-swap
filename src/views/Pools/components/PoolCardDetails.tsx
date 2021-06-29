@@ -3,6 +3,14 @@ import { Row, Col } from 'antd'
 import { Button } from 'reactstrap';
 import BigNumber from 'bignumber.js'
 
+import bep20Abi from 'config/abi/erc20.json'
+import useUtilityToken from 'hooks/useUtilityToken';
+import { useContract } from 'hooks/useContract'
+import { AutoRenewIcon } from '@luckyswap/uikit'
+
+
+const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
+
 export default function PoolCardDetails({
   userRewardDebt, 
   userAmount, 
@@ -11,25 +19,30 @@ export default function PoolCardDetails({
   stakingContract,
   addTransaction,
   account,
-  allowance,
-  approve,
-  staking
+  stakingData
 }) {
+
+  const {listenApproveEvent, approve, allowance} =  useUtilityToken(stakingData.depositToken);
+  const [isApproved, setIsApproved] = useState(false);
+  const [isApproving, setIsApproving] = useState(false);
 
   useEffect(() => {
     const fetchApproval = async() => {
-      const data = await allowance(account, staking.stakingContract);
+      const data = await allowance(account, stakingData.stakingContract);
       setIsApproved(data.toString() !== '0')
     }
     if (account) {
       fetchApproval();
     }
-  },[account, allowance, staking.stakingContract])
+  },[account, allowance, stakingData.stakingContract])
 
-  const [isApproved, setIsApproved] = useState(false);
+  useEffect(() => {
+    listenApproveEvent(() => setIsApproved(true))
+  })
 
   const handleApprove = async () => {
-    await approve(staking.stakingContract);
+    setIsApproving(true);
+    await approve(stakingData.stakingContract);
   }
 
   const handleWithdraw = async () => {
@@ -84,7 +97,14 @@ export default function PoolCardDetails({
 
                 <div className="box__footer">
                   {!isApproved ? (
-                    <Button color="danger" onClick={handleApprove}>Approve</Button>
+                    <Button color="danger" 
+                      onClick={handleApprove}
+                      isLoading={isApproving}
+                      disabled={isApproving}
+                    >
+                      { isApproving && spinnerIcon}
+                      Approve
+                    </Button>
                   ) :
                   (
                     <div>
