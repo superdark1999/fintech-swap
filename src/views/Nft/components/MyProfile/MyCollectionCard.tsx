@@ -64,9 +64,11 @@ export default function MyCollectionCard({ data, option }: any) {
       const {nftContract} = NFTServicesMethod
       const filter = nftContract.filters.Approval(data?.ownerWalletAddress);
       nftContract.on(filter,(userAddress,marketAddress, tokenId)=>{
+        console.log(userAddress,tokenId)
         if(Number(tokenId)==data?.tokenId&&userAddress==account){
           setIsNFTCanSell(true)
           setApprovingMarket(false)
+          setIsPrcessing(false)
         }
       })
     }
