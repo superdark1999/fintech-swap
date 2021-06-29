@@ -1,44 +1,29 @@
-import React, {useState, useEffect}from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-
 import BigNumber from 'bignumber.js'
 
 
-
-export default function DepositModal({ 
-  depositModal, 
-  depositToggle, 
-  depositSymbol,  
+export default function UnStakeModal({
+  withdrawModal,
+  unStakeToggle, 
   value, 
-  onChangeValue,
+  onChangeValue, 
   stakingContract,
-  addTransaction,
-  balanceOf,
-  account
-}) {
-  const [balance, setBalance] = useState(0);
-
-
-  useEffect(() => {
-    const fetchBalance = async () => {
-      const bal = await balanceOf(account);
-      setBalance(parseFloat((bal /1e18).toFixed(4)));
-    }
-    if (account)
-      fetchBalance()
-  },[account, balanceOf])
-
-  const handleDeposit = async () => {
+  addTransaction
+}) 
+{
+  const handleUnStake = async () => {
     if (stakingContract) {
       const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
       const gasAm = await stakingContract.estimateGas.deposit(...args)
-      .catch(() => console.log("Fail estimate gas deposit"));
+      .catch(() => console.log("Fail estimate gas"));
+
       await stakingContract
-        .deposit(...args, { gasLimit: gasAm })
+        .withdraw(...args, { gasLimit: gasAm })
         .then((response: any) => {
           addTransaction(response, {
-            summary: 'Deposit successfully!',
+            summary: 'Unstake successfully!',
           })
         })
         .catch((error: any) => {
@@ -46,44 +31,40 @@ export default function DepositModal({
         })
     }
   }
-
-
   return (
     <div>
       
-      <Modal isOpen={depositModal} toggle={depositToggle}>
-        <ModalHeader toggle={depositToggle}></ModalHeader>
+      <Modal isOpen={withdrawModal} toggle={unStakeToggle}>
+          <ModalHeader toggle={unStakeToggle}></ModalHeader>
 
-        <ModalBody>
-          <Title>Deposit LuckySwap Tokens</Title>
-          <Available>{balance} {depositSymbol}</Available>
+          <ModalBody>
+            <Title>UnStake LuckySwap Tokens</Title>
+            <Available>0 Lucky Available</Available>
 
-          <BoxInput>
-            <input type="text" id="fname" name="fname" placeholder="0.000"
-              value={value}
-              onChange={onChangeValue}
-              />
-            <BoxLink>
-              <span className="text-lucky">{depositSymbol}</span>
-              <BoxButton>
-                <Button>Max</Button>
-              </BoxButton>
-            </BoxLink>
-          </BoxInput>
-        </ModalBody>
+            <BoxInput>
+              <input type="text" id="fname" name="fname" placeholder="0.000"
+                value={value}
+               onChange={onChangeValue}/>
+              <BoxLink>
+                <span className="text-lucky">lucky</span>
+                <BoxButton>
+                  <Button>Max</Button>
+                </BoxButton>
+              </BoxLink>
+            </BoxInput>
+          </ModalBody>
 
-        <ModalFooter>
-          <CancelButton>
-          <Button color="primary" onClick={depositToggle}>Cancel</Button>
-          </CancelButton>
-          <Button color="secondary" onClick={handleDeposit} disabled={false}>Deposit</Button>
-        </ModalFooter>
-      </Modal>
+          <ModalFooter>
+            <CancelButton>
+              <Button color="primary" onClick={unStakeToggle}>Cancel</Button>
+            </CancelButton>
+            <Button color="secondary" onClick={handleUnStake} disabled={false}>UnStake</Button>
+          </ModalFooter>
+        </Modal>
       
     </div>
   )
 }
-
 
 const BoxInput = styled.div`
   display: flex;

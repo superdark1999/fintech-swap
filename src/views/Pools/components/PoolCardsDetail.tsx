@@ -1,31 +1,22 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'
-import { Row, Col } from 'antd'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useERC20, useStakingContract } from 'hooks/useContract'
 import useGetStateData from 'hooks/useGetStakeData';
 import useUtilityToken from 'hooks/useUtilityToken';
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
+import UnStakeModal from './UnStakeModal';
+import DepositModal from './DepositModal';
+import PoolCardDetails from './PoolCardDetails';
 
-
-const pool = {
-  earningToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a",  // XLUCKY 2
-  stakingToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6",   // XLUCKY
-  startBlock: 10000000,
-  endBlock: 13000000,
-  totalStaked: 1000000000000,
-  contractAddress: 0x699fAC70A58aeD04078Acf3aE10Af95506BfC45f,
-  
-}
 
 const staking = {
   depositSymbol: 'XLUCKY2',
   rewardSymbol: 'XLUCKY1',
   depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
-  rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a",
+  rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a", // XLucky
   stakingContract: "0x1dde4Fc6ca8121Cb11E988b524B275855F98aAA6",
   
 }
@@ -33,10 +24,8 @@ const staking = {
 function PoolCardsDetail() {
   const [depositModal, setDepositModal] = useState(false);
   const [withdrawModal, setWithdrawModel] = useState(false);
-  const [isApproved, setIsApproved] = useState(false);
   const { account } = useWeb3React()
 
-  const [balance, setBalance] = useState(0);
   const [value, setValue] = useState('');
   const stakingContract = useStakingContract(staking.stakingContract);
   const {pendingReward, userAmount, userRewardDebt} = useGetStateData(staking);
@@ -44,85 +33,6 @@ function PoolCardsDetail() {
 
   const addTransaction = useTransactionAdder()
 
-
-  useEffect(() => {
-    const fetchBalance = async () => {
-      const bal = await balanceOf(account);
-      setBalance(parseFloat((bal /1e18).toFixed(4)));
-    }
-    if (account)
-      fetchBalance()
-  },[account, balanceOf])
-
-  useEffect(() => {
-    const fetchApproval = async() => {
-      const data = await allowance(account, staking.stakingContract);
-      setIsApproved(data.toString() !== '0')
-    }
-    if (account) {
-      fetchApproval();
-    }
-  },[account, allowance])
-
-  const handleAprrove = async () => {
-    await approve(staking.stakingContract);
-  }
-
-  const handleDeposit = async () => {
-    if (stakingContract) {
-      const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
-      const gasAm = await stakingContract.estimateGas.deposit(...args)
-      .catch(() => console.log("Fail estimate gas deposit"));
-      await stakingContract
-        .deposit(...args, { gasLimit: gasAm })
-        .then((response: any) => {
-          addTransaction(response, {
-            summary: 'Deposit successfully!',
-          })
-        })
-        .catch((error: any) => {
-          console.log(error)
-        })
-    }
-  }
-
-  const handleWithdraw = async () => {
-    if (stakingContract) {
-      const args = [new BigNumber(0).times(new BigNumber(10).pow(18)).toString()]
-      const gasAm = await stakingContract.estimateGas.deposit(...args)
-      .catch(() => console.log("Fail estimate gas"));
-
-      await stakingContract
-        .deposit(...args, { gasLimit: gasAm })
-        .then((response: any) => {
-          addTransaction(response, {
-            summary: 'Withdraw successfully!',
-          })
-        })
-        .catch((error: any) => {
-          console.log(error)
-        })
-    }
-  }
-
-  const handleUnStake = async () => {
-    if (stakingContract) {
-      const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
-      const gasAm = await stakingContract.estimateGas.deposit(...args)
-      .catch(() => console.log("Fail estimate gas"));
-
-      await stakingContract
-        .withdraw(...args, { gasLimit: gasAm })
-        .then((response: any) => {
-          addTransaction(response, {
-            summary: 'Unstake successfully!',
-          })
-        })
-        .catch((error: any) => {
-          console.log(error)
-        })
-    }
-  }
 
   const depositToggle = () => setDepositModal(!depositModal);
   const unStakeToggle = () => setWithdrawModel(!withdrawModal);
@@ -139,206 +49,50 @@ function PoolCardsDetail() {
             <span>Deposit LuckySwap Tokens and earn LUCKY</span>
           </BoxHead>
 
-          <Row gutter={[24, 16]}>
-            <Col span={24} sm={12} md={12}>
-              <div className="box__item">
-                <figure>
-                  <img src="../images/icon-love.png" alt=""/>
-                </figure>
+          <PoolCardDetails 
+            userRewardDebt={userRewardDebt} 
+            userAmount={userAmount} 
+            onUnStakeToggle={unStakeToggle}
+            onDepositToggle={depositToggle}
+            stakingContract={stakingContract}
+            addTransaction={addTransaction}
+            account={account}
+            allowance={allowance}
+            approve={approve}
+            staking={staking}
+          />
 
-                <div className="content">
-                  <h3 className="content__title">{userRewardDebt.div(1e18).toNumber()}</h3>
-                  <span className="content__des">LUCKY earned</span>
-                </div>
-
-                <div className="box__footer">
-                  <Button color="danger" onClick={handleWithdraw}>Harvest</Button>
-                </div>
-              </div>
-            </Col>
-
-            <Col span={24} sm={12} md={12}>
-              <div className="box__item">
-                <figure className="background">
-                  <img src="../images/icon-logo.png" alt=""/>
-                </figure>
-
-                <div className="content">
-                  <h3 className="content__title">{userAmount.div(1e18).toNumber()}</h3>
-                  <span className="content__des">LuckySwap</span>
-                </div>
-
-                <div className="box__footer">
-                  {!isApproved ? (
-                    <Button color="danger" onClick={handleAprrove}>Approve</Button>
-                  ) :
-                  (
-                    <div>
-                      <Button color="danger" onClick={unStakeToggle}>UnStake</Button>
-                      <Button color="danger" onClick={depositToggle}>Deposit</Button>
-                    </div>
-                  )
-                  }
-                </div>
-              </div>
-            </Col>
-          </Row>
-
-          <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>Every time you stake and unstake EL tokens, the contract will automatically harvest HCATS rewards for you!</p>
+          <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>
+          Every time you stake and unstake EL tokens, the contract will automatically harvest HCATS rewards for you!
+          </p>
         </BoxDetail>
       </Page>
 
-      <div>
-      <Modal isOpen={depositModal} toggle={depositToggle}>
-        <ModalHeader toggle={depositToggle}></ModalHeader>
+      <DepositModal 
+        depositModal={depositModal}
+        depositToggle={depositToggle}
+        depositSymbol={staking.depositSymbol}
+        value={value}
+        onChangeValue={(e) => setValue(e.target.value)}
+        stakingContract={stakingContract}
+        addTransaction={addTransaction}
+        account={account}
+        balanceOf={balanceOf}
 
-        <ModalBody>
-          <Title>Deposit LuckySwap Tokens</Title>
-          <Available>{balance} {staking.depositSymbol}</Available>
+      />
 
-          <BoxInput>
-            <input type="text" id="fname" name="fname" placeholder="0.000"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              />
-            <BoxLink>
-              <span className="text-lucky">{staking.depositSymbol}</span>
-              <BoxButton>
-                <Button>Max</Button>
-              </BoxButton>
-            </BoxLink>
-          </BoxInput>
-        </ModalBody>
-
-        <ModalFooter>
-          <CancelButton>
-          <Button color="primary" onClick={depositToggle}>Cancel</Button>
-          </CancelButton>
-          <Button color="secondary" onClick={handleDeposit} disabled={false}>Deposit</Button>
-        </ModalFooter>
-      </Modal>
-      </div>
-      <div>
-        <Modal isOpen={withdrawModal} toggle={unStakeToggle}>
-          <ModalHeader toggle={unStakeToggle}></ModalHeader>
-
-          <ModalBody>
-            <Title>UnStake LuckySwap Tokens</Title>
-            <Available>0 Lucky Available</Available>
-
-            <BoxInput>
-              <input type="text" id="fname" name="fname" placeholder="0.000"
-                value={value}
-               onChange={(e) => setValue(e.target.value)}/>
-              <BoxLink>
-                <span className="text-lucky">lucky</span>
-                <BoxButton>
-                  <Button>Max</Button>
-                </BoxButton>
-              </BoxLink>
-            </BoxInput>
-          </ModalBody>
-
-          <ModalFooter>
-            <CancelButton>
-              <Button color="primary" onClick={unStakeToggle}>Cancel</Button>
-            </CancelButton>
-            <Button color="secondary" onClick={handleUnStake} disabled={false}>UnStake</Button>
-          </ModalFooter>
-        </Modal>
-      </div>
+      <UnStakeModal 
+        withdrawModal={withdrawModal} 
+        value={value}
+        onChangeValue={(e) => setValue(e.target.value)}
+        unStakeToggle={unStakeToggle}
+        stakingContract={stakingContract}
+        addTransaction={addTransaction}
+      />
     </>
   )
 }
 
-
-const Title = styled.h5`
-  color: #fff;
-  font-size: 24px;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 25px;
-`
-
-const BoxInput = styled.div`
-  display: flex;
-  align-items: center;
-  background: #4d4d50;
-  border-radius: 10px;
-  height: 72px;
-  padding: 0px 16px;
-  margin: 16px 0px 48px;
-
-  input {
-    flex: 1 1 0%;
-    width: 0px;
-    background: none;
-    border: 0px;
-    color: #fff;
-    font-size: 18px;
-    height: 56px;
-    margin: 0px;
-    padding: 0px;
-    outline: none;
-  }
-`
-
-const BoxLink = styled.div`
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  color: #fff;
-  font-weight: 600;
-  font-size: 14px;
-  text-transform: uppercase;
-`
-
-const CancelButton = styled.div`
-  button {
-    color: #2b2e2f;
-    border: none;
-    :hover{
-      opacity: .8;
-      color: #2b2e2f;
-    }
-  }
-
-`
-
-const BoxButton = styled.div`
-  margin-left: 12px;
-
-  button {
-    width: 100%;
-    font-weight: 500;
-    text-align: center;
-    border-radius: 10px;
-    outline: none;
-    border: 1px solid transparent;
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-    flex-wrap: nowrap;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-    z-index: 1;
-    background-color: #f5c606;
-    color: #2b2e2f;
-    font-family: "Baloo Da";
-    padding: 0px 10px;
-    height: 40px;
-  }
-`
-
-const Available = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-`
 
 const BoxHead = styled.div`
   display: flex;
