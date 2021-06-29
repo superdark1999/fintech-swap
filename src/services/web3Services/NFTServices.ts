@@ -66,7 +66,7 @@ function useNFTServiceChain97(){
         },[])
 
 
-        return {mintToken,getTokenUrl,approveTokenToMarket, isTokenReadyToSell}
+        return {mintToken,getTokenUrl,approveTokenToMarket, isTokenReadyToSell, nftContract}
 }
 
 
