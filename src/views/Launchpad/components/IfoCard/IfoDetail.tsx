@@ -12,6 +12,7 @@ import bep20Abi from 'config/abi/erc20.json'
 import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
 import useOldApproveConfirmTransaction from 'hooks/useOldApproveConfirmTransaction'
 import { useContract, useIfoContract } from 'hooks/useContract'
+import useUtilityToken from 'hooks/useUtilityToken';
 import getTimePeriods from 'utils/getTimePeriods'
 import { useToast } from 'state/hooks'
 import { BASE_API_ADMIN } from 'config'
@@ -61,10 +62,12 @@ const IfoTitle = ({ activeIfo }: any) => {
     secondsUntilEnd,
     status,
     startBlockNum,
+    hasHarvest
   } = useGetPublicIfoData(activeIfo)
   const { account } = useWeb3React()
   const LPContract = useContract(currencyAddress, bep20Abi)
   const raisingTokenContract = useContract(address, ifoAbi)
+  const {balanceOf, approve, allowance} =  useUtilityToken(currencyAddress);
 
   const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
   const maxDeposit = maxDepositAmount.div(1e18).toNumber() - depositedAmount.div(1e18).toNumber()
@@ -89,6 +92,15 @@ const IfoTitle = ({ activeIfo }: any) => {
         .catch((error) => {
           console.log('Error fetching balance')
         })
+      // balanceOf(account)
+      //   .then((data) => {
+      //     setOriginBalance(parseFloat((data / 1e18).toFixed(4)))
+      //     setBalance(parseFloat((data / 1e18).toFixed(4)) - parseFloat(value !=='' ? value : "0"))
+      //   })
+      //   .catch((error) => {
+      //     console.log('Error fetching balance')
+      //   })
+
 
       LPContract.on('Approval', async (oldValue, newValue, event) => {
         try {
@@ -462,7 +474,7 @@ const IfoTitle = ({ activeIfo }: any) => {
               <Button
                 className="finished"
                 color="primary"
-                disabled={getStatus()}
+                disabled={getStatus() || hasHarvest || depositedAmount.toNumber() === 0}
                 onClick={handleClaim}
               >
                 {getStatus() && spinnerIcon}

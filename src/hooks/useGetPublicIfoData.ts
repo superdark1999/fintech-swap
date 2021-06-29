@@ -21,10 +21,12 @@ export interface PublicIfoState {
   maxDepositAmount: BigNumber
   depositedAmount: BigNumber
   claimAmount: BigNumber
+  hasHarvest: boolean,
   getAddressListLength: number
   startBlockNum: number
   endBlockNum: number
   description?: string
+
 }
 
 const getStatus = (currentBlock: number, startBlock: number, endBlock: number): IfoStatus => {
@@ -61,6 +63,7 @@ const useGetPublicIfoData = (ifo: Ifo) => {
     maxDepositAmount: new BigNumber(0),
     depositedAmount: new BigNumber(0),
     claimAmount: new BigNumber(0),
+    hasHarvest: false,
     getAddressListLength: 0,
     startBlockNum: 0,
     endBlockNum: 0,
@@ -84,6 +87,7 @@ const useGetPublicIfoData = (ifo: Ifo) => {
         depositedAmount,
         totalAmount,
         getAddressListLength,
+        hasHarvest,
       ] = (await makeBatchRequest([
         contract.methods.startBlock().call,
         contract.methods.endBlock().call,
@@ -94,8 +98,10 @@ const useGetPublicIfoData = (ifo: Ifo) => {
         contract.methods.userInfo(account).call,
         contract.methods.totalAmount().call,
         contract.methods.getAddressListLength().call,
-      ])) as [string, string, string, string, string, string, string, string, string]
+        contract.methods.hasHarvest(account).call,
+      ])) as [string, string, string, string, string, string, string, string, string, boolean]
 
+      console.log("hasHarvest", hasHarvest)
       const startBlockNum = parseInt(startBlock, 10)
       const endBlockNum = parseInt(endBlock, 10)
 
@@ -119,6 +125,7 @@ const useGetPublicIfoData = (ifo: Ifo) => {
         maxDepositAmount: new BigNumber(maxDepositAmount),
         depositedAmount: new BigNumber(depositedAmount[0]),
         claimAmount: new BigNumber(claimAmount),
+        hasHarvest,
         getAddressListLength: parseInt(getAddressListLength),
         status,
         progress,
