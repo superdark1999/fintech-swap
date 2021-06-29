@@ -7,6 +7,10 @@ import isMobile  from 'react-device-detect'
 import { ButtonBuy, ButtonCancel } from 'components-v2/Button'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useHistory } from 'react-router-dom'
+import ButtonProccesing from 'components-v2/Button/btnProcessing'
+import useMarketServices,{MARKET_ADDRESS} from 'services/web3Services/MarketServices'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
+import notification from 'components-v2/Alert'
 
 
 const STATUS = {
@@ -15,18 +19,36 @@ const STATUS = {
   CANCELED: "canceled"
 }
 
-export default (props: {itemSwap: any, myItems: any, status:string}) => {
+export default (props: {itemSwap: any, myItems: any, status:string, setStatus:(status:string)=>void}) => {
 const {
-  itemSwap, myItems,status
+  itemSwap, myItems,status, setStatus
 } = props
   const history = useHistory()
   const [isOwner, setIsOwner] = useState<boolean>(false)
+  const [isProcessing, setIsProcessing] = useState<boolean>(false)
   const { account, chainId } = useActiveWeb3React()
+  const marketServicesMethod = useMarketServices()
   useEffect(()=>{
     if(itemSwap?.[0]?.tokenId){
       setIsOwner(itemSwap?.[0]?.ownerWalletAddress==account)
     }
   },[itemSwap?.[0]?.tokenId,account])
+
+  const onCancelOffer = ()=>{
+    if(marketServicesMethod){
+      setIsProcessing(true)
+      marketServicesMethod?.cancelOfferSwapNFT(itemSwap?.[0]?.tokenId).then((dt) => {
+        setStatus(STATUS.PROCESSING)
+        setIsProcessing(false)
+      }).catch(err=>{
+        notification('error', {
+          message: 'Error',
+          description: err.message,
+        })
+        setIsProcessing(false)
+      })
+    }
+  }
 
   const renderStatus = (status: any) => {
     switch (status) {
@@ -53,8 +75,8 @@ const {
       case STATUS.CANCELED : {
         return (
           <div style={{margin:'auto',textAlign:'center'}}>
-            <CloseOutlined className={'rotate'} style={{fontSize: '30px',padding:'18px',color: '#FFFFFF',background:'#FC636B', borderRadius:'100px'}} />
-            <p style={{fontWeight: 'bold', fontSize: 32}}>Processing...</p>
+            <CloseOutlined style={{fontSize: '30px',padding:'18px',color: '#FFFFFF',background:'#FC636B', borderRadius:'100px'}} />
+            <p style={{fontWeight: 'bold', fontSize: 32}}>Swap canceled!</p>
           </div>
         )
       }
@@ -62,7 +84,7 @@ const {
   }
   return (
     <ConfirmStyled isGrayFilter={status==STATUS.PROCESSING}>
-        {renderStatus(status)}
+        {renderStatus(status )}
         
         <Row justify="center">
           <div className="nft-image">
@@ -121,8 +143,10 @@ const {
           </div> */}
         </div>
         <Row justify="center">
-          {!isOwner&&status===STATUS.SUCCESS?(
-            <ButtonCancel >Cancel</ButtonCancel>     
+          {!isOwner&&status===STATUS.SUCCESS?isProcessing?(
+            <ButtonProccesing />    
+          ):(
+            <ButtonCancel onClick={onCancelOffer} >Cancel</ButtonCancel>     
           ):(
             <ButtonBuy onClick={()=>{ history.push('/my-profile/mycollection/checkingToSell')}}>Go to My collection</ButtonBuy>
           )}

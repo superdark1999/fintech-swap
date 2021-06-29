@@ -36,7 +36,7 @@ export default  () => {
 
   const [userNFTs, setUserNFTs] = useState([])
   const [offerData, setOfferData] = useState([])
-  const { getNFT, getDetailNFT, setPrice, buyItem } = useArtworkServices()
+  const { getNFT, getDetailNFT, setPrice, buyItem, cancelSellNFT } = useArtworkServices()
   const {id} = useParams()
 
 
@@ -101,6 +101,13 @@ export default  () => {
         if(itemSwap?.[0]?.ownerWalletAddress==accountB&& myItems?.[0]?.tokenId ==Number(tokenIdB) && itemSwap?.[0]?.tokenId == Number(tokenIdA)){
           buyItem({ id: [myItems?.[0]?._id,itemSwap?.[0]?._id]}).then(({data,status})=>{
             setStatus('success')
+          })
+        }
+      })
+      marketContract.on('CancelOfferNFT',(author, tokenId)=>{
+        if(author===account&&Number(tokenId)==itemSwap?.[0]?.tokenId){
+          cancelSellNFT({ id: myItems?.[0]?._id }).then(({ status }) => {
+            setStatus('canceled')
           })
         }
       })
@@ -194,7 +201,7 @@ export default  () => {
         )
       }
       case 3: {
-        return <Confirm itemSwap={itemSwap} myItems={myItems} status={status}/>
+        return <Confirm itemSwap={itemSwap} myItems={myItems} status={status} setStatus={setStatus}/>
       }
     }
   }

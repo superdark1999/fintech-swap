@@ -208,7 +208,6 @@ function useMarketServiceChain97(){
   },[marketContract,userState.balance.BNB])
 
   const cancelOfferSwapNFT = useCallback(async(tokenId:string|undefined)=>{
-    console.log(tokenId)
     const estimatedGas = await marketContract.estimateGas.cancelOfferNFT(tokenId)
     if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
       throw new Error(OUT_OF_BNB)
