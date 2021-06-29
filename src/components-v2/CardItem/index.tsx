@@ -90,6 +90,7 @@ export default function CardItem(props?: any) {
       }
     }
   }, [playVideo])
+  console.log('isHideButton',isHideButton)
   return (
     <div className="create-nav">
       <StyledCart src={data?.contentUrl}>
@@ -194,11 +195,11 @@ export default function CardItem(props?: any) {
               <span>2000x2000</span>
             </div>
             <div className="number">
-              {data?.NFTType !== 'swap-store' ? (
+              {isHideButton ? null : data?.NFTType !== 'swap-store' ? (
                 <div>
                   {formatNumber(price)} LUCKY <img src={Token} alt="" />
                 </div>
-              ) : isHideButton ? null : (
+              ) : (
                 <ButtonBuy className="btn-swap" onClick={onSwapItem}>
                   Swap now
                 </ButtonBuy>
