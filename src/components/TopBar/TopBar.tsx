@@ -72,18 +72,18 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
     }
   }, [chainId])
 
-  useEffect(()=>{
-    if(luckyMethod){
-      const {LuckyTokenContract} = luckyMethod
+  useEffect(() => {
+    if (luckyMethod) {
+      const { LuckyTokenContract } = luckyMethod
       const filter = LuckyTokenContract.filters.Approval(account);
 
       LuckyTokenContract.on(filter, (author, allowAddress, value) => {
-        if(author===account&&allowAddress===MARKET_ADDRESS){
-          userActions.updateUserInfo({ isCanBuy: true, isProcessingCanBuy:false })
+        if (author === account && allowAddress === MARKET_ADDRESS) {
+          userActions.updateUserInfo({ isCanBuy: true, isProcessingCanBuy: false })
         }
       })
     }
-  },[luckyMethod,account])
+  }, [luckyMethod, account])
 
   useEffect(() => {
     if (account) {
@@ -93,7 +93,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           coverImage: data?.data?.coverImage,
           avatarImage: data?.data?.avatarImage,
           name: data?.data?.name,
-          socialMediaLink: data?.data?.socialLink,
+          socialMediaLink: data?.data?.socialMediaLink,
           biography: data?.data?.biography,
         }
         if (status === 200) {
@@ -150,6 +150,10 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         <Link to="/" className="home-nav">Home</Link>
         <Link to="/explore" className="home-nav">Explore</Link>
         <Link to="/swap-store" className="swap-nav">Swap Store</Link>
+        <Link to="/ino" className="ino-nav">
+          <span className="label">New</span>
+          <span className="btn-ino">INO</span>
+        </Link>
         <span className="explore-nav"></span>
         {!!account ? (
           <>
@@ -158,7 +162,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         ) : (
           <a onClick={() => { alert("Unblock your wallet before create NFT") }} className="create-nav" >Create</a>
         )}
-         <Link to={"/swap/step=1"} className="create-nav">Swap</Link>
+        <Link to={"/swap/step=1"} className="create-nav">Swap</Link>
         {/* <Switch
               checkedChildren="Animation"
               unCheckedChildren="Animation"
@@ -286,7 +290,7 @@ const UserBalance = () => {
         }
       })
       luckyMethod?.getLuckyBalance().then((data: any) => {
-        userActions.updateUserBalance({ LUCKY: formatNumber(getPrice(data?._hex || 0))})
+        userActions.updateUserBalance({ LUCKY: formatNumber(getPrice(data?._hex || 0)) })
       })
     }
   }, [])
@@ -347,6 +351,31 @@ const StyledTopBar = styled.div`
       -webkit-text-fill-color: transparent;
       font-size: 16px;
       font-weight: 600;
+      @media (max-width: 756px) {
+        display: none;
+      }
+    }
+    .ino-nav {
+      width:100px;
+      color: #35A5FC;
+      font-size: 16px;
+      font-weight: 600;
+      position: relative;
+      .btn-ino{
+
+      }
+      .label{
+        position: absolute;
+        top: -8px;
+        right: 50px;
+        transform: rotate(35deg);
+        font-size: 10px;
+        text-transform: capitalize;
+        color: #fff;
+        background: #ff5917;
+        padding: 0 6px;
+        border-radius: 10px;
+      }
       @media (max-width: 756px) {
         display: none;
       }

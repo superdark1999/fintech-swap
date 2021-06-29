@@ -3,6 +3,7 @@ export const StatusBarStyled = styled.div`
     width:100%;
     height:100%;
     .status-processing{
+
       span{
       margin-right: 6px;
       animation: mymove 5s infinite;
@@ -23,7 +24,7 @@ export const StatusBarStyled = styled.div`
       height: 100%;
       font-weight: 600;
       display: flex;
-      justify-content: center;
+      justify-content: flex-end;
       align-items: center;
       text-transform: capitalize;
     }

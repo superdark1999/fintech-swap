@@ -83,11 +83,12 @@ export const UserProfileStyled = styled.div<Props>`
       .info-detail {
         display: flex;
         justify-content: space-between;
+        flex-direction:${isMobile ? 'column':'row'};
         .name {
           font-size: 28px;
           line-height: 40px;
           color: #333435;
-          font-weight: 600;
+          font-weight: 600;          
         }
         .copy {
           span {
@@ -115,6 +116,10 @@ export const UserProfileStyled = styled.div<Props>`
         }
         .button-right {
           display: flex;
+          align-items: center;
+          a{
+            padding-right: 6px;
+          }
           .btn-donate {
             width: 125px;
             height: 40px;
@@ -136,7 +141,7 @@ export const UserProfileStyled = styled.div<Props>`
         font-weight: 500;
         font-size: 16px;
         line-height: 24px;
-        margin-top: 24px;
+        margin-top: 20px;
       }
     }
   }
@@ -178,6 +183,7 @@ export const CartStyled = styled.div`
       }
       .nfttype-status{
         color: #19a3dd;
+        width:100%;
       }
       .cancel {
         width: 98px;
@@ -299,7 +305,7 @@ export const CartStyled = styled.div`
       font-size: 16px;
       line-height: 24px;
       color: #333435;
-      margin: 32px 0px 12px 0px;
+      margin: 12px 0px 12px 0px;
     }
     .organize {
       font-weight: 600;
