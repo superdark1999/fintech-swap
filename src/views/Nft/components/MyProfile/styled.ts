@@ -181,6 +181,9 @@ export const CartStyled = styled.div`
         color: #19a3dd;
         text-transform: capitalize;
       }
+      .nfttype-status{
+        color: #19a3dd;
+      }
       .cancel {
         width: 98px;
         height: 40px;

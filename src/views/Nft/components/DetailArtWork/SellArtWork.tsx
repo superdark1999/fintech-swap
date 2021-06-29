@@ -46,6 +46,7 @@ import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import _ from 'lodash'
 import { isMobile } from 'react-device-detect'
 import TableHistory from './TableHistory'
+import formatNumber from 'utils/formatNumber'
 
 const { TabPane } = Tabs
 const DetaiArtWork = ({ id }: any) => {
@@ -283,7 +284,7 @@ const DetaiArtWork = ({ id }: any) => {
 
           <Row align="middle" justify="space-between">
             <div className="token">
-              {price} LUCKY
+              {formatNumber(price)} LUCKY
               <img src={Token} alt="" />
             </div>
             {renderButton()}

@@ -15,6 +15,7 @@ import { ButtonBuy } from 'components-v2/Button'
 import { useHistory } from 'react-router-dom'
 import { useActiveWeb3React } from 'wallet/hooks'
 import Loading from 'assets/images/loading.gif'
+import formatNumber from 'utils/formatNumber'
 
 import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import { isMobile } from 'react-device-detect'
@@ -195,7 +196,7 @@ export default function CardItem(props?: any) {
             <div className="number">
               {data?.NFTType !== 'swap-store' ? (
                 <div>
-                  {price} LUCKY <img src={Token} alt="" />
+                  {formatNumber(price)} LUCKY <img src={Token} alt="" />
                 </div>
               ) : isHideButton ? null : (
                 <ButtonBuy className="btn-swap" onClick={onSwapItem}>

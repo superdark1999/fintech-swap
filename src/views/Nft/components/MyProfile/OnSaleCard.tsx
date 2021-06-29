@@ -5,13 +5,26 @@ import { Row, Col, Tabs } from 'antd'
 import Token from 'assets/images/token.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
 import usrMarketServices from 'services/web3Services/MarketServices'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import _ from 'lodash'
 import { getPrice, getCompactString } from 'utils'
+import formatNumber from 'utils/formatNumber'
+import useMarketServices,{MARKET_ADDRESS} from 'services/web3Services/MarketServices'
+import notification from 'components-v2/Alert'
 import { isMobile } from 'react-device-detect'
+import { useHistory } from 'react-router-dom'
+import StatusBar from 'components-v2/StatusBar'
+import { ButtonCancel } from 'components-v2/Button'
+
+
 export default function OnSaleCard({ data }: any) {
   const [loading, setLoading] = useState(true)
   const [price, setPrice] = useState(0)
+  const { cancelSellNFT } = useArtworkServices()
+  const [isProcessing,setIsProcessing] = useState(false)
+  const history = useHistory()
   const marketService = usrMarketServices()
+  const marketServicesMethod = useMarketServices()
 
   useEffect(() => {
     const getPriceToken = async () => {
@@ -45,6 +58,90 @@ export default function OnSaleCard({ data }: any) {
     setLoading(false)
     getPriceToken()
   }, [data?.tokenId])
+
+  const onCancelItemOnMarket = () => {
+    if (marketServicesMethod) {
+      if (data?.NFTType === 'buy') {
+        setIsProcessing(true)
+        marketServicesMethod?.cancelSellToken(data?.tokenId).then((dt) => {
+          cancelSellNFT({ id: data?._id }).then(({ status }) => {
+            if (status == 200) {
+              history.push('/my-profile/mycollection/checkingToSell')
+            } else {
+              notification('error', {
+                message: 'Error',
+                description: 'Something when wrong, please try again later.',
+              })
+              setIsProcessing(false)
+            }
+          })
+        }).catch(err=>{
+          notification('error', {
+            message: 'Error',
+            description: err.message,
+          })
+          setIsProcessing(false)
+        })
+      }else if(data?.NFTType === 'auction'){
+        setIsProcessing(true)
+        marketServicesMethod?.revokeBidToken(data?.tokenId).then((dt) => {
+          cancelSellNFT({ id: data?._id }).then(({ status }) => {
+            if (status == 200) {
+              history.push('/my-profile/mycollection/checkingToSell')
+            } else {
+              notification('error', {
+                message: 'Error',
+                description: 'Something when wrong, please try again later.',
+              })
+              setIsProcessing(false)
+            }
+          })
+        }).catch(err=>{
+          notification('error', {
+            message: 'Error',
+            description: err.message,
+          })
+          setIsProcessing(false)
+        })
+      }else if(data?.NFTType === 'swap-store'){
+        setIsProcessing(true)
+        marketServicesMethod?.cancelListNFT(data?.tokenId).then((dt) => {
+          cancelSellNFT({ id: data?._id }).then(({ status }) => {
+            if (status == 200) {
+              history.push('/my-profile/mycollection/checkingToSell')
+            } else {
+              notification('error', {
+                message: 'Error',
+                description: 'Something when wrong, please try again later.',
+              })
+              setIsProcessing(false)
+            }
+          })
+        }).catch(err=>{
+          notification('error', {
+            message: 'Error',
+            description: err.message,
+          })
+          setIsProcessing(false)
+        })
+      }
+    }
+  }
+
+  const getStatusByNFTType = (status:string)=>{
+    switch(status){
+      case 'buy':
+        return 'On store - Buy';
+      case 'auction':
+          return 'On store - Auction';
+      case 'swap-store':
+        return 'On swap store';
+      case 'swap-personal':
+        return 'On offering';
+      default:
+        return 'On store';
+    }
+  }
 
   if (loading) {
     return null
@@ -85,13 +182,18 @@ export default function OnSaleCard({ data }: any) {
           xxl={{ span: 16 }}
         >
           <div className="header-card" style={{ marginTop: 10 }}>
-            <div className="status">{data?.NFTType === 'swap-store' ? 'Swap Store' : data?.NFTType}</div>
-            <div className="cancel">Cancel</div>
+            <div className="nfttype-status">{getStatusByNFTType(data?.NFTType)}</div>
+            {isProcessing?   
+             <StatusBar type="processing" label={'On Cacelling'} />:
+              <ButtonCancel height="40px" onClick={onCancelItemOnMarket}>
+                Cancel
+              </ButtonCancel>
+            }
           </div>
 
           <div className="name">{data?.title}</div>
           {(data?.NFTType=='buy'||data?.NFTType==='auction') &&<div className="number">
-            {price} LUCKY <img src={Token} alt="" />
+            {formatNumber(price)} LUCKY <img src={Token} alt="" />
           </div>}
           <div style={{ display: 'flex' }}>
             <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>

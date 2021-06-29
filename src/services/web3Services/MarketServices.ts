@@ -7,7 +7,7 @@ import { useActiveWeb3React } from 'wallet/hooks'
 import {getPrice, SUPPORT_CHAIN_IDS, getPriceFromEstimateGas} from 'utils'
 import useUserStore from 'store/userStore'
 
-export const MARKET_ADDRESS = '0xB9412809E3eBB0C309ce57358192d85855F99Cd6';
+export const MARKET_ADDRESS = '0x89a1C14c0EcB74AE01849E52AB969AA324CAF530';
 
 const OUT_OF_BNB = `Insufficient balance of BNB`
 const OUT_OF_LUCKY = `Insufficient balance of LUCKY`
@@ -29,9 +29,6 @@ function useMarketServiceChain97(){
         const setTokenBidInfo = useCallback(async(tokenId:string|undefined,price:number|undefined,step:number|undefined)=>{
             const unitPrice = price + '000000000000000000'
             const unitStep = step + '000000000000000000'
-            if(userState.balance.LUCKY<price){
-              throw new Error(OUT_OF_LUCKY)
-            }
             const estimatedGas = await marketContract.estimateGas.readyToBidToken(tokenId,unitPrice,unitStep);
             if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
               throw new Error(OUT_OF_BNB)
@@ -199,7 +196,7 @@ function useMarketServiceChain97(){
     const offerSwapNFT = useCallback(async(offerTokenId:string|undefined,targetTokenId:string|undefined,price:number|undefined=0 )=>{
       let unitPrice='0'
       if(price){
-        unitPrice = (Number(price) * 1e18).toString()
+        unitPrice = price + '000000000000000000'
       }
        const estimatedGas = await marketContract.estimateGas.offerNFT(offerTokenId,targetTokenId,unitPrice)
       if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
@@ -211,7 +208,6 @@ function useMarketServiceChain97(){
   },[marketContract,userState.balance.BNB])
 
   const cancelOfferSwapNFT = useCallback(async(tokenId:string|undefined)=>{
-    console.log(tokenId)
     const estimatedGas = await marketContract.estimateGas.cancelOfferNFT(tokenId)
     if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
       throw new Error(OUT_OF_BNB)
