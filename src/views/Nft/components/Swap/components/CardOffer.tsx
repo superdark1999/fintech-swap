@@ -5,8 +5,6 @@ import styled from 'styled-components'
 import Lucky from 'assets/images/token.svg'
 import { CloseOutlined } from '@ant-design/icons'
 import useUserStore from 'store/userStore'
-import formatNumber from 'utils/formatNumber'
-import { getPrice } from 'utils'
 
 export default function CardOffer(props:any) {
   const { type, onChangePrice, onChangeNote, onChangeSwapMethod } = props

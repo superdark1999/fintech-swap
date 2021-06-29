@@ -66,7 +66,7 @@ const {
         
         <Row justify="center">
           <div className="nft-image">
-          { itemSwap?.[0]?.type !='video' ? 
+          { myItems?.[0]?.type !='video' ? 
             <img  src={myItems?.[0]?.contentUrl}/>:
             <video
             className="nft-image"

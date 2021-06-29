@@ -9,13 +9,10 @@ import Hammer2 from 'assets/images/hammer2.svg'
 import { Link } from 'react-router-dom'
 
 import { Rate } from 'antd'
-import { SwapOutlined } from '@ant-design/icons'
-import useNFTServices, { MARKET_ADDRESS } from 'services/NFTServices'
 import useMarketServices, {
   MARKET_ADDRESS,
 } from 'services/web3Services/MarketServices'
-import useLuckyServices from 'services/web3Services/LuckyServices'
-import useUserStore from 'store/userStore'
+import formatNumber from 'utils/formatNumber'
 import { getPrice } from 'utils'
 import _ from 'lodash'
 import ReactFreezeframe from 'react-freezeframe'
@@ -67,7 +64,7 @@ export default function Cart({ data }) {
           </div>
           <div className="number">
             <div>
-              {price} LUCKY <img src={Token} alt="" />
+              {formatNumber(price)} LUCKY <img src={Token} alt="" />
             </div>
             <img src={Hammer2} alt="" />
           </div>

@@ -29,9 +29,6 @@ function useMarketServiceChain97(){
         const setTokenBidInfo = useCallback(async(tokenId:string|undefined,price:number|undefined,step:number|undefined)=>{
             const unitPrice = price + '000000000000000000'
             const unitStep = step + '000000000000000000'
-            if(userState.balance.LUCKY<price){
-              throw new Error(OUT_OF_LUCKY)
-            }
             const estimatedGas = await marketContract.estimateGas.readyToBidToken(tokenId,unitPrice,unitStep);
             if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
               throw new Error(OUT_OF_BNB)
@@ -199,7 +196,7 @@ function useMarketServiceChain97(){
     const offerSwapNFT = useCallback(async(offerTokenId:string|undefined,targetTokenId:string|undefined,price:number|undefined=0 )=>{
       let unitPrice='0'
       if(price){
-        unitPrice = (Number(price) * 1e18).toString()
+        unitPrice = price + '000000000000000000'
       }
        const estimatedGas = await marketContract.estimateGas.offerNFT(offerTokenId,targetTokenId,unitPrice)
       if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){

@@ -7,6 +7,7 @@ import Luckyswap from 'assets/images/luckyswap.svg'
 import usrMarketServices from 'services/web3Services/MarketServices'
 import _ from 'lodash'
 import { getPrice, getCompactString } from 'utils'
+import formatNumber from 'utils/formatNumber'
 import { isMobile } from 'react-device-detect'
 export default function OnSaleCard({ data }: any) {
   const [loading, setLoading] = useState(true)
@@ -91,7 +92,7 @@ export default function OnSaleCard({ data }: any) {
 
           <div className="name">{data?.title}</div>
           {(data?.NFTType=='buy'||data?.NFTType==='auction') &&<div className="number">
-            {price} LUCKY <img src={Token} alt="" />
+            {formatNumber(price)} LUCKY <img src={Token} alt="" />
           </div>}
           <div style={{ display: 'flex' }}>
             <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
