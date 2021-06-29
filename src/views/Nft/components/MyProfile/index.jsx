@@ -246,21 +246,21 @@ const TabMyCollection = () => {
             width="auto"
             className="btn-filter"
             borderRadius="10px"
-            value="pending"
-            onChange={onHandleOptionCheck}
-            checked={optionChecked == 'pending'}
-          >
-            Pending{' '}
-          </RadioButton>
-          <RadioButton
-            width="auto"
-            className="btn-filter"
-            borderRadius="10px"
             value="approved"
             onChange={onHandleOptionCheck}
             checked={optionChecked == 'approved'}
           >
             Approved{' '}
+          </RadioButton>
+          <RadioButton
+            width="auto"
+            className="btn-filter"
+            borderRadius="10px"
+            value="pending"
+            onChange={onHandleOptionCheck}
+            checked={optionChecked == 'pending'}
+          >
+            Pending{' '}
           </RadioButton>
           <RadioButton
             width="auto"

@@ -81,10 +81,10 @@ export default function OnSaleCard({ data }: any) {
         </Col>
         <Col
           className="description"
-          xl={{ span: 16 }}
+          xl={{ span: 17 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 16 }}
+          xxl={{ span: 17 }}
         >
           {/* <div className="header-card" style={{ marginTop: 10 }}>
             <div className="status">Ready to Sell</div>

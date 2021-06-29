@@ -150,6 +150,10 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         <Link to="/" className="home-nav">Home</Link>
         <Link to="/explore" className="home-nav">Explore</Link>
         <Link to="/swap-store" className="swap-nav">Swap Store</Link>
+        <Link to="/ino" className="ino-nav">
+          <span className="label">New</span>
+          <span className="btn-ino">INO</span>
+        </Link>
         <span className="explore-nav"></span>
         {!!account ? (
           <>
@@ -347,6 +351,31 @@ const StyledTopBar = styled.div`
       -webkit-text-fill-color: transparent;
       font-size: 16px;
       font-weight: 600;
+      @media (max-width: 756px) {
+        display: none;
+      }
+    }
+    .ino-nav {
+      width:100px;
+      color: #35A5FC;
+      font-size: 16px;
+      font-weight: 600;
+      position: relative;
+      .btn-ino{
+
+      }
+      .label{
+        position: absolute;
+        top: -8px;
+        right: 50px;
+        transform: rotate(35deg);
+        font-size: 10px;
+        text-transform: capitalize;
+        color: #fff;
+        background: #ff5917;
+        padding: 0 6px;
+        border-radius: 10px;
+      }
       @media (max-width: 756px) {
         display: none;
       }

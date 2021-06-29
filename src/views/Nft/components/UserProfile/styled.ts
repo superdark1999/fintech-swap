@@ -301,7 +301,7 @@ export const CartStyled = styled.div`
       font-size: 16px;
       line-height: 24px;
       color: #333435;
-      margin: 32px 0px 12px 0px;
+      margin: 12px 0px 12px 0px;
     }
     .organize {
       font-weight: 600;

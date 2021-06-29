@@ -6,36 +6,36 @@ import styled from 'styled-components'
 //1: only token
 //2: NFT + token
 
-export default function CardSelect(props: { setSelectMethod?: (value: number) => void, isShowOption:boolean } ) {
-  const {setSelectMethod,isShowOption} = props
+export default function CardSelect(props: { setSelectMethod?: (value: number) => void, isShowOption: boolean }) {
+  const { setSelectMethod, isShowOption } = props
   return (
     <CardSelectStyled>
-      {isShowOption?(
+      {isShowOption ? (
         <div>
           <p className="description">
             Wait another user offer your NFT
           </p>
         </div>
-      ):(
+      ) : (
         <>
-        <div className="option-offer">
-        <div className="button-offer" onClick={() => setSelectMethod(1)}>
-          Select NFT only
-        </div>
-        <p className="description">
-          You can select multiple artwork at once
-        </p>
-      </div>
+          <div className="option-offer">
+            <div className="button-offer" onClick={() => setSelectMethod(1)}>
+              Select NFT only
+            </div>
+            <p className="description">
+              You can select multiple artwork at once
+            </p>
+          </div>
 
-      <div className="option-offer">
-        <div className="button-offer" onClick={() => setSelectMethod(2)}>
-          {`Select NFT & Token`}
-        </div>
-        <p className="description">
-          You can select multiple artwork and offer token
-        </p>
-      </div>
-      </>
+          <div className="option-offer">
+            <div className="button-offer" onClick={() => setSelectMethod(2)}>
+              {`Select NFT & Token`}
+            </div>
+            <p className="description">
+              You can select multiple artwork and offer token
+            </p>
+          </div>
+        </>
       )}
     </CardSelectStyled>
   )
@@ -53,6 +53,7 @@ const CardSelectStyled = styled.div`
   align-items: center;
   justify-content: space-around;
   .option-offer {
+    cursor: pointer;
     :first-child{
       border-bottom: 1px solid #E7EBEF;
     }
