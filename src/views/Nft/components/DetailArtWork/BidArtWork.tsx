@@ -42,7 +42,7 @@ import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import { getPrice, getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import formatNumber from 'utils/formatNumber'
 import _ from 'lodash'
-import { InputNumber } from 'antd'
+import { InputNumber, Image } from 'antd'
 import Hammer from 'assets/images/hammer.svg'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
@@ -320,9 +320,12 @@ const DetaiArtWork = ({ id }: any) => {
           <ImageStyled bgImage={NFTDetail?.contentUrl}>
             <div className="bg-image"></div>
             {/* <img src={NFTDetail?.contentUrl} /> */}
-            <img
+            <Image
               className="avatar"
               src={NFTDetail?.contentUrl}
+              preview={{
+                src: NFTDetail?.contentUrl,
+              }}
               alt=""
               loading="lazy"
             />
@@ -372,11 +375,10 @@ const DetaiArtWork = ({ id }: any) => {
           <p className="title">{NFTDetail?.title}</p>
           <Row>
             <Col
-              xl={{ span: 12 }}
+              xl={{ span: 14 }}
               md={{ span: 12 }}
               sm={{ span: 24 }}
               className="bid-info"
-            // style={{ width: '100%', display: 'flex', flexWrap: 'wrap'}}
             >
               <div className="group-item-bid">
                 <div className="label">Current bid</div>
@@ -411,7 +413,7 @@ const DetaiArtWork = ({ id }: any) => {
               </div>
             </Col>
             <Col
-              xl={{ span: 12 }}
+              xl={{ span: 10 }}
               md={{ span: 12 }}
               sm={{ span: 24 }}
               style={{

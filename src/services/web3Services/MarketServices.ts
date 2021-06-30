@@ -215,7 +215,7 @@ function useMarketServiceChain97(){
     return marketContract.cancelOfferNFT(tokenId, {
       gasLimit: estimatedGas,
     })
-},[marketContract,userState.balance.BNB])
+  },[marketContract,userState.balance.BNB])
 
   const confirmSwapNFT  = useCallback(async(offerTokenId:string|undefined,targetTokenId:string|undefined, address:string|undefined )=>{
     const estimatedGas = await marketContract.estimateGas.swapNFT(offerTokenId,targetTokenId,address)

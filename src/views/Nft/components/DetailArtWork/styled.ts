@@ -150,13 +150,13 @@ export const ImageStyled = styled.div<Props>`
     -webkit-filter: blur(70px);
 
     /* Full height */
-    height: 100%;
+    height: calc(100vh - 80px);
     /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
   }
-  > img {
+  .ant-image {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -165,6 +165,16 @@ export const ImageStyled = styled.div<Props>`
     max-width: calc(100% - 100px);
     max-height: calc(100vh - 330px);
     border-radius: 16px;
+    width: 100%;
+    height: 100%;
+    .ant-image-img {
+      object-fit: contain;
+      width: 100%;
+      height: 100%;
+    }
+    .ant-image-mask {
+      background: none;
+    }
   }
   .img-artwork {
     position: absolute;
@@ -311,6 +321,7 @@ export const DetailStyled = styled.div`
   .bid-info {
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
     .group-item-bid {
       width: 120px;
       margin-bottom: 12px;
