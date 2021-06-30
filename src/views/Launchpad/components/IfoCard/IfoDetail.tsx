@@ -50,7 +50,7 @@ const IfoTitle = ({ activeIfo }: any) => {
   const [isWaningAllowedDepositAmount, setIsWaningAllowedDepositAmount] = useState(false)
   const [value, setValue] = useState('')
 
-  const { typePool, banner, social, sympol, description, name, address, currency, currencyAddress } = activeIfo
+  const { typePool, banner, social, sympol, description, name, address, currency, currencyAddress, logo } = activeIfo
   const contract = useIfoContract(address)
   const {
     offeringAmount,
@@ -265,7 +265,7 @@ const IfoTitle = ({ activeIfo }: any) => {
         <BoxContent>
           <div className="two-column">
             <div className="two-column-left">
-              <h3><span><img src="images/logo-test.png" alt=""/></span>{name}</h3>
+              <h3><span><img src={`${BASE_API_ADMIN}/${logo}`} alt=""/></span>{name}</h3>
 
               <BoxSocial>
                 <a rel="noreferrer" target="_blank" href={social && social.twitter}>

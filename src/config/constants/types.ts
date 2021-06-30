@@ -23,6 +23,7 @@ export interface Ifo {
   releaseBlockNumber: number
   campaignId?: string
   banner?:string
+  logo?:string
   typePool?:string
   sympol?:string
 }
