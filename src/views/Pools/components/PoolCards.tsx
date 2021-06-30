@@ -3,11 +3,24 @@ import styled from 'styled-components'
 import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom'
+import useGetStateData from 'hooks/useGetStakeData';
+
 // import { Row, Col } from 'antd'
 
+const stakingData = {
+  name: 'Lucky',
+  depositSymbol: 'XLUCKY2',
+  rewardSymbol: 'XLUCKY1',
+  depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
+  rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a", // XLucky
+  stakingContract: "0x1dde4Fc6ca8121Cb11E988b524B275855F98aAA6",
+}
 
 function PoolCards() {
   const [activeTab, setActiveTab] = useState('1');
+
+  const { userAmount, userRewardDebt} = useGetStateData(stakingData);
+
 
   const toggle = tab => {
     if(activeTab !== tab) setActiveTab(tab);
@@ -98,12 +111,12 @@ function PoolCards() {
 
                     <FlexSpace>
                       <ContentLeft>Deposit:</ContentLeft>
-                      <ContentRight>LUCKY</ContentRight>
+                      <ContentRight>{stakingData.depositSymbol}</ContentRight>
                     </FlexSpace>
 
                     <FlexSpace>
                       <ContentLeft>Earn:</ContentLeft>
-                      <ContentRight>LUCKY</ContentRight>
+                      <ContentRight>{stakingData.rewardSymbol}</ContentRight>
                     </FlexSpace>
 
                     <FlexSpace>

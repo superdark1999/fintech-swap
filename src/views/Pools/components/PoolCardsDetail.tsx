@@ -17,6 +17,7 @@ import PoolCardDetails from './PoolCardDetails';
 
 
 const stakingData = {
+  name: 'Lucky',
   depositSymbol: 'XLUCKY2',
   rewardSymbol: 'XLUCKY1',
   depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2

@@ -49,8 +49,7 @@ const IfoTitle = ({ activeIfo }: any) => {
   const [isApproved, setIsApproved] = useState(false)
   const [isWaningAllowedDepositAmount, setIsWaningAllowedDepositAmount] = useState(false)
   const [value, setValue] = useState('')
-
-  const { typePool, banner, social, sympol, description, name, address, currency, currencyAddress, logo } = activeIfo
+  const { typePool, banner, social, sympol, launchDate, launchTime, description, name, address, currency, currencyAddress, logo } = activeIfo
   const contract = useIfoContract(address)
   const {
     offeringAmount,
@@ -154,7 +153,6 @@ const IfoTitle = ({ activeIfo }: any) => {
     isConfirmed,
     isConfirming,
     handleApprove,
-    // handleConfirm,
   } = useOldApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
@@ -345,7 +343,7 @@ const IfoTitle = ({ activeIfo }: any) => {
               <Dflex>
                 <div>Price:</div>
                 <div className="font-bold">
-                  {priceRate} {currency}
+                  {priceRate} {sympol}
                 </div>
               </Dflex>
 
@@ -380,6 +378,10 @@ const IfoTitle = ({ activeIfo }: any) => {
                     text={sympol}
                   ></CardValue>
                 </div>
+              </Dflex>
+              <Dflex>
+                <div>Launch time:</div>
+                <div className="font-bold">{`${launchDate}, ${launchTime}`}</div>
               </Dflex>
               <Dflex>
                 <div>Time:</div>
