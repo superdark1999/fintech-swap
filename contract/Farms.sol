@@ -1,10 +1,3 @@
-/**
- *Submitted for verification at BscScan.com on 2021-06-15
-*/
-
-/**
- *Submitted for verification at BscScan.com on 2021-06-15
-*/
 
 pragma solidity 0.6.12;
 
