@@ -10,16 +10,20 @@ export default function UnStakeModal({
   value, 
   onChangeValue, 
   stakingContract,
-  addTransaction
+  addTransaction,
+  userAmount,
+  setIsUnStaking
 }) 
 {
   const handleUnStake = async () => {
     if (stakingContract) {
+      setIsUnStaking(true);
+      unStakeToggle();
       const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
       const gasAm = await stakingContract.estimateGas.deposit(...args)
       .catch(() => console.log("Fail estimate gas"));
 
-      await stakingContract
+      stakingContract
         .withdraw(...args, { gasLimit: gasAm })
         .then((response: any) => {
           addTransaction(response, {
@@ -39,7 +43,7 @@ export default function UnStakeModal({
 
           <ModalBody>
             <Title>UnStake LuckySwap Tokens</Title>
-            <Available>0 Lucky Available</Available>
+            <Available>{userAmount.div(1e18).toFixed(4)} Lucky Available</Available>
 
             <BoxInput>
               <input type="text" id="fname" name="fname" placeholder="0.000"

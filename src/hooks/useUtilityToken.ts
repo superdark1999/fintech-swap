@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 import bep20Abi from 'config/abi/erc20.json'
 import { useContract, useIfoContract } from 'hooks/useContract'
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
+import { ConsoleSqlOutlined } from '@ant-design/icons'
 
 
 const useUtilityToken = (tokenAddress) => {
@@ -30,10 +31,10 @@ const useUtilityToken = (tokenAddress) => {
       return result;
   }
 
-  const listenApproveEvent = async (action) => {
+  const listenApproveEvent = async (callback) => {
     if (contract)
       contract.on('Approval', async () => {
-        action();
+        callback();
       })
   }
   return { approve, allowance, balanceOf, listenApproveEvent }

@@ -1,14 +1,19 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo, useCallback} from 'react'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'
 import { useWeb3React } from '@web3-react/core'
-import BigNumber from 'bignumber.js'
-import { useERC20, useStakingContract } from 'hooks/useContract'
 import useGetStateData from 'hooks/useGetStakeData';
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
+import { TransactionDetails } from 'state/transactions/reducer'
+import { useContract,  useStakingContract } from 'hooks/useContract'
+import SMART_CHEF_ABI from 'config/abi/smartChef.json'
+import useStakingEvent from 'hooks/useStakingEvent';
+
+
 import UnStakeModal from './UnStakeModal';
 import DepositModal from './DepositModal';
 import PoolCardDetails from './PoolCardDetails';
+
 
 
 const stakingData = {
@@ -20,20 +25,64 @@ const stakingData = {
   
 }
 
+function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
+  return b.addedTime - a.addedTime
+}
+
+
 function PoolCardsDetail() {
   const [depositModal, setDepositModal] = useState(false);
   const [withdrawModal, setWithdrawModel] = useState(false);
+  const [isUnStaking, setIsUnStaking] = useState(false);
+  const [isDepositing, setIsDepositing] = useState(false);
+  const [isHarvesting, setIsHarvesting] = useState(false);
   const { account } = useWeb3React()
 
   const [value, setValue] = useState('');
   const stakingContract = useStakingContract(stakingData.stakingContract);
-  const {pendingReward, userAmount, userRewardDebt} = useGetStateData(stakingData);
+  const { userAmount, userRewardDebt} = useGetStateData(stakingData);
 
   const addTransaction = useTransactionAdder()
+  const contract = useContract(stakingData.stakingContract,SMART_CHEF_ABI );
 
+
+
+  useEffect(() => {
+    if (contract){
+      contract.on('Withdraw',  () => {
+        setIsUnStaking(false);
+
+      })
+      contract.on('Deposit',  () => {
+        if (isDepositing)
+          setIsDepositing(false);
+        else
+          setIsHarvesting(false);
+      })
+    // listenDepositEvent(() => console.log("deposit console"));
+
+    // listenWithdrawEvent(() => console.log('withdraw console'));
+
+  
+    }
+  }, [contract, isDepositing])
 
   const depositToggle = () => setDepositModal(!depositModal);
   const unStakeToggle = () => setWithdrawModel(!withdrawModal);
+
+  const allTransactions = useAllTransactions()
+
+  const sortedRecentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions)
+    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
+  }, [allTransactions])
+
+  const getStatus = useCallback(() =>{
+    const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+    return !!pending.length
+
+  }, [sortedRecentTransactions])
+
 
   return (
     <>
@@ -56,10 +105,15 @@ function PoolCardsDetail() {
             addTransaction={addTransaction}
             account={account}
             stakingData={stakingData}
+            getStatus={getStatus}
+            isDepositing={isDepositing}
+            isUnStaking={isUnStaking}
+            isHarvesting={isHarvesting}
+            setIsHarvesting={setIsHarvesting}
           />
 
           <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>
-          Every time you stake and unstake EL tokens, the contract will automatically harvest HCATS rewards for you!
+          Every time you stake and unStake EL tokens, the contract will automatically harvest HCATS rewards for you!
           </p>
         </BoxDetail>
       </Page>
@@ -74,6 +128,7 @@ function PoolCardsDetail() {
         addTransaction={addTransaction}
         account={account}
         stakingData={stakingData}
+        setIsDepositing={setIsDepositing}
       />
 
       <UnStakeModal 
@@ -83,6 +138,9 @@ function PoolCardsDetail() {
         unStakeToggle={unStakeToggle}
         stakingContract={stakingContract}
         addTransaction={addTransaction}
+        userAmount={userAmount}
+        setIsUnStaking={setIsUnStaking}
+
       />
     </>
   )

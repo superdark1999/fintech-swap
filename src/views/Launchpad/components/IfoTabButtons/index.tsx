@@ -149,7 +149,7 @@ const IfoTabButtons = () => {
             value={state.statusCombo}
             onChange={(e) => actions.filterLaunchWithStatus(e.target.value)}
           >
-            {state.statuss.map((item) => {
+            {state.status.map((item) => {
               return (
                 <option key={item.key} value={item.key}>
                   {item.name}

@@ -3,9 +3,8 @@ import { Row, Col } from 'antd'
 import { Button } from 'reactstrap';
 import BigNumber from 'bignumber.js'
 
-import bep20Abi from 'config/abi/erc20.json'
 import useUtilityToken from 'hooks/useUtilityToken';
-import { useContract } from 'hooks/useContract'
+
 import { AutoRenewIcon } from '@luckyswap/uikit'
 
 
@@ -19,12 +18,19 @@ export default function PoolCardDetails({
   stakingContract,
   addTransaction,
   account,
-  stakingData
+  stakingData,
+  getStatus, 
+  isUnStaking,
+  isDepositing,
+  isHarvesting,
+  setIsHarvesting,
 }) {
 
   const {listenApproveEvent, approve, allowance} =  useUtilityToken(stakingData.depositToken);
   const [isApproved, setIsApproved] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
+
+
 
   useEffect(() => {
     const fetchApproval = async() => {
@@ -37,25 +43,28 @@ export default function PoolCardDetails({
   },[account, allowance, stakingData.stakingContract])
 
   useEffect(() => {
-    listenApproveEvent(() => setIsApproved(true))
-  })
+    listenApproveEvent(() => setIsApproved(true));
+
+
+  },[listenApproveEvent])
 
   const handleApprove = async () => {
     setIsApproving(true);
     await approve(stakingData.stakingContract);
   }
 
-  const handleWithdraw = async () => {
+  const handleHarvest = async () => {
     if (stakingContract) {
+      setIsHarvesting(true);
       const args = [new BigNumber(0).times(new BigNumber(10).pow(18)).toString()]
-      const gasAm = await stakingContract.estimateGas.deposit(...args)
+      const gasAm = await stakingContract.estimateGas.deposit(...args).catch(() => console.log("Fails harvest"))
       .catch(() => console.log("Fail estimate gas"));
 
-      await stakingContract
+      stakingContract
         .deposit(...args, { gasLimit: gasAm })
         .then((response: any) => {
           addTransaction(response, {
-            summary: 'Withdraw successfully!',
+            summary: 'Harvest successfully!',
           })
         })
         .catch((error: any) => {
@@ -63,6 +72,8 @@ export default function PoolCardDetails({
         })
     }
   }
+
+  
 
   return (
     <div>
@@ -79,7 +90,14 @@ export default function PoolCardDetails({
                 </div>
 
                 <div className="box__footer">
-                  <Button color="danger" onClick={handleWithdraw}>Harvest</Button>
+                  <Button color="danger" 
+                  onClick={handleHarvest}
+                  isLoading={isHarvesting}
+                  disabled={(getStatus() && isHarvesting)}
+                  >
+                  { (getStatus() && isHarvesting) && spinnerIcon}
+                    Harvest
+                  </Button>
                 </div>
               </div>
             </Col>
@@ -108,8 +126,19 @@ export default function PoolCardDetails({
                   ) :
                   (
                     <div>
-                      <Button color="danger" onClick={onUnStakeToggle}>UnStake</Button>
-                      <Button color="danger" onClick={onDepositToggle}>Deposit</Button>
+                      <Button color="danger" 
+                        onClick={onUnStakeToggle}
+                        disabled={getStatus() && isUnStaking}
+                      >
+                      { (getStatus() && isUnStaking) && spinnerIcon}
+                        UnStake
+                      </Button>
+                      <Button color="danger" 
+                        onClick={onDepositToggle}
+                        disabled={getStatus() && isDepositing}
+                      >
+                      { (getStatus() && isDepositing)&& spinnerIcon}
+                        Deposit</Button>
                     </div>
                   )
                   }

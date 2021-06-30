@@ -14,7 +14,8 @@ export default function DepositModal({
   stakingContract,
   addTransaction,
   account,
-  stakingData
+  stakingData,
+  setIsDepositing
 }) {
   const [balance, setBalance] = useState(0);
   const {balanceOf, approve, allowance} =  useUtilityToken(stakingData.depositToken);
@@ -31,10 +32,12 @@ export default function DepositModal({
 
   const handleDeposit = async () => {
     if (stakingContract) {
+      setIsDepositing(true);
+      depositToggle()
       const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
       const gasAm = await stakingContract.estimateGas.deposit(...args)
       .catch(() => console.log("Fail estimate gas deposit"));
-      await stakingContract
+       stakingContract
         .deposit(...args, { gasLimit: gasAm })
         .then((response: any) => {
           addTransaction(response, {

@@ -101,7 +101,6 @@ const useGetPublicIfoData = (ifo: Ifo) => {
         contract.methods.hasHarvest(account).call,
       ])) as [string, string, string, string, string, string, string, string, string, boolean]
 
-      console.log("hasHarvest", hasHarvest)
       const startBlockNum = parseInt(startBlock, 10)
       const endBlockNum = parseInt(endBlock, 10)
 
