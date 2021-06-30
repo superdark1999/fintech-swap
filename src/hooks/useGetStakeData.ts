@@ -32,7 +32,7 @@ const useGetStateData = (staking) => {
       }
     }
     fetchStakingData();
-  }, [account, contract])
+  })
 
 
   return state;

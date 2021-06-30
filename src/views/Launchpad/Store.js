@@ -6,7 +6,7 @@ const stateDefault = {
   launchpads: [],
   filterLaunchpads: [],
   detailLaunchpad: null,
-  statuss: [
+  status: [
     { key: 'all', name: 'All' },
     { key: 'live', name: 'Live' },
     { key: 'finished', name: 'Finished' },

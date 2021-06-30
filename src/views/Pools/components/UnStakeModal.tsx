@@ -1,46 +1,32 @@
-import React, {useState, useEffect}from 'react'
+import React, { useState} from 'react'
 import styled from 'styled-components'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import BigNumber from 'bignumber.js'
 
-import useUtilityToken from 'hooks/useUtilityToken';
 
-export default function DepositModal({ 
-  depositModal, 
-  depositToggle, 
-  depositSymbol,  
+export default function UnStakeModal({
+  withdrawModal,
+  unStakeToggle, 
   stakingContract,
   addTransaction,
-  account,
-  stakingData,
-  setIsDepositing
-}) {
-  const [balance, setBalance] = useState(0);
+  userAmount,
+  setIsUnStaking
+}) 
+{
   const [value, setValue] = useState('');
-  const {balanceOf, approve, allowance} =  useUtilityToken(stakingData.depositToken);
-
-
-  useEffect(() => {
-    const fetchBalance = async () => {
-      const bal = await balanceOf(account);
-      setBalance(parseFloat((bal /1e18).toFixed(4)));
-    }
-    if (account)
-      fetchBalance()
-  },[account, balanceOf])
-
-  const handleDeposit = async () => {
+  const handleUnStake = async () => {
     if (stakingContract) {
-      setIsDepositing(true);
-      depositToggle()
+      setIsUnStaking(true);
+      unStakeToggle();
       const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
       const gasAm = await stakingContract.estimateGas.deposit(...args)
-      .catch(() => console.log("Fail estimate gas deposit"));
-       stakingContract
-        .deposit(...args, { gasLimit: gasAm })
+      .catch(() => console.log("Fail estimate gas"));
+
+      stakingContract
+        .withdraw(...args, { gasLimit: gasAm })
         .then((response: any) => {
           addTransaction(response, {
-            summary: 'Deposit successfully!',
+            summary: 'Unstake successfully!',
           })
         })
         .catch((error: any) => {
@@ -49,46 +35,43 @@ export default function DepositModal({
     }
   }
 
-  const handleMaxAmount = () => {
-    setValue(balance.toString())
+  const handleMaxAmount = (e) => {
+    setValue(userAmount.div(1e18).toString());
   }
-
   return (
     <div>
       
-      <Modal isOpen={depositModal} toggle={depositToggle}>
-        <ModalHeader toggle={depositToggle}></ModalHeader>
+      <Modal isOpen={withdrawModal} toggle={unStakeToggle}>
+          <ModalHeader toggle={unStakeToggle}></ModalHeader>
 
-        <ModalBody>
-          <Title>Deposit LuckySwap Tokens</Title>
-          <Available>{balance} {depositSymbol}</Available>
+          <ModalBody>
+            <Title>UnStake LuckySwap Tokens</Title>
+            <Available>{userAmount.div(1e18).toFixed(4)} Lucky Available</Available>
 
-          <BoxInput>
-            <input type="text" id="fname" name="fname" placeholder="0.000"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              />
-            <BoxLink>
-              <span className="text-lucky">{depositSymbol}</span>
-              <BoxButton>
-                <Button onClick={handleMaxAmount}>Max</Button>
-              </BoxButton>
-            </BoxLink>
-          </BoxInput>
-        </ModalBody>
+            <BoxInput>
+              <input type="text" id="fname" name="fname" placeholder="0.000"
+                value={value}
+               onChange={(e) => setValue(e.target.value)}/>
+              <BoxLink>
+                <span className="text-lucky">lucky</span>
+                <BoxButton>
+                  <Button onClick={handleMaxAmount}>Max</Button>
+                </BoxButton>
+              </BoxLink>
+            </BoxInput>
+          </ModalBody>
 
-        <ModalFooter>
-          <CancelButton>
-          <Button color="primary" onClick={depositToggle}>Cancel</Button>
-          </CancelButton>
-          <Button color="secondary" onClick={handleDeposit} disabled={false}>Deposit</Button>
-        </ModalFooter>
-      </Modal>
+          <ModalFooter>
+            <CancelButton>
+              <Button color="primary" onClick={unStakeToggle}>Cancel</Button>
+            </CancelButton>
+            <Button color="secondary" onClick={handleUnStake} disabled={false}>UnStake</Button>
+          </ModalFooter>
+        </Modal>
       
     </div>
   )
 }
-
 
 const BoxInput = styled.div`
   display: flex;

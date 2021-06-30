@@ -49,8 +49,7 @@ const IfoTitle = ({ activeIfo }: any) => {
   const [isApproved, setIsApproved] = useState(false)
   const [isWaningAllowedDepositAmount, setIsWaningAllowedDepositAmount] = useState(false)
   const [value, setValue] = useState('')
-
-  const { typePool, banner, social, sympol, description, name, address, currency, currencyAddress } = activeIfo
+  const { typePool, banner, social, sympol, launchDate, launchTime, description, name, address, currency, currencyAddress, logo } = activeIfo
   const contract = useIfoContract(address)
   const {
     offeringAmount,
@@ -154,7 +153,6 @@ const IfoTitle = ({ activeIfo }: any) => {
     isConfirmed,
     isConfirming,
     handleApprove,
-    // handleConfirm,
   } = useOldApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
@@ -265,7 +263,7 @@ const IfoTitle = ({ activeIfo }: any) => {
         <BoxContent>
           <div className="two-column">
             <div className="two-column-left">
-              <h3><span><img src="images/logo-test.png" alt=""/></span>{name}</h3>
+              <h3><span><img src={`${BASE_API_ADMIN}/${logo}`} alt=""/></span>{name}</h3>
 
               <BoxSocial>
                 <a rel="noreferrer" target="_blank" href={social && social.twitter}>
@@ -345,7 +343,7 @@ const IfoTitle = ({ activeIfo }: any) => {
               <Dflex>
                 <div>Price:</div>
                 <div className="font-bold">
-                  {priceRate} {currency}
+                  {priceRate} {sympol}
                 </div>
               </Dflex>
 
@@ -382,6 +380,10 @@ const IfoTitle = ({ activeIfo }: any) => {
                 </div>
               </Dflex>
               <Dflex>
+                <div>Launch time:</div>
+                <div className="font-bold">{`${launchDate}, ${launchTime}`}</div>
+              </Dflex>
+              <Dflex>
                 <div>Time:</div>
                 <div className="font-bold">{`${timeUntil.days}d, ${timeUntil.hours}h, ${timeUntil.minutes}m until ${suffix}`}</div>
               </Dflex>
@@ -390,7 +392,7 @@ const IfoTitle = ({ activeIfo }: any) => {
         </BoxContent>
 
         <BoxForm>
-          {typePool === 'Whitelisted' ? (
+          {status!== 'finished' && typePool === 'Whitelisted' ? (
             <button
               type="submit"
               className="whitelist"
@@ -408,7 +410,7 @@ const IfoTitle = ({ activeIfo }: any) => {
           )}
 
           <div className="box-input">
-            <div className="d-flex">
+            {status !== 'finished' &&(<div className="d-flex">
               <div className="box-max">
                 <div className="balance">
                   Balance:{' '}
@@ -416,7 +418,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                   {currency}
                 </div>
                 <input
-                  disabled={getStatus() || status === 'finished' || maxDeposit === 0}
+                  disabled={getStatus()  || maxDeposit === 0}
                   className="input-max"
                   type="text"
                   pattern="^[0-9]*[.,]?[0-9]*$"
@@ -433,7 +435,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                   <input type="text" />
                 </div>
               </div>
-            </div>
+            </div>)}
             {isWaningAllowedDepositAmount && <div className="waning">Current amount exceeds the limit</div>}
             {status === 'live' &&
               (!(isConfirmed || isConfirming || isApproved) ? (

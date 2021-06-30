@@ -45,7 +45,7 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
 }
 
 const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
-  const { address, isActive, sympol, typePool, banner, id, name, currency } = ifo
+  const {  sympol, typePool, banner, logo,  name, currency } = ifo
   const { offeringAmount, raisingAmount, totalAmount, getAddressListLength, status } = useGetPublicIfoData(ifo)
   const TranslateString = useI18n()
   const Ribbon = getRibbonComponent(status, TranslateString)
@@ -60,6 +60,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
   if (status !== state.statusCombo && state.statusCombo !== 'all') {
     return <></>
   }
+
   return (
     <>
       <Item>
@@ -71,7 +72,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
         <ItemContent>
           <BoxHead>
-            <h2><span><img src="images/logo-test.png" alt=""/></span>{name}</h2>
+            <h2><span><img src={`${BASE_API_ADMIN}/${logo}`} alt=""/></span>{name}</h2>
             <p>
               1 {currency} = {priceRate} {sympol}
             </p>
