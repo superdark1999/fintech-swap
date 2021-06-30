@@ -160,9 +160,9 @@ const App = () => {
               <Route path="/explore">
                 <Explore />
               </Route>
-              <Route path="/ino">
+              {/* <Route path="/ino">
                 <InoEvent />
-              </Route>
+              </Route> */}
               <Route component={Page404} />
             </Switch>
             {/* </div> */}

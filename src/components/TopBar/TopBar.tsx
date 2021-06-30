@@ -150,7 +150,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         <Link to="/" className="home-nav">Home</Link>
         <Link to="/explore" className="home-nav">Explore</Link>
         <Link to="/swap-store" className="swap-nav">Swap Store</Link>
-        <Link to="/ino" className="ino-nav">
+        <Link to="#" className="ino-nav">
           <span className="label">New</span>
           <span className="btn-ino">INO</span>
         </Link>
