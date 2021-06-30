@@ -33,7 +33,7 @@ import notification from 'components-v2/Alert'
 import { getCompactString } from 'utils'
 import { RegexNumber100000 } from '../../constants'
 import { useActiveWeb3React } from 'wallet/hooks'
-
+import ModalSetPriceAuction from './ModalSetPriceAuction'
 export default function MyCollectionCard({ data, option }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
   const [isProcessing, setIsPrcessing] = useState(false)
@@ -114,30 +114,31 @@ export default function MyCollectionCard({ data, option }: any) {
       })
   }
   const onSubmitRuleAuction = (value: any) => {
+    console.log('value: ', value);
     const tokenId = data?.tokenId
-    setIsPrcessing(true)
-    marketServicesMethod
-      ?.setTokenBidInfo(tokenId, value.price, value.stepPrice)
-      .then((dt) => {
-        if (dt?.hash) {
-          setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
-            if (status == 200) {
-              history.push('/my-profile/mycollection/checkingToSell')
-            } else {
-              notification('error', {
-                message: 'Error',
-                description: 'Something when wrong, please try again later.',
-              })
-              setIsPrcessing(false)
-            }
-          })
-        }
-      })
-      .catch((err) => {
-        notification('error', { message: 'Error', description: err?.message })
-        setIsPrcessing(false)
-      })
-    setRuleAuctionModal(false)
+    // setIsPrcessing(true)
+    // marketServicesMethod
+    //   ?.setTokenBidInfo(tokenId, value.price, value.stepPrice)
+    //   .then((dt) => {
+    //     if (dt?.hash) {
+    //       setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
+    //         if (status == 200) {
+    //           history.push('/my-profile/mycollection/checkingToSell')
+    //         } else {
+    //           notification('error', {
+    //             message: 'Error',
+    //             description: 'Something when wrong, please try again later.',
+    //           })
+    //           setIsPrcessing(false)
+    //         }
+    //       })
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     notification('error', { message: 'Error', description: err?.message })
+    //     setIsPrcessing(false)
+    //   })
+    // setRuleAuctionModal(false)
   }
   const onSubmitSwapItem = () => {
     const tokenId = data?.tokenId
@@ -322,24 +323,23 @@ export default function MyCollectionCard({ data, option }: any) {
           </ButtonBuy>
         </div>
       )
-    } else if (data?.status == 'readyToSell') {
-      const getStatusByNFTType = (status: string) => {
-        switch (status) {
-          case 'buy':
-            return 'On store | Sell';
-          case 'auction':
-            return 'On store | Aution';
-          case 'swap-store':
-            return 'On swap store';
-          case 'swap-personal':
-            return 'On offering';
-          default:
-            return 'On store';
-        }
-      }
-      return <div className="nfttype-status">{getStatusByNFTType(data?.NFTType)}</div>
     }
   }
+  const getStatusByNFTType = (status: string) => {
+    switch (status) {
+      case 'buy':
+        return 'On store | Sell';
+      case 'auction':
+        return 'On store | Aution';
+      case 'swap-store':
+        return 'On swap store';
+      case 'swap-personal':
+        return 'On offering';
+      default:
+        return 'On store';
+    }
+  }
+
   const handleMenuClick = (dt: any) => {
     if (dt.key === 'sell') {
       setShowModalsetPrice(true)
@@ -382,7 +382,10 @@ export default function MyCollectionCard({ data, option }: any) {
         >
           <div>
             <div className="header-card">
-              <div className="name">{data?.title}</div>
+              <div>
+                {data?.status == 'readyToSell' && <div className="nfttype-status">{getStatusByNFTType(data?.NFTType)}</div>}
+                <div className="name">{data?.title}</div>
+              </div>
               {renderActionItem()}
             </div>
             {data?.TXHash && (
@@ -453,85 +456,12 @@ export default function MyCollectionCard({ data, option }: any) {
           </Form.Item>
         </Form>
       </Modal>
-
-      <Modal
-        title="Set Price Auction"
-        visible={ruleAuctionModal}
-        onCancel={() => setRuleAuctionModal(false)}
-        footer={null}
-        width={400}
-        style={{ borderRadius: 16 }}
-      >
-        <Form ref={formRef} onFinish={onSubmitRuleAuction}>
-          <Form.Item
-            label="Price"
-            name="price"
-            rules={[
-              { required: true, message: 'This Field is required' },
-              {
-                pattern: RegexNumber100000,
-                message: 'The price must be less than 100,000',
-              },
-            ]}
-          >
-            <InputNumber
-              formatter={(value) =>
-                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-              }
-              style={{
-                borderRadius: '16px',
-                overflow: 'hidden',
-                width: '100%',
-              }}
-              placeholder="Enter NFT auction price"
-            />
-          </Form.Item>
-          <Form.Item
-            name="stepPrice"
-            label="Price Step"
-            rules={[
-              { required: true, message: 'This Field is required' },
-              {
-                pattern: RegexNumber100000,
-                message: 'The price must be less than 100,000',
-              },
-            ]}
-            validateTrigger="onBlur"
-          >
-            <InputNumber
-              formatter={(value) =>
-                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-              }
-              style={{
-                borderRadius: '16px',
-                overflow: 'hidden',
-                width: '100%',
-              }}
-              placeholder="Enter step price of NFT"
-            />
-          </Form.Item>
-          <p>
-            <span style={{ color: 'red' }}>*</span> <b>Note</b>:The price step
-            is the way to calculate the price increase for each offer NFT
-          </p>
-          <p>
-            Example: NFT has a current price of 300 LUCKY and a price step of
-            100 LUCKY
-          </p>
-          <p>then the purchase price after that is 400 LUCKY</p>
-          <Form.Item>
-            <div
-              style={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <ButtonTrade htmlType="submit">Submit</ButtonTrade>
-            </div>
-          </Form.Item>
-        </Form>
-      </Modal>
+      <ModalSetPriceAuction
+        ruleAuctionModal={ruleAuctionModal}
+        setRuleAuctionModal={setRuleAuctionModal}
+        formRef={formRef}
+        onSubmitRuleAuction={onSubmitRuleAuction}
+      />
     </CartStyled>
   )
 }

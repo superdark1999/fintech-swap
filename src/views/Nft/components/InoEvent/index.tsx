@@ -1,11 +1,10 @@
 import React from 'react'
+import BgINO from 'assets/images/background-ino.jpg'
 import { InoStyled } from './styled'
-function InoEvent() {
+export default function InoEvent() {
     return (
         <InoStyled>
-            Initial NFT Offering
+            Feature will be coming soon
         </InoStyled>
     )
 }
-
-export default InoEvent
