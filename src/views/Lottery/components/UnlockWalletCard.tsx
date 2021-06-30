@@ -29,7 +29,7 @@ const UnlockWalletCard = () => {
     <Card isActive>
       <StyledCardBody>
         <IconWrapper>
-          <Ticket />
+          <img src="https://merlinlab.com/assets/lottery/lottery.svg" alt="" />
         </IconWrapper>
         <StyledHeading size="md">{TranslateString(1080, 'Unlock wallet to access lottery')}</StyledHeading>
         <UnlockButton />
