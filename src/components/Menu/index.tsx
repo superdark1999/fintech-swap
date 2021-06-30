@@ -8,7 +8,7 @@ import useTheme from 'hooks/useTheme'
 import useAuth from 'hooks/useAuth'
 import { useERC20, useContract } from 'hooks/useContract'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePriceCakeBusd, useProfile } from 'state/hooks'
+import { usePriceLuckyBusd, useProfile } from 'state/hooks'
 import { XLUCKY_TESTNET } from 'config'
 import bep20Abi from 'config/abi/erc20.json'
 import BigNumber from 'bignumber.js'
@@ -19,7 +19,7 @@ const Menu = (props) => {
   const { login, logout } = useAuth()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
-  const cakePriceUsd = usePriceCakeBusd()
+  const cakePriceUsd = usePriceLuckyBusd()
   const { profile } = useProfile()
   const balance = BnbBalance() //
 

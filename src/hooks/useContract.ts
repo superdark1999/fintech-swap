@@ -30,7 +30,7 @@ import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import ENS_ABI from '../constants/abis/ens-registrar.json'
 import WETH_ABI from '../constants/abis/weth.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
-import FARMS_ABI from '../constants/abis/masterChef.json'
+import FARMS_ABI from '../config/abi/masterchef.json'
 
 /**
  * Helper hooks to get specific contracts (by ABI)

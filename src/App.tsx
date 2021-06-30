@@ -58,7 +58,7 @@ const App: React.FC = () => {
   }, [])
 
   useEagerConnect()
-  // useFetchPublicData()
+  useFetchPublicData()
   useFetchProfile()
   useFetchPriceList()
 

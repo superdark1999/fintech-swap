@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { getPoolApy, getFarmApy } from 'utils/apy'
+import { getPoolApy, getFarmApr } from 'utils/apy'
 
 describe('getPoolApy', () => {
   it(`returns null when parameters are missing`, () => {
@@ -16,17 +16,17 @@ describe('getPoolApy', () => {
   })
 })
 
-describe('getFarmApy', () => {
+describe('getFarmApr', () => {
   it(`returns null when parameters are missing`, () => {
-    const apy = getFarmApy(null, null, null)
+    const apy = getFarmApr(null, null, null)
     expect(apy).toBeNull()
   })
   it(`returns null when APY is infinite`, () => {
-    const apy = getFarmApy(new BigNumber(0), new BigNumber(0), new BigNumber(0))
+    const apy = getFarmApr(new BigNumber(0), new BigNumber(0), new BigNumber(0))
     expect(apy).toBeNull()
   })
   it(`get the correct pool APY`, () => {
-    const apy = getFarmApy(new BigNumber(10), new BigNumber(1), new BigNumber(100000))
+    const apy = getFarmApr(new BigNumber(10), new BigNumber(1), new BigNumber(100000))
     expect(apy).toEqual(4204800)
   })
 })

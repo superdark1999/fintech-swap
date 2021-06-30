@@ -8,6 +8,7 @@ import { useAppDispatch } from 'state'
 import { Team } from 'config/constants/types'
 import { getWeb3NoAccount } from 'utils/web3'
 import useRefresh from 'hooks/useRefresh'
+import { LUCKY_PRICE } from 'config'
 import {
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
@@ -201,15 +202,9 @@ export const useGetApiPrice = (token: string) => {
   return prices[token.toLowerCase()]
 }
 
-export const usePriceCakeBusd = (): BigNumber => {
-  const ZERO = new BigNumber(0)
-  const cakeBnbFarm = useFarmFromPid(1)
-  const bnbBusdFarm = useFarmFromPid(2)
+export const usePriceLuckyBusd = (): BigNumber => {
+  return new BigNumber(LUCKY_PRICE) // TODO: this one will call api , current set price default
 
-  const bnbBusdPrice = bnbBusdFarm && bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(1).div(bnbBusdFarm.tokenPriceVsQuote) : ZERO
-  const cakeBusdPrice = cakeBnbFarm && cakeBnbFarm.tokenPriceVsQuote ? bnbBusdPrice.times(cakeBnbFarm.tokenPriceVsQuote) : ZERO
-
-  return cakeBusdPrice
 }
 
 // Block

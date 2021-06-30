@@ -5,8 +5,8 @@ import max from 'lodash/max'
 import { NavLink } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
 import BigNumber from 'bignumber.js'
-import { getFarmApy } from 'utils/apy'
-import { useFarms, usePriceCakeBusd, useGetApiPrices } from 'state/hooks'
+import { getFarmApr } from 'utils/apy'
+import { useFarms, usePriceLuckyBusd, useGetApiPrices } from 'state/hooks'
 import { getAddress } from '../../../utils/addressHelpers'
 
 const StyledFarmStakingCard = styled(Card)`
@@ -26,17 +26,17 @@ const EarnAPYCard = () => {
   const TranslateString = useI18n()
   const farmsLP = useFarms()
   const prices = useGetApiPrices()
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceLuckyBusd()
 
   const highestApy = useMemo(() => {
     const apys = farmsLP
       // Filter inactive farms, because their theoretical APY is super high. In practice, it's 0.
-      .filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+      .filter((farm) =>  farm.multiplier !== '0X')
       .map((farm) => {
         if (farm.lpTotalInQuoteToken && prices) {
           const quoteTokenPriceUsd = prices[getAddress(farm.quoteToken.address).toLowerCase()]
           const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
-          return getFarmApy(farm.poolWeight, cakePrice, totalLiquidity)
+          return getFarmApr(farm.poolWeight, cakePrice, totalLiquidity)
         }
         return null
       })

@@ -7,13 +7,13 @@ import { Image, Heading, RowType, Text } from '@luckyswap/uikit'
 import styled from 'styled-components'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import { useFarms, usePriceCakeBusd, useGetApiPrices } from '../../state/hooks'
+import { useFarms, usePriceLuckyBusd, useGetApiPrices } from '../../state/hooks'
 import useRefresh from '../../hooks/useRefresh'
 import { fetchFarmUserDataAsync } from '../../state/actions'
 import { Farm } from '../../state/types'
 import useI18n from '../../hooks/useI18n'
 import { getBalanceNumber } from '../../utils/formatBalance'
-import { getFarmApy } from '../../utils/apy'
+import { getFarmApr } from '../../utils/apy'
 import { useAppDispatch } from '../../state'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
@@ -123,7 +123,7 @@ const Farms: React.FC = () => {
   const { pathname } = useLocation()
   const TranslateString = useI18n()
   const farmsLP = useFarms()
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceLuckyBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
   const { account } = useWeb3React()
@@ -174,13 +174,15 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay: Farm[]): FarmWithStakedValue[] => {
       let farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
+        console.log('farm.>',farm)
+
         if (!farm.lpTotalInQuoteToken || !prices) {
           return farm
         }
 
-        const quoteTokenPriceUsd = prices[getAddress(farm.quoteToken.address).toLowerCase()]
+        const quoteTokenPriceUsd = 361 // TODO: This will handel API get price BUSD/BNB
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
-        const apy = isActive ? getFarmApy(farm.poolWeight, cakePrice, totalLiquidity) : 0
+        const apy = isActive ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity) : 0
 
         return { ...farm, apy, liquidity: totalLiquidity }
       })

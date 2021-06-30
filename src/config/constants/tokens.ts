@@ -3,6 +3,15 @@ const tokens = {
     symbol: 'BNB',
     projectLink: 'https://www.binance.com/',
   },
+  xlucky: {
+    symbol: 'XLUCKY',
+    address: {
+      56: '0xb45299B023a6F1E0Da134Aa4D886A548BE0B662f',
+      97: '0xb45299B023a6F1E0Da134Aa4D886A548BE0B662f',
+    },
+    decimals: 18,
+    projectLink: 'https://pancakeswap.finance/',
+  },
   bdextest: {
     symbol: 'BEDEX',
     address: {
