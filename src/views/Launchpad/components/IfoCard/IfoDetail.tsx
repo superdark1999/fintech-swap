@@ -390,7 +390,7 @@ const IfoTitle = ({ activeIfo }: any) => {
         </BoxContent>
 
         <BoxForm>
-          {typePool === 'Whitelisted' ? (
+          {status!== 'finished' && typePool === 'Whitelisted' ? (
             <button
               type="submit"
               className="whitelist"
@@ -408,7 +408,7 @@ const IfoTitle = ({ activeIfo }: any) => {
           )}
 
           <div className="box-input">
-            <div className="d-flex">
+            {status !== 'finished' &&(<div className="d-flex">
               <div className="box-max">
                 <div className="balance">
                   Balance:{' '}
@@ -416,7 +416,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                   {currency}
                 </div>
                 <input
-                  disabled={getStatus() || status === 'finished' || maxDeposit === 0}
+                  disabled={getStatus()  || maxDeposit === 0}
                   className="input-max"
                   type="text"
                   pattern="^[0-9]*[.,]?[0-9]*$"
@@ -433,7 +433,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                   <input type="text" />
                 </div>
               </div>
-            </div>
+            </div>)}
             {isWaningAllowedDepositAmount && <div className="waning">Current amount exceeds the limit</div>}
             {status === 'live' &&
               (!(isConfirmed || isConfirming || isApproved) ? (
