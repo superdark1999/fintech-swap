@@ -9,8 +9,6 @@ export default function DepositModal({
   depositModal, 
   depositToggle, 
   depositSymbol,  
-  value, 
-  onChangeValue,
   stakingContract,
   addTransaction,
   account,
@@ -18,6 +16,7 @@ export default function DepositModal({
   setIsDepositing
 }) {
   const [balance, setBalance] = useState(0);
+  const [value, setValue] = useState('');
   const {balanceOf, approve, allowance} =  useUtilityToken(stakingData.depositToken);
 
 
@@ -50,6 +49,9 @@ export default function DepositModal({
     }
   }
 
+  const handleMaxAmount = () => {
+    setValue(balance.toString())
+  }
 
   return (
     <div>
@@ -64,12 +66,12 @@ export default function DepositModal({
           <BoxInput>
             <input type="text" id="fname" name="fname" placeholder="0.000"
               value={value}
-              onChange={onChangeValue}
+              onChange={(e) => setValue(e.target.value)}
               />
             <BoxLink>
               <span className="text-lucky">{depositSymbol}</span>
               <BoxButton>
-                <Button>Max</Button>
+                <Button onClick={handleMaxAmount}>Max</Button>
               </BoxButton>
             </BoxLink>
           </BoxInput>

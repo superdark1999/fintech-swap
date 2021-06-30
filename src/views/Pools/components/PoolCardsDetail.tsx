@@ -38,7 +38,6 @@ function PoolCardsDetail() {
   const [isHarvesting, setIsHarvesting] = useState(false);
   const { account } = useWeb3React()
 
-  const [value, setValue] = useState('');
   const stakingContract = useStakingContract(stakingData.stakingContract);
   const { userAmount, userRewardDebt} = useGetStateData(stakingData);
 
@@ -122,8 +121,6 @@ function PoolCardsDetail() {
         depositModal={depositModal}
         depositToggle={depositToggle}
         depositSymbol={stakingData.depositSymbol}
-        value={value}
-        onChangeValue={(e) => setValue(e.target.value)}
         stakingContract={stakingContract}
         addTransaction={addTransaction}
         account={account}
@@ -133,8 +130,6 @@ function PoolCardsDetail() {
 
       <UnStakeModal 
         withdrawModal={withdrawModal} 
-        value={value}
-        onChangeValue={(e) => setValue(e.target.value)}
         unStakeToggle={unStakeToggle}
         stakingContract={stakingContract}
         addTransaction={addTransaction}

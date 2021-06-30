@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState} from 'react'
 import styled from 'styled-components'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import BigNumber from 'bignumber.js'
@@ -7,14 +7,13 @@ import BigNumber from 'bignumber.js'
 export default function UnStakeModal({
   withdrawModal,
   unStakeToggle, 
-  value, 
-  onChangeValue, 
   stakingContract,
   addTransaction,
   userAmount,
   setIsUnStaking
 }) 
 {
+  const [value, setValue] = useState('');
   const handleUnStake = async () => {
     if (stakingContract) {
       setIsUnStaking(true);
@@ -35,6 +34,10 @@ export default function UnStakeModal({
         })
     }
   }
+
+  const handleMaxAmount = (e) => {
+    setValue(userAmount.div(1e18).toString());
+  }
   return (
     <div>
       
@@ -48,11 +51,11 @@ export default function UnStakeModal({
             <BoxInput>
               <input type="text" id="fname" name="fname" placeholder="0.000"
                 value={value}
-               onChange={onChangeValue}/>
+               onChange={(e) => setValue(e.target.value)}/>
               <BoxLink>
                 <span className="text-lucky">lucky</span>
                 <BoxButton>
-                  <Button>Max</Button>
+                  <Button onClick={handleMaxAmount}>Max</Button>
                 </BoxButton>
               </BoxLink>
             </BoxInput>
