@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
+import Gold from 'assets/ranking/gold.svg'
 import { Row, Col, Tabs } from 'antd'
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
 import SearchInput from 'components-v2/SearchInput'
@@ -81,7 +82,7 @@ const UserProfile = () => {
                 <img src={Checkmark} />
               </div>
               <div className="rank">
-                <img src={Crown} /> GOLD ARTIST
+                <img src={Gold} /> GOLD ARTIST
               </div>
             </div>
             <div className="button-right">

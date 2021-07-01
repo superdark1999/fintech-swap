@@ -110,8 +110,11 @@ export const UserProfileStyled = styled.div<Props>`
           line-height: 20px;
           color: #fae54a;
           display: flex;
+          align-items: center;
           > img {
             margin-top: -4px;
+            margin-right: 6px;
+            width:40px;
           }
         }
         .button-right {
