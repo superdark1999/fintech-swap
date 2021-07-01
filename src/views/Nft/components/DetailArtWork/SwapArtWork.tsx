@@ -124,9 +124,12 @@ const DetaiArtWork = ({ id }: any) => {
           <ImageStyled bgImage={NFTDetail?.contentUrl}>
             <div className="bg-image"></div>
             {/* <img src={NFTDetail?.contentUrl} /> */}
-            <img
+            <Image
               className="avatar"
               src={NFTDetail?.contentUrl}
+              preview={{
+                src: NFTDetail?.contentUrl,
+              }}
               alt=""
               loading="lazy"
             />
