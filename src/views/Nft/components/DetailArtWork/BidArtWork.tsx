@@ -385,7 +385,7 @@ const DetaiArtWork = ({ id }: any) => {
               </div>
               <div className="group-item-bid">
                 <div className="label">Jump step</div>
-                <div className="value">{step}</div>
+                <div className="value">{formatNumber(step)}</div>
               </div>
               <div className="group-item-bid">
                 <div className="label">Your step</div>
@@ -407,7 +407,7 @@ const DetaiArtWork = ({ id }: any) => {
               <div className="group-item-bid">
                 <div className="label">Your bid</div>
                 <div className="value your-bid">
-                  {price + step * nextStepOffer} <img src={Token} />
+                  {formatNumber(price + step * nextStepOffer)} <img src={Token} />
                 </div>
               </div>
             </Col>
