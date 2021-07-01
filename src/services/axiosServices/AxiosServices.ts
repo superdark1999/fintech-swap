@@ -96,9 +96,13 @@ export default function AxiosServices(baseUrl: string = '') {
 
 export const JSONToFormData = (jsonData: any): FormData => {
   const form_data = new FormData()
-
   for (var key in jsonData) {
-    form_data.append(key, jsonData[key])
+    if(key == 'tags'){
+      form_data.append(key, JSON.stringify(jsonData[key]))
+    }else{
+      form_data.append(key, jsonData[key])
+    }
   }
+  console.log(form_data);
   return form_data
 }

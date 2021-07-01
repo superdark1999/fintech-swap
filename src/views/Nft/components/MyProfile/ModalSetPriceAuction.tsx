@@ -2,12 +2,11 @@ import React from 'react'
 import { Modal, Form, InputNumber, Radio, Popover } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { RegexNumber100000 } from '../../constants'
-import { ButtonTrade } from 'components-v2/Button'
+import { ButtonBuy } from 'components-v2/Button'
 import DatePicker from 'components-v2/DatePicker'
 function ModalSetPriceAuction(props: any) {
     const { ruleAuctionModal, setRuleAuctionModal, onSubmitRuleAuction, formRef } = props
     const [typeAuction, setTypeAuction] = React.useState(1);
-
     const onChange = (e: any) => {
         setTypeAuction(e.target.value);
     };
@@ -34,8 +33,9 @@ function ModalSetPriceAuction(props: any) {
             style={{ borderRadius: 16 }}
         >
             <Form ref={formRef} onFinish={onSubmitRuleAuction}>
+                <div style={{ marginBottom: '6px' }}>Price<span style={{ color: 'red', marginRight: '4px' }}>*</span>
+                </div>
                 <Form.Item
-                    label="Price"
                     name="price"
                     rules={[
                         { required: true, message: 'This Field is required' },
@@ -57,10 +57,14 @@ function ModalSetPriceAuction(props: any) {
                         placeholder="Enter NFT auction price"
                     />
                 </Form.Item>
-
+                <div style={{ marginBottom: '6px' }}>Price Jump Step<span style={{ color: 'red', marginRight: '4px' }}>*</span>
+                    <Popover content={renderContainer} title="Tutorial">
+                        <InfoCircleOutlined style={{ marginRight: '6px', cursor: 'pointer' }} />
+                    </Popover>
+                </div>
                 <Form.Item
                     name="stepPrice"
-                    label="Price Step"
+                    // label="Price Step"
                     rules={[
                         { required: true, message: 'This Field is required' },
                         {
@@ -71,9 +75,6 @@ function ModalSetPriceAuction(props: any) {
                     validateTrigger="onBlur"
                 >
                     <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
-                        <Popover content={renderContainer} title="Tutorial">
-                            <InfoCircleOutlined style={{ marginRight: '6px', cursor: 'pointer' }} />
-                        </Popover>
                         <InputNumber
                             formatter={(value) =>
                                 `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
@@ -87,9 +88,9 @@ function ModalSetPriceAuction(props: any) {
                         />
                     </div>
                 </Form.Item>
+                <div style={{ marginBottom: '6px' }}>Type</div>
                 <Form.Item
                     name="typeAuction"
-                    label="Type"
                     initialValue={typeAuction}
                 >
                     <Radio.Group defaultValue={typeAuction} onChange={onChange} value={typeAuction}>
@@ -97,9 +98,9 @@ function ModalSetPriceAuction(props: any) {
                         <Radio value={2}>Schedule</Radio>
                     </Radio.Group>
                 </Form.Item>
+                <div style={{ marginBottom: '6px' }}>Set time</div>
                 <Form.Item
                     name="dateTime"
-                    label="Set time"
                 >
                     <DatePicker disabledStartDate={typeAuction === 1 ? true : false} />
                 </Form.Item>
@@ -111,12 +112,11 @@ function ModalSetPriceAuction(props: any) {
                             justifyContent: 'center',
                         }}
                     >
-                        <ButtonTrade htmlType="submit">Submit</ButtonTrade>
+                        <ButtonBuy style={{ width: '100%' }} htmlType="submit">Submit</ButtonBuy>
                     </div>
                 </Form.Item>
             </Form>
         </Modal>
     )
 }
-
 export default ModalSetPriceAuction
