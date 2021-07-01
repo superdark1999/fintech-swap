@@ -26,7 +26,7 @@ const typeInfo = {
 //configurations for the image uploader
 
 const UploadForm = (props) => {
-  const { isFormData } = props
+  const { isFormData, typeArtWork } = props
   const [imageUrl, setUrlImage] = useState(false)
   const [type, setType] = useState(false)
   const [file, setFile] = useState(false)
@@ -69,7 +69,7 @@ const UploadForm = (props) => {
     }
   }
 
-  const { accept, supportText, size } = typeInfo[props?.type || 'image']
+  const { accept, supportText, size } = typeInfo[typeArtWork || 'image']
 
   return (
     <UploadStyled>
