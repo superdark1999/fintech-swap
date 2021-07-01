@@ -157,6 +157,7 @@ const CreateArtWork: React.FC = () => {
         description: 'This feature will be comming soon',
       })
     }
+    formRef.current?.resetFields(['content'])
     return setTypeArtWork(e.target.value)
   }
 
