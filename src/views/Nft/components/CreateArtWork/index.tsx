@@ -151,6 +151,7 @@ const CreateArtWork: React.FC = () => {
         description: 'This feature will be comming soon',
       })
     }
+    formRef.current?.resetFields(['content'])
     return setTypeArtWork(e.target.value)
   }
 
@@ -190,6 +191,7 @@ const CreateArtWork: React.FC = () => {
         </ButtonStyle>)
     }
   }
+
   return (
     <Row gutter={24} style={{ justifyContent: 'center' }}>
       <Col xl={{ span: 18 }} md={{ span: 18 }} xs={{ span: 24 }}>
