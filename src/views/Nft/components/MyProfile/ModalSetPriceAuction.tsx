@@ -32,20 +32,18 @@ function ModalSetPriceAuction(props: any) {
             width={420}
             style={{ borderRadius: 16 }}
         >
-            <Form ref={formRef} onFinish={onSubmitRuleAuction}>
+            <Form ref={formRef} onFinish={onSubmitRuleAuction} style={{ width: '100%' }}>
                 <div style={{ marginBottom: '6px' }}>Price<span style={{ color: 'red', marginRight: '4px' }}>*</span>
                 </div>
                 <Form.Item
                     name="price"
                     rules={[
                         { required: true, message: 'This Field is required' },
-                        {
-                            pattern: RegexNumber100000,
-                            message: 'The price must be less than 100,000',
-                        },
                     ]}
                 >
                     <InputNumber
+                        max={1000000}
+                        min={0.1}
                         formatter={(value) =>
                             `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                         }
@@ -54,6 +52,7 @@ function ModalSetPriceAuction(props: any) {
                             overflow: 'hidden',
                             width: '100%',
                         }}
+
                         placeholder="Enter NFT auction price"
                     />
                 </Form.Item>
@@ -67,15 +66,13 @@ function ModalSetPriceAuction(props: any) {
                     // label="Price Step"
                     rules={[
                         { required: true, message: 'This Field is required' },
-                        {
-                            pattern: RegexNumber100000,
-                            message: 'The price must be less than 100,000',
-                        },
                     ]}
                     validateTrigger="onBlur"
                 >
                     <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
                         <InputNumber
+                            max={1000000}
+                            min={0.1}
                             formatter={(value) =>
                                 `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                             }
@@ -88,7 +85,7 @@ function ModalSetPriceAuction(props: any) {
                         />
                     </div>
                 </Form.Item>
-                <div style={{ marginBottom: '6px' }}>Type</div>
+                {/* <div style={{ marginBottom: '6px' }}>Type</div>
                 <Form.Item
                     name="typeAuction"
                     initialValue={typeAuction}
@@ -103,7 +100,7 @@ function ModalSetPriceAuction(props: any) {
                     name="dateTime"
                 >
                     <DatePicker disabledStartDate={typeAuction === 1 ? true : false} />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item>
                     <div
                         style={{
@@ -112,7 +109,7 @@ function ModalSetPriceAuction(props: any) {
                             justifyContent: 'center',
                         }}
                     >
-                        <ButtonBuy style={{ width: '100%' }} htmlType="submit">Submit</ButtonBuy>
+                        <ButtonBuy style={{ width: '100%' }} >Submit</ButtonBuy>
                     </div>
                 </Form.Item>
             </Form>

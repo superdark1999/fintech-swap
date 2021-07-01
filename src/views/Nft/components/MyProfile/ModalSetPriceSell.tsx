@@ -37,14 +37,12 @@ function ModalSetPriceSell(props: any) {
                     name="lucky"
                     rules={[
                         { required: true, message: 'This Field is required' },
-                        {
-                            pattern: RegexNumber100000,
-                            message: 'The price must be less than 100,000',
-                        },
                     ]}
                     validateTrigger="onBlur"
                 >
                     <InputNumber
+                        max={1000000}
+                        min={0.1}
                         formatter={(value) =>
                             `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                         }
