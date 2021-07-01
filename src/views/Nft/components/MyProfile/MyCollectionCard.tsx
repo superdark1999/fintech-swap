@@ -328,9 +328,9 @@ export default function MyCollectionCard({ data, option }: any) {
   const getStatusByNFTType = (status: string) => {
     switch (status) {
       case 'buy':
-        return 'On store | Sell';
+        return 'On store - Sell';
       case 'auction':
-        return 'On store | Aution';
+        return 'On store - Aution';
       case 'swap-store':
         return 'On swap store';
       case 'swap-personal':
