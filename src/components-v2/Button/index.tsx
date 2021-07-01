@@ -57,7 +57,7 @@ export const ButtonTrade = styled.button<StyledButtonProps>`
   }
 `
 
-export const ButtonBuy = styled.div<StyledButtonProps>`
+export const ButtonBuy = styled.button<StyledButtonProps>`
   width: ${(props) => props.width || 'max-content'};
   height: ${(props) => props.height || 'max-content'};
   background: #35a5fc;
@@ -72,6 +72,7 @@ export const ButtonBuy = styled.div<StyledButtonProps>`
   position: relative;
   cursor: pointer;
   color: #fff;
+  border:none;
   &.disabled {
     background: #bdbdbd;
     color: #fff;

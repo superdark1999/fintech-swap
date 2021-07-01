@@ -1,9 +1,8 @@
 import axios, { Method } from 'axios'
 import { useCallback } from 'react'
 import _ from 'lodash'
-import useConfigStore  from 'store/configStore'
+import useConfigStore from 'store/configStore'
 const qs = require('qs')
-
 
 export default function AxiosServices(baseUrl: string = '') {
   const headers = {
@@ -11,7 +10,7 @@ export default function AxiosServices(baseUrl: string = '') {
     'Content-Type': 'application/json; charset=UTF-8',
     //'Access-Control-Allow-Origin': '*',
   }
-  const [configState,configAction] = useConfigStore()
+  const [configState, configAction] = useConfigStore()
 
   function fetch(
     url: string,
@@ -49,7 +48,7 @@ export default function AxiosServices(baseUrl: string = '') {
     }
 
     if (showLoading) {
-      configAction.updateConfig({showLoading: true})
+      configAction.updateConfig({ showLoading: true })
     }
     if (showError) {
       //Show error
@@ -94,15 +93,30 @@ export default function AxiosServices(baseUrl: string = '') {
   return { GET, POST, PUT, DELETE, PATCH }
 }
 
+function buildFormData(formData: FormData, data: any, parentKey?: any) {
+  if (
+    data &&
+    typeof data === 'object' &&
+    !(data instanceof Date) &&
+    !(data instanceof File)
+  ) {
+    Object.keys(data).forEach((key) => {
+      buildFormData(
+        formData,
+        data[key],
+        parentKey ? `${parentKey}[${key}]` : key,
+      )
+    })
+  } else {
+    const value = data == null ? '' : data
+
+    formData.append(parentKey, value)
+  }
+}
+
 export const JSONToFormData = (jsonData: any): FormData => {
   const form_data = new FormData()
-  for (var key in jsonData) {
-    if(key == 'tags'){
-      form_data.append(key, JSON.stringify(jsonData[key]))
-    }else{
-      form_data.append(key, jsonData[key])
-    }
-  }
-  console.log(form_data);
+  buildFormData(form_data, jsonData)
+
   return form_data
 }
