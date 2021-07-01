@@ -117,29 +117,29 @@ export default function MyCollectionCard({ data, option }: any) {
   const onSubmitRuleAuction = (value: any) => {
     console.log('value: ', value);
     const tokenId = data?.tokenId
-    // setIsPrcessing(true)
-    // marketServicesMethod
-    //   ?.setTokenBidInfo(tokenId, value.price, value.stepPrice)
-    //   .then((dt) => {
-    //     if (dt?.hash) {
-    //       setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
-    //         if (status == 200) {
-    //           history.push('/my-profile/mycollection/checkingToSell')
-    //         } else {
-    //           notification('error', {
-    //             message: 'Error',
-    //             description: 'Something when wrong, please try again later.',
-    //           })
-    //           setIsPrcessing(false)
-    //         }
-    //       })
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     notification('error', { message: 'Error', description: err?.message })
-    //     setIsPrcessing(false)
-    //   })
-    // setRuleAuctionModal(false)
+    setIsPrcessing(true)
+    marketServicesMethod
+      ?.setTokenBidInfo(tokenId, value.price, value.stepPrice)
+      .then((dt) => {
+        if (dt?.hash) {
+          setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
+            if (status == 200) {
+              history.push('/my-profile/mycollection/checkingToSell')
+            } else {
+              notification('error', {
+                message: 'Error',
+                description: 'Something when wrong, please try again later.',
+              })
+              setIsPrcessing(false)
+            }
+          })
+        }
+      })
+      .catch((err) => {
+        notification('error', { message: 'Error', description: err?.message })
+        setIsPrcessing(false)
+      })
+    setRuleAuctionModal(false)
   }
   const onSubmitSwapItem = () => {
     const tokenId = data?.tokenId
