@@ -3,21 +3,20 @@ import { Switch } from 'react-router-dom'
 import Page from './components/Page'
 import styled from 'styled-components'
 import Sidebar from './components/Sidebar/index'
-import TrendingBar from './components/TrendingBar/index'
 import BannerBar from './components/BannerBar/index'
 import HotArtists from './components/HotArtists/index'
 import HotArtWorks from './components/HotArtWorks/index'
 import HotSwap from './components/HotSwap/index'
 import Collection from './components/Collection/index'
 import { isMobile } from 'react-device-detect'
-import {useHookNTF } from  './Store'
+import { useHookNTF } from './Store'
 
 const NFTContainer = (props: any) => {
   const [onShowSidebar, setShowSidebar] = useState(false)
   const [stateBanner, actions] = useHookNTF()
-    useEffect(()=>{
-      actions.getBanner('home-nft')
-    },[])
+  useEffect(() => {
+    actions.getBanner('home-nft')
+  }, [])
   return (
     <Switch>
       <Page>
@@ -31,12 +30,9 @@ const NFTContainer = (props: any) => {
             </div>
           )}
           <div className="main-nft">
-            {/* <div className="trending-nft">
-              <TrendingBar />
-            </div> */}
             {/* <ModalLucky/> */}
             <div className="banner-nft">
-              <BannerBar banners ={stateBanner.banner}/>
+              <BannerBar banners={stateBanner.banner} />
             </div>
             <div className="hot-artists-nft space-collection">
               <HotArtists />

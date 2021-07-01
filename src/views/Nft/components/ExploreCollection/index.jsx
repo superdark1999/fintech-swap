@@ -4,7 +4,7 @@ import { ExploreCollectionStyled } from './styled'
 import Cart from 'components-v2/CardItem'
 import FilterBar from './filterBar'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-
+import TrendingBar from '../TrendingBar/index'
 // export const option: React.ReactElement<OptionProps> = Select.Option
 function ExploreCollection() {
   const [NFTs, setNFTs] = useState([])
@@ -30,12 +30,15 @@ function ExploreCollection() {
       <div className="header-artists">
         <div className="title-artists">Explore</div>
       </div>
+      <div className="trending-nft">
+        <TrendingBar />
+      </div>
       <FilterBar searchParams={searchParams} />
       <h1 style={{ fontWeight: 'bold' }}>8 results for "lucky swap studio"</h1>
       <div className="content-collect">
         {NFTs.map((item) => {
           return (
-            item?.NFTType !== 'swap' && (
+            item?.NFTType !== 'swap-store' && (
               <Cart width="320px" height="480px" data={item} />
             )
           )

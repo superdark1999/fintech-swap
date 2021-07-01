@@ -112,6 +112,8 @@ export const UserProfileStyled = styled.div<Props>`
           display: flex;
           > img {
             margin-top: -4px;
+            margin-right: 6px;
+            width:40px;
           }
         }
         .button-right {

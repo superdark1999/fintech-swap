@@ -34,6 +34,7 @@ import { getCompactString } from 'utils'
 import { RegexNumber100000 } from '../../constants'
 import { useActiveWeb3React } from 'wallet/hooks'
 import ModalSetPriceAuction from './ModalSetPriceAuction'
+import ModalSetPriceSell from './ModalSetPriceSell'
 export default function MyCollectionCard({ data, option }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
   const [isProcessing, setIsPrcessing] = useState(false)
@@ -409,53 +410,12 @@ export default function MyCollectionCard({ data, option }: any) {
           <div>{renderGroupAction(data?.status)}</div>
         </Col>
       </Row>
-
-      <Modal
-        title="Set price sell"
-        visible={isShowModalSetPrice}
-        onCancel={() => setShowModalsetPrice(false)}
-        footer={null}
-        width={400}
-      >
-        <Form ref={formRef} onFinish={onSellItem}>
-          <Form.Item
-            name="lucky"
-            label="Price sell"
-            rules={[
-              { required: true, message: 'This Field is required' },
-              {
-                pattern: RegexNumber100000,
-                message: 'The price must be less than 100,000',
-              },
-            ]}
-            validateTrigger="onBlur"
-          >
-            <InputNumber
-              formatter={(value) =>
-                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-              }
-              style={{
-                borderRadius: '16px',
-                overflow: 'hidden',
-                width: '100%',
-              }}
-              placeholder="Enter price"
-            />
-          </Form.Item>
-
-          <Form.Item>
-            <div
-              style={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <ButtonTrade htmlType="submit">Submit</ButtonTrade>
-            </div>
-          </Form.Item>
-        </Form>
-      </Modal>
+      <ModalSetPriceSell
+        isShowModalSetPrice={isShowModalSetPrice}
+        setShowModalsetPrice={setShowModalsetPrice}
+        formRef={formRef}
+        onSellItem={onSellItem}
+      />
       <ModalSetPriceAuction
         ruleAuctionModal={ruleAuctionModal}
         setRuleAuctionModal={setRuleAuctionModal}
