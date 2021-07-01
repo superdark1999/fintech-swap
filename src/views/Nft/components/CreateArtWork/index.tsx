@@ -127,7 +127,7 @@ const CreateArtWork: React.FC = () => {
         type: values?.[`type`] || 'image',
         content: values?.[`content`] || '',
         ownerWalletAddress: account || '',
-        tags: values?.tags || [],
+        //tags: values?.tags || [],
       }
       console.log('mintData: ', mintData);
       createNFT(mintData)
@@ -279,7 +279,7 @@ const CreateArtWork: React.FC = () => {
                     { required: true, message: 'This Field is required' },
                   ]}
                 >
-                  <UploadFile isFormData type={typeArtWork} />
+                  <UploadFile isFormData typeArtWork={typeArtWork} />
                 </Form.Item>
               </Col>
 
@@ -326,7 +326,7 @@ const CreateArtWork: React.FC = () => {
                     autoSize={false}
                   />
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                   name='tags'
                   label="Tags"
                 >
@@ -342,7 +342,7 @@ const CreateArtWork: React.FC = () => {
                       </Select.Option>
                     ))}
                   </Select>
-                </Form.Item>
+                </Form.Item> */}
               </Col>
             </Row>
 
