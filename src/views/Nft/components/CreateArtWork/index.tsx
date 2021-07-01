@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Form, Input, Button, Row, Col, Checkbox, Progress } from 'antd'
+import { Form, Input, Button, Row, Col, Checkbox, Progress, Select } from 'antd'
 import UploadFile from 'components-v2/UploadMedia'
 import { EditOutlined, SyncOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
@@ -14,7 +14,7 @@ import { CreateArtWorkStyled } from './styled'
 import { GroupButton, RadioButton } from './styled'
 import ModalCreateArtist from './ModalCreateArtist'
 import notification from 'components-v2/Alert'
-
+import { RegexWebsiteURL } from '../../constants'
 const TextAreaStyled = styled(Input.TextArea)`
   &.ant-input-textarea > textarea {
     border-radius: 16px;
@@ -38,6 +38,9 @@ const CreateArtWork: React.FC = () => {
   const [typeArtWork, setTypeArtWork] = useState('image')
   const [isOnUpload, setIsOnUpload] = useState(false)
   const [NFTInfo, setNFTInfo] = useState(null)
+  const [selectItems, setSelectItems] = useState([])
+  const listTag: any = []
+  const { Option } = Select;
   const validateMessages = {
     required: '${label} is required!',
     types: {
@@ -114,6 +117,7 @@ const CreateArtWork: React.FC = () => {
   }, [isProccessing, isOnUpload, NFTInfo])
 
   const onCreateNFT = async (values: any) => {
+    console.log('values: ', values);
     if (checkPolicy) {
       setIsProcessing(true)
       setIsOnUpload(true)
@@ -123,7 +127,9 @@ const CreateArtWork: React.FC = () => {
         type: values?.[`type`] || 'image',
         content: values?.[`content`] || '',
         ownerWalletAddress: account || '',
+        tags: values?.tags || [],
       }
+      console.log('mintData: ', mintData);
       createNFT(mintData)
         .then(({ data, status }) => {
           if (status === 200) {
@@ -190,6 +196,8 @@ const CreateArtWork: React.FC = () => {
         </ButtonStyle>)
     }
   }
+  const OPTIONS = ['Art', 'Music', 'Games', 'DeFi', 'Meme', 'Sports', 'Abstract', 'Space', 'Lucky'];
+  const filteredOptions = OPTIONS.filter((o: any) => !selectItems.includes(o));
   return (
     <Row gutter={24} style={{ justifyContent: 'center' }}>
       <Col xl={{ span: 18 }} md={{ span: 18 }} xs={{ span: 24 }}>
@@ -206,7 +214,7 @@ const CreateArtWork: React.FC = () => {
             <Form.Item
               name="type"
               label="Select artwork type"
-              rules={[{ required: true, message: 'This Field is required!' }]}
+              rules={[{ required: true, message: 'This Field is required' }]}
               initialValue="image"
             >
               <GroupButton defaultValue="image">
@@ -238,7 +246,7 @@ const CreateArtWork: React.FC = () => {
                   name="radio-group-standard"
                   label="Select artwork standard"
                   rules={[
-                    { required: true, message: 'This Field is required!' },
+                    { required: true, message: 'This Field is required' },
                   ]}
                   initialValue="Bep721"
                 >
@@ -267,7 +275,7 @@ const CreateArtWork: React.FC = () => {
                   valuePropName="content"
                   // getValueFromEvent={normFile}
                   rules={[
-                    { required: true, message: 'This Field is required!' },
+                    { required: true, message: 'This Field is required' },
                   ]}
                 >
                   <UploadFile isFormData type={typeArtWork} />
@@ -284,7 +292,7 @@ const CreateArtWork: React.FC = () => {
                   name="artworkName"
                   label="Artwork name"
                   rules={[
-                    { required: true, message: 'This Field is required!' },
+                    { required: true, message: 'This Field is required' },
                   ]}
                 >
                   <Input
@@ -317,15 +325,23 @@ const CreateArtWork: React.FC = () => {
                     autoSize={false}
                   />
                 </Form.Item>
-                {/* <Form.Item
-                  name={['user', 'portfolio']}
-                  label="Social media/Portfolio link"
+                <Form.Item
+                  name='tags'
+                  label="Tags"
                 >
-                  <Input
-                    style={{ borderRadius: '100px' }}
-                    placeholder="Personal website, Instagram, Twitter, ect."
-                  />
-                </Form.Item> */}
+                  <Select
+                    mode="multiple"
+                    value={selectItems}
+                    style={{ width: '100%' }}
+                    onChange={(e: any) => setSelectItems(e)}
+                    placeholder="Tags for your NFT">
+                    {filteredOptions.map((item: any) => (
+                      <Select.Option style={{ borderRadius: '30px' }} key={item} value={item}>
+                        {item}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
               </Col>
             </Row>
 

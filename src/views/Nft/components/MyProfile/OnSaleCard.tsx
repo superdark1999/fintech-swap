@@ -205,7 +205,7 @@ export default function OnSaleCard({ data }: any) {
           )}
 
           <div className="organize">
-            <span style={{ fontSize: '12px', fontWeight: 500 }}>Creator by</span>
+            <span style={{ fontSize: '12px', fontWeight: 500 }}>Creator</span>
             {/* <img style={{ width: '40px', borderRadius: '100px' }} src={data?.createdBy?.avatarImage} /> */}
             <a className="name" href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`} target="_blank">{data?.createdBy?.name ? data?.createdBy?.name : data?.createdBy?.walletAddress}</a>
             {/* <img src={Checkmark} /> */}

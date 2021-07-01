@@ -90,7 +90,7 @@ export default function CardItem(props?: any) {
       }
     }
   }, [playVideo])
-  console.log('isHideButton',isHideButton)
+  console.log('isHideButton', isHideButton)
   return (
     <div className="create-nav">
       <StyledCart src={data?.contentUrl}>
@@ -121,7 +121,7 @@ export default function CardItem(props?: any) {
                 to={`/user-profile/${data.createdBy?.walletAddress}/onstore/readyToSell`}
               >
                 <div className="name-artist">
-                  <span style={{ fontSize: '10px' }}>Creator by</span>{' '}
+                  <span style={{ fontSize: '10px' }}>Creator</span>{' '}
                   {data.createdBy.name ? (
                     <a
                       target="_blank"
@@ -178,7 +178,7 @@ export default function CardItem(props?: any) {
                     color: '#333435',
                   }}
                 >
-                  Owner by
+                  Owner
                 </span>
                 <a
                   target="_blank"

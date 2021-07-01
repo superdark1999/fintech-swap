@@ -14,7 +14,7 @@ interface Props {
   multiSelect?: boolean,
   getItemSelected?: (data: any) => void
   selectedItem?: any,
-  title:string
+  title: string
 }
 export default function ModalSelectSwap(props: Props) {
 
@@ -84,7 +84,6 @@ export default function ModalSelectSwap(props: Props) {
 
 const ModalStyled = styled(Modal)`
   .ant-modal-content {
-    border-radius: 16px;
     overflow: hidden;
     .ant-modal-body{
       padding: 20px;
