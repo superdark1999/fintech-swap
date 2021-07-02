@@ -71,9 +71,12 @@ function useMarketServiceChain97(){
           return marketContract.getBids(tokenId)
       },[marketContract])
 
-        const getBidTimeByTokenId = useCallback(async(tokenId:string|undefined)=>{
+      const getBidTimeByTokenId = useCallback(async(tokenId:string|undefined)=>{
           try{
-            return marketContract.getInfoBidByTokenId(tokenId)
+            if(tokenId){
+            const rawBidTime = await  marketContract.getInfoBidByTokenId(tokenId)
+            return rawBidTime
+            }
           }catch(err){
             return []
           }

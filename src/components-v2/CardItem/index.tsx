@@ -36,7 +36,7 @@ export default function CardItem(props?: any) {
       if (
         marketServiceMethod &&
         data?.tokenId &&
-        data?.NFTType !== 'swap-store'
+        data?.NFTType == 'auction'
       ) {
         const timeInfo  = await marketServiceMethod?.getBidTimeByTokenId?.(
           data?.tokenId
