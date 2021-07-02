@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { Carousel } from 'antd';
 import styled from 'styled-components'
 import { isMobile } from 'react-device-detect'
@@ -13,14 +13,14 @@ export interface BannerProps {
     banners: Banner[]
 
 }
-const BannerBar:React.FC<BannerProps> = ({banners}) => {
+const BannerBar: React.FC<BannerProps> = ({ banners }) => {
     return (
         <BannerBarStyled>
             <Carousel className="banner-body" autoplay>
-                {banners.length !== 0 && banners.map((src) => (
-                       <img src={`https://dashboard.luckyswap.exchange/${src.link}`} alt="banner" />
-                  ))
-                } 
+                {banners.length !== 0 && banners.map((src, i: number) => (
+                    <img key={i} src={`https://dashboard.luckyswap.exchange/${src.link}`} alt="banner" />
+                ))
+                }
             </Carousel>
         </BannerBarStyled>
     )
