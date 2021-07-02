@@ -39,7 +39,7 @@ function ExploreCollection() {
       setNFTs(data?.data || [])
       console.log('data: ', data)
     }
-  }), 500), [])
+  }), 1000), [])
 
 
   useEffect(() => {
