@@ -14,7 +14,7 @@ import { CreateArtWorkStyled } from './styled'
 import { GroupButton, RadioButton } from './styled'
 import ModalCreateArtist from './ModalCreateArtist'
 import notification from 'components-v2/Alert'
-import { RegexWebsiteURL } from '../../constants'
+import {handleAlertMessage} from 'utils'
 const TextAreaStyled = styled(Input.TextArea)`
   &.ant-input-textarea > textarea {
     border-radius: 16px;
@@ -108,8 +108,7 @@ const CreateArtWork: React.FC = () => {
           setNFTInfo(null)
           setIsProcessing(false)
           notification('error', {
-            message:
-              err?.message || 'Something went wrong please try again',
+            message:handleAlertMessage(err?.message),
             description: '',
           })
         })
@@ -117,8 +116,7 @@ const CreateArtWork: React.FC = () => {
   }, [isProccessing, isOnUpload, NFTInfo])
 
   const onCreateNFT = async (values: any) => {
-    console.log('values: ', values);
-    if (checkPolicy) {
+     if (checkPolicy) {
       setIsProcessing(true)
       setIsOnUpload(true)
       const mintData = {
@@ -127,9 +125,8 @@ const CreateArtWork: React.FC = () => {
         type: values?.[`type`] || 'image',
         content: values?.[`content`] || '',
         ownerWalletAddress: account || '',
-        //tags: values?.tags || [],
+        tags: values?.tags || [],
       }
-      console.log('mintData: ', mintData);
       createNFT(mintData)
         .then(({ data, status }) => {
           if (status === 200) {

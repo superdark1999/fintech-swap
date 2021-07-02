@@ -56,17 +56,19 @@ export default function CardItem(props?: any) {
       case "video": {
         return (
           <video
-            playsInline
+            // playsInline
             width="300px" height="450px"
             controls
             muted
             ref={videoRef}
-            className={isLazy ? "lazy" : ""}
-            src={`${data?.contentUrl}`}
-            data-srcset={srcSet}
-            data-src={`${data?.contentUrl}#t=0.1`}
+            // className={isLazy ? "lazy" : ""}
+            // src={`${data?.contentUrl}`}
+            // data-srcset={srcSet}
+            // data-src={`${data?.contentUrl}#t=0.1`}
             loop
-          />
+          >
+            <source src={`${data?.contentUrl}#t=0.1`} type="video/mp4" ></source>
+          </video>
         )
       }
       default: return (
@@ -90,7 +92,6 @@ export default function CardItem(props?: any) {
       }
     }
   }, [playVideo])
-  console.log('isHideButton', isHideButton)
   return (
     <div className="create-nav">
       <StyledCart src={data?.contentUrl}>
@@ -192,7 +193,7 @@ export default function CardItem(props?: any) {
                   {getCompactString(data?.ownerWalletAddress, 5)}
                 </a>
               </div>
-              <span>2000x2000</span>
+              {data.contentInfo && <span>{data?.contentInfo?.width}x{data?.contentInfo?.height}</span>}
             </div>
             <div className="number">
               {isHideButton ? null : data?.NFTType !== 'swap-store' ? (

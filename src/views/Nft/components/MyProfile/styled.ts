@@ -301,6 +301,7 @@ export const CartStyled = styled.div`
       > img {
         margin-top: -3px;
         margin-left: 5px;
+        width:20px;
       }
     }
     .content {
@@ -329,6 +330,7 @@ export const CartStyled = styled.div`
       .btn-qrCode {
         background: #fff;
         border-radius: 100px;
+        cursor: pointer;
         border: 1px solid #e7ebef;
         width: 40px;
         height: 40px;
