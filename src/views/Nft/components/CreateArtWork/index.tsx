@@ -326,7 +326,7 @@ const CreateArtWork: React.FC = () => {
                     autoSize={false}
                   />
                 </Form.Item>
-                {/* <Form.Item
+                <Form.Item
                   name='tags'
                   label="Tags"
                 >
@@ -342,7 +342,7 @@ const CreateArtWork: React.FC = () => {
                       </Select.Option>
                     ))}
                   </Select>
-                </Form.Item> */}
+                </Form.Item>
               </Col>
             </Row>
 
