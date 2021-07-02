@@ -329,6 +329,7 @@ export const CartStyled = styled.div`
       .btn-qrCode {
         background: #fff;
         border-radius: 100px;
+        cursor: pointer;
         border: 1px solid #e7ebef;
         width: 40px;
         height: 40px;
