@@ -345,7 +345,7 @@ const StyledTopBar = styled.div`
       }
     }
     .swap-nav {
-      width:100px;
+      width:110px;
       background-color: #35A5FC;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
