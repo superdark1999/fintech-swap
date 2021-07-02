@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Rate, Table, Modal, Input, Form, Image} from 'antd'
+import { Row, Col, Rate, Table, Modal, Input, Form, Image } from 'antd'
 import Copy from 'assets/images/copy.svg'
 import Facebook from 'assets/images/facebook.svg'
 import Telegram from 'assets/images/telegram.svg'
@@ -407,7 +407,7 @@ const DetaiArtWork = ({ id }: any) => {
               <div className="group-item-bid">
                 <div className="label">Your bid</div>
                 <div className="value your-bid">
-                  {formatNumber(price + step * nextStepOffer)} <img src={Token} />
+                  {formatNumber(price + step * nextStepOffer)} <img width="20px" src={Token} />
                 </div>
               </div>
             </Col>
@@ -492,6 +492,15 @@ const DetaiArtWork = ({ id }: any) => {
                       {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
                     </a>
                   </div>
+                  {NFTDetail.contentInfo && <div className="info">
+                    <div className="title">Dimensions:</div>
+                    <a
+                      className="value"
+                      href='#'
+                    >
+                      <span>{NFTDetail?.contentInfo?.width}x{NFTDetail?.contentInfo?.height}</span>
+                    </a>
+                  </div>}
                 </div>
               </DetailTabpane>
             </TabPane>

@@ -112,6 +112,7 @@ export const StyledCart = styled.div<PropsStyled>`
     >img {
       margin-top: -3px;
       margin-right: 5px;
+      width:20px;
     }
   }
   .rating {

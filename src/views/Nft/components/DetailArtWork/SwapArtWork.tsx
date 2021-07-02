@@ -214,6 +214,15 @@ const DetaiArtWork = ({ id }: any) => {
                       {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
                     </a>
                   </div>
+                  {NFTDetail.contentInfo && <div className="info">
+                    <div className="title">Dimensions:</div>
+                    <a
+                      className="value"
+                      href='#'
+                    >
+                      <span>{NFTDetail?.contentInfo?.width}x{NFTDetail?.contentInfo?.height}</span>
+                    </a>
+                  </div>}
                 </div>
               </DetailTabpane>
             </TabPane>

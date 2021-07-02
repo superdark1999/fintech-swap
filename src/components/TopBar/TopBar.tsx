@@ -131,7 +131,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
             style={{ marginLeft: 12, fontSize: 24, marginRight: 12 }}
           />
           <Link to="/">
-            <img src={Token} width="30px" />
+            <img src={logo} width="30px" />
           </Link>
         </div>
       ) : (

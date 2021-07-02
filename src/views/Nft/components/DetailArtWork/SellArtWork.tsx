@@ -288,7 +288,7 @@ const DetaiArtWork = ({ id }: any) => {
           <Row align="middle" justify="space-between">
             <div className="token">
               {formatNumber(price)} LUCKY
-              <img src={Token} alt="" />
+              <img src={Token} alt="" width="20px" />
             </div>
             {renderButton()}
           </Row>
@@ -348,6 +348,7 @@ const DetaiArtWork = ({ id }: any) => {
                       {getCompactString(NFTDetail?.createdBy?.walletAddress, 6)}
                     </a>
                   </div>
+
                   <div className="info">
                     <div className="title">Owner Adress:</div>
                     <a
@@ -358,6 +359,15 @@ const DetaiArtWork = ({ id }: any) => {
                       {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
                     </a>
                   </div>
+                  {NFTDetail.contentInfo && <div className="info">
+                    <div className="title">Dimensions:</div>
+                    <a
+                      className="value"
+                      href='#'
+                    >
+                      <span>{NFTDetail?.contentInfo?.width}x{NFTDetail?.contentInfo?.height}</span>
+                    </a>
+                  </div>}
                 </div>
               </DetailTabpane>
             </TabPane>
