@@ -16,12 +16,11 @@ function FilterBar(props) {
 
   const onChangeMethod = (e) => {
     let value = e.target.value;
-    if (e.target.value === 'all') value = ['buy', 'auction', 'swap-store']
     setFilterMethod(value)
   }
   const onChangeType = (e) => {
     let value = e.target.value;
-    if (e.target.value === 'all') value = ''
+    console.log('value: ', value)
     setFilterType(value)
   }
   return (
