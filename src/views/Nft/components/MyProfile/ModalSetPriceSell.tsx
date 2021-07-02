@@ -24,7 +24,7 @@ function ModalSetPriceSell(props: any) {
             <Form ref={formRef} onFinish={onSellItem} style={{ width: '100%' }}>
                 <div style={{ marginBottom: '6px' }}>Type<span style={{ color: 'red', marginRight: '4px' }}>*</span></div>
                 <Form.Item
-                    name="lucky"
+                    name="type"
                 >
                     <Select className="select" style={{ width: 120, borderRadius: 30, textAlign: 'center' }} onChange={setSelect} defaultValue={select}>
                         {OptionData.map((item, i) => (
@@ -37,8 +37,9 @@ function ModalSetPriceSell(props: any) {
                     name="lucky"
                     rules={[
                         { required: true, message: 'This Field is required' },
+                        { type: 'number', max: 999999, message: 'This field must be less than 1,000,000' },
                     ]}
-                    validateTrigger="onBlur"
+                    validateTrigger="onChange"
                 >
                     <InputNumber
                         max={1000000}

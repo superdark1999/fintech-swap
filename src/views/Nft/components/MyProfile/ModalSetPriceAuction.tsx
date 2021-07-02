@@ -39,7 +39,9 @@ function ModalSetPriceAuction(props: any) {
                     name="price"
                     rules={[
                         { required: true, message: 'This Field is required' },
+                        { type: 'number', max: 999999, message: 'This field must be less than 1,000,000' },
                     ]}
+                    validateTrigger="onChange"
                 >
                     <InputNumber
                         max={1000000}
@@ -56,34 +58,30 @@ function ModalSetPriceAuction(props: any) {
                         placeholder="Enter NFT auction price"
                     />
                 </Form.Item>
-                <div style={{ marginBottom: '6px' }}>Price Jump Step<span style={{ color: 'red', marginRight: '4px' }}>*</span>
-                    <Popover content={renderContainer} title="Tutorial">
-                        <InfoCircleOutlined style={{ marginRight: '6px', cursor: 'pointer' }} />
-                    </Popover>
+                <div style={{ marginBottom: '6px' }}>Price<span style={{ color: 'red', marginRight: '4px' }}>*</span>
                 </div>
                 <Form.Item
                     name="stepPrice"
-                    // label="Price Step"
                     rules={[
                         { required: true, message: 'This Field is required' },
+                        { type: 'number', max: 999999, message: 'This field must be less than 1,000,000' },
                     ]}
-                    validateTrigger="onBlur"
+                    validateTrigger="onChange"
                 >
-                    <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
-                        <InputNumber
-                            max={1000000}
-                            min={0.1}
-                            formatter={(value) =>
-                                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                            }
-                            style={{
-                                borderRadius: '16px',
-                                overflow: 'hidden',
-                                width: '100%',
-                            }}
-                            placeholder="Enter step price of NFT"
-                        />
-                    </div>
+                    <InputNumber
+                        max={1000000}
+                        min={0.1}
+                        formatter={(value) =>
+                            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                        }
+                        style={{
+                            borderRadius: '16px',
+                            overflow: 'hidden',
+                            width: '100%',
+                        }}
+
+                        placeholder="Enter price jump step of NFT..."
+                    />
                 </Form.Item>
                 {/* <div style={{ marginBottom: '6px' }}>Type</div>
                 <Form.Item
