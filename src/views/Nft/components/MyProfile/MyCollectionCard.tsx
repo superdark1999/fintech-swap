@@ -115,31 +115,30 @@ export default function MyCollectionCard({ data, option }: any) {
       })
   }
   const onSubmitRuleAuction = (value: any) => {
-    console.log('value: ', value);
     const tokenId = data?.tokenId
-    // setIsPrcessing(true)
-    // marketServicesMethod
-    //   ?.setTokenBidInfo(tokenId, value.price, value.stepPrice)
-    //   .then((dt) => {
-    //     if (dt?.hash) {
-    //       setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
-    //         if (status == 200) {
-    //           history.push('/my-profile/mycollection/checkingToSell')
-    //         } else {
-    //           notification('error', {
-    //             message: 'Error',
-    //             description: 'Something when wrong, please try again later.',
-    //           })
-    //           setIsPrcessing(false)
-    //         }
-    //       })
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     notification('error', { message: 'Error', description: err?.message })
-    //     setIsPrcessing(false)
-    //   })
-    // setRuleAuctionModal(false)
+    setIsPrcessing(true)
+    marketServicesMethod
+      ?.setTokenBidInfo(tokenId, value.price, value.stepPrice)
+      .then((dt) => {
+        if (dt?.hash) {
+          setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
+            if (status == 200) {
+              history.push('/my-profile/mycollection/checkingToSell')
+            } else {
+              notification('error', {
+                message: 'Error',
+                description: 'Something when wrong, please try again later.',
+              })
+              setIsPrcessing(false)
+            }
+          })
+        }
+      })
+      .catch((err) => {
+        notification('error', { message: 'Error', description: err?.message })
+        setIsPrcessing(false)
+      })
+    setRuleAuctionModal(false)
   }
   const onSubmitSwapItem = () => {
     const tokenId = data?.tokenId
@@ -251,23 +250,23 @@ export default function MyCollectionCard({ data, option }: any) {
       return (
         <div className="group-button">
           {!isNFTCanSell && !approvingMarket && (
-            <ButtonBuy height="40px">Transfer</ButtonBuy>
+            <ButtonBuy height="40px" style={{ marginRight: '10px' }}>Transfer</ButtonBuy>
           )}
           {isNFTCanSell && !isProcessing && (
             <>
               <Dropdown className="dropdown-action" overlay={menu}>
-                <ButtonBuy>
+                <ButtonBuy style={{ marginRight: '10px' }}>
                   Sell <DownOutlined style={{ marginLeft: 10 }} />
                 </ButtonBuy>
               </Dropdown>
-              <ButtonBuy className="btn-swap" onClick={onSubmitSwapItem}>
+              <ButtonBuy style={{ marginRight: '10px' }} className="btn-swap" onClick={onSubmitSwapItem}>
                 Swap
               </ButtonBuy>
             </>
           )}
           {approvingMarket && !isNFTCanSell && (
             <>
-              <ButtonBuy className="disabled">
+              <ButtonBuy style={{ marginRight: '10px' }} className="disabled">
                 Sell <DownOutlined style={{ marginLeft: 10 }} />
               </ButtonBuy>
               <ButtonBuy className="disabled">Swap</ButtonBuy>
@@ -298,13 +297,13 @@ export default function MyCollectionCard({ data, option }: any) {
             return 'Processing';
           case 'checkingReadyToSell':
             if (data?.NFTType == 'buy') {
-              return 'On checking to buy Token'
+              return 'On checking to sell Token'
             } else if (data?.NFTType) {
               return 'On checking to auction Token'
             }
             return 'Processing';
           case 'checkingBuying':
-            return 'On checking to buy';
+            return 'On checking to sell';
           case 'checkingCancelling':
             return 'On cancelling'
           default:
@@ -312,7 +311,7 @@ export default function MyCollectionCard({ data, option }: any) {
         }
       }
       return (
-        <div className="group-btn-action">
+        <div className="group-btn-action" >
           <StatusBar type="processing" label={getLabel(data?.status)} />
         </div>
       )
@@ -366,7 +365,7 @@ export default function MyCollectionCard({ data, option }: any) {
           xxl={{ span: 7 }}
         >
           {data.type === 'video' ? (
-            <video width="100%" controls muted>
+            <video width="100%" style={{ maxHeight: '200px', borderRadius: '8px' }} controls muted>
               <source src={data?.contentUrl} type="video/mp4" />
               Your browser does not support HTML5 video.
             </video>
@@ -380,6 +379,7 @@ export default function MyCollectionCard({ data, option }: any) {
           md={{ span: 24 }}
           xs={{ span: 24 }}
           xxl={{ span: 17 }}
+          style={{ height: '200px' }}
         >
           <div>
             <div className="header-card">

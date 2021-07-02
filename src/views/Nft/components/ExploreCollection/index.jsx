@@ -1,29 +1,57 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Button } from 'antd'
 import { ExploreCollectionStyled } from './styled'
 import Cart from 'components-v2/CardItem'
 import FilterBar from './filterBar'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import TrendingBar from '../TrendingBar/index'
+import _ from 'lodash'
+import {useHistory } from 'react-router-dom'
+
+
 // export const option: React.ReactElement<OptionProps> = Select.Option
 function ExploreCollection() {
-  const [NFTs, setNFTs] = useState([])
-  const [searchParams, setSearchParams] = useState('')
-  const { getNFT } = useArtworkServices()
-  useEffect(() => {
-    let params = new URLSearchParams(
-      window.document.location.search.substring(1),
+
+  const history = useHistory()
+  let paramsSearch = new URLSearchParams(
+    window.document.location.search.substring(1),
     )
-    let name = params.get('search') // is the string "Jonathan"
-    setSearchParams(name)
-    getNFT({
+    console.log('paramsSearch: ', paramsSearch)
+
+  const [NFTs, setNFTs] = useState([])
+  const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
+
+  const { getNFT } = useArtworkServices()
+  const [filterMethod, setFilterMethod] = useState('')
+  const [filterType, setFilterType] = useState('')
+  console.log('filterType: ', filterType)
+
+ 
+  
+  const handleInputOnchange = (e) => {
+    const { value } = e.target;
+    setSearchParams(value);
+  }
+
+  const getArrNFT = useCallback(_.debounce((params) => 
+  getNFT(params).then(({ status, data }) => {
+    if (status == 200) {
+      setNFTs(data?.data || [])
+      console.log('data: ', data)
+    }
+  }), 1000), [])
+
+
+  useEffect(() => {
+    searchParams && history.push(`/explore?search=${searchParams}`)
+    const params = _.pickBy({
       status: 'readyToSell',
-    }).then(({ status, data }) => {
-      if (status == 200) {
-        setNFTs(data?.data || [])
-      }
-    })
-  }, [])
+      NFTType: filterMethod,
+      type: filterType,
+      title: searchParams?.toLowerCase()
+    }, _.identity)
+    getArrNFT(params)
+  }, [filterMethod, filterType, searchParams])
 
   return (
     <ExploreCollectionStyled>
@@ -33,7 +61,15 @@ function ExploreCollection() {
       <div className="trending-nft">
         <TrendingBar />
       </div>
-      <FilterBar searchParams={searchParams} />
+      <FilterBar 
+        setFilterMethod={setFilterMethod} 
+        filterMethod={filterMethod}
+        filterType={filterType}
+        setFilterType={setFilterType}
+        handleInputOnchange={handleInputOnchange}
+        searchParams={searchParams} 
+
+      />
       <h1 style={{ fontWeight: 'bold' }}>8 results for "lucky swap studio"</h1>
       <div className="content-collect">
         {NFTs.map((item) => {
