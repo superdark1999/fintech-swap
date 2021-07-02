@@ -21,7 +21,7 @@ import Loadmore from 'components-v2/Loadmore'
 import StatusBar from 'components-v2/StatusBar'
 import { ButtonTrade, ButtonBuy, ButtonCancel } from 'components-v2/Button'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
-import QRCode from 'assets/images/qr-code.svg'
+import QRCodeIcon from 'assets/images/qr-code.svg'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices, { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import useNFTServices from 'services/web3Services/NFTServices'
@@ -35,11 +35,14 @@ import { RegexNumber100000 } from '../../constants'
 import { useActiveWeb3React } from 'wallet/hooks'
 import ModalSetPriceAuction from './ModalSetPriceAuction'
 import ModalSetPriceSell from './ModalSetPriceSell'
+import QRCodeComp from 'components-v2/QRcode/index'
 export default function MyCollectionCard({ data, option }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
   const [isProcessing, setIsPrcessing] = useState(false)
   const [ruleAuctionModal, setRuleAuctionModal] = useState(false)
   const [approvingMarket, setApprovingMarket] = useState(false)
+  const [showQR, setShowQR] = useState(false)
+
   const NFTServicesMethod = useNFTServices()
   const marketServicesMethod = useMarketServices()
   const { setPrice, cancelSellNFT } = useArtworkServices()
@@ -237,11 +240,11 @@ export default function MyCollectionCard({ data, option }: any) {
       }
     }
   }
-
+  console.log('s', showQR);
   const renderQRCode = () => {
     return (
-      <button className="btn-qrCode">
-        <img src={QRCode} />
+      <button className="btn-qrCode" onClick={() => setShowQR(true)}>
+        <img src={QRCodeIcon} />
       </button>
     )
   }
@@ -422,6 +425,7 @@ export default function MyCollectionCard({ data, option }: any) {
         formRef={formRef}
         onSubmitRuleAuction={onSubmitRuleAuction}
       />
+      <QRCodeComp isShow={showQR} setShowQR={setShowQR} url={`${window.location.origin}/my-profile/mycollection/all`} />
     </CartStyled>
   )
 }
