@@ -77,7 +77,7 @@ export const SidebarStyled = styled.div<PropsStyled>`
       text-indent:30px;
       img{
         left:10px;
-        width:40px;
+        width:20px;
         position:absolute;
       }
       :hover{

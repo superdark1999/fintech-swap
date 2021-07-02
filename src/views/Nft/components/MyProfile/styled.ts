@@ -301,6 +301,7 @@ export const CartStyled = styled.div`
       > img {
         margin-top: -3px;
         margin-left: 5px;
+        width:20px;
       }
     }
     .content {

@@ -335,7 +335,7 @@ export const DetailStyled = styled.div`
         &.your-bid {
           font-weight: 600;
           font-size: 20px;
-          color: #fc636b;
+          color: #1890ff;
         }
       }
     }
