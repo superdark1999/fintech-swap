@@ -36,12 +36,10 @@ import FARMS_ABI from '../config/abi/masterchef.json'
  * Helper hooks to get specific contracts (by ABI)
  */
 
-
 export const useLotteryTicket = () => {
   const web3 = useWeb3()
   return useMemo(() => getLotteryTicketContract(web3), [web3])
 }
-
 
 export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
@@ -110,8 +108,6 @@ export const useLottery = () => {
   const web3 = useWeb3()
   return useMemo(() => getLotteryContract(web3), [web3])
 }
-
-
 
 export const useMasterchef = () => {
   const web3 = useWeb3()

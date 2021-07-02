@@ -27,9 +27,13 @@ const Menu = (props) => {
   const useContractTemp = useContract(XLUCKY_TESTNET, bep20Abi)
   useEffect(() => {
     if (useContractTemp) {
-      useContractTemp.balanceOf(account).then((data) => {
-        setBalanceToken(data / 1e18)
-      })
+      useContractTemp
+        .balanceOf(account)
+        .then((data) => {
+          console.log('result get balance : ', data)
+          setBalanceToken(data / 1e18)
+        })
+        .catch((error) => console.log('get balance error : ', error))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account])

@@ -72,18 +72,24 @@ const TicketCard: React.FC = () => {
 
   useEffect(() => {
     if (useContractTemp) {
-      useContractTemp.balanceOf(account).then((data) => {
-        setBalanceToken(data.toString())
-      })
+      useContractTemp
+        .balanceOf(account)
+        .then((data) => {
+          setBalanceToken(data.toString())
+        })
+        .catch((error) => console.log('lottery : ', error))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account])
 
   useEffect(() => {
     if (useContractTemp) {
-      useContractTemp.balanceOf(account).then((data) => {
-        setBalanceToken(data.toString())
-      })
+      useContractTemp
+        .balanceOf(account)
+        .then((data) => {
+          setBalanceToken(data.toString())
+        })
+        .catch((error) => console.log('lottery : ', error))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, fastRefresh])

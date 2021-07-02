@@ -4,9 +4,28 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { NetworkConnector } from './NetworkConnector'
 import { BscConnector } from './bsc/bscConnector'
+import {} from '@luckyswap/v2-sdk'
 import getNodeUrl from '../utils/getRpcUrl'
 
-const NETWORK_URL =getNodeUrl()
+export enum ChainId {
+  RINKEBY = 4,
+  MATIC = 137,
+  MATIC_TESTNET = 80001,
+  BSC = 56,
+  BSC_TESTNET = 97,
+}
+
+const RPC = {
+  [ChainId.RINKEBY]: 'https://eth-rinkeby.alchemyapi.io/v2/XVLwDlhGP6ApBXFz_lfv0aZ6VmurWhYD',
+  [ChainId.MATIC]: 'https://rpc-mainnet.maticvigil.com',
+  [ChainId.MATIC]:
+    'https://apis.ankr.com/e22bfa5f5a124b9aa1f911b742f6adfe/c06bb163c3c2a10a4028959f4d82836d/polygon/full/main',
+  [ChainId.MATIC_TESTNET]: 'https://rpc-mumbai.matic.today',
+  [ChainId.BSC]: 'https://bsc-dataseed.binance.org/',
+  [ChainId.BSC_TESTNET]: 'https://data-seed-prebsc-2-s3.binance.org:8545',
+}
+
+const NETWORK_URL = getNodeUrl()
 export const NETWORK_CHAIN_ID: number = parseInt('56' ?? '56')
 
 if (typeof NETWORK_URL === 'undefined') {
@@ -14,7 +33,8 @@ if (typeof NETWORK_URL === 'undefined') {
 }
 
 export const network = new NetworkConnector({
-  urls: { [NETWORK_CHAIN_ID]: NETWORK_URL },
+  urls: RPC,
+  defaultChainId: 1,
 })
 
 let networkLibrary: Web3Provider | undefined
@@ -24,7 +44,7 @@ export function getNetworkLibrary(): Web3Provider {
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [56, 97],
+  supportedChainIds: [4, 56, 97, 137, 80001],
 })
 
 export const bsc = new BscConnector({ supportedChainIds: [56] })

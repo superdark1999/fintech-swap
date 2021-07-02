@@ -15,7 +15,10 @@ const useTokenBalance = (tokenAddress: string) => {
   useEffect(() => {
     const fetchBalance = async () => {
       const contract = getBep20Contract(tokenAddress, web3)
-      const res =  await contract.methods.balanceOf(account).call()
+      const res = await contract.methods
+        .balanceOf(account)
+        .call()
+        .catch((error) => console.log('fetch balance error : ', error))
       setBalance(new BigNumber(res))
     }
 

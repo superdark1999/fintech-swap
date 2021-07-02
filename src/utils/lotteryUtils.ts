@@ -47,7 +47,7 @@ export const multiBuy = async (lotteryContract, price, numbersList, account) => 
 export const getTickets = async (lotteryContract, ticketsContract, account, customLotteryNum) => {
   const issueIndex = customLotteryNum || (await lotteryContract.issueIndex())
 
-  const length = await ticketsContract.balanceOf(account)
+  const length = await ticketsContract.balanceOf(account).catch((error) => console.log('length error : ', error))
 
   // eslint-disable-next-line prefer-spread
   const calls1 = Array.apply(null, { length } as unknown[]).map((a, i) => [
@@ -74,7 +74,7 @@ export const getTickets = async (lotteryContract, ticketsContract, account, cust
 }
 
 export const getTicketsAmount = async (ticketsContract, account) => {
-  return ticketsContract.balanceOf(account)
+  return ticketsContract.balanceOf(account).catch((error) => console.log('ticket amount : ', error))
 }
 
 export const multiClaim = async (lotteryContract, ticketsContract, account) => {
@@ -133,7 +133,7 @@ export const getTotalClaim = async (lotteryContract, ticketsContract, account) =
     const claimedStatus = await multiCall(ticketAbi, calls3)
 
     const drawed = await getLotteryStatus(lotteryContract)
-    
+
     const finalTokenIds = []
     ticketIssues.forEach(async (ticketIssue, i) => {
       // eslint-disable-next-line no-empty

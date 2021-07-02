@@ -1,42 +1,41 @@
-import React, {useState, useEffect}from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import BigNumber from 'bignumber.js'
 
-import useUtilityToken from 'hooks/useUtilityToken';
+import useUtilityToken from 'hooks/useUtilityToken'
 
-export default function DepositModal({ 
-  depositModal, 
-  depositToggle, 
-  depositSymbol,  
+export default function DepositModal({
+  depositModal,
+  depositToggle,
+  depositSymbol,
   stakingContract,
   addTransaction,
   account,
   stakingData,
-  setIsDepositing
+  setIsDepositing,
 }) {
-  const [balance, setBalance] = useState(0);
-  const [value, setValue] = useState('');
-  const {balanceOf, approve, allowance} =  useUtilityToken(stakingData.depositToken);
-
+  const [balance, setBalance] = useState(0)
+  const [value, setValue] = useState('')
+  const { balanceOf, approve, allowance } = useUtilityToken(stakingData.depositToken)
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const bal = await balanceOf(account);
-      setBalance(parseFloat((bal /1e18).toFixed(4)));
+      const bal = await balanceOf(account).catch((error) => console.log('fetch balance error : ', error))
+      setBalance(parseFloat((bal / 1e18).toFixed(4)))
     }
-    if (account)
-      fetchBalance()
-  },[account, balanceOf])
+    if (account) fetchBalance()
+  }, [account, balanceOf])
 
   const handleDeposit = async () => {
     if (stakingContract) {
-      setIsDepositing(true);
+      setIsDepositing(true)
       depositToggle()
       const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
-      const gasAm = await stakingContract.estimateGas.deposit(...args)
-      .catch(() => console.log("Fail estimate gas deposit"));
-       stakingContract
+      const gasAm = await stakingContract.estimateGas
+        .deposit(...args)
+        .catch(() => console.log('Fail estimate gas deposit'))
+      stakingContract
         .deposit(...args, { gasLimit: gasAm })
         .then((response: any) => {
           addTransaction(response, {
@@ -55,19 +54,24 @@ export default function DepositModal({
 
   return (
     <div>
-      
       <Modal isOpen={depositModal} toggle={depositToggle}>
         <ModalHeader toggle={depositToggle}></ModalHeader>
 
         <ModalBody>
           <Title>Deposit LuckySwap Tokens</Title>
-          <Available>{balance} {depositSymbol}</Available>
+          <Available>
+            {balance} {depositSymbol}
+          </Available>
 
           <BoxInput>
-            <input type="text" id="fname" name="fname" placeholder="0.000"
+            <input
+              type="text"
+              id="fname"
+              name="fname"
+              placeholder="0.000"
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              />
+            />
             <BoxLink>
               <span className="text-lucky">{depositSymbol}</span>
               <BoxButton>
@@ -79,16 +83,18 @@ export default function DepositModal({
 
         <ModalFooter>
           <CancelButton>
-          <Button color="primary" onClick={depositToggle}>Cancel</Button>
+            <Button color="primary" onClick={depositToggle}>
+              Cancel
+            </Button>
           </CancelButton>
-          <Button color="secondary" onClick={handleDeposit} disabled={false}>Deposit</Button>
+          <Button color="secondary" onClick={handleDeposit} disabled={false}>
+            Deposit
+          </Button>
         </ModalFooter>
       </Modal>
-      
     </div>
   )
 }
-
 
 const BoxInput = styled.div`
   display: flex;
@@ -159,7 +165,7 @@ const BoxButton = styled.div`
     z-index: 1;
     background-color: #f5c606;
     color: #2b2e2f;
-    font-family: "Baloo Da";
+    font-family: 'Baloo Da';
     padding: 0px 10px;
     height: 40px;
   }
@@ -169,10 +175,9 @@ const CancelButton = styled.div`
   button {
     color: #2b2e2f;
     border: none;
-    :hover{
-      opacity: .8;
+    :hover {
+      opacity: 0.8;
       color: #2b2e2f;
     }
   }
-
 `

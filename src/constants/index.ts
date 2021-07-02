@@ -1,7 +1,6 @@
 import { ChainId, JSBI, Percent, Token, WETH } from '@luckyswap/v2-sdk'
 
 export const ROUTER_ADDRESS = '0x4eED75a231D8A1d265B283A67b5b37D1Ec80d379'
-
 // a list of tokens by chain
 type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
@@ -15,12 +14,15 @@ export const UST = new Token(
   '0x23396cf899ca06c4472205fc903bdb4de249d6fc',
   18,
   'UST',
-  'Wrapped UST Token'
+  'Wrapped UST Token',
 )
 
 const WETH_ONLY: ChainTokenList = {
+  [ChainId.RINKEBY]: [WETH[ChainId.RINKEBY]],
   [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
   [ChainId.BSCTESTNET]: [WETH[ChainId.BSCTESTNET]],
+  [ChainId.MATIC]: [WETH[ChainId.MATIC]],
+  [ChainId.MATIC_TESTNET]: [WETH[ChainId.MATIC_TESTNET]],
 }
 
 // used to construct intermediary pairs for trading
@@ -57,7 +59,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     ],
     [BUSD, USDT],
     [DAI, USDT],
-  ]
+  ],
 }
 
 export const NetworkContextName = 'NETWORK'
