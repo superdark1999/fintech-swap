@@ -1,4 +1,4 @@
-import React, { useState }  from 'react'
+import React, { useState, useEffect }  from 'react'
 import styled from 'styled-components'
 import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
@@ -8,6 +8,8 @@ import useGetStateData from 'hooks/useGetStakeData';
 import { useFarms, usePriceLuckyBusd, useLucky2Price } from 'state/hooks'
 import { getPoolApy } from 'utils/apy'
 import { getBalanceNumber } from 'utils/formatBalance'
+import useUtilityToken from 'hooks/useUtilityToken';
+import { LUCKY_PER_BLOCK  } from 'config'
 
 
 // import { Row, Col } from 'antd'
@@ -37,21 +39,40 @@ const stakingData = {
 
 function PoolCards() {
   const [activeTab, setActiveTab] = useState('1');
+  const [apy, setApy] = useState('');
+  const [totalStaked, setTotalStaked] = useState(0);
 
   const { userAmount, userRewardDebt} = useGetStateData(stakingData);
+
+  const {balanceOf, approve, allowance} =  useUtilityToken(stakingData.depositToken);
 
   const rewardTokenPrice = usePriceLuckyBusd()
   const stakingTokenPrice = useLucky2Price()
 
-  const totalStaked = new BigNumber(100000000000000000000000);
+
+  useEffect(() => { 
+  const fetchTotalStaked = async () => {
+  if (balanceOf){
+    const result =  await balanceOf(stakingData.stakingContract);
+    const balance = new BigNumber(result._hex).div(1e18).toNumber();
+    setTotalStaked(balance)
+
+    const apyValue = getPoolApy(
+      stakingTokenPrice.toNumber(),
+      rewardTokenPrice.toNumber(),
+      balance,
+      LUCKY_PER_BLOCK.toNumber(),
+    )
+    if (apyValue)
+      setApy(parseFloat(apyValue.toString()).toFixed(2));
+    }
+
+  }
+    fetchTotalStaked();
+  },[balanceOf, stakingTokenPrice,rewardTokenPrice,])
 
   // console.log("reward", rewardTokenPrice, stakingTokenPrice)
-  const apy = getPoolApy(
-    stakingTokenPrice.toNumber(),
-    rewardTokenPrice.toNumber(),
-    getBalanceNumber(totalStaked),
-    parseFloat('0.005'),
-  )
+  
 
   const toggle = tab => {
     if(activeTab !== tab) setActiveTab(tab);
@@ -142,12 +163,12 @@ function PoolCards() {
 
                     <FlexSpace>
                       <ContentLeft>Deposit:</ContentLeft>
-                      <ContentRight>{stakingData.depositSymbol}</ContentRight>
+                      <ContentRight>{totalStaked} {stakingData.depositSymbol}</ContentRight>
                     </FlexSpace>
 
                     <FlexSpace>
                       <ContentLeft>Earn:</ContentLeft>
-                      <ContentRight>{stakingData.rewardSymbol}</ContentRight>
+                      <ContentRight>{userRewardDebt.div(1e18).toFixed(2)} {stakingData.rewardSymbol}</ContentRight>
                     </FlexSpace>
 
                     <FlexSpace>
