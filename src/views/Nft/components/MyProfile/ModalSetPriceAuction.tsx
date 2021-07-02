@@ -83,7 +83,7 @@ function ModalSetPriceAuction(props: any) {
                         placeholder="Enter price jump step of NFT..."
                     />
                 </Form.Item>
-                {/* <div style={{ marginBottom: '6px' }}>Type</div>
+                <div style={{ marginBottom: '6px' }}>Type</div>
                 <Form.Item
                     name="typeAuction"
                     initialValue={typeAuction}
@@ -96,9 +96,13 @@ function ModalSetPriceAuction(props: any) {
                 <div style={{ marginBottom: '6px' }}>Set time</div>
                 <Form.Item
                     name="dateTime"
+                    valuePropName="dateTime"
+                    rules={[
+                        { required: true, message: 'This Field is required' },
+                    ]}
                 >
-                    <DatePicker disabledStartDate={typeAuction === 1 ? true : false} />
-                </Form.Item> */}
+                    <DatePicker isFormData disabledStartDate={typeAuction === 1 ? true : false} />
+                </Form.Item>
                 <Form.Item>
                     <div
                         style={{

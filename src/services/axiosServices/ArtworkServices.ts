@@ -3,7 +3,7 @@ import useAxiosServices, { JSONToFormData } from './AxiosServices'
 
 export default function useArtworkService() {
   const { GET, POST, PATCH, PUT } = useAxiosServices(
-    'https://api.luckyswap.center',
+    'http://localhost:3030',
   )
   const createNFT = useCallback((body) => {
     return POST('/artwork', JSONToFormData(body), false, false)

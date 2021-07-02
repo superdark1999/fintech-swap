@@ -3,7 +3,7 @@ import useAxiosServices from './AxiosServices'
 
 export default function useArtworkService(){
 
-    const {GET,POST, PATCH, PUT} = useAxiosServices('https://api.luckyswap.center')
+    const {GET,POST, PATCH, PUT} = useAxiosServices('http://localhost:3030')
 
     const login = (body:any)=>{
         return POST('/user/login',body,false, false)
