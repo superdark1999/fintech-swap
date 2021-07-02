@@ -116,7 +116,7 @@ const CreateArtWork: React.FC = () => {
   }, [isProccessing, isOnUpload, NFTInfo])
 
   const onCreateNFT = async (values: any) => {
-    if (checkPolicy) {
+     if (checkPolicy) {
       setIsProcessing(true)
       setIsOnUpload(true)
       const mintData = {
@@ -125,7 +125,7 @@ const CreateArtWork: React.FC = () => {
         type: values?.[`type`] || 'image',
         content: values?.[`content`] || '',
         ownerWalletAddress: account || '',
-        //tags: values?.tags || [],
+        tags: values?.tags || [],
       }
       createNFT(mintData)
         .then(({ data, status }) => {

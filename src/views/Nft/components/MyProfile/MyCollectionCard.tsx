@@ -5,15 +5,8 @@ import Crown from 'assets/images/crown.svg'
 import {
   Row,
   Col,
-  Tabs,
-  Modal,
-  Input,
-  Form,
-  Button,
-  Radio,
   Menu,
   Dropdown,
-  InputNumber,
 } from 'antd'
 import { DownOutlined, SyncOutlined, CheckOutlined } from '@ant-design/icons'
 import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
@@ -117,8 +110,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const onSubmitRuleAuction = (value: any) => {
     const tokenId = data?.tokenId
     setIsPrcessing(true)
-    marketServicesMethod
-      ?.setTokenBidInfo(tokenId, value.price, value.stepPrice)
+    marketServicesMethod?.setTokenBidInfo(tokenId, value.price, value.stepPrice)
       .then((dt) => {
         if (dt?.hash) {
           setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
