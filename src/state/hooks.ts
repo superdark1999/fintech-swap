@@ -8,7 +8,7 @@ import { useAppDispatch } from 'state'
 import { Team } from 'config/constants/types'
 import { getWeb3NoAccount } from 'utils/web3'
 import useRefresh from 'hooks/useRefresh'
-import { LUCKY_PRICE } from 'config'
+import { LUCKY_PRICE, LUCKY2_PRICE } from 'config'
 import {
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
@@ -188,7 +188,7 @@ export const useFetchPriceList = () => {
 }
 
 export const useGetApiPrices = () => {
-  const prices: PriceState['data'] = useSelector((state: State) => state.prices.data)
+  const prices: PriceState['data'] = useSelector((state: State) => state.prices.data);
   return prices
 }
 
@@ -198,13 +198,16 @@ export const useGetApiPrice = (token: string) => {
   if (!prices) {
     return null
   }
-
   return prices[token.toLowerCase()]
 }
 
 export const usePriceLuckyBusd = (): BigNumber => {
   return new BigNumber(LUCKY_PRICE) // TODO: this one will call api , current set price default
 
+}
+
+export const useLucky2Price = (): BigNumber => {
+  return new BigNumber(LUCKY2_PRICE);
 }
 
 // Block

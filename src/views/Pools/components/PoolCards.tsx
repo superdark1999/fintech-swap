@@ -3,7 +3,12 @@ import styled from 'styled-components'
 import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom'
+import BigNumber from 'bignumber.js'
 import useGetStateData from 'hooks/useGetStakeData';
+import { useFarms, usePriceLuckyBusd, useLucky2Price } from 'state/hooks'
+import { getPoolApy } from 'utils/apy'
+import { getBalanceNumber } from 'utils/formatBalance'
+
 
 // import { Row, Col } from 'antd'
 
@@ -16,11 +21,37 @@ const stakingData = {
   stakingContract: "0x1dde4Fc6ca8121Cb11E988b524B275855F98aAA6",
 }
 
+// {
+//   sousId: 99,
+//   stakingToken: tokens.bdex,
+//   earningToken: tokens.bake,
+//   contractAddress: {
+//     97: '0xa5bd720d5115Dc14E9a04C8349F316252A69F987',
+//     56: '0x40918EF8efFF4aA061656013a81E0e5A8A702eA7',
+//   },
+//   poolCategory: PoolCategory.CORE,
+//   harvest: true,
+//   sortOrder: 999,
+//   tokenPerBlock: '0.005',
+// }
+
 function PoolCards() {
   const [activeTab, setActiveTab] = useState('1');
 
   const { userAmount, userRewardDebt} = useGetStateData(stakingData);
 
+  const rewardTokenPrice = usePriceLuckyBusd()
+  const stakingTokenPrice = useLucky2Price()
+
+  const totalStaked = new BigNumber(100000000000000000000000);
+
+  // console.log("reward", rewardTokenPrice, stakingTokenPrice)
+  const apy = getPoolApy(
+    stakingTokenPrice.toNumber(),
+    rewardTokenPrice.toNumber(),
+    getBalanceNumber(totalStaked),
+    parseFloat('0.005'),
+  )
 
   const toggle = tab => {
     if(activeTab !== tab) setActiveTab(tab);
@@ -121,7 +152,7 @@ function PoolCards() {
 
                     <FlexSpace>
                       <ContentLeft>APR:</ContentLeft>
-                      <ContentRight>0%</ContentRight>
+                      <ContentRight>{apy}%</ContentRight>
                     </FlexSpace>
                   </CardContent>
 
