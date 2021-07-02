@@ -8,7 +8,8 @@ import _ from 'lodash'
 
 export { default as formatAddress } from './formatAddress'
 
-
+const OUT_OF_BNB = `Insufficient balance of BNB`
+const OUT_OF_LUCKY = `Insufficient balance of LUCKY`
 
 export const getParam = (name: string) => {
 
@@ -65,3 +66,16 @@ export const embedTokenIdLinkBSCScan = (tokenId:number,contractAddress:string,ch
 }
 
 export const SUPPORT_CHAIN_IDS:Array<ChainId> = [97]
+
+export const handleAlertMessage = (message:string)=>{
+  if(message==`Error: [ethjs-query] while formatting outputs from RPC '{"value":{"code":-32603,"data":{"code":-32000,"message":"transaction underpriced"}}}'`){
+    return 'Low gas'
+  }else if(message == 'MetaMask Tx Signature: User denied transaction signature.'){
+    return 'You denied transaction signature.'
+  }else if(message == OUT_OF_BNB){
+    return OUT_OF_BNB
+  }else if(message == OUT_OF_LUCKY){
+    return OUT_OF_LUCKY
+  }
+  return 'Something went wrong, please try again later.'
+}
