@@ -65,7 +65,9 @@ export default function UnStakeModal({
             <CancelButton>
               <Button color="primary" onClick={unStakeToggle}>Cancel</Button>
             </CancelButton>
-            <Button color="secondary" onClick={handleUnStake} disabled={false}>UnStake</Button>
+            <UnStakeButton>
+              <Button color="secondary" onClick={handleUnStake} disabled={false}>UnStake</Button>
+            </UnStakeButton>
           </ModalFooter>
         </Modal>
       
@@ -148,13 +150,26 @@ const BoxButton = styled.div`
   }
 `
 
-const CancelButton = styled.div`
+const UnStakeButton = styled.div `
   button {
     color: #2b2e2f;
+    background-color: #f5c606;
+    :hover {
+      opacity: .8;
+      color: #2b2e2f;
+      background-color: #f5c606;
+    
+
+    }
+  }
+`
+
+const CancelButton = styled.div`
+  button {
+    background-color: #6c757d !important;
     border: none;
     :hover{
       opacity: .8;
-      color: #2b2e2f;
     }
   }
 

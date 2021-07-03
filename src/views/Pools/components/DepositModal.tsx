@@ -79,9 +79,11 @@ export default function DepositModal({
 
         <ModalFooter>
           <CancelButton>
-          <Button color="primary" onClick={depositToggle}>Cancel</Button>
+            <Button color="primary" onClick={depositToggle}>Cancel</Button>
           </CancelButton>
-          <Button color="secondary" onClick={handleDeposit} disabled={false}>Deposit</Button>
+          <DepositButton>
+            <Button color="secondary" onClick={handleDeposit} disabled={false}>Deposit</Button>
+          </DepositButton>
         </ModalFooter>
       </Modal>
       
@@ -164,14 +166,26 @@ const BoxButton = styled.div`
     height: 40px;
   }
 `
+const DepositButton = styled.div`
+    button {
+        color: #2b2e2f;
+        background-color: #f5c606;
+        :hover {
+          opacity: .8;
+          color: #2b2e2f;
+          background-color: #f5c606;
+        
+
+        }
+      }
+`
 
 const CancelButton = styled.div`
   button {
-    color: #2b2e2f;
+    background-color: #6c757d !important;
     border: none;
     :hover{
       opacity: .8;
-      color: #2b2e2f;
     }
   }
 
