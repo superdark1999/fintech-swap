@@ -23,7 +23,7 @@ export const columnHistory = [
     title: 'From',
     dataIndex: 'from',
     render: (from) =>  
-    <a href={`https://mkp.luckyswap.center/user-profile/${from[0]}/onstore/readyToSell`} target="_blank">
+    <a href={window.location.origin+`/user-profile/${from[0]}/onstore/readyToSell`} target="_blank">
       <IMG src={from[1]} >  
       </IMG>
     </a>
@@ -32,7 +32,7 @@ export const columnHistory = [
     title: 'To',
     dataIndex: 'to',
     render: (to) => 
-    <a href={`https://mkp.luckyswap.center/user-profile/${to[0]}/onstore/readyToSell`} target="_blank">
+    <a href={window.location.origin+`/user-profile/${to[0]}/onstore/readyToSell`} target="_blank">
       <IMG src={to[1]} >  
       </IMG>
     </a>
