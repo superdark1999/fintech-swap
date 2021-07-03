@@ -8,6 +8,10 @@ const ID = styled.div`
   overflow: hidden;
   text-overflow: ellipsis; 
 `
+const IMG = styled.img`
+  width: 35px;
+  border-radius: 50%;
+`
 
 export const columnHistory = [
   {
@@ -18,16 +22,20 @@ export const columnHistory = [
   {
     title: 'From',
     dataIndex: 'from',
-    render: (from) => <ID >
-      {from}
-    </ID>
+    render: (from) =>  
+    <a href={`https://mkp.luckyswap.center/user-profile/${from[0]}/onstore/readyToSell`}>
+      <IMG src={from[1]} >  
+      </IMG>
+    </a>
   },
   {
     title: 'To',
     dataIndex: 'to',
-    render: (to) => <ID >
-      {to}
-    </ID>
+    render: (to) => 
+    <a href={`https://mkp.luckyswap.center/user-profile/${to[0]}/onstore/readyToSell`}>
+      <IMG src={to[1]} >  
+      </IMG>
+    </a>
   },
   {
     title: 'Date',
