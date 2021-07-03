@@ -3,7 +3,7 @@ import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@luckyswap/v2-sdk'
+import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER, ROUTER_ADDRESSES } from '@luckyswap/v2-sdk'
 import { ROUTER_ADDRESS } from '../constants'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { abi as IBeswapRouterV2 } from '../constants/abis/IBeswapRouterV2.json'
@@ -91,8 +91,8 @@ export function getContract(address: string, ABI: any, library: Web3Provider, ac
 }
 
 // account is optional
-export function getRouterContract(_: number, library: Web3Provider, account?: string): Contract {
-  return getContract(ROUTER_ADDRESS, IBeswapRouterV2, library, account)
+export function getRouterContract(chainId: number, library: Web3Provider, account?: string): Contract {
+  return getContract(ROUTER_ADDRESSES[chainId], IBeswapRouterV2, library, account)
 }
 
 export function escapeRegExp(string: string): string {
