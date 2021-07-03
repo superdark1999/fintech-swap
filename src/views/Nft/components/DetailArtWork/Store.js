@@ -18,13 +18,16 @@ const Store = createStore({
     getHistorys:
       (tokenId) =>
       ({ setState, getState }) => {
+        
         axios(`${API_DASHBOARD}/transactions?tokenId=${tokenId}`).then(
           (res) => {
             let parseData = res.data
             parseData = parseData.map((item) => {
+              console.log(item.from)
               item.price = 0
-              item.from = getCompactString(item.from, 6)
-              item.to = getCompactString(item.to, 6)
+              item.from =[item.from, item.avtFrom.from]
+              //getCompactString(item.from, 6)
+              item.to = [item.to, item.avtTo.to]
               item.date =
                 item.timeStamp &&
                 new Date(item.timeStamp * 1000).toLocaleDateString('en-US')
