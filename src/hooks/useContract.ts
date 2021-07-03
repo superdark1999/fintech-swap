@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import useWeb3 from 'hooks/useWeb3'
 import { Contract } from '@ethersproject/contracts'
-import { ChainId, WETH } from '@luckyswap/v2-sdk'
+import { ChainId, WETH, ROUTER_ADDRESSES, FACTORY_ADDRESSES } from '@luckyswap/v2-sdk'
 import { useActiveWeb3React } from 'hooks'
 import addresss from 'config/constants/contracts'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
@@ -24,6 +24,8 @@ import {
   getEasterNftContract,
 } from '../utils/contractHelpers'
 import { getContract } from '../utils'
+import FACTORY_ABI from '../constants/abis/factory.json'
+import ROUTER_ABI from '../constants/abis/router.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
 import ERC20_ABI from '../constants/abis/erc20.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
@@ -53,8 +55,21 @@ export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contrac
   return useContract(address, ENS_ABI, withSignerIfPossible)
 }
 
+export function useFactoryContract(): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId && FACTORY_ADDRESSES[chainId], FACTORY_ABI, false)
+}
+
+export function useRouterContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+
+  const address = ROUTER_ADDRESSES[chainId]
+
+  return useContract(address, ROUTER_ABI, withSignerIfPossible)
+}
+
 export function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
-  const { library, account } = useActiveWeb3React()
+  const { library, account, chainId } = useActiveWeb3React()
   return useMemo(() => {
     if (!address || !ABI || !library) return null
     try {

@@ -1,12 +1,11 @@
-import { Contract } from '@ethersproject/contracts'
 import { getAddress } from '@ethersproject/address'
-import { AddressZero } from '@ethersproject/constants'
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER, ROUTER_ADDRESSES } from '@luckyswap/v2-sdk'
-import { ROUTER_ADDRESS } from '../constants'
-import { TokenAddressMap } from '../state/lists/hooks'
+import { AddressZero } from '@ethersproject/constants'
+import { Contract } from '@ethersproject/contracts'
+import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
+import { ChainId, Currency, CurrencyAmount, ETHER, JSBI, Percent, ROUTER_ADDRESSES, Token } from '@luckyswap/v2-sdk'
 import { abi as IBeswapRouterV2 } from '../constants/abis/IBeswapRouterV2.json'
+import { TokenAddressMap } from '../state/lists/hooks'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {

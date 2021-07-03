@@ -6,7 +6,7 @@ import { ChainId, JSBI, Percent, Token, WETH } from '@luckyswap/v2-sdk'
 // export const ROUTER_ADDRESS = '0x09FceE7287f882c5eEAb8032A64FDE54Fc1dD055'
 
 // Polygon testnet
-export const ROUTER_ADDRESS = '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd'
+// export const ROUTER_ADDRESS = '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd'
 
 // a list of tokens by chain
 type ChainTokenList = {
