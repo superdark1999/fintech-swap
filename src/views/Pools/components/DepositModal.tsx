@@ -2,10 +2,24 @@ import React, {useState, useEffect}from 'react'
 import styled from 'styled-components'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import BigNumber from 'bignumber.js'
+import { Pool} from 'config/constants/types';
+import { Contract } from '@ethersproject/contracts'
+
 
 import useUtilityToken from 'hooks/useUtilityToken';
 
-export default function DepositModal({ 
+interface DepositModalProp {
+  depositModal: boolean,
+  depositToggle: () => void,
+  depositSymbol: string,
+  stakingContract: Contract,
+  addTransaction: (response: any, message: any) => void,
+  account: string,
+  stakingData: Pool,
+  setIsDepositing: (value: boolean) => void
+
+}
+ const DepositModal: React.FC<DepositModalProp> = ({ 
   depositModal, 
   depositToggle, 
   depositSymbol,  
@@ -14,10 +28,10 @@ export default function DepositModal({
   account,
   stakingData,
   setIsDepositing
-}) {
+}) =>{
   const [balance, setBalance] = useState(0);
   const [value, setValue] = useState('');
-  const {balanceOf, approve, allowance} =  useUtilityToken(stakingData.depositToken);
+  const {balanceOf, approve, allowance} =  useUtilityToken(stakingData.depositTokenAddress);
 
 
   useEffect(() => {
@@ -190,3 +204,5 @@ const CancelButton = styled.div`
   }
 
 `
+
+export default DepositModal;

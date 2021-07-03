@@ -23,7 +23,7 @@ import { RedirectOldRemoveLiquidityPathStructure } from './views/RemoveLiquidity
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './views/AddLiquidity/redirects'
 import './index.css'
 import 'antd/dist/antd.css'
-import Poolls from './views/Pools/components/PoolCardsDetail'
+import PoolDetail from './views/Pools/components/PoolCardsDetail'
 import IfoDetail from './views/Launchpad/components/IfoCard/IfoDetail'
 
 import { LanguageContext } from './hooks/LanguageContext'
@@ -177,8 +177,8 @@ const App: React.FC = () => {
                 <Route path="/nft">
                   <Redirect to="/collectibles" />
                 </Route>
-                <Route path="/PoolCardsDetail">
-                  <Poolls />
+                <Route path="/PoolCardsDetail/:id">
+                  <PoolDetail />
                 </Route>
                 <Route path="/IfoDetail/:id">
                   <IfoDetail />
