@@ -4,7 +4,7 @@ import { Tabs } from 'antd'
 import { TableStyled } from './styled'
 import { columnHistory } from './Mock'
 import { useHookDetail } from './Store'
-const { TabPane } = Tabs
+
 const TableHistory = ({ tokenId }: any) => {
   const [stateDetail, actionsDetail] = useHookDetail()
   // call history transaction by tokenID
