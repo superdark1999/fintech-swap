@@ -3,7 +3,7 @@ import moment from 'moment'
 import { DatePicker, Space } from 'antd'
 const { RangePicker } = DatePicker
 function DatePickerComp(props) {
-  const { disabledStartDate = false, disabledEndDate = false } = props
+  const { disabledStartDate = false, disabledEndDate = false, isFormData } = props
   const range = (start, end) => {
     const result = []
     for (let i = start; i < end; i++) {
@@ -14,7 +14,7 @@ function DatePickerComp(props) {
 
   const disabledDate = (current) => {
     // Can not select days before today and today
-    return current && current < moment().endOf('day')
+    return current && current.unix() < moment().unix()
   }
 
   const disabledDateTime = () => {
@@ -34,9 +34,22 @@ function DatePickerComp(props) {
       }
     }
   }
+  // const handleRangeTime = (value) => {
+
+  //   const startTime = value[0]?.utc?.()?.unix?.()
+  //   const endTime = value[1]?.utc?.()?.unix?.()
+  //   if(isFormData){
+  //     if(props?.onChange){
+  //       props.onChange?.({startTime,endTime})
+  //     }
+  //   }
+  //   //props?.onChange?.({startTime,endTime})
+  // }
+
   return (
     <Space direction="vertical" size={12}>
       <RangePicker
+        {...props}
         disabledDate={disabledDate}
         disabledTime={disabledRangeTime}
         disabled={[disabledStartDate, disabledEndDate]}
@@ -48,6 +61,11 @@ function DatePickerComp(props) {
           ],
         }}
         format="YYYY-MM-DD HH:mm"
+        onChange={(value)=>{
+          const startTime = value[0]?.utc?.()?.unix?.()
+          const endTime = value[1]?.utc?.()?.unix?.()
+          props.onChange({startTime,endTime})
+        }}
       />
     </Space>
   )

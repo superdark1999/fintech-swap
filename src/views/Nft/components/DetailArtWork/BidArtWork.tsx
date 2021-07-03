@@ -49,6 +49,8 @@ import notification from 'components-v2/Alert'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import TableHistory from './TableHistory'
+import Countdown from 'react-countdown'
+import moment from 'moment'
 const { TabPane } = Tabs
 
 const DetaiArtWork = ({ id }: any) => {
@@ -68,6 +70,7 @@ const DetaiArtWork = ({ id }: any) => {
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
   const [isReadyBid, setIsReadyBid] = useState(false)
   const [nextStepOffer, setStepNextOffer] = useState<number>(1)
+  const [dayExp, setDayExp] = useState<number>(1)
 
   useEffect(() => {
     getDetailNFT({ id }).then(({ status, data }) => {
@@ -81,6 +84,11 @@ const DetaiArtWork = ({ id }: any) => {
             const stepPriceUnit = await marketServicesMethod?.getStepPrice?.(
               data?.data?.tokenId,
             )
+            const timeInfo  = await marketServicesMethod?.getBidTimeByTokenId?.(
+              data?.data?.tokenId
+            )
+            const endTime = moment(Number(timeInfo?.[2]))?.valueOf()
+            setDayExp(endTime>moment()?.valueOf()?endTime:0)
             setStep(getPrice(stepPriceUnit._hex))
             const bidsData =
               bidsArr?.map((item: any) => {
@@ -224,6 +232,7 @@ const DetaiArtWork = ({ id }: any) => {
   }
 
   const renderButton = () => {
+    console.log(dayExp)
     if (isSelled || account === NFTDetail.ownerWalletAddress) return null
     if (isProcessing || userState?.isProcessingCanBuy) {
       return <ButtonProccesing />
@@ -242,7 +251,7 @@ const DetaiArtWork = ({ id }: any) => {
         </ButtonTrade>
       )
     }
-    if (userState?.isCanBuy) {
+    if (userState?.isCanBuy&&dayExp>0) {
       return (
         <ButtonTrade onClick={() => setIsShowModalSetPrice(true)}>
           <SwapOutlined /> Play Bid
@@ -269,7 +278,19 @@ const DetaiArtWork = ({ id }: any) => {
                 <CloseOutlined className="icon" />
               </Link>
             </div>
-            <div className="date-time">02h 31m 04s left 🔥 </div>
+            <div className="date-time">
+             {dayExp > 0? 
+             dayExp==1?
+             <>Caculating</>:
+                  <>
+                    <Countdown
+                      onComplete={() => setDayExp(0)}
+                      date={dayExp}
+                    />{' '}
+                    🔥{' '}
+                  </> 
+            : <>Bid time is over</> }
+            </div>
             <div className="rating">
               4.8 <StarFilled style={{ color: '#fadb14' }} />{' '}
               <span

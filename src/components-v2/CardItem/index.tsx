@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom'
 import { useActiveWeb3React } from 'wallet/hooks'
 import Loading from 'assets/images/loading.gif'
 import formatNumber from 'utils/formatNumber'
+import moment from 'moment'
 
 import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import { isMobile } from 'react-device-detect'
@@ -26,7 +27,7 @@ export default function CardItem(props?: any) {
   const { account, chainId } = useActiveWeb3React()
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
-  const [dayExp, setDayExp] = useState(false)
+  const [dayExp, setDayExp] = useState(0)
   const [playVideo, setplayVideo] = useState(false)
   const videoRef = useRef<HTMLVideoElement>();
   const marketServiceMethod = useMarketServices()
@@ -35,12 +36,13 @@ export default function CardItem(props?: any) {
       if (
         marketServiceMethod &&
         data?.tokenId &&
-        data?.NFTType !== 'swap-store'
+        data?.NFTType == 'auction'
       ) {
-        const price = await marketServiceMethod?.getHighestBidAndPrice(
-          data?.tokenId,
-          data?.NFTType,
+        const timeInfo  = await marketServiceMethod?.getBidTimeByTokenId?.(
+          data?.tokenId
         )
+        const endTime = timeInfo?.[2]? moment(Number(timeInfo?.[2])||0)?.valueOf(): 0
+        setDayExp(endTime>moment()?.valueOf()?endTime:0)
         setPrice(price)
         setLoading(false)
       }
@@ -101,12 +103,12 @@ export default function CardItem(props?: any) {
               <div className="gradient-background">
                 <div className="title">{data?.title}</div>
               </div>
-              {!dayExp && data.NFTType === 'auction' && (
+              {data.NFTType === 'auction'&&dayExp>0 && (
                 <div className="header-card-art-work">
                   <div className="date-time">
                     <Countdown
-                      onComplete={() => setDayExp(true)}
-                      date={Date.now() + Math.floor(Math.random() * 10000000)}
+                      onComplete={() => setDayExp(0)}
+                      date={dayExp}
                     />{' '}
                     🔥{' '}
                   </div>
@@ -198,7 +200,7 @@ export default function CardItem(props?: any) {
             <div className="number">
               {isHideButton ? null : data?.NFTType !== 'swap-store' ? (
                 <div>
-                  {formatNumber(price)} LUCKY <img src={Token} alt="" />
+                  {data?.price} LUCKY <img src={Token} alt="" />
                 </div>
               ) : (
                 <ButtonBuy className="btn-swap" onClick={onSwapItem}>
