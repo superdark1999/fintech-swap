@@ -26,7 +26,7 @@ export default function PoolCardDetails({
   setIsHarvesting,
 }) {
 
-  const {listenApproveEvent, approve, allowance} =  useUtilityToken(stakingData.depositToken);
+  const {listenApproveEvent, approve, allowance} =  useUtilityToken(stakingData.depositTokenAddress);
   const [isApproved, setIsApproved] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
 
@@ -34,13 +34,14 @@ export default function PoolCardDetails({
 
   useEffect(() => {
     const fetchApproval = async() => {
-      const data = await allowance(account, stakingData.stakingContract);
-      setIsApproved(data.toString() !== '0')
+      const data = await allowance(account, stakingData.stakingAddress).catch(error => console.log("allowance error: ", error));
+      if (data)
+        setIsApproved(data.toString() !== '0')
     }
     if (account) {
       fetchApproval();
     }
-  },[account, allowance, stakingData.stakingContract])
+  },[account, allowance, stakingData.stakingAddress])
 
   useEffect(() => {
     listenApproveEvent(() => setIsApproved(true));
@@ -50,7 +51,7 @@ export default function PoolCardDetails({
 
   const handleApprove = async () => {
     setIsApproving(true);
-    await approve(stakingData.stakingContract);
+    await approve(stakingData.stakingAddress);
   }
 
   const handleHarvest = async () => {

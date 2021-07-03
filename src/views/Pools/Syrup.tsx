@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
@@ -10,28 +10,47 @@ import useI18n from 'hooks/useI18n'
 import { usePools, useBlock } from 'state/hooks'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import Coming from './components/Coming'
-import PoolCard from './components/PoolCard'
-import PoolTabButtons from './components/PoolTabButtons'
-import Divider from './components/Divider'
-import PoolItem from './components/PoolCards'
+import {Pool} from 'config/constants/types'
+import PoolCards from './components/PoolCards'
+import NavBar from './components/NavBar';
+import { useHookPools } from './Store';
+
 
 const Farm: React.FC = () => {
+  const [activeTab, setActiveTab] = useState('1');
+
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const { account } = useWeb3React()
-  const pools = usePools(account)
+  // const pools = usePools(account)
   const { currentBlock } = useBlock()
-  const [stakedOnly, setStakedOnly] = useState(false)
+  const [ state, actions] = useHookPools();
+  const { pools } = state;
 
-  const [finishedPools, openPools] = useMemo(
-    () => partition(pools, (pool) => pool.isFinished || currentBlock > pool.endBlock),
-    [currentBlock, pools],
-  )
-  const stakedOnlyPools = useMemo(
-    () => openPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
-    [openPools],
-  )
+  useEffect(() => {
+   const fetchPools = () => {
+    actions.getPools()
+   } 
+   
+   fetchPools();
+  })
+  
+  const toggle = tab => {
+    if(activeTab !== tab) setActiveTab(tab);
+  }
+
+
+
+  // const [stakedOnly, setStakedOnly] = useState(false)
+
+  // const [finishedPools, openPools] = useMemo(
+  //   () => partition(pools, (pool) => pool.isFinished || currentBlock > pool.endBlock),
+  //   [currentBlock, pools],
+  // )
+  // const stakedOnlyPools = useMemo(
+  //   () => openPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)),
+  //   [openPools],
+  // )
 
   return (
     <Page>
@@ -50,7 +69,8 @@ const Farm: React.FC = () => {
       </Hero> */}
       {/* <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} /> */}
       {/* <Divider /> */}
-      <PoolItem />
+      <NavBar activeTab={activeTab} toggle={toggle}/>
+      <PoolCards pools={pools} activeTab={activeTab}/>
       <FlexLayout>
         {/* <Route exact path={`${path}`}>
           <>

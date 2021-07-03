@@ -60,6 +60,15 @@ export interface FarmConfig {
     endBlock: number
   }
 }
+export interface Pool {
+  _id: string,
+  name: string,
+  depositTokenSymbol: string,
+  rewardTokenSymbol: string,
+  depositTokenAddress: string,
+  rewardTokenAddress: string,
+  stakingAddress: string,
+}
 
 export interface PoolConfig {
   sousId: number
