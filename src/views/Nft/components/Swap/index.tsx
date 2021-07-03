@@ -124,9 +124,10 @@ export default  () => {
           return {
             ownerWalletAddress: item[0],
             tokenId: Number(item[1]),
-            price: getPrice(Number(item[2]))
+            price: getPrice(Number(item[2])),
+            isCancel:item[3]
           }
-        })
+        })?.filter((i:any)=>!i?.isCancel)
         if(!_.isEmpty(rawNFTs)){
           getNFT({
             tokenId: rawNFTs.map((it:any)=>it.tokenId)

@@ -49,6 +49,8 @@ import notification from 'components-v2/Alert'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import TableHistory from './TableHistory'
+import Countdown from 'react-countdown'
+import moment, { max } from 'moment'
 const { TabPane } = Tabs
 
 const DetaiArtWork = ({ id }: any) => {
@@ -68,6 +70,7 @@ const DetaiArtWork = ({ id }: any) => {
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
   const [isReadyBid, setIsReadyBid] = useState(false)
   const [nextStepOffer, setStepNextOffer] = useState<number>(1)
+  const [dayExp, setDayExp] = useState<number>(1)
 
   useEffect(() => {
     getDetailNFT({ id }).then(({ status, data }) => {
@@ -75,37 +78,46 @@ const DetaiArtWork = ({ id }: any) => {
         if (data?.data?.tokenId && marketServicesMethod) {
           //get highest bid price
           const getBidInfoToken = async () => {
-            const bidsArr = await marketServicesMethod?.getBidsByTokenId?.(
-              data?.data?.tokenId,
-            )
-            const stepPriceUnit = await marketServicesMethod?.getStepPrice?.(
-              data?.data?.tokenId,
-            )
-            setStep(getPrice(stepPriceUnit._hex))
-            const bidsData =
-              bidsArr?.map((item: any) => {
-                return {
-                  key: item?.[0] || '',
-                  address: item?.[0] || '',
-                  price: Number(item?.[1]?._hex) / Number(1e18),
-                }
-              }) || []
-            const maxPrice =
-              _.maxBy(bidsData, (item: any) => item?.price)?.price || 0
-            const unitPrice = await marketServicesMethod?.getTokenBidPrice?.(
-              data?.data?.tokenId,
-            )
-            const price = getPrice(unitPrice?._hex)
-            setBidsData(bidsData.filter((it: any) => it.price > price))
-            if (price > maxPrice) {
-              setPrice(price)
-            } else {
-              setPrice(maxPrice)
+            try{
+              const bidsArr = await marketServicesMethod?.getBidsByTokenId?.(
+                data?.data?.tokenId,
+              )
+              const stepPriceUnit = await marketServicesMethod?.getStepPrice?.(
+                data?.data?.tokenId,
+              )
+              const timeInfo  = await marketServicesMethod?.getBidTimeByTokenId?.(
+                data?.data?.tokenId
+              )
+              const endTime = moment.unix(Number(timeInfo?.[2]))?.valueOf()
+              console.log(endTime)
+              setDayExp(endTime>moment()?.valueOf()?endTime:0)
+              setStep(getPrice(stepPriceUnit._hex))
+              const bidsData =
+                bidsArr?.map((item: any) => {
+                  return {
+                    key: item?.[0] || '',
+                    address: item?.[0] || '',
+                    price: Number(item?.[1]?._hex) / Number(1e18),
+                  }
+                }) || []
+              const maxPrice =
+                _.maxBy(bidsData, (item: any) => item?.price)?.price || 0
+              const unitPrice = await marketServicesMethod?.getTokenBidPrice?.(
+                data?.data?.tokenId,
+              )
+              const price = getPrice(unitPrice?._hex)
+              setBidsData(bidsData.filter((it: any) => it.price > price))
+              if (price > maxPrice) {
+                setPrice(price)
+              } else {
+                setPrice(maxPrice)
+              }
+              if (account)
+                setIsReadyBid(!!bidsData.find((it: any) => it.address == account))
+            }catch(err){
+
             }
-            if (account)
-              setIsReadyBid(!!bidsData.find((it: any) => it.address == account))
           }
-          setLoading(false)
           getBidInfoToken()
         }
         setNFTDetail(data?.data)
@@ -242,7 +254,7 @@ const DetaiArtWork = ({ id }: any) => {
         </ButtonTrade>
       )
     }
-    if (userState?.isCanBuy) {
+    if (userState?.isCanBuy&&dayExp>0) {
       return (
         <ButtonTrade onClick={() => setIsShowModalSetPrice(true)}>
           <SwapOutlined /> Play Bid
@@ -269,7 +281,19 @@ const DetaiArtWork = ({ id }: any) => {
                 <CloseOutlined className="icon" />
               </Link>
             </div>
-            <div className="date-time">02h 31m 04s left 🔥 </div>
+            <div className="date-time">
+             {dayExp > 0? 
+             dayExp==1?
+             <>Caculating</>:
+                  <>
+                    <Countdown
+                      onComplete={() => setDayExp(0)}
+                      date={dayExp}
+                    />{' '}
+                    🔥{' '}
+                  </> 
+            : <>Bid time is over</> }
+            </div>
             <div className="rating">
               4.8 <StarFilled style={{ color: '#fadb14' }} />{' '}
               <span

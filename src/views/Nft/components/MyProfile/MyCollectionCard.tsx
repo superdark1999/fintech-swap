@@ -112,8 +112,9 @@ export default function MyCollectionCard({ data, option }: any) {
   }
   const onSubmitRuleAuction = (value: any) => {
     const tokenId = data?.tokenId
+    const {startTime, endTime} = value
     setIsPrcessing(true)
-    marketServicesMethod?.setTokenBidInfo(tokenId, value.price, value.stepPrice)
+    marketServicesMethod?.setTokenBidInfo(tokenId, value.price, value.stepPrice, value?.dateTime?.startTime,value?.dateTime?.endTime)
       .then((dt) => {
         if (dt?.hash) {
           setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
@@ -232,7 +233,6 @@ export default function MyCollectionCard({ data, option }: any) {
       }
     }
   }
-  console.log('s', showQR);
   const renderQRCode = () => {
     return (
       <button className="btn-qrCode" onClick={() => setShowQR(true)}>
