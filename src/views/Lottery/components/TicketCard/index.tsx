@@ -62,7 +62,7 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
       <CardBody>
         <CardHeader>
           <IconWrapper>
-            <img alt="" src="https://merlinlab.com/assets/lottery/lottery.svg" />
+            <img alt="" src="https://merlinlab.com/assets/lottery/lottery.svg"/>
           </IconWrapper>
           {lotteryHasDrawn ? (
             <TicketCountWrapper>

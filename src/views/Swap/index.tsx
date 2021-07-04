@@ -23,12 +23,7 @@ import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useAppro
 import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
 import { Field } from '../../state/swap/actions'
-import {
-  useDefaultsFromURLSearch,
-  useDerivedSwapInfo,
-  useSwapActionHandlers,
-  useSwapState,
-} from '../../state/swap/hooks'
+import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from '../../state/swap/hooks'
 import { useExpertModeManager, useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton } from '../../components/Swap/Shared'
 import Loader from '../../components/Swap/Loader'
@@ -53,7 +48,7 @@ const Swap = () => {
   const [syrupTransactionType, setSyrupTransactionType] = useState<string>('')
   const urlLoadedTokens: Token[] = useMemo(
     () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
-    [loadedInputCurrency, loadedOutputCurrency],
+    [loadedInputCurrency, loadedOutputCurrency]
   )
   const handleConfirmTokenWarning = useCallback(() => {
     setDismissTokenWarning(true)
@@ -76,11 +71,11 @@ const Swap = () => {
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
-  const {
-    wrapType,
-    execute: onWrap,
-    inputError: wrapInputError,
-  } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
+  const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
+    currencies[Field.INPUT],
+    currencies[Field.OUTPUT],
+    typedValue
+  )
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const trade = showWrap ? undefined : v2Trade
 
@@ -102,13 +97,13 @@ const Swap = () => {
     (value: string) => {
       onUserInput(Field.INPUT, value)
     },
-    [onUserInput],
+    [onUserInput]
   )
   const handleTypeOutput = useCallback(
     (value: string) => {
       onUserInput(Field.OUTPUT, value)
     },
-    [onUserInput],
+    [onUserInput]
   )
 
   // modal and loading
@@ -135,7 +130,7 @@ const Swap = () => {
 
   const route = trade?.route
   const userHasSpecifiedInputOutput = Boolean(
-    currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0)),
+    currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
   )
   const noRoute = !route
 
@@ -160,7 +155,7 @@ const Swap = () => {
     trade,
     allowedSlippage,
     deadline,
-    recipient,
+    recipient
   )
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
@@ -229,7 +224,7 @@ const Swap = () => {
         setSyrupTransactionType(purchaseType)
       }
     },
-    [setIsSyrup, setSyrupTransactionType],
+    [setIsSyrup, setSyrupTransactionType]
   )
 
   const handleInputSelect = useCallback(
@@ -240,7 +235,7 @@ const Swap = () => {
         checkForSyrup(inputCurrency.symbol.toLowerCase(), 'Selling')
       }
     },
-    [onCurrencySelection, setApprovalSubmitted, checkForSyrup],
+    [onCurrencySelection, setApprovalSubmitted, checkForSyrup]
   )
 
   const handleMaxInput = useCallback(() => {
@@ -256,7 +251,7 @@ const Swap = () => {
         checkForSyrup(outputCurrency.symbol.toLowerCase(), 'Buying')
       }
     },
-    [onCurrencySelection, checkForSyrup],
+    [onCurrencySelection, checkForSyrup]
   )
 
   return (
@@ -271,10 +266,10 @@ const Swap = () => {
         transactionType={syrupTransactionType}
         onConfirm={handleConfirmSyrupWarning}
       />
-
+      
       <AppBody>
         <FlexBox>
-          <CardNav />
+          <CardNav/>
           <PageHeader title="" description="" />
         </FlexBox>
         <Wrapper id="swap-page">
@@ -372,12 +367,8 @@ const Swap = () => {
                     )}
                     {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                       <RowBetween align="center">
-                        <Text fontSize="14px" fontWeight="600">
-                          Slippage Tolerance
-                        </Text>
-                        <Text fontSize="14px" fontWeight="700">
-                          {allowedSlippage / 100}%
-                        </Text>
+                        <Text fontSize="14px" fontWeight="600">Slippage Tolerance</Text>
+                        <Text fontSize="14px" fontWeight="700">{allowedSlippage / 100}%</Text>
                       </RowBetween>
                     )}
                   </AutoColumn>
@@ -386,17 +377,15 @@ const Swap = () => {
             </AutoColumn>
             <BottomGrouping className="bot-btn">
               {!account ? (
-                <ConnectWalletButton />
+                <ConnectWalletButton  />
               ) : showWrap ? (
-                <Button disabled={Boolean(wrapInputError)} onClick={onWrap}>
+                <Button disabled={Boolean(wrapInputError)} onClick={onWrap} >
                   {wrapInputError ??
                     (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
                 </Button>
               ) : noRoute && userHasSpecifiedInputOutput ? (
                 <GreyCard style={{ textAlign: 'center' }}>
-                  <Text mb="4px" color="#2b2e2f">
-                    Insufficient liquidity for this trade.
-                  </Text>
+                  <Text mb="4px" color="#2b2e2f">Insufficient liquidity for this trade.</Text>
                 </GreyCard>
               ) : showApproveFlow ? (
                 <RowBetween>

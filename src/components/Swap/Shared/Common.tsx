@@ -82,7 +82,7 @@ export function ExternalLink({
         event.preventDefault()
       }
     },
-    [target],
+    [target]
   )
   return <StyledLink target={target} rel={rel} href={href} onClick={handleClick} {...rest} />
 }

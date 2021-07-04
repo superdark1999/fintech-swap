@@ -1,10 +1,5 @@
 import { CurrencyAmount, Fraction, JSBI, Percent, TokenAmount, Trade } from '@luckyswap/v2-sdk'
-import {
-  BLOCKED_PRICE_IMPACT_NON_EXPERT,
-  ALLOWED_PRICE_IMPACT_HIGH,
-  ALLOWED_PRICE_IMPACT_LOW,
-  ALLOWED_PRICE_IMPACT_MEDIUM,
-} from '../constants'
+import { BLOCKED_PRICE_IMPACT_NON_EXPERT , ALLOWED_PRICE_IMPACT_HIGH, ALLOWED_PRICE_IMPACT_LOW, ALLOWED_PRICE_IMPACT_MEDIUM } from '../constants'
 
 import { Field } from '../state/swap/actions'
 import { basisPointsToPercent } from './index'
@@ -14,10 +9,9 @@ const ONE_HUNDRED_PERCENT = new Percent(JSBI.BigInt(10000), JSBI.BigInt(10000))
 const INPUT_FRACTION_AFTER_FEE = ONE_HUNDRED_PERCENT.subtract(BASE_FEE)
 
 // computes price breakdown for the trade
-export function computeTradePriceBreakdown(trade?: Trade): {
-  priceImpactWithoutFee?: Percent
-  realizedLPFee?: CurrencyAmount
-} {
+export function computeTradePriceBreakdown(
+  trade?: Trade
+): { priceImpactWithoutFee?: Percent; realizedLPFee?: CurrencyAmount } {
   // for each hop in our trade, take away the x*y=k price impact from 0.3% fees
   // e.g. for 3 tokens/2 hops: 1 - ((1 - .03) * (1-.03))
   const realizedLPFee = !trade
@@ -25,8 +19,8 @@ export function computeTradePriceBreakdown(trade?: Trade): {
     : ONE_HUNDRED_PERCENT.subtract(
         trade.route.pairs.reduce<Fraction>(
           (currentFee: Fraction): Fraction => currentFee.multiply(INPUT_FRACTION_AFTER_FEE),
-          ONE_HUNDRED_PERCENT,
-        ),
+          ONE_HUNDRED_PERCENT
+        )
       )
 
   // remove lp fees from price impact ,
@@ -51,12 +45,12 @@ export function computeTradePriceBreakdown(trade?: Trade): {
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
 export function computeSlippageAdjustedAmounts(
   trade: Trade | undefined,
-  allowedSlippage: number,
+  allowedSlippage: number
 ): { [field in Field]?: CurrencyAmount } {
   const pct = basisPointsToPercent(allowedSlippage)
   return {
     [Field.INPUT]: trade?.maximumAmountIn(pct),
-    [Field.OUTPUT]: trade?.minimumAmountOut(pct),
+    [Field.OUTPUT]: trade?.minimumAmountOut(pct)
   }
 }
 

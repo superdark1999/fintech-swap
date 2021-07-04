@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import { useContract, useLottery, useLotteryTicket } from 'hooks/useContract'
+import {useContract, useLottery, useLotteryTicket } from 'hooks/useContract'
 import { getLotteryAddress, getLotteryTicketAddress } from 'utils/addressHelpers'
 import lotteryTicketAbi from 'config/abi/lotteryNft.json'
 import lotteryAbi from 'config/abi/lottery.json'
@@ -50,7 +50,7 @@ export const useTotalRewards = () => {
       fetchBalance()
     }
   }, [lotteryContract, fastRefresh])
-  console.log('rewards>>', rewards)
+  console.log('rewards>>',rewards)
   return rewards
 }
 
@@ -63,7 +63,7 @@ export const useTotalClaim = () => {
 
   const fetchBalance = useCallback(async () => {
     setClaimLoading(true)
-    const claim = await getTotalClaim(lotteryContract, ticketsContract, account)
+    const claim =  await getTotalClaim(lotteryContract, ticketsContract, account)
     setClaimAmount(claim)
     setClaimLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,7 +105,7 @@ export const useMatchingRewardLength = (numbers) => {
   useEffect(() => {
     const fetchBalance = async () => {
       const matchedNumbaers = await getMatchingRewardLength(lotteryContract, numbers)
-      console.log('matchedNumbaers??', matchedNumbaers, numbers)
+      console.log('matchedNumbaers??',matchedNumbaers,numbers)
 
       setMatchingNumbers(matchedNumbaers)
     }

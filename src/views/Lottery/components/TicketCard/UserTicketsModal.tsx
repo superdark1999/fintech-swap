@@ -38,11 +38,7 @@ const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, on
       )
     }
     // eslint-disable-next-line react/no-array-index-key
-    return (
-      <p style={{ color: 'yellow' }} key={index}>
-        {number.toString()}
-      </p>
-    )
+    return <p style={{color:"yellow"}} key={index}>{number.toString()}</p>
   })
 
   return (

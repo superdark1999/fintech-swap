@@ -28,8 +28,8 @@ export const useFetchPublicData = () => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   useEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync() as any)
-    dispatch(fetchPoolsPublicDataAsync() as any)
+    dispatch(fetchFarmsPublicDataAsync()as any) 
+    dispatch(fetchPoolsPublicDataAsync()as any) 
   }, [dispatch, slowRefresh])
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export const usePools = (account): Pool[] => {
   const dispatch = useAppDispatch()
   useEffect(() => {
     if (account) {
-      dispatch(fetchPoolsUserDataAsync(account) as any)
+      dispatch(fetchPoolsUserDataAsync(account)as any) 
     }
   }, [account, dispatch, fastRefresh])
 
@@ -126,7 +126,7 @@ export const useFetchProfile = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchProfile(account) as any)
+    dispatch(fetchProfile(account)as any) 
   }, [account, dispatch])
 }
 
@@ -142,7 +142,7 @@ export const useTeam = (id: number) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchTeam(id) as any)
+    dispatch(fetchTeam(id)as any) 
   }, [id, dispatch])
 
   return team
@@ -153,7 +153,7 @@ export const useTeams = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchTeams() as any)
+    dispatch(fetchTeams()as any) 
   }, [dispatch])
 
   return { teams: data, isInitialized, isLoading }
@@ -167,7 +167,7 @@ export const useFetchAchievements = () => {
 
   useEffect(() => {
     if (account) {
-      dispatch(fetchAchievements(account) as any)
+      dispatch(fetchAchievements(account)as any) 
     }
   }, [account, dispatch])
 }
@@ -183,7 +183,7 @@ export const useFetchPriceList = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchPrices() as any)
+    dispatch(fetchPrices()as any) 
   }, [dispatch, slowRefresh])
 }
 
@@ -204,6 +204,7 @@ export const useGetApiPrice = (token: string) => {
 
 export const usePriceLuckyBusd = (): BigNumber => {
   return new BigNumber(LUCKY_PRICE) // TODO: this one will call api , current set price default
+
 }
 
 // Block

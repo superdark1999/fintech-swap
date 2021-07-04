@@ -72,6 +72,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [approval, setRequestedApproval])
 
+  
   const masterchefContract: any = useFarmsContract()
 
   async function _onStake(amount) {

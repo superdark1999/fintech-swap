@@ -7,6 +7,7 @@ import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../constants'
 import { PairState, usePairs } from '../data/Reserves'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
+
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const { chainId } = useActiveWeb3React()
 
@@ -17,9 +18,9 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const basePairs: [Token, Token][] = useMemo(
     () =>
       flatMap(bases, (base): [Token, Token][] => bases.map((otherBase) => [base, otherBase])).filter(
-        ([t0, t1]) => t0.address !== t1.address,
+        ([t0, t1]) => t0.address !== t1.address
       ),
-    [bases],
+    [bases]
   )
 
   const [tokenA, tokenB] = chainId
@@ -58,7 +59,7 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
               return true
             })
         : [],
-    [tokenA, tokenB, bases, basePairs, chainId],
+    [tokenA, tokenB, bases, basePairs, chainId]
   )
 
   const allPairs = usePairs(allPairCombinations)
@@ -74,9 +75,9 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
           .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
             memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr
             return memo
-          }, {}),
+          }, {})
       ),
-    [allPairs],
+    [allPairs]
   )
 }
 

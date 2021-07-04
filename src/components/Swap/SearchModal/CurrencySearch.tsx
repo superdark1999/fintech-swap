@@ -100,7 +100,7 @@ export function CurrencySearch({
         }
       }
     },
-    [onDismiss, onCurrencySelect, audioPlay],
+    [onDismiss, onCurrencySelect, audioPlay]
   )
 
   // clear the input on open
@@ -133,7 +133,7 @@ export function CurrencySearch({
         }
       }
     },
-    [filteredSortedTokens, handleCurrencySelect, searchQuery],
+    [filteredSortedTokens, handleCurrencySelect, searchQuery]
   )
 
   const selectedListInfo = useSelectedListInfo()
@@ -147,7 +147,7 @@ export function CurrencySearch({
             <QuestionHelper
               text={TranslateString(
                 130,
-                'Find a token by searching for its name or symbol or by pasting its address below.',
+                'Find a token by searching for its name or symbol or by pasting its address below.'
               )}
             />
           </Text>
@@ -204,9 +204,7 @@ export function CurrencySearch({
                       alt={`${selectedListInfo.current.name} list logo`}
                     />
                   ) : null}
-                  <Text id="currency-search-selected-list-name" color="red">
-                    {selectedListInfo.current.name}
-                  </Text>
+                  <Text id="currency-search-selected-list-name" color="red">{selectedListInfo.current.name}</Text>
                 </Row>
               ) : null}
               <LinkStyledButton

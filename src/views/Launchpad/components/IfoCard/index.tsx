@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useWeb3React } from '@web3-react/core'
 import { Card, CardBody, CardRibbon } from '@luckyswap/uikit'
-import { Progress } from 'antd'
+import { Progress } from 'antd';
 import { Ifo, IfoStatus } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
@@ -45,7 +45,7 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
 }
 
 const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
-  const { sympol, typePool, banner, logo, name, currency } = ifo
+  const {  sympol, typePool, banner, logo,  name, currency } = ifo
   const { offeringAmount, raisingAmount, totalAmount, getAddressListLength, status } = useGetPublicIfoData(ifo)
   const TranslateString = useI18n()
   const Ribbon = getRibbonComponent(status, TranslateString)
@@ -72,12 +72,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
         <ItemContent>
           <BoxHead>
-            <h2>
-              <span>
-                <img src={`${BASE_API_ADMIN}/${logo}`} alt="" />
-              </span>
-              {name}
-            </h2>
+            <h2><span><img src={`${BASE_API_ADMIN}/${logo}`} alt=""/></span>{name}</h2>
             <p>
               1 {currency} = {priceRate} {sympol}
             </p>
@@ -100,7 +95,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
 
           <BoxProgress>
             <TitleProgress>Progress</TitleProgress>
-            <Progress percent={parseFloat(processRate)} status="active" showInfo={false} />
+            <Progress percent={parseFloat(processRate)} status="active" showInfo={false}/>
             <ProgressFooter>
               <ProgressPercentage>{processRate}%</ProgressPercentage>
               <FeaturedCardMinimum style={{ marginLeft: '10px' }}>{` (Min.0%)`}</FeaturedCardMinimum>

@@ -25,26 +25,32 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   const profileContract = useProfileContract()
   const { account } = useWeb3React()
   const { toastSuccess } = useToast()
-  const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
-    useApproveConfirmTransaction({
-      onApprove: () => {
-        return pancakeRabbitsContract.methods.approve(getPancakeProfileAddress(), tokenId).send({ from: account })
-      },
-      onConfirm: () => {
-        if (!profile.isActive) {
-          return profileContract.methods.reactivateProfile(getPancakeRabbitsAddress(), tokenId).send({ from: account })
-        }
+  const {
+    isApproving,
+    isApproved,
+    isConfirmed,
+    isConfirming,
+    handleApprove,
+    handleConfirm,
+  } = useApproveConfirmTransaction({
+    onApprove: () => {
+      return pancakeRabbitsContract.methods.approve(getPancakeProfileAddress(), tokenId).send({ from: account })
+    },
+    onConfirm: () => {
+      if (!profile.isActive) {
+        return profileContract.methods.reactivateProfile(getPancakeRabbitsAddress(), tokenId).send({ from: account })
+      }
 
-        return profileContract.methods.updateProfile(getPancakeRabbitsAddress(), tokenId).send({ from: account })
-      },
-      onSuccess: async () => {
-        // Re-fetch profile
-        await dispatch(fetchProfile(account) as any)
-        toastSuccess('Profile Updated!')
+      return profileContract.methods.updateProfile(getPancakeRabbitsAddress(), tokenId).send({ from: account })
+    },
+    onSuccess: async () => {
+      // Re-fetch profile
+      await dispatch(fetchProfile(account)as any) 
+      toastSuccess('Profile Updated!')
 
-        onDismiss()
-      },
-    })
+      onDismiss()
+    },
+  })
   const bunnyIds = Object.keys(nftsInWallet).map((nftWalletItem) => Number(nftWalletItem))
   const walletNfts = nftList.filter((nft) => bunnyIds.includes(nft.bunnyId))
 

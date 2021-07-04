@@ -3,7 +3,7 @@ import { TranslatableText } from 'state/types'
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 
 export interface Ifo {
-  _id: string
+  _id: string,
   id: string
   isActive: boolean
   address: string
@@ -22,10 +22,10 @@ export interface Ifo {
   tokenSymbol: string
   releaseBlockNumber: number
   campaignId?: string
-  banner?: string
-  logo?: string
-  typePool?: string
-  sympol?: string
+  banner?:string
+  logo?:string
+  typePool?:string
+  sympol?:string
 }
 
 export enum PoolCategory {

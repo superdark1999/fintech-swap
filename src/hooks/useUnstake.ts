@@ -18,7 +18,7 @@ const useUnstake = (pid: number) => {
   const handleUnstake = useCallback(
     async (amount: string) => {
       const txHash = await unstake(masterChefContract, pid, amount, account)
-      dispatch(fetchFarmUserDataAsync(account) as any)
+      dispatch(fetchFarmUserDataAsync(account)as any) 
       console.info(txHash)
     },
     [account, dispatch, masterChefContract, pid],
@@ -48,9 +48,9 @@ export const useSousUnstake = (sousId) => {
         const txHash = await sousUnstake(sousChefContract, amount, decimals, account)
         console.info(txHash)
       }
-      dispatch(updateUserStakedBalance(sousId, account) as any)
-      dispatch(updateUserBalance(sousId, account) as any)
-      dispatch(updateUserPendingReward(sousId, account) as any)
+      dispatch(updateUserStakedBalance(sousId, account)as any) 
+      dispatch(updateUserBalance(sousId, account)as any) 
+      dispatch(updateUserPendingReward(sousId, account)as any) 
     },
     [account, dispatch, isOldSyrup, masterChefContract, sousChefContract, sousId],
   )

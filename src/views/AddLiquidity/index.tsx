@@ -26,7 +26,7 @@ import Pane from '../../components/Swap/Pane'
 import { MinimalPositionCard } from '../../components/Swap/PositionCard'
 import Row, { RowBetween, RowFlat } from '../../components/Swap/Row'
 import TransactionConfirmationModal, {
-  ConfirmationModalContent,
+  ConfirmationModalContent
 } from '../../components/Swap/TransactionConfirmationModal'
 import { useRouterContract } from '../../hooks/useContract'
 import AppBody from '../AppBody'

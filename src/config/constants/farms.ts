@@ -21,7 +21,7 @@ const farms: FarmConfig[] = [
     },
     token: tokens.xlucky,
     quoteToken: tokens.busd,
-  },
+  }
 ]
 
 export default farms

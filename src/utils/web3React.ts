@@ -5,6 +5,7 @@ import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import getNodeUrl from './getRpcUrl'
 
+
 const POLLING_INTERVAL = 12000
 const chainId = parseInt(process.env.REACT_APP_CHAIN_ID) || 56
 const rpcUrl = getNodeUrl(chainId)

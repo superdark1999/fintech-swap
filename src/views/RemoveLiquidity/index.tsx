@@ -22,7 +22,7 @@ import { RowBetween, RowFixed } from '../../components/Swap/Row'
 import { StyledInternalLink } from '../../components/Swap/Shared'
 import { Dots } from '../../components/Swap/swap/styleds'
 import TransactionConfirmationModal, {
-  ConfirmationModalContent,
+  ConfirmationModalContent
 } from '../../components/Swap/TransactionConfirmationModal'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'

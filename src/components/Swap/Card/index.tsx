@@ -17,9 +17,9 @@ export const LightCard = styled(Card)`
 
 export const GreyCard = styled(Card)`
   background-color: ${({ theme }) => theme.colors.tertiary};
-  height: 48px;
-  display: flex;
+  height:48px;
+  display:flex;
   align-items: center;
   justify-content: center;
-  cursor: not-allowed;
+  cursor:not-allowed;
 `

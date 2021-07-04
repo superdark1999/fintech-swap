@@ -48,26 +48,20 @@ const CakeStats = () => {
         </Heading> */}
         <Title>Candy Stats</Title>
         <Row>
-          <Text fontSize="14px" color="#2b2c3a">
-            {TranslateString(536, 'Total BESWAP Supply')}
-          </Text>
+          <Text fontSize="14px" color="#2b2c3a">{TranslateString(536, 'Total BESWAP Supply')}</Text>
           {cakeSupply && <CardValue fontSize="14px" color="#2b2c3a" value={cakeSupply} />}
         </Row>
         <Row>
-          <Text fontSize="14px" color="#2b2c3a">
-            {TranslateString(538, 'Total BESWAP  Burned')}
-          </Text>
+          <Text fontSize="14px" color="#2b2c3a">{TranslateString(538, 'Total BESWAP  Burned')}</Text>
           <CardValue fontSize="14px" color="#2b2c3a" decimals={0} value={burnedBalance} />
         </Row>
         <Row>
-          <Text fontSize="14px" color="#2b2c3a">
-            {TranslateString(540, 'New BESWAP/block')}
-          </Text>
+          <Text fontSize="14px" color="#2b2c3a">{TranslateString(540, 'New BESWAP/block')}</Text>
           <CardValue fontSize="14px" color="#2b2c3a" decimals={0} value={22} />
         </Row>
 
         <BgIMG>
-          <img src="/images/bg.png" alt="" />
+          <img src="/images/bg.png" alt=""/>
         </BgIMG>
       </CardBody>
     </StyledCakeStats>

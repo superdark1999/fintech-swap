@@ -35,22 +35,20 @@ const PageHeader = ({ title, description, children }: PageHeaderProps) => {
     <StyledPageHeader>
       <Flex alignItems="center">
         <Details>
-          <Heading mb="8px" color="#2b2c3a">
-            {title}
-          </Heading>
+          <Heading mb="8px" color="#2b2c3a">{title}</Heading>
           {description && (
             <Text color="#2b2c3a" fontSize="14px">
               {description}
             </Text>
           )}
         </Details>
-        <div className="line-icon">
-          <div className="custome-icon">
-            <IconButton variant="text" onClick={onPresentSettings} title="Settings">
+       <div className="line-icon">
+        <div className="custome-icon">
+          <IconButton variant="text" onClick={onPresentSettings} title="Settings">
               <CogIcon width="24px" color="currentColor" />
             </IconButton>
-          </div>
         </div>
+       </div>
         {/* <IconButton variant="text" onClick={onPresentRecentTransactions} title="Recent transactions">
           <HistoryIcon />
         </IconButton> */}

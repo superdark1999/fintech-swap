@@ -26,30 +26,36 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
   const balance = getBalanceNumber(useTokenBalance(currencyAddress))
   const TranslateString = useI18n()
   const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
-  const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
-    useApproveConfirmTransaction({
-      onRequiresApproval: async () => {
-        try {
-          const response = await raisingTokenContract.methods.allowance(account, contract.options.address).call()
-          const currentAllowance = new BigNumber(response)
-          return currentAllowance.gt(0)
-        } catch (error) {
-          return false
-        }
-      },
-      onApprove: () => {
-        return raisingTokenContract.methods
-          .approve(contract.options.address, ethers.constants.MaxUint256)
-          .send({ from: account })
-      },
-      onConfirm: () => {
-        return contract.methods.deposit(valueWithTokenDecimals.toString()).send({ from: account })
-      },
-      onSuccess: async () => {
-        onDismiss()
-        onSuccess(valueWithTokenDecimals)
-      },
-    })
+  const {
+    isApproving,
+    isApproved,
+    isConfirmed,
+    isConfirming,
+    handleApprove,
+    handleConfirm,
+  } = useApproveConfirmTransaction({
+    onRequiresApproval: async () => {
+      try {
+        const response = await raisingTokenContract.methods.allowance(account, contract.options.address).call()
+        const currentAllowance = new BigNumber(response)
+        return currentAllowance.gt(0)
+      } catch (error) {
+        return false
+      }
+    },
+    onApprove: () => {
+      return raisingTokenContract.methods
+        .approve(contract.options.address, ethers.constants.MaxUint256)
+        .send({ from: account })
+    },
+    onConfirm: () => {
+      return contract.methods.deposit(valueWithTokenDecimals.toString()).send({ from: account })
+    },
+    onSuccess: async () => {
+      onDismiss()
+      onSuccess(valueWithTokenDecimals)
+    },
+  })
 
   return (
     <Modal title={`Contribute ${currency}`} onDismiss={onDismiss}>

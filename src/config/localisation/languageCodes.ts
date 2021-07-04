@@ -27,4 +27,6 @@ export const TR = { code: 'tr', language: 'Türkçe' }
 export const UK = { code: 'uk', language: 'Українська' }
 export const VI = { code: 'vi', language: 'Tiếng Việt' }
 
-export const allLanguages = [EN]
+export const allLanguages = [
+  EN
+]
