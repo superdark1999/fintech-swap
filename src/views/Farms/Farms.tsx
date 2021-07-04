@@ -134,14 +134,14 @@ const Farms: React.FC = () => {
   const { fastRefresh } = useRefresh()
   useEffect(() => {
     if (account) {
-      dispatch(fetchFarmUserDataAsync(account)as any) 
+      dispatch(fetchFarmUserDataAsync(account) as any)
     }
   }, [account, dispatch, fastRefresh])
 
   const [stakedOnly, setStakedOnly] = useState(false)
   const isActive = !pathname.includes('history')
 
-  const activeFarms = farmsLP.filter((farm) =>   farm.multiplier !== '0X')
+  const activeFarms = farmsLP.filter((farm) => farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.multiplier === '0X')
 
   const stakedOnlyFarms = activeFarms.filter(
@@ -174,7 +174,7 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay: Farm[]): FarmWithStakedValue[] => {
       let farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
-        console.log('farm.>',farm)
+        console.log('farm.>', farm)
 
         if (!farm.lpTotalInQuoteToken || !prices) {
           return farm
@@ -321,7 +321,9 @@ const Farms: React.FC = () => {
           </ViewControls> */}
           <FilterContainer>
             <LabelWrapper>
-              <Text color="#fff" fontWeight="600" fontSize="16px">SORT BY</Text>
+              <Text color="#fff" fontWeight="600" fontSize="16px">
+                SORT BY
+              </Text>
               <Select
                 options={[
                   {
@@ -349,7 +351,9 @@ const Farms: React.FC = () => {
               />
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text color="#fff" fontWeight="600" fontSize="16px">SEARCH</Text>
+              <Text color="#fff" fontWeight="600" fontSize="16px">
+                SEARCH
+              </Text>
               <SearchInput onChange={handleChangeQuery} value={query} />
             </LabelWrapper>
           </FilterContainer>

@@ -84,7 +84,7 @@ const BalanceContainer = styled.div`
 
     @media (max-width: 768px) {
       width: 100%;
-    } 
+    }
   }
 `
 const onClick = ({ key }) => {

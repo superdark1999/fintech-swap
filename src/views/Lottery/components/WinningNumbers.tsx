@@ -46,21 +46,27 @@ const WinningNumbers: React.FC = () => {
           </Row>
           <Column>
             <RowNoPadding>
-              <CenteredTextWithPadding style={{color:'white'}}>{TranslateString(442, 'Tickets matching 4 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding style={{ color: 'white' }}>
+                {TranslateString(442, 'Tickets matching 4 numbers:')}
+              </CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{color:'yellow'}}>{MatchedNumber4}</strong>
+                <strong style={{ color: 'yellow' }}>{MatchedNumber4}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
             <RowNoPadding>
-              <CenteredTextWithPadding style={{color:'white'}}>{TranslateString(444, 'Tickets matching 3 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding style={{ color: 'white' }}>
+                {TranslateString(444, 'Tickets matching 3 numbers:')}
+              </CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{color:'yellow'}}>{MatchedNumber3}</strong>
+                <strong style={{ color: 'yellow' }}>{MatchedNumber3}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
             <RowNoPadding>
-              <CenteredTextWithPadding style={{color:'white'}}>{TranslateString(446, 'Tickets matching 2 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding style={{ color: 'white' }}>
+                {TranslateString(446, 'Tickets matching 2 numbers:')}
+              </CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{color:'yellow'}}>{MatchedNumber2}</strong>
+                <strong style={{ color: 'yellow' }}>{MatchedNumber2}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
           </Column>

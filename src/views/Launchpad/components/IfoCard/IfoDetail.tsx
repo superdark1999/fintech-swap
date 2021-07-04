@@ -12,7 +12,7 @@ import bep20Abi from 'config/abi/erc20.json'
 import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
 import useOldApproveConfirmTransaction from 'hooks/useOldApproveConfirmTransaction'
 import { useContract, useIfoContract } from 'hooks/useContract'
-import useUtilityToken from 'hooks/useUtilityToken';
+import useUtilityToken from 'hooks/useUtilityToken'
 import getTimePeriods from 'utils/getTimePeriods'
 import { useToast } from 'state/hooks'
 import { BASE_API_ADMIN } from 'config'
@@ -49,7 +49,20 @@ const IfoTitle = ({ activeIfo }: any) => {
   const [isApproved, setIsApproved] = useState(false)
   const [isWaningAllowedDepositAmount, setIsWaningAllowedDepositAmount] = useState(false)
   const [value, setValue] = useState('')
-  const { typePool, banner, social, sympol, launchDate, launchTime, description, name, address, currency, currencyAddress, logo } = activeIfo
+  const {
+    typePool,
+    banner,
+    social,
+    sympol,
+    launchDate,
+    launchTime,
+    description,
+    name,
+    address,
+    currency,
+    currencyAddress,
+    logo,
+  } = activeIfo
   const contract = useIfoContract(address)
   const {
     offeringAmount,
@@ -61,12 +74,12 @@ const IfoTitle = ({ activeIfo }: any) => {
     secondsUntilEnd,
     status,
     startBlockNum,
-    hasHarvest
+    hasHarvest,
   } = useGetPublicIfoData(activeIfo)
   const { account } = useWeb3React()
   const LPContract = useContract(currencyAddress, bep20Abi)
   const raisingTokenContract = useContract(address, ifoAbi)
-  const {balanceOf, approve, allowance} =  useUtilityToken(currencyAddress);
+  const { balanceOf, approve, allowance } = useUtilityToken(currencyAddress)
 
   const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
   const maxDeposit = maxDepositAmount.div(1e18).toNumber() - depositedAmount.div(1e18).toNumber()
@@ -86,7 +99,7 @@ const IfoTitle = ({ activeIfo }: any) => {
       LPContract.balanceOf(account)
         .then((data) => {
           setOriginBalance(parseFloat((data / 1e18).toFixed(4)))
-          setBalance(parseFloat((data / 1e18).toFixed(4)) - parseFloat(value !=='' ? value : "0"))
+          setBalance(parseFloat((data / 1e18).toFixed(4)) - parseFloat(value !== '' ? value : '0'))
         })
         .catch((error) => {
           console.log('Error fetching balance')
@@ -99,7 +112,6 @@ const IfoTitle = ({ activeIfo }: any) => {
       //   .catch((error) => {
       //     console.log('Error fetching balance')
       //   })
-
 
       LPContract.on('Approval', async (oldValue, newValue, event) => {
         try {
@@ -148,12 +160,7 @@ const IfoTitle = ({ activeIfo }: any) => {
     // addUserContributedAmount(amount)
   }
 
-  const {
-    isApproving,
-    isConfirmed,
-    isConfirming,
-    handleApprove,
-  } = useOldApproveConfirmTransaction({
+  const { isApproving, isConfirmed, isConfirming, handleApprove } = useOldApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
         const response = await LPContract.allowance(account, contract.options.address).then((data) => {
@@ -229,16 +236,13 @@ const IfoTitle = ({ activeIfo }: any) => {
   }
 
   const handleMaxAmount = () => {
-    if ( maxDeposit > originBalance){
-      setValue(originBalance.toString());
-      setBalance(0);
+    if (maxDeposit > originBalance) {
+      setValue(originBalance.toString())
+      setBalance(0)
+    } else {
+      setValue(maxDeposit.toString())
+      setBalance(originBalance - maxDeposit)
     }
-    else{
-      setValue(maxDeposit.toString());
-      setBalance(originBalance - maxDeposit);
-    }
-
-
   }
 
   const allTransactions = useAllTransactions()
@@ -263,7 +267,12 @@ const IfoTitle = ({ activeIfo }: any) => {
         <BoxContent>
           <div className="two-column">
             <div className="two-column-left">
-              <h3><span><img src={`${BASE_API_ADMIN}/${logo}`} alt=""/></span>{name}</h3>
+              <h3>
+                <span>
+                  <img src={`${BASE_API_ADMIN}/${logo}`} alt="" />
+                </span>
+                {name}
+              </h3>
 
               <BoxSocial>
                 <a rel="noreferrer" target="_blank" href={social && social.twitter}>
@@ -392,7 +401,7 @@ const IfoTitle = ({ activeIfo }: any) => {
         </BoxContent>
 
         <BoxForm>
-          {status!== 'finished' && typePool === 'Whitelisted' ? (
+          {status !== 'finished' && typePool === 'Whitelisted' ? (
             <button
               type="submit"
               className="whitelist"
@@ -410,32 +419,34 @@ const IfoTitle = ({ activeIfo }: any) => {
           )}
 
           <div className="box-input">
-            {status !== 'finished' &&(<div className="d-flex">
-              <div className="box-max">
-                <div className="balance">
-                  Balance:{' '}
-                  <CardValue bold color="" value={balance} decimals={2} fontSize="10px" fontWeight="600"></CardValue>
-                  {currency}
-                </div>
-                <input
-                  disabled={getStatus()  || maxDeposit === 0}
-                  className="input-max"
-                  type="text"
-                  pattern="^[0-9]*[.,]?[0-9]*$"
-                  placeholder="0.0"
-                  value={value}
-                  onChange={(e) => handleChangeAmount(e)}
-                />
-                <button className="max-btn" type="submit" onClick={handleMaxAmount}>
-                  Max
-                </button>
-                <div className="line"></div>
-                <div className="box-bnb">
-                  <p>{currency}</p>
-                  <input type="text" />
+            {status !== 'finished' && (
+              <div className="d-flex">
+                <div className="box-max">
+                  <div className="balance">
+                    Balance:{' '}
+                    <CardValue bold color="" value={balance} decimals={2} fontSize="10px" fontWeight="600"></CardValue>
+                    {currency}
+                  </div>
+                  <input
+                    disabled={getStatus() || maxDeposit === 0}
+                    className="input-max"
+                    type="text"
+                    pattern="^[0-9]*[.,]?[0-9]*$"
+                    placeholder="0.0"
+                    value={value}
+                    onChange={(e) => handleChangeAmount(e)}
+                  />
+                  <button className="max-btn" type="submit" onClick={handleMaxAmount}>
+                    Max
+                  </button>
+                  <div className="line"></div>
+                  <div className="box-bnb">
+                    <p>{currency}</p>
+                    <input type="text" />
+                  </div>
                 </div>
               </div>
-            </div>)}
+            )}
             {isWaningAllowedDepositAmount && <div className="waning">Current amount exceeds the limit</div>}
             {status === 'live' &&
               (!(isConfirmed || isConfirming || isApproved) ? (

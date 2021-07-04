@@ -1,74 +1,62 @@
-import React, {useState, useEffect, useMemo, useCallback} from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'
 import { useWeb3React } from '@web3-react/core'
-import useGetStateData from 'hooks/useGetStakeData';
+import useGetStateData from 'hooks/useGetStakeData'
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
-import { useContract,  useStakingContract } from 'hooks/useContract'
+import { useContract, useStakingContract } from 'hooks/useContract'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
-import useStakingEvent from 'hooks/useStakingEvent';
+import useStakingEvent from 'hooks/useStakingEvent'
 
-
-import UnStakeModal from './UnStakeModal';
-import DepositModal from './DepositModal';
-import PoolCardDetails from './PoolCardDetails';
-
-
+import UnStakeModal from './UnStakeModal'
+import DepositModal from './DepositModal'
+import PoolCardDetails from './PoolCardDetails'
 
 const stakingData = {
   name: 'Lucky',
   depositSymbol: 'XLUCKY2',
   rewardSymbol: 'XLUCKY1',
-  depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
-  rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a", // XLucky
-  stakingContract: "0x1dde4Fc6ca8121Cb11E988b524B275855F98aAA6",
-  
+  depositToken: '0xeDa153eF21dCE7BAe808B0265d86564cc26524b6', // XLucky2
+  rewardToken: '0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a', // XLucky
+  stakingContract: '0x1dde4Fc6ca8121Cb11E988b524B275855F98aAA6',
 }
 
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
 }
 
-
 function PoolCardsDetail() {
-  const [depositModal, setDepositModal] = useState(false);
-  const [withdrawModal, setWithdrawModel] = useState(false);
-  const [isUnStaking, setIsUnStaking] = useState(false);
-  const [isDepositing, setIsDepositing] = useState(false);
-  const [isHarvesting, setIsHarvesting] = useState(false);
+  const [depositModal, setDepositModal] = useState(false)
+  const [withdrawModal, setWithdrawModel] = useState(false)
+  const [isUnStaking, setIsUnStaking] = useState(false)
+  const [isDepositing, setIsDepositing] = useState(false)
+  const [isHarvesting, setIsHarvesting] = useState(false)
   const { account } = useWeb3React()
 
-  const stakingContract = useStakingContract(stakingData.stakingContract);
-  const { userAmount, userRewardDebt} = useGetStateData(stakingData);
+  const stakingContract = useStakingContract(stakingData.stakingContract)
+  const { userAmount, userRewardDebt } = useGetStateData(stakingData)
 
   const addTransaction = useTransactionAdder()
-  const contract = useContract(stakingData.stakingContract,SMART_CHEF_ABI );
-
-
+  const contract = useContract(stakingData.stakingContract, SMART_CHEF_ABI)
 
   useEffect(() => {
-    if (contract){
-      contract.on('Withdraw',  () => {
-        setIsUnStaking(false);
-
+    if (contract) {
+      contract.on('Withdraw', () => {
+        setIsUnStaking(false)
       })
-      contract.on('Deposit',  () => {
-        if (isDepositing)
-          setIsDepositing(false);
-        else
-          setIsHarvesting(false);
+      contract.on('Deposit', () => {
+        if (isDepositing) setIsDepositing(false)
+        else setIsHarvesting(false)
       })
-    // listenDepositEvent(() => console.log("deposit console"));
+      // listenDepositEvent(() => console.log("deposit console"));
 
-    // listenWithdrawEvent(() => console.log('withdraw console'));
-
-  
+      // listenWithdrawEvent(() => console.log('withdraw console'));
     }
   }, [contract, isDepositing])
 
-  const depositToggle = () => setDepositModal(!depositModal);
-  const unStakeToggle = () => setWithdrawModel(!withdrawModal);
+  const depositToggle = () => setDepositModal(!depositModal)
+  const unStakeToggle = () => setWithdrawModel(!withdrawModal)
 
   const allTransactions = useAllTransactions()
 
@@ -77,12 +65,10 @@ function PoolCardsDetail() {
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
 
-  const getStatus = useCallback(() =>{
+  const getStatus = useCallback(() => {
     const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
     return !!pending.length
-
   }, [sortedRecentTransactions])
-
 
   return (
     <>
@@ -90,15 +76,15 @@ function PoolCardsDetail() {
         <BoxDetail>
           <BoxHead>
             <figure>
-              <img src="../images/icon-logo.png" alt=""/>
+              <img src="../images/icon-logo.png" alt="" />
             </figure>
             <h2>Lucky Swap</h2>
             <span>Deposit LuckySwap Tokens and earn LUCKY</span>
           </BoxHead>
 
-          <PoolCardDetails 
-            userRewardDebt={userRewardDebt} 
-            userAmount={userAmount} 
+          <PoolCardDetails
+            userRewardDebt={userRewardDebt}
+            userAmount={userAmount}
             onUnStakeToggle={unStakeToggle}
             onDepositToggle={depositToggle}
             stakingContract={stakingContract}
@@ -112,13 +98,14 @@ function PoolCardsDetail() {
             setIsHarvesting={setIsHarvesting}
           />
 
-          <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>
-          Every time you stake and unStake EL tokens, the contract will automatically harvest HCATS rewards for you!
+          <p className="line__bot">
+            <img src="../images/icon-starts.png" alt="" />
+            Every time you stake and unStake EL tokens, the contract will automatically harvest HCATS rewards for you!
           </p>
         </BoxDetail>
       </Page>
 
-      <DepositModal 
+      <DepositModal
         depositModal={depositModal}
         depositToggle={depositToggle}
         depositSymbol={stakingData.depositSymbol}
@@ -129,19 +116,17 @@ function PoolCardsDetail() {
         setIsDepositing={setIsDepositing}
       />
 
-      <UnStakeModal 
-        withdrawModal={withdrawModal} 
+      <UnStakeModal
+        withdrawModal={withdrawModal}
         unStakeToggle={unStakeToggle}
         stakingContract={stakingContract}
         addTransaction={addTransaction}
         userAmount={userAmount}
         setIsUnStaking={setIsUnStaking}
-
       />
     </>
   )
 }
-
 
 const BoxHead = styled.div`
   display: flex;
@@ -226,7 +211,7 @@ const BoxDetail = styled.div`
     }
 
     &__footer {
-      border-top: 1px solid #D8D8D8;
+      border-top: 1px solid #d8d8d8;
       padding-top: 20px;
       width: 100%;
       text-align: center;
@@ -241,7 +226,6 @@ const BoxDetail = styled.div`
         min-height: 40px;
         border-color: transparent;
         color: #2b2e2f;
-
 
         &:hover {
           opacity: 0.7;
@@ -265,7 +249,5 @@ const BoxDetail = styled.div`
     }
   }
 `
-
-
 
 export default PoolCardsDetail

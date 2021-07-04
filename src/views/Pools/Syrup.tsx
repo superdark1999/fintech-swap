@@ -65,7 +65,6 @@ const Farm: React.FC = () => {
             <PoolCard key={pool.sousId} pool={pool} />
           ))}
         </Route> */}
-        
       </FlexLayout>
     </Page>
   )

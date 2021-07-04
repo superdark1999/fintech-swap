@@ -1,26 +1,23 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import BigNumber from 'bignumber.js'
-
 
 export default function UnStakeModal({
   withdrawModal,
-  unStakeToggle, 
+  unStakeToggle,
   stakingContract,
   addTransaction,
   userAmount,
-  setIsUnStaking
-}) 
-{
-  const [value, setValue] = useState('');
+  setIsUnStaking,
+}) {
+  const [value, setValue] = useState('')
   const handleUnStake = async () => {
     if (stakingContract) {
-      setIsUnStaking(true);
-      unStakeToggle();
+      setIsUnStaking(true)
+      unStakeToggle()
       const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
-      const gasAm = await stakingContract.estimateGas.deposit(...args)
-      .catch(() => console.log("Fail estimate gas"));
+      const gasAm = await stakingContract.estimateGas.deposit(...args).catch(() => console.log('Fail estimate gas'))
 
       stakingContract
         .withdraw(...args, { gasLimit: gasAm })
@@ -36,39 +33,46 @@ export default function UnStakeModal({
   }
 
   const handleMaxAmount = (e) => {
-    setValue(userAmount.div(1e18).toString());
+    setValue(userAmount.div(1e18).toString())
   }
   return (
     <div>
-      
       <Modal isOpen={withdrawModal} toggle={unStakeToggle}>
-          <ModalHeader toggle={unStakeToggle}></ModalHeader>
+        <ModalHeader toggle={unStakeToggle}></ModalHeader>
 
-          <ModalBody>
-            <Title>UnStake LuckySwap Tokens</Title>
-            <Available>{userAmount.div(1e18).toFixed(4)} Lucky Available</Available>
+        <ModalBody>
+          <Title>UnStake LuckySwap Tokens</Title>
+          <Available>{userAmount.div(1e18).toFixed(4)} Lucky Available</Available>
 
-            <BoxInput>
-              <input type="text" id="fname" name="fname" placeholder="0.000"
-                value={value}
-               onChange={(e) => setValue(e.target.value)}/>
-              <BoxLink>
-                <span className="text-lucky">lucky</span>
-                <BoxButton>
-                  <Button onClick={handleMaxAmount}>Max</Button>
-                </BoxButton>
-              </BoxLink>
-            </BoxInput>
-          </ModalBody>
+          <BoxInput>
+            <input
+              type="text"
+              id="fname"
+              name="fname"
+              placeholder="0.000"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+            />
+            <BoxLink>
+              <span className="text-lucky">lucky</span>
+              <BoxButton>
+                <Button onClick={handleMaxAmount}>Max</Button>
+              </BoxButton>
+            </BoxLink>
+          </BoxInput>
+        </ModalBody>
 
-          <ModalFooter>
-            <CancelButton>
-              <Button color="primary" onClick={unStakeToggle}>Cancel</Button>
-            </CancelButton>
-            <Button color="secondary" onClick={handleUnStake} disabled={false}>UnStake</Button>
-          </ModalFooter>
-        </Modal>
-      
+        <ModalFooter>
+          <CancelButton>
+            <Button color="primary" onClick={unStakeToggle}>
+              Cancel
+            </Button>
+          </CancelButton>
+          <Button color="secondary" onClick={handleUnStake} disabled={false}>
+            UnStake
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   )
 }
@@ -142,7 +146,7 @@ const BoxButton = styled.div`
     z-index: 1;
     background-color: #f5c606;
     color: #2b2e2f;
-    font-family: "Baloo Da";
+    font-family: 'Baloo Da';
     padding: 0px 10px;
     height: 40px;
   }
@@ -152,10 +156,9 @@ const CancelButton = styled.div`
   button {
     color: #2b2e2f;
     border: none;
-    :hover{
-      opacity: .8;
+    :hover {
+      opacity: 0.8;
       color: #2b2e2f;
     }
   }
-
 `

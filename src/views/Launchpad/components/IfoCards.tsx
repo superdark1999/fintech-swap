@@ -17,11 +17,11 @@ const IfoCardWrapper = styled.div<IfoCardWrapperProps>`
   grid-gap: 20px;
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   @media (min-width: 991px) {
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 `
 

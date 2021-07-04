@@ -30,7 +30,7 @@ const YourPrizesCard: React.FC = () => {
   const { claimAmount } = useTotalClaim()
 
   const winnings = getBalanceNumber(claimAmount)
-  console.log('winnings?',claimAmount,winnings)
+  console.log('winnings?', claimAmount, winnings)
   const isAWin = winnings > 0
 
   return (

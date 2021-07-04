@@ -10,7 +10,7 @@ import { TransactionDetails } from './reducer'
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
   response: TransactionResponse,
-  customData?: { summary?: string; approval?: { tokenAddress: string; spender: string } }
+  customData?: { summary?: string; approval?: { tokenAddress: string; spender: string } },
 ) => void {
   const { chainId, account } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
@@ -18,7 +18,7 @@ export function useTransactionAdder(): (
   return useCallback(
     (
       response: TransactionResponse,
-      { summary, approval }: { summary?: string; approval?: { tokenAddress: string; spender: string } } = {}
+      { summary, approval }: { summary?: string; approval?: { tokenAddress: string; spender: string } } = {},
     ) => {
       if (!account) return
       if (!chainId) return
@@ -29,7 +29,7 @@ export function useTransactionAdder(): (
       }
       dispatch(addTransaction({ hash, from: account, chainId, approval, summary }))
     },
-    [dispatch, chainId, account]
+    [dispatch, chainId, account],
   )
 }
 
@@ -75,6 +75,6 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
         if (!approval) return false
         return approval.spender === spender && approval.tokenAddress === tokenAddress && isTransactionRecent(tx)
       }),
-    [allTransactions, spender, tokenAddress]
+    [allTransactions, spender, tokenAddress],
   )
 }

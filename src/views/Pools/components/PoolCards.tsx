@@ -1,9 +1,9 @@
-import React, { useState }  from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
-import classnames from 'classnames';
+import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
+import classnames from 'classnames'
 import { Link } from 'react-router-dom'
-import useGetStateData from 'hooks/useGetStakeData';
+import useGetStateData from 'hooks/useGetStakeData'
 
 // import { Row, Col } from 'antd'
 
@@ -11,19 +11,18 @@ const stakingData = {
   name: 'Lucky',
   depositSymbol: 'XLUCKY2',
   rewardSymbol: 'XLUCKY1',
-  depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
-  rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a", // XLucky
-  stakingContract: "0x1dde4Fc6ca8121Cb11E988b524B275855F98aAA6",
+  depositToken: '0xeDa153eF21dCE7BAe808B0265d86564cc26524b6', // XLucky2
+  rewardToken: '0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a', // XLucky
+  stakingContract: '0x1dde4Fc6ca8121Cb11E988b524B275855F98aAA6',
 }
 
 function PoolCards() {
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState('1')
 
-  const { userAmount, userRewardDebt} = useGetStateData(stakingData);
+  const { userAmount, userRewardDebt } = useGetStateData(stakingData)
 
-
-  const toggle = tab => {
-    if(activeTab !== tab) setActiveTab(tab);
+  const toggle = (tab) => {
+    if (activeTab !== tab) setActiveTab(tab)
   }
 
   return (
@@ -33,7 +32,9 @@ function PoolCards() {
           <NavItem>
             <NavLink
               className={classnames({ active: activeTab === '1' })}
-              onClick={() => { toggle('1'); }}
+              onClick={() => {
+                toggle('1')
+              }}
             >
               Hot
             </NavLink>
@@ -42,7 +43,9 @@ function PoolCards() {
           <NavItem>
             <NavLink
               className={classnames({ active: activeTab === '2' })}
-              onClick={() => { toggle('2'); }}
+              onClick={() => {
+                toggle('2')
+              }}
             >
               Earn
             </NavLink>
@@ -51,7 +54,9 @@ function PoolCards() {
           <NavItem>
             <NavLink
               className={classnames({ active: activeTab === '3' })}
-              onClick={() => { toggle('3'); }}
+              onClick={() => {
+                toggle('3')
+              }}
             >
               Staking
             </NavLink>
@@ -60,7 +65,9 @@ function PoolCards() {
           <NavItem>
             <NavLink
               className={classnames({ active: activeTab === '4' })}
-              onClick={() => { toggle('4'); }}
+              onClick={() => {
+                toggle('4')
+              }}
             >
               Others
             </NavLink>
@@ -69,7 +76,9 @@ function PoolCards() {
           <NavItem>
             <NavLink
               className={classnames({ active: activeTab === '5' })}
-              onClick={() => { toggle('5'); }}
+              onClick={() => {
+                toggle('5')
+              }}
             >
               Earn NFT
             </NavLink>
@@ -78,7 +87,9 @@ function PoolCards() {
           <NavItem>
             <NavLink
               className={classnames({ active: activeTab === '6' })}
-              onClick={() => { toggle('6'); }}
+              onClick={() => {
+                toggle('6')
+              }}
             >
               NFT Staking
             </NavLink>
@@ -87,87 +98,88 @@ function PoolCards() {
           <NavItem>
             <NavLink
               className={classnames({ active: activeTab === '7' })}
-              onClick={() => { toggle('7'); }}
+              onClick={() => {
+                toggle('7')
+              }}
             >
               Ended
             </NavLink>
           </NavItem>
         </Nav>
         <TabContent activeTab={activeTab}>
-          <TabPane tabId="1">    
-          <PoolCard>
-            <Row xs="1" sm="2" md="4">
-              <Col>
-                <BoxPool>
-                  <HeadLine>
-                    <span>Premium</span>
-                  </HeadLine>
-                  <figure>
-                    <img src="../images/logo-icon.png" alt=""/>
-                  </figure>
+          <TabPane tabId="1">
+            <PoolCard>
+              <Row xs="1" sm="2" md="4">
+                <Col>
+                  <BoxPool>
+                    <HeadLine>
+                      <span>Premium</span>
+                    </HeadLine>
+                    <figure>
+                      <img src="../images/logo-icon.png" alt="" />
+                    </figure>
 
-                  <CardContent>
-                    <Title>LuckySwap</Title>
+                    <CardContent>
+                      <Title>LuckySwap</Title>
 
-                    <FlexSpace>
-                      <ContentLeft>Deposit:</ContentLeft>
-                      <ContentRight>{stakingData.depositSymbol}</ContentRight>
-                    </FlexSpace>
+                      <FlexSpace>
+                        <ContentLeft>Deposit:</ContentLeft>
+                        <ContentRight>{stakingData.depositSymbol}</ContentRight>
+                      </FlexSpace>
 
-                    <FlexSpace>
-                      <ContentLeft>Earn:</ContentLeft>
-                      <ContentRight>{stakingData.rewardSymbol}</ContentRight>
-                    </FlexSpace>
+                      <FlexSpace>
+                        <ContentLeft>Earn:</ContentLeft>
+                        <ContentRight>{stakingData.rewardSymbol}</ContentRight>
+                      </FlexSpace>
 
-                    <FlexSpace>
-                      <ContentLeft>APR:</ContentLeft>
-                      <ContentRight>0%</ContentRight>
-                    </FlexSpace>
-                  </CardContent>
+                      <FlexSpace>
+                        <ContentLeft>APR:</ContentLeft>
+                        <ContentRight>0%</ContentRight>
+                      </FlexSpace>
+                    </CardContent>
 
-                  <Boxbtn>
-                    <Button color="primary">
-                      <Link to="/PoolCardsDetail">Join</Link>
-                    </Button>
-                  </Boxbtn>
-                </BoxPool>
-              </Col>
+                    <Boxbtn>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Join</Link>
+                      </Button>
+                    </Boxbtn>
+                  </BoxPool>
+                </Col>
 
-              <Col>
-                <BoxPool>
+                <Col>
+                  <BoxPool>
+                    <figure>
+                      <img src="../images/hcats.png" alt="" />
+                    </figure>
 
-                  <figure>
-                    <img src="../images/hcats.png" alt=""/>
-                  </figure>
+                    <CardContent>
+                      <Title>HCATS</Title>
 
-                  <CardContent>
-                    <Title>HCATS</Title>
+                      <FlexSpace>
+                        <ContentLeft>Deposit:</ContentLeft>
+                        <ContentRight>LUCKY</ContentRight>
+                      </FlexSpace>
 
-                    <FlexSpace>
-                      <ContentLeft>Deposit:</ContentLeft>
-                      <ContentRight>LUCKY</ContentRight>
-                    </FlexSpace>
+                      <FlexSpace>
+                        <ContentLeft>Earn:</ContentLeft>
+                        <ContentRight>HCATS</ContentRight>
+                      </FlexSpace>
 
-                    <FlexSpace>
-                      <ContentLeft>Earn:</ContentLeft>
-                      <ContentRight>HCATS</ContentRight>
-                    </FlexSpace>
+                      <FlexSpace>
+                        <ContentLeft>APR:</ContentLeft>
+                        <ContentRight>0%</ContentRight>
+                      </FlexSpace>
+                    </CardContent>
 
-                    <FlexSpace>
-                      <ContentLeft>APR:</ContentLeft>
-                      <ContentRight>0%</ContentRight>
-                    </FlexSpace>
-                  </CardContent>
+                    <Boxbtn>
+                      <Button color="primary">
+                        <Link to="/PoolCardsDetail">Join</Link>
+                      </Button>
+                    </Boxbtn>
+                  </BoxPool>
+                </Col>
 
-                  <Boxbtn>
-                    <Button color="primary">
-                      <Link to="/PoolCardsDetail">Join</Link>
-                    </Button>
-                  </Boxbtn>
-                </BoxPool>
-              </Col>
-
-              {/* <Col>
+                {/* <Col>
                 <BoxPool>
                   <HeadLine>
                     <span>Premium</span>
@@ -455,8 +467,8 @@ function PoolCards() {
                 </BoxPool>
               </Col>
             */}
-            </Row>
-          </PoolCard>
+              </Row>
+            </PoolCard>
           </TabPane>
 
           {/* <TabPane tabId="2">
@@ -1484,16 +1496,15 @@ function PoolCards() {
           </TabPane>
          */}
         </TabContent>
-    </div>
-  </>
+      </div>
+    </>
   )
 }
-
 
 const PoolCard = styled.div``
 
 const HeadLine = styled.div`
-  background: linear-gradient(90deg, rgba(239,186,12,1) 0%, rgba(251,219,59,1) 100%);
+  background: linear-gradient(90deg, rgba(239, 186, 12, 1) 0%, rgba(251, 219, 59, 1) 100%);
   width: 100%;
   padding: 10px 0;
   position: absolute;
@@ -1560,7 +1571,7 @@ const ContentRight = styled.div`
 
 const Boxbtn = styled.div`
   text-align: center;
-  border-top: 1px solid #D8D8D8;
+  border-top: 1px solid #d8d8d8;
   padding-top: 15px;
 
   button {

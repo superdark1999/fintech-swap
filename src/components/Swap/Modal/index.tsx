@@ -32,7 +32,7 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
 })`
   &[data-reach-dialog-content] {
     margin: 0 0 2rem 0;
-    background: linear-gradient(45deg,rgb(35 35 35) 30%,rgb(45 45 45) 100%);
+    background: linear-gradient(45deg, rgb(35 35 35) 30%, rgb(45 45 45) 100%);
     box-shadow: 0 4px 8px 0 ${transparentize(0.95, '#191326')};
     padding: 10px;
     width: 80%;
@@ -42,7 +42,7 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
 
     max-height: 80vh;
     min-height: 70vh;
-      
+
     @media (max-width: 768px) {
       min-height: 65vh;
     }
@@ -86,7 +86,7 @@ export default function Modal({
   return (
     <>
       {fadeTransition.map(
-        ({ item, key, props }:any) =>
+        ({ item, key, props }: any) =>
           item && (
             <StyledDialogOverlay key={key} style={props} onDismiss={onDismiss} initialFocusRef={initialFocusRef}>
               <StyledDialogContent
@@ -102,7 +102,7 @@ export default function Modal({
                 {children}
               </StyledDialogContent>
             </StyledDialogOverlay>
-          )
+          ),
       )}
     </>
   )
