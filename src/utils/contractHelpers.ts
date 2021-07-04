@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 import { AbiItem } from 'web3-utils'
-import web3NoAccount from 'utils/web3'
+// import web3NoAccount from 'utils/web3'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 
@@ -39,10 +39,11 @@ import sousChefBnb from 'config/abi/sousChefBnb.json'
 import claimRefundAbi from 'config/abi/claimRefund.json'
 import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
 import easterNftAbi from 'config/abi/easterNft.json'
+import { getWeb3NoAccount } from './web3'
 
 const getContract = (abi: any, address: string, web3?: Web3) => {
-  const _web3 = web3 ?? web3NoAccount
-  return new _web3.eth.Contract((abi as unknown) as AbiItem, address)
+  const _web3 = web3 ?? getWeb3NoAccount()
+  return new _web3.eth.Contract(abi as unknown as AbiItem, address)
 }
 
 export const getBep20Contract = (address: string, web3?: Web3) => {

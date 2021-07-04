@@ -25,7 +25,7 @@ const RPC = {
   [ChainId.BSC_TESTNET]: 'https://data-seed-prebsc-2-s3.binance.org:8545',
 }
 
-const NETWORK_URL = getNodeUrl()
+const NETWORK_URL = getNodeUrl(ChainId.BSC)
 export const NETWORK_CHAIN_ID: number = parseInt('56' ?? '56')
 
 if (typeof NETWORK_URL === 'undefined') {

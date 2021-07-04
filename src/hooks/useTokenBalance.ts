@@ -65,11 +65,11 @@ export const useBurnedBalance = (tokenAddress: string) => {
   return balance
 }
 
-export const BnbBalance = () => {
+export const NativeBalance = () => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { slowRefresh } = useRefresh()
-  const web3 = getWeb3NoAccount()
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
+  const web3 = getWeb3NoAccount(chainId)
   useEffect(() => {
     if (account) {
       const fetchBalance = async () => {
@@ -79,7 +79,7 @@ export const BnbBalance = () => {
 
       fetchBalance()
     }
-  }, [web3, account, slowRefresh])
+  }, [web3, account, slowRefresh, chainId])
   return balance
 }
 

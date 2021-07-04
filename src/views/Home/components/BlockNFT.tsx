@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
-import { Row, Col } from 'antd'
-import useTokenBalance, { BnbBalance } from 'hooks/useTokenBalance'
+import { Col, Row } from 'antd'
 import { XLUCKY_TESTNET } from 'config'
 import bep20Abi from 'config/abi/erc20.json'
-import { useERC20, useContract } from 'hooks/useContract'
+import { useContract } from 'hooks/useContract'
+import { NativeBalance } from 'hooks/useTokenBalance'
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 import CardValue from './CardValue'
 
 const BlockNFT = () => {
   const { account } = useWeb3React()
   const [balanceToken, setBalanceToken] = useState(0)
-  const balance = BnbBalance() //
+  const balance = NativeBalance() //
   const useContractTemp = useContract(XLUCKY_TESTNET, bep20Abi)
   useEffect(() => {
     if (useContractTemp) {

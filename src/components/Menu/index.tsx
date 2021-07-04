@@ -1,42 +1,44 @@
-import React, { useState, useEffect, useContext } from 'react'
 import { Menu as UikitMenu } from '@luckyswap/uikit'
 import { useWeb3React } from '@web3-react/core'
+import { XLUCKY_TESTNET_ADDRESSES } from 'config'
+import bep20Abi from 'config/abi/erc20.json'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
-import { BnbBalance } from 'hooks/useTokenBalance'
-import useTheme from 'hooks/useTheme'
 import useAuth from 'hooks/useAuth'
-import { useERC20, useContract } from 'hooks/useContract'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { useContract } from 'hooks/useContract'
+import useTheme from 'hooks/useTheme'
+import { NativeBalance } from 'hooks/useTokenBalance'
+import React, { useContext, useEffect, useState } from 'react'
 import { usePriceLuckyBusd, useProfile } from 'state/hooks'
-import { XLUCKY_TESTNET } from 'config'
-import bep20Abi from 'config/abi/erc20.json'
-import BigNumber from 'bignumber.js'
+import { getBalanceNumber } from 'utils/formatBalance'
 import config from './config'
 
 const Menu = (props) => {
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
   const { login, logout } = useAuth()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceLuckyBusd()
   const { profile } = useProfile()
-  const balance = BnbBalance() //
+  const balance = NativeBalance() //
 
   const [balanceToken, setBalanceToken] = useState(0)
-  const useContractTemp = useContract(XLUCKY_TESTNET, bep20Abi)
+  const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
+
   useEffect(() => {
     if (useContractTemp) {
       useContractTemp
         .balanceOf(account)
         .then((data) => {
-          console.log('result get balance : ', data)
           setBalanceToken(data / 1e18)
         })
-        .catch((error) => console.log('get balance error : ', error))
+        .catch((error) => {
+          console.log('get xlucky balance error : ', error)
+          setBalanceToken(0)
+        })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account])
+  }, [account, chainId])
 
   return (
     <UikitMenu

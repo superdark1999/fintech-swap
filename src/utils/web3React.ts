@@ -1,15 +1,14 @@
+import { BscConnector } from '@binance-chain/bsc-connector'
+import { Web3Provider } from '@ethersproject/providers'
+import { ConnectorNames } from '@luckyswap/uikit'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-import { BscConnector } from '@binance-chain/bsc-connector'
-import { ConnectorNames } from '@luckyswap/uikit'
-import { Web3Provider } from '@ethersproject/providers'
-
-import Web3 from 'web3'
 import getNodeUrl from './getRpcUrl'
 
+
 const POLLING_INTERVAL = 12000
-const rpcUrl = getNodeUrl()
 const chainId = parseInt(process.env.REACT_APP_CHAIN_ID) || 56
+const rpcUrl = getNodeUrl(chainId)
 
 // const injected = new InjectedConnector({ supportedChainIds: [chainId] })
 const injected = new InjectedConnector({ supportedChainIds: [4, 56, 97, 137, 80001] })

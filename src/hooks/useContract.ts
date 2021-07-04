@@ -69,7 +69,7 @@ export function useRouterContract(withSignerIfPossible?: boolean): Contract | nu
 }
 
 export function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
-  const { library, account, chainId } = useActiveWeb3React()
+  const { library, account } = useActiveWeb3React()
   return useMemo(() => {
     if (!address || !ABI || !library) return null
     try {

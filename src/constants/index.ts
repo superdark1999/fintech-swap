@@ -90,3 +90,31 @@ export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(
 
 // used to ensure the user doesn't send so much ETH so they end up with <.01
 export const MIN_ETH: JSBI = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16)) // .01 ETH
+
+export const RPC_URLS: {
+  [chainId in ChainId]?: string[]
+} = {
+  [ChainId.MAINNET]: [
+    'https://bsc-dataseed.binance.org/',
+    'https://bsc-dataseed1.defibit.io/',
+    'https://bsc-dataseed1.ninicoin.io/',
+  ],
+  [ChainId.BSCTESTNET]: [
+    'https://data-seed-prebsc-1-s1.binance.org:8545/',
+    'https://data-seed-prebsc-2-s1.binance.org:8545/',
+    'https://data-seed-prebsc-1-s2.binance.org:8545/',
+  ],
+  [ChainId.MATIC]: ['https://rpc-mainnet.matic.network', 'https://rpc-mainnet.maticvigil.com'],
+  [ChainId.MATIC_TESTNET]: ['https://rpc-mumbai.matic.today', 'https://rpc-mumbai.maticvigil.com'],
+  [ChainId.RINKEBY]: [''],
+}
+
+export const BLOCK_EXPLORER_URLS: {
+  [chainId in ChainId]?: string[]
+} = {
+  [ChainId.MAINNET]: ['https://bscscan.com'],
+  [ChainId.BSCTESTNET]: ['https://testnet.bscscan.com/'],
+  [ChainId.MATIC]: ['https://explorer.matic.network/'],
+  [ChainId.MATIC_TESTNET]: ['https://mumbai-explorer.matic.today'],
+  [ChainId.RINKEBY]: [''],
+}
