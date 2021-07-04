@@ -57,7 +57,11 @@ export const columnHistory = [
   {
     title: 'Date',
     dataIndex: 'date',
-    width: 150
+    width: 150,
+    render: (date) => 
+    <A href={`https://testnet.bscscan.com/tx/${date[1]}`} target="_blank">
+      {date[0]}
+    </A>
   },
 ];
 

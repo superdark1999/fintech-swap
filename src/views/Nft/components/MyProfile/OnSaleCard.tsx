@@ -12,7 +12,7 @@ import formatNumber from 'utils/formatNumber'
 import useMarketServices, { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import notification from 'components-v2/Alert'
 import { isMobile } from 'react-device-detect'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import StatusBar from 'components-v2/StatusBar'
 import { ButtonCancel } from 'components-v2/Button'
 
@@ -157,7 +157,7 @@ export default function OnSaleCard({ data }: any) {
           xxl={{ span: 7 }}
         >
           {/* brbedit */}
-          <a href={`${window.location.origin}/artwork/detail/buy/${data.id}`}>
+          <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
           {data?.type === 'video' ? (
             <video
               muted
@@ -176,7 +176,7 @@ export default function OnSaleCard({ data }: any) {
               loading="lazy"
             />
           )}
-          </a>
+          </Link>
         </Col>
         <Col
           className="description"

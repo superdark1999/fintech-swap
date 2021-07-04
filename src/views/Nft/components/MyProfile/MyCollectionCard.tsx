@@ -20,7 +20,7 @@ import useMarketServices, {
   MARKET_ADDRESS,
 } from 'services/web3Services/MarketServices'
 import useNFTServices from 'services/web3Services/NFTServices'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import OnsSaleCard from './OnSaleCard'
 import _ from 'lodash'
 import { Alert } from 'antd'
@@ -401,7 +401,7 @@ export default function MyCollectionCard({ data, option }: any) {
           xs={{ span: 24 }}
           xxl={{ span: 7 }}
         >
-          <a href={`${window.location.origin}/artwork/detail/buy/${data.id}`}>
+          <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
             {data.type === 'video' ? (
               <video width="100%" style={{ maxHeight: '200px', borderRadius: '8px' }} controls muted>
                 <source src={data?.contentUrl} type="video/mp4" />
@@ -410,7 +410,7 @@ export default function MyCollectionCard({ data, option }: any) {
             ) : (
               <img className="avatar" src={data?.contentUrl} />
             )}
-          </a>
+          </Link>
         </Col>
         <Col
           className="description space-vehicle"

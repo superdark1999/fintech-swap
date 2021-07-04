@@ -30,9 +30,10 @@ const Store = createStore({
               //getCompactString(item.from, 6)
               item.to = [item.to, item.avtTo.from
                 , item.avtTo.name]
-              item.date =
-                item.timeStamp &&
-                moment(new Date(item.timeStamp * 1000).toLocaleDateString('en-US')).fromNow()
+              item.date = [item.timeStamp &&
+                moment(new Date(item.timeStamp * 1000).toLocaleDateString('en-US')).fromNow(),
+              item.hash]
+                
               return item
             })
             setState({ historys: parseData })
