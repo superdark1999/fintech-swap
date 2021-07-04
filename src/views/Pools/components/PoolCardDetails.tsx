@@ -87,7 +87,7 @@ export default function PoolCardDetails({
 
                 <div className="content">
                   <h3 className="content__title">{userRewardDebt.div(1e18).toNumber()}</h3>
-                  <span className="content__des">LUCKY earned</span>
+                  <span className="content__des">{stakingData.rewardTokenSymbol} earned</span>
                 </div>
 
                 <div className="box__footer">
@@ -111,7 +111,7 @@ export default function PoolCardDetails({
 
                 <div className="content">
                   <h3 className="content__title">{userAmount.div(1e18).toNumber()}</h3>
-                  <span className="content__des">LuckySwap</span>
+                  <span className="content__des">{stakingData.depositTokenSymbol}</span>
                 </div>
 
                 <div className="box__footer">

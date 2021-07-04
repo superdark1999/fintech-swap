@@ -63,7 +63,7 @@ const PoolCard : React.FC<HarvestProps> = ({ pool })  => {
           </figure>
 
           <CardContent>
-            <Title>LuckySwap</Title>
+            <Title>{pool.name}</Title>
 
             <FlexSpace>
               <ContentLeft>Deposit:</ContentLeft>

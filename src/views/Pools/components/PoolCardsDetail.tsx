@@ -112,8 +112,8 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
             <figure>
               <img src="../images/icon-logo.png" alt=""/>
             </figure>
-            <h2>Lucky Swap</h2>
-            <span>Deposit LuckySwap Tokens and earn LUCKY</span>
+            <h2>{stakingData.name}</h2>
+            <span>Deposit {stakingData.depositTokenSymbol} Tokens and earn {stakingData.rewardTokenSymbol}</span>
           </BoxHead>
 
           <PoolCardDetails 
