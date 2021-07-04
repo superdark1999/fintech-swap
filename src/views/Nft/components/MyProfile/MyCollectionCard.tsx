@@ -359,14 +359,16 @@ export default function MyCollectionCard({ data, option }: any) {
           xs={{ span: 24 }}
           xxl={{ span: 7 }}
         >
-          {data.type === 'video' ? (
-            <video width="100%" style={{ maxHeight: '200px', borderRadius: '8px' }} controls muted>
-              <source src={data?.contentUrl} type="video/mp4" />
-              Your browser does not support HTML5 video.
-            </video>
-          ) : (
-            <img className="avatar" src={data?.contentUrl} />
-          )}
+          <a href={`${window.location.origin}/artwork/detail/buy/${data.id}`}>
+            {data.type === 'video' ? (
+              <video width="100%" style={{ maxHeight: '200px', borderRadius: '8px' }} controls muted>
+                <source src={data?.contentUrl} type="video/mp4" />
+                Your browser does not support HTML5 video.
+              </video>
+            ) : (
+              <img className="avatar" src={data?.contentUrl} />
+            )}
+          </a>
         </Col>
         <Col
           className="description space-vehicle"

@@ -25,6 +25,7 @@ export default function OnSaleCard({ data }: any) {
   const history = useHistory()
   const marketService = usrMarketServices()
   const marketServicesMethod = useMarketServices()
+  console.log(data)
 
   useEffect(() => {
     const getPriceToken = async () => {
@@ -155,6 +156,8 @@ export default function OnSaleCard({ data }: any) {
           xs={{ span: 24 }}
           xxl={{ span: 7 }}
         >
+          {/* brbedit */}
+          <a href={`${window.location.origin}/artwork/detail/buy/${data.id}`}>
           {data?.type === 'video' ? (
             <video
               muted
@@ -173,6 +176,7 @@ export default function OnSaleCard({ data }: any) {
               loading="lazy"
             />
           )}
+          </a>
         </Col>
         <Col
           className="description"
