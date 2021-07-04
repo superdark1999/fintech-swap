@@ -9,11 +9,14 @@ const useUtilityToken = (tokenAddress) => {
   const contract = useContract(tokenAddress, bep20Abi)
   const addTransaction = useTransactionAdder()
 
-  const balanceOf = async (account) => {
-    const balance =  await contract.balanceOf(account)
+  const balanceOf = async (address) => {
+  if (address && contract) {
+    const balance =  await contract.balanceOf(address)
     .catch(() => console.log("fail to fetch balance"))
 
     return balance;
+    } 
+  return 0;
   } 
 
   const approve = async (address) => {

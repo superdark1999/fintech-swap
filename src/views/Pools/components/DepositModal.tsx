@@ -2,22 +2,52 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import BigNumber from 'bignumber.js'
+import { Pool} from 'config/constants/types';
+import { Contract } from '@ethersproject/contracts'
+
 
 import useUtilityToken from 'hooks/useUtilityToken'
 
+<<<<<<< HEAD
 export default function DepositModal({
   depositModal,
   depositToggle,
   depositSymbol,
+=======
+interface DepositModalProp {
+  depositModal: boolean,
+  depositToggle: () => void,
+  depositSymbol: string,
+  stakingContract: Contract,
+  addTransaction: (response: any, message: any) => void,
+  account: string,
+  stakingData: Pool,
+  setIsDepositing: (value: boolean) => void
+
+}
+ const DepositModal: React.FC<DepositModalProp> = ({ 
+  depositModal, 
+  depositToggle, 
+  depositSymbol,  
+>>>>>>> ce35e3a68da12a3a455e79d341201b921b9b496e
   stakingContract,
   addTransaction,
   account,
   stakingData,
+<<<<<<< HEAD
   setIsDepositing,
 }) {
   const [balance, setBalance] = useState(0)
   const [value, setValue] = useState('')
   const { balanceOf, approve, allowance } = useUtilityToken(stakingData.depositToken)
+=======
+  setIsDepositing
+}) =>{
+  const [balance, setBalance] = useState(0);
+  const [value, setValue] = useState('');
+  const {balanceOf, approve, allowance} =  useUtilityToken(stakingData.depositTokenAddress);
+
+>>>>>>> ce35e3a68da12a3a455e79d341201b921b9b496e
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -83,6 +113,7 @@ export default function DepositModal({
 
         <ModalFooter>
           <CancelButton>
+<<<<<<< HEAD
             <Button color="primary" onClick={depositToggle}>
               Cancel
             </Button>
@@ -90,6 +121,13 @@ export default function DepositModal({
           <Button color="secondary" onClick={handleDeposit} disabled={false}>
             Deposit
           </Button>
+=======
+            <Button color="primary" onClick={depositToggle}>Cancel</Button>
+          </CancelButton>
+          <DepositButton>
+            <Button color="secondary" onClick={handleDeposit} disabled={false}>Deposit</Button>
+          </DepositButton>
+>>>>>>> ce35e3a68da12a3a455e79d341201b921b9b496e
         </ModalFooter>
       </Modal>
     </div>
@@ -170,14 +208,38 @@ const BoxButton = styled.div`
     height: 40px;
   }
 `
+const DepositButton = styled.div`
+    button {
+        color: #2b2e2f;
+        background-color: #f5c606;
+        :hover {
+          opacity: .8;
+          color: #2b2e2f;
+          background-color: #f5c606;
+        
+
+        }
+      }
+`
 
 const CancelButton = styled.div`
   button {
-    color: #2b2e2f;
+    background-color: #6c757d !important;
     border: none;
+<<<<<<< HEAD
     :hover {
       opacity: 0.8;
       color: #2b2e2f;
     }
   }
 `
+=======
+    :hover{
+      opacity: .8;
+    }
+  }
+
+`
+
+export default DepositModal;
+>>>>>>> ce35e3a68da12a3a455e79d341201b921b9b496e

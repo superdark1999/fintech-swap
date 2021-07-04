@@ -2,12 +2,15 @@ import React, {useState, useEffect, useMemo, useCallback} from 'react'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'
 import { useWeb3React } from '@web3-react/core'
+import { useParams } from 'react-router-dom'
+import { Pool} from 'config/constants/types';
 import useGetStateData from 'hooks/useGetStakeData';
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
-import { useContract,  useStakingContract } from 'hooks/useContract'
+import { useContract,  useStakingContract  } from 'hooks/useContract'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
-import useStakingEvent from 'hooks/useStakingEvent';
+import { useHookPools } from '../Store';
+
 
 
 import UnStakeModal from './UnStakeModal';
@@ -16,22 +19,45 @@ import PoolCardDetails from './PoolCardDetails';
 
 
 
-const stakingData = {
-  name: 'Lucky',
-  depositSymbol: 'XLUCKY2',
-  rewardSymbol: 'XLUCKY1',
-  depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
-  rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a", // XLucky
-  stakingContract: "0x1dde4Fc6ca8121Cb11E988b524B275855F98aAA6",
+// const stakingData = {
+//   name: 'Lucky',
+//   depositSymbol: 'XLUCKY2',
+//   rewardSymbol: 'XLUCKY1',
+//   depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
+//   rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a", // XLucky
+//   stakingContract: "0x1dde4Fc6ca8121Cb11E988b524B275855F98aAA6",
   
-}
+// }
 
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
 }
 
+interface HarvestProps {
+  stakingData: Pool
+}
 
-function PoolCardsDetail() {
+function FetchPoolData() {
+  const param: any = useParams()
+
+  const [state, actions] = useHookPools();
+  const { poolDetail } = state;
+
+  useEffect(() => {
+    const fetchPool = () => {
+      actions.getPoolDetail(param.id)
+    }
+
+    fetchPool();
+  }, [actions, param.id])
+
+  if (poolDetail)
+    return <PoolCardsDetail stakingData={poolDetail}/>
+  return <div>loading</div>
+}
+
+const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
+
   const [depositModal, setDepositModal] = useState(false);
   const [withdrawModal, setWithdrawModel] = useState(false);
   const [isUnStaking, setIsUnStaking] = useState(false);
@@ -39,12 +65,11 @@ function PoolCardsDetail() {
   const [isHarvesting, setIsHarvesting] = useState(false);
   const { account } = useWeb3React()
 
-  const stakingContract = useStakingContract(stakingData.stakingContract);
+  const stakingContract = useStakingContract(stakingData?.stakingAddress);
   const { userAmount, userRewardDebt} = useGetStateData(stakingData);
 
   const addTransaction = useTransactionAdder()
-  const contract = useContract(stakingData.stakingContract,SMART_CHEF_ABI );
-
+  const contract = useContract(stakingData?.stakingAddress,SMART_CHEF_ABI );
 
 
   useEffect(() => {
@@ -59,11 +84,6 @@ function PoolCardsDetail() {
         else
           setIsHarvesting(false);
       })
-    // listenDepositEvent(() => console.log("deposit console"));
-
-    // listenWithdrawEvent(() => console.log('withdraw console'));
-
-  
     }
   }, [contract, isDepositing])
 
@@ -121,7 +141,7 @@ function PoolCardsDetail() {
       <DepositModal 
         depositModal={depositModal}
         depositToggle={depositToggle}
-        depositSymbol={stakingData.depositSymbol}
+        depositSymbol={stakingData.depositTokenSymbol}
         stakingContract={stakingContract}
         addTransaction={addTransaction}
         account={account}
@@ -268,4 +288,4 @@ const BoxDetail = styled.div`
 
 
 
-export default PoolCardsDetail
+export default FetchPoolData
