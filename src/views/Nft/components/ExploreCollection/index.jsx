@@ -32,7 +32,6 @@ function ExploreCollection() {
   getNFT(params).then(({ status, data }) => {
     if (status == 200) {
       setNFTs(data?.data || [])
-      console.log('data: ', data)
     }
   }), 1000), [])
 
