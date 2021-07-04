@@ -12,7 +12,7 @@ import formatNumber from 'utils/formatNumber'
 import useMarketServices, { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import notification from 'components-v2/Alert'
 import { isMobile } from 'react-device-detect'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import StatusBar from 'components-v2/StatusBar'
 import { ButtonCancel } from 'components-v2/Button'
 
@@ -25,6 +25,7 @@ export default function OnSaleCard({ data }: any) {
   const history = useHistory()
   const marketService = usrMarketServices()
   const marketServicesMethod = useMarketServices()
+  console.log(data)
 
   useEffect(() => {
     const getPriceToken = async () => {
@@ -155,6 +156,8 @@ export default function OnSaleCard({ data }: any) {
           xs={{ span: 24 }}
           xxl={{ span: 7 }}
         >
+          {/* brbedit */}
+          <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
           {data?.type === 'video' ? (
             <video
               muted
@@ -173,6 +176,7 @@ export default function OnSaleCard({ data }: any) {
               loading="lazy"
             />
           )}
+          </Link>
         </Col>
         <Col
           className="description"

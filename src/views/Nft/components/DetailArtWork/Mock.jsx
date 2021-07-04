@@ -12,34 +12,56 @@ const IMG = styled.img`
   width: 35px;
   border-radius: 50%;
 `
+const A = styled.a`
+  display: flex
+`
+const SPAN = styled.span`
+  margin: auto 0;
+  margin-left: 10px
+`
 
 export const columnHistory = [
   {
     title: 'Event',
     dataIndex: 'event',
-    width: 150,
+    width: 200,
+  },
+  {
+    title: 'Price',
+    dataIndex: 'price',
+    width: 100,
   },
   {
     title: 'From',
     dataIndex: 'from',
+    width: 200,
     render: (from) =>  
-    <a href={window.location.origin+`/user-profile/${from[0]}/onstore/readyToSell`} target="_blank">
+    <A href={window.location.origin+`/user-profile/${from[0]}/onstore/readyToSell`} target="_blank">
       <IMG src={from[1]} >  
       </IMG>
-    </a>
+      <SPAN>{from[2]}</SPAN>
+    </A>
+    
   },
   {
     title: 'To',
     dataIndex: 'to',
+    width: 200,
     render: (to) => 
-    <a href={window.location.origin+`/user-profile/${to[0]}/onstore/readyToSell`} target="_blank">
+    <A href={window.location.origin+`/user-profile/${to[0]}/onstore/readyToSell`} target="_blank">
       <IMG src={to[1]} >  
       </IMG>
-    </a>
+      <SPAN>{to[2]}</SPAN>
+    </A>
   },
   {
     title: 'Date',
     dataIndex: 'date',
+    width: 150,
+    render: (date) => 
+    <A href={`https://testnet.bscscan.com/tx/${date[1]}`} target="_blank">
+      {date[0]}
+    </A>
   },
 ];
 
