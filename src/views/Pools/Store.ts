@@ -1,11 +1,10 @@
 import { createStore, createHook, createContainer, createSubscriber } from 'react-sweet-state'
-import { BASE_API_ADMIN } from 'config'
 import axios from 'axios'
-import {Pool} from 'config/constants/types'
-
+import { Pool } from 'config/constants/types'
+import { BASE_API_ADMIN } from '../../config'
 
 interface State {
-  pools: Pool[],
+  pools: Pool[]
   poolDetail: Pool
 }
 
@@ -44,17 +43,17 @@ const Store = createStore({
             })
             .catch((error) => console.log('error fetching launchpads data'))
       },
-  //   changeKeySearch:
-  //     (value) =>
-  //     ({setState }) => {
-  //       setState({ keySearch: value })
-  //     },
-  //   setLaunchPad:
-  //     (launchpads) =>
-  //     ({ getState, setState }) => {
-  //       const state = getState()
-  //       setState({ ...state, launchpads })
-  //     },
+    //   changeKeySearch:
+    //     (value) =>
+    //     ({setState }) => {
+    //       setState({ keySearch: value })
+    //     },
+    //   setLaunchPad:
+    //     (launchpads) =>
+    //     ({ getState, setState }) => {
+    //       const state = getState()
+    //       setState({ ...state, launchpads })
+    //     },
 
     getPoolDetail:
       (id) =>
@@ -64,29 +63,29 @@ const Store = createStore({
         setState({ ...getState(), poolDetail: result.data })
       },
 
-  //   setStatus:
-  //     (status) =>
-  //     ({ setState, getState }) => {
-  //       setState({ ...getState(), filterStatus: status })
-  //     },
-  //   filterLaunchWithStatus:
-  //     (status) =>
-  //     ({ setState, getState }) => {
-  //       setState({ statusCombo: status })
-  //     },
-  //   updateStatusLaunchPad:
-  //     (id, status) =>
-  //     ({ getState, setState }) => {
-  //       let { launchpads } = getState()
-  //       launchpads = launchpads.map((item) => {
-  //         if (item.id === id) {
-  //           item.status = status
-  //         }
-  //         return item
-  //       })
+    //   setStatus:
+    //     (status) =>
+    //     ({ setState, getState }) => {
+    //       setState({ ...getState(), filterStatus: status })
+    //     },
+    //   filterLaunchWithStatus:
+    //     (status) =>
+    //     ({ setState, getState }) => {
+    //       setState({ statusCombo: status })
+    //     },
+    //   updateStatusLaunchPad:
+    //     (id, status) =>
+    //     ({ getState, setState }) => {
+    //       let { launchpads } = getState()
+    //       launchpads = launchpads.map((item) => {
+    //         if (item.id === id) {
+    //           item.status = status
+    //         }
+    //         return item
+    //       })
 
-  //       setState({ launchpads })
-  //     },
+    //       setState({ launchpads })
+    //     },
   },
   name: 'Pools Store',
 })

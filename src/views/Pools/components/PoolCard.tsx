@@ -1,16 +1,14 @@
-import React, {useEffect, useState} from 'react'
-import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
-import styled from 'styled-components'
-import classnames from 'classnames';
-import { Link, useParams } from 'react-router-dom'
-import BigNumber from 'bignumber.js'
+import BigNumber from 'bignumber.js';
+import { LUCKY_PER_BLOCK } from 'config';
+import { Pool } from 'config/constants/types';
 import useGetStateData from 'hooks/useGetStakeData';
-import { useFarms, usePriceLuckyBusd, useLucky2Price } from 'state/hooks'
-import { getPoolApy } from 'utils/apy'
-import { getBalanceNumber } from 'utils/formatBalance'
 import useUtilityToken from 'hooks/useUtilityToken';
-import { LUCKY_PER_BLOCK  } from 'config'
-import {Pool} from 'config/constants/types'
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Button, Col } from 'reactstrap';
+import { useLucky2Price, usePriceLuckyBusd } from 'state/hooks';
+import styled from 'styled-components';
+import { getPoolApy } from 'utils/apy';
 
 interface HarvestProps{
   pool: Pool
