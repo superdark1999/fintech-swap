@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo} from 'react'
 import { Button } from 'antd'
 import { ExploreCollectionStyled } from './styled'
 import Cart from 'components-v2/CardItem'
@@ -13,20 +13,15 @@ import {useHistory } from 'react-router-dom'
 function ExploreCollection() {
 
   const history = useHistory()
-  let paramsSearch = new URLSearchParams(
+  let paramsSearch = useMemo(() => new URLSearchParams(
     window.document.location.search.substring(1),
-    )
-    console.log('paramsSearch: ', paramsSearch)
-
+    ), []) 
   const [NFTs, setNFTs] = useState([])
   const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
 
   const { getNFT } = useArtworkServices()
   const [filterMethod, setFilterMethod] = useState('')
   const [filterType, setFilterType] = useState('')
-  console.log('filterType: ', filterType)
-
- 
   
   const handleInputOnchange = (e) => {
     const { value } = e.target;
@@ -43,7 +38,8 @@ function ExploreCollection() {
 
 
   useEffect(() => {
-    searchParams && history.push(`/explore?search=${searchParams}`)
+    searchParams ? history.push(`/explore?search=${searchParams}`) : history.push(`/explore`)
+    console.log('searchParams: ', searchParams)
     const params = _.pickBy({
       status: 'readyToSell',
       NFTType: filterMethod,
