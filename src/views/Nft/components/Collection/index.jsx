@@ -1,21 +1,41 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Select, Button } from 'antd'
 import { CollectionStyled } from './styled'
 import Cart from 'components-v2/CardItem'
 import useIO from 'hooks/useIo'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-const OptionData = ['All items', 'Image', 'Gif', 'Video']
-const OptionSort = ['new', 'old']
+import _ from 'lodash'
+
+const OptionData = [
+    { label:'All tems', value: ''},
+    { label: 'Image', value: 'image'},
+    { label: 'Video', value: 'video'},
+    { label: 'Gif', value: 'gif'},
+    { label: 'Audio', value: 'audio'},
+  ]
+
+const OptionSort = [{
+  label: 'New',
+  value: 'asc'
+},
+{
+  label: 'Old',
+  value: 'desc'
+}]
 
 // export const option: React.ReactElement<OptionProps> = Select.Option
 
 const { Option } = Select
 
-function Collection() {
-  const [select, setSelect] = useState('All items')
-  const [selectSort, setSelectSort] = useState('new')
-  const [NFTs, setNFTs] = useState([])
+function Collection(props) {
+
+  const {price} = props
+
+  const [select, setSelect] = useState('')
+  const [selectSort, setSelectSort] = useState('asc')
+  const [NFTs, setNFTs] = useState({data: [], total: 0})
   const { getNFT } = useArtworkServices()
+  const [page, setPage] = useState(1)
 
   const [observer, setElements, entries] = useIO({
     threshold: 0.25,
@@ -23,15 +43,30 @@ function Collection() {
   });
 
   useEffect(() => {
-    getNFT({
+    const params = _.pickBy({
       status: 'readyToSell',
-      NFTType: ['buy','auction','swap-store'],
-    }).then(({ status, data }) => {
+      NFTType:  ['buy','auction','swap-store'],
+      type: select === 'all' ? '' : select,
+      page,
+      limit: 8,
+      sort: selectSort,
+      sortBy: 'createdAt',
+      ...price,
+    }, _.identity)
+    getNFT(params).then(({ status, data }) => {
       if (status == 200) {
-        setNFTs(data?.data || [])
+        if (page === 1 ) {
+          setNFTs({data: data?.data, total: data.total})
+        }
+        else setNFTs({data: NFTs?.data?.concat(data.data), total: data.total})
       }
     })
-  }, [])
+  }, [page, selectSort, select, price])
+
+  const onChangeSelectType = (val) => {
+    setPage(1)
+    setSelect(val)
+  }
 
   useEffect(() => {
     entries.forEach((entry) => {
@@ -45,11 +80,18 @@ function Collection() {
   }, [entries, observer]);
 
   useEffect(() => {
-    if (NFTs.length) {
+    if (NFTs?.data?.length) {
       let img = Array.from(document.getElementsByClassName("lazy"));
       setElements(img);
     }
   }, [NFTs, setElements]);
+
+  const nextPage = useCallback(
+    (page) => {
+      setPage(page)
+    },
+    [],
+  )
 
   return (
     <CollectionStyled>
@@ -58,40 +100,40 @@ function Collection() {
         <div className="more-action">
           <Select
             style={{ width: 120, borderRadius: 30 }}
-            onChange={setSelect}
+            onChange={onChangeSelectType}
             defaultValue={select}
           >
-            {OptionData.map((item) => (
-              <Option key={item} value={item}>
-                {item}
+            {OptionData.map((item, index) => (
+              <Option key={index} value={item.value} label={item.label}>
+                {item.label}
               </Option>
             ))}
           </Select>
           <Select
-            style={{ width: 120, borderRadius: 30 }}
+            style={{ minWidth: 100, borderRadius: 30 }}
             onChange={setSelectSort}
             defaultValue={selectSort}
           >
-            {OptionSort.map((item) => (
-              <Option key={item} value={item}>
-                {item}
+            {OptionSort.map((item, index) => (
+              <Option key={index} value={item.value} label={item.label}>
+                {item.label}
               </Option>
             ))}
           </Select>
         </div>
       </div>
       <div className="content-collect">
-        {NFTs.map((item) => (
+        {NFTs?.data?.map((item) => (
           <Cart width="320px" height="480px" data={item} isLazy/>
         ))}
       </div>
-      <div className="footer-section">
+      {NFTs?.data?.length < NFTs?.total && <div className="footer-section">
         <div className="wrapper-button">
-          <Button shape="round">
-            <a href="/explore">Load more</a>
+          <Button shape="round" onClick={() => nextPage(page+1)}>
+            Load more
           </Button>
         </div>
-      </div>
+      </div>}
     </CollectionStyled>
   )
 }

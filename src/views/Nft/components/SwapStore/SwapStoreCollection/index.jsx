@@ -36,6 +36,7 @@ function ExploreCollection() {
       setNFTs(data?.data || [])
     }
   }), 1000), [])
+  const [page, setPage] = useState(1)
 
   const [observer, setElements, entries] = useIO({
     threshold: 0.25,
@@ -44,15 +45,16 @@ function ExploreCollection() {
 
 
   useEffect(() => {
-    // searchParams ? history.push(`/swap-store?search=${searchParams}`) : history.push(`/explore`)
     const params = _.pickBy({
       status: 'readyToSell',
       NFTType: 'swap-store',
       type: filterType,
-      title: searchParams?.toLowerCase()
+      title: searchParams?.toLowerCase(),
+      page,
+      limit: 8,
     }, _.identity)
     getArrNFT(params)
-  }, [filterMethod, filterType, searchParams])
+  }, [filterMethod, filterType, searchParams, page])
 
   const [stateBanner, actions] = useHookNTF()
   useEffect(() => {
@@ -76,6 +78,13 @@ function ExploreCollection() {
       setElements(img);
     }
   }, [NFTs, setElements]);
+
+  const nextPage = useCallback(
+    (page) => {
+      setPage(page)
+    },
+    [],
+  )
 
   return (
     <ExploreCollectionStyled>
@@ -102,11 +111,11 @@ function ExploreCollection() {
           )
         })}
       </div>
-      <div className="footer-section">
-        <div className="wrapper-button">
+      {NFTs?.data?.length < NFTs.total && <div className="footer-section">
+        <div className="wrapper-button" onClick={() => nextPage(page+1)}>
           <Button shape="round">Load more</Button>
         </div>
-      </div>
+      </div>}
     </ExploreCollectionStyled>
   )
 }
