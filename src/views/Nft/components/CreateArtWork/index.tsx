@@ -276,7 +276,7 @@ const CreateArtWork: React.FC = () => {
                     { required: true, message: 'This Field is required' },
                   ]}
                 >
-                  <UploadFile isFormData typeArtWork={typeArtWork} />
+                  <UploadFile isFormData typeArtWork={typeArtWork} resetUploadImage={()=>{ formRef.current?.resetFields(['content'])}} />
                 </Form.Item>
               </Col>
 

@@ -69,17 +69,19 @@ export default function MyCollectionCard({ data, option }: any) {
       data?.ownerWalletAddress === account &&
       NFTServicesMethod
     ) {
+      console.log('runnnn')
       const { nftContract } = NFTServicesMethod
       const filter = nftContract.filters.Approval(data?.ownerWalletAddress)
-      nftContract.on(filter, (userAddress, marketAddress, tokenId, checkkk) => {
-        if (Number(tokenId) == data?.tokenId && userAddress == account && approvingMarket) {
+      nftContract.on(filter, (userAddress, marketAddress, tokenId) => {
+        if (Number(tokenId) == data?.tokenId && userAddress == account && marketAddress == MARKET_ADDRESS) {
+          console.log('checkkking',tokenId)
           setIsNFTCanSell(true)
           setApprovingMarket(false)
           setIsPrcessing(false)
         }
       })
     }
-  }, [data?.tokenId, !!NFTServicesMethod, account])
+  }, [data?.tokenId, NFTServicesMethod, account])
 
   const onSellItem = (value: any) => {
     setIsPrcessing(true)
