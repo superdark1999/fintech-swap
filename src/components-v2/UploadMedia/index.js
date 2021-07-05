@@ -26,7 +26,7 @@ const typeInfo = {
 //configurations for the image uploader
 
 const UploadForm = (props) => {
-  const { isFormData, typeArtWork } = props
+  const { isFormData, typeArtWork, resetUploadImage } = props
   const [imageUrl, setUrlImage] = useState(false)
   const [type, setType] = useState(false)
   const [file, setFile] = useState(false)
@@ -60,6 +60,7 @@ const UploadForm = (props) => {
   }
 
   const handleRemove = () => {
+    resetUploadImage()
     setUrlImage(false)
     setFile(false)
   }
