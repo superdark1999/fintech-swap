@@ -67,8 +67,7 @@ export default function MyCollectionCard({ data, option }: any) {
   useEffect(() => {
     if (
       data?.ownerWalletAddress === account &&
-      NFTServicesMethod &&
-      !isNFTCanSell
+      NFTServicesMethod
     ) {
       const { nftContract } = NFTServicesMethod
       const filter = nftContract.filters.Approval(data?.ownerWalletAddress)
@@ -80,7 +79,7 @@ export default function MyCollectionCard({ data, option }: any) {
         }
       })
     }
-  }, [isNFTCanSell, data?.tokenId, NFTServicesMethod, account])
+  }, [data?.tokenId, !!NFTServicesMethod, account])
 
   const onSellItem = (value: any) => {
     setIsPrcessing(true)
