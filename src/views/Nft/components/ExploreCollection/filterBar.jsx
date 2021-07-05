@@ -8,7 +8,7 @@ const { Option } = Select
 const { Search } = Input
 
 function FilterBar(props) {
-  const { searchParams, setFilterMethod, filterMethod, setFilterType, filterType, handleInputOnchange} = props
+  const { searchParams, setFilterMethod, filterMethod, setFilterType, filterType, handleInputOnchange, setPage} = props
 
   const [select, setSelect] = useState('All items')
 
@@ -17,11 +17,12 @@ function FilterBar(props) {
   const onChangeMethod = (e) => {
     let value = e.target.value;
     setFilterMethod(value)
+    setPage(1)
   }
   const onChangeType = (e) => {
     let value = e.target.value;
-    console.log('value: ', value)
     setFilterType(value)
+    setPage(1)
   }
   return (
     <FilterBarStyled>
@@ -52,6 +53,7 @@ function FilterBar(props) {
             <Radio checked={filterMethod === ''} value=''>All</Radio>
             <Radio checked={filterMethod === 'auction'} value="auction">Auction</Radio>
             <Radio checked={filterMethod === 'swap-store'} value="swap-store">Swap</Radio>
+            <Radio checked={filterMethod === 'buy'} value="buy">Buy</Radio>
           </Radio.Group>
         </div>
       </div>

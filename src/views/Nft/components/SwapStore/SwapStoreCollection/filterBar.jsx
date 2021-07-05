@@ -8,19 +8,16 @@ const { Option } = Select
 const { Search } = Input
 
 function FilterBar(props) {
-  const { searchParams, setFilterMethod, filterMethod, setFilterType, filterType, handleInputOnchange} = props
+  const { searchParams, setFilterType, filterType, handleInputOnchange, setPage} = props
 
   const [select, setSelect] = useState('All items')
 
   const [selectSort, setSelectSort] = useState('Sort by')
 
-  const onChangeMethod = (e) => {
-    let value = e.target.value;
-    setFilterMethod(value)
-  }
   const onChangeType = (e) => {
     let value = e.target.value;
     setFilterType(value)
+    setPage(1)
   }
   return (
     <FilterBarStyled>
