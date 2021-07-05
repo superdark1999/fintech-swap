@@ -41,7 +41,7 @@ import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import { getPrice, getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import formatNumber from 'utils/formatNumber'
-import _ from 'lodash'
+import _, { startsWith } from 'lodash'
 import Hammer from 'assets/images/hammer.svg'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
@@ -70,7 +70,7 @@ const DetaiArtWork = ({ id }: any) => {
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
   const [isReadyBid, setIsReadyBid] = useState(false)
   const [nextStepOffer, setStepNextOffer] = useState<number>(1)
-  const [dayExp, setDayExp] = useState<number>(1)
+  const [dayExp, setDayExp] = useState({startTime:0, endTime:0})
 
   useEffect(() => {
     getDetailNFT({ id }).then(({ status, data }) => {
@@ -88,9 +88,10 @@ const DetaiArtWork = ({ id }: any) => {
               const timeInfo  = await marketServicesMethod?.getBidTimeByTokenId?.(
                 data?.data?.tokenId
               )
+              const startTime = moment.unix(Number(timeInfo?.[1]))?.valueOf()
               const endTime = moment.unix(Number(timeInfo?.[2]))?.valueOf()
-              console.log(endTime)
-              setDayExp(endTime>moment()?.valueOf()?endTime:0)
+
+              setDayExp({startTime:startTime>moment()?.valueOf()?startTime:0,endTime:endTime>moment()?.valueOf()?endTime:0})
               setStep(getPrice(stepPriceUnit._hex))
               const bidsData =
                 bidsArr?.map((item: any) => {
@@ -254,7 +255,7 @@ const DetaiArtWork = ({ id }: any) => {
         </ButtonTrade>
       )
     }
-    if (userState?.isCanBuy&&dayExp>0) {
+    if (userState?.isCanBuy&&dayExp?.startTime==0 && dayExp?.endTime!=0 && moment().valueOf()<dayExp?.endTime) {
       return (
         <ButtonTrade onClick={() => setIsShowModalSetPrice(true)}>
           <SwapOutlined /> Play Bid
@@ -263,6 +264,29 @@ const DetaiArtWork = ({ id }: any) => {
     }
     if (!userState?.isCanBuy) {
       return <ButtonBuy onClick={onApproveBuyOnMarket}>Allow to buy</ButtonBuy>
+    }
+  }
+  const renderTime = ()=>{
+    if(dayExp?.startTime!=0&&moment().valueOf()<dayExp?.startTime){
+      return (<>
+            {'Comming in '}
+              <Countdown
+                onComplete={() => setDayExp({startTime:0,endTime:dayExp?.endTime})}
+                date={dayExp?.startTime}
+              />{' '}
+              🔥
+            </> )
+    }else if(dayExp?.startTime==0 && dayExp?.endTime!=0 && moment().valueOf()<dayExp?.endTime){
+      return (
+          <>
+            <Countdown
+              onComplete={() => setDayExp({startTime:0,endTime:0})}
+              date={dayExp?.endTime}
+            />{' '}
+            🔥{' '}
+          </> )
+    }else if(dayExp?.endTime==0&&dayExp?.startTime==0){
+      return(<>Bid time is over</>)
     }
   }
   return (
@@ -282,17 +306,7 @@ const DetaiArtWork = ({ id }: any) => {
               </Link>
             </div>
             <div className="date-time">
-             {dayExp > 0? 
-             dayExp==1?
-             <>Caculating</>:
-                  <>
-                    <Countdown
-                      onComplete={() => setDayExp(0)}
-                      date={dayExp}
-                    />{' '}
-                    🔥{' '}
-                  </> 
-            : <>Bid time is over</> }
+             {renderTime()}
             </div>
             <div className="rating">
               4.8 <StarFilled style={{ color: '#fadb14' }} />{' '}

@@ -93,6 +93,9 @@ function ModalSetPriceAuction(props: any) {
                         <Radio value={2}>Schedule</Radio>
                     </Radio.Group>
                 </Form.Item>
+                {typeAuction==1? 
+                <div style={{ marginBottom: '6px' }}>Your item will be listed in the current market within 1 day</div>:
+                <>
                 <div style={{ marginBottom: '6px' }}>Set time</div>
                 <Form.Item
                     name="dateTime"
@@ -103,6 +106,8 @@ function ModalSetPriceAuction(props: any) {
                 >
                     <DatePicker isFormData disabledStartDate={typeAuction === 1 ? true : false} />
                 </Form.Item>
+                </>
+                }
                 <Form.Item>
                     <div
                         style={{

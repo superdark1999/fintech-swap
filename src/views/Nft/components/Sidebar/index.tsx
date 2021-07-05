@@ -13,15 +13,19 @@ const plainOptions = ['Apple', 'Pear', 'Orange'];
 interface SidebarProps {
   setShowSidebar: any;
   onShowSidebar: any;
+  price: any, 
+  onChangePrice: any,
 }
 
 const { Option } = Select
 const options = ["LUCKY TOKEN (LUCKY)"]
 
-const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar }) => {
+const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChangePrice}) => {
   const [select, setSelect] = React.useState<string | null>('LUCKY TOKEN (LUCKY)');
   const [configMenu, setConfigMenu] = React.useState<any | null>(['collection', 'price', 'tag']);
   const [checkedList, setCheckedList] = React.useState<[string] | null>(['']);
+
+  const [price, setPrice] = useState<any>({error: true})
 
 
   const onTogleMenu = (value: string) => {
@@ -39,6 +43,20 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar }) => {
     },
     [configMenu],
   )
+
+  const handeChangePriceInput = (e:any) => {
+    const value = e.target.value;
+    const name = e.target.name;
+    if (price.maxPrice >= price.minPrice) {
+      setPrice({...price, [name]: value, error: undefined})
+    }
+    else setPrice({...price, [name]: value, error: "Your minimum item price must be greater than the minimum"})
+  }
+
+  const onApply = () => {
+    console.log('price', price)
+    onChangePrice(price)
+  }
 
   if (!onShowSidebar) {
     return (
@@ -112,13 +130,14 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar }) => {
             ))}
           </Select>
           <div className="button group-input">
-            <Input placeholder="min" />
+            <Input type='number' min={0} placeholder="min" name="minPrice" value={price.minPrice} onChange={handeChangePriceInput}/>
             to
-            <Input placeholder="max" />
+            <Input type='number' min={price.minPrice} placeholder="max" name="maxPrice" value={price.maxPrice} onChange={handeChangePriceInput}/>
           </div>
+          {price.error && <span style={{color: 'red', width: '300px', padding: '0 24px'}}>{price.error}</span>}
           <div className="button sub-menu">
 
-            <Button shape="round" style={{ fontWeight: 'bold' }}>
+            <Button disabled={price.error} shape="round" style={{ fontWeight: 'bold'}} onClick={onApply}>
               Apply
             </Button>
           </div>

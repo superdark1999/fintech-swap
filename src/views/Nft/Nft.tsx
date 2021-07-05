@@ -14,6 +14,12 @@ import { useHookNTF } from './Store'
 const NFTContainer = (props: any) => {
   const [onShowSidebar, setShowSidebar] = useState(false)
   const [stateBanner, actions] = useHookNTF()
+  const [price, setPrice] = useState<any>({minPrice: 0, maxPrice: 0})
+
+  const onChangePrice = (price:any) => {
+    setPrice(price)
+  }
+
   useEffect(() => {
     actions.getBanner('home-nft')
   }, [])
@@ -26,6 +32,8 @@ const NFTContainer = (props: any) => {
               <Sidebar
                 setShowSidebar={setShowSidebar}
                 onShowSidebar={onShowSidebar}
+                price={price}
+                onChangePrice={onChangePrice}
               />
             </div>
           )}
@@ -44,7 +52,7 @@ const NFTContainer = (props: any) => {
               <HotSwap />
             </div>
             <div className="collection-nft space-collection">
-              <Collection />
+              <Collection price={price}/>
             </div>
           </div>
         </NFTContainerStyled>
