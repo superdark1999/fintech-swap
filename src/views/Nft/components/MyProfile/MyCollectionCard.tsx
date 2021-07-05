@@ -32,9 +32,11 @@ import ModalSetPriceAuction from './ModalSetPriceAuction'
 import ModalSetPriceSell from './ModalSetPriceSell'
 import QRCodeComp from 'components-v2/QRcode/index'
 import { createFromIconfontCN } from '@ant-design/icons'
+import moment from 'moment'
 const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
 })
+
 export default function MyCollectionCard({ data, option }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
   const [isProcessing, setIsPrcessing] = useState(false)
@@ -71,15 +73,14 @@ export default function MyCollectionCard({ data, option }: any) {
       const { nftContract } = NFTServicesMethod
       const filter = nftContract.filters.Approval(data?.ownerWalletAddress)
       nftContract.on(filter, (userAddress, marketAddress, tokenId) => {
-        console.log(userAddress, tokenId)
-        if (Number(tokenId) == data?.tokenId && userAddress == account) {
+        if (Number(tokenId) == data?.tokenId && userAddress == account && marketAddress == MARKET_ADDRESS) {
           setIsNFTCanSell(true)
           setApprovingMarket(false)
           setIsPrcessing(false)
         }
       })
     }
-  }, [isNFTCanSell, data?.tokenId, NFTServicesMethod, account])
+  }, [data?.tokenId, NFTServicesMethod, account])
 
   const onSellItem = (value: any) => {
     setIsPrcessing(true)
@@ -120,17 +121,12 @@ export default function MyCollectionCard({ data, option }: any) {
       })
   }
   const onSubmitRuleAuction = (value: any) => {
+
     const tokenId = data?.tokenId
-    const { startTime, endTime } = value
+    const startTime = value?.dateTime?.startTime||moment().unix();
+    const endTime = value?.dateTime?.endTime||moment().add(1, 'days')?.unix();
     setIsPrcessing(true)
-    marketServicesMethod
-      ?.setTokenBidInfo(
-        tokenId,
-        value.price,
-        value.stepPrice,
-        value?.dateTime?.startTime,
-        value?.dateTime?.endTime,
-      )
+    marketServicesMethod?.setTokenBidInfo(tokenId, value.price, value.stepPrice, startTime,endTime)
       .then((dt) => {
         if (dt?.hash) {
           setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {

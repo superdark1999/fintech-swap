@@ -27,20 +27,21 @@ export default function CardItem(props?: any) {
   const { account, chainId } = useActiveWeb3React()
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
-  const [dayExp, setDayExp] = useState(0)
   const [playVideo, setplayVideo] = useState(false)
   const videoRef = useRef<HTMLVideoElement>()
   const marketServiceMethod = useMarketServices()
+  const [dayExp, setDayExp] = useState({startTime:0, endTime:0})
+
   useEffect(() => {
     const getTokenPrice = async () => {
       if (marketServiceMethod && data?.tokenId && data?.NFTType == 'auction') {
         const timeInfo = await marketServiceMethod?.getBidTimeByTokenId?.(
           data?.tokenId,
         )
-        const endTime = timeInfo?.[2]
-          ? moment(Number(timeInfo?.[2]) || 0)?.valueOf()
-          : 0
-        setDayExp(endTime > moment()?.valueOf() ? endTime : 0)
+        const startTime = moment.unix(Number(timeInfo?.[1]))?.valueOf()
+        const endTime = moment.unix(Number(timeInfo?.[2]))?.valueOf()
+
+        setDayExp({startTime:startTime>moment()?.valueOf()?startTime:0,endTime:endTime>moment()?.valueOf()?endTime:0})
         setPrice(price)
         setLoading(false)
       }
@@ -85,6 +86,31 @@ export default function CardItem(props?: any) {
         )
     }
   }
+
+  const renderTime = ()=>{
+    if(dayExp?.startTime!=0&&moment().valueOf()<dayExp?.startTime){
+      return (<>
+            {'Coming in '}
+              <Countdown
+                onComplete={() => setDayExp({startTime:0,endTime:dayExp?.endTime})}
+                date={dayExp?.startTime}
+              />{' '}
+              🔥
+            </> )
+    }else if(dayExp?.startTime==0 && dayExp?.endTime!=0 && moment().valueOf()<dayExp?.endTime){
+      return (
+          <>
+            <Countdown
+              onComplete={() => setDayExp({startTime:0,endTime:0})}
+              date={dayExp?.endTime}
+            />{' '}
+            🔥{' '}
+          </> )
+    }else if(dayExp?.endTime==0&&dayExp?.startTime==0){
+      return(<>Bid time is over</>)
+    }
+  }
+
   useEffect(() => {
     if (videoRef) {
       if (playVideo) {
@@ -107,11 +133,10 @@ export default function CardItem(props?: any) {
               <div className="gradient-background">
                 <div className="title">{data?.title}</div>
               </div>
-              {data.NFTType === 'auction' && dayExp > 0 && (
+              {data.NFTType === 'auction' && (
                 <div className="header-card-art-work">
                   <div className="date-time">
-                    <Countdown onComplete={() => setDayExp(0)} date={dayExp} />{' '}
-                    🔥{' '}
+                    {renderTime()}
                   </div>
                 </div>
               )}

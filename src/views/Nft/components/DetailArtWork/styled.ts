@@ -229,7 +229,8 @@ export const VideoStyled = styled.div<Props>`
 `
 export const DetailStyled = styled.div`
   padding: 42px 32px;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 160px);
+  overflow: scroll;
   .offer-auction {
     height: 30px;
     span {
