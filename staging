@@ -1,0 +1,35 @@
+
+server {
+      server_name     staging-marketplace.luckyswap.center www.staging-marketplace.luckyswap.center;
+    root /home/luckyswap/stagking/luckyswap-nft-marketplace/build;
+location / {
+                    try_files $uri $uri/ /index.html;
+        }
+    listen 443 ssl; # managed by Certbot
+   ssl_certificate /etc/letsencrypt/live/staging-marketplace.luckyswap.center/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/staging-marketplace.luckyswap.center/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+server {
+    if ($host = staging-marketplace.luckyswap.center) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+listen          80;
+        listen          [::]:80;
+        server_name    staging-marketplace.luckyswap.center www.staging-marketplace.luckyswap.center;
+    return 404; # managed by Certbot
+}
+
+
+
+rm /etc/nginx/sites-enabled/staging-marketplace.luckyswap.center.conf
+rm /etc/nginx/sites-available/staging-marketplace.luckyswap.center.conf
+
+nano /etc/nginx/sites-available/staging-marketplace.luckyswap.center.conf
+
+sudo ln -s /etc/nginx/sites-available/staging-marketplace.luckyswap.center.conf /etc/nginx/sites-enabled/staging-marketplace.luckyswap.center.conf
+
+sudo certbot --nginx -d staging-marketplace.luckyswap.center  
+
+sudo certbot --nginx -d staging-marketplace.luckyswap.center 

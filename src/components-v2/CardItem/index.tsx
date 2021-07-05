@@ -28,19 +28,15 @@ export default function CardItem(props?: any) {
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
   const [playVideo, setplayVideo] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>();
+  const videoRef = useRef<HTMLVideoElement>()
   const marketServiceMethod = useMarketServices()
   const [dayExp, setDayExp] = useState({startTime:0, endTime:0})
 
   useEffect(() => {
     const getTokenPrice = async () => {
-      if (
-        marketServiceMethod &&
-        data?.tokenId &&
-        data?.NFTType == 'auction'
-      ) {
-        const timeInfo  = await marketServiceMethod?.getBidTimeByTokenId?.(
-          data?.tokenId
+      if (marketServiceMethod && data?.tokenId && data?.NFTType == 'auction') {
+        const timeInfo = await marketServiceMethod?.getBidTimeByTokenId?.(
+          data?.tokenId,
         )
         const startTime = moment.unix(Number(timeInfo?.[1]))?.valueOf()
         const endTime = moment.unix(Number(timeInfo?.[2]))?.valueOf()
@@ -58,11 +54,12 @@ export default function CardItem(props?: any) {
   }
   const renderMedia = () => {
     switch (data?.type) {
-      case "video": {
+      case 'video': {
         return (
           <video
             // playsInline
-            width="300px" height="450px"
+            width="300px"
+            height="450px"
             controls
             muted
             ref={videoRef}
@@ -72,20 +69,21 @@ export default function CardItem(props?: any) {
             // data-src={`${data?.contentUrl}#t=0.1`}
             loop
           >
-            <source src={`${data?.contentUrl}#t=0.1`} type="video/mp4" ></source>
+            <source src={`${data?.contentUrl}#t=0.1`} type="video/mp4"></source>
           </video>
         )
       }
-      default: return (
-        <img
-          src={isLazy ? Loading : data?.contentUrl}
-          className={isLazy ? "avatar lazy" : "avatar"}
-          alt=""
-          srcSet={isLazy ? "" : srcSet}
-          data-srcset={srcSet}
-          data-src={data?.contentUrl}
-        />
-      )
+      default:
+        return (
+          <img
+            src={isLazy ? Loading : data?.contentUrl}
+            className={isLazy ? 'avatar lazy' : 'avatar'}
+            alt=""
+            srcSet={isLazy ? '' : srcSet}
+            data-srcset={srcSet}
+            data-src={data?.contentUrl}
+          />
+        )
     }
   }
 
@@ -127,7 +125,11 @@ export default function CardItem(props?: any) {
       <StyledCart src={data?.contentUrl}>
         <div className="card-art-work">
           <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
-            <div className="wrapper-image" onMouseEnter={() => setplayVideo(true)} onMouseLeave={() => setplayVideo(false)}>
+            <div
+              className="wrapper-image"
+              onMouseEnter={() => setplayVideo(true)}
+              onMouseLeave={() => setplayVideo(false)}
+            >
               <div className="gradient-background">
                 <div className="title">{data?.title}</div>
               </div>
@@ -152,11 +154,7 @@ export default function CardItem(props?: any) {
                   {data.createdBy.name ? (
                     <a
                       target="_blank"
-                      href={embedTokenIdLinkBSCScan(
-                        data.tokenId,
-                        data?.createdBy?.walletAddress,
-                        chainId,
-                      )}
+                      href={`${window.location.href}user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell}`}   
                     >
                       {data.createdBy.name}
                     </a>
@@ -180,7 +178,8 @@ export default function CardItem(props?: any) {
                 title="copy"
                 onClick={() =>
                   handleCopy(
-                    `${window.location.href}artwork/detail/${data?.NFTType || 'buy'
+                    `${window.location.href}artwork/detail/${
+                      data?.NFTType || 'buy'
                     }/${data?._id}`,
                   )
                 }
@@ -211,7 +210,7 @@ export default function CardItem(props?: any) {
                   target="_blank"
                   href={embedTokenIdLinkBSCScan(
                     data.tokenId,
-                    data?.contractAddress,
+                    data?.ownerWalletAddress,
                     chainId,
                   )}
                 >
@@ -219,7 +218,11 @@ export default function CardItem(props?: any) {
                   {getCompactString(data?.ownerWalletAddress, 5)}
                 </a>
               </div>
-              {data.contentInfo && <span>{data?.contentInfo?.width}x{data?.contentInfo?.height}</span>}
+              {data.contentInfo && (
+                <span>
+                  {data?.contentInfo?.width}x{data?.contentInfo?.height}
+                </span>
+              )}
             </div>
             <div className="number">
               {isHideButton ? null : data?.NFTType !== 'swap-store' ? (

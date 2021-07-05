@@ -28,6 +28,8 @@ import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import { useHistory } from 'react-router-dom'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import _ from 'lodash'
+import TableHistory from './TableHistory'
+
 const { TabPane } = Tabs
 const DetaiArtWork = ({ id }: any) => {
   const { getDetailNFT, buyItem } = useArtworkServices()
@@ -228,12 +230,7 @@ const DetaiArtWork = ({ id }: any) => {
             </TabPane>
 
             <TabPane tab="History" key="2">
-              <Table
-                columns={columnHistory}
-                dataSource={dataHistory}
-                size="middle"
-                scroll={{ x: 'calc(300px + 50%)', y: 700 }}
-              />
+              <TableHistory />
             </TabPane>
             <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">

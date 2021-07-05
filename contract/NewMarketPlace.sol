@@ -1,7 +1,4 @@
-/**
- *Submitted for verification at BscScan.com on 2021-06-11
-*/
-
+m
 // File: @openzeppelin/contracts/math/SafeMath.sol
 
 // SPDX-License-Identifier: MIT
@@ -1402,31 +1399,6 @@ interface IBidNFT {
     function cancelBidToken(uint256 _tokenId) external;
 }
 
-pragma solidity >=0.6.2;
-
-interface ISwapNFT {
-
-
-    function offerNFT(uint256 _tokenId,uint256 _tokenTarget, uint256 _price) external;
-    
-    function cancelOfferNFT(uint256 _tokenId) external;
-    
-    function listNFT(uint256 _tokenId) external;
-    
-    function swapNFT( uint256 nftA,uint256  nftB, address user) external;
-        
-
-    function listNFTTo(
-        uint256 _tokenId,
-        address _to
-    ) external;
-
-    function cancelListNFT(uint256 _tokenId) external;
-
-    
-    
-}
-
 // File: contracts/BidNFT.sol
 
 pragma solidity =0.6.6;
@@ -1443,7 +1415,7 @@ pragma experimental ABIEncoderV2;
 
 
 
-contract LuckyMarketPlace is IBidNFT , ERC721Holder, Ownable, Pausable {
+contract LuckyMarketPlace is IBidNFT, ERC721Holder, Ownable, Pausable {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
     using Address for address;
@@ -1464,17 +1436,7 @@ contract LuckyMarketPlace is IBidNFT , ERC721Holder, Ownable, Pausable {
         uint256 tokenId;
         uint256 price;
     }
-    
-    struct Offer {
-        address user;
-        uint256 tokenId;
-        uint256 price;
-    }
-    
-   struct ListNFT {
-        uint256 tokenId;
-        address user;
-    }
+
     IERC721 public nft;
     IERC20 public quoteErc20;
     address public feeAddr;
@@ -1490,25 +1452,14 @@ contract LuckyMarketPlace is IBidNFT , ERC721Holder, Ownable, Pausable {
     mapping(uint256 => BidEntry[]) private _tokenBids;
     mapping(address => EnumerableMap.UintToUintMap) private _userBids;
 
-
-
-
-    uint256[] public addressIndices;
-    mapping(uint256 =>Offer[]) private _offerMap;
-    mapping(uint256 =>address) public _listMap;    
-    
     event Trade(address indexed seller, address indexed buyer, uint256 indexed tokenId, uint256 price, uint256 fee);
     event Ask(address indexed seller, uint256 indexed tokenId, uint256 price);
     event CancelSellToken(address indexed seller, uint256 indexed tokenId);
     event FeeAddressTransferred(address indexed previousOwner, address indexed newOwner);
+    event SetFeePercent(address indexed seller, uint256 oldFeePercent, uint256 newFeePercent);
     event Bid(address indexed bidder, uint256 indexed tokenId, uint256 price);
     event CancelBidToken(address indexed bidder, uint256 indexed tokenId);
-    event List(address indexed seller, uint256 indexed tokenId);
-    event CancelOfferNFT(uint256 indexed tokenId);
-    event CancelListNFT(address indexed seller, uint256 indexed tokenId);
-    event SetFeePercent(address indexed seller, uint256 oldFeePercent, uint256 newFeePercent);
-    event CancelOfferNFT(address indexed user, uint256 indexed tokenId);    
-    event SwapNFTs( uint256 nftA,uint256  nftB, address user);    
+
     constructor(
         address _nftAddress,
         address _quoteErc20Address,
@@ -1841,127 +1792,7 @@ contract LuckyMarketPlace is IBidNFT , ERC721Holder, Ownable, Pausable {
     function getStepByTokenId(uint256 _tokenId)public view returns(uint256) {
         uint256 price = _stepsMap.get(_tokenId);
         return price;
-    }   
-    
-    
-    function swapNFT(uint256 _nftA,uint256 _nftB, address _userB) public {
-        (Offer memory offerEntry) = getOfferByTokenIdAndAddressSwap(_nftB, _userB);
-        
-        require(offerEntry.user == _userB, 'User B not exist');
-        require(_listMap[_nftA] == address(_msgSender()), 'User A not exist');
-        
-        uint256 price =offerEntry.price;
-        if(price>0){
-             quoteErc20.safeTransferFrom(address(this),address(_msgSender()), price);
-         }
-         
-         nft.safeTransferFrom(address(this),address(_msgSender()) , _nftB);
-         
-         nft.safeTransferFrom(address(this), address(_userB), _nftA);
-         
-        emit SwapNFTs(_nftA, _nftB, _msgSender());
-    }
-    
+    }    
+}   
+ 
   
-    function listNFT(uint256 _tokenId) public{
-        listNFTTo(_tokenId, address(_msgSender()));
-    }
-
-    function listNFTTo(
-        uint256 _tokenId,
-        address _to
-    ) public  {
-        require(_msgSender() == nft.ownerOf(_tokenId), 'Only Token Owner can sell token');
-        nft.safeTransferFrom(address(_msgSender()), address(this), _tokenId);
-        
-        addressIndices.push(_tokenId);
-        _listMap[_tokenId] = _to;
-        
-        emit List(_to, _tokenId);
-    }
-
-    function cancelListNFT(uint256 _tokenId) public {
-        require(_listMap[_tokenId]== _msgSender(), 'User do not list NFT');
-        nft.safeTransferFrom(address(this), _msgSender(), _tokenId);
-        _listMap[_tokenId]  =0x0000000000000000000000000000000000000000;
-        delete addressIndices[_tokenId];
-        emit CancelOfferNFT(_msgSender(), _tokenId);
-    }
-    
-    function cancelOfferNFT(uint256 _tokenId) public {
-        address _address = address(_msgSender());
-        
-        (Offer memory offerEntry, uint256 _index) = getOfferByTokenIdAndAddress(_tokenId, _address);
-        require(offerEntry.user == _address, 'User offer not exist');
-        if(offerEntry.price>0){
-            quoteErc20.transfer(_address, offerEntry.price);
-        }
-        nft.safeTransferFrom(address(this), address(_msgSender()), offerEntry.tokenId);
-        delOfferByTokenIdAndIndex(_tokenId, _index);
-        emit CancelOfferNFT(_msgSender(), _tokenId);
-    }
-
-    function delOfferByTokenIdAndIndex(uint256 _tokenId, uint256 _index) private {
-        uint256 len = _offerMap[_tokenId].length;
-        for (uint256 i = _index; i < len - 1; i++) {
-            _offerMap[_tokenId][i] = _offerMap[_tokenId][i + 1];
-        }
-        _offerMap[_tokenId].pop();
-    }    
-    function getOfferByTokenIdAndAddressSwap(uint256 _tokenId, address _address)
-            public
-            view
-            returns (Offer memory)
-        {
-            // find the index of the offer
-            Offer[] memory offerEntries = _offerMap[_tokenId];
-            uint256 len = offerEntries.length;
-            uint256 _index;
-            Offer memory offerEntry;
-            for (uint256 i = 0; i < len; i++) {
-                if (_address == offerEntries[i].user) {
-                    _index = i;
-                    offerEntry = Offer({user: offerEntries[i].user, price: offerEntries[i].price, tokenId:offerEntries[i].tokenId});
-                    break;
-                }
-            }
-            return (offerEntry);
-    }
-         function getOfferByTokenIdAndAddress(uint256 _tokenId, address _address)
-            public
-            view
-            returns (Offer memory, uint256)
-        {
-            // find the index of the offer
-            Offer[] memory offerEntries = _offerMap[_tokenId];
-            uint256 len = offerEntries.length;
-            uint256 _index;
-            Offer memory offerEntry;
-            for (uint256 i = 0; i < len; i++) {
-                if (_address == offerEntries[i].user) {
-                    _index = i;
-                    offerEntry = Offer({user: offerEntries[i].user, price: offerEntries[i].price, tokenId:offerEntries[i].tokenId});
-                    break;
-                }
-            }
-            return (offerEntry, _index);
-    }
-    
-   function getOffersLength(uint256 _tokenId) public view returns (uint256) {
-        return _offerMap[_tokenId].length;
-    }
-    
-    function getOffers(uint256 _tokenId) public view returns (Offer[] memory) {
-        return _offerMap[_tokenId];
-    }
-    
-    function getListingNFT() public view returns (ListNFT[] memory) {
-        uint256 len = addressIndices.length;
-        ListNFT[] memory listings =  new ListNFT[](len);
-        for (uint256 i = 0; i < len; i++) {
-            address user = _listMap[addressIndices[i]];
-            listings[i] = ListNFT({tokenId: addressIndices[i], user: user});
-        }
-        return listings;
-    }    
-}

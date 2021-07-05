@@ -8,30 +8,60 @@ const ID = styled.div`
   overflow: hidden;
   text-overflow: ellipsis; 
 `
+const IMG = styled.img`
+  width: 35px;
+  border-radius: 50%;
+`
+const A = styled.a`
+  display: flex
+`
+const SPAN = styled.span`
+  margin: auto 0;
+  margin-left: 10px
+`
 
 export const columnHistory = [
   {
     title: 'Event',
     dataIndex: 'event',
-    width: 150,
+    width: 200,
+  },
+  {
+    title: 'Price',
+    dataIndex: 'price',
+    width: 100,
   },
   {
     title: 'From',
     dataIndex: 'from',
-    render: (from) => <ID >
-      {from}
-    </ID>
+    width: 200,
+    render: (from) =>  
+    <A href={window.location.origin+`/user-profile/${from[0]}/onstore/readyToSell`} target="_blank">
+      <IMG src={from[1]} >  
+      </IMG>
+      <SPAN>{from[2]}</SPAN>
+    </A>
+    
   },
   {
     title: 'To',
     dataIndex: 'to',
-    render: (to) => <ID >
-      {to}
-    </ID>
+    width: 200,
+    render: (to) => 
+    <A href={window.location.origin+`/user-profile/${to[0]}/onstore/readyToSell`} target="_blank">
+      <IMG src={to[1]} >  
+      </IMG>
+      <SPAN>{to[2]}</SPAN>
+    </A>
   },
   {
     title: 'Date',
     dataIndex: 'date',
+    width: 150,
+    render: (date) => 
+    <A href={`https://testnet.bscscan.com/tx/${date[1]}`} target="_blank">
+      {date[0]}
+    </A>
   },
 ];
 

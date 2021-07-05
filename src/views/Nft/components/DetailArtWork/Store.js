@@ -7,6 +7,7 @@ import {
 import { API_DASHBOARD } from '../../../../constants'
 import axios from 'axios'
 import { getCompactString } from 'utils'
+import moment from 'moment'
 
 const stateDefault = {
   historys: [],
@@ -18,16 +19,21 @@ const Store = createStore({
     getHistorys:
       (tokenId) =>
       ({ setState, getState }) => {
+        
         axios(`${API_DASHBOARD}/transactions?tokenId=${tokenId}`).then(
           (res) => {
             let parseData = res.data
             parseData = parseData.map((item) => {
+              
               item.price = 0
-              item.from = getCompactString(item.from, 6)
-              item.to = getCompactString(item.to, 6)
-              item.date =
-                item.timeStamp &&
-                new Date(item.timeStamp * 1000).toLocaleDateString('en-US')
+              item.from =[item.from, item.avtFrom.from, item.avtFrom.name]
+              //getCompactString(item.from, 6)
+              item.to = [item.to, item.avtTo.from
+                , item.avtTo.name]
+              item.date = [item.timeStamp &&
+                moment(new Date(item.timeStamp * 1000).toLocaleDateString('en-US')).fromNow(),
+              item.hash]
+                
               return item
             })
             setState({ historys: parseData })
