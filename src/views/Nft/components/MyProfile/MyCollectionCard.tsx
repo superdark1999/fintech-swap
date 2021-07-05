@@ -73,16 +73,14 @@ export default function MyCollectionCard({ data, option }: any) {
       const { nftContract } = NFTServicesMethod
       const filter = nftContract.filters.Approval(data?.ownerWalletAddress)
       nftContract.on(filter, (userAddress, marketAddress, tokenId) => {
-        console.log('runnnn',userAddress,marketAddress,Number(tokenId))
-        if (Number(tokenId) == data?.tokenId && userAddress == account) {
-          console.log('ksksk')
+        if (Number(tokenId) == data?.tokenId && userAddress == account && marketAddress == MARKET_ADDRESS) {
           setIsNFTCanSell(true)
           setApprovingMarket(false)
           setIsPrcessing(false)
         }
       })
     }
-  }, [isNFTCanSell, data?.tokenId, NFTServicesMethod, account])
+  }, [data?.tokenId, NFTServicesMethod, account])
 
   const onSellItem = (value: any) => {
     setIsPrcessing(true)
@@ -125,8 +123,8 @@ export default function MyCollectionCard({ data, option }: any) {
   const onSubmitRuleAuction = (value: any) => {
 
     const tokenId = data?.tokenId
-    const startTime = value?.dateTime?.startTime||moment().valueOf();
-    const endTime = value?.dateTime?.endTime||moment().add(1, 'days')?.valueOf();
+    const startTime = value?.dateTime?.startTime||moment().unix();
+    const endTime = value?.dateTime?.endTime||moment().add(1, 'days')?.unix();
     setIsPrcessing(true)
     marketServicesMethod?.setTokenBidInfo(tokenId, value.price, value.stepPrice, startTime,endTime)
       .then((dt) => {
