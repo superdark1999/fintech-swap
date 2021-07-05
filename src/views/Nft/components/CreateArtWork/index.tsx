@@ -151,7 +151,7 @@ const CreateArtWork: React.FC = () => {
     if (!e.target.value) {
       return notification('info', {
         message: 'Announce',
-        description: 'This feature will be comming soon',
+        description: 'This feature will be coming soon',
       })
     }
     formRef.current?.resetFields(['content'])

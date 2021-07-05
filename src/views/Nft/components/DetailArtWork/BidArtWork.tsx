@@ -269,7 +269,7 @@ const DetaiArtWork = ({ id }: any) => {
   const renderTime = ()=>{
     if(dayExp?.startTime!=0&&moment().valueOf()<dayExp?.startTime){
       return (<>
-            {'Comming in '}
+            {'Coming in '}
               <Countdown
                 onComplete={() => setDayExp({startTime:0,endTime:dayExp?.endTime})}
                 date={dayExp?.startTime}
