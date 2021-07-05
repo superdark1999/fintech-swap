@@ -67,14 +67,13 @@ export default function MyCollectionCard({ data, option }: any) {
   useEffect(() => {
     if (
       data?.ownerWalletAddress === account &&
-      NFTServicesMethod
+      NFTServicesMethod &&
+      !isNFTCanSell
     ) {
-      console.log('runnnn')
       const { nftContract } = NFTServicesMethod
       const filter = nftContract.filters.Approval(data?.ownerWalletAddress)
       nftContract.on(filter, (userAddress, marketAddress, tokenId) => {
         if (Number(tokenId) == data?.tokenId && userAddress == account && marketAddress == MARKET_ADDRESS) {
-          console.log('checkkking',tokenId)
           setIsNFTCanSell(true)
           setApprovingMarket(false)
           setIsPrcessing(false)
