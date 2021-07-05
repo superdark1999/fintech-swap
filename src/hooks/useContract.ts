@@ -179,7 +179,6 @@ export function useFarmsContract(): Contract | null {
   return useContract(addresss.masterChef[97], FARMS_ABI, true)
 }
 
-export function useStakingContract(address: any | null ): Contract | null {
-
+export function useStakingContract(address: any | null): Contract | null {
   return useContract(address, SMART_CHEF_ABI, true)
 }

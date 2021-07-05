@@ -1,4 +1,4 @@
-import React, {useEffect}from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Text, Heading, BaseLayout, Button, LinkExternal, Flex, Image } from '@luckyswap/uikit'
 import IfoCard from './components/IfoCard'
@@ -8,21 +8,29 @@ import IfoCards from './components/IfoCards'
  */
 
 const Ifo = ({ ifos }) => {
-
   return (
     <div>
       <IfoCards isSingle>
-        {ifos.map((ifo) =>
+        {ifos.map((ifo) => (
           <IfoCard key={ifo._id} ifo={ifo} />
-        )}
-        
+        ))}
       </IfoCards>
 
       <BoxIDO>
         <div className="content">
           <h4>How to launch your own IDO ?</h4>
-          <p>Launch your project with LuckySwap, LuckySwap is a decentralized trading platform that uses the automatic market maker (AMM) model. At the same time LuckySwap is the 1st AMM+NFT exchange on Binance Smart Chain.Various data indicate the rapid growth of LuckySwap in the DEFI ecosystem</p>
-          <a rel="noreferrer"  href="https://docs.google.com/forms/u/3/d/e/1FAIpQLSdeFTnAHObS3CWDxB4b8c3zFRsj9DXb1MJ_vqE7YLUO4BeChg/viewform" target="_blank">Apply Now</a>
+          <p>
+            Launch your project with LuckySwap, LuckySwap is a decentralized trading platform that uses the automatic
+            market maker (AMM) model. At the same time LuckySwap is the 1st AMM+NFT exchange on Binance Smart
+            Chain.Various data indicate the rapid growth of LuckySwap in the DEFI ecosystem
+          </p>
+          <a
+            rel="noreferrer"
+            href="https://docs.google.com/forms/u/3/d/e/1FAIpQLSdeFTnAHObS3CWDxB4b8c3zFRsj9DXb1MJ_vqE7YLUO4BeChg/viewform"
+            target="_blank"
+          >
+            Apply Now
+          </a>
         </div>
       </BoxIDO>
     </div>
@@ -77,7 +85,7 @@ const BoxIDO = styled.div`
     width: 152px;
     height: 40px;
     line-height: 40px;
-    background: linear-gradient(180.24deg,rgb(114 186 255) 0.21%,rgb(28 144 255) 63.19%);
+    background: linear-gradient(180.24deg, rgb(114 186 255) 0.21%, rgb(28 144 255) 63.19%);
     border-radius: 8px;
     color: #fff;
     text-align: center;

@@ -41,7 +41,7 @@ const Store = createStore({
       },
     changeKeySearch:
       (value) =>
-      ({setState }) => {
+      ({ setState }) => {
         setState({ keySearch: value })
       },
     setLaunchPad:

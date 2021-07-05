@@ -4,10 +4,11 @@ import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@luckys
 import { useMemo } from 'react'
 import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
-import { calculateGasMargin, getRouterContract, isAddress, shortenAddress } from '../utils'
+import { calculateGasMargin, isAddress, shortenAddress } from '../utils'
 import isZero from '../utils/isZero'
 import { useActiveWeb3React } from './index'
 import useENS from './useENS'
+import { useRouterContract } from './useContract'
 
 enum SwapCallbackState {
   INVALID,
@@ -48,12 +49,12 @@ function useSwapCallArguments(
   const { account, chainId, library } = useActiveWeb3React()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
+  const contract: Contract = useRouterContract()
   const recipient = recipientAddressOrName === null ? account : recipientAddress
 
   return useMemo(() => {
     if (!trade || !recipient || !library || !account || !chainId) return []
 
-    const contract: Contract | null = getRouterContract(chainId, library, account)
     if (!contract) {
       return []
     }
@@ -83,7 +84,7 @@ function useSwapCallArguments(
     }
 
     return swapMethods.map((parameters) => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, deadline, library, recipient, trade])
+  }, [contract, account, allowedSlippage, chainId, deadline, library, recipient, trade])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid

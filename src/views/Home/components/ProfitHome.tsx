@@ -7,7 +7,7 @@ import { Row, Col, Menu, Dropdown, message } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 
 function currencyFormat(num) {
-  return  num && num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+  return num && num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
 
 const ProfitHomeContainer = styled.div`
@@ -38,13 +38,13 @@ const CardProfitStyled = styled.div`
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     align-items: center;
     display: flex;
-    b{
+    b {
       color: #fff;
     }
     span {
       margin-top: 0;
       color: #fff;
-      font-weight:700;
+      font-weight: 700;
       @media (min-width: 768px) {
         margin-top: 20px;
       }
@@ -144,12 +144,18 @@ function ProfitHome() {
       <Col md={24}>
         <Row gutter={30}>
           <Col span={24} md={12}>
-            <CardProfit icon='https://dynamic-assets.coinbase.com/e785e0181f1a23a30d9476038d9be91e9f6c63959b538eabbc51a1abc8898940383291eede695c3b8dfaa1829a9b57f5a2d0a16b0523580346c6b8fab67af14b/asset_icons/b57ac673f06a4b0338a596817eb0a50ce16e2059f327dc117744449a47915cb2.png' 
-            data={data[0]} bgColor="#16426f" />
+            <CardProfit
+              icon="https://dynamic-assets.coinbase.com/e785e0181f1a23a30d9476038d9be91e9f6c63959b538eabbc51a1abc8898940383291eede695c3b8dfaa1829a9b57f5a2d0a16b0523580346c6b8fab67af14b/asset_icons/b57ac673f06a4b0338a596817eb0a50ce16e2059f327dc117744449a47915cb2.png"
+              data={data[0]}
+              bgColor="#16426f"
+            />
           </Col>
           <Col span={24} md={12}>
-            <CardProfit   icon='https://dynamic-assets.coinbase.com/dbb4b4983bde81309ddab83eb598358eb44375b930b94687ebe38bc22e52c3b2125258ffb8477a5ef22e33d6bd72e32a506c391caa13af64c00e46613c3e5806/asset_icons/4113b082d21cc5fab17fc8f2d19fb996165bcce635e6900f7fc2d57c4ef33ae9.png' 
-            data={data[1]} bgColor="#444444" />
+            <CardProfit
+              icon="https://dynamic-assets.coinbase.com/dbb4b4983bde81309ddab83eb598358eb44375b930b94687ebe38bc22e52c3b2125258ffb8477a5ef22e33d6bd72e32a506c391caa13af64c00e46613c3e5806/asset_icons/4113b082d21cc5fab17fc8f2d19fb996165bcce635e6900f7fc2d57c4ef33ae9.png"
+              data={data[1]}
+              bgColor="#444444"
+            />
           </Col>
         </Row>
       </Col>
@@ -158,7 +164,7 @@ function ProfitHome() {
 }
 
 const CardProfit = (props) => {
-  const {data, icon} =props
+  const { data, icon } = props
   return (
     <CardProfitStyled {...props}>
       <div className="top-profit">
@@ -173,17 +179,23 @@ const CardProfit = (props) => {
       </div>
       <div className="bottom-profit">
         <div className="d-flex">
-          <img
-            src={icon}
-            className="logo"
-            alt="logo-BTC"
-          />
+          <img src={icon} className="logo" alt="logo-BTC" />
         </div>
         <span>{data && data.symbol}</span>
-        <span className="bold">{currencyFormat(data && data.market_data && data.market_data.volume_last_24_hours)}</span>
+        <span className="bold">
+          {currencyFormat(data && data.market_data && data.market_data.volume_last_24_hours)}
+        </span>
         {/* <span>{data && data.market_data && data.market_data.percent_change_usd_last_24_hours.toFixed(2)}%</span> */}
         <span>${currencyFormat(data && data.market_data && data.market_data.price_usd)}</span>
-        <span className={`bold ${data && data.market_data && data.market_data.percent_change_usd_last_24_hours.toFixed(2)>0?'green':'red'}-text`}>{data && data.market_data && data.market_data.percent_change_usd_last_24_hours.toFixed(2)}%</span>
+        <span
+          className={`bold ${
+            data && data.market_data && data.market_data.percent_change_usd_last_24_hours.toFixed(2) > 0
+              ? 'green'
+              : 'red'
+          }-text`}
+        >
+          {data && data.market_data && data.market_data.percent_change_usd_last_24_hours.toFixed(2)}%
+        </span>
       </div>
     </CardProfitStyled>
   )

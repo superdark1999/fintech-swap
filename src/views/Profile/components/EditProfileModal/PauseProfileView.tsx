@@ -33,7 +33,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
       })
       .on('receipt', async () => {
         // Re-fetch profile
-        await dispatch(fetchProfile(account)as any) 
+        await dispatch(fetchProfile(account) as any)
         toastSuccess('Profile Paused!')
 
         onDismiss()

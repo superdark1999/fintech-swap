@@ -1,8 +1,9 @@
-import { ChainId, Token } from '@luckyswap/v2-sdk'
+import { Token } from '@luckyswap/v2-sdk'
 import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'
+import { ChainId } from '../../constants'
 
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {

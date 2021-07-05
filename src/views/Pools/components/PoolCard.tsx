@@ -1,63 +1,58 @@
-import BigNumber from 'bignumber.js';
-import { LUCKY_PER_BLOCK } from 'config';
-import { Pool } from 'config/constants/types';
-import useGetStateData from 'hooks/useGetStakeData';
-import useUtilityToken from 'hooks/useUtilityToken';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Col } from 'reactstrap';
-import { useLucky2Price, usePriceLuckyBusd } from 'state/hooks';
-import styled from 'styled-components';
-import { getPoolApy } from 'utils/apy';
+import BigNumber from 'bignumber.js'
+import { LUCKY_PER_BLOCK } from 'config'
+import { Pool } from 'config/constants/types'
+import useGetStateData from 'hooks/useGetStakeData'
+import useUtilityToken from 'hooks/useUtilityToken'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Button, Col } from 'reactstrap'
+import { useLucky2Price, usePriceLuckyBusd } from 'state/hooks'
+import styled from 'styled-components'
+import { getPoolApy } from 'utils/apy'
 
-interface HarvestProps{
+interface HarvestProps {
   pool: Pool
 }
 
-const PoolCard : React.FC<HarvestProps> = ({ pool })  => {
+const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
+  const [apy, setApy] = useState('')
+  const [totalStaked, setTotalStaked] = useState(0)
 
-  const [apy, setApy] = useState('');
-  const [totalStaked, setTotalStaked] = useState(0);
+  const { userRewardDebt } = useGetStateData(pool)
 
-  const {  userRewardDebt} = useGetStateData(pool);
-
-  const {balanceOf} =  useUtilityToken(pool.depositTokenAddress);
+  const { balanceOf } = useUtilityToken(pool.depositTokenAddress)
 
   const rewardTokenPrice = usePriceLuckyBusd()
   const stakingTokenPrice = useLucky2Price()
 
+  useEffect(() => {
+    const fetchTotalStaked = async () => {
+      if (balanceOf) {
+        const result = await balanceOf(pool.stakingAddress)
+        const balance = new BigNumber(result._hex).div(1e18).toNumber()
+        setTotalStaked(balance)
 
-  useEffect(() => { 
-  const fetchTotalStaked = async () => {
-  if (balanceOf){
-    const result =  await balanceOf(pool.stakingAddress);
-    const balance = new BigNumber(result._hex).div(1e18).toNumber();
-    setTotalStaked(balance)
-
-    const apyValue = getPoolApy(
-      stakingTokenPrice.toNumber(),
-      rewardTokenPrice.toNumber(),
-      balance,
-      LUCKY_PER_BLOCK.toNumber(),
-    )
-    if (apyValue)
-      setApy(parseFloat(apyValue.toString()).toFixed(2));
+        const apyValue = getPoolApy(
+          stakingTokenPrice.toNumber(),
+          rewardTokenPrice.toNumber(),
+          balance,
+          LUCKY_PER_BLOCK.toNumber(),
+        )
+        if (apyValue) setApy(parseFloat(apyValue.toString()).toFixed(2))
+      }
     }
-
-  }
-    fetchTotalStaked();
-  },[balanceOf, stakingTokenPrice,rewardTokenPrice, pool.stakingAddress])
-
+    fetchTotalStaked()
+  }, [balanceOf, stakingTokenPrice, rewardTokenPrice, pool.stakingAddress])
 
   return (
     <div>
-    <Col>
+      <Col>
         <BoxPool>
           <HeadLine>
             <span>Premium</span>
           </HeadLine>
           <figure>
-            <img src="../images/logo-icon.png" alt=""/>
+            <img src="../images/logo-icon.png" alt="" />
           </figure>
 
           <CardContent>
@@ -65,12 +60,16 @@ const PoolCard : React.FC<HarvestProps> = ({ pool })  => {
 
             <FlexSpace>
               <ContentLeft>Deposit:</ContentLeft>
-              <ContentRight>{totalStaked} {pool.depositTokenSymbol}</ContentRight>
+              <ContentRight>
+                {totalStaked} {pool.depositTokenSymbol}
+              </ContentRight>
             </FlexSpace>
 
             <FlexSpace>
               <ContentLeft>Earn:</ContentLeft>
-              <ContentRight>{userRewardDebt.div(1e18).toFixed(2)} {pool.rewardTokenSymbol}</ContentRight>
+              <ContentRight>
+                {userRewardDebt.div(1e18).toFixed(2)} {pool.rewardTokenSymbol}
+              </ContentRight>
             </FlexSpace>
 
             <FlexSpace>
@@ -90,10 +89,8 @@ const PoolCard : React.FC<HarvestProps> = ({ pool })  => {
   )
 }
 
-
-
 const HeadLine = styled.div`
-  background: linear-gradient(90deg, rgba(239,186,12,1) 0%, rgba(251,219,59,1) 100%);
+  background: linear-gradient(90deg, rgba(239, 186, 12, 1) 0%, rgba(251, 219, 59, 1) 100%);
   width: 100%;
   padding: 10px 0;
   position: absolute;
@@ -160,7 +157,7 @@ const ContentRight = styled.div`
 
 const Boxbtn = styled.div`
   text-align: center;
-  border-top: 1px solid #D8D8D8;
+  border-top: 1px solid #d8d8d8;
   padding-top: 15px;
 
   button {
@@ -182,5 +179,4 @@ const Boxbtn = styled.div`
   }
 `
 
-
-export default PoolCard;
+export default PoolCard

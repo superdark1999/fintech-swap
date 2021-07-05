@@ -6,14 +6,7 @@ import { NetworkConnector } from './NetworkConnector'
 import { BscConnector } from './bsc/bscConnector'
 import {} from '@luckyswap/v2-sdk'
 import getNodeUrl from '../utils/getRpcUrl'
-
-export enum ChainId {
-  RINKEBY = 4,
-  MATIC = 137,
-  MATIC_TESTNET = 80001,
-  BSC = 56,
-  BSC_TESTNET = 97,
-}
+import { ChainId } from '../constants'
 
 const RPC = {
   [ChainId.RINKEBY]: 'https://eth-rinkeby.alchemyapi.io/v2/XVLwDlhGP6ApBXFz_lfv0aZ6VmurWhYD',
@@ -21,11 +14,11 @@ const RPC = {
   [ChainId.MATIC]:
     'https://apis.ankr.com/e22bfa5f5a124b9aa1f911b742f6adfe/c06bb163c3c2a10a4028959f4d82836d/polygon/full/main',
   [ChainId.MATIC_TESTNET]: 'https://rpc-mumbai.matic.today',
-  [ChainId.BSC]: 'https://bsc-dataseed.binance.org/',
-  [ChainId.BSC_TESTNET]: 'https://data-seed-prebsc-2-s3.binance.org:8545',
+  [ChainId.MAINNET]: 'https://bsc-dataseed.binance.org/',
+  [ChainId.BSCTESTNET]: 'https://data-seed-prebsc-2-s3.binance.org:8545',
 }
 
-const NETWORK_URL = getNodeUrl(ChainId.BSC)
+const NETWORK_URL = getNodeUrl(ChainId.MAINNET)
 export const NETWORK_CHAIN_ID: number = parseInt('56' ?? '56')
 
 if (typeof NETWORK_URL === 'undefined') {

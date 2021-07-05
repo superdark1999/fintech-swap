@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { AddIcon, Button, CardBody, Text as UIKitText } from '@luckyswap/uikit'
-import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@luckyswap/v2-sdk'
+import { Currency, currencyEquals, ETHER, TokenAmount } from '@luckyswap/v2-sdk'
 import { PairState } from 'data/Reserves'
 import { useActiveWeb3React } from 'hooks'
 import { useCurrency } from 'hooks/Tokens'
@@ -16,6 +16,7 @@ import { calculateGasMargin, calculateSlippageAmount } from 'utils'
 import { currencyId } from 'utils/currencyId'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
+import { WNATIVE } from '../../constants'
 import { LightCard } from '../../components/Swap/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Swap/Column'
 import ConnectWalletButton from '../../components/Swap/ConnectWalletButton'
@@ -26,7 +27,7 @@ import Pane from '../../components/Swap/Pane'
 import { MinimalPositionCard } from '../../components/Swap/PositionCard'
 import Row, { RowBetween, RowFlat } from '../../components/Swap/Row'
 import TransactionConfirmationModal, {
-  ConfirmationModalContent
+  ConfirmationModalContent,
 } from '../../components/Swap/TransactionConfirmationModal'
 import { useRouterContract } from '../../hooks/useContract'
 import AppBody from '../AppBody'
@@ -46,8 +47,8 @@ export default function AddLiquidity({
 
   const oneCurrencyIsWETH = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
-        (currencyB && currencyEquals(currencyB, WETH[chainId]))),
+      ((currencyA && currencyEquals(currencyA, WNATIVE[chainId])) ||
+        (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
   )
   const expertMode = useIsExpertMode()
 
@@ -133,6 +134,9 @@ export default function AddLiquidity({
     let method: (...args: any) => Promise<TransactionResponse>
     let args: Array<string | string[] | number>
     let value: BigNumber | null
+
+    // console.log('Currency A : ', currencyA)
+
     if (currencyA === ETHER || currencyB === ETHER) {
       const tokenBIsETH = currencyB === ETHER
       estimate = routerContract.estimateGas.addLiquidityETH

@@ -21,12 +21,11 @@ export interface PublicIfoState {
   maxDepositAmount: BigNumber
   depositedAmount: BigNumber
   claimAmount: BigNumber
-  hasHarvest: boolean,
+  hasHarvest: boolean
   getAddressListLength: number
   startBlockNum: number
   endBlockNum: number
   description?: string
-
 }
 
 const getStatus = (currentBlock: number, startBlock: number, endBlock: number): IfoStatus => {
@@ -76,7 +75,7 @@ const useGetPublicIfoData = (ifo: Ifo) => {
   useEffect(() => {
     const fetchProgress = async () => {
       if (!account || address === '0x0000000000000000000000000000000000000000') return
-      
+
       const [
         startBlock,
         endBlock,

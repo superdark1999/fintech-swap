@@ -31,7 +31,7 @@ const EarnAPYCard = () => {
   const highestApy = useMemo(() => {
     const apys = farmsLP
       // Filter inactive farms, because their theoretical APY is super high. In practice, it's 0.
-      .filter((farm) =>  farm.multiplier !== '0X')
+      .filter((farm) => farm.multiplier !== '0X')
       .map((farm) => {
         if (farm.lpTotalInQuoteToken && prices) {
           const quoteTokenPriceUsd = prices[getAddress(farm.quoteToken.address).toLowerCase()]
