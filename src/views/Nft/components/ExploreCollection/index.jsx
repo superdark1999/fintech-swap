@@ -29,6 +29,7 @@ function ExploreCollection() {
   const handleInputOnchange = (e) => {
     const { value } = e.target;
     setSearchParams(value);
+    setPage(1)
   }
 
   const [observer, setElements, entries] = useIO({
@@ -39,14 +40,18 @@ function ExploreCollection() {
   const getArrNFT = useCallback(_.debounce((params) => 
   getNFT(params).then(({ status, data }) => {
     if (status == 200) {
-      setNFTs({data: data?.data, total: data.total})
+      if (page === 1) {
+        setNFTs({data: data?.data, total: data.total})
+        console.log("akjsd")
+      } else {
+        setNFTs({data: NFTs.data.concat(data?.data), total: data.total})
+      }
     }
-  }), 1000), [])
+  }), 1000), [page])
 
 
   useEffect(() => {
     searchParams ? history.push(`/explore?search=${searchParams}`) : history.push(`/explore`)
-    console.log('searchParams: ', searchParams)
     const params = _.pickBy({
       status: 'readyToSell',
       NFTType: filterMethod,
@@ -99,19 +104,18 @@ function ExploreCollection() {
         setFilterType={setFilterType}
         handleInputOnchange={handleInputOnchange}
         searchParams={searchParams} 
+        setPage={setPage}
 
       />
-      <h1 style={{ fontWeight: 'bold' }}>8 results for "lucky swap studio"</h1>
+      <h1 style={{ fontWeight: 'bold' }}>{NFTs?.total} results for "lucky swap studio"</h1>
       <div className="content-collect">
         {NFTs?.data?.map((item) => {
           return (
-            item?.NFTType !== 'swap-store' && (
               <Cart width="320px" height="480px" data={item} isLazy/>
-            )
           )
         })}
       </div>
-      {Nfts?.data?.length < Nfts.total && <div className="footer-section">
+      {NFTs?.data?.length < NFTs?.total && <div className="footer-section">
         <div className="wrapper-button" onClick={() => nextPage(page+1)}>
           <Button shape="round">Load more</Button>
         </div>

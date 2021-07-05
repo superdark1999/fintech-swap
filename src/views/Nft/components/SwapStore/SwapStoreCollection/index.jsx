@@ -18,9 +18,9 @@ function ExploreCollection() {
   let paramsSearch = useMemo(() => new URLSearchParams(
     window.document.location.search.substring(1),
     ), []) 
-  const [NFTs, setNFTs] = useState([])
+  const [NFTs, setNFTs] = useState({data: [], total: 0})
   const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
-
+  const [page, setPage] = useState(1)
   const { getNFT } = useArtworkServices()
   const [filterMethod, setFilterMethod] = useState('')
   const [filterType, setFilterType] = useState('')
@@ -33,10 +33,14 @@ function ExploreCollection() {
   const getArrNFT = useCallback(_.debounce((params) => 
   getNFT(params).then(({ status, data }) => {
     if (status == 200) {
-      setNFTs(data?.data || [])
+      if (page === 1) {
+        setNFTs({data: data?.data, total: data.total})
+        console.log("akjsd")
+      } else {
+        setNFTs({data: NFTs.data.concat(data?.data), total: data.total})
+      }
     }
-  }), 1000), [])
-  const [page, setPage] = useState(1)
+  }), 1000), [page])
 
   const [observer, setElements, entries] = useIO({
     threshold: 0.25,
@@ -73,7 +77,7 @@ function ExploreCollection() {
   }, [entries, observer]);
 
   useEffect(() => {
-    if (NFTs.length) {
+    if (NFTs.data.length) {
       let img = Array.from(document.getElementsByClassName("lazy"));
       setElements(img);
     }
@@ -101,14 +105,13 @@ function ExploreCollection() {
         setFilterType={setFilterType}
         handleInputOnchange={handleInputOnchange}
         searchParams={searchParams} 
+        setPage={setPage}
       />
       <div className="content-collect">
-        {NFTs.map((item) => {
+        {NFTs.data.map((item) => {
           return (
-            item?.NFTType === 'swap-store' && (
               <Cart width="320px" height="480px" data={item} isLazy/>
             )
-          )
         })}
       </div>
       {NFTs?.data?.length < NFTs.total && <div className="footer-section">
