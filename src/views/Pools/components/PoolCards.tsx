@@ -10,6 +10,11 @@ interface HarvestProps {
 }
 
 const PoolCards: React.FC<HarvestProps> = ({ pools, activeTab }) =>{
+  const logos = ['../images/logo-icon.png', './images/lucky2-icon.png', './images/blink.png', './images/berry-icon.png']
+
+  for(let i = 0; i < pools.length; i++)
+    pools[i].logo = logos[i];
+
   return (
     <>
       <div>
@@ -17,7 +22,7 @@ const PoolCards: React.FC<HarvestProps> = ({ pools, activeTab }) =>{
           <TabPane tabId="1">    
             <Row xs="1" sm="2" md="4">
               {pools.map(pool => (
-                <PoolCard pool={pool}/>
+                <PoolCard key={pool._id} pool={pool}/>
               ))}
 
               {/* <Col>

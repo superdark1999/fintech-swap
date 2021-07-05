@@ -18,7 +18,7 @@ interface HarvestProps{
 
 const PoolCard : React.FC<HarvestProps> = ({ pool })  => {
 
-  const [apy, setApy] = useState('');
+  const [apy, setApy] = useState('0');
   const [totalStaked, setTotalStaked] = useState(0);
 
   const {  userRewardDebt} = useGetStateData(pool);
@@ -59,7 +59,7 @@ const PoolCard : React.FC<HarvestProps> = ({ pool })  => {
             <span>Premium</span>
           </HeadLine>
           <figure>
-            <img src="../images/logo-icon.png" alt=""/>
+            <img src={pool.logo} alt=""/>
           </figure>
 
           <CardContent>
