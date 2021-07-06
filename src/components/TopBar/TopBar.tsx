@@ -67,8 +67,43 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   // }, []);
 
   useEffect(() => {
+
+    const { ethereum } = window as any
     if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)) {
-      setIsShowAlert(true)
+      ethereum.request({ 
+        method: 'wallet_switchEthereumChain', 
+        params:[{ 
+          chainId: '0x61'
+      }] }).then(()=>{
+        window.location.reload()
+      }).catch((err:any)=>{
+        if(err.code == 4902){
+          ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [{ 
+              chainId: '0x61',
+              rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+              chainName: 'Binance SmartChain Testnet',
+              nativeCurrency: {
+                name: 'TestnetBNB',
+                symbol: 'BNB', // 2-6 characters long
+                decimals: 18
+              },
+              blockExplorerUrls:['https://testnet.bscscan.com']
+            }],
+          }).then(()=>{
+            ethereum.request({ 
+              method: 'wallet_switchEthereumChain', 
+              params:[{ 
+                chainId: '0x61'
+            }] }).then(()=>{
+              window.location.reload()
+            })
+          }).catch((err:any)=>{
+            console.log(err)
+          })
+        }
+      })
     }
   }, [chainId])
 
@@ -120,6 +155,29 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   const onSearching = (e: any) => {
     //history.push(`/explore?search=${e.target.value}`)
     window.location.replace(`/explore?search=${e.target.value}`)
+  }
+  const authenAccount = ()=>{
+    const { ethereum } = window as any
+    ethereum
+    .request({
+      method: 'wallet_getPermissions',
+      params: [{ eth_accounts: {} }],
+    })
+    .then((permissions:any) => {
+      const accountsPermission = permissions.find(
+        (permission:any) => permission.parentCapability === 'eth_accounts'
+      );
+      if (accountsPermission) {
+        console.log('eth_accounts permission successfully requested!');
+      }
+    })
+    .catch((error:any) => {
+      if (error.code === 4001) {
+        console.log('Permissions needed to continue.');
+      } else {
+        console.error(error);
+      }
+    });
   }
   return (
     <StyledTopBar className={classtSicky}>
