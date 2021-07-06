@@ -1,1 +1,15 @@
+<<<<<<< HEAD
+<<<<<<<< HEAD:build/static/js/20.2dc9c3d5.chunk.js.map
 {"version":3,"sources":["views/Lottery/components/PastDrawsHistory/LineChartWrapper.tsx"],"names":["Line"],"mappings":"wIAAA,qBAEeA,YAAf","file":"static/js/20.2dc9c3d5.chunk.js","sourcesContent":["import { Line } from 'react-chartjs-2'\n\nexport default Line\n"],"sourceRoot":""}
+========
+=======
+>>>>>>> add button
+<<<<<<< HEAD:build/static/js/20.23fe5e7f.chunk.js.map
+{"version":3,"sources":["views/Lottery/components/PastDrawsHistory/LineChartWrapper.tsx"],"names":["Line"],"mappings":"wIAAA,qBAEeA,YAAf","file":"static/js/20.23fe5e7f.chunk.js","sourcesContent":["import { Line } from 'react-chartjs-2'\n\nexport default Line\n"],"sourceRoot":""}
+=======
+{"version":3,"sources":["views/Lottery/components/PastDrawsHistory/LineChartWrapper.tsx"],"names":["Line"],"mappings":"wIAAA,qBAEeA,YAAf","file":"static/js/20.2dc9c3d5.chunk.js","sourcesContent":["import { Line } from 'react-chartjs-2'\n\nexport default Line\n"],"sourceRoot":""}
+>>>>>>> add button:build/static/js/20.2dc9c3d5.chunk.js.map
+<<<<<<< HEAD
+>>>>>>>> add button:build/static/js/20.23fe5e7f.chunk.js.map
+=======
+>>>>>>> add button
