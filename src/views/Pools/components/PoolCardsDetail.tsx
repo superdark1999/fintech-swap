@@ -18,16 +18,9 @@ import DepositModal from './DepositModal';
 import PoolCardDetails from './PoolCardDetails';
 
 
+const logos = {
+  'Luckyswap':'../images/logo-icon.png','Luckyswap 2': './images/lucky2-icon.png', 'BLINk' :'./images/blink.png','Berry': './images/berry-icon.png'}
 
-// const stakingData = {
-//   name: 'Lucky',
-//   depositSymbol: 'XLUCKY2',
-//   rewardSymbol: 'XLUCKY1',
-//   depositToken: "0xeDa153eF21dCE7BAe808B0265d86564cc26524b6", // XLucky2
-//   rewardToken: "0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a", // XLucky
-//   stakingContract: "0x1dde4Fc6ca8121Cb11E988b524B275855F98aAA6",
-  
-// }
 
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
@@ -70,6 +63,8 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
 
   const addTransaction = useTransactionAdder()
   const contract = useContract(stakingData?.stakingAddress,SMART_CHEF_ABI );
+  
+  const logo = logos[stakingData.name];
 
 
   useEffect(() => {
@@ -110,7 +105,7 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
         <BoxDetail>
           <BoxHead>
             <figure>
-              <img src="../images/icon-logo.png" alt=""/>
+              <img src={logo} alt=""/>
             </figure>
             <h2>{stakingData.name}</h2>
             <span>Deposit {stakingData.depositTokenSymbol} Tokens and earn {stakingData.rewardTokenSymbol}</span>

@@ -2,11 +2,18 @@ import React, {useState, useEffect}from 'react'
 import { Row, Col } from 'antd'
 import { Button } from 'reactstrap';
 import BigNumber from 'bignumber.js'
+import styled from 'styled-components'
+
 
 import useUtilityToken from 'hooks/useUtilityToken';
 
 import { AutoRenewIcon } from '@luckyswap/uikit'
 
+  const imageTokens = {
+  'XLUCKY': '../images/logo-icon.png',
+  'XLUCKY2': '../images/lucky2-icon.png',
+  'BRY': '../images/enlin.svg',
+  'BUSD': './images/busd.png'}
 
 const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
@@ -30,8 +37,8 @@ export default function PoolCardDetails({
   const [isApproved, setIsApproved] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
 
-
-
+  const imageDepositToken = imageTokens[stakingData.depositTokenSymbol];
+  const imageRewardToken = imageTokens[stakingData.rewardTokenSymbol]
   useEffect(() => {
     const fetchApproval = async() => {
       const data = await allowance(account, stakingData.stakingAddress).catch(error => console.log("allowance error: ", error));
@@ -81,8 +88,8 @@ export default function PoolCardDetails({
       <Row gutter={[24, 16]}>
             <Col span={24} sm={12} md={12}>
               <div className="box__item">
-                <figure>
-                  <img src="../images/icon-love.png" alt=""/>
+                <figure className="background">
+                  <img src={imageRewardToken} alt=""/>
                 </figure>
 
                 <div className="content">
@@ -106,7 +113,7 @@ export default function PoolCardDetails({
             <Col span={24} sm={12} md={12}>
               <div className="box__item">
                 <figure className="background">
-                  <img src="../images/icon-logo.png" alt=""/>
+                  <img src={imageDepositToken} alt=""/>
                 </figure>
 
                 <div className="content">
@@ -150,3 +157,89 @@ export default function PoolCardDetails({
     </div>
   )
 }
+
+
+const BoxDetail = styled.div`
+  .box {
+    &__item {
+      background: rgb(41 41 41);
+      box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
+      border-radius: 10px;
+      padding: 46px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      figure {
+        &.background {
+          background: #212628;
+          box-shadow: 0px 0px 12px rgb(0 0 0 / 50%);
+          border-radius: 4px;
+          padding: 16px;
+
+          img {
+            width: 70px;
+          }
+        }
+      }
+
+      .content {
+        margin-top: 36px;
+        margin-bottom: 26px;
+        text-align: center;
+
+        &__title {
+          font-size: 36px;
+          font-weight: 600;
+          color: #fff;
+          margin-bottom: 5px;
+        }
+
+        &__des {
+          font-size: 16px;
+          color: #b9b9b9;
+        }
+      }
+    }
+
+    &__footer {
+      border-top: 1px solid #D8D8D8;
+      padding-top: 20px;
+      width: 100%;
+      text-align: center;
+
+      button {
+        background: #f5c606;
+        margin-right: 20px;
+        border-radius: 4px;
+        font-weight: 600;
+        width: 100%;
+        max-width: 200px;
+        min-height: 40px;
+        border-color: transparent;
+        color: #2b2e2f;
+
+
+        &:hover {
+          opacity: 0.7;
+        }
+
+        &:focus {
+          border-color: transparent;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+
+  .line__bot {
+    color: #fff;
+    font-size: 16px;
+    margin-top: 50px;
+
+    img {
+      margin-right: 10px;
+    }
+  }
+`
