@@ -59,3 +59,5 @@ export const UNI: { [chainId in ChainId]: Token } = {
 }
 
 export const API_DASHBOARD = 'https://dashboard.luckyswap.exchange'
+export const API_TESTNET = 'https://testnet.bscscan.com'
+export const API_S3 = 'https://lucky-swap.s3.ap-southeast-1.amazonaws.com'
