@@ -10,6 +10,8 @@ import { getLotteryAddress } from 'utils/addressHelpers'
 import lotteryAbi from 'config/abi/lottery.json'
 
 import Hero from './components/Hero'
+import WinningNumbers from './components/WinningNumbers'
+import TotalPrizesCard from './components/TotalPrizesCard'
 import Divider from './components/Divider'
 import NextDrawPage from './NextDrawPage'
 import PastDrawsPage from './PastDrawsPage'
@@ -62,6 +64,9 @@ const Lottery: React.FC = () => {
   return (
     <>
       <Hero />
+      <WinningNumbers />
+      <TotalPrizesCard />
+      
       <Page>
         <Wrapper>
           <ButtonMenu activeIndex={activeIndex} onItemClick={handleClick} scale="sm" variant="subtle">

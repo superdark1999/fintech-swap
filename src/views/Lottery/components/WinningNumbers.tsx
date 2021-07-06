@@ -22,7 +22,7 @@ const WinningNumbers: React.FC = () => {
           <StyledCardHeader>
             <Title style={{ color: 'rgb(243, 193, 17)' }}>
               {account && lotteryHasDrawn
-                ? `🥳${TranslateString(570, 'Winning Numbers This Round')}🥳`
+                ? `${TranslateString(570, 'Latest Winning Numbers')}`
                 : TranslateString(440, 'Latest Winning Numbers')}
             </Title>
           </StyledCardHeader>
@@ -46,21 +46,21 @@ const WinningNumbers: React.FC = () => {
           </Row>
           <Column>
             <RowNoPadding>
-              <CenteredTextWithPadding style={{color:'white'}}>{TranslateString(442, 'Tickets matching 4 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding style={{color:'#fff'}}>{TranslateString(442, 'Tickets matching 4 numbers:')}</CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{color:'yellow'}}>{MatchedNumber4}</strong>
+                <strong style={{color:'#F3C111'}}>{MatchedNumber4}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
             <RowNoPadding>
-              <CenteredTextWithPadding style={{color:'white'}}>{TranslateString(444, 'Tickets matching 3 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding style={{color:'#fff'}}>{TranslateString(444, 'Tickets matching 3 numbers:')}</CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{color:'yellow'}}>{MatchedNumber3}</strong>
+                <strong style={{color:'#F3C111'}}>{MatchedNumber3}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
             <RowNoPadding>
-              <CenteredTextWithPadding style={{color:'white'}}>{TranslateString(446, 'Tickets matching 2 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding style={{color:'#fff'}}>{TranslateString(446, 'Tickets matching 2 numbers:')}</CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{color:'yellow'}}>{MatchedNumber2}</strong>
+                <strong style={{color:'#F3C111'}}>{MatchedNumber2}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
           </Column>
@@ -75,16 +75,27 @@ const WinningNumbers: React.FC = () => {
 }
 
 const CardBodyNew = styled.div`
-  background-color: rgba(255, 255, 255, 0.1);
+  position: relative;
+  background-color: rgb(43 41 41);
   border: 0.0625rem solid rgba(255, 255, 255, 0.2);
   border-radius: 1.25rem;
   padding: 24px;
+  min-height: 496px;
 `
 
 const Link = styled.a`
   margin-top: 1em;
   text-decoration: none;
-  color: #25beca;
+  color: #101010;
+  background-color: #F3C111;
+  border-radius: 12px;
+  padding: 10px 25px;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #faad14;
+    transition: .5s;
+  }
 `
 
 const Row = styled.div`
@@ -92,6 +103,8 @@ const Row = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
+  border: 1px solid #F3C111;
+  border-radius: 14px;
 `
 
 const RabbitRow = styled.div`
@@ -133,6 +146,7 @@ const RowNoPadding = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
+  margin-bottom: 10px;
 `
 
 const Column = styled.div`
@@ -152,6 +166,7 @@ const CenteredTextWithPadding = styled.div`
   align-items: center;
   padding-left: 2px;
   padding-right: 2px;
+  font-weight: 600;
 `
 
 const TicketNumberBox = styled.div`
@@ -169,7 +184,13 @@ const TicketNumberBox = styled.div`
   @media (min-width: 768px) {
     font-size: 40px;
     margin: 20px;
-    width: 60px;
+    background: url('../images/bg-number.svg');
+    background-repeat: no-repeat;
+    width: 120px;
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `
 
@@ -194,7 +215,12 @@ const StyledCardHeader = styled.div`
   flex-direction: column;
 `
 
-const CardWrapper = styled.div``
+const CardWrapper = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+  margin-bottom: 30px;
+`
 
 const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
@@ -210,6 +236,26 @@ const StyledCardContentInner = styled.div`
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
+
+  &:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    background: url('../images/jackpot-l.png');
+    width: 220px;
+    height: 496px;
+  }
+
+  &:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    content: '';
+    background: url('../images/jackpot-r.png');
+    width: 220px;
+    height: 496px;
+  }
 `
 
 export default WinningNumbers

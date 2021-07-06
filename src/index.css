@@ -373,8 +373,8 @@ button.button-connect:hover {
 }
 
 .logo-mobile {
-  width: 100%;
   max-width: 40px;
+  margin-right: 10px;
 }
 
 .custom-btn {
@@ -420,4 +420,16 @@ button.btn-secondary.dropdown-toggle:focus{
 .btn-check:active+.btn-secondary, .btn-check:checked+.btn-secondary, .btn-secondary.active, .btn-secondary:active, .show>.btn-secondary.dropdown-toggle {
   background-color: transparent !important;
   border-color: transparent !important;
+}
+
+@media (max-width: 768px) {
+  .rm-margin {
+    margin-right: 5px !important;
+  }
+}
+
+.no-border {
+  border-top: none !important;
+  background-color: #1d1d1d;
+  border-radius: 17px;
 }
