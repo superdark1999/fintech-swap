@@ -30,9 +30,9 @@ const Store = createStore({
               
               item.to = [item.to, item.avtTo.from
                 , item.avtTo.name]
-              //console.log(new Date(item.timeStamp * 1000 - 3600000))
+              //console.log(new Date(item.timeStamp * 1000).toUTCString())
               item.date = [item.timeStamp &&
-                moment(new Date(item.timeStamp * 1000).toLocaleDateString('en-US')).add(14, 'hours').fromNow(),
+                moment(new Date(item.timeStamp * 1000).toUTCString()).fromNow(),
               item.hash]
                 
               return item
