@@ -1,6 +1,7 @@
 import { ButtonTrade } from "components-v2/Button";
 import React from 'react'
 import styled from 'styled-components'
+import { API_TESTNET, API_S3 } from '../../../../constants'
 
 const ID = styled.div`
   text-align: right;
@@ -36,9 +37,9 @@ export const columnHistory = [
     dataIndex: 'from',
     width: 200,
     render: (from) =>  
-    <A href={(from[1].match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == "https://lucky-swap.s3.ap-southeast-1.amazonaws.com"
+    <A href={(from[1].match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == API_S3
       ? window.location.origin+`/user-profile/${from[0]}/onstore/readyToSell`
-      :`https://testnet.bscscan.com/address/${from[0]}`)} target="_blank">
+      :`${API_TESTNET}/address/${from[0]}`)} target="_blank">
       <IMG src={from[1]} >  
       </IMG>
       <SPAN>{from[2]}</SPAN>
@@ -50,9 +51,9 @@ export const columnHistory = [
     dataIndex: 'to',
     width: 200,
     render: (to) => 
-    <A href={(to[1].match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == "https://lucky-swap.s3.ap-southeast-1.amazonaws.com"
+    <A href={(to[1].match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == API_S3
     ? window.location.origin+`/user-profile/${to[0]}/onstore/readyToSell`
-    :`https://testnet.bscscan.com/address/${to[0]}`)} target="_blank">
+    :`${API_TESTNET}/address/${to[0]}`)} target="_blank">
       <IMG src={to[1]} >  
       </IMG>
       <SPAN>{to[2]}</SPAN>
@@ -63,7 +64,7 @@ export const columnHistory = [
     dataIndex: 'date',
     width: 220,
     render: (date) => 
-    <A href={`https://testnet.bscscan.com/tx/${date[1]}`} target="_blank">
+    <A href={`${API_TESTNET}/tx/${date[1]}`} target="_blank">
       {date[0]}
     </A>
   },
