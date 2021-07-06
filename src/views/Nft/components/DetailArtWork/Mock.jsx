@@ -36,7 +36,9 @@ export const columnHistory = [
     dataIndex: 'from',
     width: 200,
     render: (from) =>  
-    <A href={window.location.origin+`/user-profile/${from[0]}/onstore/readyToSell`} target="_blank">
+    <A href={(from[1].match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == "https://lucky-swap.s3.ap-southeast-1.amazonaws.com"
+      ? window.location.origin+`/user-profile/${from[0]}/onstore/readyToSell`
+      :`https://testnet.bscscan.com/address/${from[0]}`)} target="_blank">
       <IMG src={from[1]} >  
       </IMG>
       <SPAN>{from[2]}</SPAN>
@@ -48,7 +50,9 @@ export const columnHistory = [
     dataIndex: 'to',
     width: 200,
     render: (to) => 
-    <A href={window.location.origin+`/user-profile/${to[0]}/onstore/readyToSell`} target="_blank">
+    <A href={(to[1].match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == "https://lucky-swap.s3.ap-southeast-1.amazonaws.com"
+    ? window.location.origin+`/user-profile/${to[0]}/onstore/readyToSell`
+    :`https://testnet.bscscan.com/address/${to[0]}`)} target="_blank">
       <IMG src={to[1]} >  
       </IMG>
       <SPAN>{to[2]}</SPAN>
@@ -57,7 +61,7 @@ export const columnHistory = [
   {
     title: 'Date',
     dataIndex: 'date',
-    width: 150,
+    width: 220,
     render: (date) => 
     <A href={`https://testnet.bscscan.com/tx/${date[1]}`} target="_blank">
       {date[0]}
@@ -118,6 +122,7 @@ export const columnBidding = [
     title: 'Address',
     dataIndex: 'address',
     width: 100,
+    
   },
   {
     title: 'Price',
