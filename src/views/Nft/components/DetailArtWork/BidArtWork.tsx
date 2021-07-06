@@ -51,6 +51,7 @@ import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import TableHistory from './TableHistory'
 import Countdown from 'react-countdown'
 import moment, { max } from 'moment'
+import styled from 'styled-components'
 const { TabPane } = Tabs
 
 const DetaiArtWork = ({ id }: any) => {
@@ -733,15 +734,16 @@ const BiddingTable = ({
     }
   }
   const columnBidding =
+
     NFTInfo?.ownerWalletAddress === account
       ? [
         {
           title: 'Address',
           dataIndex: 'address',
           width: 100,
-          render: (address: String) => (
+          render: (address: string) => (
             <a className="value" href="/" target="_blank">
-              {address}
+              {getCompactString(address, 6)}
             </a>
           ),
         },
@@ -777,9 +779,9 @@ const BiddingTable = ({
           title: 'Address',
           dataIndex: 'address',
           width: 100,
-          render: (address: String) => (
+          render: (address: string) => (
             <a className="value" href="/" target="_blank">
-              {address}
+              {getCompactString(address, 6)}
             </a>
           ),
         },
