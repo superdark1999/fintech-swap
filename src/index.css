@@ -416,3 +416,8 @@ button.btn-secondary:hover {
 button.btn-secondary.dropdown-toggle:focus{
   box-shadow: none !important;
 }
+
+.btn-check:active+.btn-secondary, .btn-check:checked+.btn-secondary, .btn-secondary.active, .btn-secondary:active, .show>.btn-secondary.dropdown-toggle {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
