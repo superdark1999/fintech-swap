@@ -8,7 +8,7 @@ import { API_DASHBOARD } from '../../../../constants'
 import axios from 'axios'
 import { getCompactString } from 'utils'
 import moment from 'moment'
-
+//moment.setDefault("America/New_York");
 const stateDefault = {
   historys: [],
 }
@@ -31,11 +31,12 @@ const Store = createStore({
               
               item.price = 0
               item.from =[item.from, item.avtFrom.from, item.avtFrom.name]
-              //getCompactString(item.from, 6)
+              
               item.to = [item.to, item.avtTo.from
                 , item.avtTo.name]
+              //console.log(new Date(item.timeStamp * 1000).toUTCString())
               item.date = [item.timeStamp &&
-                moment(new Date(item.timeStamp * 1000).toLocaleDateString('en-US')).fromNow(),
+                moment(new Date(item.timeStamp * 1000).toUTCString()).fromNow(),
               item.hash]
                 
               return item
