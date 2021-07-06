@@ -64,8 +64,9 @@ const Lottery: React.FC = () => {
   return (
     <>
       <Hero />
-      <WinningNumbers />
+      
       <TotalPrizesCard />
+      <WinningNumbers />
       
       <Page>
         <Wrapper>

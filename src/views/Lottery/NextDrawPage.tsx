@@ -47,7 +47,7 @@ const NextDrawPage: React.FC = () => {
     <>
       <Cards>
         <div>
-          {/* <TotalPrizesCard /> */}
+          <TotalPrizesCard />
         </div>
         <SecondCardColumnWrapper isAWin={isAWin}>
           {!account ? (
