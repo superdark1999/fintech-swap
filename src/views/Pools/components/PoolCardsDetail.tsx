@@ -46,7 +46,7 @@ function FetchPoolData() {
 
   if (poolDetail)
     return <PoolCardsDetail stakingData={poolDetail}/>
-  return <div>loading</div>
+  return <div></div>
 }
 
 const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {

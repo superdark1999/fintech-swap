@@ -11,6 +11,8 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import useUtilityToken from 'hooks/useUtilityToken';
 import { LUCKY_PER_BLOCK  } from 'config'
 import {Pool} from 'config/constants/types'
+import CardValue from '../../Home/components/CardValue';
+
 
 interface HarvestProps{
   pool: Pool
@@ -66,18 +68,49 @@ const PoolCard : React.FC<HarvestProps> = ({ pool })  => {
             <Title>{pool.name}</Title>
 
             <FlexSpace>
+         
               <ContentLeft>Deposit:</ContentLeft>
-              <ContentRight>{totalStaked} {pool.depositTokenSymbol}</ContentRight>
+              <ContentRight>
+              <CardValue
+                bold
+                color=""
+                value={totalStaked}
+                decimals={0}
+                fontSize="60px"
+                text={pool.depositTokenSymbol}
+                fontWeight="600"
+              ></CardValue>
+              </ContentRight>
             </FlexSpace>
 
             <FlexSpace>
               <ContentLeft>Earn:</ContentLeft>
-              <ContentRight>{userRewardDebt.div(1e18).toFixed(2)} {pool.rewardTokenSymbol}</ContentRight>
+              <ContentRight>     
+                <CardValue
+                    bold
+                    color=""
+                    value={parseFloat(userRewardDebt.div(1e18).toFixed(2))}
+                    decimals={2}
+                    fontSize="60px"
+                    text={pool.rewardTokenSymbol}
+                    fontWeight="600"
+                  ></CardValue>
+                  </ContentRight>
             </FlexSpace>
 
             <FlexSpace>
               <ContentLeft>APR:</ContentLeft>
-              <ContentRight>{apy}%</ContentRight>
+              <ContentRight>
+              <CardValue
+                bold
+                color=""
+                value={parseFloat(apy)}
+                decimals={2}
+                fontSize="60px"
+                text='%'
+                fontWeight="600"
+              ></CardValue>
+                </ContentRight>
             </FlexSpace>
           </CardContent>
 

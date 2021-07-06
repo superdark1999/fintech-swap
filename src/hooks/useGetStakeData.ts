@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import BigNumber from 'bignumber.js'
-import makeBatchRequest from 'utils/makeBatchRequest'
 import { useERC20, useStakingContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import {Pool} from 'config/constants/types'
+import useRefresh from 'hooks/useRefresh'
+
 
 
 const useGetStateData = (staking: Pool) => {
@@ -14,7 +15,7 @@ const useGetStateData = (staking: Pool) => {
 
   })
   const { account } = useWeb3React()
-
+  const slowRefresh = useRefresh();
   const contract = useStakingContract(staking.stakingAddress);
   
 
@@ -33,7 +34,7 @@ const useGetStateData = (staking: Pool) => {
       }
     }
     fetchStakingData();
-  })
+  }, [account, contract, slowRefresh])
 
 
   return state;

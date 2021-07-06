@@ -2,12 +2,12 @@ import React, {useState, useEffect}from 'react'
 import { Row, Col } from 'antd'
 import { Button } from 'reactstrap';
 import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
-
 
 import useUtilityToken from 'hooks/useUtilityToken';
 
 import { AutoRenewIcon } from '@luckyswap/uikit'
+import CardValue from '../../Home/components/CardValue';
+
 
   const imageTokens = {
   'XLUCKY': '../images/logo-icon.png',
@@ -93,8 +93,17 @@ export default function PoolCardDetails({
                 </figure>
 
                 <div className="content">
-                  <h3 className="content__title">{userRewardDebt.div(1e18).toNumber()}</h3>
-                  <span className="content__des">{stakingData.rewardTokenSymbol} earned</span>
+                
+                  <h3 className="content__title">
+                  <CardValue
+                    bold
+                    color=""
+                    value={userRewardDebt.div(1e18).toNumber()}
+                    decimals={2}
+                    fontSize="10px"
+                    text={stakingData.rewardTokenSymbol}
+                    fontWeight="1000"
+                  ></CardValue></h3>
                 </div>
 
                 <div className="box__footer">
@@ -115,10 +124,19 @@ export default function PoolCardDetails({
                 <figure className="background">
                   <img src={imageDepositToken} alt=""/>
                 </figure>
-
                 <div className="content">
-                  <h3 className="content__title">{userAmount.div(1e18).toNumber()}</h3>
-                  <span className="content__des">{stakingData.depositTokenSymbol}</span>
+                
+                  <h3 className="content__title">
+                    <CardValue
+                    bold
+                    color=""
+                    value={userAmount.div(1e18).toNumber()}
+                    decimals={0}
+                    fontSize="60px"
+                    text={stakingData.depositTokenSymbol}
+                    fontWeight="600"
+                  ></CardValue>
+                  </h3>
                 </div>
 
                 <div className="box__footer">
@@ -157,89 +175,3 @@ export default function PoolCardDetails({
     </div>
   )
 }
-
-
-const BoxDetail = styled.div`
-  .box {
-    &__item {
-      background: rgb(41 41 41);
-      box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
-      border-radius: 10px;
-      padding: 46px 18px 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      figure {
-        &.background {
-          background: #212628;
-          box-shadow: 0px 0px 12px rgb(0 0 0 / 50%);
-          border-radius: 4px;
-          padding: 16px;
-
-          img {
-            width: 70px;
-          }
-        }
-      }
-
-      .content {
-        margin-top: 36px;
-        margin-bottom: 26px;
-        text-align: center;
-
-        &__title {
-          font-size: 36px;
-          font-weight: 600;
-          color: #fff;
-          margin-bottom: 5px;
-        }
-
-        &__des {
-          font-size: 16px;
-          color: #b9b9b9;
-        }
-      }
-    }
-
-    &__footer {
-      border-top: 1px solid #D8D8D8;
-      padding-top: 20px;
-      width: 100%;
-      text-align: center;
-
-      button {
-        background: #f5c606;
-        margin-right: 20px;
-        border-radius: 4px;
-        font-weight: 600;
-        width: 100%;
-        max-width: 200px;
-        min-height: 40px;
-        border-color: transparent;
-        color: #2b2e2f;
-
-
-        &:hover {
-          opacity: 0.7;
-        }
-
-        &:focus {
-          border-color: transparent;
-          box-shadow: none;
-        }
-      }
-    }
-  }
-
-  .line__bot {
-    color: #fff;
-    font-size: 16px;
-    margin-top: 50px;
-
-    img {
-      margin-right: 10px;
-    }
-  }
-`
