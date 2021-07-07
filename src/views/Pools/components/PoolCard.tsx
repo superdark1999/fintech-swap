@@ -9,7 +9,8 @@ import { useFarms, usePriceLuckyBusd, useLucky2Price } from 'state/hooks'
 import { getPoolApy } from 'utils/apy'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useUtilityToken from 'hooks/useUtilityToken';
-import { LUCKY_PER_BLOCK  } from 'config'
+import { LUCKY_PER_BLOCK, BASE_API_ADMIN  } from 'config'
+
 import {Pool} from 'config/constants/types'
 import CardValue from '../../Home/components/CardValue';
 
@@ -61,7 +62,7 @@ const PoolCard : React.FC<HarvestProps> = ({ pool })  => {
             <span>Premium</span>
           </HeadLine>
           <figure>
-            <img src={pool.logo} alt=""/>
+            <img src={ BASE_API_ADMIN.concat('/') + pool.logo} alt=""/>
           </figure>
 
           <CardContent>

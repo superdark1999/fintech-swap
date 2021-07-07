@@ -9,17 +9,14 @@ import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'st
 import { TransactionDetails } from 'state/transactions/reducer'
 import { useContract,  useStakingContract  } from 'hooks/useContract'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
+import { BASE_API_ADMIN} from 'config';
 import { useHookPools } from '../Store';
-
 
 
 import UnStakeModal from './UnStakeModal';
 import DepositModal from './DepositModal';
 import PoolCardDetails from './PoolCardDetails';
 
-
-const logos = {
-  'Luckyswap':'../images/logo-icon.png','Luckyswap 2': './images/lucky2-icon.png', 'BLINk' :'./images/blink.png','Berry': './images/berry-icon.png'}
 
 
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
@@ -64,7 +61,6 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
   const addTransaction = useTransactionAdder()
   const contract = useContract(stakingData?.stakingAddress,SMART_CHEF_ABI );
   
-  const logo = logos[stakingData.name];
 
 
   useEffect(() => {
@@ -105,7 +101,7 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
         <BoxDetail>
           <BoxHead>
             <figure>
-              <img src={logo} alt=""/>
+              <img src={ BASE_API_ADMIN.concat('/') + stakingData.logo} alt=""/>
             </figure>
             <h2>{stakingData.name}</h2>
             <span>Deposit {stakingData.depositTokenSymbol} Tokens and earn {stakingData.rewardTokenSymbol}</span>
