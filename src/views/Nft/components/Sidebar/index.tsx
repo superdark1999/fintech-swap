@@ -5,7 +5,7 @@ import Collection from 'assets/images/collection.svg'
 import Astronaut from 'assets/images/astronaut.svg'
 import Rocket from 'assets/images/Rocket.svg'
 import MoneyIcon from 'assets/images/money.svg'
-
+import token from 'assets/images/token.svg'
 import { Button, Select, Input, Checkbox } from 'antd'
 import { PlusCircleOutlined, CaretUpOutlined, TagFilled, SearchOutlined, MenuUnfoldOutlined, CaretDownOutlined, LeftOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
@@ -14,14 +14,14 @@ const plainOptions = ['Apple', 'Pear', 'Orange'];
 interface SidebarProps {
   setShowSidebar: any;
   onShowSidebar: any;
-  price: any, 
+  price: any,
   onChangePrice: any,
 }
 
 const { Option } = Select
 const options = ["LUCKY TOKEN (LUCKY)"]
 
-const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChangePrice}) => {
+const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChangePrice }) => {
   const [select, setSelect] = React.useState<string | null>('LUCKY TOKEN (LUCKY)');
   const [configMenu, setConfigMenu] = React.useState<any | null>(['collection', 'price', 'tag']);
   const [checkedList, setCheckedList] = React.useState<[string] | null>(['']);
@@ -45,10 +45,10 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChan
     [configMenu],
   )
 
-  const handeChangePriceInput = (e:any) => {
+  const handeChangePriceInput = (e: any) => {
     const value = +e.target.value;
     const name = e.target.name;
-    setPrice({...price, [name]: value})
+    setPrice({ ...price, [name]: value })
   }
 
   const onApply = () => {
@@ -61,17 +61,15 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChan
         <div className="collapse-menu button-collapse" onClick={() => setShowSidebar(!onShowSidebar)}>
           <MenuUnfoldOutlined />
         </div>
-        {/* <div className="collapse-menu">
-          <img src={NotifyIcon} alt=""/>
-          <img src={Collection} alt=""/>
-          <img src={MoneyIcon} alt=""/>
+        <div className="collapse-menu" onClick={() => setShowSidebar(!onShowSidebar)}>
+          <img src={NotifyIcon} alt="" />
+          <img src={token} alt="" />
+          <img src={MoneyIcon} alt="" />
           <TagFilled />
-        </div> */}
+        </div>
       </SidebarStyled>
     )
   }
-
-  console.log("price.minPrice < price.maxPrice", price.minPrice < price.maxPrice)
 
   return (
     <SidebarStyled>
@@ -129,14 +127,14 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChan
             ))}
           </Select>
           <div className="button group-input">
-            <Input type='number' min={0} placeholder="min" name="minPrice" value={price.minPrice} onChange={handeChangePriceInput}/>
+            <Input type='number' min={0} placeholder="min" name="minPrice" value={price.minPrice} onChange={handeChangePriceInput} />
             to
-            <Input type='number' min={0} placeholder="max" name="maxPrice" value={price.maxPrice} onChange={handeChangePriceInput}/>
+            <Input type='number' min={0} placeholder="max" name="maxPrice" value={price.maxPrice} onChange={handeChangePriceInput} />
           </div>
-          {(price?.minPrice > price?.maxPrice) && <span style={{color: 'red', width: '300px', padding: '0 24px'}}>Your minimum item price must be greater than the minimum</span>}
+          {(price?.minPrice > price?.maxPrice) && <span style={{ color: 'red', width: '300px', padding: '0 24px' }}>Your minimum item price must be greater than the minimum</span>}
           <div className="button sub-menu">
 
-            <Button disabled={!price.maxPrice || !price.minPrice || price?.minPrice > price?.maxPrice }  shape="round" style={{ fontWeight: 'bold'}} onClick={onApply}>
+            <Button disabled={!price.maxPrice || !price.minPrice || price?.minPrice > price?.maxPrice} shape="round" style={{ fontWeight: 'bold' }} onClick={onApply}>
               Apply
             </Button>
           </div>
