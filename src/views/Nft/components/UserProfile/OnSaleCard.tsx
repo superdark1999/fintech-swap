@@ -54,10 +54,10 @@ export default function OnSaleCard({ data }: any) {
     <CartStyled>
       <Row gutter={24} align={"middle"}>
         <Col
-          xl={{ span: 7 }}
+          xl={{ span: 5 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 7 }}
+          xxl={{ span: 5 }}
         >
           {data?.type === 'video' ? (
             <video
@@ -81,10 +81,10 @@ export default function OnSaleCard({ data }: any) {
         </Col>
         <Col
           className="description"
-          xl={{ span: 17 }}
+          xl={{ span: 18 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 17 }}
+          xxl={{ span: 18 }}
         >
           {/* <div className="header-card" style={{ marginTop: 10 }}>
             <div className="status">Ready to Sell</div>
