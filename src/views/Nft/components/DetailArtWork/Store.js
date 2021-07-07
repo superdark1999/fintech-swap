@@ -13,7 +13,7 @@ const stateDefault = {
   historys: [],
 }
 const banner = []
-const view = []
+const view =0;
 const Store = createStore({
   initialState: { ...stateDefault, banner, view },
   actions: {
@@ -83,6 +83,7 @@ const Store = createStore({
     getViews:
       (Id) =>
       async ({ setState, getState }) => {
+        setState({ view: 0 })
         let c
         await fetch(
           `https://api.countapi.xyz/update/lucky-swap/${Id}/?amount=1`,
@@ -100,7 +101,6 @@ const Store = createStore({
               c = res.value
             })
         }
-        console.log('>>>>>>>>>>>', c)
         setState({ view: c })
       },
   },

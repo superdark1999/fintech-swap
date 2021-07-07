@@ -32,6 +32,7 @@
     "bootstrap": "^4.5.3",
     "cids": "^1.0.0",
     "copy-to-clipboard": "^3.3.1",
+    "countapi-js": "^1.0.2",
     "debounce": "^1.2.0",
     "env-cmd": "^10.1.0",
     "ethers": "^5.0.32",
