@@ -363,7 +363,7 @@ export default function MyCollectionCard({ data, option }: any) {
       case 'buy':
         return 'On store - Sell'
       case 'auction':
-        return 'On store - Aution'
+        return 'On store - Auction'
       case 'swap-store':
         return 'On swap store'
       case 'swap-personal':
@@ -376,7 +376,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const handleMenuClick = (dt: any) => {
     if (dt.key === 'sell') {
       setShowModalsetPrice(true)
-    } else if (dt.key === 'aution') {
+    } else if (dt.key === 'auction') {
       setRuleAuctionModal(true)
     }
   }
@@ -384,7 +384,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const menu = (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="sell">Sell</Menu.Item>
-      <Menu.Item key="aution">Aution</Menu.Item>
+      <Menu.Item key="auction">Auction</Menu.Item>
     </Menu>
   )
   //render status from API

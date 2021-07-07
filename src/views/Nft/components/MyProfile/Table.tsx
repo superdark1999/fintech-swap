@@ -69,7 +69,7 @@ export default () => {
       }))
     })
   },[])
-  const onWidthdraw = (record:any) => ()=>{
+  const onWithdraw = (record:any) => ()=>{
     setIsProcessing(true)
     cancelBidToken(record?.tokenId).then(_.debounce(()=>{
       getBidsByUser(account).then(data=>{
@@ -102,7 +102,7 @@ export default () => {
     {
       title: 'Action',
       dataIndex: 'action',
-      render: (_:any,record:any) => <ButtonTrade onClick={onWidthdraw(record)}>{!isProccessing?'Widthdraw':'Proccessing...'}</ButtonTrade>,
+      render: (_:any,record:any) => <ButtonTrade onClick={onWithdraw(record)}>{!isProccessing?'Withdraw':'Proccessing...'}</ButtonTrade>,
       width: 100,
     },
     {
