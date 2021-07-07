@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useEffect, useState } from 'react'
 import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
-import { getWeb3NoAccount } from 'utils/web3'
+import { useGetWeb3NoAccount } from 'utils/web3'
 import useRefresh from './useRefresh'
 import useWeb3 from './useWeb3'
 
@@ -67,11 +67,12 @@ export const useBurnedBalance = (tokenAddress: string) => {
 
 export const useNativeBalance = () => {
   const [balance, setBalance] = useState(new BigNumber(0))
-  // const { slowRefresh } = useRefresh()
-  const { account, chainId } = useWeb3React()
+  const { slowRefresh } = useRefresh()
+  const { account } = useWeb3React()
+  const getWeb3NoAccount = useGetWeb3NoAccount()
   useEffect(() => {
-    if (account && chainId) {
-      const web3 = getWeb3NoAccount(chainId)
+    if (account) {
+      const web3 = getWeb3NoAccount()
       const fetchBalance = async () => {
         const result = await web3.eth.getBalance(account)
         setBalance(new BigNumber(result))
@@ -79,7 +80,7 @@ export const useNativeBalance = () => {
 
       fetchBalance()
     }
-  }, [chainId, account])
+  }, [account, slowRefresh, getWeb3NoAccount])
   return balance
 }
 

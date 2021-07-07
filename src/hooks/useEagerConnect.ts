@@ -4,7 +4,9 @@ import { connectorLocalStorageKey, ConnectorNames } from '@luckyswap/uikit'
 import useAuth from 'hooks/useAuth'
 
 const useEagerConnect = () => {
+
   const { login } = useAuth()
+
 
   useEffect(() => {
     const connectorId = window.localStorage.getItem(connectorLocalStorageKey) as ConnectorNames

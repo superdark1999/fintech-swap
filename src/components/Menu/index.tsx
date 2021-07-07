@@ -18,10 +18,8 @@ const Menu = (props) => {
   const { login, logout } = useAuth()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
-  // const cakePriceUsd = usePriceLuckyBusd()
   const { profile } = useProfile()
-  // const balance = useETHBalances(account ? [account] : [''])?.[account ?? '']
-  const balance = useNativeBalance()
+  const nativeBalance = useNativeBalance()
 
   const [balanceToken, setBalanceToken] = useState(0)
 
@@ -61,8 +59,7 @@ const Menu = (props) => {
         noProfileLink: '/profile',
         showPip: !profile?.username,
       }}
-      balanceBNB={getBalanceNumber(balance).toFixed(3)}
-      // balanceBNB={balance ? balance.toSignificant(3) : 0}
+      balanceBNB={getBalanceNumber(nativeBalance).toFixed(3)}
       balanceLUCKY={balanceToken.toFixed(3)}
       {...props}
     />
