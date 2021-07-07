@@ -4,6 +4,7 @@ import Copy from 'assets/images/copy.svg'
 import Facebook from 'assets/images/facebook.svg'
 import Telegram from 'assets/images/telegram.svg'
 import Token from 'assets/images/token.svg'
+import EyeView from 'assets/images/visible-eye.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
 import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
@@ -24,6 +25,7 @@ import {
   FooterStyled,
   ImageStyled,
   DetailTabpane,
+  OwenedBy,
   HeaderStyled,
   TableStyled,
   VideoStyled,
@@ -51,7 +53,11 @@ import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import TableHistory from './TableHistory'
 import Countdown from 'react-countdown'
 import moment, { max } from 'moment'
+import { useHookDetail } from './Store'
 import styled from 'styled-components'
+import axios from 'axios'
+import ID from 'components-v2/ID'
+
 const { TabPane } = Tabs
 
 const DetaiArtWork = ({ id }: any) => {
@@ -63,6 +69,7 @@ const DetaiArtWork = ({ id }: any) => {
   const [isSelled, setIsSelled] = useState(false)
   const [price, setPrice] = useState<number>(0)
   const [bidsData, setBidsData] = useState([])
+  const [stateDetail, actionsDetail] = useHookDetail()
   const [userState, userActions] = useUserStore()
   const marketServicesMethod = useMarketServices()
   const [step, setStep] = useState(0)
@@ -74,6 +81,7 @@ const DetaiArtWork = ({ id }: any) => {
   const [dayExp, setDayExp] = useState({startTime:0, endTime:0})
 
   useEffect(() => {
+    console.log(id)
     getDetailNFT({ id }).then(({ status, data }) => {
       if (status == 200) {
         if (data?.data?.tokenId && marketServicesMethod) {
@@ -83,7 +91,7 @@ const DetaiArtWork = ({ id }: any) => {
               const bidsArr = await marketServicesMethod?.getBidsByTokenId?.(
                 data?.data?.tokenId,
               )
-              console.log("----------"+bidsArr)
+              
               const stepPriceUnit = await marketServicesMethod?.getStepPrice?.(
                 data?.data?.tokenId,
               )
@@ -127,6 +135,13 @@ const DetaiArtWork = ({ id }: any) => {
       }
     })
   }, [])
+
+  useEffect(() => {
+    if(id) {
+      actionsDetail.getViews(id)
+    }
+  }, [id])
+
 
   const onApproveBuyOnMarket = () => {
     userActions?.updateUserInfo({ isProcessingCanBuy: true })
@@ -467,8 +482,22 @@ const DetaiArtWork = ({ id }: any) => {
           </Row>
 
           <p className="description">{NFTDetail?.description || ''}</p>
-
-          <Link
+          <OwenedBy>
+            <Link
+              to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
+            >
+              <p className="organize">
+                <img style={{ borderRadius: '100px' }} width="40px" src={NFTDetail?.createdBy ? NFTDetail?.createdBy?.avatarImage : Luckyswap} />
+                <span className="name">{NFTDetail?.createdBy?.name}</span>
+                <img src={Checkmark} />
+              </p>
+            </Link>
+             <div className="view">
+               <img width="20px" src={EyeView} alt="" />
+               {stateDetail.view} views
+             </div>
+          </OwenedBy>
+          {/* <Link
             to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
           >
             <p className="organize">
@@ -476,7 +505,7 @@ const DetaiArtWork = ({ id }: any) => {
               <span className="name">{NFTDetail?.createdBy?.name}</span>
               <img src={Checkmark} />
             </p>
-          </Link>
+          </Link> */}
 
           <Tabs defaultActiveKey="1">
             <TabPane tab="Detail" key="1">
