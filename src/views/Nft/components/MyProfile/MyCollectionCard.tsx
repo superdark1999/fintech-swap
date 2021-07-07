@@ -392,10 +392,10 @@ export default function MyCollectionCard({ data, option }: any) {
     <CartStyled>
       <Row gutter={24} align={'middle'}>
         <Col
-          xl={{ span: 7 }}
+          xl={{ span: 5 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 7 }}
+          xxl={{ span: 5 }}
         >
           <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
             {data.type === 'video' ? (
@@ -410,10 +410,10 @@ export default function MyCollectionCard({ data, option }: any) {
         </Col>
         <Col
           className="description space-vehicle"
-          xl={{ span: 17 }}
+          xl={{ span: 18 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 17 }}
+          xxl={{ span: 18 }}
           style={{ height: '200px' }}
         >
           <div>
