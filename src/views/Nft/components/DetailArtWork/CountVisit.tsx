@@ -3,14 +3,18 @@ import 'antd/dist/antd.css'
 import EyeView from 'assets/images/visible-eye.svg'
 import { useHookDetail } from './Store'
 
-const CountVisit = ({id}: any) => {
+const CountVisit = ({ id }: any) => {
   const [stateDetail, actionsDetail] = useHookDetail()
   // call history transaction by tokenID
   useEffect(() => {
-    if(id) {
+    if (id) {
       actionsDetail.getViews(id)
     }
-  }, [id])
+    return () => {
+      actionsDetail.resetView()
+      return null
+    }
+  }, [])
   return (
     <div className="view">
       <img width="20px" src={EyeView} alt="" />

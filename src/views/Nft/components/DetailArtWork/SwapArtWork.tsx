@@ -236,7 +236,7 @@ const DetaiArtWork = ({ id }: any) => {
             </TabPane>
 
             <TabPane tab="History" key="2">
-              <TableHistory />
+              <TableHistory tokenId={NFTDetail.tokenId}/>
             </TabPane>
             <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">
