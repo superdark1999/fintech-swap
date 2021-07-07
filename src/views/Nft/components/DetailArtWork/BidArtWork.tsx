@@ -51,6 +51,7 @@ import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import TableHistory from './TableHistory'
 import Countdown from 'react-countdown'
 import moment, { max } from 'moment'
+import styled from 'styled-components'
 const { TabPane } = Tabs
 
 const DetaiArtWork = ({ id }: any) => {
@@ -82,6 +83,7 @@ const DetaiArtWork = ({ id }: any) => {
               const bidsArr = await marketServicesMethod?.getBidsByTokenId?.(
                 data?.data?.tokenId,
               )
+              console.log("----------"+bidsArr)
               const stepPriceUnit = await marketServicesMethod?.getStepPrice?.(
                 data?.data?.tokenId,
               )
@@ -733,15 +735,16 @@ const BiddingTable = ({
     }
   }
   const columnBidding =
+
     NFTInfo?.ownerWalletAddress === account
       ? [
         {
           title: 'Address',
           dataIndex: 'address',
           width: 100,
-          render: (address: String) => (
-            <a className="value" href="/" target="_blank">
-              {address}
+          render: (address: string) => (
+            <a className="value" href={window.location.origin+`/user-profile/${address}/onstore/readyToSell`} target="_blank">
+              {getCompactString(address, 6)}
             </a>
           ),
         },
@@ -751,7 +754,7 @@ const BiddingTable = ({
           width: 100,
           render: (price: Number) => (
             <div className="token">
-              {formatNumber(price)} LUCKY
+              {formatNumber(price)}
               <img src={Token} alt="" />
             </div>
           ),
@@ -777,9 +780,9 @@ const BiddingTable = ({
           title: 'Address',
           dataIndex: 'address',
           width: 100,
-          render: (address: String) => (
-            <a className="value" href="/" target="_blank">
-              {address}
+          render: (address: string) => (
+            <a className="value" href={window.location.origin+`/user-profile/${address}/onstore/readyToSell`} target="_blank">
+              {getCompactString(address, 6)}
             </a>
           ),
         },
@@ -789,7 +792,7 @@ const BiddingTable = ({
           width: 100,
           render: (price: Number) => (
             <div className="token">
-              {formatNumber(price)} LUCKY
+              {formatNumber(price)}
               <img src={Token} alt="" />
             </div>
           ),

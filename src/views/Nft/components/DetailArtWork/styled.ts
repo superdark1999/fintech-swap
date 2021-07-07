@@ -516,6 +516,13 @@ export const TableStyled = styled(Table)`
       background: #ffffff;
       border-bottom: 1px solid #f0f0f0;
       padding: 12px 20px !important;
+      .value {
+        width: 50%;
+        text-align: right;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 `
