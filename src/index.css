@@ -428,8 +428,24 @@ button.btn-secondary.dropdown-toggle:focus{
   }
 }
 
+.bg-yellow {
+  background-color: #F3C111 !important;
+  color: #333333 !important;
+}
+
+.border-yellow {
+  border: 1px solid #F3C111 !important;
+  background-color: transparent !important;
+  color: #F3C111 !important;
+}
+
 .no-border {
   border-top: none !important;
   background-color: #1d1d1d;
   border-radius: 17px;
+}
+
+.box-lucky h2 {
+  font-size: 40px;
+  color: #F3C111;
 }

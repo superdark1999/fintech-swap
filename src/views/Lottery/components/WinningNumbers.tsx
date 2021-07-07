@@ -216,9 +216,6 @@ const StyledCardHeader = styled.div`
 `
 
 const CardWrapper = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1200px;
   margin-bottom: 30px;
 `
 

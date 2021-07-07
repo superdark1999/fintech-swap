@@ -9,9 +9,19 @@ import { useLottery, useContract } from 'hooks/useContract'
 import { getLotteryAddress } from 'utils/addressHelpers'
 import lotteryAbi from 'config/abi/lottery.json'
 
+import { useWeb3React } from '@web3-react/core'
+import { useTotalClaim } from 'hooks/useTickets'
+import { getBalanceNumber } from 'utils/formatBalance'
 import Hero from './components/Hero'
 import WinningNumbers from './components/WinningNumbers'
 import TotalPrizesCard from './components/TotalPrizesCard'
+import YourPrizesCard from './components/YourPrizesCard'
+import UnlockWalletCard from './components/UnlockWalletCard'
+import TicketCard from './components/TicketCard'
+import HowItWorks from './components/HowItWorks'
+import PastLotteryRoundViewer from './components/PastLotteryRoundViewer'
+// import { BaseLayout } from '@luckyswap/uikit'
+import PastDrawsHistoryCard from './components/PastDrawsHistory/PastDrawsHistoryCard'
 import Divider from './components/Divider'
 import NextDrawPage from './NextDrawPage'
 import PastDrawsPage from './PastDrawsPage'
@@ -24,6 +34,24 @@ const Wrapper = styled.div`
   margin-bottom: 32px;
 `
 
+
+const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 40px;
+  margin-bottom: 30px;
+`
+
+const Dflex = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1200px;
+    margin-bottom: 30px;
+`
+
 const Lottery: React.FC = () => {
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
 
@@ -33,6 +61,11 @@ const Lottery: React.FC = () => {
   const [historyError, setHistoryError] = useState(false)
   const [currentLotteryNumber, setCurrentLotteryNumber] = useState(0)
   const [mostRecentLotteryNumber, setMostRecentLotteryNumber] = useState(1)
+
+  const { account } = useWeb3React()
+  const { claimAmount } = useTotalClaim()
+  const winnings = getBalanceNumber(claimAmount)
+  const isAWin = winnings > 0
 
   useEffect(() => {
     fetch(`https://api.pancakeswap.com/api/lotteryHistory`)
@@ -61,15 +94,28 @@ const Lottery: React.FC = () => {
     setActiveIndex(index)
   }
 
+
   return (
-    <>
-      <Hero />
-      
-      <TotalPrizesCard />
-      <WinningNumbers />
-      
+    <>      
       <Page>
-        <Wrapper>
+        <Hero/>
+        <TotalPrizesCard />
+        <SecondCardColumnWrapper isAWin={isAWin}>
+          {!account ? (
+            <UnlockWalletCard />
+          ) : (
+            <>
+              <TicketCard isSecondCard={isAWin} />
+              <YourPrizesCard />
+            </>
+          )}
+        </SecondCardColumnWrapper>
+        <WinningNumbers />
+        <HowItWorks />
+        <PastLotteryRoundViewer />
+        <PastDrawsHistoryCard />
+        
+        {/* <Wrapper>
           <ButtonMenu activeIndex={activeIndex} onItemClick={handleClick} scale="sm" variant="subtle">
             <ButtonMenuItem>{TranslateString(716, 'Next draw')}</ButtonMenuItem>
             <ButtonMenuItem>{TranslateString(718, 'Past draws')}</ButtonMenuItem>
@@ -80,7 +126,7 @@ const Lottery: React.FC = () => {
           value={{ historyError, historyData, mostRecentLotteryNumber, currentLotteryNumber }}
         >
           {activeIndex === 0 ? <NextDrawPage /> : <PastDrawsPage />}
-        </PastLotteryDataContext.Provider>
+        </PastLotteryDataContext.Provider> */}
       </Page>
     </>
   )

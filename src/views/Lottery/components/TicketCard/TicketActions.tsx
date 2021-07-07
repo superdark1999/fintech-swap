@@ -134,15 +134,15 @@ const TicketCard: React.FC = () => {
   const renderLotteryTicketButtons = () => {
     if (allowance.toString() === '0') {
       return (
-        <>
-          <Button variant="secondary" width="100%">
-            {TranslateString(432, 'View your tickets')}
+        <Dflex>
+          <Button className="bg-yellow" width="100%">
+            {TranslateString(432, 'Connect Wallet')}
           </Button>
-          <Button variant="secondary" width="100%" disabled={requestedApproval || getStatus()} onClick={handleApprove}>
+          <Button className="border-yellow" width="100%" disabled={requestedApproval || getStatus()} onClick={handleApprove}>
             {getStatus() ? spinnerIcon : ''}
-            {TranslateString(494, 'Approve LUCKY')}
+            {TranslateString(494, 'View your tickets')}
           </Button>
-        </>
+        </Dflex>
       )
     }
     return (
@@ -166,7 +166,7 @@ const TicketCard: React.FC = () => {
 
   return (
     <CardActions>
-      {lotteryHasDrawn ? (
+      {!lotteryHasDrawn ? (
         <Button disabled> {TranslateString(874, 'On sale soon')}</Button>
       ) : (
         renderLotteryTicketButtons()
@@ -174,5 +174,12 @@ const TicketCard: React.FC = () => {
     </CardActions>
   )
 }
+
+const Dflex = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  width: 100%;
+`
 
 export default TicketCard

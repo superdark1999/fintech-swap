@@ -12,12 +12,12 @@ import { usePriceLuckyBusd } from 'state/hooks'
 import PrizeGrid from '../PrizeGrid'
 import CardBusdValue from '../../../Home/components/CardBusdValue'
 
-const Container = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1200px;
-  margin-bottom: 30px;
-`
+// const Container = styled.div`
+//   margin-left: auto;
+//   margin-right: auto;
+//   max-width: 1200px;
+//   margin-bottom: 30px;
+// `
 
 const BoxTotal = styled.div `
   background: linear-gradient(45deg,rgb(35 35 35) 30%,rgb(45 45 45) 100%);
@@ -112,7 +112,6 @@ const TotalPrizesCard = () => {
   const { currentLotteryNumber } = useContext(PastLotteryDataContext)
 
   return (
-    <Container>
       <BoxTotal>
         <CardBody>
           {account && (
@@ -161,7 +160,6 @@ const TotalPrizesCard = () => {
           </CardFooter>
         </ExpandingWrapper>
       </BoxTotal>
-    </Container>
   )
 }
 
