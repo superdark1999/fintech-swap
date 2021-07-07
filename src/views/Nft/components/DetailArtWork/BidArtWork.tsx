@@ -9,6 +9,7 @@ import Luckyswap from 'assets/images/luckyswap.svg'
 import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
+import CountVisit from './CountVisit'
 import { ButtonStyle, ButtonBuyStyle } from 'components-v2/cart/styled'
 import {
   SwapOutlined,
@@ -492,10 +493,7 @@ const DetaiArtWork = ({ id }: any) => {
                 <img src={Checkmark} />
               </p>
             </Link>
-             <div className="view">
-               <img width="20px" src={EyeView} alt="" />
-               {stateDetail.view} views
-             </div>
+            <CountVisit id={id}/>
           </OwenedBy>
           {/* <Link
             to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
