@@ -13,6 +13,8 @@ const Wrapper = styled.div`
   flex-direction: column;
 `
 
+
+
 const StyledCardBody = styled(CardBody)`
   display: flex;
   justify-content: center;

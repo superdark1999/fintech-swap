@@ -10,6 +10,7 @@ interface HeadingProps {
 
 const IconWrapper = styled.div`
   margin-right: 16px;
+  
   svg {
     width: 48px;
     height: 48px;
@@ -24,8 +25,8 @@ const LotteryCardHeading: React.FC<HeadingProps> = ({ valueToDisplay, children, 
           <Icon />
         </IconWrapper>
       )}
-      <Flex flexDirection="column">
-        <Text fontSize="14px" color="textSubtle">
+      <Flex className="box-lucky" flexDirection="column">
+        <Text fontSize="16px" color="textSubtle">
           {children}
         </Text>
         <Heading size="lg">{valueToDisplay}</Heading>
