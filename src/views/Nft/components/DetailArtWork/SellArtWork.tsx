@@ -189,8 +189,7 @@ const DetaiArtWork = ({ id }: any) => {
                 <CloseOutlined className="icon" />
               </Link>
             </div>
-            {/* <div className="date-time">02h 31m 04s left 🔥 </div> */}
-            <div className="rating" style={{marginLeft: 10}}>
+            <div className="rating">
               4.8 <StarFilled style={{ color: '#fadb14' }} />{' '}
               <span
                 style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5' }}

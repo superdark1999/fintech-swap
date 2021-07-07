@@ -95,7 +95,7 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
             >
               <Input
                 style={{ borderRadius: '100px' }}
-                placeholder="Persional website, Instagram, Twitter, etc"
+                placeholder="Personal website, Instagram, Twitter, etc"
               />
             </Form.Item>
             <Form.Item

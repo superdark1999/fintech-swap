@@ -45,7 +45,7 @@ function HotArtists() {
       />
       <div className="content-artists" ref={divRef}>
         {users.map((item, i) => (
-          <Link to={ `/user-profile/${item.id}/onstore/readyToSell`}>
+          <Link key={i} to={`/user-profile/${item.id}/onstore/readyToSell`}>
             <div className="card-artists" key={i}>
               <img
                 className="avatar-artists"
