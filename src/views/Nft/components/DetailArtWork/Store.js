@@ -20,7 +20,7 @@ const Store = createStore({
     getHistorys:
       (tokenId) =>
       ({ setState, getState }) => {
-        axios(`${API_DASHBOARD}/transactions?tokenId=${tokenId}`).then(
+        axios(`http://localhost:3004/transactions?tokenId=${tokenId}`).then(
           (res) => {
             let parseData = res.data
             parseData = parseData.map((item) => {
@@ -31,7 +31,7 @@ const Store = createStore({
                 item.avtFrom.from,
                 item.avtFrom.name,
               ]
-
+              console.log(typeof item.avtTo.from, item.avtTo.from)
               item.to = [item.avtTo.address, item.avtTo.from, item.avtTo.name]
 
               //start handle date
