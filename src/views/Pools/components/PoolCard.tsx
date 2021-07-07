@@ -115,11 +115,9 @@ const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
             </FlexSpace>
           </CardContent>
 
-          <Boxbtn>
-            <Button color="primary">
+          <BoxLink>
               <Link to={`/PoolCardsDetail/${pool._id}`}>Join</Link>
-            </Button>
-          </Boxbtn>
+          </BoxLink>
         </BoxPool>
       </Col>
     </div>
@@ -214,6 +212,33 @@ const Boxbtn = styled.div`
       &:hover {
         color: rgb(255, 253, 250);
       }
+    }
+  }
+`
+
+const BoxLink = styled.div`
+  display: flex;
+  justify-content: center;
+  color: #2b2e2f;
+
+  a {
+    display: block;
+    width: 232px;
+    height: 40px;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #2b2e2f;
+    text-align: center;
+    background: #f5c606;
+    border-radius: 10px;
+    text-decoration: none;
+
+    &:hover {
+      transition: 0.5s;
+      color: #2b2e2f;
+      background: #f5c606;
+      opacity: 0.8;
     }
   }
 `
