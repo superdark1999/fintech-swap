@@ -13,8 +13,9 @@ const stateDefault = {
   historys: [],
 }
 const banner = []
+const view = []
 const Store = createStore({
-  initialState: { ...stateDefault, banner },
+  initialState: { ...stateDefault, banner, view },
   actions: {
     resetData:
       (tokenId) =>
@@ -28,33 +29,67 @@ const Store = createStore({
           (res) => {
             let parseData = res.data
             parseData = parseData.map((item) => {
-              
               item.price = 0
               //console.log(item.avtFrom.from)
-              item.from =[item.avtFrom.address, item.avtFrom.from, item.avtFrom.name]
-              
+              item.from = [
+                item.avtFrom.address,
+                item.avtFrom.from,
+                item.avtFrom.name,
+              ]
+
               item.to = [item.avtTo.address, item.avtTo.from, item.avtTo.name]
 
               //start handle date
-              const created = new Date(item.timeStamp * 1000);
-              const utc_created = Date.UTC(created.getUTCFullYear(),created.getUTCMonth(), created.getUTCDate() , 
-              created.getUTCHours(), created.getUTCMinutes(), created.getUTCSeconds(), created.getUTCMilliseconds());
+              const created = new Date(item.timeStamp * 1000)
+              const utc_created = Date.UTC(
+                created.getUTCFullYear(),
+                created.getUTCMonth(),
+                created.getUTCDate(),
+                created.getUTCHours(),
+                created.getUTCMinutes(),
+                created.getUTCSeconds(),
+                created.getUTCMilliseconds(),
+              )
               // The time now
               const now = new Date()
-              const utc_now = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate() , 
-              now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
-              const howLongAgo = utc_created - utc_now;
+              const utc_now = Date.UTC(
+                now.getUTCFullYear(),
+                now.getUTCMonth(),
+                now.getUTCDate(),
+                now.getUTCHours(),
+                now.getUTCMinutes(),
+                now.getUTCSeconds(),
+                now.getUTCMilliseconds(),
+              )
+              const howLongAgo = utc_created - utc_now
               //end handle date
 
-              item.date = [item.timeStamp &&
-                getHumanTime(howLongAgo),
-              item.hash]
-                
+              item.date = [
+                item.timeStamp && getHumanTime(howLongAgo),
+                item.hash,
+              ]
+
               return item
             })
             setState({ historys: parseData })
           },
         )
+      },
+    getViews:
+      (Id) =>
+      async({ setState, getState }) => {
+        let c
+        await fetch( `https://api.countapi.xyz/update/lucky-swap/${Id}/?amount=1`).then(res => res.json())
+          .then(res => {
+            c = res.value;
+          })
+        if(c == null) {
+          await fetch( `https://api.countapi.xyz/create?namespace=lucky-swap&key=${Id}&value=1`).then(res => res.json())
+          .then(res => {
+            c = res.value;
+          })
+        }
+        setState({view: c})
       },
   },
   name: 'Detail Store',

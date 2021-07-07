@@ -401,7 +401,16 @@ export const FooterStyled = styled.div`
     }
   }
 `
-
+export const OwenedBy = styled.div`
+  display:flex;
+  .view{
+    margin: 0px auto auto 15px;
+  }
+  img {
+    width: 20px;
+    margin-right: 10px;
+  }
+`
 export const DetailTabpane = styled.div`
   border: 1px solid #f0f0f0;
   padding: 12px;
