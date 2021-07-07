@@ -37,7 +37,8 @@ export const columnHistory = [
     dataIndex: 'from',
     width: 200,
     render: (from) =>  
-    <A href={(String(from[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == API_S3
+    <A href={((String(from[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == API_S3
+      || String(from[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == 'null')
       ? window.location.origin+`/user-profile/${from[0]}/onstore/readyToSell`
       :`${API_TESTNET}/address/${from[0]}`)} target="_blank">
       <IMG src={from[1]} >  
@@ -51,7 +52,8 @@ export const columnHistory = [
     dataIndex: 'to',
     width: 200,
     render: (to) => 
-    <A href={(String(to[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == API_S3
+    <A href={((String(to[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == API_S3 
+      || String(to[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == 'null')
     ? window.location.origin+`/user-profile/${to[0]}/onstore/readyToSell`
     :`${API_TESTNET}/address/${to[0]}`)} target="_blank">
       <IMG src={to[1]} >  
