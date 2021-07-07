@@ -13,6 +13,7 @@ export const SidebarStyled = styled.div<PropsStyled>`
     /* align-items: center; */
     margin-left: 14px;
     flex-direction: column;
+    position: relative;
     >img, span {
       margin-top: 20px;
       /* border-bottom: 1px solid #E7EBEF; */
@@ -20,6 +21,21 @@ export const SidebarStyled = styled.div<PropsStyled>`
       height: 25px;
       font-size: 25px;
     }
+    .number-notify{
+      position: absolute;
+        color:#fff;
+        background:#FC636B;
+        border-radius: 100px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        margin-left:6px;
+        font-size: 14px;
+        top: -14px;
+        right: 6px;
+        width: 20px;
+        height: 20px;
+      }
   }
   
   .button {

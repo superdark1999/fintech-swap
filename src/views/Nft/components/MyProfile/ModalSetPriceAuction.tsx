@@ -58,7 +58,10 @@ function ModalSetPriceAuction(props: any) {
                         placeholder="Enter NFT auction price"
                     />
                 </Form.Item>
-                <div style={{ marginBottom: '6px' }}>Price<span style={{ color: 'red', marginRight: '4px' }}>*</span>
+                <div style={{ marginBottom: '6px' }}>Price Jump Step<span style={{ color: 'red', marginRight: '4px' }}>*</span>
+                    <Popover content={renderContainer} title="Tutorial">
+                        <InfoCircleOutlined style={{ marginRight: '6px', cursor: 'pointer' }} />
+                    </Popover>
                 </div>
                 <Form.Item
                     name="stepPrice"
@@ -93,20 +96,20 @@ function ModalSetPriceAuction(props: any) {
                         <Radio value={2}>Schedule</Radio>
                     </Radio.Group>
                 </Form.Item>
-                {typeAuction==1? 
-                <div style={{ marginBottom: '6px' }}>Your item will be listed in the current market within 1 day</div>:
-                <>
-                <div style={{ marginBottom: '6px' }}>Set time</div>
-                <Form.Item
-                    name="dateTime"
-                    valuePropName="dateTime"
-                    rules={[
-                        { required: true, message: 'This Field is required' },
-                    ]}
-                >
-                    <DatePicker isFormData disabledStartDate={typeAuction === 1 ? true : false} />
-                </Form.Item>
-                </>
+                {typeAuction == 1 ?
+                    <div style={{ marginBottom: '6px' }}>Your item will be listed in the current market within 1 day</div> :
+                    <>
+                        <div style={{ marginBottom: '6px' }}>Set time</div>
+                        <Form.Item
+                            name="dateTime"
+                            valuePropName="dateTime"
+                            rules={[
+                                { required: true, message: 'This Field is required' },
+                            ]}
+                        >
+                            <DatePicker isFormData disabledStartDate={typeAuction === 1 ? true : false} />
+                        </Form.Item>
+                    </>
                 }
                 <Form.Item>
                     <div

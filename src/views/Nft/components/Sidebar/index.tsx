@@ -63,6 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChan
         </div>
         <div className="collapse-menu" onClick={() => setShowSidebar(!onShowSidebar)}>
           <img src={NotifyIcon} alt="" />
+          <span className="number-notify">5</span>
           <img src={token} alt="" />
           <img src={MoneyIcon} alt="" />
           <TagFilled />
