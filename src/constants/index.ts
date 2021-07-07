@@ -1,4 +1,4 @@
-import { JSBI, Percent, Token, WETH } from '@luckyswap/v2-sdk'
+import { JSBI, Percent, Token, ChainId, WNATIVE } from '@luckyswap/v2-sdk'
 
 // export const ROUTER_ADDRESS = '0x4eED75a231D8A1d265B283A67b5b37D1Ec80d379'
 
@@ -7,14 +7,6 @@ import { JSBI, Percent, Token, WETH } from '@luckyswap/v2-sdk'
 
 // Polygon testnet
 // export const ROUTER_ADDRESS = '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd'
-
-export enum ChainId {
-  RINKEBY = 4,
-  MATIC = 137,
-  MATIC_TESTNET = 80001,
-  MAINNET = 56,
-  BSCTESTNET = 97,
-}
 
 // a list of tokens by chain
 type ChainTokenList = {
@@ -32,58 +24,49 @@ export const UST = new Token(
   'Wrapped UST Token',
 )
 
-export const WNATIVE = {
-  [ChainId.MAINNET]: new Token(
-    ChainId.MAINNET,
-    '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
-    18,
-    'WBNB',
-    'Wrapped BNB',
-  ),
-  [ChainId.BSCTESTNET]: new Token(
-    ChainId.BSCTESTNET,
-    '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
-    18,
-    'WBNB',
-    'Wrapped BNB',
-  ),
-  [ChainId.RINKEBY]: new Token(
-    ChainId.RINKEBY,
-    '0xd0A1E359811322d97991E03f863a0C30C2cF029C',
-    18,
-    'WETH9',
-    'Wrapped Ether',
-  ),
-  [ChainId.MATIC]: new Token(
-    ChainId.MATIC,
-    '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
-    18,
-    'WMATIC',
-    'Wrapped Matic',
-  ),
-  [ChainId.MATIC_TESTNET]: new Token(
-    ChainId.MATIC_TESTNET,
-    '0x5B67676a984807a212b1c59eBFc9B3568a474F0a',
-    18,
-    'WMATIC',
-    'Wrapped Matic',
-  ),
-}
+// export const WNATIVE = {
+//   [ChainId.MAINNET]: new Token(
+//     ChainId.MAINNET,
+//     '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+//     18,
+//     'WBNB',
+//     'Wrapped BNB',
+//   ),
+//   [ChainId.BSCTESTNET]: new Token(
+//     ChainId.BSCTESTNET,
+//     '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
+//     18,
+//     'WBNB',
+//     'Wrapped BNB',
+//   ),
+//   [ChainId.MATIC]: new Token(
+//     ChainId.MATIC,
+//     '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+//     18,
+//     'WMATIC',
+//     'Wrapped Matic',
+//   ),
+//   [ChainId.MATIC_TESTNET]: new Token(
+//     ChainId.MATIC_TESTNET,
+//     '0x5B67676a984807a212b1c59eBFc9B3568a474F0a',
+//     18,
+//     'WMATIC',
+//     'Wrapped Matic',
+//   ),
+// }
 
 export const ROUTER_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac',
   [ChainId.MATIC]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.RINKEBY]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
   [ChainId.MATIC_TESTNET]: '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd',
   [ChainId.BSCTESTNET]: '0x09FceE7287f882c5eEAb8032A64FDE54Fc1dD055',
 }
 
 const WETH_ONLY: ChainTokenList = {
-  [ChainId.RINKEBY]: [WETH[ChainId.RINKEBY]],
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
-  [ChainId.BSCTESTNET]: [WETH[ChainId.BSCTESTNET]],
-  [ChainId.MATIC]: [WETH[ChainId.MATIC]],
-  [ChainId.MATIC_TESTNET]: [WETH[ChainId.MATIC_TESTNET]],
+  [ChainId.MAINNET]: [WNATIVE[ChainId.MAINNET]],
+  [ChainId.BSCTESTNET]: [WNATIVE[ChainId.BSCTESTNET]],
+  [ChainId.MATIC]: [WNATIVE[ChainId.MATIC]],
+  [ChainId.MATIC_TESTNET]: [WNATIVE[ChainId.MATIC_TESTNET]],
 }
 
 // used to construct intermediary pairs for trading
@@ -158,9 +141,8 @@ export const RPC_URLS: {
     'https://data-seed-prebsc-2-s1.binance.org:8545/',
     'https://data-seed-prebsc-1-s2.binance.org:8545/',
   ],
-  [ChainId.MATIC]: ['https://rpc-mainnet.matic.network', 'https://rpc-mainnet.maticvigil.com'],
+  [ChainId.MATIC]: ['https://rpc-mainnet.matic.network'],
   [ChainId.MATIC_TESTNET]: ['https://rpc-mumbai.matic.today', 'https://rpc-mumbai.maticvigil.com'],
-  [ChainId.RINKEBY]: [''],
 }
 
 export const BLOCK_EXPLORER_URLS: {
@@ -170,5 +152,4 @@ export const BLOCK_EXPLORER_URLS: {
   [ChainId.BSCTESTNET]: ['https://testnet.bscscan.com/'],
   [ChainId.MATIC]: ['https://explorer.matic.network/'],
   [ChainId.MATIC_TESTNET]: ['https://mumbai-explorer.matic.today'],
-  [ChainId.RINKEBY]: [''],
 }

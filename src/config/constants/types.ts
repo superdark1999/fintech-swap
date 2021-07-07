@@ -63,6 +63,7 @@ export interface FarmConfig {
 export interface Pool {
   _id: string
   name: string
+  logo: string
   depositTokenSymbol: string
   rewardTokenSymbol: string
   depositTokenAddress: string

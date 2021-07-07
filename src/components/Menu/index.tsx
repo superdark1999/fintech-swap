@@ -7,9 +7,9 @@ import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useAuth from 'hooks/useAuth'
 import { useContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
-import { NativeBalance } from 'hooks/useTokenBalance'
+import { useNativeBalance } from 'hooks/useTokenBalance'
 import React, { useContext, useEffect, useState } from 'react'
-import { usePriceLuckyBusd, useProfile } from 'state/hooks'
+import { useProfile } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import config from './config'
 
@@ -18,11 +18,13 @@ const Menu = (props) => {
   const { login, logout } = useAuth()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
-  const cakePriceUsd = usePriceLuckyBusd()
+  // const cakePriceUsd = usePriceLuckyBusd()
   const { profile } = useProfile()
-  const balance = NativeBalance() //
+  // const balance = useETHBalances(account ? [account] : [''])?.[account ?? '']
+  const balance = useNativeBalance()
 
   const [balanceToken, setBalanceToken] = useState(0)
+
   const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
 
   useEffect(() => {
@@ -60,6 +62,7 @@ const Menu = (props) => {
         showPip: !profile?.username,
       }}
       balanceBNB={getBalanceNumber(balance).toFixed(3)}
+      // balanceBNB={balance ? balance.toSignificant(3) : 0}
       balanceLUCKY={balanceToken.toFixed(3)}
       {...props}
     />

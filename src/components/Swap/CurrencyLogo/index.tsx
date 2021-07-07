@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from '@luckyswap/v2-sdk'
+import { Currency, Token } from '@luckyswap/v2-sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import useHttpLocations from 'hooks/useHttpLocations'
@@ -34,9 +34,9 @@ export default function CurrencyLogo({
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
 
   const srcs: string[] = useMemo(() => {
-    if (currency === ETHER) return []
+    if (currency?.isNative) return []
 
-    if (currency instanceof Token) {
+    if (currency?.isToken) {
       if (currency instanceof WrappedTokenInfo) {
         return [...uriLocations, `/images/coins/${currency?.symbol ?? 'token'}.png`, getTokenLogoURL(currency.address)]
       }
@@ -46,7 +46,7 @@ export default function CurrencyLogo({
     return []
   }, [currency, uriLocations])
 
-  if (currency === ETHER) {
+  if (currency?.isNative) {
     return <StyledBnbLogo src="/images/coins/bnb.png" size={size} style={style} />
   }
 

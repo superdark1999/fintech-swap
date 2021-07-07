@@ -1,30 +1,30 @@
-import { useEffect, useMemo } from 'react'
-import BigNumber from 'bignumber.js'
-import { kebabCase } from 'lodash'
-import { useWeb3React } from '@web3-react/core'
 import { Toast, toastTypes } from '@luckyswap/uikit'
+import { useWeb3React } from '@web3-react/core'
+import BigNumber from 'bignumber.js'
+import { Team } from 'config/constants/types'
+import useRefresh from 'hooks/useRefresh'
+import { kebabCase } from 'lodash'
+import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { Team } from 'config/constants/types'
 import { getWeb3NoAccount } from 'utils/web3'
-import useRefresh from 'hooks/useRefresh'
-import { LUCKY_PRICE, LUCKY2_PRICE } from '../config'
+import { LUCKY2_PRICE, LUCKY_PRICE } from '../config'
+import { useActiveWeb3React } from '../hooks/index'
+import { fetchAchievements } from './achievements'
 import {
-  fetchFarmsPublicDataAsync,
+  clear as clearToast, fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   push as pushToast,
-  remove as removeToast,
-  clear as clearToast,
-  setBlock,
+  remove as removeToast, setBlock
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, PriceState } from './types'
+import { fetchPrices } from './prices'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
-import { fetchAchievements } from './achievements'
-import { fetchPrices } from './prices'
+import { AchievementState, Farm, Pool, PriceState, ProfileState, State, TeamsState } from './types'
 
 export const useFetchPublicData = () => {
+  const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   useEffect(() => {
@@ -33,14 +33,14 @@ export const useFetchPublicData = () => {
   }, [dispatch, slowRefresh])
 
   useEffect(() => {
-    const web3 = getWeb3NoAccount()
+    const web3 = getWeb3NoAccount(chainId)
     const interval = setInterval(async () => {
       const blockNumber = await web3.eth.getBlockNumber()
       dispatch(setBlock(blockNumber))
     }, 6000)
 
     return () => clearInterval(interval)
-  }, [dispatch])
+  }, [dispatch, chainId])
 }
 
 // Farms

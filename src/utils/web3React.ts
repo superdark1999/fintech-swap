@@ -10,7 +10,7 @@ const chainId = parseInt(process.env.REACT_APP_CHAIN_ID) || 56
 const rpcUrl = getNodeUrl(chainId)
 
 // const injected = new InjectedConnector({ supportedChainIds: [chainId] })
-const injected = new InjectedConnector({ supportedChainIds: [4, 56, 97, 137, 80001] })
+const injected = new InjectedConnector({ supportedChainIds: [56, 97, 137, 80001] })
 
 const walletconnect = new WalletConnectConnector({
   rpc: { [chainId]: rpcUrl },

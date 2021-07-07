@@ -2,14 +2,12 @@ import { Web3Provider } from '@ethersproject/providers'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
+import { ChainId } from '@luckyswap/v2-sdk'
 import { NetworkConnector } from './NetworkConnector'
 import { BscConnector } from './bsc/bscConnector'
-import {} from '@luckyswap/v2-sdk'
 import getNodeUrl from '../utils/getRpcUrl'
-import { ChainId } from '../constants'
 
 const RPC = {
-  [ChainId.RINKEBY]: 'https://eth-rinkeby.alchemyapi.io/v2/XVLwDlhGP6ApBXFz_lfv0aZ6VmurWhYD',
   [ChainId.MATIC]: 'https://rpc-mainnet.maticvigil.com',
   [ChainId.MATIC]:
     'https://apis.ankr.com/e22bfa5f5a124b9aa1f911b742f6adfe/c06bb163c3c2a10a4028959f4d82836d/polygon/full/main',
@@ -37,7 +35,7 @@ export function getNetworkLibrary(): Web3Provider {
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [4, 56, 97, 137, 80001],
+  supportedChainIds: [56, 97, 137, 80001],
 })
 
 export const bsc = new BscConnector({ supportedChainIds: [56] })

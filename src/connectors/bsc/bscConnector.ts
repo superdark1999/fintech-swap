@@ -36,6 +36,7 @@ export class BscConnector extends AbstractConnector {
   }
 
   private handleChainChanged(chainId: string | number): void {
+    window.localStorage.setItem('chainId', chainId.toString())
     this.emitUpdate({ chainId, provider: window.BinanceChain } as any)
   }
 
@@ -68,7 +69,7 @@ export class BscConnector extends AbstractConnector {
     }
 
     if ((window.BinanceChain as any).isMetaMask) {
-      ;(window.BinanceChain as any).autoRefreshOnNetworkChange = false
+      (window.BinanceChain as any).autoRefreshOnNetworkChange = false
     }
 
     // try to activate + get account via eth_requestAccounts

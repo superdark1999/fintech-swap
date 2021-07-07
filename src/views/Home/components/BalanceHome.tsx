@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
 import styled from 'styled-components'
-import { NativeBalance } from 'hooks/useTokenBalance'
+import { useNativeBalance } from 'hooks/useTokenBalance'
 import { Menu, Dropdown, message } from 'antd'
 import Chart from './Chart'
 
@@ -99,7 +99,7 @@ const menu = (
 )
 const listTime = ['1d', '5d', '1m', '1y']
 function BalanceHome() {
-  const balance = NativeBalance() //
+  const balance = useNativeBalance() //
   return (
     <BalanceContainer>
       <div className="left-balance">

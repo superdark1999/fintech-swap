@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react'
-import BigNumber from 'bignumber.js'
-import makeBatchRequest from 'utils/makeBatchRequest'
-import { useERC20, useStakingContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
+import BigNumber from 'bignumber.js'
 import { Pool } from 'config/constants/types'
+import { useStakingContract } from 'hooks/useContract'
+import { useEffect, useState } from 'react'
 
 const useGetStateData = (staking: Pool) => {
   const [state, setState] = useState({

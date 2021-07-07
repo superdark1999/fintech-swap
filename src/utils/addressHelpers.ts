@@ -1,7 +1,9 @@
+import { ChainId } from '@luckyswap/v2-sdk'
 import addresses from 'config/constants/contracts'
 import tokens from 'config/constants/tokens'
 import { Address } from 'config/constants/types'
 
+// TODO : Improve
 export const getAddress = (address: Address): string => {
   const mainNetChainId = 56
   const chainId = process.env.REACT_APP_CHAIN_ID

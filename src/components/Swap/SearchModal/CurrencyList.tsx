@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from '@luckyswap/v2-sdk'
+import { ChainId, Currency, CurrencyAmount, currencyEquals, NATIVE, Token } from '@luckyswap/v2-sdk'
 import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import styled from 'styled-components'
@@ -18,7 +18,7 @@ import Loader from '../Loader'
 import { isTokenOnList } from '../../../utils'
 
 function currencyKey(currency: Currency): string {
-  return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''
+  return currency?.isToken ? currency.address : currency?.isNative ? 'ETHER' : ''
 }
 
 const StyledBalanceText = styled(Text)`
@@ -122,7 +122,7 @@ function CurrencyRow({
               <LinkStyledButton
                 onClick={(event) => {
                   event.stopPropagation()
-                  if (chainId && currency instanceof Token) removeToken(chainId, currency.address)
+                  if (chainId && currency?.isToken) removeToken(chainId, currency.address)
                 }}
               >
                 (Remove)
@@ -135,7 +135,7 @@ function CurrencyRow({
               <LinkStyledButton
                 onClick={(event) => {
                   event.stopPropagation()
-                  if (currency instanceof Token) addToken(currency)
+                  if (currency?.isToken) addToken(currency)
                 }}
               >
                 (Add)
@@ -160,6 +160,7 @@ export default function CurrencyList({
   otherCurrency,
   fixedListRef,
   showETH,
+  chainId,
 }: {
   height: number
   currencies: Currency[]
@@ -168,8 +169,12 @@ export default function CurrencyList({
   otherCurrency?: Currency | null
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   showETH: boolean
+  chainId: ChainId
 }) {
-  const itemData = useMemo(() => (showETH ? [Currency.ETHER, ...currencies] : [...currencies]), [currencies, showETH])
+  const itemData = useMemo(
+    () => (showETH ? [NATIVE[chainId], ...currencies] : [...currencies]),
+    [currencies, showETH, chainId],
+  )
 
   const Row = useCallback(
     ({ data, index, style }) => {

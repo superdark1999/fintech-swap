@@ -1,6 +1,6 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { CurrencyAmount, ETHER, ROUTER_ADDRESSES, TokenAmount, Trade } from '@luckyswap/v2-sdk'
+import { CurrencyAmount, ROUTER_ADDRESSES, TokenAmount, Trade } from '@luckyswap/v2-sdk'
 import { useActiveWeb3React } from 'hooks'
 import { useCallback, useMemo } from 'react'
 import { useTokenAllowance } from '../data/Allowances'
@@ -53,16 +53,18 @@ export function useApproveCallback(
   spender?: string,
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useActiveWeb3React()
-  const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined
+  const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
-    if (amountToApprove.currency === ETHER) return ApprovalState.APPROVED
+    if (amountToApprove.currency?.isNative) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
-    if (!currentAllowance) return ApprovalState.UNKNOWN
+    if (!currentAllowance) {
+      return ApprovalState.UNKNOWN
+    }
 
     // amountToApprove will be defined if currentAllowance is
     return currentAllowance.lessThan(amountToApprove)

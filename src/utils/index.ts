@@ -3,8 +3,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { AddressZero } from '@ethersproject/constants'
 import { Contract } from '@ethersproject/contracts'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
-import { ChainId, Currency, CurrencyAmount, ETHER, JSBI, Percent, ROUTER_ADDRESSES, Token } from '@luckyswap/v2-sdk'
-import { abi as IBeswapRouterV2 } from '../constants/abis/IBeswapRouterV2.json'
+import { ChainId, Currency, CurrencyAmount, JSBI, Percent, Token } from '@luckyswap/v2-sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
 
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -19,7 +18,6 @@ export function isAddress(value: any): string | false {
 const BSCSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   56: '',
   97: 'testnet.',
-  4: 'rinkeby.',
   137: '',
   80001: 'mumbai.',
 }
@@ -94,6 +92,6 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
-  if (currency === ETHER) return true
+  if (currency?.isNative) return true
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }

@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { AddIcon, Button, CardBody, Text as UIKitText } from '@luckyswap/uikit'
-import { Currency, currencyEquals, ETHER, TokenAmount } from '@luckyswap/v2-sdk'
+import { Currency, currencyEquals, TokenAmount, WNATIVE } from '@luckyswap/v2-sdk'
 import { PairState } from 'data/Reserves'
 import { useActiveWeb3React } from 'hooks'
 import { useCurrency } from 'hooks/Tokens'
@@ -15,8 +15,6 @@ import { useIsExpertMode, useUserDeadline, useUserSlippageTolerance } from 'stat
 import { calculateGasMargin, calculateSlippageAmount } from 'utils'
 import { currencyId } from 'utils/currencyId'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { wrappedCurrency } from 'utils/wrappedCurrency'
-import { WNATIVE } from '../../constants'
 import { LightCard } from '../../components/Swap/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Swap/Column'
 import ConnectWalletButton from '../../components/Swap/ConnectWalletButton'
@@ -72,8 +70,8 @@ export default function AddLiquidity({
   const isValid = !error
 
   // modal and loading
-  const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
+  const [showConfirm, setShowConfirm] = useState<boolean>(false)
 
   // txn values
   const [deadline] = useUserDeadline() // custom from users settings
@@ -116,7 +114,7 @@ export default function AddLiquidity({
   const addTransaction = useTransactionAdder()
 
   async function onAdd() {
-    if (!chainId || !library || !account) return
+    if (!chainId || !library || !account || !routerContract) return
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB) {
@@ -137,12 +135,12 @@ export default function AddLiquidity({
 
     // console.log('Currency A : ', currencyA)
 
-    if (currencyA === ETHER || currencyB === ETHER) {
-      const tokenBIsETH = currencyB === ETHER
+    if (currencyA?.isNative || currencyB?.isNative) {
+      const tokenBIsETH = currencyB?.isNative
       estimate = routerContract.estimateGas.addLiquidityETH
       method = routerContract.addLiquidityETH
       args = [
-        wrappedCurrency(tokenBIsETH ? currencyA : currencyB, chainId)?.address ?? '', // token
+        (tokenBIsETH ? currencyA : currencyB)?.wrapped?.address ?? '', // token
         (tokenBIsETH ? parsedAmountA : parsedAmountB).raw.toString(), // token desired
         amountsMin[tokenBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
         amountsMin[tokenBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
@@ -154,8 +152,8 @@ export default function AddLiquidity({
       estimate = routerContract.estimateGas.addLiquidity
       method = routerContract.addLiquidity
       args = [
-        wrappedCurrency(currencyA, chainId)?.address ?? '',
-        wrappedCurrency(currencyB, chainId)?.address ?? '',
+        currencyA?.wrapped.address ?? '',
+        currencyB?.wrapped.address ?? '',
         parsedAmountA.raw.toString(),
         parsedAmountB.raw.toString(),
         amountsMin[Field.CURRENCY_A].toString(),

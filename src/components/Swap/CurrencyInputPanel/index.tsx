@@ -115,10 +115,10 @@ export default function CurrencyInputPanel({
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-  const translatedLabel = label || TranslateString(132, 'Input')
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
   }, [setModalOpen])
+  const translatedLabel = label || TranslateString(132, 'Input')
 
   return (
     <InputPanel id={id}>

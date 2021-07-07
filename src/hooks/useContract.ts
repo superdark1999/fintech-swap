@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import useWeb3 from 'hooks/useWeb3'
 import { Contract } from '@ethersproject/contracts'
-import { ChainId, WETH, ROUTER_ADDRESSES, FACTORY_ADDRESSES } from '@luckyswap/v2-sdk'
+import { ChainId, ROUTER_ADDRESSES, FACTORY_ADDRESSES, WNATIVE } from '@luckyswap/v2-sdk'
 import { useActiveWeb3React } from 'hooks'
 import addresss from 'config/constants/contracts'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
@@ -164,7 +164,7 @@ export function useENSResolverContract(address: string | undefined, withSignerIf
 }
 export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId ? WETH[chainId].address : undefined, WETH_ABI, withSignerIfPossible)
+  return useContract(chainId ? WNATIVE[chainId].address : undefined, WETH_ABI, withSignerIfPossible)
 }
 
 export function useMulticallContract(): Contract | null {

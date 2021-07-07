@@ -1,9 +1,8 @@
-import { Token } from '@luckyswap/v2-sdk'
+import { Token, ChainId } from '@luckyswap/v2-sdk'
 import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'
-import { ChainId } from '../../constants'
 
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
@@ -37,7 +36,6 @@ export type TokenAddressMap = Readonly<{ [chainId in ChainId]: Readonly<{ [token
 const EMPTY_LIST: TokenAddressMap = {
   [ChainId.MAINNET]: {},
   [ChainId.BSCTESTNET]: {},
-  [ChainId.RINKEBY]: {},
   [ChainId.MATIC]: {},
   [ChainId.MATIC_TESTNET]: {},
 }
