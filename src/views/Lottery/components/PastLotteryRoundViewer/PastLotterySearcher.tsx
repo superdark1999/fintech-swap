@@ -42,7 +42,7 @@ const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotter
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
-    onSubmit(lotteryNumber)
+    onSubmit(0)
   }
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {

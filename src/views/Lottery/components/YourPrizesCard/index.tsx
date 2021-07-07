@@ -7,20 +7,27 @@ import PrizesWonContent from './PrizesWonContent'
 import NoPrizesContent from './NoPrizesContent'
 
 const StyledCard = styled(Card)`
+  margin: 0 !important;
+  max-width: 100% !important;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
   ${(props) =>
     props.isDisabled
       ? `  
-        margin-top: 16px;
+        margin-top: 0;
         background-color: unset;
         box-shadow: unset;
         border: 1px solid ${props.theme.colors.textDisabled};
 
         ${props.theme.mediaQueries.sm} {
-          margin-top: 24px;
+          margin-top: 0;
         }
 
         ${props.theme.mediaQueries.lg} {
-          margin-top: 32px;
+          margin-top: 0;
         }
         `
       : ``}
@@ -30,7 +37,6 @@ const YourPrizesCard: React.FC = () => {
   const { claimAmount } = useTotalClaim()
 
   const winnings = getBalanceNumber(claimAmount)
-  console.log('winnings?', claimAmount, winnings)
   const isAWin = winnings > 0
 
   return (

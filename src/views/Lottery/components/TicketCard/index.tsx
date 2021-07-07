@@ -13,17 +13,21 @@ interface CardProps {
 }
 
 const StyledCard = styled(Card)<CardProps>`
+  margin: 0 !important;
+  max-width: 100% !important;
+  border-radius: 14px;
+
   ${(props) =>
     props.isSecondCard
       ? `  
-        margin-top: 16px;
+        margin-top: 0;
 
         ${props.theme.mediaQueries.sm} {
-          margin-top: 24px;
+          margin-top: 0;
         }
 
         ${props.theme.mediaQueries.lg} {
-          margin-top: 32px;
+          margin-top: 0;
         }
         `
       : ``}
@@ -32,10 +36,12 @@ const StyledCard = styled(Card)<CardProps>`
 const CardHeader = styled.div`
   align-items: center;
   display: flex;
+  flex-direction: column;
+  text-align: center;
 `
 
 const IconWrapper = styled.div`
-  margin-right: 16px;
+  margin-bottom: 16px;
   svg {
     width: 48px;
     height: 48px;
@@ -45,6 +51,7 @@ const IconWrapper = styled.div`
 const TicketCountWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 10px;
 `
 
 const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
@@ -62,14 +69,14 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
       <CardBody>
         <CardHeader>
           <IconWrapper>
-            <img alt="" src="https://merlinlab.com/assets/lottery/lottery.svg" />
+            <img alt="" src="../images/icon-lottery.svg"/>
           </IconWrapper>
           {lotteryHasDrawn ? (
             <TicketCountWrapper>
-              <Text fontSize="14px" color="textSubtle">
-                {TranslateString(870, 'Until ticket sale:')}
+              <Text fontSize="20px" color="textSubtle">
+                {TranslateString(870, 'Your tickets for this round')}
               </Text>
-              <Heading size="lg">{timeUntilTicketSale}</Heading>
+              <Heading size="lg" style={{color: '#F3C111', fontSize: '30px'}}>{timeUntilTicketSale}</Heading>
             </TicketCountWrapper>
           ) : (
             <TicketCountWrapper>

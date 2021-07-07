@@ -70,9 +70,9 @@ const PrizesWonContent: React.FC = () => {
   return (
     <StyledCardContentInner>
       <IconWrapper>
-        <Won />
+        <img src="images/icon-gif.svg" alt="gif"/>
       </IconWrapper>
-      <Heading as="h3" size="lg" color="secondary">
+      <Heading as="h3" size="lg" color="#1CFFBB">
         {TranslateString(660, 'You won!')}
       </Heading>
       {claimLoading && <Loading />}
@@ -89,7 +89,7 @@ const PrizesWonContent: React.FC = () => {
         </>
       )}
       <StyledCardActions>
-        <Button variant="secondary" width="100%" disabled={requestedClaim} onClick={handleClaim}>
+        <Button className="border-yellow" variant="secondary" width="100%" disabled={requestedClaim} onClick={handleClaim}>
           {TranslateString(1056, 'Collect')}
         </Button>
       </StyledCardActions>

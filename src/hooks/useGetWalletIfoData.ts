@@ -39,8 +39,6 @@ const useGetWalletIfoData = (ifo: Ifo) => {
   const contract = useIfoContract(address)
   const currencyContract = useERC20(currencyAddress)
 
-  console.log('currency contract : ', currencyContract)
-
   const allowance = useIfoAllowance(currencyContract, address, isPendingTx)
 
   const setPendingTx = (status: boolean) =>

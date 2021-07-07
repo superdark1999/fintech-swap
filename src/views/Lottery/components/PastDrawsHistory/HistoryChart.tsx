@@ -105,7 +105,7 @@ const HistoryChart: React.FC = () => {
           <Text>Error fetching data</Text>
         </InnerWrapper>
       )}
-      {!historyError && historyData.length > 1 ? (
+      {!historyError && historyData.length > 0 ? (
         <Suspense fallback={<div>Loading...</div>}>
           <Line data={chartData} options={options} type="line" />
         </Suspense>

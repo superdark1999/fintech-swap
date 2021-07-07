@@ -47,9 +47,9 @@ const NextDrawPage: React.FC = () => {
     <>
       <Cards>
         <div>
-          <TotalPrizesCard />
+          {/* <TotalPrizesCard /> */}
         </div>
-        <SecondCardColumnWrapper isAWin={isAWin}>
+        {/* <SecondCardColumnWrapper isAWin={isAWin}>
           {!account ? (
             <UnlockWalletCard />
           ) : (
@@ -58,11 +58,11 @@ const NextDrawPage: React.FC = () => {
               <TicketCard isSecondCard={isAWin} />
             </>
           )}
-        </SecondCardColumnWrapper>
+        </SecondCardColumnWrapper> */}
       </Cards>
-      <HowItWorks />
+      {/* <HowItWorks /> */}
       {/* legacy page content */}
-      <WinningNumbers />
+      {/* <WinningNumbers /> */}
     </>
   )
 }
