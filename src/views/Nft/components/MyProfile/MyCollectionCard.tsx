@@ -123,10 +123,10 @@ export default function MyCollectionCard({ data, option }: any) {
   const onSubmitRuleAuction = (value: any) => {
 
     const tokenId = data?.tokenId
-    const startTime = value?.dateTime?.startTime||moment().unix();
-    const endTime = value?.dateTime?.endTime||moment().add(1, 'days')?.unix();
+    const startTime = value?.dateTime?.startTime || moment().unix();
+    const endTime = value?.dateTime?.endTime || moment().add(1, 'days')?.unix();
     setIsPrcessing(true)
-    marketServicesMethod?.setTokenBidInfo(tokenId, value.price, value.stepPrice, startTime,endTime)
+    marketServicesMethod?.setTokenBidInfo(tokenId, value.price, value.stepPrice, startTime, endTime)
       .then((dt) => {
         if (dt?.hash) {
           setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
@@ -256,9 +256,11 @@ export default function MyCollectionCard({ data, option }: any) {
   }
   const renderQRCode = () => {
     return (
-      <button className="btn-qrCode" onClick={() => setShowQR(true)}>
-        <ShareAltOutlined style={{ fontSize: '24px' }} />
-      </button>
+      <div className="qrCode-wrapper">
+        <button className="btn-qrCode" onClick={() => setShowQR(true)}>
+          <ShareAltOutlined style={{ fontSize: '24px' }} />
+        </button>
+      </div>
     )
   }
   const renderGroupAction = (status: any) => {
