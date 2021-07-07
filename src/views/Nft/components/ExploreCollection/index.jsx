@@ -22,7 +22,7 @@ function ExploreCollection() {
   const [NFTs, setNFTs] = useState({data: [], total: 0})
   const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
   const { getNFT } = useArtworkServices()
-  const [filterMethod, setFilterMethod] = useState('')
+  const [filterMethod, setFilterMethod] = useState(['auction','swap-store','buy'])
   const [filterType, setFilterType] = useState('')
   const [page, setPage] = useState(1)
 
@@ -42,7 +42,6 @@ function ExploreCollection() {
     if (status == 200) {
       if (page === 1) {
         setNFTs({data: data?.data, total: data.total})
-        console.log("akjsd")
       } else {
         setNFTs({data: NFTs.data.concat(data?.data), total: data.total})
       }
@@ -52,6 +51,7 @@ function ExploreCollection() {
 
   useEffect(() => {
     searchParams ? history.push(`/explore?search=${searchParams}`) : history.push(`/explore`)
+    console.log(filterMethod)
     const params = _.pickBy({
       status: 'readyToSell',
       NFTType: filterMethod,
