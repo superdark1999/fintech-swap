@@ -13,14 +13,19 @@ const stateDefault = {
   historys: [],
 }
 const banner = []
-const view = []
+const view =0;
 const Store = createStore({
   initialState: { ...stateDefault, banner, view },
   actions: {
+    resetData:
+      (tokenId) =>
+      ({ setState }) => {
+        setState({ historys: [] })
+      },
     getHistorys:
       (tokenId) =>
       ({ setState, getState }) => {
-        axios(`http://localhost:3004/transactions?tokenId=${tokenId}`).then(
+        axios(`${API_DASHBOARD}/transactions?tokenId=${tokenId}`).then(
           (res) => {
             let parseData = res.data
             parseData = parseData.map((item) => {
@@ -70,108 +75,120 @@ const Store = createStore({
           },
         )
       },
+    resetView:
+      () =>
+      async ({ setState }) => {
+        setState({ views: 0 })
+      },
     getViews:
       (Id) =>
-      async({ setState, getState }) => {
+      async ({ setState, getState }) => {
+        setState({ view: 0 })
         let c
-        await fetch( `https://api.countapi.xyz/update/lucky-swap/${Id}/?amount=1`).then(res => res.json())
-          .then(res => {
-            c = res.value;
+        await fetch(
+          `https://api.countapi.xyz/update/lucky-swap/${Id}/?amount=1`,
+        )
+          .then((res) => res.json())
+          .then((res) => {
+            c = res.value
           })
-        if(c == null) {
-          await fetch( `https://api.countapi.xyz/create?namespace=lucky-swap&key=${Id}&value=1`).then(res => res.json())
-          .then(res => {
-            c = res.value;
-          })
+        if (c == null) {
+          await fetch(
+            `https://api.countapi.xyz/create?namespace=lucky-swap&key=${Id}&value=1`,
+          )
+            .then((res) => res.json())
+            .then((res) => {
+              c = res.value
+            })
         }
-        setState({view: c})
+        setState({ view: c })
       },
   },
   name: 'Detail Store',
 })
 var getHumanTime = function (timestamp) {
   //console.log()
-	// Convert to a positive integer
-	var time = Math.abs(timestamp);
+  // Convert to a positive integer
+  var time = Math.abs(timestamp)
   //console.log(time)
-	// Define humanTime and units
-	var humanTime, units, humanTime2, units2;
+  // Define humanTime and units
+  var humanTime, units, humanTime2, units2
 
-	// If there are years
-	if (time > (1000 * 60 * 60 * 24 * 365)) {
-		humanTime = parseInt(time / (1000 * 60 * 60 * 24 * 365), 10);
+  // If there are years
+  if (time > 1000 * 60 * 60 * 24 * 365) {
+    humanTime = parseInt(time / (1000 * 60 * 60 * 24 * 365), 10)
     const v = parseFloat(time / (1000 * 60 * 60 * 24 * 365))
-    humanTime2 = parseInt(Math.abs((humanTime - v)*12))
+    humanTime2 = parseInt(Math.abs((humanTime - v) * 12))
 
-		units = (humanTime == 1?'year':'years');
-		units2 = (humanTime2 = 1?'month':'months');
-    return humanTime + ' ' + units + ' ' + humanTime2 + ' ' + units2;
-	}
+    units = humanTime == 1 ? 'year' : 'years'
+    units2 = humanTime2 = 1 ? 'month' : 'months'
+    return humanTime + ' ' + units + ' ' + humanTime2 + ' ' + units2
+  }
 
-	// If there are months
-	else if (time > (1000 * 60 * 60 * 24 * 30)) {
-		humanTime = parseInt(time / (1000 * 60 * 60 * 24 * 30), 10);
+  // If there are months
+  else if (time > 1000 * 60 * 60 * 24 * 30) {
+    humanTime = parseInt(time / (1000 * 60 * 60 * 24 * 30), 10)
     const v = parseFloat(time / (1000 * 60 * 60 * 24 * 30))
-    humanTime2 = parseInt(Math.abs((humanTime - v)*30))
+    humanTime2 = parseInt(Math.abs((humanTime - v) * 30))
 
-		units = (humanTime == 1?'month':'months');
-		units2 = (humanTime2 == 1?'week':'weeks');
-    return humanTime + ' ' + units + ' ' + humanTime2 + ' ' + units2+ ' ago';
-	}
+    units = humanTime == 1 ? 'month' : 'months'
+    units2 = humanTime2 == 1 ? 'week' : 'weeks'
+    return humanTime + ' ' + units + ' ' + humanTime2 + ' ' + units2 + ' ago'
+  }
 
-	// If there are weeks
-	// else if (time > (1000 * 60 * 60 * 24 * 7)) {
-	// 	humanTime = parseInt(time / (1000 * 60 * 60 * 24 * 7), 10);
+  // If there are weeks
+  // else if (time > (1000 * 60 * 60 * 24 * 7)) {
+  // 	humanTime = parseInt(time / (1000 * 60 * 60 * 24 * 7), 10);
   //   const v = parseFloat(time / (1000 * 60 * 60 * 24 * 7))
   //   humanTime2 = parseInt(Math.abs((humanTime - v)*7))
 
-	// 	units = (humanTime == 1?'week':'weeks');
-	// 	units2 = (humanTime2 == 1?'day':'days');
+  // 	units = (humanTime == 1?'week':'weeks');
+  // 	units2 = (humanTime2 == 1?'day':'days');
   //   return humanTime + ' ' + units + ' ' + humanTime2 + ' ' + units2;
-	// }
+  // }
 
-	// If there are days
-	else if (time > (1000 * 60 * 60 * 24)) {
-		humanTime = parseInt(time / (1000 * 60 * 60 * 24), 10);
+  // If there are days
+  else if (time > 1000 * 60 * 60 * 24) {
+    humanTime = parseInt(time / (1000 * 60 * 60 * 24), 10)
     const v = parseFloat(time / (1000 * 60 * 60 * 24))
-    humanTime2 = parseInt(Math.abs((humanTime - v)*24))
+    humanTime2 = parseInt(Math.abs((humanTime - v) * 24))
 
-		units = (humanTime == 1?'day':'days');;
-		units2 = (humanTime == 1?'hr':'hrs');
-    return humanTime + ' ' + units + ' ' + humanTime2 + ' ' + units2+ ' ago';
-	}
+    units = humanTime == 1 ? 'day' : 'days'
+    units2 = humanTime == 1 ? 'hr' : 'hrs'
+    return humanTime + ' ' + units + ' ' + humanTime2 + ' ' + units2 + ' ago'
+  }
 
-	// If there are hours
-	else if (time > (1000 * 60 * 60)) {
-		humanTime = parseInt(time / (1000 * 60 * 60), 10);
+  // If there are hours
+  else if (time > 1000 * 60 * 60) {
+    humanTime = parseInt(time / (1000 * 60 * 60), 10)
     const v = parseFloat(time / (1000 * 60 * 60))
-    humanTime2 = parseInt(Math.abs((humanTime - v)*60))
+    humanTime2 = parseInt(Math.abs((humanTime - v) * 60))
     //console.log("v:"+ v, "b:"+b)
 
-		units = (humanTime == 1?'hr': 'hrs');
-		units2 = (humanTime2 == 1?'min': 'mins');
-    
-    return humanTime + ' ' + units + ' ' + humanTime2 + ' ' + units2+ ' ago';
-	}
+    units = humanTime == 1 ? 'hr' : 'hrs'
+    units2 = humanTime2 == 1 ? 'min' : 'mins'
 
-	// If there are minutes
-	else if (time > (1000 * 60)) {
-		humanTime = parseInt(time / (1000 * 60), 10);
+    return humanTime + ' ' + units + ' ' + humanTime2 + ' ' + units2 + ' ago'
+  }
+
+  // If there are minutes
+  else if (time > 1000 * 60) {
+    humanTime = parseInt(time / (1000 * 60), 10)
     const v = parseFloat(time / (1000 * 60))
-    humanTime2 = parseInt(Math.abs((humanTime - v)*60))
+    humanTime2 = parseInt(Math.abs((humanTime - v) * 60))
 
-		units = (humanTime == 1?'min': 'mins');
-		units2 = (humanTime2 == 1?'sec':'secs');
-    return humanTime + ' ' + units + ' ' + humanTime2 + ' ' + units2+ ' ago';
-	}
+    units = humanTime == 1 ? 'min' : 'mins'
+    units2 = humanTime2 == 1 ? 'sec' : 'secs'
+    return humanTime + ' ' + units + ' ' + humanTime2 + ' ' + units2 + ' ago'
+  }
 
-	// Otherwise, use seconds
-	else {
-		humanTime = parseInt(time / (1000), 10);
-		units = (humanTime == 1?'sec':'secs');
-    return humanTime + ' ' + units+ ' ago';
-	}
-};
+  // Otherwise, use seconds
+  else {
+    humanTime = parseInt(time / 1000, 10)
+    units = humanTime == 1 ? 'sec' : 'secs'
+    return humanTime + ' ' + units + ' ago'
+  }
+}
 
 export const useHookDetail = createHook(Store)
 export const Container = createContainer(Store, {

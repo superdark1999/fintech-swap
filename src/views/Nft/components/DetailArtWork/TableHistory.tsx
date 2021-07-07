@@ -12,6 +12,10 @@ const TableHistory = ({ tokenId }: any) => {
     if (tokenId) {
       actionsDetail.getHistorys(tokenId)
     }
+    return () => {
+      actionsDetail.resetData()
+      return null
+    }
   }, [tokenId])
   return (
     <TableStyled

@@ -136,14 +136,6 @@ const DetaiArtWork = ({ id }: any) => {
       }
     })
   }, [])
-
-  useEffect(() => {
-    if(id) {
-      actionsDetail.getViews(id)
-    }
-  }, [id])
-
-
   const onApproveBuyOnMarket = () => {
     userActions?.updateUserInfo({ isProcessingCanBuy: true })
     luckyServicesMethod
