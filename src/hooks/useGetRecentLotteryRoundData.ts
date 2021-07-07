@@ -28,10 +28,10 @@ const useGetRecentLotteryRoundData = (): GetRecentLotteryRoundDataReturn => {
         setIsLoading(false)
       }
     }
-
-    if (mostRecentLotteryNumber > 0) {
-      fetchRecentLotteryData()
-    }
+    // if (mostRecentLotteryNumber > 0) {
+    //   fetchRecentLotteryData()
+    // }
+    fetchRecentLotteryData()
   }, [mostRecentLotteryNumber, setData, setIsLoading, setError])
 
   return { isLoading, data, mostRecentLotteryNumber, error }

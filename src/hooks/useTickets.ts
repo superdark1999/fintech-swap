@@ -50,7 +50,6 @@ export const useTotalRewards = () => {
       fetchBalance()
     }
   }, [lotteryContract, fastRefresh])
-  console.log('rewards>>',rewards)
   return rewards
 }
 
@@ -105,7 +104,6 @@ export const useMatchingRewardLength = (numbers) => {
   useEffect(() => {
     const fetchBalance = async () => {
       const matchedNumbaers = await getMatchingRewardLength(lotteryContract, numbers)
-      console.log('matchedNumbaers??',matchedNumbaers,numbers)
 
       setMatchingNumbers(matchedNumbaers)
     }
