@@ -96,7 +96,7 @@ interface DepositModalProp {
             <Button color="primary" onClick={depositToggle}>Cancel</Button>
           </CancelButton>
           <DepositButton>
-            <Button color="secondary" onClick={handleDeposit} disabled={false}>Deposit</Button>
+            <Button  color="primary" onClick={handleDeposit} disabled={value==='' || value==='0'}>Deposit</Button>
           </DepositButton>
         </ModalFooter>
       </Modal>
@@ -182,16 +182,20 @@ const BoxButton = styled.div`
 `
 const DepositButton = styled.div`
     button {
+      color: #2b2e2f;
+      background-color: #f5c606 !important;
+      border: none;
+      :hover {
+        opacity: .8 ; 
         color: #2b2e2f;
-        background-color: #f5c606;
-        :hover {
-          opacity: .8;
-          color: #2b2e2f;
-          background-color: #f5c606;
-        
-
-        }
+        background-color: #f5c606 !important;
       }
+      :disabled {
+        opacity: .5 ; 
+        color: #2b2e2f;
+        background-color: #f5c606 !important;
+      }
+    }
 `
 
 const CancelButton = styled.div`
