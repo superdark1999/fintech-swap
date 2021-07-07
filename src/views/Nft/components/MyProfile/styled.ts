@@ -349,6 +349,6 @@ export const CartStyled = styled.div`
 `
 
 export const ListCart = styled.div`
-  max-width: 900px;
+  /* max-width: 900px; */
   margin: 0 auto;
 `
