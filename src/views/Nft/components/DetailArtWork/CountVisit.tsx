@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import 'antd/dist/antd.css'
-import { Tabs } from 'antd'
-import { TableStyled } from './styled'
-import { columnHistory } from './Mock'
 import EyeView from 'assets/images/visible-eye.svg'
 import { useHookDetail } from './Store'
 
-const CountVisit = ({ id }: any) => {
+const CountVisit = ({id}: any) => {
   const [stateDetail, actionsDetail] = useHookDetail()
   // call history transaction by tokenID
   useEffect(() => {

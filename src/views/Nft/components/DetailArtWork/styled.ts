@@ -404,7 +404,7 @@ export const FooterStyled = styled.div`
 export const OwenedBy = styled.div`
   display:flex;
   .view{
-    margin: 0px auto auto 50px;
+    margin: 0px auto auto 15px;
   }
   img {
     width: 20px;
