@@ -324,8 +324,14 @@ export const CartStyled = styled.div`
     }
     .group-button {
       display: flex;
+      flex:1;
       > div {
         margin-right: 10px;
+      }
+      .qrCode-wrapper{
+        flex: 1;
+        justify-content: flex-end;
+        display: flex;
       }
       .btn-qrCode {
         background: #fff;
@@ -349,6 +355,6 @@ export const CartStyled = styled.div`
 `
 
 export const ListCart = styled.div`
-  max-width: 900px;
+  /* max-width: 900px; */
   margin: 0 auto;
 `

@@ -16,6 +16,7 @@ export default function CardSwap(props: any) {
       }
     }
   }, [playVideo])
+  console.log('checkk',!!props.value && !!props.setVisible)
   return (
     <CardSwapStyled style={{ ...props.style }} onMouseEnter={() => setplayVideo(true)} onMouseLeave={() => setplayVideo(false)}>
       {/* <img src={props.data?.contentUrl}/> */}
@@ -24,7 +25,7 @@ export default function CardSwap(props: any) {
         <div className="title">{props.data?.title}</div>
       </div>
       {
-        (props.value && props.setVisible) && <div className="edit" onClick={() => props?.setVisible({ isOpen: true, value: props.value })}>Edit</div>
+        props.value && props.setVisible && props.isRenderEdit && <div className="edit" onClick={() => props?.setVisible({ isOpen: true, value: props.value })}>Edit</div>
       }
     </CardSwapStyled>
   )

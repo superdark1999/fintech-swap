@@ -9,11 +9,10 @@ import useIO from 'hooks/useIo'
 import useConfigStore from 'store/configStore'
 
 function HotSwap() {
-
   const [observer, setElements, entries] = useIO({
     threshold: 0.25,
-    root: null
-  });
+    root: null,
+  })
 
   const divRef = useRef(null)
   const [loading, setLoading] = useState(true)
@@ -28,40 +27,44 @@ function HotSwap() {
   const { getNFT } = useArtworkServices()
 
   useEffect(() => {
-    getNFT({
-      status: 'readyToSell',
-      NFTType: 'swap-store'
-    },true).then(({ status, data }) => {
-      if (status == 200) {
-        setNFTs(data?.data || [])
-        setLoading(false)
-        configAction.updateConfig({
-          showLoading: false,
-        })
-      }
-    })
-    .catch((err) => {
-      // setLoading(false)
-    })
+    getNFT(
+      {
+        status: 'readyToSell',
+        NFTType: 'swap-store',
+      },
+      true,
+    )
+      .then(({ status, data }) => {
+        if (status == 200) {
+          setNFTs(data?.data || [])
+          setLoading(false)
+          configAction.updateConfig({
+            showLoading: false,
+          })
+        }
+      })
+      .catch((err) => {
+        // setLoading(false)
+      })
   }, [])
-  
+
   useEffect(() => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        let lazyImage = entry.target;
-        lazyImage.src = lazyImage.dataset.src;
-        lazyImage.classList.remove("lazy");
-        observer.unobserve(lazyImage);
+        let lazyImage = entry.target
+        lazyImage.src = lazyImage.dataset.src
+        lazyImage.classList.remove('lazy')
+        observer.unobserve(lazyImage)
       }
-    });
-  }, [entries, observer]);
+    })
+  }, [entries, observer])
 
   useEffect(() => {
     if (NFTs.length) {
-      let img = Array.from(document.getElementsByClassName("lazy"));
-      setElements(img);
+      let img = Array.from(document.getElementsByClassName('lazy'))
+      setElements(img)
     }
-  }, [NFTs, setElements]);
+  }, [NFTs, setElements])
 
   return (
     <HotArtWorksStyled>
@@ -82,9 +85,9 @@ function HotSwap() {
         style={{ fontSize: 24 }}
       />
       <div className="content-artwork" ref={divRef}>
-        { NFTs.map((item) => (
-            <Cart width="320px" height="480px" data={item} isLazy/>
-            ))}
+        {NFTs.map((item, i) => (
+          <Cart key={i} width="320px" height="480px" data={item} isLazy />
+        ))}
       </div>
     </HotArtWorksStyled>
   )

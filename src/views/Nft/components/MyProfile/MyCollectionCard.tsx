@@ -123,10 +123,10 @@ export default function MyCollectionCard({ data, option }: any) {
   const onSubmitRuleAuction = (value: any) => {
 
     const tokenId = data?.tokenId
-    const startTime = value?.dateTime?.startTime||moment().unix();
-    const endTime = value?.dateTime?.endTime||moment().add(1, 'days')?.unix();
+    const startTime = value?.dateTime?.startTime || moment().unix();
+    const endTime = value?.dateTime?.endTime || moment().add(1, 'days')?.unix();
     setIsPrcessing(true)
-    marketServicesMethod?.setTokenBidInfo(tokenId, value.price, value.stepPrice, startTime,endTime)
+    marketServicesMethod?.setTokenBidInfo(tokenId, value.price, value.stepPrice, startTime, endTime)
       .then((dt) => {
         if (dt?.hash) {
           setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
@@ -256,9 +256,11 @@ export default function MyCollectionCard({ data, option }: any) {
   }
   const renderQRCode = () => {
     return (
-      <button className="btn-qrCode" onClick={() => setShowQR(true)}>
-        <ShareAltOutlined style={{ fontSize: '24px' }} />
-      </button>
+      <div className="qrCode-wrapper">
+        <button className="btn-qrCode" onClick={() => setShowQR(true)}>
+          <ShareAltOutlined style={{ fontSize: '24px' }} />
+        </button>
+      </div>
     )
   }
   const renderGroupAction = (status: any) => {
@@ -363,7 +365,7 @@ export default function MyCollectionCard({ data, option }: any) {
       case 'buy':
         return 'On store - Sell'
       case 'auction':
-        return 'On store - Aution'
+        return 'On store - Auction'
       case 'swap-store':
         return 'On swap store'
       case 'swap-personal':
@@ -376,7 +378,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const handleMenuClick = (dt: any) => {
     if (dt.key === 'sell') {
       setShowModalsetPrice(true)
-    } else if (dt.key === 'aution') {
+    } else if (dt.key === 'auction') {
       setRuleAuctionModal(true)
     }
   }
@@ -384,7 +386,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const menu = (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="sell">Sell</Menu.Item>
-      <Menu.Item key="aution">Aution</Menu.Item>
+      <Menu.Item key="auction">Auction</Menu.Item>
     </Menu>
   )
   //render status from API
@@ -392,10 +394,10 @@ export default function MyCollectionCard({ data, option }: any) {
     <CartStyled>
       <Row gutter={24} align={'middle'}>
         <Col
-          xl={{ span: 7 }}
+          xl={{ span: 5 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 7 }}
+          xxl={{ span: 5 }}
         >
           <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
             {data.type === 'video' ? (
@@ -410,10 +412,10 @@ export default function MyCollectionCard({ data, option }: any) {
         </Col>
         <Col
           className="description space-vehicle"
-          xl={{ span: 17 }}
+          xl={{ span: 18 }}
           md={{ span: 24 }}
           xs={{ span: 24 }}
-          xxl={{ span: 17 }}
+          xxl={{ span: 18 }}
           style={{ height: '200px' }}
         >
           <div>
