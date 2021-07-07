@@ -83,6 +83,7 @@ const DetaiArtWork = ({ id }: any) => {
               const bidsArr = await marketServicesMethod?.getBidsByTokenId?.(
                 data?.data?.tokenId,
               )
+              console.log("----------"+bidsArr)
               const stepPriceUnit = await marketServicesMethod?.getStepPrice?.(
                 data?.data?.tokenId,
               )
@@ -742,7 +743,7 @@ const BiddingTable = ({
           dataIndex: 'address',
           width: 100,
           render: (address: string) => (
-            <a className="value" href="/" target="_blank">
+            <a className="value" href={window.location.origin+`/user-profile/${address}/onstore/readyToSell`} target="_blank">
               {getCompactString(address, 6)}
             </a>
           ),
@@ -753,7 +754,7 @@ const BiddingTable = ({
           width: 100,
           render: (price: Number) => (
             <div className="token">
-              {formatNumber(price)} LUCKY
+              {formatNumber(price)}
               <img src={Token} alt="" />
             </div>
           ),
@@ -780,7 +781,7 @@ const BiddingTable = ({
           dataIndex: 'address',
           width: 100,
           render: (address: string) => (
-            <a className="value" href="/" target="_blank">
+            <a className="value" href={window.location.origin+`/user-profile/${address}/onstore/readyToSell`} target="_blank">
               {getCompactString(address, 6)}
             </a>
           ),
@@ -791,7 +792,7 @@ const BiddingTable = ({
           width: 100,
           render: (price: Number) => (
             <div className="token">
-              {formatNumber(price)} LUCKY
+              {formatNumber(price)}
               <img src={Token} alt="" />
             </div>
           ),
