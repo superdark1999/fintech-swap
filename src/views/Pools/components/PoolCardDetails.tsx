@@ -6,6 +6,14 @@ import BigNumber from 'bignumber.js'
 import useUtilityToken from 'hooks/useUtilityToken'
 
 import { AutoRenewIcon } from '@luckyswap/uikit'
+import CardValue from '../../Home/components/CardValue';
+
+
+  const imageTokens = {
+  'XLUCKY': '../images/logo-icon.png',
+  'XLUCKY2': '../images/lucky2-icon.png',
+  'BRY': '../images/enlin.svg',
+  'BUSD': './images/busd.png'}
 
 const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
@@ -24,10 +32,13 @@ export default function PoolCardDetails({
   isHarvesting,
   setIsHarvesting,
 }) {
-  const { listenApproveEvent, approve, allowance } = useUtilityToken(stakingData.depositTokenAddress)
-  const [isApproved, setIsApproved] = useState(false)
-  const [isApproving, setIsApproving] = useState(false)
 
+  const {listenApproveEvent, approve, allowance} =  useUtilityToken(stakingData.depositTokenAddress);
+  const [isApproved, setIsApproved] = useState(false);
+  const [isApproving, setIsApproving] = useState(false);
+
+  const imageDepositToken = imageTokens[stakingData.depositTokenSymbol];
+  const imageRewardToken = imageTokens[stakingData.rewardTokenSymbol]
   useEffect(() => {
     const fetchApproval = async () => {
       const data = await allowance(account, stakingData.stakingAddress).catch((error) =>
@@ -74,64 +85,92 @@ export default function PoolCardDetails({
   return (
     <div>
       <Row gutter={[24, 16]}>
-        <Col span={24} sm={12} md={12}>
-          <div className="box__item">
-            <figure>
-              <img src="../images/icon-love.png" alt="" />
-            </figure>
+            <Col span={24} sm={12} md={12}>
+              <div className="box__item">
+                <figure className="background">
+                  <img src={imageRewardToken} alt=""/>
+                </figure>
 
-            <div className="content">
-              <h3 className="content__title">{userRewardDebt.div(1e18).toNumber()}</h3>
-              <span className="content__des">{stakingData.rewardTokenSymbol} earned</span>
-            </div>
+                <div className="content">
+                
+                  <h3 className="content__title">
+                  <CardValue
+                    bold
+                    color=""
+                    value={userRewardDebt.div(1e18).toNumber()}
+                    decimals={2}
+                    fontSize="10px"
+                    text={stakingData.rewardTokenSymbol}
+                    fontWeight="1000"
+                  ></CardValue></h3>
+                </div>
 
-            <div className="box__footer">
-              <Button
-                color="danger"
-                onClick={handleHarvest}
-                isLoading={isHarvesting}
-                disabled={getStatus() && isHarvesting}
-              >
-                {getStatus() && isHarvesting && spinnerIcon}
-                Harvest
-              </Button>
-            </div>
-          </div>
-        </Col>
-
-        <Col span={24} sm={12} md={12}>
-          <div className="box__item">
-            <figure className="background">
-              <img src="../images/icon-logo.png" alt="" />
-            </figure>
-
-            <div className="content">
-              <h3 className="content__title">{userAmount.div(1e18).toNumber()}</h3>
-              <span className="content__des">{stakingData.depositTokenSymbol}</span>
-            </div>
-
-            <div className="box__footer">
-              {!isApproved ? (
-                <Button color="danger" onClick={handleApprove} isLoading={isApproving} disabled={isApproving}>
-                  {isApproving && spinnerIcon}
-                  Approve
-                </Button>
-              ) : (
-                <div>
-                  <Button color="danger" onClick={onUnStakeToggle} disabled={getStatus() && isUnStaking}>
-                    {getStatus() && isUnStaking && spinnerIcon}
-                    UnStake
-                  </Button>
-                  <Button color="danger" onClick={onDepositToggle} disabled={getStatus() && isDepositing}>
-                    {getStatus() && isDepositing && spinnerIcon}
-                    Deposit
+                <div className="box__footer">
+                  <Button color="danger" 
+                  onClick={handleHarvest}
+                  isLoading={isHarvesting}
+                  disabled={(getStatus() && isHarvesting)}
+                  >
+                  { (getStatus() && isHarvesting) && spinnerIcon}
+                    Harvest
                   </Button>
                 </div>
-              )}
-            </div>
-          </div>
-        </Col>
-      </Row>
+              </div>
+            </Col>
+
+            <Col span={24} sm={12} md={12}>
+              <div className="box__item">
+                <figure className="background">
+                  <img src={imageDepositToken} alt=""/>
+                </figure>
+                <div className="content">
+                
+                  <h3 className="content__title">
+                    <CardValue
+                    bold
+                    color=""
+                    value={userAmount.div(1e18).toNumber()}
+                    decimals={0}
+                    fontSize="60px"
+                    text={stakingData.depositTokenSymbol}
+                    fontWeight="600"
+                  ></CardValue>
+                  </h3>
+                </div>
+
+                <div className="box__footer">
+                  {!isApproved ? (
+                    <Button color="danger" 
+                      onClick={handleApprove}
+                      isLoading={isApproving}
+                      disabled={isApproving}
+                    >
+                      { isApproving && spinnerIcon}
+                      Approve
+                    </Button>
+                  ) :
+                  (
+                    <div>
+                      <Button color="danger" 
+                        onClick={onUnStakeToggle}
+                        disabled={getStatus() && isUnStaking}
+                      >
+                      { (getStatus() && isUnStaking) && spinnerIcon}
+                        UnStake
+                      </Button>
+                      <Button color="danger" 
+                        onClick={onDepositToggle}
+                        disabled={getStatus() && isDepositing}
+                      >
+                      { (getStatus() && isDepositing)&& spinnerIcon}
+                        Deposit</Button>
+                    </div>
+                  )
+                  }
+                </div>
+              </div>
+            </Col>
+          </Row>
     </div>
   )
 }
