@@ -31,19 +31,22 @@ function FetchPoolData() {
   const param: any = useParams()
 
   const [state, actions] = useHookPools();
+  const [isLoading, setIsLoading] = useState(true);
   const { poolDetail } = state;
 
   useEffect(() => {
     const fetchPool = () => {
-      actions.getPoolDetail(param.id)
+      actions.getPoolDetail(param.id).then(() => setIsLoading(false))
     }
 
     fetchPool();
   }, [actions, param.id])
 
-  if (poolDetail)
+  if (poolDetail && !isLoading)
     return <PoolCardsDetail stakingData={poolDetail}/>
-  return <div></div>
+  return <div>
+    {/* <img src="./images/loading.gif" alt=''/> */}
+  </div>
 }
 
 const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {

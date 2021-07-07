@@ -15,11 +15,11 @@ import {Pool} from 'config/constants/types'
 import CardValue from '../../Home/components/CardValue';
 
 
-interface HarvestProps{
+interface PoolCardProps{
   pool: Pool
 }
 
-const PoolCard : React.FC<HarvestProps> = ({ pool })  => {
+const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
 
   const [apy, setApy] = useState('0');
   const [totalStaked, setTotalStaked] = useState(0);

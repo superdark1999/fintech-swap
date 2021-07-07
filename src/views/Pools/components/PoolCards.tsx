@@ -4,12 +4,12 @@ import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 're
 import {Pool} from 'config/constants/types'
 import PoolCard from './PoolCard';
 
-interface HarvestProps {
+interface PoolCardsProps {
   pools: Pool[],
   activeTab: string,
 }
 
-const PoolCards: React.FC<HarvestProps> = ({ pools, activeTab }) =>{
+const PoolCards: React.FC<PoolCardsProps> = ({ pools, activeTab }) =>{
   // const logos = ['../images/logo-icon.png', './images/lucky2-icon.png', './images/blink.png', './images/berry-icon.png']
 
   // for(let i = 0; i < pools.length; i++)

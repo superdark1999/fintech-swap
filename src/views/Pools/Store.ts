@@ -59,13 +59,9 @@ const Store = createStore({
     getPoolDetail:
       (id) =>
       async ({ setState, getState }) => {
-        // else {
           const url = `${BASE_API_ADMIN}/pools/${id}`
           const result: any = await axios.get(url).catch(() => console.log('axios error'))
-          setState({ ...getState(), poolDetail: result.data })
-          return result;
-  
-        // }
+          setState({ ...getState(), poolDetail: result.data });
       },
 
   //   setStatus:
