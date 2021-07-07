@@ -7,7 +7,7 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import _ from 'lodash'
 
 const OptionData = [
-    { label:'All tems', value: ''},
+    { label:'All items', value: ''},
     { label: 'Image', value: 'image'},
     { label: 'Video', value: 'video'},
     { label: 'Gif', value: 'gif'},

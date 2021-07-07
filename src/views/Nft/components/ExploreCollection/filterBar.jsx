@@ -21,6 +21,9 @@ function FilterBar(props) {
   }
   const onChangeType = (e) => {
     let value = e.target.value;
+    if(!value){
+      value = ['auction','swap-store','buy']
+    }
     setFilterType(value)
     setPage(1)
   }

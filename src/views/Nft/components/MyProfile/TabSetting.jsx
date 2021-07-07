@@ -105,7 +105,7 @@ const TabSetting = () => {
             <Input
               defaultValue={userState.socialMediaLink || ''}
               style={{ borderRadius: '100px' }}
-              placeholder="Persional website, Instagram, Twitter, etc"
+              placeholder="Personal website, Instagram, Twitter, etc"
             />
           </Form.Item>
           <Form.Item name={'biography'} label="bio">

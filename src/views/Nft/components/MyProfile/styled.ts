@@ -324,8 +324,14 @@ export const CartStyled = styled.div`
     }
     .group-button {
       display: flex;
+      flex:1;
       > div {
         margin-right: 10px;
+      }
+      .qrCode-wrapper{
+        flex: 1;
+        justify-content: flex-end;
+        display: flex;
       }
       .btn-qrCode {
         background: #fff;

@@ -79,7 +79,7 @@ export default function (props: Props) {
               {
                 myItems.map((card: any) => {
                   return (
-                    <CardSwap data={card} setVisible={setVisible} value='my-item' />
+                    <CardSwap data={card} setVisible={setVisible} value='my-item' isRenderEdit={itemSwap?.[0]?.ownerWalletAddress != account} />
                   )
                 })
               }
@@ -103,13 +103,13 @@ export default function (props: Props) {
           {
             myItems.map((card: any) => {
               return (
-                <CardSwap data={card} setVisible={setVisible} value='my-item' />
+                <CardSwap data={card} setVisible={setVisible} value='my-item' isRenderEdit={itemSwap?.[0]?.ownerWalletAddress != account} />
               )
             })
           }
         </ListCard>
       )
-    } else if (myItems.length === 1) return <CardSwap data={myItems[0]} setVisible={setVisible} value='my-item' />
+    } else if (myItems.length === 1) return <CardSwap data={myItems[0]} setVisible={setVisible} value='my-item' isRenderEdit={itemSwap?.[0]?.ownerWalletAddress != account} />
     else return <CardDefault setVisible={setVisible} value='my-item' />
   }
 
@@ -161,12 +161,10 @@ export default function (props: Props) {
       if (myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId) {
         setIsProcessing(true)
         const { confirmSwapNFT } = marketServiceMethod
-        console.log(itemSwap?.[0]?.tokenId, myItems?.[0]?.tokenId, myItems?.[0]?.ownerWalletAddress)
         confirmSwapNFT(itemSwap?.[0]?.tokenId, myItems?.[0]?.tokenId, myItems?.[0]?.ownerWalletAddress).then((data) => {
           nextStep && nextStep(3)
         }).catch((err) => {
           setIsProcessing(false)
-          console.log(err)
           notification('error', {
             message: 'Error',
             description: err.message,

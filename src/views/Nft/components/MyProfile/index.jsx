@@ -15,7 +15,7 @@ import OnsSaleCard from './OnSaleCard'
 import MyCollectionCard from './MyCollectionCard'
 import TabSetting from './TabSetting'
 import TableHistory from './Table'
-import Ranking from './Ranking'
+import Earn from './Earn'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import { HeartOutlined, CheckOutlined } from '@ant-design/icons'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
@@ -39,8 +39,8 @@ export default () => {
       history.push(`/my-profile/settings/#`)
     } else if (e === 'history') {
       history.push(`/my-profile/history/#`)
-    } else if (e === 'ranking') {
-      history.push(`/my-profile/ranking/#`)
+    } else if (e === 'earn') {
+      history.push(`/my-profile/earn/#`)
     }
   }
   console.log('userState: ', userState)
@@ -139,8 +139,8 @@ export default () => {
             <TabPane tab="My Collection" key="mycollection">
               <TabMyCollection />
             </TabPane>
-            <TabPane tab="Ranking" key="ranking">
-              <Ranking />
+            <TabPane tab="Earn" key="earn">
+              <Earn />
             </TabPane>
             <TabPane tab="History" key="history">
               <TableHistory />

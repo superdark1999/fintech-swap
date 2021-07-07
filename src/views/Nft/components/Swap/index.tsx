@@ -136,8 +136,8 @@ export default  () => {
              const offerData = data?.data?.map((item:any)=>{
                 const rawNFTByTokenId = rawNFTs.find((it:any)=>item?.tokenId==it?.tokenId)||{}
                 return {
+                  ...item,
                   ...rawNFTByTokenId,
-                  ...item
                 }
               })
             if(_.find(offerData,item=>item.ownerWalletAddress===account)){

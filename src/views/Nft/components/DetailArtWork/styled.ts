@@ -450,12 +450,12 @@ export const HeaderStyled = styled.div`
     padding-right: 10px;
     width: max-content;
     height: 24px;
-    margin-right: 12px;
     margin-left: 20px;
     margin-bottom: 12px;
   }
   .rating {
     padding: 0px 8px;
+    margin-left: 12px;
     background-color: #ffffff;
     border: 1px solid #e7ebef;
     box-sizing: border-box;
