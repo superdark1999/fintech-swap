@@ -10,7 +10,7 @@ const CountVisit = ({id}: any) => {
     if(id) {
       actionsDetail.getViews(id)
     }
-  }, [id])
+  },[])
   return (
     <div className="view">
       <img width="20px" src={EyeView} alt="" />
