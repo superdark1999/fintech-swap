@@ -34,6 +34,12 @@ export const TrendingBarStyled = styled.div`
         cursor: pointer;
         background-color: #35a5fc;
         color: #fff;
+        opacity: 0.8
+      }
+      &.active {
+        cursor: pointer;
+        background-color: #35a5fc;
+        color: #fff;
       }
     }
   }
