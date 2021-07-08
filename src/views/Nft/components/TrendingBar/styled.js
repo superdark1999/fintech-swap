@@ -10,6 +10,12 @@ export const TrendingBarStyled = styled.div`
     height: 100%;
     font-weight: 700;
     font-size: 18px;
+    justify-content: center;
+    border-radius: 6px;
+    color: #fff;
+    margin-right: 10px;
+    padding: 14px;
+    background-image: linear-gradient(190deg, #fb5d5d 0%, #f9a054 74%);
   }
   .filter-bar {
     display: flex;

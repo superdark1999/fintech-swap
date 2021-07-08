@@ -79,7 +79,7 @@ const UserProfile = () => {
                     ? user?.name
                     : getCompactString(user?.walletAddress, 6)}
                 </span>
-                <img src={Checkmark} />
+                {/* <img src={Checkmark} /> */}
               </div>
               <div className="rank">
                 <img src={Gold} /> GOLD ARTIST
