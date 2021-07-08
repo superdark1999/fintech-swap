@@ -314,6 +314,7 @@ export default function MyCollectionCard({ data, option }: any) {
   }
 
   const renderActionItem = () => {
+
     if (
       isProcessing ||
       approvingMarket ||
@@ -354,7 +355,7 @@ export default function MyCollectionCard({ data, option }: any) {
       return (
         <div className="group-btn-action">
           <ButtonBuy height="40px" onClick={onAllowSellItem}>
-            Public NFT
+            Approve NFT
           </ButtonBuy>
         </div>
       )

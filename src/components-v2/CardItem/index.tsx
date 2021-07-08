@@ -237,7 +237,7 @@ export default function CardItem(props?: any) {
             <div className="number">
               {isHideButton ? null : data?.NFTType !== 'swap-store' ? (
                 <div>
-                  {data?.price} LUCKY <img src={Token} alt="" />
+                  {formatNumber(data?.price)} LUCKY <img src={Token} alt="" />
                 </div>
               ) : (
                 <ButtonBuy className="btn-swap" onClick={onSwapItem}>

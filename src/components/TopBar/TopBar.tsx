@@ -64,8 +64,12 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   // }, []);
 
   useEffect(() => {
-    const { ethereum } = window as any
-    if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)) {
+    const { ethereum, BinanceChain } = window as any
+    if (
+      chainId &&
+      !SUPPORT_CHAIN_IDS.includes(chainId) &&
+      ethereum.selectedAddress
+    ) {
       ethereum
         .request({
           method: 'wallet_switchEthereumChain',
@@ -118,6 +122,11 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
               })
           }
         })
+    } else if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)) {
+      console.log('lsls', chainId, account)
+      BinanceChain.switchNetwork('bsc-testnet').then(() => {
+        window.location.reload()
+      })
     }
   }, [chainId])
 
@@ -438,8 +447,10 @@ const UserBalance = () => {
           LUCKY: formatNumber(getPrice(data?._hex || 0)),
         })
       })
+    } else {
+      userActions.updateUserBalance({ LUCKY: 0, BNB: 0 })
     }
-  }, [])
+  }, [account])
   const menu = (
     <Menu style={{ maxWidth: '220px', padding: '0 6px', borderRadius: '8px' }}>
       <SubMenu

@@ -198,7 +198,7 @@ const DetaiArtWork = ({ id }: any) => {
               >
                 (15)
               </span>{' '}
-              <img src={Hammer} alt="" />
+              {/* <img src={Hammer} alt="" /> */}
             </div>
           </Row>
 
