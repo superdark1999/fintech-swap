@@ -54,7 +54,8 @@ function HotArtists() {
               />
               {/* gắn ID user ở đây */}
               <div className="name-artists">
-                {item.name} <img src={Checkmark} />
+                {item.name} 
+                {/* <img src={Checkmark} /> */}
               </div>
 
               <div className="rank-artists">
