@@ -3,7 +3,7 @@ import { isMobile } from 'react-device-detect'
 
 export const ExploreCollectionStyled = styled.div`
   max-width: 1320px;
-  padding: 20px 0;
+  padding: 20px;
   margin: auto;
   .header-artists {
     height: 48px;
@@ -98,7 +98,7 @@ export const FilterBarStyled = styled.div`
     .ant-radio-wrapper {
       background: #fff;
       color: #333435;
-      margin: 0px 8px;
+      margin: 8px;
       padding: 4px 16px;
       font-weight: 600;
       border: 1px solid #e7ebef;
@@ -120,7 +120,6 @@ export const FilterBarStyled = styled.div`
     font-weight: ${isMobile ? '500' : '700'};
     font-size: ${isMobile ? '16px' : '20px'};
     text-align: ${isMobile && 'right'};
-    height: 32px;
     display: flex;
     flex-direction: column;
     /* text-decoration: underline; */
