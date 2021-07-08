@@ -7,11 +7,10 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import TrendingBar from '../TrendingBar/index'
 import _ from 'lodash'
 import { useHistory } from 'react-router-dom'
-import LoadingBar from 'react-top-loading-bar'
 import useIO from 'hooks/useIo'
-import { isMobile } from 'react-device-detect'
+import {isMobile} from 'react-device-detect'
+import ProgressBar from 'components-v2/ProgressBar'
 
-// export const option: React.ReactElement<OptionProps> = Select.Option
 function ExploreCollection() {
   const history = useHistory()
   let paramsSearch = useMemo(
@@ -22,6 +21,7 @@ function ExploreCollection() {
   const [NFTs, setNFTs] = useState({ data: [], total: 0 })
   const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
   const { getNFT } = useArtworkServices()
+  
   const [filterMethod, setFilterMethod] = useState('')
   const [filterType, setFilterType] = useState('')
   const [sort, setSort] = useState('asc')
@@ -54,7 +54,7 @@ function ExploreCollection() {
             }
           }
         }),
-      1000,
+        NFTs.length === 0 ? 0 : 1000,
     ),
     [page],
   )
@@ -107,10 +107,6 @@ function ExploreCollection() {
     }
   }, [NFTs, setElements])
 
-  const nextPage = useCallback((page) => {
-    setPage(page)
-  }, [])
-
   return (
     <ExploreCollectionStyled>
       <div className="header-artists">
@@ -148,19 +144,14 @@ function ExploreCollection() {
       </div>
       {NFTs?.data?.length < NFTs?.total && (
         <div className="footer-section">
-          <div className="wrapper-button" onClick={() => nextPage(page + 1)}>
+          <div className="wrapper-button" onClick={() => setPage(page + 1)}>
             <Button shape="round">Load more</Button>
           </div>
         </div>
       )}
 
-      <LoadingBar
-        color="linear-gradient(101deg, #1cace8 0%, #07dce6 100%)"
-        progress={loading}
-        onLoaderFinished={() => setLoading(0)}
-        transitionTime={800}
-        height={4}
-      />
+      <ProgressBar loading={loading} setLoading={setLoading} />
+      
     </ExploreCollectionStyled>
   )
 }

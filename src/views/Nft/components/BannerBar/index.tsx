@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Carousel } from 'antd';
 import styled from 'styled-components'
 import { isMobile } from 'react-device-detect'
+import StackedCard from 'components-v2/StackedCard'
 
 export interface Banner {
     name: string,
@@ -15,13 +16,19 @@ export interface BannerProps {
 }
 const BannerBar: React.FC<BannerProps> = ({ banners }) => {
     return (
-        <BannerBarStyled>
+        <BannerBarStyled>       
+        {
+          !isMobile? (
             <Carousel className="banner-body" autoplay>
-                {banners.length !== 0 && banners.map((src, i: number) => (
-                    <img key={i} src={`https://dashboard.luckyswap.exchange/${src.link}`} alt="banner" />
-                ))
-                }
+              {banners.length !== 0 && banners.map((src, i: number) => (
+                  <img key={i} src={`https://dashboard.luckyswap.exchange/${src.link}`} alt="banner" />
+              ))
+              }
             </Carousel>
+          )
+          :
+          <StackedCard listItem={banners}/>
+        }
         </BannerBarStyled>
     )
 }

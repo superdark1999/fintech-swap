@@ -1,19 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FilterBarStyled } from './styled'
 import { Select, Radio, Input } from 'antd'
-
+import { OptionSort, OptionMethods, OptionTypeNft } from '../../constants'
 const { Option } = Select
 const { Search } = Input
-
-const OptionSort = [
-  {
-    label: 'New',
-    value: 'asc'
-  },
-  {
-    label: 'Old',
-    value: 'desc'
-  }]
 
 function FilterBar(props) {
   const {
@@ -43,6 +33,7 @@ function FilterBar(props) {
     setFilterType(value)
     setPage(1)
   }
+  
   return (
     <FilterBarStyled>
       <div className="left-action">
@@ -54,21 +45,15 @@ function FilterBar(props) {
             value={filterType}
             defaultChecked
           >
-            <Radio checked={filterType === ''} value=''>
-              All
-            </Radio>
-            <Radio checked={filterType === 'image'} value="image">
-              Picture
-            </Radio>
-            <Radio checked={filterType === 'gif'} value="gif">
-              GIF
-            </Radio>
-            <Radio checked={filterType === 'video'} value="video">
-              Video
-            </Radio>
-            <Radio checked={filterType === 'audio'} value="audio">
-              Audio
-            </Radio>
+            {
+              OptionTypeNft.map((item, i) => {
+                return (
+                  <Radio key={i} checked={filterMethod === item.value} value={item.value}>
+                    {item.label}
+                  </Radio>
+                )
+              })
+            }
           </Radio.Group>
         </div>
         <div className="list-filter" style={{ marginBottom: '24px' }}>
@@ -79,18 +64,15 @@ function FilterBar(props) {
             value={filterMethod}
             defaultChecked
           >
-            <Radio checked={filterMethod === ''} value=''>
-              All
-            </Radio>
-            <Radio checked={filterMethod === 'auction'} value="auction">
-              Auction
-            </Radio>
-            <Radio checked={filterMethod === 'swap-store'} value="swap-store">
-              Swap
-            </Radio>
-            <Radio checked={filterMethod === 'buy'} value="buy">
-              Buy
-            </Radio>
+           {
+            OptionMethods.map((item, i) => {
+              return (
+                <Radio key={i} checked={filterMethod === item.value} value={item.value}>
+                  {item.label}
+                </Radio>
+              )
+            })
+           }
           </Radio.Group>
         </div>
       </div>
@@ -111,7 +93,7 @@ function FilterBar(props) {
             defaultValue={sort}
           >
             {OptionSort.map((item) => (
-              <Option key={item} value={item.value} >
+              <Option key={item.value} value={item.value} >
                 {item.label}
               </Option>
             ))}

@@ -1,9 +1,8 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { TrendingBarStyled } from './styled'
 import { isMobile } from 'react-device-detect'
 
 const TrendingBar = (props: { setTags?: (value: any) => void, tags?: any }) => {
-  const [arrTag, setArrTag] = useState(props.tags || [])
 
   const OPTIONS = [
     'Art',
@@ -18,14 +17,13 @@ const TrendingBar = (props: { setTags?: (value: any) => void, tags?: any }) => {
   ]
 
   const onSelectTags = (item: any) => {
-    let tags = [...arrTag]
-    if (arrTag.includes(item)) {
-      tags = arrTag.filter((tag:string) => tag !== item)
+    let tags = [...props?.tags]
+    if (props?.tags?.includes(item)) {
+      tags = props?.tags?.filter((tag:string) => tag !== item)
     } else {
       tags.push(item)
     }
     props?.setTags(tags)
-    setArrTag(tags)
   }
 
   return (
@@ -33,7 +31,7 @@ const TrendingBar = (props: { setTags?: (value: any) => void, tags?: any }) => {
       {!isMobile && <div className="title-bar">Trending</div>}
       <div className="filter-bar">
         {OPTIONS.map((item, i) => (
-          <div key={i} className={arrTag.includes(item) ? "filter-bar-item active" :"filter-bar-item"} onClick={() => onSelectTags(item)}>
+          <div key={i} className={props?.tags?.includes(item) ? "filter-bar-item active" :"filter-bar-item"} onClick={() => onSelectTags(item)}>
             #{item}
           </div>
         ))}
