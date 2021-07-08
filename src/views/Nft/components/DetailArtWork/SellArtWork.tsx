@@ -66,7 +66,6 @@ const DetaiArtWork = ({ id }: any) => {
   const luckyServiceMethod = useLuckyServices()
   const [isProcessing, setIsProccessing] = useState(false)
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
-  const { checkApproveLevelAmount } = useLuckyServices()
   const history = useHistory()
   useEffect(() => {
     getDetailNFT({ id }).then(({ status, data }) => {
