@@ -72,14 +72,16 @@ export const StyledCart = styled.div<PropsStyled>`
         .date-time {
           font-weight: 600;
           font-size: 14px;
-          background-color: #fc636b;
+          background-color: #ff2b34;
           color: #ffffff;
           /* border: 2px solid #FC636B; */
           border-radius: 30px;
-          padding-left: 10px;
-          padding-right: 10px;
+          padding-left: 12px;
+          padding-right: 12px;
           width: max-content;
           height: 24px;
+          align-items: center;
+          display: flex;
         }
         > img {
           width: 36px;
@@ -152,7 +154,7 @@ export const StyledCart = styled.div<PropsStyled>`
           color: #333435;
           opacity: 0.75;
           font-weight: 600;
-        }        
+        }
         .copy {
           font-size: 12px;
           cursor: pointer;
@@ -164,13 +166,13 @@ export const StyledCart = styled.div<PropsStyled>`
         }
       }
       .name-artist-2 {
-          display: flex;
-          justify-content: space-between;
-          font-size: 14px;
-          line-height: 20px;
-          color: #333435;
-          opacity: 0.75;
-        }
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        line-height: 20px;
+        color: #333435;
+        opacity: 0.75;
+      }
       .number {
         font-weight: 600;
         font-size: 14px;

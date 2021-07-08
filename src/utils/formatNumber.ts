@@ -1,3 +1,3 @@
 export default (number: Number) => {
-  return Intl.NumberFormat().format(+number.toFixed(2))
+  return new Intl.NumberFormat().format(+number.toFixed(2))
 }

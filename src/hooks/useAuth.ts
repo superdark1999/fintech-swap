@@ -14,9 +14,11 @@ import { ConnectorNames, connectorLocalStorageKey } from '@luckyswap/uikit'
 import { connectorsByName } from 'utils/web3React'
 import {setupNetwork} from 'utils/setupNetwork'
 import notification from 'components-v2/Alert'
+import { useActiveWeb3React } from 'wallet/hooks'
 
 const useAuth = () => {
-  const { activate, deactivate } = useWeb3React()
+  const { chainId, account, connector } = useActiveWeb3React()
+  const { activate, deactivate,  } = useWeb3React()
   const loginWallet = useCallback((connectorID: ConnectorNames) => {
     const connector = connectorsByName[connectorID]
     console.log('connector: ', connector);
@@ -64,7 +66,22 @@ const useAuth = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return { loginWallet, logout: deactivate }
+  const logout  = useCallback(()=>{
+    const { ethereum } = window as any
+     deactivate()
+    // ethereum.request({
+    //   method: "wallet_requestPermissions",
+    //   params: [
+    //     {
+    //       eth_accounts: {}
+    //     }
+    //   ]
+    // });
+    // const { ethereum } = window as any
+    // ethereum.request({ method: 'wallet_switchEthereumChain' })
+  },[])
+
+  return { loginWallet, logout }
 }
 
 export default useAuth

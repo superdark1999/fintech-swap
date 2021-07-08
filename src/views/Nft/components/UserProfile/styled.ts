@@ -57,7 +57,7 @@ export const UserProfileStyled = styled.div<Props>`
       background-repeat: no-repeat;
       background-size: cover;
       .header-profile-col {
-        max-width: 1320px;
+        max-width: 1100px;
         > .avatar {
           width: 140px;
           height: 140px;
@@ -71,7 +71,7 @@ export const UserProfileStyled = styled.div<Props>`
     }
     &.content-profile {
       .content {
-        max-width: ${!isMobile && '1320px'};
+        max-width: ${!isMobile && '1100px'};
         .ant-tabs {
           overflow: inherit !important;
         }
@@ -83,12 +83,12 @@ export const UserProfileStyled = styled.div<Props>`
       .info-detail {
         display: flex;
         justify-content: space-between;
-        flex-direction:${isMobile ? 'column':'row'};
+        flex-direction: ${isMobile ? 'column' : 'row'};
         .name {
           font-size: 28px;
           line-height: 40px;
           color: #333435;
-          font-weight: 600;          
+          font-weight: 600;
         }
         .copy {
           span {
@@ -113,13 +113,13 @@ export const UserProfileStyled = styled.div<Props>`
           > img {
             margin-top: -4px;
             margin-right: 6px;
-            width:40px;
+            width: 40px;
           }
         }
         .button-right {
           display: flex;
           align-items: center;
-          a{
+          a {
             padding-right: 6px;
           }
           .btn-donate {
@@ -144,6 +144,7 @@ export const UserProfileStyled = styled.div<Props>`
         font-size: 16px;
         line-height: 24px;
         margin-top: 20px;
+        margin-left: 20px;
       }
     }
   }
@@ -152,7 +153,7 @@ export const UserProfileStyled = styled.div<Props>`
 export const CartStyled = styled.div`
   /* display: flex; */
   margin: 20px 0;
-  padding: 30px;
+  padding: 12px 30px;
   border: 1px solid #e7ebef;
   box-sizing: border-box;
   border-radius: 24px;
@@ -172,7 +173,7 @@ export const CartStyled = styled.div`
     .header-card {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 12px;
+      align-items: center;
       .status {
         display: flex;
         align-items: center;
@@ -296,7 +297,7 @@ export const CartStyled = styled.div`
       > img {
         margin-top: -3px;
         margin-left: 5px;
-        width:20px;
+        width: 20px;
       }
     }
     .content {
@@ -304,7 +305,7 @@ export const CartStyled = styled.div`
       font-size: 16px;
       line-height: 24px;
       color: #333435;
-      margin: 12px 0px 12px 0px;
+      margin: 12px 0px 0px 0px;
     }
     .organize {
       font-weight: 600;

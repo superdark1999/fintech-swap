@@ -4,13 +4,11 @@ import Copy from 'assets/images/copy.svg'
 import Facebook from 'assets/images/facebook.svg'
 import Telegram from 'assets/images/telegram.svg'
 import Token from 'assets/images/token.svg'
-import EyeView from 'assets/images/visible-eye.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
 import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
 import CountVisit from './CountVisit'
-import { ButtonStyle, ButtonBuyStyle } from 'components-v2/cart/styled'
 import {
   SwapOutlined,
   CloseOutlined,
@@ -44,10 +42,9 @@ import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import { getPrice, getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import formatNumber from 'utils/formatNumber'
-import _, { startsWith } from 'lodash'
+import _ from 'lodash'
 import Hammer from 'assets/images/hammer.svg'
 import { Link } from 'react-router-dom'
-import { useHistory } from 'react-router-dom'
 import notification from 'components-v2/Alert'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
@@ -55,9 +52,9 @@ import TableHistory from './TableHistory'
 import Countdown from 'react-countdown'
 import moment, { max } from 'moment'
 import { useHookDetail } from './Store'
-import styled from 'styled-components'
-import axios from 'axios'
-import ID from 'components-v2/ID'
+import BiddingTable from './BiddingTable'
+import NFTInformation from './NFTInformation'
+import Reviews from './Reviews'
 
 const { TabPane } = Tabs
 
@@ -79,30 +76,33 @@ const DetaiArtWork = ({ id }: any) => {
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
   const [isReadyBid, setIsReadyBid] = useState(false)
   const [nextStepOffer, setStepNextOffer] = useState<number>(1)
-  const [dayExp, setDayExp] = useState({startTime:0, endTime:0})
+  const [dayExp, setDayExp] = useState({ startTime: 0, endTime: 0 })
 
   useEffect(() => {
-    console.log(id)
     getDetailNFT({ id }).then(({ status, data }) => {
       if (status == 200) {
         if (data?.data?.tokenId && marketServicesMethod) {
           //get highest bid price
           const getBidInfoToken = async () => {
-            try{
+            try {
               const bidsArr = await marketServicesMethod?.getBidsByTokenId?.(
                 data?.data?.tokenId,
               )
-              
+
               const stepPriceUnit = await marketServicesMethod?.getStepPrice?.(
                 data?.data?.tokenId,
               )
-              const timeInfo  = await marketServicesMethod?.getBidTimeByTokenId?.(
-                data?.data?.tokenId
-              )
+              const timeInfo =
+                await marketServicesMethod?.getBidTimeByTokenId?.(
+                  data?.data?.tokenId,
+                )
               const startTime = moment.unix(Number(timeInfo?.[1]))?.valueOf()
               const endTime = moment.unix(Number(timeInfo?.[2]))?.valueOf()
 
-              setDayExp({startTime:startTime>moment()?.valueOf()?startTime:0,endTime:endTime>moment()?.valueOf()?endTime:0})
+              setDayExp({
+                startTime: startTime > moment()?.valueOf() ? startTime : 0,
+                endTime: endTime > moment()?.valueOf() ? endTime : 0,
+              })
               setStep(getPrice(stepPriceUnit._hex))
               const bidsData =
                 bidsArr?.map((item: any) => {
@@ -125,10 +125,10 @@ const DetaiArtWork = ({ id }: any) => {
                 setPrice(maxPrice)
               }
               if (account)
-                setIsReadyBid(!!bidsData.find((it: any) => it.address == account))
-            }catch(err){
-
-            }
+                setIsReadyBid(
+                  !!bidsData.find((it: any) => it.address == account),
+                )
+            } catch (err) {}
           }
           getBidInfoToken()
         }
@@ -265,7 +265,12 @@ const DetaiArtWork = ({ id }: any) => {
         </ButtonTrade>
       )
     }
-    if (userState?.isCanBuy&&dayExp?.startTime==0 && dayExp?.endTime!=0 && moment().valueOf()<dayExp?.endTime) {
+    if (
+      userState?.isCanBuy &&
+      dayExp?.startTime == 0 &&
+      dayExp?.endTime != 0 &&
+      moment().valueOf() < dayExp?.endTime
+    ) {
       return (
         <ButtonTrade onClick={() => setIsShowModalSetPrice(true)}>
           <SwapOutlined /> Play Bid
@@ -276,27 +281,36 @@ const DetaiArtWork = ({ id }: any) => {
       return <ButtonBuy onClick={onApproveBuyOnMarket}>Allow to buy</ButtonBuy>
     }
   }
-  const renderTime = ()=>{
-    if(dayExp?.startTime!=0&&moment().valueOf()<dayExp?.startTime){
-      return (<>
-            {'Coming in '}
-              <Countdown
-                onComplete={() => setDayExp({startTime:0,endTime:dayExp?.endTime})}
-                date={dayExp?.startTime}
-              />{' '}
-              🔥
-            </> )
-    }else if(dayExp?.startTime==0 && dayExp?.endTime!=0 && moment().valueOf()<dayExp?.endTime){
+  const renderTime = () => {
+    if (dayExp?.startTime != 0 && moment().valueOf() < dayExp?.startTime) {
       return (
-          <>
-            <Countdown
-              onComplete={() => setDayExp({startTime:0,endTime:0})}
-              date={dayExp?.endTime}
-            />{' '}
-            🔥{' '}
-          </> )
-    }else if(dayExp?.endTime==0&&dayExp?.startTime==0){
-      return(<>Bid time is over</>)
+        <>
+          {'Coming in '}
+          <Countdown
+            onComplete={() =>
+              setDayExp({ startTime: 0, endTime: dayExp?.endTime })
+            }
+            date={dayExp?.startTime}
+          />{' '}
+          🔥
+        </>
+      )
+    } else if (
+      dayExp?.startTime == 0 &&
+      dayExp?.endTime != 0 &&
+      moment().valueOf() < dayExp?.endTime
+    ) {
+      return (
+        <>
+          <Countdown
+            onComplete={() => setDayExp({ startTime: 0, endTime: 0 })}
+            date={dayExp?.endTime}
+          />{' '}
+          🔥{' '}
+        </>
+      )
+    } else if (dayExp?.endTime == 0 && dayExp?.startTime == 0) {
+      return <>Bid time is over</>
     }
   }
   return (
@@ -315,9 +329,7 @@ const DetaiArtWork = ({ id }: any) => {
                 <CloseOutlined className="icon" />
               </Link>
             </div>
-            <div className="date-time">
-             {renderTime()}
-            </div>
+            <div className="date-time">{renderTime()}</div>
             <div className="rating">
               4.8 <StarFilled style={{ color: '#fadb14' }} />{' '}
               <span
@@ -455,7 +467,8 @@ const DetaiArtWork = ({ id }: any) => {
               <div className="group-item-bid">
                 <div className="label">Your bid</div>
                 <div className="value your-bid">
-                  {formatNumber(price + step * nextStepOffer)} <img width="20px" src={Token} />
+                  {formatNumber(price + step * nextStepOffer)}{' '}
+                  <img width="20px" src={Token} />
                 </div>
               </div>
             </Col>
@@ -480,12 +493,20 @@ const DetaiArtWork = ({ id }: any) => {
               to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
             >
               <p className="organize">
-                <img style={{ borderRadius: '100px' }} width="40px" src={NFTDetail?.createdBy ? NFTDetail?.createdBy?.avatarImage : Luckyswap} />
+                <img
+                  style={{ borderRadius: '100px' }}
+                  width="40px"
+                  src={
+                    NFTDetail?.createdBy
+                      ? NFTDetail?.createdBy?.avatarImage
+                      : Luckyswap
+                  }
+                />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
-                <img src={Checkmark} />
+                {/* <img src={Checkmark} /> */}
               </p>
             </Link>
-            <CountVisit id={id}/>
+            <CountVisit id={id} />
           </OwenedBy>
           {/* <Link
             to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
@@ -499,69 +520,7 @@ const DetaiArtWork = ({ id }: any) => {
 
           <Tabs defaultActiveKey="1">
             <TabPane tab="Detail" key="1">
-              <DetailTabpane>
-                <div className="group-info">
-                  <div className="info">
-                    <div className="title">NFT Contract ID:</div>
-                    <a
-                      className="value"
-                      href={embedTokenIdLinkBSCScan(
-                        NFTDetail.tokenId,
-                        NFTDetail?.contractAddress,
-                        chainId,
-                      )}
-                      target="_blank"
-                    >
-                      {getCompactString(NFTDetail?.contractAddress, 6)}
-                    </a>
-                  </div>
-                  <div className="info">
-                    <div className="title">Token ID:</div>
-                    <a
-                      className="value"
-                      href={embedTokenIdLinkBSCScan(
-                        NFTDetail.tokenId,
-                        NFTDetail?.contractAddress,
-                        chainId,
-                      )}
-                      target="_blank"
-                    >
-                      {NFTDetail && NFTDetail.tokenId}
-                    </a>
-                  </div>
-                </div>
-                <div className="group-info">
-                  <div className="info">
-                    <div className="title">Creator's Adress:</div>
-                    <a
-                      className="value"
-                      href={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
-                      target="_blank"
-                    >
-                      {getCompactString(NFTDetail?.createdBy?.walletAddress, 6)}
-                    </a>
-                  </div>
-                  <div className="info">
-                    <div className="title">Owner Adress:</div>
-                    <a
-                      className="value"
-                      href={`/user-profile/${NFTDetail?.ownerWalletAddress}/onstore/readyToSell`}
-                      target="_blank"
-                    >
-                      {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
-                    </a>
-                  </div>
-                  {NFTDetail.contentInfo && <div className="info">
-                    <div className="title">Dimensions:</div>
-                    <a
-                      className="value"
-                      href='#'
-                    >
-                      <span>{NFTDetail?.contentInfo?.width}x{NFTDetail?.contentInfo?.height}</span>
-                    </a>
-                  </div>}
-                </div>
-              </DetailTabpane>
+              <NFTInformation NFTDetail={NFTDetail} />
             </TabPane>
 
             <TabPane tab="History" key="2">
@@ -576,60 +535,7 @@ const DetaiArtWork = ({ id }: any) => {
               />
             </TabPane>
             <TabPane tab="Reviews" key="4">
-              <ScrollReview className="list-review">
-                <ReviewStyled>
-                  <div className="review-item">
-                    <div>
-                      <img src={Luckyswap} style={{ marginRight: 5 }} />
-                      <span className="name">LuckySwapStudio</span>
-                    </div>
-                    <Rate style={{ fontSize: 12 }} disabled defaultValue={2} />
-                  </div>
-                  <div className="comment">This is amazing</div>
-                  <div className="time">30 minutes ago</div>
-                </ReviewStyled>
-
-                <ReviewStyled>
-                  <div className="review-item">
-                    <div>
-                      <img src={Luckyswap} style={{ marginRight: 5 }} />
-                      <span className="name">LuckySwapStudio</span>
-                    </div>
-                    <Rate style={{ fontSize: 12 }} disabled defaultValue={2} />
-                  </div>
-                  <div className="comment">This is amazing</div>
-                  <div className="time">30 minutes ago</div>
-                </ReviewStyled>
-
-                <ReviewStyled>
-                  <div className="review-item">
-                    <div>
-                      <img src={Luckyswap} style={{ marginRight: 5 }} />
-                      <span className="name">LuckySwapStudio</span>
-                    </div>
-                    <Rate style={{ fontSize: 12 }} disabled defaultValue={2} />
-                  </div>
-                  <div className="comment">This is amazing</div>
-                  <div className="time">30 minutes ago</div>
-                </ReviewStyled>
-
-                <ReviewStyled>
-                  <div className="review-item">
-                    <div>
-                      <img src={Luckyswap} style={{ marginRight: 5 }} />
-                      <span className="name">LuckySwapStudio</span>
-                    </div>
-                    <Rate style={{ fontSize: 12 }} disabled defaultValue={2} />
-                  </div>
-                  <div className="comment">This is amazing</div>
-                  <div className="time">30 minutes ago</div>
-                </ReviewStyled>
-
-                <FooterStyled>
-                  <input placeholder="Write a comment" />{' '}
-                  <ButtonTrade>Send</ButtonTrade>
-                </FooterStyled>
-              </ScrollReview>
+              <Reviews/>
             </TabPane>
           </Tabs>
 
@@ -694,161 +600,5 @@ const DetaiArtWork = ({ id }: any) => {
   )
 }
 
-const BiddingTable = ({
-  NFTInfo,
-  bids,
-  refreshingAfterCancelBid,
-  onSetProccessing,
-}: any) => {
-  const { account } = useActiveWeb3React()
-  const [isProcessing, setIsProccessing] = useState(false)
-  const { buyItem } = useArtworkServices()
-  const marketServicesMethod = useMarketServices()
-  const history = useHistory()
-
-  const onCancelBidToken = (record: any) => () => {
-    setIsProccessing(true)
-    if (marketServicesMethod) {
-      marketServicesMethod
-        ?.cancelBidToken(NFTInfo?.tokenId)
-        .then(() => {
-          onSetProccessing(true)
-          _.debounce(() => {
-            refreshingAfterCancelBid && refreshingAfterCancelBid()
-          }, 30000)()
-        })
-        .catch(() => {
-          setIsProccessing(false)
-        })
-    }
-  }
-  const confirmSellToken = (record: any) => () => {
-    if (!account) {
-      return alert('Unblock your wallet to confirm this item')
-    }
-    if (isProcessing) return
-    setIsProccessing(true)
-    const tokenId = NFTInfo?.tokenId
-    if (tokenId && record?.address) {
-      marketServicesMethod
-        ?.sellTokenToBidUser(tokenId, record?.address)
-        .then((dt) => {
-          if (dt?.hash) {
-            buyItem({
-              id: NFTInfo?._id,
-              walletAddress: record?.address,
-            })
-              .then(({ status }) => {
-                if (status == 200) {
-                  history.push('/my-profile/mycollection/checkingReadyToBuy')
-                }
-              })
-              .catch(() => {
-                setIsProccessing(false)
-              })
-          }
-        })
-        .catch(() => {
-          setIsProccessing(false)
-        })
-    }
-  }
-  const columnBidding =
-
-    NFTInfo?.ownerWalletAddress === account
-      ? [
-        {
-          title: 'Address',
-          dataIndex: 'address',
-          width: 100,
-          render: (address: string) => (
-            <a className="value" href={window.location.origin+`/user-profile/${address}/onstore/readyToSell`} target="_blank">
-              {getCompactString(address, 6)}
-            </a>
-          ),
-        },
-        {
-          title: 'Price',
-          dataIndex: 'price',
-          width: 100,
-          render: (price: Number) => (
-            <div className="token">
-              {formatNumber(price)}
-              <img src={Token} alt="" />
-            </div>
-          ),
-        },
-        {
-          title: 'Action',
-          dataIndex: 'action',
-          render: (_: any, record: any) => {
-            if (isProcessing) {
-              return <ButtonProccesing />
-            }
-            return (
-              <ButtonTrade onClick={confirmSellToken(record)}>
-                {'Confirm'}
-              </ButtonTrade>
-            )
-          },
-          width: 100,
-        },
-      ]
-      : [
-        {
-          title: 'Address',
-          dataIndex: 'address',
-          width: 100,
-          render: (address: string) => (
-            <a className="value" href={window.location.origin+`/user-profile/${address}/onstore/readyToSell`} target="_blank">
-              {getCompactString(address, 6)}
-            </a>
-          ),
-        },
-        {
-          title: 'Price',
-          dataIndex: 'price',
-          width: 100,
-          render: (price: Number) => (
-            <div className="token">
-              {formatNumber(price)}
-              <img src={Token} alt="" />
-            </div>
-          ),
-        },
-        {
-          title: 'Action',
-          dataIndex: 'action',
-          render: (_: any, record: any) => {
-            if (record?.key == account) {
-              return (
-                <>
-                  {isProcessing ? (
-                    <ButtonProccesing />
-                  ) : (
-                    <ButtonTrade
-                      style={{ background: '#FC636B' }}
-                      onClick={onCancelBidToken(record)}
-                    >
-                      Cancel
-                    </ButtonTrade>
-                  )}
-                </>
-              )
-            }
-            return null
-          },
-          width: 100,
-        },
-      ]
-  return (
-    <TableStyled
-      columns={columnBidding}
-      dataSource={bids}
-      size="middle"
-      scroll={{ x: 300, y: 300 }}
-    />
-  )
-}
 
 export default DetaiArtWork

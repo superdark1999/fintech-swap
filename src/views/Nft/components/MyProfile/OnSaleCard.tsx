@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
-import { Row, Col, Tabs } from 'antd'
+import { Row, Col, Tabs, } from 'antd'
 import Token from 'assets/images/token.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
 import usrMarketServices from 'services/web3Services/MarketServices'
@@ -15,6 +15,10 @@ import { isMobile } from 'react-device-detect'
 import { Link, useHistory } from 'react-router-dom'
 import StatusBar from 'components-v2/StatusBar'
 import { ButtonCancel } from 'components-v2/Button'
+import QRCodeComp from 'components-v2/QRcode/index'
+import {
+  ShareAltOutlined,
+} from '@ant-design/icons'
 
 
 export default function OnSaleCard({ data }: any) {
@@ -25,6 +29,7 @@ export default function OnSaleCard({ data }: any) {
   const history = useHistory()
   const marketService = usrMarketServices()
   const marketServicesMethod = useMarketServices()
+  const [showQR, setShowQR] = useState(false)
   console.log(data)
 
   useEffect(() => {
@@ -144,6 +149,16 @@ export default function OnSaleCard({ data }: any) {
     }
   }
 
+  const renderQRCode = () => {
+    return (
+      <div className="group-button qrCode-wrapper" style={{justifyContent:'flex-end'}}>
+        <button className="btn-qrCode" onClick={() => setShowQR(true)}>
+          <ShareAltOutlined style={{ fontSize: '24px' }} />
+        </button>
+      </div>
+    )
+  }
+
   if (loading) {
     return null
   }
@@ -220,9 +235,15 @@ export default function OnSaleCard({ data }: any) {
             {/* <img style={{ width: '40px', borderRadius: '100px' }} src={data?.createdBy?.avatarImage} /> */}
             <a className="name" href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`} target="_blank">{data?.createdBy?.name ? data?.createdBy?.name : data?.createdBy?.walletAddress}</a>
             {/* <img src={Checkmark} /> */}
+            {renderQRCode()}
           </div>
         </Col>
       </Row>
+      <QRCodeComp
+        isShow={showQR}
+        setShowQR={setShowQR}
+        url={`${window.location.origin}/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}
+      />
     </CartStyled>
   )
 }
