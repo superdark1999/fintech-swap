@@ -89,11 +89,17 @@ const Link = styled.a`
   color: #101010;
   background-color: #F3C111;
   border-radius: 12px;
-  padding: 10px 25px;
+  padding: 17px 25px;
   font-weight: 500;
+  white-space: nowrap;
+
+  @media (min-width) {
+    padding: 10px 25px;
+  }
 
   &:hover {
-    background-color: #faad14;
+    background-color: #ffda3b;
+    color: #101010;
     transition: .5s;
   }
 `
@@ -242,6 +248,10 @@ const StyledCardContentInner = styled.div`
     background: url('../images/jackpot-l.png');
     width: 220px;
     height: 496px;
+
+    @media (max-width: 991px) {
+      opacity: 0.2;
+    }
   }
 
   &:after {
@@ -252,6 +262,10 @@ const StyledCardContentInner = styled.div`
     background: url('../images/jackpot-r.png');
     width: 220px;
     height: 496px;
+
+    @media (max-width: 991px) {
+      opacity: 0.2;
+    }
   }
 `
 

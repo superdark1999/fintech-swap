@@ -21,9 +21,14 @@ const FullWidth = styled.div`
   background: linear-gradient(45deg,rgb(35 35 35) 30%,rgb(45 45 45) 100%);
   box-shadow: none;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-bottom: 30px;
+  grid-template-columns: 1fr;
+  margin-bottom: 20px;
   border-radius: 14px;
+
+  @media (min-width: 991px) {
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 30px;
+  }
 `
 
 export default PastRoundCard
