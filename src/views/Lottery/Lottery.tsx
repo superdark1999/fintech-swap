@@ -37,9 +37,13 @@ const Wrapper = styled.div`
 
 const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-gap: 40px;
   margin-bottom: 30px;
+
+  @media (min-width: 991px) {
+    grid-template-columns: 1fr 1fr;
+  }
 `
 
 const Dflex = styled.div`
