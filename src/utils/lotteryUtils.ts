@@ -9,10 +9,12 @@ import { LOTTERY_TICKET_PRICE } from 'config'
 import { AbiItem } from 'web3-utils'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { getMulticallAddress } from './addressHelpers'
+import { getChainId } from './web3React'
 
 export const multiCall = async (abi, calls) => {
-  const web3 = getWeb3NoAccount()
-  const multi = new web3.eth.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
+  const chainId = await getChainId()
+  const web3 = getWeb3NoAccount(chainId)
+  const multi = new web3.eth.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress(chainId))
   const itf = new Interface(abi)
   let res = []
   if (calls.length > 100) {

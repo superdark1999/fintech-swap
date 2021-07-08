@@ -1,6 +1,7 @@
 import { BscConnector } from '@binance-chain/bsc-connector'
 import { Web3Provider } from '@ethersproject/providers'
 import { ConnectorNames } from '@luckyswap/uikit'
+import { ChainId } from '@luckyswap/v2-sdk'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import getNodeUrl from './getRpcUrl'
@@ -31,4 +32,9 @@ export default function getLibrary(provider: any): Web3Provider {
   const library = new Web3Provider(provider)
   library.pollingInterval = 15000
   return library
+}
+
+export const getChainId = async (): Promise<ChainId> => {
+  const result = await injected.getChainId()
+  return parseInt(result.toString(), 16)
 }

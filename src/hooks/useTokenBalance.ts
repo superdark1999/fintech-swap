@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useEffect, useState } from 'react'
 import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
-import { useGetWeb3NoAccount } from 'utils/web3'
+import { useWeb3NoAccount } from 'utils/web3'
 import useRefresh from './useRefresh'
 import useWeb3 from './useWeb3'
 
@@ -69,18 +69,18 @@ export const useNativeBalance = () => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { slowRefresh } = useRefresh()
   const { account } = useWeb3React()
-  const getWeb3NoAccount = useGetWeb3NoAccount()
+  const web3NoAccount = useWeb3NoAccount()
+
   useEffect(() => {
-    if (account) {
-      const web3 = getWeb3NoAccount()
+    if (account && web3NoAccount) {
       const fetchBalance = async () => {
-        const result = await web3.eth.getBalance(account)
+        const result = await web3NoAccount.eth.getBalance(account)
         setBalance(new BigNumber(result))
       }
 
       fetchBalance()
     }
-  }, [account, slowRefresh, getWeb3NoAccount])
+  }, [account, slowRefresh, web3NoAccount])
   return balance
 }
 

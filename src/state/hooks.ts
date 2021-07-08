@@ -7,16 +7,18 @@ import { kebabCase } from 'lodash'
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { getWeb3NoAccount } from 'utils/web3'
+import { useWeb3NoAccount } from 'utils/web3'
 import { LUCKY2_PRICE, LUCKY_PRICE } from '../config'
 import { useActiveWeb3React } from '../hooks/index'
 import { fetchAchievements } from './achievements'
 import {
-  clear as clearToast, fetchFarmsPublicDataAsync,
+  clear as clearToast,
+  fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   push as pushToast,
-  remove as removeToast, setBlock
+  remove as removeToast,
+  setBlock,
 } from './actions'
 import { fetchPrices } from './prices'
 import { fetchProfile } from './profile'
@@ -27,20 +29,20 @@ export const useFetchPublicData = () => {
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
+  const web3NoAccount = useWeb3NoAccount()
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync() as any)
     dispatch(fetchPoolsPublicDataAsync() as any)
   }, [dispatch, slowRefresh])
 
   useEffect(() => {
-    const web3 = getWeb3NoAccount(chainId)
     const interval = setInterval(async () => {
-      const blockNumber = await web3.eth.getBlockNumber()
+      const blockNumber = await web3NoAccount.eth.getBlockNumber()
       dispatch(setBlock(blockNumber))
     }, 6000)
 
     return () => clearInterval(interval)
-  }, [dispatch, chainId])
+  }, [dispatch, chainId, web3NoAccount])
 }
 
 // Farms

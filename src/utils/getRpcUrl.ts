@@ -4,13 +4,15 @@ import { RPC_URLS } from '../constants'
 
 // Array of available nodes to connect to
 
-const getNodeUrl = (chainId) => {
-  if (RPC_URLS[chainId].length === 0) {
-    return RPC_URLS[ChainId.MAINNET][0]
+const getNodeUrl = (chainId?: ChainId) => {
+  try {
+    const randomIndex = random(0, RPC_URLS[chainId].length - 1)
+    const nodeUrl = RPC_URLS[chainId][randomIndex]
+    return nodeUrl
+  } catch (error) {
+    console.error('get node url error : ', error)
+    return null
   }
-  const randomIndex = random(0, RPC_URLS[chainId].length - 1)
-  const nodeUrl = RPC_URLS[chainId][randomIndex]
-  return nodeUrl
 }
 
 export default getNodeUrl
