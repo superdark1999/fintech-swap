@@ -1,0 +1,32 @@
+body {
+  font-family: 'Poppins', sans-serif !important;
+}
+.footer-gray-line {
+  height: 1px;
+  background: #7e96b8;
+  opacity: 0.3;
+}
+.mb-20 {
+  margin-bottom: 20px;
+}
+.react-confirm-alert-overlay {
+  background: rgb(1 5 12 / 90%) !important;
+}
+.hpaIsh {
+  position: absolute;
+  top: 2px;
+}
+
+@media (max-width: 576px) {
+  .swiper-button-prev,
+  .swiper-container-rtl .swiper-button-next {
+    height: 10px !important;
+    width: 50px !important;
+  }
+
+  .swiper-button-next,
+  .swiper-container-rtl .swiper-button-prev {
+    height: 10px !important;
+    width: 50px !important;
+  }
+}
