@@ -26,9 +26,14 @@ const BoxTotal = styled.div `
   overflow: hidden;
   position: relative;
   width: 100%;
-  margin: 0 auto 60px;
+  margin-bottom: 20px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 991px) {
+    grid-template-columns: 1fr 1fr;
+    margin: 0 auto 60px;
+  }
 `
 
 const CardHeading = styled.div`
