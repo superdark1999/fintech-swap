@@ -31,6 +31,7 @@ import { useHistory } from 'react-router-dom'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import _ from 'lodash'
 import TableHistory from './TableHistory'
+import Reviews from './Reviews'
 
 const { TabPane } = Tabs
 const DetaiArtWork = ({ id }: any) => {
@@ -250,53 +251,7 @@ const DetaiArtWork = ({ id }: any) => {
             </TabPane>
             <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">
-                <ReviewStyled>
-                  <div className="review-item">
-                    <div>
-                      <img src={Luckyswap} style={{ marginRight: 5 }} />
-                      <span className="name">LuckySwapStudio</span>
-                    </div>
-                    <Rate style={{ fontSize: 12 }} disabled defaultValue={2} />
-                  </div>
-                  <div className="comment">This is amazing</div>
-                  <div className="time">30 minutes ago</div>
-                </ReviewStyled>
-
-                <ReviewStyled>
-                  <div className="review-item">
-                    <div>
-                      <img src={Luckyswap} style={{ marginRight: 5 }} />
-                      <span className="name">LuckySwapStudio</span>
-                    </div>
-                    <Rate style={{ fontSize: 12 }} disabled defaultValue={2} />
-                  </div>
-                  <div className="comment">This is amazing</div>
-                  <div className="time">30 minutes ago</div>
-                </ReviewStyled>
-
-                <ReviewStyled>
-                  <div className="review-item">
-                    <div>
-                      <img src={Luckyswap} style={{ marginRight: 5 }} />
-                      <span className="name">LuckySwapStudio</span>
-                    </div>
-                    <Rate style={{ fontSize: 12 }} disabled defaultValue={2} />
-                  </div>
-                  <div className="comment">This is amazing</div>
-                  <div className="time">30 minutes ago</div>
-                </ReviewStyled>
-
-                <ReviewStyled>
-                  <div className="review-item">
-                    <div>
-                      <img src={Luckyswap} style={{ marginRight: 5 }} />
-                      <span className="name">LuckySwapStudio</span>
-                    </div>
-                    <Rate style={{ fontSize: 12 }} disabled defaultValue={2} />
-                  </div>
-                  <div className="comment">This is amazing</div>
-                  <div className="time">30 minutes ago</div>
-                </ReviewStyled>
+                <Reviews />
               </ScrollReview>
             </TabPane>
           </Tabs>
