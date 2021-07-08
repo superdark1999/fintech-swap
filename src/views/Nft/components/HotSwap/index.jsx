@@ -86,7 +86,7 @@ function HotSwap() {
       />
       <div className="content-artwork" ref={divRef}>
         {NFTs.map((item, i) => (
-          <Cart key={i} width="320px" height="480px" data={item} isLazy />
+          <Cart key={item.id} width="320px" height="480px" data={item} isLazy />
         ))}
       </div>
     </HotArtWorksStyled>
