@@ -240,7 +240,7 @@ const DetaiArtWork = ({ id }: any) => {
             </TabPane>
             <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">
-                <ReviewStyled>
+                {/* <ReviewStyled>
                   <div className="review-item">
                     <div>
                       <img src={Luckyswap} style={{ marginRight: 5 }} />
@@ -287,6 +287,7 @@ const DetaiArtWork = ({ id }: any) => {
                   <div className="comment">This is amazing</div>
                   <div className="time">30 minutes ago</div>
                 </ReviewStyled>
+              */}
               </ScrollReview>
             </TabPane>
           </Tabs>
