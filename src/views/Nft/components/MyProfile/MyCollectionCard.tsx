@@ -21,7 +21,7 @@ import useMarketServices, {
 } from 'services/web3Services/MarketServices'
 import useNFTServices from 'services/web3Services/NFTServices'
 import { Link, useHistory } from 'react-router-dom'
-import OnsSaleCard from './OnSaleCard'
+//import OnsSaleCard from './OnSaleCard'
 import _ from 'lodash'
 import { Alert } from 'antd'
 import notification from 'components-v2/Alert'
@@ -33,6 +33,7 @@ import ModalSetPriceSell from './ModalSetPriceSell'
 import QRCodeComp from 'components-v2/QRcode/index'
 import { createFromIconfontCN } from '@ant-design/icons'
 import moment from 'moment'
+import { Tag } from 'reactstrap'
 const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
 })
@@ -43,7 +44,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const [ruleAuctionModal, setRuleAuctionModal] = useState(false)
   const [approvingMarket, setApprovingMarket] = useState(false)
   const [showQR, setShowQR] = useState(false)
-
+  console.log(typeof data.createdAt, data.createdAt)
   const NFTServicesMethod = useNFTServices()
   const marketServicesMethod = useMarketServices()
   const { setPrice, cancelSellNFT } = useArtworkServices()
@@ -374,7 +375,16 @@ export default function MyCollectionCard({ data, option }: any) {
         return 'On store'
     }
   }
-
+  const Tags = (tag:any) =>{
+    console.log(tag)
+    return(
+      <li>
+        <a href="/">
+          <strong>{tag.tag}</strong>
+        </a>
+      </li>
+    )
+  }
   const handleMenuClick = (dt: any) => {
     if (dt.key === 'sell') {
       setShowModalsetPrice(true)
@@ -416,38 +426,75 @@ export default function MyCollectionCard({ data, option }: any) {
           md={{ span: 24 }}
           xs={{ span: 24 }}
           xxl={{ span: 18 }}
-          style={{ height: '200px' }}
+          // style={{ height: '200px' }}
         >
           <div>
             <div className="header-card">
-              <div>
+              <div className="title-card">
                 {data?.status == 'readyToSell' && (
                   <div className="nfttype-status">
                     {getStatusByNFTType(data?.NFTType)}
                   </div>
                 )}
+                {/* <div className="name-date">
+                  <div className="name">{data?.title}</div>
+                  <div className="date">{data?.createdAt}</div>
+                </div> */}
                 <div className="name">{data?.title}</div>
               </div>
               {renderActionItem()}
             </div>
-            {data?.TXHash && (
-              <div style={{ display: 'flex', marginBottom: 10 }}>
-                <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </div>
-                <a href="#" target="_blank" className="number">
-                  {getCompactString(data?.TXHash, 10)}
-                </a>
+
+            <div className="box-flex" style={{ display: 'flex', marginBottom: 10, justifyContent: 'space-between' }}>
+              {data?.TXHash && (
+                <div style={{ display: 'flex', marginBottom: 10 }}>
+                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </div>
+                  <a href="#" target="_blank" className="number">
+                    {getCompactString(data?.TXHash, 10)}
+                  </a>
+                </div>
+              )}
+              {data?.createdAt && (
+                <div style={{ display: 'flex', marginBottom: 10 }}>
+                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>Date create: </div>
+                  <a href="#" target="_blank" className="date">
+                    {moment(data?.createdAt).format('MM/DD/YYYY')}
+                  </a>
+                </div>
+              )}
+            </div>
+            {data?.description && (
+              <div className="description" style={{ color: 'rgb(51, 52, 53)', fontWeight: 600, marginBottom: 10}}>
+                {data?.description}
               </div>
             )}
-            <div
-              style={{
-                color: '#AFBAC5',
-                fontWeight: 600,
-                textTransform: 'capitalize',
-              }}
-            >
-              Type: {data?.type}
+            <div className="box-flex" style={{ display: 'flex',justifyContent: 'space-between', marginBottom: 10,}}>
+              {data?.type && (
+                <div style={{ display: 'flex', marginBottom: 10 }}>
+                  <div style={{ color: '#AFBAC5', fontWeight: 600}}>Type: </div>
+                  <a href="#" target="_blank" className="type">
+                    {data?.type}
+                  </a>
+                </div>
+              )}
+              {data?.tags && (
+                <div style={{ display: 'flex'}}>
+                  <div style={{ color: '#AFBAC5', fontWeight: 600}}>Tags: </div>
+                  <ul className="tags">
+                    <React.Fragment>
+                      {data?.tags.map((item:any, key:any) => {
+                        return (
+                        <Tags tag={item} />
+                        );
+                      })}
+                    </React.Fragment>
+                  </ul>
+                </div>
+              )}
             </div>
+            
           </div>
+          
           <div>{renderGroupAction(data?.status)}</div>
         </Col>
       </Row>
@@ -471,3 +518,5 @@ export default function MyCollectionCard({ data, option }: any) {
     </CartStyled>
   )
 }
+
+

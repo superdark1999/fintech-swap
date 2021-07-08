@@ -194,11 +194,18 @@ export default function OnSaleCard({ data }: any) {
               </ButtonCancel>
             }
           </div>
-
           <div className="name">{data?.title}</div>
+          
+          {/* <div className="name-data">
+            <div className="name">{data?.title}</div>
+            <div className="date">sadsa</div>
+
+          </div> */}
+
           {(data?.NFTType == 'buy' || data?.NFTType === 'auction') && <div className="number">
             {formatNumber(price)} LUCKY <img src={Token} alt="" />
           </div>}
+
           <div style={{ display: 'flex' }}>
             <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
             <div className="number">{getCompactString(data?.TXHash, 6)}</div>

@@ -489,7 +489,7 @@ const StyledTopBar = styled.div`
       margin-left:14px;
       position: relative;
       cursor: pointer;
-      color:#35A5FC;
+      color:#333435;
       border:2px solid #35A5FC;   
       .number-balance{
         margin-right:4px;

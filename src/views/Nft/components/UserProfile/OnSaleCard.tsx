@@ -9,6 +9,7 @@ import _ from 'lodash'
 import { getPrice, getCompactString } from 'utils'
 import formatNumber from 'utils/formatNumber'
 import { isMobile } from 'react-device-detect'
+import { Link } from 'react-router-dom'
 export default function OnSaleCard({ data }: any) {
   const [loading, setLoading] = useState(true)
   const [price, setPrice] = useState(0)
@@ -59,6 +60,7 @@ export default function OnSaleCard({ data }: any) {
           xs={{ span: 24 }}
           xxl={{ span: 5 }}
         >
+          <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
           {data?.type === 'video' ? (
             <video
               muted
@@ -78,6 +80,8 @@ export default function OnSaleCard({ data }: any) {
               loading="lazy"
             />
           )}
+          </Link>
+          
         </Col>
         <Col
           className="description"

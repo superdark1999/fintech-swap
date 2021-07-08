@@ -85,6 +85,7 @@ export const UserProfileStyled = styled.div<Props>`
         justify-content: space-between;
         flex-direction:${isMobile ? 'column':'row'};
         .name {
+          
           font-size: 28px;
           line-height: 40px;
           color: #333435;
@@ -188,6 +189,15 @@ export const CartStyled = styled.div`
         color: #19a3dd;
         width:100%;
       }
+      .name-date{
+        display: flex;
+        font-weight: bold;
+        font-size: 28px;
+        line-height: 40px;
+        color: #333435;
+        opacity: 0.9;
+        margin-bottom: 12px;
+      }
       .cancel {
         width: 98px;
         height: 40px;
@@ -207,6 +217,7 @@ export const CartStyled = styled.div`
       }
     }
     .name {
+      text-transform: uppercase;
       font-weight: bold;
       font-size: 28px;
       line-height: 40px;
@@ -214,6 +225,7 @@ export const CartStyled = styled.div`
       opacity: 0.9;
       margin-bottom: 12px;
     }
+    
     .header-card {
       @media (max-width: 991px) {
         display: flex;
@@ -292,7 +304,7 @@ export const CartStyled = styled.div`
       flex: 1;
       cursor: pointer;
       text-decoration: underline;
-      background: #35a5fc;
+      background: #333435;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 16px;
@@ -303,6 +315,36 @@ export const CartStyled = styled.div`
         margin-left: 5px;
         width:20px;
       }
+    }
+    .type{
+      margin-left: 4px;
+      color: #333435;
+    }
+    .date{
+      margin-left: 4px;
+      color: #333435;
+    }
+    .tags{
+      list-style: none;
+      padding-left: 10px;
+      margin-bottom: 0;
+      li{
+        margin-bottom: 10px;
+        float: left;
+        margin-right: 10px;
+        a{
+          padding: 8px 10px;
+          display: block;
+          font-size: 16px;
+          text-decoration: none;
+          background: #e4e4e4;
+          color: #333435;
+          border-radius: 25px;
+        }
+      }
+    }
+    .title-card{
+      display: block;
     }
     .content {
       font-weight: 500;
