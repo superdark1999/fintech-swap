@@ -14,7 +14,7 @@ import { CreateArtWorkStyled } from './styled'
 import { GroupButton, RadioButton } from './styled'
 import ModalCreateArtist from './ModalCreateArtist'
 import notification from 'components-v2/Alert'
-import {handleAlertMessage} from 'utils'
+import { handleAlertMessage } from 'utils'
 const TextAreaStyled = styled(Input.TextArea)`
   &.ant-input-textarea > textarea {
     border-radius: 16px;
@@ -23,8 +23,9 @@ const TextAreaStyled = styled(Input.TextArea)`
 `
 
 const CreateArtWork: React.FC = () => {
-  const [showModalCreateArtist, setShowModalCreateArtist] =
-    React.useState<boolean | null>(false)
+  const [showModalCreateArtist, setShowModalCreateArtist] = React.useState<
+    boolean | null
+  >(false)
   const formRef = React.useRef() as React.MutableRefObject<any>
   const { createNFT, updateHashInfoNFT } = useArtworkServices()
   const { updateProfile } = useUserServices()
@@ -40,7 +41,7 @@ const CreateArtWork: React.FC = () => {
   const [NFTInfo, setNFTInfo] = useState(null)
   const [selectItems, setSelectItems] = useState([])
   const listTag: any = []
-  const { Option } = Select;
+  const { Option } = Select
   const validateMessages = {
     required: '${label} is required!',
     types: {
@@ -96,11 +97,16 @@ const CreateArtWork: React.FC = () => {
           const txHash = mintData?.hash
           updateHashInfoNFT({ NFTid, txHash }).then(({ status, data }) => {
             if (status === 200) {
-              notification('open', {
-                message: 'Create NFT success,you can check NFT on pending collection',
-                description: '',
-                titleBtn: 'View detail'
-              }, onGoToPendingArtWork)
+              notification(
+                'open',
+                {
+                  message:
+                    'Create NFT success,you can check NFT on pending collection',
+                  description: '',
+                  titleBtn: 'View detail',
+                },
+                onGoToPendingArtWork,
+              )
             }
           })
         })
@@ -108,7 +114,7 @@ const CreateArtWork: React.FC = () => {
           setNFTInfo(null)
           setIsProcessing(false)
           notification('error', {
-            message:handleAlertMessage(err?.message),
+            message: handleAlertMessage(err?.message),
             description: '',
           })
         })
@@ -116,7 +122,7 @@ const CreateArtWork: React.FC = () => {
   }, [isProccessing, isOnUpload, NFTInfo])
 
   const onCreateNFT = async (values: any) => {
-     if (checkPolicy) {
+    if (checkPolicy) {
       setIsProcessing(true)
       setIsOnUpload(true)
       const mintData = {
@@ -161,41 +167,53 @@ const CreateArtWork: React.FC = () => {
   const renderGroupButton = () => {
     if (isProccessing && !isOnUpload) {
       return (
-        <ButtonStyle
-          type="submit"
-          style={{ width: 300, margin: '20px auto' }}
-        >
-          <div className="btn-submit">Processing    <SyncOutlined /></div>
+        <ButtonStyle type="submit" style={{ width: 300, margin: '20px auto' }}>
+          <div className="btn-submit">
+            Processing <SyncOutlined />
+          </div>
         </ButtonStyle>
       )
     }
     if (!isProccessing && !isOnUpload) {
       return (
-        <ButtonStyle
-          type="submit"
-          style={{ width: 300, margin: '20px auto' }}
-        >
+        <ButtonStyle type="submit" style={{ width: 300, margin: '20px auto' }}>
           Create
         </ButtonStyle>
       )
     }
     if (isOnUpload) {
       const timeUpload: any = {
-        'image': 2000,
-        'gif': 4000,
-        'video': 7500
+        image: 2000,
+        gif: 4000,
+        video: 7500,
       }
       return (
-        <ButtonStyle
-          type="submit"
-          style={{ width: 300, margin: '20px auto' }}
-        >
-          <div>Processing <Proccessing timeProcess={typeArtWork ? timeUpload[typeArtWork] : 3000} onEndProccess={() => { setIsOnUpload(false) }} /></div>
-        </ButtonStyle>)
+        <ButtonStyle type="submit" style={{ width: 300, margin: '20px auto' }}>
+          <div>
+            Processing{' '}
+            <Proccessing
+              timeProcess={typeArtWork ? timeUpload[typeArtWork] : 3000}
+              onEndProccess={() => {
+                setIsOnUpload(false)
+              }}
+            />
+          </div>
+        </ButtonStyle>
+      )
     }
   }
-  const OPTIONS = ['Art', 'Music', 'Games', 'DeFi', 'Meme', 'Sports', 'Abstract', 'Space', 'Lucky'];
-  const filteredOptions = OPTIONS.filter((o: any) => !selectItems.includes(o));
+  const OPTIONS = [
+    'Art',
+    'Music',
+    'Games',
+    'DeFi',
+    'Meme',
+    'Sports',
+    'Abstract',
+    'Space',
+    'Lucky',
+  ]
+  const filteredOptions = OPTIONS.filter((o: any) => !selectItems.includes(o))
   return (
     <Row gutter={24} style={{ justifyContent: 'center' }}>
       <Col xl={{ span: 18 }} md={{ span: 18 }} xs={{ span: 24 }}>
@@ -216,19 +234,37 @@ const CreateArtWork: React.FC = () => {
               initialValue="image"
             >
               <GroupButton defaultValue="image">
-                <RadioButton style={{ height: 100 }} value="image" onChange={onHandleTypeArtWork} >
+                <RadioButton
+                  style={{ height: 100 }}
+                  value="image"
+                  onChange={onHandleTypeArtWork}
+                >
                   Picture
                 </RadioButton>
-                <RadioButton style={{ height: 100 }} value="gif" onChange={onHandleTypeArtWork} >
+                <RadioButton
+                  style={{ height: 100 }}
+                  value="gif"
+                  onChange={onHandleTypeArtWork}
+                >
                   Gif
                 </RadioButton>
-                <RadioButton style={{ height: 100 }} value="video" onChange={onHandleTypeArtWork} >
+                <RadioButton
+                  style={{ height: 100 }}
+                  value="video"
+                  onChange={onHandleTypeArtWork}
+                >
                   Video
                 </RadioButton>
-                <RadioButton style={{ height: 100, background: '#f3f3f3', opacity: '.5' }} onChange={onHandleTypeArtWork} >
+                <RadioButton
+                  style={{ height: 100, background: '#f3f3f3', opacity: '.5' }}
+                  onChange={onHandleTypeArtWork}
+                >
                   Audio
                 </RadioButton>
-                <RadioButton style={{ height: 100, background: '#f3f3f3', opacity: '.5' }} onChange={onHandleTypeArtWork} >
+                <RadioButton
+                  style={{ height: 100, background: '#f3f3f3', opacity: '.5' }}
+                  onChange={onHandleTypeArtWork}
+                >
                   Special
                 </RadioButton>
               </GroupButton>
@@ -276,7 +312,13 @@ const CreateArtWork: React.FC = () => {
                     { required: true, message: 'This Field is required' },
                   ]}
                 >
-                  <UploadFile isFormData typeArtWork={typeArtWork} resetUploadImage={()=>{ formRef.current?.resetFields(['content'])}} />
+                  <UploadFile
+                    isFormData
+                    typeArtWork={typeArtWork}
+                    resetUploadImage={() => {
+                      formRef.current?.resetFields(['content'])
+                    }}
+                  />
                 </Form.Item>
               </Col>
 
@@ -291,6 +333,11 @@ const CreateArtWork: React.FC = () => {
                   label="Artwork name"
                   rules={[
                     { required: true, message: 'This Field is required' },
+                    {
+                      type: 'string',
+                      max: 40,
+                      message: 'This Field must be less than 40 characters',
+                    },
                   ]}
                 >
                   <Input
@@ -323,18 +370,20 @@ const CreateArtWork: React.FC = () => {
                     autoSize={false}
                   />
                 </Form.Item>
-                <Form.Item
-                  name='tags'
-                  label="Tags"
-                >
+                <Form.Item name="tags" label="Tags">
                   <Select
                     mode="multiple"
                     value={selectItems}
                     style={{ width: '100%' }}
                     onChange={(e: any) => setSelectItems(e)}
-                    placeholder="Tags for your NFT">
+                    placeholder="Tags for your NFT"
+                  >
                     {filteredOptions.map((item: any) => (
-                      <Select.Option style={{ borderRadius: '30px' }} key={item} value={item}>
+                      <Select.Option
+                        style={{ borderRadius: '30px' }}
+                        key={item}
+                        value={item}
+                      >
                         {item}
                       </Select.Option>
                     ))}
@@ -350,7 +399,13 @@ const CreateArtWork: React.FC = () => {
                 xs={{ span: 24 }}
                 xxl={{ span: 12 }}
               >
-                <Checkbox style={{ textAlign: 'center', color: checkPolicy ? '' : 'red' }} onChange={onCheckPolicy}>
+                <Checkbox
+                  style={{
+                    textAlign: 'center',
+                    color: checkPolicy ? '' : 'red',
+                  }}
+                  onChange={onCheckPolicy}
+                >
                   I declare that this is an original artwork. I understand that
                   no plagiarism is allowed, and that the artwork can be removed
                   anytime if detected.
@@ -368,8 +423,8 @@ const CreateArtWork: React.FC = () => {
                 xxl={{ span: 12 }}
               >
                 <p style={{ textAlign: 'center', fontWeight: 500 }}>
-                  <span style={{ color: 'red' }}>*</span>Mint an NFT charges 0.01BNB Please do not upload any
-                  sensitive content
+                  <span style={{ color: 'red' }}>*</span>Mint an NFT charges
+                  0.01BNB Please do not upload any sensitive content
                 </p>
               </Col>
             </Row>
@@ -401,7 +456,13 @@ const Proccessing = ({ timeProcess, onEndProccess }: any) => {
     }
   }, [processPercent])
   return (
-    <Progress width={20} strokeWidth={15} type="circle" percent={processPercent} showInfo={false} />
+    <Progress
+      width={20}
+      strokeWidth={15}
+      type="circle"
+      percent={processPercent}
+      showInfo={false}
+    />
   )
 }
 

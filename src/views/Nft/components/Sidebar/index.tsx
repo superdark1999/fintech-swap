@@ -7,36 +7,54 @@ import Rocket from 'assets/images/Rocket.svg'
 import MoneyIcon from 'assets/images/money.svg'
 import token from 'assets/images/token.svg'
 import { Button, Select, Input, Checkbox } from 'antd'
-import { PlusCircleOutlined, CaretUpOutlined, TagFilled, SearchOutlined, MenuUnfoldOutlined, CaretDownOutlined, LeftOutlined } from '@ant-design/icons'
+import {
+  PlusCircleOutlined,
+  CaretUpOutlined,
+  TagFilled,
+  SearchOutlined,
+  MenuUnfoldOutlined,
+  CaretDownOutlined,
+  LeftOutlined,
+} from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { isEmpty } from 'lodash'
-const plainOptions = ['Apple', 'Pear', 'Orange'];
+const plainOptions = ['Apple', 'Pear', 'Orange']
 interface SidebarProps {
-  setShowSidebar: any;
-  onShowSidebar: any;
-  price: any,
-  onChangePrice: any,
+  setShowSidebar: any
+  onShowSidebar: any
+  price: any
+  onChangePrice: any
 }
 
 const { Option } = Select
-const options = ["LUCKY TOKEN (LUCKY)"]
+const options = ['LUCKY TOKEN (LUCKY)']
 
-const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChangePrice }) => {
-  const [select, setSelect] = React.useState<string | null>('LUCKY TOKEN (LUCKY)');
-  const [configMenu, setConfigMenu] = React.useState<any | null>(['collection', 'price', 'tag']);
-  const [checkedList, setCheckedList] = React.useState<[string] | null>(['']);
+const Sidebar: React.FC<SidebarProps> = ({
+  setShowSidebar,
+  onShowSidebar,
+  onChangePrice,
+}) => {
+  const [select, setSelect] = React.useState<string | null>(
+    'LUCKY TOKEN (LUCKY)',
+  )
+  const [configMenu, setConfigMenu] = React.useState<any | null>([
+    'collection',
+    'price',
+    'tag',
+  ])
+  const [checkedList, setCheckedList] = React.useState<[string] | null>([''])
 
   const [price, setPrice] = useState<any>({})
 
-
   const onTogleMenu = (value: string) => {
-    if (!configMenu.find((menu: string) => value === menu)) setConfigMenu(configMenu.concat(value))
+    if (!configMenu.find((menu: string) => value === menu))
+      setConfigMenu(configMenu.concat(value))
     else setConfigMenu(configMenu.filter((item: string) => item !== value))
-  };
+  }
 
   const onChange = (list: any) => {
-    setCheckedList(list);
-  };
+    setCheckedList(list)
+  }
   const checkRenderSubMenu = useCallback(
     (subMenu: string) => {
       if (configMenu.find((menu: string) => subMenu === menu)) return true
@@ -46,8 +64,8 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChan
   )
 
   const handeChangePriceInput = (e: any) => {
-    const value = +e.target.value;
-    const name = e.target.name;
+    const value = +e.target.value
+    const name = e.target.name
     setPrice({ ...price, [name]: value })
   }
 
@@ -58,10 +76,16 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChan
   if (!onShowSidebar) {
     return (
       <SidebarStyled>
-        <div className="collapse-menu button-collapse" onClick={() => setShowSidebar(!onShowSidebar)}>
+        <div
+          className="collapse-menu button-collapse"
+          onClick={() => setShowSidebar(!onShowSidebar)}
+        >
           <MenuUnfoldOutlined />
         </div>
-        <div className="collapse-menu" onClick={() => setShowSidebar(!onShowSidebar)}>
+        <div
+          className="collapse-menu"
+          onClick={() => setShowSidebar(!onShowSidebar)}
+        >
           <img src={NotifyIcon} alt="" />
           <span className="number-notify">5</span>
           <img src={token} alt="" />
@@ -74,7 +98,10 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChan
 
   return (
     <SidebarStyled>
-      <div className="button button-collapse" onClick={() => setShowSidebar(!onShowSidebar)}>
+      <div
+        className="button button-collapse"
+        onClick={() => setShowSidebar(!onShowSidebar)}
+      >
         <LeftOutlined />
         <div className="title">Collapse</div>
       </div>
@@ -83,7 +110,11 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChan
         On sale
         <span className="number-notify">5</span>
       </Link>
-      <a className="button buy-lucky" target="_blank" href="https://luckyswap.finance/#/">
+      <a
+        className="button buy-lucky"
+        target="_blank"
+        href="https://luckyswap.finance/#/"
+      >
         <img src={Rocket} alt="" style={{ marginRight: '10px' }} />
         <span>Buy LUCKY</span>
       </a>
@@ -124,18 +155,46 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChan
         <div className={true ? 'show-sub-menu list-sub-menu' : 'list-sub-menu'}>
           <Select onChange={setSelect} defaultValue={select}>
             {options.map((item) => (
-              <Option key={item} value={item}>{item}</Option>
+              <Option key={item} value={item}>
+                {item}
+              </Option>
             ))}
           </Select>
           <div className="button group-input">
-            <Input type='number' min={0} placeholder="min" name="minPrice" value={price.minPrice} onChange={handeChangePriceInput} />
+            <Input
+              type="number"
+              min={0}
+              placeholder="min"
+              name="minPrice"
+              value={price.minPrice}
+              onChange={handeChangePriceInput}
+            />
             to
-            <Input type='number' min={0} placeholder="max" name="maxPrice" value={price.maxPrice} onChange={handeChangePriceInput} />
+            <Input
+              type="number"
+              min={0}
+              placeholder="max"
+              name="maxPrice"
+              value={price.maxPrice}
+              onChange={handeChangePriceInput}
+            />
           </div>
-          {(price?.minPrice > price?.maxPrice) && <span style={{ color: 'red', width: '300px', padding: '0 24px' }}>Your minimum item price must be greater than the minimum</span>}
+          {price?.minPrice > price?.maxPrice && (
+            <span style={{ color: 'red', width: '300px', padding: '0 24px' }}>
+              Your minimum item price must be greater than the minimum
+            </span>
+          )}
           <div className="button sub-menu">
-
-            <Button disabled={!price.maxPrice || !price.minPrice || price?.minPrice > price?.maxPrice} shape="round" style={{ fontWeight: 'bold' }} onClick={onApply}>
+            <Button
+              disabled={
+                !price.maxPrice ||
+                !price.minPrice ||
+                price?.minPrice > price?.maxPrice
+              }
+              shape="round"
+              style={{ fontWeight: 'bold' }}
+              onClick={onApply}
+            >
               Apply
             </Button>
           </div>
@@ -155,7 +214,11 @@ const Sidebar: React.FC<SidebarProps> = ({ setShowSidebar, onShowSidebar, onChan
             <SearchOutlined className="icon-search" />
             <input placeholder="Search tag" />
           </div>
-          <Checkbox.Group options={plainOptions} value={checkedList} onChange={e => onChange(e)} />
+          <Checkbox.Group
+            options={plainOptions}
+            value={checkedList}
+            onChange={(e) => onChange(e)}
+          />
         </div>
       </div>
     </SidebarStyled>

@@ -79,14 +79,14 @@ const DetaiArtWork = ({ id }: any) => {
               </Link>
             </div>
             {/* <div className="date-time">02h 31m 04s left 🔥 </div> */}
-            <div className="rating" style={{marginLeft: 10}}>
+            <div className="rating" style={{ marginLeft: 10 }}>
               4.8 <StarFilled style={{ color: '#fadb14' }} />{' '}
               <span
                 style={{ fontWeight: 'normal', fontSize: 12, color: '#AFBAC5' }}
               >
                 (15)
               </span>{' '}
-              <img src={Hammer} alt="" />
+              {/* <img src={Hammer} alt="" /> */}
             </div>
           </Row>
 
@@ -154,18 +154,26 @@ const DetaiArtWork = ({ id }: any) => {
           </Row>
 
           <p className="description">{NFTDetail?.description || ''}</p>
-          
+
           <OwenedBy>
             <Link
               to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
             >
               <p className="organize">
-                <img style={{ borderRadius: '100px' }} width="40px" src={NFTDetail?.createdBy ? NFTDetail?.createdBy?.avatarImage : Luckyswap} />
+                <img
+                  style={{ borderRadius: '100px' }}
+                  width="40px"
+                  src={
+                    NFTDetail?.createdBy
+                      ? NFTDetail?.createdBy?.avatarImage
+                      : Luckyswap
+                  }
+                />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
-                <img src={Checkmark} />
+                {/* <img src={Checkmark} /> */}
               </p>
             </Link>
-            <CountVisit id={id}/>
+            <CountVisit id={id} />
           </OwenedBy>
 
           <Tabs defaultActiveKey="1">
@@ -222,21 +230,23 @@ const DetaiArtWork = ({ id }: any) => {
                       {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
                     </a>
                   </div>
-                  {NFTDetail.contentInfo && <div className="info">
-                    <div className="title">Dimensions:</div>
-                    <a
-                      className="value"
-                      href='#'
-                    >
-                      <span>{NFTDetail?.contentInfo?.width}x{NFTDetail?.contentInfo?.height}</span>
-                    </a>
-                  </div>}
+                  {NFTDetail.contentInfo && (
+                    <div className="info">
+                      <div className="title">Dimensions:</div>
+                      <a className="value" href="#">
+                        <span>
+                          {NFTDetail?.contentInfo?.width}x
+                          {NFTDetail?.contentInfo?.height}
+                        </span>
+                      </a>
+                    </div>
+                  )}
                 </div>
               </DetailTabpane>
             </TabPane>
 
             <TabPane tab="History" key="2">
-              <TableHistory tokenId={NFTDetail.tokenId}/>
+              <TableHistory tokenId={NFTDetail.tokenId} />
             </TabPane>
             <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">

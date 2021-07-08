@@ -41,7 +41,10 @@ export default function CardItem(props?: any) {
         const startTime = moment.unix(Number(timeInfo?.[1]))?.valueOf()
         const endTime = moment.unix(Number(timeInfo?.[2]))?.valueOf()
 
-        setDayExp({ startTime: startTime > moment()?.valueOf() ? startTime : 0, endTime: endTime > moment()?.valueOf() ? endTime : 0 })
+        setDayExp({
+          startTime: startTime > moment()?.valueOf() ? startTime : 0,
+          endTime: endTime > moment()?.valueOf() ? endTime : 0,
+        })
         setPrice(price)
         setLoading(false)
       }
@@ -81,7 +84,11 @@ export default function CardItem(props?: any) {
             alt=""
             srcSet={isLazy ? '' : srcSet}
             data-srcset={srcSet}
-            data-src={data?.contentInfo?.thumbMedium && data?.type == 'image' ? data?.contentInfo?.thumbMedium : data?.contentUrl}
+            data-src={
+              data?.contentInfo?.thumbMedium && data?.type == 'image'
+                ? data?.contentInfo?.thumbMedium
+                : data?.contentUrl
+            }
           />
         )
     }
@@ -89,25 +96,30 @@ export default function CardItem(props?: any) {
 
   const renderTime = () => {
     if (dayExp?.startTime != 0 && moment().valueOf() < dayExp?.startTime) {
-      return (<>
-        {'Coming in '}
-        <Countdown
-          onComplete={() => setDayExp({ startTime: 0, endTime: dayExp?.endTime })}
-          date={dayExp?.startTime}
-        />{' '}
-        🔥
-      </>)
-    } else if (dayExp?.startTime == 0 && dayExp?.endTime != 0 && moment().valueOf() < dayExp?.endTime) {
       return (
         <>
+          {'Coming in '}
           <Countdown
-            onComplete={() => setDayExp({ startTime: 0, endTime: 0 })}
-            date={dayExp?.endTime}
-          />{' '}
-          🔥{' '}
-        </>)
+            onComplete={() =>
+              setDayExp({ startTime: 0, endTime: dayExp?.endTime })
+            }
+            date={dayExp?.startTime}
+          />
+        </>
+      )
+    } else if (
+      dayExp?.startTime == 0 &&
+      dayExp?.endTime != 0 &&
+      moment().valueOf() < dayExp?.endTime
+    ) {
+      return (
+        <Countdown
+          onComplete={() => setDayExp({ startTime: 0, endTime: 0 })}
+          date={dayExp?.endTime}
+        />
+      )
     } else if (dayExp?.endTime == 0 && dayExp?.startTime == 0) {
-      return (<>Bid time is over</>)
+      return <>Bid time is over</>
     }
   }
 
@@ -135,9 +147,7 @@ export default function CardItem(props?: any) {
               </div>
               {data.NFTType === 'auction' && (
                 <div className="header-card-art-work">
-                  <div className="date-time">
-                    {renderTime()}
-                  </div>
+                  <div className="date-time">{renderTime()}</div>
                 </div>
               )}
               {/* <ReactFreezeframe ref={useFrameGif} className="avatar"  src={data?.contentUrl}/>      */}
@@ -178,7 +188,8 @@ export default function CardItem(props?: any) {
                 title="copy"
                 onClick={() =>
                   handleCopy(
-                    `${window.location.href}artwork/detail/${data?.NFTType || 'buy'
+                    `${window.location.href}artwork/detail/${
+                      data?.NFTType || 'buy'
                     }/${data?._id}`,
                   )
                 }
@@ -226,7 +237,7 @@ export default function CardItem(props?: any) {
             <div className="number">
               {isHideButton ? null : data?.NFTType !== 'swap-store' ? (
                 <div>
-                  {data?.price} LUCKY <img src={Token} alt="" />
+                  {formatNumber(data?.price)} LUCKY <img src={Token} alt="" />
                 </div>
               ) : (
                 <ButtonBuy className="btn-swap" onClick={onSwapItem}>

@@ -8,14 +8,20 @@ const { Option } = Select
 const { Search } = Input
 
 function FilterBar(props) {
-  const { searchParams, setFilterType, filterType, handleInputOnchange, setPage} = props
+  const {
+    searchParams,
+    setFilterType,
+    filterType,
+    handleInputOnchange,
+    setPage,
+  } = props
 
   const [select, setSelect] = useState('All items')
 
   const [selectSort, setSelectSort] = useState('Sort by')
 
   const onChangeType = (e) => {
-    let value = e.target.value;
+    let value = e.target.value
     setFilterType(value)
     setPage(1)
   }
@@ -30,14 +36,23 @@ function FilterBar(props) {
             value={filterType}
             defaultChecked
           >
-            <Radio checked={filterType === ''} value=''>All</Radio>
-            <Radio checked={filterType === 'image'} value="image">Picture</Radio>
-            <Radio checked={filterType === 'gif'} value="gif">GIF</Radio>
-            <Radio checked={filterType === 'video'} value="video">Video</Radio>
-            <Radio checked={filterType === 'audio'} value="audio">Audio</Radio>
+            <Radio checked={filterType === ''} value="">
+              All
+            </Radio>
+            <Radio checked={filterType === 'image'} value="image">
+              Picture
+            </Radio>
+            <Radio checked={filterType === 'gif'} value="gif">
+              GIF
+            </Radio>
+            <Radio checked={filterType === 'video'} value="video">
+              Video
+            </Radio>
+            <Radio checked={filterType === 'audio'} value="audio">
+              Audio
+            </Radio>
           </Radio.Group>
         </div>
-        
       </div>
       <div className="right-action">
         <Search

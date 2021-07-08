@@ -2,11 +2,8 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Web3Status from '../../wallet/Web3Status'
 import logo from '../../assets/img/logo-no-text.svg'
-import {
-  SearchOutlined,
-  MenuUnfoldOutlined,
-} from '@ant-design/icons'
-import { Link, useHistory } from 'react-router-dom'
+import { SearchOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
+import { Link, useHistory, useParams, useLocation } from 'react-router-dom'
 import { ButtonBuy, ButtonTrade } from 'components-v2/Button'
 import ViewMore from 'assets/images/view-more.svg'
 import BinanceCoin from 'assets/symbol/binance.png'
@@ -25,16 +22,15 @@ import { Modal, Input, Form } from 'antd'
 import formatNumber from 'utils/formatNumber'
 import useAuth from 'hooks/useAuth'
 interface TopBarProps {
-  setMobileMenu?: (value: boolean) => void,
+  setMobileMenu?: (value: boolean) => void
   mobileMenu?: boolean
 }
 declare global {
   interface Window {
-    animation: any,
-
+    animation: any
   }
 }
-const { SubMenu } = Menu;
+const { SubMenu } = Menu
 const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   const [classtSicky, setClassSticky] = useState('')
   const { logout } = useAuth()
@@ -45,8 +41,9 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   const [configState, configAction] = useConfigStore()
   const [isShowAlert, setIsShowAlert] = useState(false)
 
-  var prevScrollpos = window.pageYOffset;
-
+  var prevScrollpos = window.pageYOffset
+  let location = useLocation()
+  console.log('location: ', location.pathname)
   // const handleScroll = () => {
   //   const currentScrollPos = window.pageYOffset
   //   if (prevScrollpos > currentScrollPos) {
@@ -68,59 +65,82 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
 
   useEffect(() => {
     const { ethereum, BinanceChain } = window as any
-    if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)&&ethereum.selectedAddress) {
-      ethereum.request({ 
-        method: 'wallet_switchEthereumChain', 
-        params:[{ 
-          chainId: '0x61'
-        }]
-      }).then(() => {
-        window.location.reload()
-      }).catch((err: any) => {
-        if (err.code == 4902) {
-          ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [{
+    if (
+      chainId &&
+      !SUPPORT_CHAIN_IDS.includes(chainId) &&
+      ethereum.selectedAddress
+    ) {
+      ethereum
+        .request({
+          method: 'wallet_switchEthereumChain',
+          params: [
+            {
               chainId: '0x61',
-              rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
-              chainName: 'Binance SmartChain Testnet',
-              nativeCurrency: {
-                name: 'TestnetBNB',
-                symbol: 'BNB', // 2-6 characters long
-                decimals: 18
-              },
-              blockExplorerUrls: ['https://testnet.bscscan.com']
-            }],
-          }).then(() => {
-            ethereum.request({
-              method: 'wallet_switchEthereumChain',
-              params: [{
-                chainId: '0x61'
-              }]
-            }).then(() => {
-              window.location.reload()
-            })
-          }).catch((err: any) => {
-            console.log(err)
-          })
-        }
-      })
-    }else if(chainId && !SUPPORT_CHAIN_IDS.includes(chainId)){
-        console.log('lsls',chainId,account)
-        BinanceChain.switchNetwork('bsc-testnet').then(()=>{
+            },
+          ],
+        })
+        .then(() => {
           window.location.reload()
         })
-      }
+        .catch((err: any) => {
+          if (err.code == 4902) {
+            ethereum
+              .request({
+                method: 'wallet_addEthereumChain',
+                params: [
+                  {
+                    chainId: '0x61',
+                    rpcUrls: [
+                      'https://data-seed-prebsc-1-s1.binance.org:8545/',
+                    ],
+                    chainName: 'Binance SmartChain Testnet',
+                    nativeCurrency: {
+                      name: 'TestnetBNB',
+                      symbol: 'BNB', // 2-6 characters long
+                      decimals: 18,
+                    },
+                    blockExplorerUrls: ['https://testnet.bscscan.com'],
+                  },
+                ],
+              })
+              .then(() => {
+                ethereum
+                  .request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [
+                      {
+                        chainId: '0x61',
+                      },
+                    ],
+                  })
+                  .then(() => {
+                    window.location.reload()
+                  })
+              })
+              .catch((err: any) => {
+                console.log(err)
+              })
+          }
+        })
+    } else if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)) {
+      console.log('lsls', chainId, account)
+      BinanceChain.switchNetwork('bsc-testnet').then(() => {
+        window.location.reload()
+      })
+    }
   }, [chainId])
 
   useEffect(() => {
     if (luckyMethod) {
       const { LuckyTokenContract } = luckyMethod
-      const filter = LuckyTokenContract.filters.Approval(account);
+      const filter = LuckyTokenContract.filters.Approval(account)
 
       LuckyTokenContract.on(filter, (author, allowAddress, value) => {
         if (author === account && allowAddress === MARKET_ADDRESS) {
-          userActions.updateUserInfo({ isCanBuy: true, isProcessingCanBuy: false })
+          userActions.updateUserInfo({
+            isCanBuy: true,
+            isProcessingCanBuy: false,
+          })
         }
       })
     }
@@ -141,7 +161,8 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           userActions.updateUserInfo(artistData)
         }
         if (luckyMethod) {
-          luckyMethod.checkApproveLevelAmount(MARKET_ADDRESS)
+          luckyMethod
+            .checkApproveLevelAmount(MARKET_ADDRESS)
             .then((dt: any) => {
               const allowance = Number(dt?._hex || 0) > 0
               userActions.updateUserInfo({ isCanBuy: allowance })
@@ -171,27 +192,26 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
       })
       .then((permissions: any) => {
         const accountsPermission = permissions.find(
-          (permission: any) => permission.parentCapability === 'eth_accounts'
-        );
+          (permission: any) => permission.parentCapability === 'eth_accounts',
+        )
         if (accountsPermission) {
-          console.log('eth_accounts permission successfully requested!');
+          console.log('eth_accounts permission successfully requested!')
         }
       })
       .catch((error: any) => {
         if (error.code === 4001) {
-          console.log('Permissions needed to continue.');
+          console.log('Permissions needed to continue.')
         } else {
-          console.error(error);
+          console.error(error)
         }
-      });
+      })
   }
   return (
     <StyledTopBar className={classtSicky}>
       {isMobile ? (
-        <div
-          style={{ display: 'flex', alignItems: 'center', zIndex: 10 }}
-        >
-          <MenuUnfoldOutlined onClick={() => setMobileMenu(true)}
+        <div style={{ display: 'flex', alignItems: 'center', zIndex: 10 }}>
+          <MenuUnfoldOutlined
+            onClick={() => setMobileMenu(true)}
             style={{ marginLeft: 12, fontSize: 24, marginRight: 12 }}
           />
           <Link to="/">
@@ -211,105 +231,167 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           className="search-nav"
           onPressEnter={onSearching}
         ></Input>
-        <Link to="/" className="home-nav">Home</Link>
-        <Link to="/swap-store" className="swap-nav">Swap Store</Link>
-        <Link to="/explore" className="home-nav">Explore</Link>
-        <Link to="/ino" className="ino-nav">
+        <Link
+          to="/"
+          className={`home-nav ${location.pathname === '/' ? 'active' : ''}`}
+        >
+          Home
+        </Link>
+        <Link
+          to="/swap-store"
+          className={`swap-nav ${
+            location.pathname === '/swap-store' ? 'active' : ''
+          }`}
+        >
+          Swap Store
+        </Link>
+        <Link
+          to="/explore"
+          className={`home-nav ${
+            location.pathname === '/explore' ? 'active' : ''
+          }`}
+        >
+          Explore
+        </Link>
+        <Link
+          to="/ino"
+          className={`ino-nav ${location.pathname === '/ino' ? 'active' : ''}`}
+        >
           <span className="label">New</span>
           <span className="btn-ino">INO</span>
         </Link>
         <span className="explore-nav"></span>
         {!!account ? (
           <>
-            <Link to={"/create/artwork"} className="create-nav">Create</Link>
+            <Link to={'/create/artwork'} className="create-nav">
+              Create
+            </Link>
           </>
         ) : (
-          <a onClick={() => { alert("Unblock your wallet before create NFT") }} className="create-nav" >Create</a>
+          <a
+            onClick={() => {
+              alert('Unblock your wallet before create NFT')
+            }}
+            className="create-nav"
+          >
+            Create
+          </a>
         )}
-        <Link to={"/swap/step=1"} className="create-nav">Swap</Link>
+        <Link to={'/swap/step=1'} className="create-nav">
+          Swap
+        </Link>
         {/* <Switch
               checkedChildren="Animation"
               unCheckedChildren="Animation"
               onChange={onChangeAnimation}
             /> */}
-        {!isMobile &&
+        {!isMobile && (
           <>
             <div className="connect-wallet">
               <Web3Status />
             </div>
           </>
-        }
-        {!!account ? (
-          <UserBalance />
-        ) : null}
+        )}
+        {!!account ? <UserBalance /> : null}
         {account ? (
           <div className="view-more">
-            <ButtonTrade padding="10px" borderRadius="100px" height="40px" width="40px" >
+            <ButtonTrade
+              padding="10px"
+              borderRadius="100px"
+              height="40px"
+              width="40px"
+            >
               <img src={ViewMore} />
             </ButtonTrade>
             <div className="menu">
-              {isMobile &&
+              {isMobile && (
                 <>
                   <div className="menu-item">
                     <div className="connect-wallet">
                       <Web3Status />
                     </div>
                   </div>
-                  <div className="menu-item"><Link to={"/create/artwork"}><ButtonBuy>Create</ButtonBuy></Link></div>
-                  <div className="menu-item"><Link to={"/swap/step=1"}><ButtonBuy>Swap</ButtonBuy></Link></div>
+                  <div className="menu-item">
+                    <Link to={'/create/artwork'}>
+                      <ButtonBuy>Create</ButtonBuy>
+                    </Link>
+                  </div>
+                  <div className="menu-item">
+                    <Link to={'/swap/step=1'}>
+                      <ButtonBuy>Swap</ButtonBuy>
+                    </Link>
+                  </div>
                 </>
-              }
+              )}
               <Link to="/my-profile/onstore/readyToSell">
-                <div className="menu-item">
-                  My profile
-                </div>
+                <div className="menu-item">My profile</div>
               </Link>
               <Link to="/my-profile/mycollection/all">
-                <div className="menu-item">
-                  My collection
-                </div>
+                <div className="menu-item">My collection</div>
               </Link>
               <Link to="/my-profile/settings">
-                <div className="menu-item">
-                  Settings
-                </div>
+                <div className="menu-item">Settings</div>
               </Link>
               {/* <Link to="/my-profile/login"> */}
-              <div className="menu-item" onClick={() => {
-                logout()
-                window.localStorage.removeItem('connectorId')
-              }}>
+              <div
+                className="menu-item"
+                onClick={() => {
+                  logout()
+                  window.localStorage.removeItem('connectorId')
+                }}
+              >
                 Log out
               </div>
               {/* </Link> */}
             </div>
           </div>
-        )
-          :
+        ) : (
           <>
-
             <div className="view-more">
-              {isMobile && (<>
-                <ButtonTrade padding="10px" borderRadius="100px" height="40px" width="40px" >
-                  <img src={ViewMore} />
-                </ButtonTrade>
-                <div className="menu">
-                  {isMobile &&
-                    <>
-                      <div className="menu-item">
-                        <div className="connect-wallet">
-                          <Web3Status />
+              {isMobile && (
+                <>
+                  <ButtonTrade
+                    padding="10px"
+                    borderRadius="100px"
+                    height="40px"
+                    width="40px"
+                  >
+                    <img src={ViewMore} />
+                  </ButtonTrade>
+                  <div className="menu">
+                    {isMobile && (
+                      <>
+                        <div className="menu-item">
+                          <div className="connect-wallet">
+                            <Web3Status />
+                          </div>
                         </div>
-                      </div>
-                      <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Create</ButtonBuy></a></div>
-                      <div className="menu-item"><a onClick={() => { alert("Unblock your wallet before create NFT") }} ><ButtonBuy>Swap</ButtonBuy></a></div>
-                    </>
-                  }
-                </div>
-              </>)}
+                        <div className="menu-item">
+                          <a
+                            onClick={() => {
+                              alert('Unblock your wallet before create NFT')
+                            }}
+                          >
+                            <ButtonBuy>Create</ButtonBuy>
+                          </a>
+                        </div>
+                        <div className="menu-item">
+                          <a
+                            onClick={() => {
+                              alert('Unblock your wallet before create NFT')
+                            }}
+                          >
+                            <ButtonBuy>Swap</ButtonBuy>
+                          </a>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           </>
-        }
+        )}
       </div>
       <Modal
         title="Notification"
@@ -318,10 +400,15 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         width={400}
         style={{ borderRadius: '12px' }}
       >
-        <Form onFinish={() => { window.location.reload() }}>
+        <Form
+          onFinish={() => {
+            window.location.reload()
+          }}
+        >
           <Form.Item name="pricePlaceBid">
             <label>
-              Currently selected chain is not supported, please check provider window to change to 'Binance Smart Chain Testnet Network'
+              Currently selected chain is not supported, please check provider
+              window to change to 'Binance Smart Chain Testnet Network'
             </label>
           </Form.Item>
           <Form.Item>
@@ -337,7 +424,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           </Form.Item>
         </Form>
       </Modal>
-    </StyledTopBar >
+    </StyledTopBar>
   )
 }
 
@@ -350,27 +437,39 @@ const UserBalance = () => {
     if (luckyMethod && account) {
       getBNBBalance(account).then(({ data, status }) => {
         if (status == 200) {
-          userActions.updateUserBalance({ BNB: formatNumber(getPrice(data?.result || 0)) })
+          userActions.updateUserBalance({
+            BNB: formatNumber(getPrice(data?.result || 0)),
+          })
         }
       })
       luckyMethod?.getLuckyBalance().then((data: any) => {
-        userActions.updateUserBalance({ LUCKY: formatNumber(getPrice(data?._hex || 0)) })
+        userActions.updateUserBalance({
+          LUCKY: formatNumber(getPrice(data?._hex || 0)),
+        })
       })
-    }else{
-      userActions.updateUserBalance({ LUCKY: 0, BNB:0 })
+    } else {
+      userActions.updateUserBalance({ LUCKY: 0, BNB: 0 })
     }
   }, [account])
   const menu = (
     <Menu style={{ maxWidth: '220px', padding: '0 6px', borderRadius: '8px' }}>
-      <SubMenu style={{ borderRadius: '8px', fontWeight: 'bold', padding: '12px' }} icon={<img src={Token} width="18px" />} key="3" title={`${userState?.balance?.LUCKY || 0} LUCKY`}>
-      </SubMenu>
-      <SubMenu style={{ borderRadius: '8px', fontWeight: 'bold', padding: '12px' }} icon={<img src={BinanceCoin} width="18px" />} key="3" title={`${userState?.balance?.BNB || 0} BNB`}>
-      </SubMenu>
+      <SubMenu
+        style={{ borderRadius: '8px', fontWeight: 'bold', padding: '12px' }}
+        icon={<img src={Token} width="18px" />}
+        key="3"
+        title={`${userState?.balance?.LUCKY || 0} LUCKY`}
+      ></SubMenu>
+      <SubMenu
+        style={{ borderRadius: '8px', fontWeight: 'bold', padding: '12px' }}
+        icon={<img src={BinanceCoin} width="18px" />}
+        key="3"
+        title={`${userState?.balance?.BNB || 0} BNB`}
+      ></SubMenu>
     </Menu>
-  );
+  )
   return (
     <Dropdown className="create-nav-balance" overlay={menu} trigger={['click']}>
-      <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+      <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
         <img src={Token} width="18px" style={{ marginRight: '6px' }} />
         <span className="number-balance">{userState?.balance?.LUCKY || 0}</span>
         <span className="label-balance"> LUCKY</span>
@@ -390,6 +489,9 @@ const StyledTopBar = styled.div`
     display: flex;
     z-index: 5;
     align-items: center;
+    .active {
+      border-bottom: 4px solid;
+    }
     .search-nav {
       flex: 1;
       border: 1px solid #e7ebef;
@@ -400,40 +502,47 @@ const StyledTopBar = styled.div`
       max-width: 250px;
     }
     .home-nav {
-      width:80px;
-      background-color: #35A5FC;
+      height: 80px;
+      background-color: #35a5fc;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 16px;
+      display: flex;
+      align-items: center;
+      margin-right: 12px;
       font-weight: 600;
       @media (max-width: 756px) {
         display: none;
       }
     }
     .swap-nav {
-      width:110px;
-      background-color: #35A5FC;
+      height: 80px;
+      margin-right: 12px;
+      background-color: #35a5fc;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 16px;
       font-weight: 600;
+      display: flex;
+      align-items: center;
       @media (max-width: 756px) {
         display: none;
       }
     }
     .ino-nav {
-      width:100px;
-      color: #35A5FC;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      color: #35a5fc;
       font-size: 16px;
       font-weight: 600;
       position: relative;
-      .btn-ino{
-
+      .btn-ino {
       }
-      .label{
+      .label {
         position: absolute;
-        top: -8px;
-        right: 50px;
+        top: 20px;
+        right: -20px;
         transform: rotate(35deg);
         font-size: 10px;
         text-transform: capitalize;
@@ -447,10 +556,14 @@ const StyledTopBar = styled.div`
       }
     }
     .explore-nav {
+      height: 80px;
+      margin-right: 12px;
       flex: 1;
-      background-color: #35A5FC;
+      background-color: #35a5fc;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
       font-size: 16px;
       font-weight: 600;
       @media (max-width: 756px) {
@@ -460,7 +573,7 @@ const StyledTopBar = styled.div`
     .create-nav {
       width: 100px;
       height: 40px;
-      background: #35A5FC;
+      background: #35a5fc;
       border-radius: 100px;
       display: flex;
       justify-content: center;
@@ -469,19 +582,19 @@ const StyledTopBar = styled.div`
       font-weight: 600;
       font-size: 16px;
       line-height: 24px;
-      margin-right:14px;
-      color:#fff;
+      margin-right: 14px;
+      color: #fff;
       position: relative;
       cursor: pointer;
       @media (max-width: 756px) {
         display: none;
       }
-      @media (max-width:756px){
+      @media (max-width: 756px) {
         display: none;
       }
     }
     .create-nav-balance {
-      padding:0 10px;
+      padding: 0 10px;
       height: 40px;
       background: #fff;
       border-radius: 100px;
@@ -492,18 +605,18 @@ const StyledTopBar = styled.div`
       font-weight: 600;
       font-size: 16px;
       line-height: 24px;
-      margin-left:14px;
+      margin-left: 14px;
       position: relative;
       cursor: pointer;
-      color:#35A5FC;
-      border:2px solid #35A5FC;   
-      .number-balance{
-        margin-right:4px;
-      }  
+      color: #35a5fc;
+      border: 2px solid #35a5fc;
+      .number-balance {
+        margin-right: 4px;
+      }
       @media (max-width: 756px) {
         display: none;
       }
-      @media (max-width:756px){
+      @media (max-width: 756px) {
         display: none;
       }
     }
@@ -512,11 +625,11 @@ const StyledTopBar = styled.div`
     position: relative;
     margin-left: 12px;
     margin-right: 12px;
-    .menu{
+    .menu {
       display: none;
     }
     :hover {
-      .menu{
+      .menu {
         width: 200px;
         display: block;
         position: absolute;
@@ -524,24 +637,24 @@ const StyledTopBar = styled.div`
         color: #333333;
         /* bottom: ${isMobile ? '-380px' : '-235px'}; */
         left: -160px;
-        border: 1px solid #E7EBEF;
+        border: 1px solid #e7ebef;
         box-sizing: border-box;
         box-shadow: 0px 24px 48px rgb(35 35 35 / 8%);
         border-radius: 8px;
         .menu-item {
-          border-bottom: 0.5px solid #E7EBEF;
+          border-bottom: 0.5px solid #e7ebef;
           padding: 16px 24px;
           font-weight: 500;
           font-size: 16px;
           color: #333333;
           :hover {
-            color: #35A5FC;
+            color: #35a5fc;
             background-color: #ffffff;
           }
         }
       }
-     }
     }
+  }
 
   .header-wrapper {
     width: 100vw;
