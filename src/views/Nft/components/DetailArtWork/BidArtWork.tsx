@@ -79,7 +79,7 @@ const DetaiArtWork = ({ id }: any) => {
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
   const [isReadyBid, setIsReadyBid] = useState(false)
   const [nextStepOffer, setStepNextOffer] = useState<number>(1)
-  const [dayExp, setDayExp] = useState({startTime:0, endTime:0})
+  const [dayExp, setDayExp] = useState({ startTime: 0, endTime: 0 })
 
   useEffect(() => {
     console.log(id)
@@ -88,21 +88,25 @@ const DetaiArtWork = ({ id }: any) => {
         if (data?.data?.tokenId && marketServicesMethod) {
           //get highest bid price
           const getBidInfoToken = async () => {
-            try{
+            try {
               const bidsArr = await marketServicesMethod?.getBidsByTokenId?.(
                 data?.data?.tokenId,
               )
-              
+
               const stepPriceUnit = await marketServicesMethod?.getStepPrice?.(
                 data?.data?.tokenId,
               )
-              const timeInfo  = await marketServicesMethod?.getBidTimeByTokenId?.(
-                data?.data?.tokenId
-              )
+              const timeInfo =
+                await marketServicesMethod?.getBidTimeByTokenId?.(
+                  data?.data?.tokenId,
+                )
               const startTime = moment.unix(Number(timeInfo?.[1]))?.valueOf()
               const endTime = moment.unix(Number(timeInfo?.[2]))?.valueOf()
 
-              setDayExp({startTime:startTime>moment()?.valueOf()?startTime:0,endTime:endTime>moment()?.valueOf()?endTime:0})
+              setDayExp({
+                startTime: startTime > moment()?.valueOf() ? startTime : 0,
+                endTime: endTime > moment()?.valueOf() ? endTime : 0,
+              })
               setStep(getPrice(stepPriceUnit._hex))
               const bidsData =
                 bidsArr?.map((item: any) => {
@@ -125,10 +129,10 @@ const DetaiArtWork = ({ id }: any) => {
                 setPrice(maxPrice)
               }
               if (account)
-                setIsReadyBid(!!bidsData.find((it: any) => it.address == account))
-            }catch(err){
-
-            }
+                setIsReadyBid(
+                  !!bidsData.find((it: any) => it.address == account),
+                )
+            } catch (err) {}
           }
           getBidInfoToken()
         }
@@ -265,7 +269,12 @@ const DetaiArtWork = ({ id }: any) => {
         </ButtonTrade>
       )
     }
-    if (userState?.isCanBuy&&dayExp?.startTime==0 && dayExp?.endTime!=0 && moment().valueOf()<dayExp?.endTime) {
+    if (
+      userState?.isCanBuy &&
+      dayExp?.startTime == 0 &&
+      dayExp?.endTime != 0 &&
+      moment().valueOf() < dayExp?.endTime
+    ) {
       return (
         <ButtonTrade onClick={() => setIsShowModalSetPrice(true)}>
           <SwapOutlined /> Play Bid
@@ -276,27 +285,36 @@ const DetaiArtWork = ({ id }: any) => {
       return <ButtonBuy onClick={onApproveBuyOnMarket}>Allow to buy</ButtonBuy>
     }
   }
-  const renderTime = ()=>{
-    if(dayExp?.startTime!=0&&moment().valueOf()<dayExp?.startTime){
-      return (<>
-            {'Coming in '}
-              <Countdown
-                onComplete={() => setDayExp({startTime:0,endTime:dayExp?.endTime})}
-                date={dayExp?.startTime}
-              />{' '}
-              🔥
-            </> )
-    }else if(dayExp?.startTime==0 && dayExp?.endTime!=0 && moment().valueOf()<dayExp?.endTime){
+  const renderTime = () => {
+    if (dayExp?.startTime != 0 && moment().valueOf() < dayExp?.startTime) {
       return (
-          <>
-            <Countdown
-              onComplete={() => setDayExp({startTime:0,endTime:0})}
-              date={dayExp?.endTime}
-            />{' '}
-            🔥{' '}
-          </> )
-    }else if(dayExp?.endTime==0&&dayExp?.startTime==0){
-      return(<>Bid time is over</>)
+        <>
+          {'Coming in '}
+          <Countdown
+            onComplete={() =>
+              setDayExp({ startTime: 0, endTime: dayExp?.endTime })
+            }
+            date={dayExp?.startTime}
+          />{' '}
+          🔥
+        </>
+      )
+    } else if (
+      dayExp?.startTime == 0 &&
+      dayExp?.endTime != 0 &&
+      moment().valueOf() < dayExp?.endTime
+    ) {
+      return (
+        <>
+          <Countdown
+            onComplete={() => setDayExp({ startTime: 0, endTime: 0 })}
+            date={dayExp?.endTime}
+          />{' '}
+          🔥{' '}
+        </>
+      )
+    } else if (dayExp?.endTime == 0 && dayExp?.startTime == 0) {
+      return <>Bid time is over</>
     }
   }
   return (
@@ -315,9 +333,7 @@ const DetaiArtWork = ({ id }: any) => {
                 <CloseOutlined className="icon" />
               </Link>
             </div>
-            <div className="date-time">
-             {renderTime()}
-            </div>
+            <div className="date-time">{renderTime()}</div>
             <div className="rating">
               4.8 <StarFilled style={{ color: '#fadb14' }} />{' '}
               <span
@@ -455,7 +471,8 @@ const DetaiArtWork = ({ id }: any) => {
               <div className="group-item-bid">
                 <div className="label">Your bid</div>
                 <div className="value your-bid">
-                  {formatNumber(price + step * nextStepOffer)} <img width="20px" src={Token} />
+                  {formatNumber(price + step * nextStepOffer)}{' '}
+                  <img width="20px" src={Token} />
                 </div>
               </div>
             </Col>
@@ -480,12 +497,20 @@ const DetaiArtWork = ({ id }: any) => {
               to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
             >
               <p className="organize">
-                <img style={{ borderRadius: '100px' }} width="40px" src={NFTDetail?.createdBy ? NFTDetail?.createdBy?.avatarImage : Luckyswap} />
+                <img
+                  style={{ borderRadius: '100px' }}
+                  width="40px"
+                  src={
+                    NFTDetail?.createdBy
+                      ? NFTDetail?.createdBy?.avatarImage
+                      : Luckyswap
+                  }
+                />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
-                <img src={Checkmark} />
+                {/* <img src={Checkmark} /> */}
               </p>
             </Link>
-            <CountVisit id={id}/>
+            <CountVisit id={id} />
           </OwenedBy>
           {/* <Link
             to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
@@ -551,15 +576,17 @@ const DetaiArtWork = ({ id }: any) => {
                       {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
                     </a>
                   </div>
-                  {NFTDetail.contentInfo && <div className="info">
-                    <div className="title">Dimensions:</div>
-                    <a
-                      className="value"
-                      href='#'
-                    >
-                      <span>{NFTDetail?.contentInfo?.width}x{NFTDetail?.contentInfo?.height}</span>
-                    </a>
-                  </div>}
+                  {NFTDetail.contentInfo && (
+                    <div className="info">
+                      <div className="title">Dimensions:</div>
+                      <a className="value" href="#">
+                        <span>
+                          {NFTDetail?.contentInfo?.width}x
+                          {NFTDetail?.contentInfo?.height}
+                        </span>
+                      </a>
+                    </div>
+                  )}
                 </div>
               </DetailTabpane>
             </TabPane>
@@ -754,93 +781,106 @@ const BiddingTable = ({
     }
   }
   const columnBidding =
-
     NFTInfo?.ownerWalletAddress === account
       ? [
-        {
-          title: 'Address',
-          dataIndex: 'address',
-          width: 100,
-          render: (address: string) => (
-            <a className="value" href={window.location.origin+`/user-profile/${address}/onstore/readyToSell`} target="_blank">
-              {getCompactString(address, 6)}
-            </a>
-          ),
-        },
-        {
-          title: 'Price',
-          dataIndex: 'price',
-          width: 100,
-          render: (price: Number) => (
-            <div className="token">
-              {formatNumber(price)}
-              <img src={Token} alt="" />
-            </div>
-          ),
-        },
-        {
-          title: 'Action',
-          dataIndex: 'action',
-          render: (_: any, record: any) => {
-            if (isProcessing) {
-              return <ButtonProccesing />
-            }
-            return (
-              <ButtonTrade onClick={confirmSellToken(record)}>
-                {'Confirm'}
-              </ButtonTrade>
-            )
+          {
+            title: 'Address',
+            dataIndex: 'address',
+            width: 100,
+            render: (address: string) => (
+              <a
+                className="value"
+                href={
+                  window.location.origin +
+                  `/user-profile/${address}/onstore/readyToSell`
+                }
+                target="_blank"
+              >
+                {getCompactString(address, 6)}
+              </a>
+            ),
           },
-          width: 100,
-        },
-      ]
-      : [
-        {
-          title: 'Address',
-          dataIndex: 'address',
-          width: 100,
-          render: (address: string) => (
-            <a className="value" href={window.location.origin+`/user-profile/${address}/onstore/readyToSell`} target="_blank">
-              {getCompactString(address, 6)}
-            </a>
-          ),
-        },
-        {
-          title: 'Price',
-          dataIndex: 'price',
-          width: 100,
-          render: (price: Number) => (
-            <div className="token">
-              {formatNumber(price)}
-              <img src={Token} alt="" />
-            </div>
-          ),
-        },
-        {
-          title: 'Action',
-          dataIndex: 'action',
-          render: (_: any, record: any) => {
-            if (record?.key == account) {
+          {
+            title: 'Price',
+            dataIndex: 'price',
+            width: 100,
+            render: (price: Number) => (
+              <div className="token">
+                {formatNumber(price)}
+                <img src={Token} alt="" />
+              </div>
+            ),
+          },
+          {
+            title: 'Action',
+            dataIndex: 'action',
+            render: (_: any, record: any) => {
+              if (isProcessing) {
+                return <ButtonProccesing />
+              }
               return (
-                <>
-                  {isProcessing ? (
-                    <ButtonProccesing />
-                  ) : (
-                    <ButtonTrade
-                      style={{ background: '#FC636B' }}
-                      onClick={onCancelBidToken(record)}
-                    >
-                      Cancel
-                    </ButtonTrade>
-                  )}
-                </>
+                <ButtonTrade onClick={confirmSellToken(record)}>
+                  {'Confirm'}
+                </ButtonTrade>
               )
-            }
-            return null
+            },
+            width: 100,
           },
-          width: 100,
-        },
-      ]
+        ]
+      : [
+          {
+            title: 'Address',
+            dataIndex: 'address',
+            width: 100,
+            render: (address: string) => (
+              <a
+                className="value"
+                href={
+                  window.location.origin +
+                  `/user-profile/${address}/onstore/readyToSell`
+                }
+                target="_blank"
+              >
+                {getCompactString(address, 6)}
+              </a>
+            ),
+          },
+          {
+            title: 'Price',
+            dataIndex: 'price',
+            width: 100,
+            render: (price: Number) => (
+              <div className="token">
+                {formatNumber(price)}
+                <img src={Token} alt="" />
+              </div>
+            ),
+          },
+          {
+            title: 'Action',
+            dataIndex: 'action',
+            render: (_: any, record: any) => {
+              if (record?.key == account) {
+                return (
+                  <>
+                    {isProcessing ? (
+                      <ButtonProccesing />
+                    ) : (
+                      <ButtonTrade
+                        style={{ background: '#FC636B' }}
+                        onClick={onCancelBidToken(record)}
+                      >
+                        Cancel
+                      </ButtonTrade>
+                    )}
+                  </>
+                )
+              }
+              return null
+            },
+            width: 100,
+          },
+        ]
   return (
     <TableStyled
       columns={columnBidding}

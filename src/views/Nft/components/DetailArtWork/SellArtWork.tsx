@@ -272,18 +272,26 @@ const DetaiArtWork = ({ id }: any) => {
           </Row>
 
           <p className="description">{NFTDetail?.description || ''}</p>
-          
+
           <OwenedBy>
             <Link
               to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
             >
               <p className="organize">
-                <img style={{ borderRadius: '100px' }} width="40px" src={NFTDetail?.createdBy ? NFTDetail?.createdBy?.avatarImage : Luckyswap} />
+                <img
+                  style={{ borderRadius: '100px' }}
+                  width="40px"
+                  src={
+                    NFTDetail?.createdBy
+                      ? NFTDetail?.createdBy?.avatarImage
+                      : Luckyswap
+                  }
+                />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
-                <img src={Checkmark} />
+                {/* <img src={Checkmark} /> */}
               </p>
             </Link>
-            <CountVisit id={id}/>
+            <CountVisit id={id} />
           </OwenedBy>
 
           <Tabs defaultActiveKey="1">
@@ -341,15 +349,17 @@ const DetaiArtWork = ({ id }: any) => {
                       {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
                     </a>
                   </div>
-                  {NFTDetail.contentInfo && <div className="info">
-                    <div className="title">Dimensions:</div>
-                    <a
-                      className="value"
-                      href='#'
-                    >
-                      <span>{NFTDetail?.contentInfo?.width}x{NFTDetail?.contentInfo?.height}</span>
-                    </a>
-                  </div>}
+                  {NFTDetail.contentInfo && (
+                    <div className="info">
+                      <div className="title">Dimensions:</div>
+                      <a className="value" href="#">
+                        <span>
+                          {NFTDetail?.contentInfo?.width}x
+                          {NFTDetail?.contentInfo?.height}
+                        </span>
+                      </a>
+                    </div>
+                  )}
                 </div>
               </DetailTabpane>
             </TabPane>
@@ -449,7 +459,7 @@ const DetaiArtWork = ({ id }: any) => {
             footer={null}
             width={400}
           >
-            <Form onFinish={() => { }}>
+            <Form onFinish={() => {}}>
               <Form.Item
                 name="lucky"
                 label="Price"
@@ -476,7 +486,7 @@ const DetaiArtWork = ({ id }: any) => {
           </Modal>
         </DetailStyled>
       </Col>
-    </Row >
+    </Row>
   )
 }
 

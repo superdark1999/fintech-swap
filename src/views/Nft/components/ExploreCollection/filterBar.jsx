@@ -8,21 +8,29 @@ const { Option } = Select
 const { Search } = Input
 
 function FilterBar(props) {
-  const { searchParams, setFilterMethod, filterMethod, setFilterType, filterType, handleInputOnchange, setPage} = props
+  const {
+    searchParams,
+    setFilterMethod,
+    filterMethod,
+    setFilterType,
+    filterType,
+    handleInputOnchange,
+    setPage,
+  } = props
 
   const [select, setSelect] = useState('All items')
 
   const [selectSort, setSelectSort] = useState('Sort by')
 
   const onChangeMethod = (e) => {
-    let value = e.target.value;
+    let value = e.target.value
     setFilterMethod(value)
     setPage(1)
   }
   const onChangeType = (e) => {
-    let value = e.target.value;
-    if(!value){
-      value = ['auction','swap-store','buy']
+    let value = e.target.value
+    if (!value) {
+      value = ['auction', 'swap-store', 'buy']
     }
     setFilterType(value)
     setPage(1)
@@ -38,11 +46,21 @@ function FilterBar(props) {
             value={filterType}
             defaultChecked
           >
-            <Radio checked={filterType === ''} value=''>All</Radio>
-            <Radio checked={filterType === 'image'} value="image">Picture</Radio>
-            <Radio checked={filterType === 'gif'} value="gif">GIF</Radio>
-            <Radio checked={filterType === 'video'} value="video">Video</Radio>
-            <Radio checked={filterType === 'audio'} value="audio">Audio</Radio>
+            <Radio checked={filterType === ''} value="">
+              All
+            </Radio>
+            <Radio checked={filterType === 'image'} value="image">
+              Picture
+            </Radio>
+            <Radio checked={filterType === 'gif'} value="gif">
+              GIF
+            </Radio>
+            <Radio checked={filterType === 'video'} value="video">
+              Video
+            </Radio>
+            <Radio checked={filterType === 'audio'} value="audio">
+              Audio
+            </Radio>
           </Radio.Group>
         </div>
         <div className="list-filter" style={{ marginBottom: '24px' }}>
@@ -53,10 +71,18 @@ function FilterBar(props) {
             value={filterMethod}
             defaultChecked
           >
-            <Radio checked={filterMethod === ''} value=''>All</Radio>
-            <Radio checked={filterMethod === 'auction'} value="auction">Auction</Radio>
-            <Radio checked={filterMethod === 'swap-store'} value="swap-store">Swap</Radio>
-            <Radio checked={filterMethod === 'buy'} value="buy">Buy</Radio>
+            <Radio checked={filterMethod === ''} value="">
+              All
+            </Radio>
+            <Radio checked={filterMethod === 'auction'} value="auction">
+              Auction
+            </Radio>
+            <Radio checked={filterMethod === 'swap-store'} value="swap-store">
+              Swap
+            </Radio>
+            <Radio checked={filterMethod === 'buy'} value="buy">
+              Buy
+            </Radio>
           </Radio.Group>
         </div>
       </div>
