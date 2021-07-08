@@ -7,8 +7,9 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import TrendingBar from '../TrendingBar/index'
 import _ from 'lodash'
 import { useHistory } from 'react-router-dom'
-import Nfts from 'wallet/state/config/constants/nfts'
+import LoadingBar from 'react-top-loading-bar'
 import useIO from 'hooks/useIo'
+import {isMobile} from 'react-device-detect'
 
 // export const option: React.ReactElement<OptionProps> = Select.Option
 function ExploreCollection() {
@@ -21,13 +22,12 @@ function ExploreCollection() {
   const [NFTs, setNFTs] = useState({ data: [], total: 0 })
   const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
   const { getNFT } = useArtworkServices()
-  const [filterMethod, setFilterMethod] = useState([
-    'auction',
-    'swap-store',
-    'buy',
-  ])
+  const [filterMethod, setFilterMethod] = useState('')
   const [filterType, setFilterType] = useState('')
+  const [sort, setSort] = useState('asc')
   const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(0)
+  const [tags, setTags] = useState([])
 
   const handleInputOnchange = (e) => {
     const { value } = e.target
@@ -45,10 +45,12 @@ function ExploreCollection() {
       (params) =>
         getNFT(params).then(({ status, data }) => {
           if (status == 200) {
+            setLoading(100)
             if (page === 1) {
               setNFTs({ data: data?.data, total: data.total })
             } else {
               setNFTs({ data: NFTs.data.concat(data?.data), total: data.total })
+              !isMobile && handleScroll()
             }
           }
         }),
@@ -57,24 +59,35 @@ function ExploreCollection() {
     [page],
   )
 
+  function handleScroll() {
+    window.scroll({
+      top: document.body.scrollHeight,
+      left: 0, 
+      behavior: 'smooth',
+    });
+  }
+
   useEffect(() => {
     searchParams
       ? history.push(`/explore?search=${searchParams}`)
       : history.push(`/explore`)
-    console.log(filterMethod)
     const params = _.pickBy(
       {
         status: 'readyToSell',
-        NFTType: filterMethod,
+        NFTType: filterMethod ? filterMethod : [ 'auction', 'swap-store', 'buy'],
         type: filterType,
         title: searchParams?.toLowerCase(),
         page,
         limit: 8,
+        sort,
+        sortBy: 'createdAt',
+        tags,
       },
       _.identity,
     )
+    setLoading((Math.random() * (80 - 40 + 1)) + 40)
     getArrNFT(params)
-  }, [filterMethod, filterType, searchParams, page])
+  }, [filterMethod, filterType, searchParams, page, sort, tags])
 
   useEffect(() => {
     entries.forEach((entry) => {
@@ -98,13 +111,15 @@ function ExploreCollection() {
     setPage(page)
   }, [])
 
+
+
   return (
     <ExploreCollectionStyled>
       <div className="header-artists">
         <div className="title-artists">Explore</div>
       </div>
       <div className="trending-nft">
-        <TrendingBar />
+        <TrendingBar setTags={setTags} tags={tags} />
       </div>
       <FilterBar
         setFilterMethod={setFilterMethod}
@@ -114,11 +129,13 @@ function ExploreCollection() {
         handleInputOnchange={handleInputOnchange}
         searchParams={searchParams}
         setPage={setPage}
+        setSort={setSort}
+        sort={sort}
       />
       <h1 style={{ fontWeight: 'bold' }}>
         {NFTs?.total} results for "lucky swap studio"
       </h1>
-      <div className="content-collect">
+      <div className="content-collect" >
         {NFTs?.data?.map((item) => {
           return <Cart key={item.id} width="320px" height="480px" data={item} isLazy />
         })}
@@ -130,6 +147,15 @@ function ExploreCollection() {
           </div>
         </div>
       )}
+
+      <LoadingBar
+        color='linear-gradient(101deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)'
+        progress={loading}
+        onLoaderFinished={() => setLoading(0)}
+        transitionTime={800}
+        height={4}
+      />
+      
     </ExploreCollectionStyled>
   )
 }

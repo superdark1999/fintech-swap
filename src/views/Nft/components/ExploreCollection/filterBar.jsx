@@ -2,10 +2,18 @@ import React, { useState } from 'react'
 import { FilterBarStyled } from './styled'
 import { Select, Radio, Input } from 'antd'
 
-const OptionData = ['Hangzhou', 'Ningbo', 'All items']
-const OptionSort = ['Hangzhou', 'Ningbo', 'Sort by']
 const { Option } = Select
 const { Search } = Input
+
+const OptionSort = [
+  {
+    label: 'New',
+    value: 'asc'
+  },
+  {
+    label: 'Old',
+    value: 'desc'
+  }]
 
 function FilterBar(props) {
   const {
@@ -16,11 +24,14 @@ function FilterBar(props) {
     filterType,
     handleInputOnchange,
     setPage,
+    sort,
+    setSort
   } = props
 
-  const [select, setSelect] = useState('All items')
-
-  const [selectSort, setSelectSort] = useState('Sort by')
+  const onChangeSort = (value) => {
+    setSort(value)
+    setPage(1)
+  }
 
   const onChangeMethod = (e) => {
     let value = e.target.value
@@ -29,9 +40,6 @@ function FilterBar(props) {
   }
   const onChangeType = (e) => {
     let value = e.target.value
-    if (!value) {
-      value = ['auction', 'swap-store', 'buy']
-    }
     setFilterType(value)
     setPage(1)
   }
@@ -46,7 +54,7 @@ function FilterBar(props) {
             value={filterType}
             defaultChecked
           >
-            <Radio checked={filterType === ''} value="">
+            <Radio checked={filterType === ''} value=''>
               All
             </Radio>
             <Radio checked={filterType === 'image'} value="image">
@@ -71,7 +79,7 @@ function FilterBar(props) {
             value={filterMethod}
             defaultChecked
           >
-            <Radio checked={filterMethod === ''} value="">
+            <Radio checked={filterMethod === ''} value=''>
               All
             </Radio>
             <Radio checked={filterMethod === 'auction'} value="auction">
@@ -96,25 +104,15 @@ function FilterBar(props) {
           enterButton
         />
         <div>
+          <label>Sort: </label>
           <Select
             style={{ width: 120, borderRadius: 30 }}
-            onChange={setSelect}
-            defaultValue={select}
-          >
-            {OptionData.map((item) => (
-              <Option key={item} value={item}>
-                {item}
-              </Option>
-            ))}
-          </Select>
-          <Select
-            style={{ width: 120, borderRadius: 30 }}
-            onChange={setSelectSort}
-            defaultValue={selectSort}
+            onChange={onChangeSort}
+            defaultValue={sort}
           >
             {OptionSort.map((item) => (
-              <Option key={item} value={item}>
-                {item}
+              <Option key={item} value={item.value} >
+                {item.label}
               </Option>
             ))}
           </Select>

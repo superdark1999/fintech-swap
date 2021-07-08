@@ -23,7 +23,7 @@ import { isMobile } from 'react-device-detect'
 export default function CardItem(props?: any) {
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const history = useHistory()
-  const { data, isLazy = false, srcSet, isHideButton } = props
+  const { data={} , isLazy = false, srcSet, isHideButton } = props
   const { account, chainId } = useActiveWeb3React()
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -161,12 +161,12 @@ export default function CardItem(props?: any) {
               >
                 <div className="name-artist">
                   <span style={{ fontSize: '10px' }}>Creator</span>{' '}
-                  {data.createdBy.name ? (
+                  {data?.createdBy?.name ? (
                     <a
                       target="_blank"
                       href={`${window.location.href}user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell}`}
                     >
-                      {data.createdBy.name}
+                      {data?.createdBy?.name}
                     </a>
                   ) : (
                     <a
@@ -219,7 +219,7 @@ export default function CardItem(props?: any) {
                 <a
                   target="_blank"
                   href={embedTokenIdLinkBSCScan(
-                    data.tokenId,
+                    data?.tokenId,
                     data?.ownerWalletAddress,
                     chainId,
                   )}
@@ -236,7 +236,7 @@ export default function CardItem(props?: any) {
             </div>
             <div className="number">
               {isHideButton ? null : data?.NFTType !== 'swap-store' ? (
-                <div>
+                data?.price && <div>
                   {formatNumber(data?.price)} LUCKY <img src={Token} alt="" />
                 </div>
               ) : (
@@ -255,10 +255,10 @@ export default function CardItem(props?: any) {
                 >
                   (15)
                 </span>{' '}
-                {data.NFTType === 'auction' && (
+                {data?.NFTType === 'auction' && (
                   <img src={Hammer} alt="auction NFT" title="auction" />
                 )}
-                {data.NFTType === 'buy' && (
+                {data?.NFTType === 'buy' && (
                   <img src={CartGrey} alt="buy NFT" title="buy" />
                 )}
               </div>
