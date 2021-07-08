@@ -400,7 +400,6 @@ export default function MyCollectionCard({ data, option }: any) {
           xs={{ span: 24 }}
           xxl={{ span: 5 }}
         >
-          <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
             {data.type === 'video' ? (
               <video width="100%" style={{ maxHeight: '200px', borderRadius: '8px' }} controls muted>
                 <source src={data?.contentUrl} type="video/mp4" />
@@ -409,7 +408,6 @@ export default function MyCollectionCard({ data, option }: any) {
             ) : (
               <img className="avatar" src={data?.contentUrl} />
             )}
-          </Link>
         </Col>
         <Col
           className="description space-vehicle"

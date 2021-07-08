@@ -49,6 +49,8 @@ import _ from 'lodash'
 import { isMobile } from 'react-device-detect'
 import TableHistory from './TableHistory'
 import formatNumber from 'utils/formatNumber'
+import NFTInformation from './NFTInformation'
+import Reviews from './Reviews'
 
 const { TabPane } = Tabs
 const DetaiArtWork = ({ id }: any) => {
@@ -288,130 +290,14 @@ const DetaiArtWork = ({ id }: any) => {
 
           <Tabs defaultActiveKey="1">
             <TabPane tab="Detail" key="1">
-              <DetailTabpane>
-                <div className="group-info">
-                  <div className="info">
-                    <div className="title">NFT Contract ID:</div>
-                    <a
-                      className="value"
-                      href={embedTokenIdLinkBSCScan(
-                        NFTDetail.tokenId,
-                        NFTDetail?.contractAddress,
-                        chainId,
-                      )}
-                      target="_blank"
-                    >
-                      {getCompactString(NFTDetail?.contractAddress, 6)}
-                    </a>
-                  </div>
-                  <div className="info">
-                    <div className="title">Token ID:</div>
-                    <a
-                      className="value"
-                      href={embedTokenIdLinkBSCScan(
-                        NFTDetail.tokenId,
-                        NFTDetail?.contractAddress,
-                        chainId,
-                      )}
-                      target="_blank"
-                    >
-                      {NFTDetail && NFTDetail.tokenId}
-                    </a>
-                  </div>
-                </div>
-                <div className="group-info">
-                  <div className="info">
-                    <div className="title">Creator's Adress:</div>
-                    <a
-                      className="value"
-                      href={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
-                      target="_blank"
-                    >
-                      {getCompactString(NFTDetail?.createdBy?.walletAddress, 6)}
-                    </a>
-                  </div>
-
-                  <div className="info">
-                    <div className="title">Owner Adress:</div>
-                    <a
-                      className="value"
-                      href={`/user-profile/${NFTDetail?.ownerWalletAddress}/onstore/readyToSell`}
-                      target="_blank"
-                    >
-                      {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
-                    </a>
-                  </div>
-                  {NFTDetail.contentInfo && <div className="info">
-                    <div className="title">Dimensions:</div>
-                    <a
-                      className="value"
-                      href='#'
-                    >
-                      <span>{NFTDetail?.contentInfo?.width}x{NFTDetail?.contentInfo?.height}</span>
-                    </a>
-                  </div>}
-                </div>
-              </DetailTabpane>
+            <NFTInformation NFTDetail={NFTDetail} />
             </TabPane>
 
             <TabPane tab="History" key="2">
               <TableHistory tokenId={NFTDetail.tokenId} />
             </TabPane>
             <TabPane tab="Reviews" key="4">
-              <ScrollReview className="list-review">
-                <ReviewStyled>
-                  <div className="review-item">
-                    <div>
-                      <img src={Luckyswap} style={{ marginRight: 5 }} />
-                      <span className="name">LuckySwapStudio</span>
-                    </div>
-                    <Rate style={{ fontSize: 12 }} disabled defaultValue={2} />
-                  </div>
-                  <div className="comment">This is amazing</div>
-                  <div className="time">30 minutes ago</div>
-                </ReviewStyled>
-
-                <ReviewStyled>
-                  <div className="review-item">
-                    <div>
-                      <img src={Luckyswap} style={{ marginRight: 5 }} />
-                      <span className="name">LuckySwapStudio</span>
-                    </div>
-                    <Rate style={{ fontSize: 12 }} disabled defaultValue={2} />
-                  </div>
-                  <div className="comment">This is amazing</div>
-                  <div className="time">30 minutes ago</div>
-                </ReviewStyled>
-
-                <ReviewStyled>
-                  <div className="review-item">
-                    <div>
-                      <img src={Luckyswap} style={{ marginRight: 5 }} />
-                      <span className="name">LuckySwapStudio</span>
-                    </div>
-                    <Rate style={{ fontSize: 12 }} disabled defaultValue={2} />
-                  </div>
-                  <div className="comment">This is amazing</div>
-                  <div className="time">30 minutes ago</div>
-                </ReviewStyled>
-
-                <ReviewStyled>
-                  <div className="review-item">
-                    <div>
-                      <img src={Luckyswap} style={{ marginRight: 5 }} />
-                      <span className="name">LuckySwapStudio</span>
-                    </div>
-                    <Rate style={{ fontSize: 12 }} disabled defaultValue={2} />
-                  </div>
-                  <div className="comment">This is amazing</div>
-                  <div className="time">30 minutes ago</div>
-                </ReviewStyled>
-
-                <FooterStyled>
-                  <input placeholder="Write a comment" />
-                  <ButtonTrade>Send</ButtonTrade>
-                </FooterStyled>
-              </ScrollReview>
+              <Reviews/>
             </TabPane>
           </Tabs>
 
