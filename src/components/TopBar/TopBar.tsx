@@ -67,12 +67,11 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   // }, []);
 
   useEffect(() => {
-
-    const { ethereum } = window as any
-    if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)) {
-      ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{
+    const { ethereum, BinanceChain } = window as any
+    if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)&&ethereum.selectedAddress) {
+      ethereum.request({ 
+        method: 'wallet_switchEthereumChain', 
+        params:[{ 
           chainId: '0x61'
         }]
       }).then(() => {
@@ -106,7 +105,12 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           })
         }
       })
-    }
+    }else if(chainId && !SUPPORT_CHAIN_IDS.includes(chainId)){
+        console.log('lsls',chainId,account)
+        BinanceChain.switchNetwork('bsc-testnet').then(()=>{
+          window.location.reload()
+        })
+      }
   }, [chainId])
 
   useEffect(() => {
@@ -352,8 +356,10 @@ const UserBalance = () => {
       luckyMethod?.getLuckyBalance().then((data: any) => {
         userActions.updateUserBalance({ LUCKY: formatNumber(getPrice(data?._hex || 0)) })
       })
+    }else{
+      userActions.updateUserBalance({ LUCKY: 0, BNB:0 })
     }
-  }, [])
+  }, [account])
   const menu = (
     <Menu style={{ maxWidth: '220px', padding: '0 6px', borderRadius: '8px' }}>
       <SubMenu style={{ borderRadius: '8px', fontWeight: 'bold', padding: '12px' }} icon={<img src={Token} width="18px" />} key="3" title={`${userState?.balance?.LUCKY || 0} LUCKY`}>

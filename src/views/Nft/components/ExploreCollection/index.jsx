@@ -120,7 +120,7 @@ function ExploreCollection() {
       </h1>
       <div className="content-collect">
         {NFTs?.data?.map((item) => {
-          return <Cart width="320px" height="480px" data={item} isLazy />
+          return <Cart key={item.id} width="320px" height="480px" data={item} isLazy />
         })}
       </div>
       {NFTs?.data?.length < NFTs?.total && (
