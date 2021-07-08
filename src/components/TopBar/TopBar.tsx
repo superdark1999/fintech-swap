@@ -73,13 +73,14 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         method: 'wallet_switchEthereumChain', 
         params:[{ 
           chainId: '0x61'
-      }] }).then(()=>{
+        }]
+      }).then(() => {
         window.location.reload()
-      }).catch((err:any)=>{
-        if(err.code == 4902){
+      }).catch((err: any) => {
+        if (err.code == 4902) {
           ethereum.request({
             method: 'wallet_addEthereumChain',
-            params: [{ 
+            params: [{
               chainId: '0x61',
               rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
               chainName: 'Binance SmartChain Testnet',
@@ -88,17 +89,18 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
                 symbol: 'BNB', // 2-6 characters long
                 decimals: 18
               },
-              blockExplorerUrls:['https://testnet.bscscan.com']
+              blockExplorerUrls: ['https://testnet.bscscan.com']
             }],
-          }).then(()=>{
-            ethereum.request({ 
-              method: 'wallet_switchEthereumChain', 
-              params:[{ 
+          }).then(() => {
+            ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{
                 chainId: '0x61'
-            }] }).then(()=>{
+              }]
+            }).then(() => {
               window.location.reload()
             })
-          }).catch((err:any)=>{
+          }).catch((err: any) => {
             console.log(err)
           })
         }
@@ -160,28 +162,28 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
     //history.push(`/explore?search=${e.target.value}`)
     window.location.replace(`/explore?search=${e.target.value}`)
   }
-  const authenAccount = ()=>{
+  const authenAccount = () => {
     const { ethereum } = window as any
     ethereum
-    .request({
-      method: 'wallet_getPermissions',
-      params: [{ eth_accounts: {} }],
-    })
-    .then((permissions:any) => {
-      const accountsPermission = permissions.find(
-        (permission:any) => permission.parentCapability === 'eth_accounts'
-      );
-      if (accountsPermission) {
-        console.log('eth_accounts permission successfully requested!');
-      }
-    })
-    .catch((error:any) => {
-      if (error.code === 4001) {
-        console.log('Permissions needed to continue.');
-      } else {
-        console.error(error);
-      }
-    });
+      .request({
+        method: 'wallet_getPermissions',
+        params: [{ eth_accounts: {} }],
+      })
+      .then((permissions: any) => {
+        const accountsPermission = permissions.find(
+          (permission: any) => permission.parentCapability === 'eth_accounts'
+        );
+        if (accountsPermission) {
+          console.log('eth_accounts permission successfully requested!');
+        }
+      })
+      .catch((error: any) => {
+        if (error.code === 4001) {
+          console.log('Permissions needed to continue.');
+        } else {
+          console.error(error);
+        }
+      });
   }
   return (
     <StyledTopBar className={classtSicky}>
@@ -210,8 +212,8 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           onPressEnter={onSearching}
         ></Input>
         <Link to="/" className="home-nav">Home</Link>
-        <Link to="/explore" className="home-nav">Explore</Link>
         <Link to="/swap-store" className="swap-nav">Swap Store</Link>
+        <Link to="/explore" className="home-nav">Explore</Link>
         <Link to="/ino" className="ino-nav">
           <span className="label">New</span>
           <span className="btn-ino">INO</span>

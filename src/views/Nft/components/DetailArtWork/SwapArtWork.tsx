@@ -8,6 +8,7 @@ import Luckyswap from 'assets/images/luckyswap.svg'
 import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
+import CountVisit from './CountVisit'
 import { CloseOutlined, StarFilled, CheckOutlined } from '@ant-design/icons'
 import {
   DetailStyled,
@@ -15,6 +16,7 @@ import {
   ScrollReview,
   ImageStyled,
   DetailTabpane,
+  OwenedBy,
   HeaderStyled,
   VideoStyled,
 } from './styled'
@@ -152,15 +154,19 @@ const DetaiArtWork = ({ id }: any) => {
           </Row>
 
           <p className="description">{NFTDetail?.description || ''}</p>
-          <Link
-            to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
-          >
-            <p className="organize">
-              <img style={{ borderRadius: '100px' }} width="40px" src={NFTDetail?.createdBy ? NFTDetail?.createdBy?.avatarImage : Luckyswap} />
-              <span className="name">{NFTDetail?.createdBy?.name}</span>
-              <img src={Checkmark} />
-            </p>
-          </Link>
+          
+          <OwenedBy>
+            <Link
+              to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
+            >
+              <p className="organize">
+                <img style={{ borderRadius: '100px' }} width="40px" src={NFTDetail?.createdBy ? NFTDetail?.createdBy?.avatarImage : Luckyswap} />
+                <span className="name">{NFTDetail?.createdBy?.name}</span>
+                <img src={Checkmark} />
+              </p>
+            </Link>
+            <CountVisit id={id}/>
+          </OwenedBy>
 
           <Tabs defaultActiveKey="1">
             <TabPane tab="Detail" key="1">
@@ -230,7 +236,7 @@ const DetaiArtWork = ({ id }: any) => {
             </TabPane>
 
             <TabPane tab="History" key="2">
-              <TableHistory />
+              <TableHistory tokenId={NFTDetail.tokenId}/>
             </TabPane>
             <TabPane tab="Reviews" key="4">
               <ScrollReview className="list-review">

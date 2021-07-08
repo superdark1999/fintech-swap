@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom'
 import useConfigStore from 'store/configStore'
 import useIO from 'hooks/useIo'
 
-
 function HotArtWorks() {
   const divRef = useRef(null)
   const [loading, setLoading] = useState(true)
@@ -25,7 +24,7 @@ function HotArtWorks() {
     getNFT(
       {
         status: 'readyToSell',
-        NFTType: ['buy','auction'],
+        NFTType: ['buy', 'auction'],
       },
       true,
     )
@@ -43,29 +42,28 @@ function HotArtWorks() {
       })
   }, [])
 
-
   const [observer, setElements, entries] = useIO({
     threshold: 0.25,
-    root: null
-  });
+    root: null,
+  })
 
   useEffect(() => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        let lazyImage = entry.target;
-        lazyImage.src = lazyImage.dataset.src;
-        lazyImage.classList.remove("lazy");
-        observer.unobserve(lazyImage);
+        let lazyImage = entry.target
+        lazyImage.src = lazyImage.dataset.src
+        lazyImage.classList.remove('lazy')
+        observer.unobserve(lazyImage)
       }
-    });
-  }, [entries, observer]);
+    })
+  }, [entries, observer])
 
   useEffect(() => {
     if (NFTs.length) {
-      let img = Array.from(document.getElementsByClassName("lazy"));
-      setElements(img);
+      let img = Array.from(document.getElementsByClassName('lazy'))
+      setElements(img)
     }
-  }, [NFTs, setElements]);
+  }, [NFTs, setElements])
 
   return (
     <HotArtWorksStyled>
@@ -104,11 +102,9 @@ function HotArtWorks() {
           NFTs.map((item) => (
             <Cart width="320px" height="480px" data={item} isLazy/>
             ))} */}
-            {
-              NFTs.map((item) => (
-            <Cart width="320px" height="480px" data={item} isLazy/>
-            ))
-            }
+        {NFTs.map((item, i) => (
+          <Cart key={i} width="320px" height="480px" data={item} isLazy />
+        ))}
       </div>
     </HotArtWorksStyled>
   )
