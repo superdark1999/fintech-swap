@@ -5,7 +5,7 @@ import useI18n from 'hooks/useI18n'
 import { useWeb3React } from '@web3-react/core'
 import useTickets from 'hooks/useTickets'
 import UnlockButton from 'components/UnlockButton'
-import { SCAN_NAMES } from '../../../../constants'
+import { SCAN_SITES } from '../../../../constants'
 import MyTicketsModal from '../TicketCard/UserTicketsModal'
 
 const Wrapper = styled.div`
@@ -53,7 +53,7 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
       </div>
       <div>
         <ExternalLinkWrap href={contractLink}>
-          {TranslateString(356, `View on ${SCAN_NAMES[chainId]}`)}
+          {TranslateString(356, `View on ${SCAN_SITES[chainId]}`)}
         </ExternalLinkWrap>
       </div>
     </Wrapper>

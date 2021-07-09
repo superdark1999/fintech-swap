@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import { ThemeContext } from 'styled-components'
 import { Button, LinkExternal } from '@luckyswap/uikit'
 import { ArrowUpCircle } from 'react-feather'
-import { SCAN_NAMES } from '../../../constants'
+import { SCAN_SITES } from '../../../constants'
 import { AutoColumn } from '../Column'
 import { getBscScanLink } from '../../../utils'
 import { Wrapper, Section, ConfirmedIcon, ContentHeader } from './helpers'
@@ -27,7 +27,7 @@ const TransactionSubmittedContent = ({ onDismiss, chainId, hash }: TransactionSu
         <AutoColumn gap="8px" justify="center">
           {chainId && hash && (
             <LinkExternal href={getBscScanLink(chainId, hash, 'transaction')}>
-              View on {SCAN_NAMES[chainId]}
+              View on {SCAN_SITES[chainId]}
             </LinkExternal>
           )}
           <Button onClick={onDismiss} mt="20px" className="btn-supply">

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, Link } from '@luckyswap/uikit'
 import Tooltip from '../../views/Farms/components/Tooltip/Tooltip'
-import { SCAN_NAMES } from '../../constants/index'
+import { SCAN_SITES } from '../../constants/index'
 
 const StyledTooltip = styled(Tooltip)`
   bottom: -9px;
@@ -27,7 +27,7 @@ const ToolTipInner = ({ blockNumber, chainId }) => {
         Block {blockNumber}
       </Text>
       <Link external href={`https://testnet.bscscan.com/block/${blockNumber}`}>
-        View on {SCAN_NAMES[chainId]}
+        View on {SCAN_SITES[chainId]}
       </Link>
     </>
   )

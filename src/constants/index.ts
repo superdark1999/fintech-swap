@@ -1,13 +1,5 @@
 import { JSBI, Percent, Token, ChainId, WNATIVE } from '@luckyswap/v2-sdk'
 
-// export const ROUTER_ADDRESS = '0x4eED75a231D8A1d265B283A67b5b37D1Ec80d379'
-
-// New Binance testnet
-// export const ROUTER_ADDRESS = '0x09FceE7287f882c5eEAb8032A64FDE54Fc1dD055'
-
-// Polygon testnet
-// export const ROUTER_ADDRESS = '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd'
-
 // a list of tokens by chain
 type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
@@ -23,37 +15,6 @@ export const UST = new Token(
   'UST',
   'Wrapped UST Token',
 )
-
-// export const WNATIVE = {
-//   [ChainId.MAINNET]: new Token(
-//     ChainId.MAINNET,
-//     '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
-//     18,
-//     'WBNB',
-//     'Wrapped BNB',
-//   ),
-//   [ChainId.BSCTESTNET]: new Token(
-//     ChainId.BSCTESTNET,
-//     '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
-//     18,
-//     'WBNB',
-//     'Wrapped BNB',
-//   ),
-//   [ChainId.MATIC]: new Token(
-//     ChainId.MATIC,
-//     '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
-//     18,
-//     'WMATIC',
-//     'Wrapped Matic',
-//   ),
-//   [ChainId.MATIC_TESTNET]: new Token(
-//     ChainId.MATIC_TESTNET,
-//     '0x5B67676a984807a212b1c59eBFc9B3568a474F0a',
-//     18,
-//     'WMATIC',
-//     'Wrapped Matic',
-//   ),
-// }
 
 export const ROUTER_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac',
@@ -154,7 +115,7 @@ export const BLOCK_EXPLORER_URLS: {
   [ChainId.MATIC_TESTNET]: ['https://mumbai.polygonscan.com/'],
 }
 
-export const SCAN_NAMES: {
+export const SCAN_SITES: {
   [chainId in ChainId]?: string
 } = {
   [ChainId.MAINNET]: 'bscscan',
