@@ -70,9 +70,6 @@ const InfoCard = (value) => {
             target="_blank">
               {data?.tokenId}
             </a>
-            {/* <a href="#" target="_blank" className="tokenId">
-              {data?.tokenId}
-            </a> */}
           </div>
         )}
         <div className="organize">
