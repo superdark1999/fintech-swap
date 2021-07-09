@@ -16,16 +16,13 @@ import MyCollectionCard from './MyCollectionCard'
 import TabSetting from './TabSetting'
 import TableHistory from './Table'
 import Earn from './Earn'
-import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
+import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'x
 import { HeartOutlined, CheckOutlined } from '@ant-design/icons'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
 import { getCompactString } from 'utils'
 import { isMobile } from 'react-device-detect'
 import GetTypeSocial from 'components-v2/GetTypeSocial'
-import _,{ isEmpty } from 'lodash'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import _, { isEmpty } from 'lodash'
 const { TabPane } = Tabs
 export default () => {
   const [userState] = useUserStore()
@@ -258,6 +255,7 @@ const TabMyCollection = () => {
     }
     return item
   })||[]
+
   return (
     <>
       <Row align="middle" justify="space-between">
@@ -306,7 +304,7 @@ const TabMyCollection = () => {
         <SearchInput maxWidth="300px" placeholder="Search items" />
       </Row>
       <ListCart className="list-artwork">
-        {mergerData.map((item) => {
+        {renderData.map((item) => {
           return (
             <MyCollectionCard
               key={item?._id}

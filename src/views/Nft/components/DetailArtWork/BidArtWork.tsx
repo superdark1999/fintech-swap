@@ -313,6 +313,11 @@ const DetaiArtWork = ({ id }: any) => {
       return <>Bid time is over</>
     }
   }
+
+  const priviousPage = () => {
+    window.history.back()
+  }
+
   return (
     <Row>
       <Col
@@ -325,9 +330,9 @@ const DetaiArtWork = ({ id }: any) => {
         <HeaderStyled className="header-detail">
           <Row align="middle">
             <div className="social-icon">
-              <Link to="/">
-                <CloseOutlined className="icon" />
-              </Link>
+              {/* <Link to="/"> */}
+              <CloseOutlined className="icon" onClick={priviousPage}/>
+              {/* </Link> */}
             </div>
             <div className="date-time">{renderTime()}</div>
             <div className="rating">

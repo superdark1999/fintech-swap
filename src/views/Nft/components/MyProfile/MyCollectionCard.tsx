@@ -32,6 +32,7 @@ import ModalSetPriceAuction from './ModalSetPriceAuction'
 import ModalSetPriceSell from './ModalSetPriceSell'
 import QRCodeComp from 'components-v2/QRcode/index'
 import { createFromIconfontCN } from '@ant-design/icons'
+import InfoCard from '../InfoCard'
 import moment from 'moment'
 const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
@@ -61,7 +62,7 @@ export default function MyCollectionCard({ data, option }: any) {
         })
         .catch((err) => console.log(err))
     }
-  }, [data?.tokenId, !!NFTServicesMethod])
+  }, [data?.tokenId, NFTServicesMethod])
 
   useEffect(() => {
     if (
@@ -83,7 +84,7 @@ export default function MyCollectionCard({ data, option }: any) {
         }
       })
     }
-  }, [data?.tokenId, !!NFTServicesMethod, account])
+  }, [data?.tokenId, NFTServicesMethod, account])
 
   const onSellItem = (value: any) => {
     setIsPrcessing(true)
@@ -260,6 +261,30 @@ export default function MyCollectionCard({ data, option }: any) {
             })
             setIsPrcessing(false)
           })
+      }else if(data?.NFTType === 'swap-personal'&& data?.offerFor){
+        setIsPrcessing(true)
+        marketServicesMethod
+          ?.cancelOfferSwapNFT(data?.offerFor)
+          .then((dt) => {
+            cancelSellNFT({ id: data?._id }).then(({ status }) => {
+              if (status == 200) {
+                history.push('/my-profile/mycollection/checkingToSell')
+              } else {
+                notification('error', {
+                  message: 'Error',
+                  description: 'Something when wrong, please try again later.',
+                })
+                setIsPrcessing(false)
+              }
+            })
+          })
+          .catch((err) => {
+            notification('error', {
+              message: 'Error',
+              description: err.message,
+            })
+            setIsPrcessing(false)
+          })
       }
     }
   }
@@ -383,16 +408,7 @@ export default function MyCollectionCard({ data, option }: any) {
         return 'On store'
     }
   }
-  const Tags = (tag: any, key: any) => {
-    console.log(tag, key)
-    return (
-      <li className="item">
-        <a href="/">
-          <span> &nbsp; #{tag.tag}</span>
-        </a>
-      </li>
-    )
-  }
+  
   const handleMenuClick = (dt: any) => {
     if (dt.key === 'sell') {
       setShowModalsetPrice(true)
@@ -456,117 +472,8 @@ export default function MyCollectionCard({ data, option }: any) {
               </div>
               {renderActionItem()}
             </div>
-
-            <div
-              className="box-flex"
-              style={{ display: 'flex', marginBottom: 10 }}
-            >
-              {data?.TXHash && (
-                <div style={{ display: 'flex', width: '50%' }}>
-                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </div>
-                  <a href="#" target="_blank" className="number">
-                    {getCompactString(data?.TXHash, 10)}
-                  </a>
-                </div>
-              )}
-              {data?.createdAt && (
-                <div style={{ display: 'flex' }}>
-                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
-                    Date create:{' '}
-                  </div>
-                  <a href="#" target="_blank" className="date">
-                    {moment(data?.createdAt).format('MM/DD/YYYY HH:mm')}
-                  </a>
-                </div>
-              )}
-            </div>
-
-            <div
-              className="box-flex"
-              style={{ display: 'flex', marginBottom: 10 }}
-            >
-              {data?.tokenId && (
-                <div style={{ display: 'flex', width: '50%' }}>
-                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
-                    TokenID:{' '}
-                  </div>
-                  <a href="#" target="_blank" className="tokenId">
-                    {data?.tokenId}
-                  </a>
-                </div>
-              )}
-              <div className="organize">
-                <span
-                  style={{
-                    fontSize: '16px',
-                    fontWeight: 600,
-                    color: '#AFBAC5',
-                  }}
-                >
-                  Creator:{' '}
-                </span>
-                <a
-                  className="name"
-                  style={{ lineHeight: '24px', fontWeight: 'unset' }}
-                  href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`}
-                  target="_blank"
-                >
-                  {data?.createdBy?.name
-                    ? data?.createdBy?.name
-                    : data?.createdBy?.walletAddress}
-                </a>
-              </div>
-            </div>
-
-            <div
-              className="box-flex"
-              style={{ display: 'flex', marginBottom: 10 }}
-            >
-              {data?.type && (
-                <div
-                  style={{ display: 'flex', marginBottom: 10, width: '50%' }}
-                >
-                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
-                    Type:{' '}
-                  </div>
-                  <a href="#" target="_blank" className="type">
-                    {data?.type}
-                  </a>
-                </div>
-              )}
-              {data?.tags && (
-                <div style={{ display: 'flex' }}>
-                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
-                    Tags:{' '}
-                  </div>
-                  <ul className="tags">
-                    <React.Fragment>
-                      {data?.tags.map((item: any, i: any) => {
-                        return <Tags tag={item} key={i} />
-                      })}
-                    </React.Fragment>
-                  </ul>
-                </div>
-              )}
-            </div>
-            {data?.description && (
-              <div style={{ display: 'flex'}}>
-                <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
-                Introduction:&nbsp;
-                </div>
-                <div
-                  className="description"
-                  style={{
-                    color: 'rgb(51, 52, 53)',
-                    marginLeft: 0,
-                    fontWeight: 600,
-                    marginBottom: 10,
-                  }}
-                >
-                  {data?.description}
-                </div>
-              </div>
-            )}
+            <InfoCard value={data} />
+            
           </div>
 
           <div>{renderGroupAction(data?.status)}</div>

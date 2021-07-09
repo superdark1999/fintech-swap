@@ -34,14 +34,39 @@ const BannerBar: React.FC<BannerProps> = ({ banners }) => {
 }
 
 const BannerBarStyled = styled.div`
+@media only screen and (max-width: 600) {
     border-radius: 24px;
-    height: ${isMobile ? '110px' : '380px'};
+    height:  110px;
     .banner-body{
-        height: ${isMobile ? '110px' : '380px'};
-        width:100%;
-        img{ 
-         height: ${isMobile ? '110px' : '380px'};
-        }
+      height:  110px;
+      width: 100%;
+      img{ 
+        height: 110px;
+      }
     }
+  }
+  @media only screen and (min-width: 768px) {
+    border-radius: 24px;
+    height:  380px;
+    .banner-body{
+      height:  380px;
+      width: 100%;
+      img{ 
+        height: 380px;
+      }
+    } 
+  }
+
+  @media only screen and (min-width: 992px) {
+    border-radius: 24px;
+    height:  300px;
+    .banner-body{
+      height:  110px;
+      width: 100%;
+      img{ 
+        height: 300px
+      }
+    }
+  }
 `
 export default BannerBar

@@ -149,7 +149,7 @@ export const UserProfileStyled = styled.div<Props>`
         font-size: 16px;
         line-height: 24px;
         margin-top: 20px;
-        margin-left: 20px;
+        margin-left: ${isMobile ? '0px' : ' 20px'};
       }
     }
   }
@@ -167,7 +167,9 @@ export const CartStyled = styled.div`
     width: 210px;
     height: 210px;
     border-radius: 8px;
-    margin-right: 40px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: ${isMobile ? '10px' : ' 0px'};
   }
   .btn-swap {
     background: linear-gradient(45deg, #1cace8, #07dce6);
@@ -304,80 +306,6 @@ export const CartStyled = styled.div`
             align-items: center;
           }
         }
-      }
-    }
-    .number {
-      -webkit-flex: 1;
-      -ms-flex: 1;
-      flex: 1;
-      cursor: pointer;
-      text-decoration: underline;
-      background: #333435;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 16px;
-      margin-left: 4px;
-      font-weight: 600;
-      > img {
-        margin-top: -3px;
-        margin-left: 5px;
-        width: 20px;
-      }
-    }
-    .type {
-      margin-left: 4px;
-      color: #333435;
-    }
-    .tokenId {
-      margin-left: 4px;
-      color: #333435;
-    }
-    .date {
-      margin-left: 4px;
-      color: #333435;
-    }
-    .tags {
-      list-style: none;
-      padding-left: 10px;
-      margin-bottom: 0;
-      .item {
-        display: inline-block;
-      }
-      .item + .item::before {
-        display: inline-block;
-        white-space: pre;
-        content: ', ';
-      }
-      li {
-        margin-bottom: 10px;
-        float: left;
-        a {
-          font-size: 16px;
-          text-decoration: none;
-          color: #333435;
-          border-radius: 25px;
-        }
-      }
-    }
-    .title-card {
-      display: block;
-    }
-    .content {
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 24px;
-      color: #333435;
-      margin: 12px 0px 0px 0px;
-    }
-    .organize {
-      font-weight: 600;
-      line-height: 20px;
-      color: #333435;
-      display: flex;
-      align-items: center;
-      > .name {
-        margin: 0px 6px;
-        font-size: 16px;
       }
     }
     .group-button {
