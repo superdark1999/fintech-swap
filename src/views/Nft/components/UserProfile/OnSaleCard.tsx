@@ -11,10 +11,15 @@ import formatNumber from 'utils/formatNumber'
 import { isMobile } from 'react-device-detect'
 import { Link } from 'react-router-dom'
 import InfoCard from '../InfoCard'
+import QRCodeComp from 'components-v2/QRcode/index'
+import {
+  ShareAltOutlined,
+} from '@ant-design/icons'
 export default function OnSaleCard({ data }: any) {
   const [loading, setLoading] = useState(true)
   const [price, setPrice] = useState(0)
   const marketService = useMarketServices()
+  const [showQR, setShowQR] = useState(false)
 
   useEffect(() => {
     const getPriceToken = async () => {
@@ -51,6 +56,18 @@ export default function OnSaleCard({ data }: any) {
 
   if (loading) {
     return null
+  }
+  const renderQRCode = () => {
+    return (
+      <div
+        className="group-button qrCode-wrapper"
+        style={{ justifyContent: 'flex-end' }}
+      >
+        <button className="btn-qrCode" onClick={() => setShowQR(true)}>
+          <ShareAltOutlined style={{ fontSize: '24px' }} />
+        </button>
+      </div>
+    )
   }
   return (
     <CartStyled>
@@ -107,9 +124,17 @@ export default function OnSaleCard({ data }: any) {
             {formatNumber(price)} LUCKY <img src={Token} alt="" />
           </div>
           <InfoCard value={data}/>
+          {renderQRCode()}
           {/* anss */}
         </Col>
       </Row>
+      <QRCodeComp
+        isShow={showQR}
+        setShowQR={setShowQR}
+        url={`${window.location.origin}/artwork/detail/${
+          data?.NFTType || 'buy'
+        }/${data?._id}`}
+      />
     </CartStyled>
   )
 }

@@ -52,8 +52,7 @@ const InfoCard = (value) => {
         </div>
       )}
     </div><div
-      className="box-flex"
-      //style={{ display: 'flex', marginBottom: 10 }}
+      className="box-flex "
     >
         {data?.tokenId && (
           <div style={{ display: 'flex', width: '50%' }}>
@@ -70,9 +69,6 @@ const InfoCard = (value) => {
             target="_blank">
               {data?.tokenId}
             </a>
-            {/* <a href="#" target="_blank" className="tokenId">
-              {data?.tokenId}
-            </a> */}
           </div>
         )}
         <div className="organize">
@@ -87,7 +83,7 @@ const InfoCard = (value) => {
           </span>
           <a
             className="value"
-            style={{ lineHeight: '24px', fontWeight: 'unset' }}
+            style={{ lineHeight: '24px', fontWeight: 'unset'}}
             href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`}
             target="_blank"
           >
@@ -99,7 +95,6 @@ const InfoCard = (value) => {
       </div>
       <div
         className="box-flex"
-        //style={{ display: 'flex', marginBottom: 10 }}
       >
         {data?.type && (
           <div
