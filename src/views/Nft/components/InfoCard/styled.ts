@@ -19,8 +19,8 @@ export const CartStyled = styled.div<Props>`
       opacity: 0.9;
     }
     .intro{
-      display: ${isMobile ? 'block' : 'flex'}
-        
+      display: ${isMobile ? 'block' : 'flex'};
+      margin-bottom: 10px;
     }
     
     .des{
@@ -29,7 +29,7 @@ export const CartStyled = styled.div<Props>`
         margin-bottom: 10px;
         text-overflow: ellipsis;
         overflow: hidden;
-        width: ${isMobile ? ' 100% ' :(props) =>!!props.readMore ? 'nowrap' : 'unset' };
+        width: ${isMobile ? ' 100% ' : (props) =>!!props.readMore ? '75%' : '100%' };
         white-space: ${isMobile ? 'unset' : (props) =>!!props.readMore ? 'nowrap' : 'unset'};
     }
     .readMore{
