@@ -120,7 +120,7 @@ export default function OnSaleCard({ data }: any) {
           >
             {data?.title}
           </Link>
-          <div className="number">
+          <div className="number" style={{ marginBottom: '10px' }}>
             {formatNumber(price)} LUCKY <img src={Token} alt="" />
           </div>
           <InfoCard value={data}/>
