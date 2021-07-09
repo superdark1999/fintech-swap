@@ -7838,13 +7838,6 @@ cosmiconfig@^6.0.0:
     path-type "^4.0.0"
     yaml "^1.7.2"
 
-countapi-js@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/countapi-js/-/countapi-js-1.0.2.tgz#932412160ef94a81fb0568a0919fd3ab567c0cb0"
-  integrity sha512-HteIJM3mB+Um9Kwdk9tdzF6cit39crhksA2EIlg9qBpecAzU8xxG6NGxFQnDmvKtgYu9SD6u0LNiXg5FxDm8dw==
-  dependencies:
-    cross-fetch "^3.0.4"
-
 countup.js@^1.9.3:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/countup.js/-/countup.js-1.9.3.tgz#ce3e50cd7160441e478f07da31895edcc0f1c9dd"
@@ -19399,6 +19392,11 @@ react-sweet-state@^2.5.1:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/react-sweet-state/-/react-sweet-state-2.5.2.tgz#ec220bfe08acc5eb8d957454dcb4a00e9e179107"
   integrity sha512-iMEhwhJSAOpfdgpHfWX/W4JcLyc7fvfaeACsCiDpn+xXrVGrncHTLeKiNHqPHhEpRZHJLmKIleFal6KrL8ZpMw==
+
+react-top-loading-bar@^2.0.1:
+  version "2.0.1"
+  resolved "https://npm.vexere.net/react-top-loading-bar/-/react-top-loading-bar-2.0.1.tgz#c8805ad9c1068766fdd3cadd414e67cfdf1878e9"
+  integrity sha512-wkRlK9Rte4TU817GDcjlsCoDOxrrnvsNvK609FKyio0EIrmmqjQDz5DB8HbN88CHNZBy5Lh/OBALc03ioWFPuQ==
 
 react-transition-group@^2.3.1:
   version "2.9.0"

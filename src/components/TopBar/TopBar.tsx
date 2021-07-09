@@ -509,7 +509,7 @@ const StyledTopBar = styled.div`
       font-size: 16px;
       display: flex;
       align-items: center;
-      margin-right: 12px;
+      margin-right: 24px;
       font-weight: 600;
       @media (max-width: 756px) {
         display: none;
@@ -517,7 +517,7 @@ const StyledTopBar = styled.div`
     }
     .swap-nav {
       height: 80px;
-      margin-right: 12px;
+      margin-right: 24px;
       background-color: #35a5fc;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -557,7 +557,7 @@ const StyledTopBar = styled.div`
     }
     .explore-nav {
       height: 80px;
-      margin-right: 12px;
+      margin-right: 24px;
       flex: 1;
       background-color: #35a5fc;
       -webkit-background-clip: text;

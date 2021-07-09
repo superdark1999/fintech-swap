@@ -7,10 +7,10 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import TrendingBar from '../TrendingBar/index'
 import _ from 'lodash'
 import { useHistory } from 'react-router-dom'
-import Nfts from 'wallet/state/config/constants/nfts'
 import useIO from 'hooks/useIo'
+import {isMobile} from 'react-device-detect'
+import ProgressBar from 'components-v2/ProgressBar'
 
-// export const option: React.ReactElement<OptionProps> = Select.Option
 function ExploreCollection() {
   const history = useHistory()
   let paramsSearch = useMemo(
@@ -21,13 +21,13 @@ function ExploreCollection() {
   const [NFTs, setNFTs] = useState({ data: [], total: 0 })
   const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
   const { getNFT } = useArtworkServices()
-  const [filterMethod, setFilterMethod] = useState([
-    'auction',
-    'swap-store',
-    'buy',
-  ])
+  
+  const [filterMethod, setFilterMethod] = useState('')
   const [filterType, setFilterType] = useState('')
+  const [sort, setSort] = useState('asc')
   const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(0)
+  const [tags, setTags] = useState([])
 
   const handleInputOnchange = (e) => {
     const { value } = e.target
@@ -45,36 +45,49 @@ function ExploreCollection() {
       (params) =>
         getNFT(params).then(({ status, data }) => {
           if (status == 200) {
+            setLoading(100)
             if (page === 1) {
               setNFTs({ data: data?.data, total: data.total })
             } else {
               setNFTs({ data: NFTs.data.concat(data?.data), total: data.total })
+              !isMobile && handleScroll()
             }
           }
         }),
-      1000,
+        NFTs.length === 0 ? 0 : 1000,
     ),
     [page],
   )
+
+  function handleScroll() {
+    window.scroll({
+      top: document.body.scrollHeight,
+      left: 0,
+      behavior: 'smooth',
+    })
+  }
 
   useEffect(() => {
     searchParams
       ? history.push(`/explore?search=${searchParams}`)
       : history.push(`/explore`)
-    console.log(filterMethod)
     const params = _.pickBy(
       {
         status: 'readyToSell',
-        NFTType: filterMethod,
+        NFTType: filterMethod ? filterMethod : ['auction', 'swap-store', 'buy'],
         type: filterType,
         title: searchParams?.toLowerCase(),
         page,
         limit: 8,
+        sort,
+        sortBy: 'createdAt',
+        tags,
       },
       _.identity,
     )
+    setLoading(Math.random() * (80 - 40 + 1) + 40)
     getArrNFT(params)
-  }, [filterMethod, filterType, searchParams, page])
+  }, [filterMethod, filterType, searchParams, page, sort, tags])
 
   useEffect(() => {
     entries.forEach((entry) => {
@@ -94,17 +107,13 @@ function ExploreCollection() {
     }
   }, [NFTs, setElements])
 
-  const nextPage = useCallback((page) => {
-    setPage(page)
-  }, [])
-
   return (
     <ExploreCollectionStyled>
       <div className="header-artists">
         <div className="title-artists">Explore</div>
       </div>
       <div className="trending-nft">
-        <TrendingBar />
+        <TrendingBar setTags={setTags} tags={tags} />
       </div>
       <FilterBar
         setFilterMethod={setFilterMethod}
@@ -114,22 +123,35 @@ function ExploreCollection() {
         handleInputOnchange={handleInputOnchange}
         searchParams={searchParams}
         setPage={setPage}
+        setSort={setSort}
+        sort={sort}
       />
       <h1 style={{ fontWeight: 'bold' }}>
         {NFTs?.total} results for "lucky swap studio"
       </h1>
       <div className="content-collect">
         {NFTs?.data?.map((item) => {
-          return <Cart key={item.id} width="320px" height="480px" data={item} isLazy />
+          return (
+            <Cart
+              key={item.id}
+              width="320px"
+              height="480px"
+              data={item}
+              isLazy
+            />
+          )
         })}
       </div>
       {NFTs?.data?.length < NFTs?.total && (
         <div className="footer-section">
-          <div className="wrapper-button" onClick={() => nextPage(page + 1)}>
+          <div className="wrapper-button" onClick={() => setPage(page + 1)}>
             <Button shape="round">Load more</Button>
           </div>
         </div>
       )}
+
+      <ProgressBar loading={loading} setLoading={setLoading} />
+      
     </ExploreCollectionStyled>
   )
 }

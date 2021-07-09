@@ -11,3 +11,31 @@ export const NUM_MONTH_WITHDRAW = [15, 15, 30, 30, 90]
 
 export const RegexNumber100000 = /^(?:1000000|[1-9]\d{0,6})(?:\.\d{1,2})?$/g
 export const RegexWebsiteURL = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm
+
+export const OptionSort = [
+  {
+    label: 'New',
+    value: 'asc'
+  },
+  {
+    label: 'Old',
+    value: 'desc'
+  }
+]
+  
+export const OptionMethods = [
+  { label: 'All', value: ''},
+  { label: 'Auction', value: 'auction'},
+  { label: 'Swap', value: 'swap-store'},
+  { label: 'Buy', value: 'buy'},
+]
+
+export const OptionTypeNft = [
+  { label: 'All', value: ''},
+  { label: 'Picture', value: 'image'},
+  { label: 'GIF', value: 'gif'},
+  { label: 'Video', value: 'video'},
+  { label: 'Audio', value: 'audio'},
+]
+
+
