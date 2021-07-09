@@ -89,6 +89,10 @@ export const UserProfileStyled = styled.div<Props>`
           line-height: 40px;
           color: #333435;
           font-weight: 600;
+          :hover {
+            cursor: pointer;
+            text-decoration: underline;
+          }
         }
         .copy {
           span {
@@ -214,6 +218,10 @@ export const CartStyled = styled.div`
       color: #333435;
       opacity: 0.9;
       margin-bottom: 12px;
+      :hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
     }
     .header-card {
       @media (max-width: 991px) {

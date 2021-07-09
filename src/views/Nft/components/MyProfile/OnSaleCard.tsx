@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
-import { Row, Col, Tabs, } from 'antd'
+import { Row, Col, Tabs } from 'antd'
 import Token from 'assets/images/token.svg'
 import Luckyswap from 'assets/images/luckyswap.svg'
 import usrMarketServices from 'services/web3Services/MarketServices'
@@ -9,17 +9,16 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import _ from 'lodash'
 import { getPrice, getCompactString } from 'utils'
 import formatNumber from 'utils/formatNumber'
-import useMarketServices, { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
+import useMarketServices, {
+  MARKET_ADDRESS,
+} from 'services/web3Services/MarketServices'
 import notification from 'components-v2/Alert'
 import { isMobile } from 'react-device-detect'
 import { Link, useHistory } from 'react-router-dom'
 import StatusBar from 'components-v2/StatusBar'
 import { ButtonCancel } from 'components-v2/Button'
 import QRCodeComp from 'components-v2/QRcode/index'
-import {
-  ShareAltOutlined,
-} from '@ant-design/icons'
-
+import { ShareAltOutlined } from '@ant-design/icons'
 
 export default function OnSaleCard({ data }: any) {
   const [loading, setLoading] = useState(true)
@@ -69,67 +68,76 @@ export default function OnSaleCard({ data }: any) {
     if (marketServicesMethod) {
       if (data?.NFTType === 'buy') {
         setIsProcessing(true)
-        marketServicesMethod?.cancelSellToken(data?.tokenId).then((dt) => {
-          cancelSellNFT({ id: data?._id }).then(({ status }) => {
-            if (status == 200) {
-              history.push('/my-profile/mycollection/checkingToSell')
-            } else {
-              notification('error', {
-                message: 'Error',
-                description: 'Something when wrong, please try again later.',
-              })
-              setIsProcessing(false)
-            }
+        marketServicesMethod
+          ?.cancelSellToken(data?.tokenId)
+          .then((dt) => {
+            cancelSellNFT({ id: data?._id }).then(({ status }) => {
+              if (status == 200) {
+                history.push('/my-profile/mycollection/checkingToSell')
+              } else {
+                notification('error', {
+                  message: 'Error',
+                  description: 'Something when wrong, please try again later.',
+                })
+                setIsProcessing(false)
+              }
+            })
           })
-        }).catch(err => {
-          notification('error', {
-            message: 'Error',
-            description: err.message,
+          .catch((err) => {
+            notification('error', {
+              message: 'Error',
+              description: err.message,
+            })
+            setIsProcessing(false)
           })
-          setIsProcessing(false)
-        })
       } else if (data?.NFTType === 'auction') {
         setIsProcessing(true)
-        marketServicesMethod?.revokeBidToken(data?.tokenId).then((dt) => {
-          cancelSellNFT({ id: data?._id }).then(({ status }) => {
-            if (status == 200) {
-              history.push('/my-profile/mycollection/checkingToSell')
-            } else {
-              notification('error', {
-                message: 'Error',
-                description: 'Something when wrong, please try again later.',
-              })
-              setIsProcessing(false)
-            }
+        marketServicesMethod
+          ?.revokeBidToken(data?.tokenId)
+          .then((dt) => {
+            cancelSellNFT({ id: data?._id }).then(({ status }) => {
+              if (status == 200) {
+                history.push('/my-profile/mycollection/checkingToSell')
+              } else {
+                notification('error', {
+                  message: 'Error',
+                  description: 'Something when wrong, please try again later.',
+                })
+                setIsProcessing(false)
+              }
+            })
           })
-        }).catch(err => {
-          notification('error', {
-            message: 'Error',
-            description: err.message,
+          .catch((err) => {
+            notification('error', {
+              message: 'Error',
+              description: err.message,
+            })
+            setIsProcessing(false)
           })
-          setIsProcessing(false)
-        })
       } else if (data?.NFTType === 'swap-store') {
         setIsProcessing(true)
-        marketServicesMethod?.cancelListNFT(data?.tokenId).then((dt) => {
-          cancelSellNFT({ id: data?._id }).then(({ status }) => {
-            if (status == 200) {
-              history.push('/my-profile/mycollection/checkingToSell')
-            } else {
-              notification('error', {
-                message: 'Error',
-                description: 'Something when wrong, please try again later.',
-              })
-              setIsProcessing(false)
-            }
+        marketServicesMethod
+          ?.cancelListNFT(data?.tokenId)
+          .then((dt) => {
+            cancelSellNFT({ id: data?._id }).then(({ status }) => {
+              if (status == 200) {
+                history.push('/my-profile/mycollection/checkingToSell')
+              } else {
+                notification('error', {
+                  message: 'Error',
+                  description: 'Something when wrong, please try again later.',
+                })
+                setIsProcessing(false)
+              }
+            })
           })
-        }).catch(err => {
-          notification('error', {
-            message: 'Error',
-            description: err.message,
+          .catch((err) => {
+            notification('error', {
+              message: 'Error',
+              description: err.message,
+            })
+            setIsProcessing(false)
           })
-          setIsProcessing(false)
-        })
       }
     }
   }
@@ -137,21 +145,24 @@ export default function OnSaleCard({ data }: any) {
   const getStatusByNFTType = (status: string) => {
     switch (status) {
       case 'buy':
-        return 'On store | Sell';
+        return 'On store | Sell'
       case 'auction':
-        return 'On store - Auction';
+        return 'On store - Auction'
       case 'swap-store':
-        return 'On swap store';
+        return 'On swap store'
       case 'swap-personal':
-        return 'On offering';
+        return 'On offering'
       default:
-        return 'On store';
+        return 'On store'
     }
   }
 
   const renderQRCode = () => {
     return (
-      <div className="group-button qrCode-wrapper" style={{justifyContent:'flex-end'}}>
+      <div
+        className="group-button qrCode-wrapper"
+        style={{ justifyContent: 'flex-end' }}
+      >
         <button className="btn-qrCode" onClick={() => setShowQR(true)}>
           <ShareAltOutlined style={{ fontSize: '24px' }} />
         </button>
@@ -164,7 +175,7 @@ export default function OnSaleCard({ data }: any) {
   }
   return (
     <CartStyled>
-      <Row gutter={24} align={"middle"}>
+      <Row gutter={24} align={'middle'}>
         <Col
           xl={{ span: 5 }}
           md={{ span: 24 }}
@@ -173,24 +184,24 @@ export default function OnSaleCard({ data }: any) {
         >
           {/* brbedit */}
           <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
-          {data?.type === 'video' ? (
-            <video
-              muted
-              controls
-              autoPlay={isMobile ? false : true}
-              loop
-              className="avatar"
-            >
-              <source src={`${data?.contentUrl}#t=0.1`} type="video/mp4" />
-            </video>
-          ) : (
-            <img
-              className="avatar"
-              src={data?.contentUrl}
-              alt=""
-              loading="lazy"
-            />
-          )}
+            {data?.type === 'video' ? (
+              <video
+                muted
+                controls
+                autoPlay={isMobile ? false : true}
+                loop
+                className="avatar"
+              >
+                <source src={`${data?.contentUrl}#t=0.1`} type="video/mp4" />
+              </video>
+            ) : (
+              <img
+                className="avatar"
+                src={data?.contentUrl}
+                alt=""
+                loading="lazy"
+              />
+            )}
           </Link>
         </Col>
         <Col
@@ -201,19 +212,28 @@ export default function OnSaleCard({ data }: any) {
           xxl={{ span: 18 }}
         >
           <div className="header-card" style={{ marginTop: 10 }}>
-            <div className="nfttype-status">{getStatusByNFTType(data?.NFTType)}</div>
-            {isProcessing ?
-              <StatusBar type="processing" label={'On Cacelling'} /> :
+            <div className="nfttype-status">
+              {getStatusByNFTType(data?.NFTType)}
+            </div>
+            {isProcessing ? (
+              <StatusBar type="processing" label={'On Cacelling'} />
+            ) : (
               <ButtonCancel height="40px" onClick={onCancelItemOnMarket}>
                 Cancel
               </ButtonCancel>
-            }
+            )}
           </div>
-
-          <div className="name">{data?.title}</div>
-          {(data?.NFTType == 'buy' || data?.NFTType === 'auction') && <div className="number">
-            {formatNumber(price)} LUCKY <img src={Token} alt="" />
-          </div>}
+          <Link
+            className="name"
+            to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}
+          >
+            {data?.title}
+          </Link>
+          {(data?.NFTType == 'buy' || data?.NFTType === 'auction') && (
+            <div className="number">
+              {formatNumber(price)} LUCKY <img src={Token} alt="" />
+            </div>
+          )}
           <div style={{ display: 'flex' }}>
             <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
             <div className="number">{getCompactString(data?.TXHash, 6)}</div>
@@ -226,7 +246,15 @@ export default function OnSaleCard({ data }: any) {
           <div className="organize">
             <span style={{ fontSize: '12px', fontWeight: 500 }}>Creator</span>
             {/* <img style={{ width: '40px', borderRadius: '100px' }} src={data?.createdBy?.avatarImage} /> */}
-            <a className="name" href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`} target="_blank">{data?.createdBy?.name ? data?.createdBy?.name : data?.createdBy?.walletAddress}</a>
+            <a
+              className="name"
+              href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`}
+              target="_blank"
+            >
+              {data?.createdBy?.name
+                ? data?.createdBy?.name
+                : data?.createdBy?.walletAddress}
+            </a>
             {/* <img src={Checkmark} /> */}
             {renderQRCode()}
           </div>
@@ -235,7 +263,9 @@ export default function OnSaleCard({ data }: any) {
       <QRCodeComp
         isShow={showQR}
         setShowQR={setShowQR}
-        url={`${window.location.origin}/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}
+        url={`${window.location.origin}/artwork/detail/${
+          data?.NFTType || 'buy'
+        }/${data?._id}`}
       />
     </CartStyled>
   )
