@@ -10,7 +10,7 @@ interface HeadingProps {
 
 const IconWrapper = styled.div`
   margin-right: 16px;
-  
+
   svg {
     width: 48px;
     height: 48px;

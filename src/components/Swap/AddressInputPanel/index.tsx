@@ -7,6 +7,7 @@ import { ExternalLink } from '../Shared'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import { getBscScanLink } from '../../../utils'
+import { SCAN_NAMES } from '../../../constants/index'
 
 const InputPanel = styled.div`
   display: flex;
@@ -104,7 +105,7 @@ export default function AddressInputPanel({
               </Text>
               {address && chainId && (
                 <ExternalLink href={getBscScanLink(chainId, name ?? address, 'address')} style={{ fontSize: '14px' }}>
-                  (View on BscScan)
+                  (View on {SCAN_NAMES[chainId]})
                 </ExternalLink>
               )}
             </RowBetween>

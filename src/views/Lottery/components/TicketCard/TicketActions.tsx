@@ -144,7 +144,12 @@ const TicketCard: React.FC = () => {
           <Button className="bg-yellow" width="100%">
             {TranslateString(432, 'Connect Wallet')}
           </Button>
-          <Button className="border-yellow" width="100%" disabled={requestedApproval || getStatus()} onClick={handleApprove}>
+          <Button
+            className="border-yellow"
+            width="100%"
+            disabled={requestedApproval || getStatus()}
+            onClick={handleApprove}
+          >
             {getStatus() ? spinnerIcon : ''}
             {TranslateString(494, 'View your tickets')}
           </Button>

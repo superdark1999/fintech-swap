@@ -9,9 +9,11 @@ const useWeb3NoAccount = () => {
   const [web3NoAccount, setWeb3NoAccount] = useState(null)
 
   useEffect(() => {
-    const RPC_URL = getRpcUrl(chainId ?? 56)
-    const httpProvider = new Web3.providers.HttpProvider(RPC_URL, { timeout: 10000 } as HttpProviderOptions)
-    setWeb3NoAccount(new Web3(httpProvider))
+    if (chainId) {
+      const RPC_URL = getRpcUrl(chainId)
+      const httpProvider = new Web3.providers.HttpProvider(RPC_URL, { timeout: 10000 } as HttpProviderOptions)
+      setWeb3NoAccount(new Web3(httpProvider))
+    }
   }, [chainId])
 
   return web3NoAccount

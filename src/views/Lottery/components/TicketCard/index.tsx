@@ -69,14 +69,16 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
       <CardBody>
         <CardHeader>
           <IconWrapper>
-            <img alt="" src="../images/icon-lottery.svg"/>
+            <img alt="" src="../images/icon-lottery.svg" />
           </IconWrapper>
           {lotteryHasDrawn ? (
             <TicketCountWrapper>
               <Text fontSize="20px" color="textSubtle">
                 {TranslateString(870, 'Your tickets for this round')}
               </Text>
-              <Heading size="lg" style={{color: '#F3C111', fontSize: '30px'}}>{timeUntilTicketSale}</Heading>
+              <Heading size="lg" style={{ color: '#F3C111', fontSize: '30px' }}>
+                {timeUntilTicketSale}
+              </Heading>
             </TicketCountWrapper>
           ) : (
             <TicketCountWrapper>

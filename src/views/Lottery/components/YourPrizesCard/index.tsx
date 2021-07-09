@@ -13,7 +13,7 @@ const StyledCard = styled(Card)`
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   ${(props) =>
     props.isDisabled
       ? `  

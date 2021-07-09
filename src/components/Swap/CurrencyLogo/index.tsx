@@ -32,6 +32,20 @@ export default function CurrencyLogo({
   style?: React.CSSProperties
 }) {
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
+  const { chainId } = useActiveWeb3React()
+
+  const getNativeLogo = () => {
+    switch (chainId) {
+      case 56:
+      case 97:
+        return '/images/coins/bnb.png'
+      case 137:
+      case 80001:
+        return '/images/coins/polygon.svg'
+      default:
+        return ''
+    }
+  }
 
   const srcs: string[] = useMemo(() => {
     if (currency?.isNative) return []
@@ -47,7 +61,7 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency?.isNative) {
-    return <StyledBnbLogo src="/images/coins/bnb.png" size={size} style={style} />
+    return <StyledBnbLogo src={getNativeLogo()} size={size} style={style} />
   }
 
   return (currency as any)?.symbol ? (

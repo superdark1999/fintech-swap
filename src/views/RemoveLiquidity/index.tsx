@@ -554,7 +554,7 @@ export default function RemoveLiquidity({
                                 currencyB?.isNative ? WNATIVE[chainId].address : currencyIdB
                               }`}
                             >
-                              Receive WBNB
+                              Receive {WNATIVE[chainId].symbol}
                             </StyledInternalLink>
                           ) : oneCurrencyIsWETH ? (
                             <StyledInternalLink
@@ -562,7 +562,7 @@ export default function RemoveLiquidity({
                                 currencyA && currencyEquals(currencyA, WNATIVE[chainId]) ? 'ETH' : currencyIdA
                               }/${currencyB && currencyEquals(currencyB, WNATIVE[chainId]) ? 'ETH' : currencyIdB}`}
                             >
-                              Receive BNB
+                              Receive {WNATIVE[chainId].symbol}
                             </StyledInternalLink>
                           ) : null}
                         </RowBetween>

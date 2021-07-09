@@ -1,4 +1,5 @@
 import { Menu as UikitMenu } from '@luckyswap/uikit'
+import { ChainId } from '@luckyswap/v2-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { XLUCKY_TESTNET_ADDRESSES } from 'config'
 import bep20Abi from 'config/abi/erc20.json'
@@ -11,6 +12,7 @@ import { useNativeBalance } from 'hooks/useTokenBalance'
 import React, { useContext, useEffect, useState } from 'react'
 import { useProfile } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { BLOCK_EXPLORER_URLS, RPC_URLS } from '../../constants'
 import config from './config'
 
 const Menu = (props) => {
@@ -40,11 +42,32 @@ const Menu = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, chainId])
 
+  const changeChainIdHandler = async (chainIdToChange: ChainId) => {
+    const provider = (window as WindowChain).ethereum
+    if (provider) {
+      try {
+        await provider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [
+            {
+              chainId: `0x${chainIdToChange.toString(16)}`,
+            },
+          ],
+        })
+        window.location.reload()
+      } catch (error) {
+        console.error(error)
+      }
+    } else {
+      console.error("Can't setup the BSC network on metamask because window.ethereum is undefined")
+    }
+  }
   return (
     <UikitMenu
       account={account}
       login={login}
       logout={logout}
+      chainId={chainId}
       isDark={isDark}
       toggleTheme={toggleTheme}
       currentLang={selectedLanguage && selectedLanguage.code}
@@ -61,6 +84,7 @@ const Menu = (props) => {
       }}
       balanceBNB={getBalanceNumber(nativeBalance).toFixed(3)}
       balanceLUCKY={balanceToken.toFixed(3)}
+      onChainChange={changeChainIdHandler}
       {...props}
     />
   )

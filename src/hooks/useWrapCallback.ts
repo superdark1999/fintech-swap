@@ -45,13 +45,15 @@ export default function useWrapCallback(
             ? async () => {
                 try {
                   const txReceipt = await wethContract.deposit({ value: `0x${inputAmount.raw.toString(16)}` })
-                  addTransaction(txReceipt, { summary: `Wrap ${inputAmount.toSignificant(6)} BNB to WBNB` })
+                  addTransaction(txReceipt, {
+                    summary: `Wrap ${inputAmount.toSignificant(6)} ${inputCurrency.symbol} to W${inputCurrency.symbol}`,
+                  })
                 } catch (error) {
                   console.error('Could not deposit', error)
                 }
               }
             : undefined,
-        inputError: sufficientBalance ? undefined : 'Insufficient ETH balance',
+        inputError: sufficientBalance ? undefined : `Insufficient ${inputCurrency.symbol} balance`,
       }
     }
     if (currencyEquals(WNATIVE[chainId], inputCurrency) && outputCurrency?.isNative) {
@@ -62,13 +64,17 @@ export default function useWrapCallback(
             ? async () => {
                 try {
                   const txReceipt = await wethContract.withdraw(`0x${inputAmount.raw.toString(16)}`)
-                  addTransaction(txReceipt, { summary: `Unwrap ${inputAmount.toSignificant(6)} WBNB to BNB` })
+                  addTransaction(txReceipt, {
+                    summary: `Unwrap ${inputAmount.toSignificant(6)} W${inputCurrency.symbol} to ${
+                      inputCurrency.symbol
+                    }`,
+                  })
                 } catch (error) {
                   console.error('Could not withdraw', error)
                 }
               }
             : undefined,
-        inputError: sufficientBalance ? undefined : 'Insufficient WBNB balance',
+        inputError: sufficientBalance ? undefined : `Insufficient W${inputCurrency.symbol} balance`,
       }
     }
     return NOT_APPLICABLE

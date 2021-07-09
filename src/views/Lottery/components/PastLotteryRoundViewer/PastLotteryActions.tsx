@@ -5,6 +5,7 @@ import useI18n from 'hooks/useI18n'
 import { useWeb3React } from '@web3-react/core'
 import useTickets from 'hooks/useTickets'
 import UnlockButton from 'components/UnlockButton'
+import { SCAN_NAMES } from '../../../../constants'
 import MyTicketsModal from '../TicketCard/UserTicketsModal'
 
 const Wrapper = styled.div`
@@ -33,7 +34,7 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
   const tickets = useTickets(lotteryNumber)
   const ticketsLength = tickets.length
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
 
   if (!account) {
     return (
@@ -51,7 +52,9 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
         </Button>
       </div>
       <div>
-        <ExternalLinkWrap href={contractLink}>{TranslateString(356, 'View on BscScan')}</ExternalLinkWrap>
+        <ExternalLinkWrap href={contractLink}>
+          {TranslateString(356, `View on ${SCAN_NAMES[chainId]}`)}
+        </ExternalLinkWrap>
       </div>
     </Wrapper>
   )

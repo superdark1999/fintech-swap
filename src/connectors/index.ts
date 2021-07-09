@@ -16,12 +16,13 @@ const RPC = {
   [ChainId.BSCTESTNET]: 'https://data-seed-prebsc-2-s3.binance.org:8545',
 }
 
-const NETWORK_URL = getNodeUrl(ChainId.MAINNET)
+// const NETWORK_URL = getNodeUrl(ChainId.MAINNET)
+// console.log('get node trong connector')
 export const NETWORK_CHAIN_ID: number = parseInt('56' ?? '56')
 
-if (typeof NETWORK_URL === 'undefined') {
-  throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)
-}
+// if (typeof NETWORK_URL === 'undefined') {
+//   throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)
+// }
 
 export const network = new NetworkConnector({
   urls: RPC,
@@ -38,11 +39,11 @@ export const injected = new InjectedConnector({
   supportedChainIds: [56, 97, 137, 80001],
 })
 
-export const bsc = new BscConnector({ supportedChainIds: [56] })
+// export const bsc = new BscConnector({ supportedChainIds: [56] })
 
-// mainnet only
+// // mainnet only
 export const walletconnect = new WalletConnectConnector({
-  rpc: { [NETWORK_CHAIN_ID]: NETWORK_URL },
+  rpc: { 56: 'https://bsc-dataseed.binance.org/' },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
   pollingInterval: 15000,
@@ -50,7 +51,7 @@ export const walletconnect = new WalletConnectConnector({
 
 // mainnet only
 export const walletlink = new WalletLinkConnector({
-  url: NETWORK_URL,
+  url: 'https://bsc-dataseed.binance.org/',
   appName: 'Uniswap',
   appLogoUrl:
     'https://mpng.pngfly.com/20181202/bex/kisspng-emoji-domain-unicorn-pin-badges-sticker-unicorn-tumblr-emoji-unicorn-iphoneemoji-5c046729264a77.5671679315437924251569.jpg',

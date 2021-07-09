@@ -5,6 +5,7 @@ import { Contract } from '@ethersproject/contracts'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { ChainId, Currency, CurrencyAmount, JSBI, Percent, Token } from '@luckyswap/v2-sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
+import { BLOCK_EXPLORER_URLS } from '../constants'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -15,15 +16,8 @@ export function isAddress(value: any): string | false {
   }
 }
 
-const BSCSCAN_PREFIXES: { [chainId in ChainId]: string } = {
-  56: '',
-  97: 'testnet.',
-  137: '',
-  80001: 'mumbai.',
-}
-
 export function getBscScanLink(chainId: ChainId, data: string, type: 'transaction' | 'token' | 'address'): string {
-  const prefix = `https://${BSCSCAN_PREFIXES[chainId] || BSCSCAN_PREFIXES[ChainId.MAINNET]}bscscan.com`
+  const prefix = BLOCK_EXPLORER_URLS[chainId][0]
 
   switch (type) {
     case 'transaction': {

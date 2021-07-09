@@ -150,6 +150,15 @@ export const BLOCK_EXPLORER_URLS: {
 } = {
   [ChainId.MAINNET]: ['https://bscscan.com'],
   [ChainId.BSCTESTNET]: ['https://testnet.bscscan.com/'],
-  [ChainId.MATIC]: ['https://explorer.matic.network/'],
-  [ChainId.MATIC_TESTNET]: ['https://mumbai-explorer.matic.today'],
+  [ChainId.MATIC]: ['https://polygonscan.com/'],
+  [ChainId.MATIC_TESTNET]: ['https://mumbai.polygonscan.com/'],
+}
+
+export const SCAN_NAMES: {
+  [chainId in ChainId]?: string
+} = {
+  [ChainId.MAINNET]: 'bscscan',
+  [ChainId.BSCTESTNET]: 'bscscan',
+  [ChainId.MATIC]: 'polygonscan',
+  [ChainId.MATIC_TESTNET]: 'polygonscan',
 }

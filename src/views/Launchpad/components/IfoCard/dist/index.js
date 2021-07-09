@@ -1,5 +1,4 @@
-'use strict'
-var __makeTemplateObject =
+const __makeTemplateObject =
   (this && this.__makeTemplateObject) ||
   function (cooked, raw) {
     if (Object.defineProperty) {
@@ -10,14 +9,15 @@ var __makeTemplateObject =
     return cooked
   }
 exports.__esModule = true
-var react_1 = require('react')
-var styled_components_1 = require('styled-components')
-var react_router_dom_1 = require('react-router-dom')
-var core_1 = require('@web3-react/core')
-var uikit_1 = require('@luckyswap/uikit')
-var useI18n_1 = require('hooks/useI18n')
-var useGetPublicIfoData_1 = require('hooks/useGetPublicIfoData')
-var StyledIfoCard = styled_components_1['default'](uikit_1.Card)(
+const react_1 = require('react')
+const styled_components_1 = require('styled-components')
+const react_router_dom_1 = require('react-router-dom')
+const core_1 = require('@web3-react/core')
+const uikit_1 = require('@luckyswap/uikit')
+const useI18n_1 = require('hooks/useI18n')
+const useGetPublicIfoData_1 = require('hooks/useGetPublicIfoData')
+
+const StyledIfoCard = styled_components_1.default(uikit_1.Card)(
   templateObject_1 ||
     (templateObject_1 = __makeTemplateObject(
       [
@@ -30,312 +30,312 @@ var StyledIfoCard = styled_components_1['default'](uikit_1.Card)(
       ],
     )),
   function (_a) {
-    var ifoId = _a.ifoId
-    return "url('/images/ifos/" + ifoId + "-bg.svg')"
+    const { ifoId } = _a
+    return `url('/images/ifos/${ifoId}-bg.svg')`
   },
 )
-var getRibbonComponent = function (status, TranslateString) {
+const getRibbonComponent = function (status, TranslateString) {
   if (status === 'coming_soon') {
-    return react_1['default'].createElement(uikit_1.CardRibbon, {
+    return react_1.default.createElement(uikit_1.CardRibbon, {
       variantColor: 'textDisabled',
       text: TranslateString(999, 'Coming Soon'),
     })
   }
   if (status === 'live') {
-    return react_1['default'].createElement(uikit_1.CardRibbon, {
+    return react_1.default.createElement(uikit_1.CardRibbon, {
       variantColor: 'primary',
       text: TranslateString(999, 'LIVE NOW!'),
     })
   }
   return null
 }
-var IfoCard = function (_a) {
-  var ifo = _a.ifo
-  var id = ifo.id,
-    name = ifo.name,
-    subTitle = ifo.subTitle
-  var publicIfoData = useGetPublicIfoData_1['default'](ifo)
-  var account = core_1.useWeb3React().account
-  var TranslateString = useI18n_1['default']()
-  var Ribbon = getRibbonComponent(publicIfoData.status, TranslateString)
+const IfoCard = function (_a) {
+  const { ifo } = _a
+  const { id } = ifo
+  const { name } = ifo
+  const { subTitle } = ifo
+  const publicIfoData = useGetPublicIfoData_1.default(ifo)
+  const { account } = core_1.useWeb3React()
+  const TranslateString = useI18n_1.default()
+  const Ribbon = getRibbonComponent(publicIfoData.status, TranslateString)
   return (
     // <StyledIfoCard ifoId={id} ribbon={Ribbon} isActive={publicIfoData.status === 'live'}>
     //   <IfoCardDetails ifo={ifo} publicIfoData={publicIfoData} />
     // </StyledIfoCard>
-    react_1['default'].createElement(
+    react_1.default.createElement(
       BoxIfoCard,
       null,
-      react_1['default'].createElement(
+      react_1.default.createElement(
         Item,
         null,
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemHead,
           null,
-          react_1['default'].createElement('section', null, react_1['default'].createElement('span', null, 'Ended')),
+          react_1.default.createElement('section', null, react_1.default.createElement('span', null, 'Ended')),
         ),
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemContent,
           null,
-          react_1['default'].createElement('h4', null, 'HyFi'),
-          react_1['default'].createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
-          react_1['default'].createElement(
+          react_1.default.createElement('h4', null, 'HyFi'),
+          react_1.default.createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
+          react_1.default.createElement(
             Dflex,
             null,
-            react_1['default'].createElement('div', null, 'IDO Amount:'),
-            react_1['default'].createElement('div', null, '4,000,000 HYFI'),
+            react_1.default.createElement('div', null, 'IDO Amount:'),
+            react_1.default.createElement('div', null, '4,000,000 HYFI'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             Dflex,
             { className: 'flex-bot' },
-            react_1['default'].createElement('div', null, 'Time:'),
-            react_1['default'].createElement('div', null, '6213225 (04.02 9:00 UTC)'),
+            react_1.default.createElement('div', null, 'Time:'),
+            react_1.default.createElement('div', null, '6213225 (04.02 9:00 UTC)'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             BoxLink,
             null,
-            react_1['default'].createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
           ),
         ),
       ),
-      react_1['default'].createElement(
+      react_1.default.createElement(
         Item,
         null,
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemHead,
           null,
-          react_1['default'].createElement('section', null, react_1['default'].createElement('span', null, 'Ended')),
+          react_1.default.createElement('section', null, react_1.default.createElement('span', null, 'Ended')),
         ),
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemContent,
           null,
-          react_1['default'].createElement('h4', null, 'HyFi'),
-          react_1['default'].createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
-          react_1['default'].createElement(
+          react_1.default.createElement('h4', null, 'HyFi'),
+          react_1.default.createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
+          react_1.default.createElement(
             Dflex,
             null,
-            react_1['default'].createElement('div', null, 'IDO Amount:'),
-            react_1['default'].createElement('div', null, '4,000,000 HYFI'),
+            react_1.default.createElement('div', null, 'IDO Amount:'),
+            react_1.default.createElement('div', null, '4,000,000 HYFI'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             Dflex,
             { className: 'flex-bot' },
-            react_1['default'].createElement('div', null, 'Time:'),
-            react_1['default'].createElement('div', null, '6213225 (04.02 9:00 UTC)'),
+            react_1.default.createElement('div', null, 'Time:'),
+            react_1.default.createElement('div', null, '6213225 (04.02 9:00 UTC)'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             BoxLink,
             null,
-            react_1['default'].createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
           ),
         ),
       ),
-      react_1['default'].createElement(
+      react_1.default.createElement(
         Item,
         null,
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemHead,
           null,
-          react_1['default'].createElement('section', null, react_1['default'].createElement('span', null, 'Ended')),
+          react_1.default.createElement('section', null, react_1.default.createElement('span', null, 'Ended')),
         ),
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemContent,
           null,
-          react_1['default'].createElement('h4', null, 'HyFi'),
-          react_1['default'].createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
-          react_1['default'].createElement(
+          react_1.default.createElement('h4', null, 'HyFi'),
+          react_1.default.createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
+          react_1.default.createElement(
             Dflex,
             null,
-            react_1['default'].createElement('div', null, 'IDO Amount:'),
-            react_1['default'].createElement('div', null, '4,000,000 HYFI'),
+            react_1.default.createElement('div', null, 'IDO Amount:'),
+            react_1.default.createElement('div', null, '4,000,000 HYFI'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             Dflex,
             { className: 'flex-bot' },
-            react_1['default'].createElement('div', null, 'Time:'),
-            react_1['default'].createElement('div', null, '6213225 (04.02 9:00 UTC)'),
+            react_1.default.createElement('div', null, 'Time:'),
+            react_1.default.createElement('div', null, '6213225 (04.02 9:00 UTC)'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             BoxLink,
             null,
-            react_1['default'].createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
           ),
         ),
       ),
-      react_1['default'].createElement(
+      react_1.default.createElement(
         Item,
         null,
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemHead,
           null,
-          react_1['default'].createElement('section', null, react_1['default'].createElement('span', null, 'Ended')),
+          react_1.default.createElement('section', null, react_1.default.createElement('span', null, 'Ended')),
         ),
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemContent,
           null,
-          react_1['default'].createElement('h4', null, 'HyFi'),
-          react_1['default'].createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
-          react_1['default'].createElement(
+          react_1.default.createElement('h4', null, 'HyFi'),
+          react_1.default.createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
+          react_1.default.createElement(
             Dflex,
             null,
-            react_1['default'].createElement('div', null, 'IDO Amount:'),
-            react_1['default'].createElement('div', null, '4,000,000 HYFI'),
+            react_1.default.createElement('div', null, 'IDO Amount:'),
+            react_1.default.createElement('div', null, '4,000,000 HYFI'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             Dflex,
             { className: 'flex-bot' },
-            react_1['default'].createElement('div', null, 'Time:'),
-            react_1['default'].createElement('div', null, '6213225 (04.02 9:00 UTC)'),
+            react_1.default.createElement('div', null, 'Time:'),
+            react_1.default.createElement('div', null, '6213225 (04.02 9:00 UTC)'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             BoxLink,
             null,
-            react_1['default'].createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
           ),
         ),
       ),
-      react_1['default'].createElement(
+      react_1.default.createElement(
         Item,
         null,
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemHead,
           null,
-          react_1['default'].createElement('section', null, react_1['default'].createElement('span', null, 'Ended')),
+          react_1.default.createElement('section', null, react_1.default.createElement('span', null, 'Ended')),
         ),
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemContent,
           null,
-          react_1['default'].createElement('h4', null, 'HyFi'),
-          react_1['default'].createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
-          react_1['default'].createElement(
+          react_1.default.createElement('h4', null, 'HyFi'),
+          react_1.default.createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
+          react_1.default.createElement(
             Dflex,
             null,
-            react_1['default'].createElement('div', null, 'IDO Amount:'),
-            react_1['default'].createElement('div', null, '4,000,000 HYFI'),
+            react_1.default.createElement('div', null, 'IDO Amount:'),
+            react_1.default.createElement('div', null, '4,000,000 HYFI'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             Dflex,
             { className: 'flex-bot' },
-            react_1['default'].createElement('div', null, 'Time:'),
-            react_1['default'].createElement('div', null, '6213225 (04.02 9:00 UTC)'),
+            react_1.default.createElement('div', null, 'Time:'),
+            react_1.default.createElement('div', null, '6213225 (04.02 9:00 UTC)'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             BoxLink,
             null,
-            react_1['default'].createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
           ),
         ),
       ),
-      react_1['default'].createElement(
+      react_1.default.createElement(
         Item,
         null,
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemHead,
           null,
-          react_1['default'].createElement('section', null, react_1['default'].createElement('span', null, 'Ended')),
+          react_1.default.createElement('section', null, react_1.default.createElement('span', null, 'Ended')),
         ),
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemContent,
           null,
-          react_1['default'].createElement('h4', null, 'HyFi'),
-          react_1['default'].createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
-          react_1['default'].createElement(
+          react_1.default.createElement('h4', null, 'HyFi'),
+          react_1.default.createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
+          react_1.default.createElement(
             Dflex,
             null,
-            react_1['default'].createElement('div', null, 'IDO Amount:'),
-            react_1['default'].createElement('div', null, '4,000,000 HYFI'),
+            react_1.default.createElement('div', null, 'IDO Amount:'),
+            react_1.default.createElement('div', null, '4,000,000 HYFI'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             Dflex,
             { className: 'flex-bot' },
-            react_1['default'].createElement('div', null, 'Time:'),
-            react_1['default'].createElement('div', null, '6213225 (04.02 9:00 UTC)'),
+            react_1.default.createElement('div', null, 'Time:'),
+            react_1.default.createElement('div', null, '6213225 (04.02 9:00 UTC)'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             BoxLink,
             null,
-            react_1['default'].createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
           ),
         ),
       ),
-      react_1['default'].createElement(
+      react_1.default.createElement(
         Item,
         null,
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemHead,
           null,
-          react_1['default'].createElement('section', null, react_1['default'].createElement('span', null, 'Ended')),
+          react_1.default.createElement('section', null, react_1.default.createElement('span', null, 'Ended')),
         ),
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemContent,
           null,
-          react_1['default'].createElement('h4', null, 'HyFi'),
-          react_1['default'].createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
-          react_1['default'].createElement(
+          react_1.default.createElement('h4', null, 'HyFi'),
+          react_1.default.createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
+          react_1.default.createElement(
             Dflex,
             null,
-            react_1['default'].createElement('div', null, 'IDO Amount:'),
-            react_1['default'].createElement('div', null, '4,000,000 HYFI'),
+            react_1.default.createElement('div', null, 'IDO Amount:'),
+            react_1.default.createElement('div', null, '4,000,000 HYFI'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             Dflex,
             { className: 'flex-bot' },
-            react_1['default'].createElement('div', null, 'Time:'),
-            react_1['default'].createElement('div', null, '6213225 (04.02 9:00 UTC)'),
+            react_1.default.createElement('div', null, 'Time:'),
+            react_1.default.createElement('div', null, '6213225 (04.02 9:00 UTC)'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             BoxLink,
             null,
-            react_1['default'].createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
           ),
         ),
       ),
-      react_1['default'].createElement(
+      react_1.default.createElement(
         Item,
         null,
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemHead,
           null,
-          react_1['default'].createElement('section', null, react_1['default'].createElement('span', null, 'Ended')),
+          react_1.default.createElement('section', null, react_1.default.createElement('span', null, 'Ended')),
         ),
-        react_1['default'].createElement(
+        react_1.default.createElement(
           ItemContent,
           null,
-          react_1['default'].createElement('h4', null, 'HyFi'),
-          react_1['default'].createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
-          react_1['default'].createElement(
+          react_1.default.createElement('h4', null, 'HyFi'),
+          react_1.default.createElement('p', null, 'The Intelligent, High-frequency Yield Farming aggregator.'),
+          react_1.default.createElement(
             Dflex,
             null,
-            react_1['default'].createElement('div', null, 'IDO Amount:'),
-            react_1['default'].createElement('div', null, '4,000,000 HYFI'),
+            react_1.default.createElement('div', null, 'IDO Amount:'),
+            react_1.default.createElement('div', null, '4,000,000 HYFI'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             Dflex,
             { className: 'flex-bot' },
-            react_1['default'].createElement('div', null, 'Time:'),
-            react_1['default'].createElement('div', null, '6213225 (04.02 9:00 UTC)'),
+            react_1.default.createElement('div', null, 'Time:'),
+            react_1.default.createElement('div', null, '6213225 (04.02 9:00 UTC)'),
           ),
-          react_1['default'].createElement(
+          react_1.default.createElement(
             BoxLink,
             null,
-            react_1['default'].createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
+            react_1.default.createElement(react_router_dom_1.Link, { to: '/IfoDetail' }, 'Participate'),
           ),
         ),
       ),
-      react_1['default'].createElement(
+      react_1.default.createElement(
         Item,
         { className: 'item-coming' },
-        react_1['default'].createElement(ItemHead, null, 'Upcoming Project !'),
-        react_1['default'].createElement(
+        react_1.default.createElement(ItemHead, null, 'Upcoming Project !'),
+        react_1.default.createElement(
           ItemContent,
           null,
-          react_1['default'].createElement('h4', null, 'Stay tuned !'),
-          react_1['default'].createElement('p', null, 'Something exciting is coming your way!'),
+          react_1.default.createElement('h4', null, 'Stay tuned !'),
+          react_1.default.createElement('p', null, 'Something exciting is coming your way!'),
         ),
       ),
     )
   )
 }
-var BoxIfoCard = styled_components_1['default'].div(
+var BoxIfoCard = styled_components_1.default.div(
   templateObject_2 ||
     (templateObject_2 = __makeTemplateObject(
       [
@@ -346,7 +346,7 @@ var BoxIfoCard = styled_components_1['default'].div(
       ],
     )),
 )
-var Item = styled_components_1['default'].div(
+var Item = styled_components_1.default.div(
   templateObject_3 ||
     (templateObject_3 = __makeTemplateObject(
       [
@@ -357,7 +357,7 @@ var Item = styled_components_1['default'].div(
       ],
     )),
 )
-var ItemHead = styled_components_1['default'].div(
+var ItemHead = styled_components_1.default.div(
   templateObject_4 ||
     (templateObject_4 = __makeTemplateObject(
       [
@@ -368,7 +368,7 @@ var ItemHead = styled_components_1['default'].div(
       ],
     )),
 )
-var Dflex = styled_components_1['default'].div(
+var Dflex = styled_components_1.default.div(
   templateObject_5 ||
     (templateObject_5 = __makeTemplateObject(
       [
@@ -379,7 +379,7 @@ var Dflex = styled_components_1['default'].div(
       ],
     )),
 )
-var ItemContent = styled_components_1['default'].div(
+var ItemContent = styled_components_1.default.div(
   templateObject_6 ||
     (templateObject_6 = __makeTemplateObject(
       [
@@ -390,7 +390,7 @@ var ItemContent = styled_components_1['default'].div(
       ],
     )),
 )
-var BoxLink = styled_components_1['default'].div(
+var BoxLink = styled_components_1.default.div(
   templateObject_7 ||
     (templateObject_7 = __makeTemplateObject(
       [
@@ -401,11 +401,11 @@ var BoxLink = styled_components_1['default'].div(
       ],
     )),
 )
-exports['default'] = IfoCard
-var templateObject_1,
-  templateObject_2,
-  templateObject_3,
-  templateObject_4,
-  templateObject_5,
-  templateObject_6,
-  templateObject_7
+exports.default = IfoCard
+let templateObject_1
+let templateObject_2
+let templateObject_3
+let templateObject_4
+let templateObject_5
+let templateObject_6
+let templateObject_7

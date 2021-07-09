@@ -19,8 +19,8 @@ import CardBusdValue from '../../../Home/components/CardBusdValue'
 //   margin-bottom: 30px;
 // `
 
-const BoxTotal = styled.div `
-  background: linear-gradient(45deg,rgb(35 35 35) 30%,rgb(45 45 45) 100%);
+const BoxTotal = styled.div`
+  background: linear-gradient(45deg, rgb(35 35 35) 30%, rgb(45 45 45) 100%);
   box-shadow: 0px 0px 11px 0px rgb(16 16 16 / 57%);
   color: #ffffff;
   overflow: hidden;
@@ -82,7 +82,7 @@ const CardBodyNew = styled.div`
   padding: 24px;
 `
 
-const BoxLucky = styled.div `
+const BoxLucky = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -92,7 +92,7 @@ const BoxLucky = styled.div `
   h2 {
     font-size: 44px;
     position: relative;
-    color: #F3C111;
+    color: #f3c111;
     font-weight: 700;
   }
 
@@ -103,7 +103,7 @@ const BoxLucky = styled.div `
   }
 `
 
-const Dollar = styled.div `
+const Dollar = styled.div`
   padding-left: 60px;
 `
 
@@ -117,54 +117,54 @@ const TotalPrizesCard = () => {
   const { currentLotteryNumber } = useContext(PastLotteryDataContext)
 
   return (
-      <BoxTotal>
-        <CardBody>
-          {account && (
-            <Flex mb="16px" alignItems="center" justifyContent="space-between" style={{ height: '20px' }}>
-              {currentLotteryNumber === 0 && <Skeleton height={20} width={56} />}
-              <>
-                <Text fontSize="12px" style={{ fontWeight: 600 }}>
-                  {TranslateString(720, `Round #${currentLotteryNumber}`, { num: currentLotteryNumber })}
-                </Text>
-              </>
-              {/* {currentLotteryNumber > 0 && (
+    <BoxTotal>
+      <CardBody>
+        {account && (
+          <Flex mb="16px" alignItems="center" justifyContent="space-between" style={{ height: '20px' }}>
+            {currentLotteryNumber === 0 && <Skeleton height={20} width={56} />}
+            <>
+              <Text fontSize="12px" style={{ fontWeight: 600 }}>
+                {TranslateString(720, `Round #${currentLotteryNumber}`, { num: currentLotteryNumber })}
+              </Text>
+            </>
+            {/* {currentLotteryNumber > 0 && (
                 <>
                   <Text fontSize="12px" style={{ fontWeight: 600 }}>
                     {TranslateString(720, `Round #${currentLotteryNumber}`, { num: currentLotteryNumber })}
                   </Text>
                 </>
               )} */}
-            </Flex>
-          )}
-          
-          <CardHeading>
-            <Left>
-              <PrizeCountWrapper>
-                <Text fontSize="24px" fontWeight="500" color="textSubtle">
-                  {TranslateString(722, 'Total Pot:')}
-                </Text>
-                <BoxLucky>
-                  <IconWrapper>
-                    <img width="55px" alt="" src="/images/icon-logo-y.png" />
-                  </IconWrapper>
-                  <Heading style={{ 'textShadow': 'rgb(255 214 0) 0px 0px 25px', fontSize : '44' }} size="lg">
-                    {lotteryPrizeWithCommaSeparators} <span>LUCKY</span>
-                  </Heading>
-                </BoxLucky>
-                <Dollar>{lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}</Dollar>
-              </PrizeCountWrapper>
-            </Left>
-            <Right>
-              <ExpandableSectionButton onClick={() => setShowFooter(!showFooter)} expanded={showFooter} />
-            </Right>
-          </CardHeading>
-        </CardBody>
-        <ExpandingWrapper showFooter={showFooter}>
-          <CardFooter className="no-border">
-            <PrizeGrid lotteryPrizeAmount={lotteryPrizeAmount} />
-          </CardFooter>
-        </ExpandingWrapper>
-      </BoxTotal>
+          </Flex>
+        )}
+
+        <CardHeading>
+          <Left>
+            <PrizeCountWrapper>
+              <Text fontSize="24px" fontWeight="500" color="textSubtle">
+                {TranslateString(722, 'Total Pot:')}
+              </Text>
+              <BoxLucky>
+                <IconWrapper>
+                  <img width="55px" alt="" src="/images/icon-logo-y.png" />
+                </IconWrapper>
+                <Heading style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px', fontSize: '44' }} size="lg">
+                  {lotteryPrizeWithCommaSeparators} <span>LUCKY</span>
+                </Heading>
+              </BoxLucky>
+              <Dollar>{lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}</Dollar>
+            </PrizeCountWrapper>
+          </Left>
+          <Right>
+            <ExpandableSectionButton onClick={() => setShowFooter(!showFooter)} expanded={showFooter} />
+          </Right>
+        </CardHeading>
+      </CardBody>
+      <ExpandingWrapper showFooter={showFooter}>
+        <CardFooter className="no-border">
+          <PrizeGrid lotteryPrizeAmount={lotteryPrizeAmount} />
+        </CardFooter>
+      </ExpandingWrapper>
+    </BoxTotal>
   )
 }
 

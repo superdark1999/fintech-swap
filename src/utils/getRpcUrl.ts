@@ -10,7 +10,7 @@ const getNodeUrl = (chainId?: ChainId) => {
     const nodeUrl = RPC_URLS[chainId][randomIndex]
     return nodeUrl
   } catch (error) {
-    console.error('get node url error : ', error)
+    console.log('node url error : ', error)
     return null
   }
 }
