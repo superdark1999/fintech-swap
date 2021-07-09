@@ -176,6 +176,7 @@ export const CartStyled = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 10px;
       .status {
         display: flex;
         align-items: center;
@@ -218,13 +219,13 @@ export const CartStyled = styled.div`
       }
     }
     .name {
-      text-transform: uppercase;
+      
       font-weight: bold;
       font-size: 28px;
       line-height: 40px;
       color: #333435;
       opacity: 0.9;
-      margin-bottom: 12px;
+      
     }
     
     .header-card {
@@ -300,6 +301,7 @@ export const CartStyled = styled.div`
       }
     }
     .number {
+      
       -webkit-flex: 1;
       -ms-flex: 1;
       flex: 1;
@@ -320,6 +322,11 @@ export const CartStyled = styled.div`
     .type{
       margin-left: 4px;
       color: #333435;
+     
+    }
+    .tokenId{
+      margin-left: 4px;
+      color: #333435;
     }
     .date{
       margin-left: 4px;
@@ -329,23 +336,29 @@ export const CartStyled = styled.div`
       list-style: none;
       padding-left: 10px;
       margin-bottom: 0;
+      .item{
+        display: inline-block;
+      }
+      .item + .item::before {
+        display: inline-block;
+        white-space: pre;
+        content: ", ";
+      }
       li{
         margin-bottom: 10px;
         float: left;
-        margin-right: 10px;
         a{
-          padding: 8px 10px;
-          display: block;
           font-size: 16px;
           text-decoration: none;
-          background: #e4e4e4;
           color: #333435;
           border-radius: 25px;
+         
         }
       }
     }
     .title-card{
       display: block;
+      
     }
     .content {
       font-weight: 500;
@@ -362,7 +375,7 @@ export const CartStyled = styled.div`
       align-items: center;
       > .name {
         margin: 0px 6px;
-        font-size: 14px;
+        font-size: 16px;
       }
     }
     .group-button {

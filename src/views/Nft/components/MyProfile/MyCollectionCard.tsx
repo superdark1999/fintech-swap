@@ -33,7 +33,6 @@ import ModalSetPriceSell from './ModalSetPriceSell'
 import QRCodeComp from 'components-v2/QRcode/index'
 import { createFromIconfontCN } from '@ant-design/icons'
 import moment from 'moment'
-import { Tag } from 'reactstrap'
 const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
 })
@@ -44,7 +43,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const [ruleAuctionModal, setRuleAuctionModal] = useState(false)
   const [approvingMarket, setApprovingMarket] = useState(false)
   const [showQR, setShowQR] = useState(false)
-  console.log(typeof data.createdAt, data.createdAt)
+  console.log(data)
   const NFTServicesMethod = useNFTServices()
   const marketServicesMethod = useMarketServices()
   const { setPrice, cancelSellNFT } = useArtworkServices()
@@ -74,7 +73,11 @@ export default function MyCollectionCard({ data, option }: any) {
       const { nftContract } = NFTServicesMethod
       const filter = nftContract.filters.Approval(data?.ownerWalletAddress)
       nftContract.on(filter, (userAddress, marketAddress, tokenId) => {
-        if (Number(tokenId) == data?.tokenId && userAddress == account && marketAddress == MARKET_ADDRESS) {
+        if (
+          Number(tokenId) == data?.tokenId &&
+          userAddress == account &&
+          marketAddress == MARKET_ADDRESS
+        ) {
           setIsNFTCanSell(true)
           setApprovingMarket(false)
           setIsPrcessing(false)
@@ -122,12 +125,18 @@ export default function MyCollectionCard({ data, option }: any) {
       })
   }
   const onSubmitRuleAuction = (value: any) => {
-
     const tokenId = data?.tokenId
-    const startTime = value?.dateTime?.startTime || moment().unix();
-    const endTime = value?.dateTime?.endTime || moment().add(1, 'days')?.unix();
+    const startTime = value?.dateTime?.startTime || moment().unix()
+    const endTime = value?.dateTime?.endTime || moment().add(1, 'days')?.unix()
     setIsPrcessing(true)
-    marketServicesMethod?.setTokenBidInfo(tokenId, value.price, value.stepPrice, startTime, endTime)
+    marketServicesMethod
+      ?.setTokenBidInfo(
+        tokenId,
+        value.price,
+        value.stepPrice,
+        startTime,
+        endTime,
+      )
       .then((dt) => {
         if (dt?.hash) {
           setPrice({ id: data?._id, NFTType: 'auction' }).then(({ status }) => {
@@ -315,7 +324,6 @@ export default function MyCollectionCard({ data, option }: any) {
   }
 
   const renderActionItem = () => {
-
     if (
       isProcessing ||
       approvingMarket ||
@@ -376,12 +384,12 @@ export default function MyCollectionCard({ data, option }: any) {
         return 'On store'
     }
   }
-  const Tags = (tag:any) =>{
-    console.log(tag)
-    return(
-      <li>
+  const Tags = (tag: any, key: any) => {
+    console.log(tag, key)
+    return (
+      <li className="item">
         <a href="/">
-          <strong>{tag.tag}</strong>
+          <span> &nbsp; #{tag.tag}</span>
         </a>
       </li>
     )
@@ -400,6 +408,7 @@ export default function MyCollectionCard({ data, option }: any) {
       <Menu.Item key="auction">Auction</Menu.Item>
     </Menu>
   )
+
   //render status from API
   return (
     <CartStyled>
@@ -410,14 +419,19 @@ export default function MyCollectionCard({ data, option }: any) {
           xs={{ span: 24 }}
           xxl={{ span: 5 }}
         >
-            {data.type === 'video' ? (
-              <video width="100%" style={{ maxHeight: '200px', borderRadius: '8px' }} controls muted>
-                <source src={data?.contentUrl} type="video/mp4" />
-                Your browser does not support HTML5 video.
-              </video>
-            ) : (
-              <img className="avatar" src={data?.contentUrl} />
-            )}
+          {data.type === 'video' ? (
+            <video
+              width="100%"
+              style={{ maxHeight: '200px', borderRadius: '8px' }}
+              controls
+              muted
+            >
+              <source src={data?.contentUrl} type="video/mp4" />
+              Your browser does not support HTML5 video.
+            </video>
+          ) : (
+            <img className="avatar" src={data?.contentUrl} />
+          )}
         </Col>
         <Col
           className="description space-vehicle"
@@ -444,9 +458,12 @@ export default function MyCollectionCard({ data, option }: any) {
               {renderActionItem()}
             </div>
 
-            <div className="box-flex" style={{ display: 'flex', marginBottom: 10, justifyContent: 'space-between' }}>
+            <div
+              className="box-flex"
+              style={{ display: 'flex', marginBottom: 10 }}
+            >
               {data?.TXHash && (
-                <div style={{ display: 'flex', marginBottom: 10 }}>
+                <div style={{ display: 'flex', width: '50%' }}>
                   <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </div>
                   <a href="#" target="_blank" className="number">
                     {getCompactString(data?.TXHash, 10)}
@@ -454,46 +471,106 @@ export default function MyCollectionCard({ data, option }: any) {
                 </div>
               )}
               {data?.createdAt && (
-                <div style={{ display: 'flex', marginBottom: 10 }}>
-                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>Date create: </div>
+                <div style={{ display: 'flex' }}>
+                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+                    Date create:{' '}
+                  </div>
                   <a href="#" target="_blank" className="date">
-                    {moment(data?.createdAt).format('MM/DD/YYYY')}
+                    {moment(data?.createdAt).format('MM/DD/YYYY HH:mm')}
                   </a>
                 </div>
               )}
             </div>
+
+            <div
+              className="box-flex"
+              style={{ display: 'flex', marginBottom: 10 }}
+            >
+              {data?.tokenId && (
+                <div style={{ display: 'flex', width: '50%' }}>
+                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+                    TokenID:{' '}
+                  </div>
+                  <a href="#" target="_blank" className="tokenId">
+                    {data?.tokenId}
+                  </a>
+                </div>
+              )}
+              <div className="organize">
+                <span
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    color: '#AFBAC5',
+                  }}
+                >
+                  Creator:{' '}
+                </span>
+                <a
+                  className="name"
+                  style={{ lineHeight: '24px', fontWeight: 'unset' }}
+                  href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`}
+                  target="_blank"
+                >
+                  {data?.createdBy?.name
+                    ? data?.createdBy?.name
+                    : data?.createdBy?.walletAddress}
+                </a>
+              </div>
+            </div>
+
             {data?.description && (
-              <div className="description" style={{ color: 'rgb(51, 52, 53)', fontWeight: 600, marginBottom: 10}}>
-                {data?.description}
+              <div style={{ display: 'flex', width: '50%' }}>
+                <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+                Introduction:&nbsp;
+                </div>
+                <div
+                  className="description"
+                  style={{
+                    color: 'rgb(51, 52, 53)',
+                    marginLeft: 0,
+                    fontWeight: 600,
+                    marginBottom: 10,
+                  }}
+                >
+                  {data?.description}
+                </div>
               </div>
             )}
-            <div className="box-flex" style={{ display: 'flex',justifyContent: 'space-between', marginBottom: 10,}}>
+
+            <div
+              className="box-flex"
+              style={{ display: 'flex', marginBottom: 10 }}
+            >
               {data?.type && (
-                <div style={{ display: 'flex', marginBottom: 10 }}>
-                  <div style={{ color: '#AFBAC5', fontWeight: 600}}>Type: </div>
+                <div
+                  style={{ display: 'flex', marginBottom: 10, width: '50%' }}
+                >
+                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+                    Type:{' '}
+                  </div>
                   <a href="#" target="_blank" className="type">
                     {data?.type}
                   </a>
                 </div>
               )}
               {data?.tags && (
-                <div style={{ display: 'flex'}}>
-                  <div style={{ color: '#AFBAC5', fontWeight: 600}}>Tags: </div>
+                <div style={{ display: 'flex' }}>
+                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+                    Tags:{' '}
+                  </div>
                   <ul className="tags">
                     <React.Fragment>
-                      {data?.tags.map((item:any, key:any) => {
-                        return (
-                        <Tags tag={item} />
-                        );
+                      {data?.tags.map((item: any, i: any) => {
+                        return <Tags tag={item} key={i} />
                       })}
                     </React.Fragment>
                   </ul>
                 </div>
               )}
             </div>
-            
           </div>
-          
+
           <div>{renderGroupAction(data?.status)}</div>
         </Col>
       </Row>
@@ -517,5 +594,3 @@ export default function MyCollectionCard({ data, option }: any) {
     </CartStyled>
   )
 }
-
-

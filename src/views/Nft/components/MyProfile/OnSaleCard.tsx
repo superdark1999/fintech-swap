@@ -19,6 +19,7 @@ import QRCodeComp from 'components-v2/QRcode/index'
 import {
   ShareAltOutlined,
 } from '@ant-design/icons'
+import moment from 'moment'
 
 
 export default function OnSaleCard({ data }: any) {
@@ -159,6 +160,17 @@ export default function OnSaleCard({ data }: any) {
     )
   }
 
+  const Tags = (tag: any, key: any) => {
+    console.log(tag, key)
+    return (
+      <li className="item">
+        <a href="/">
+          <span> &nbsp; #{tag.tag}</span>
+        </a>
+      </li>
+    )
+  }
+
   if (loading) {
     return null
   }
@@ -200,7 +212,7 @@ export default function OnSaleCard({ data }: any) {
           xs={{ span: 24 }}
           xxl={{ span: 18 }}
         >
-          <div className="header-card" style={{ marginTop: 10 }}>
+          <div className="header-card" style={{ marginBottom: 0 }}>
             <div className="nfttype-status">{getStatusByNFTType(data?.NFTType)}</div>
             {isProcessing ?
               <StatusBar type="processing" label={'On Cacelling'} /> :
@@ -217,11 +229,123 @@ export default function OnSaleCard({ data }: any) {
 
           </div> */}
 
-          {(data?.NFTType == 'buy' || data?.NFTType === 'auction') && <div className="number">
+          {(data?.NFTType == 'buy' || data?.NFTType === 'auction') && <div className="number" style={{marginBottom: 10 }}>
             {formatNumber(price)} LUCKY <img src={Token} alt="" />
           </div>}
 
-          <div style={{ display: 'flex' }}>
+          <div
+              className="box-flex"
+              style={{ display: 'flex', marginBottom: 10 }}
+            >
+              {data?.TXHash && (
+                <div style={{ display: 'flex', width: '50%' }}>
+                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </div>
+                  <a href="#" target="_blank" className="number">
+                    {getCompactString(data?.TXHash, 10)}
+                  </a>
+                </div>
+              )}
+              {data?.createdAt && (
+                <div style={{ display: 'flex' }}>
+                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+                    Date create:{' '}
+                  </div>
+                  <a href="#" target="_blank" className="date">
+                    {moment(data?.createdAt).format('MM/DD/YYYY HH:mm')}
+                  </a>
+                </div>
+              )}
+            </div>
+
+            <div
+              className="box-flex"
+              style={{ display: 'flex', marginBottom: 10 }}
+            >
+              {data?.tokenId && (
+                <div style={{ display: 'flex', width: '50%' }}>
+                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+                    TokenID:{' '}
+                  </div>
+                  <a href="#" target="_blank" className="tokenId">
+                    {data?.tokenId}
+                  </a>
+                </div>
+              )}
+              <div className="organize">
+                <span
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    color: '#AFBAC5',
+                  }}
+                >
+                  Creator:{' '}
+                </span>
+                <a
+                  className="name"
+                  style={{ lineHeight: '24px', fontWeight: 'unset' }}
+                  href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`}
+                  target="_blank"
+                >
+                  {data?.createdBy?.name
+                    ? data?.createdBy?.name
+                    : data?.createdBy?.walletAddress}
+                </a>
+              </div>
+            </div>
+
+            {data?.description && (
+              <div style={{ display: 'flex', width: '50%' }}>
+                <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+                Introduction:&nbsp;
+                </div>
+                <div
+                  className="description"
+                  style={{
+                    color: 'rgb(51, 52, 53)',
+                    marginLeft: 0,
+                    fontWeight: 600,
+                    marginBottom: 10,
+                  }}
+                >
+                  {data?.description}
+                </div>
+              </div>
+            )}
+
+            <div
+              className="box-flex"
+              style={{ display: 'flex', marginBottom: 10 }}
+            >
+              {data?.type && (
+                <div
+                  style={{ display: 'flex', marginBottom: 10, width: '50%' }}
+                >
+                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+                    Type:{' '}
+                  </div>
+                  <a href="#" target="_blank" className="type">
+                    {data?.type}
+                  </a>
+                </div>
+              )}
+              {data?.tags && (
+                <div style={{ display: 'flex' }}>
+                  <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+                    Tags:{' '}
+                  </div>
+                  <ul className="tags">
+                    <React.Fragment>
+                      {data?.tags.map((item: any, i: any) => {
+                        return <Tags tag={item} key={i} />
+                      })}
+                    </React.Fragment>
+                  </ul>
+                </div>
+              )}
+            </div>
+
+          {/* <div style={{ display: 'flex' }}>
             <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
             <div className="number">{getCompactString(data?.TXHash, 6)}</div>
           </div>
@@ -232,11 +356,10 @@ export default function OnSaleCard({ data }: any) {
 
           <div className="organize">
             <span style={{ fontSize: '12px', fontWeight: 500 }}>Creator</span>
-            {/* <img style={{ width: '40px', borderRadius: '100px' }} src={data?.createdBy?.avatarImage} /> */}
             <a className="name" href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`} target="_blank">{data?.createdBy?.name ? data?.createdBy?.name : data?.createdBy?.walletAddress}</a>
-            {/* <img src={Checkmark} /> */}
+            
             {renderQRCode()}
-          </div>
+          </div> */}
         </Col>
       </Row>
       <QRCodeComp
