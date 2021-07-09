@@ -63,6 +63,10 @@ const DetaiArtWork = ({ id }: any) => {
     )
   }
 
+  const priviousPage = () => {
+    window.history.back()
+  }
+
   return (
     <Row>
       <Col
@@ -75,9 +79,7 @@ const DetaiArtWork = ({ id }: any) => {
         <HeaderStyled className="header-detail">
           <Row align="middle">
             <div className="social-icon">
-              <Link to="/">
-                <CloseOutlined className="icon" />
-              </Link>
+              <CloseOutlined className="icon" onClick={priviousPage} />
             </div>
             {/* <div className="date-time">02h 31m 04s left 🔥 </div> */}
             <div className="rating" style={{ marginLeft: 10 }}>

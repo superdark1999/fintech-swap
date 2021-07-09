@@ -38,6 +38,7 @@ import Lucky3 from 'assets/icon/lucky-3.svg'
 import Lottie from 'react-lottie';
 import LogoAnimation from "assets/animation/Logo_animation.json";
 import InoEvent from 'views/Nft/components/InoEvent'
+import CacheRoute, { CacheSwitch } from 'react-router-cache-route'
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if ('ethereum' in window) {
@@ -123,10 +124,10 @@ const App = () => {
             }
             <TopBar setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
             {/* <div style={{marginTop: 80}}> */}
-            <Switch >
-              <Route path="/" exact>
+            <CacheSwitch >
+              <CacheRoute path="/" exact>
                 <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
-              </Route>
+              </CacheRoute>
               <Route path="/nfts">
                 <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
               </Route>
@@ -136,35 +137,35 @@ const App = () => {
               <Route path="/artwork/detail/:type/:id">
                 <DetailArtWork />
               </Route>
-              <Route path="/user-profile/:id/:tab/:option">
+              <CacheRoute path="/user-profile/:id/:tab/:option">
                 <UserProfile />
-              </Route>
-              <Route path="/my-profile/:tab/:option">
+              </CacheRoute>
+              <CacheRoute path="/my-profile/:tab/:option">
                 <MyProfile />
-              </Route>
-              <Route path="/user-profile/:id/:tab">
+              </CacheRoute>
+              <CacheRoute path="/user-profile/:id/:tab">
                 <UserProfile />
-              </Route>
-              <Route path="/my-profile/:tab">
+              </CacheRoute>
+              <CacheRoute path="/my-profile/:tab">
                 <MyProfile />
-              </Route>
+              </CacheRoute>
               <Route path="/swap/:id/step=:step">
                 <Swap />
               </Route>
               <Route path="/swap/step=:step">
                 <Swap />
               </Route>
-              <Route path="/swap-store">
+              <CacheRoute path="/swap-store">
                 <SwapStore />
-              </Route>
-              <Route path="/explore">
+              </CacheRoute>
+              <CacheRoute path="/explore">
                 <Explore />
-              </Route>
+              </CacheRoute>
               <Route path="/ino">
                 <InoEvent />
               </Route>
               <Route component={Page404} />
-            </Switch>
+            </CacheSwitch>
             {/* </div> */}
 
           </>
