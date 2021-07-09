@@ -306,6 +306,8 @@ export const CartStyled = styled.div`
         }
       }
     }
+<<<<<<< HEAD
+=======
     .number {
       -webkit-flex: 1;
       -ms-flex: 1;
@@ -380,6 +382,7 @@ export const CartStyled = styled.div`
         font-size: 16px;
       }
     }
+>>>>>>> 398061f571cd86ec1712486565ddb98adc4838d5
     .group-button {
       display: flex;
       flex: 1;
