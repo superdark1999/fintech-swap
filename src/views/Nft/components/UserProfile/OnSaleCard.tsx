@@ -60,10 +60,7 @@ export default function OnSaleCard({ data }: any) {
           xs={{ span: 24 }}
           xxl={{ span: 5 }}
         >
-          <Link
-            className="name"
-            to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}
-          >
+          <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
             {data?.type === 'video' ? (
               <video
                 muted
