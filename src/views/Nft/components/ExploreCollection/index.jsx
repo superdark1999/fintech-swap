@@ -7,11 +7,10 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import TrendingBar from '../TrendingBar/index'
 import _ from 'lodash'
 import { useHistory } from 'react-router-dom'
-import LoadingBar from 'react-top-loading-bar'
 import useIO from 'hooks/useIo'
 import {isMobile} from 'react-device-detect'
+import ProgressBar from 'components-v2/ProgressBar'
 
-// export const option: React.ReactElement<OptionProps> = Select.Option
 function ExploreCollection() {
   const history = useHistory()
   let paramsSearch = useMemo(
@@ -22,6 +21,7 @@ function ExploreCollection() {
   const [NFTs, setNFTs] = useState({ data: [], total: 0 })
   const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
   const { getNFT } = useArtworkServices()
+  
   const [filterMethod, setFilterMethod] = useState('')
   const [filterType, setFilterType] = useState('')
   const [sort, setSort] = useState('asc')
@@ -54,7 +54,7 @@ function ExploreCollection() {
             }
           }
         }),
-      1000,
+        NFTs.length === 0 ? 0 : 1000,
     ),
     [page],
   )
@@ -62,9 +62,9 @@ function ExploreCollection() {
   function handleScroll() {
     window.scroll({
       top: document.body.scrollHeight,
-      left: 0, 
+      left: 0,
       behavior: 'smooth',
-    });
+    })
   }
 
   useEffect(() => {
@@ -74,7 +74,7 @@ function ExploreCollection() {
     const params = _.pickBy(
       {
         status: 'readyToSell',
-        NFTType: filterMethod ? filterMethod : [ 'auction', 'swap-store', 'buy'],
+        NFTType: filterMethod ? filterMethod : ['auction', 'swap-store', 'buy'],
         type: filterType,
         title: searchParams?.toLowerCase(),
         page,
@@ -85,7 +85,7 @@ function ExploreCollection() {
       },
       _.identity,
     )
-    setLoading((Math.random() * (80 - 40 + 1)) + 40)
+    setLoading(Math.random() * (80 - 40 + 1) + 40)
     getArrNFT(params)
   }, [filterMethod, filterType, searchParams, page, sort, tags])
 
@@ -106,12 +106,6 @@ function ExploreCollection() {
       setElements(img)
     }
   }, [NFTs, setElements])
-
-  const nextPage = useCallback((page) => {
-    setPage(page)
-  }, [])
-
-
 
   return (
     <ExploreCollectionStyled>
@@ -135,26 +129,28 @@ function ExploreCollection() {
       <h1 style={{ fontWeight: 'bold' }}>
         {NFTs?.total} results for "lucky swap studio"
       </h1>
-      <div className="content-collect" >
+      <div className="content-collect">
         {NFTs?.data?.map((item) => {
-          return <Cart key={item.id} width="320px" height="480px" data={item} isLazy />
+          return (
+            <Cart
+              key={item.id}
+              width="320px"
+              height="480px"
+              data={item}
+              isLazy
+            />
+          )
         })}
       </div>
       {NFTs?.data?.length < NFTs?.total && (
         <div className="footer-section">
-          <div className="wrapper-button" onClick={() => nextPage(page + 1)}>
+          <div className="wrapper-button" onClick={() => setPage(page + 1)}>
             <Button shape="round">Load more</Button>
           </div>
         </div>
       )}
 
-      <LoadingBar
-        color='linear-gradient(101deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)'
-        progress={loading}
-        onLoaderFinished={() => setLoading(0)}
-        transitionTime={800}
-        height={4}
-      />
+      <ProgressBar loading={loading} setLoading={setLoading} />
       
     </ExploreCollectionStyled>
   )
