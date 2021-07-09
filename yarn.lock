@@ -15233,7 +15233,7 @@ min-document@^2.19.0:
   dependencies:
     dom-walk "^0.1.0"
 
-mini-create-react-context@^0.4.0:
+mini-create-react-context@^0.4.0, mini-create-react-context@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/mini-create-react-context/-/mini-create-react-context-0.4.1.tgz#072171561bfdc922da08a60c2197a497cc2d1d5e"
   integrity sha512-YWCYEmd5CQeHGSAKrYvXgmzzkrvssZcuuQDDeqkT+PziKGMgE+0MCCtcKbROzocGBG1meBLl2FotlRwf4gAzbQ==
@@ -19270,6 +19270,13 @@ react-remove-scroll@^2.4.1:
     tslib "^1.0.0"
     use-callback-ref "^1.2.3"
     use-sidecar "^1.0.1"
+
+react-router-cache-route@^1.11.1:
+  version "1.11.1"
+  resolved "https://npm.vexere.net/react-router-cache-route/-/react-router-cache-route-1.11.1.tgz#c5f51d708e85aaa94fd25c8fce58ef00536e01d3"
+  integrity sha512-+/h2ryPm6TNlEulZm/ucmZfllFwguOBSFl5j8Pkf4byR5ckHhXiKF55XdNxyz/BmidvRJtW725I8h+8VKTCo5Q==
+  dependencies:
+    mini-create-react-context "^0.4.1"
 
 react-router-dom@^5.2.0:
   version "5.2.0"

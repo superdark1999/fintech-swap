@@ -176,6 +176,10 @@ const DetaiArtWork = ({ id }: any) => {
       return <ButtonBuy onClick={onApproveBuyOnMarket}>Allow to buy</ButtonBuy>
     }
   }
+
+  const priviousPage = () => {
+    window.history.back()
+  }
   return (
     <Row>
       <Col
@@ -188,9 +192,7 @@ const DetaiArtWork = ({ id }: any) => {
         <HeaderStyled className="header-detail">
           <Row align="middle">
             <div className="social-icon">
-              <Link to="/">
-                <CloseOutlined className="icon" />
-              </Link>
+              <CloseOutlined className="icon" onClick={priviousPage}/>
             </div>
             <div className="rating">
               4.8 <StarFilled style={{ color: '#fadb14' }} />{' '}
