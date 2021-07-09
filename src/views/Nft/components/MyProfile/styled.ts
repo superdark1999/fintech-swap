@@ -85,6 +85,7 @@ export const UserProfileStyled = styled.div<Props>`
         justify-content: space-between;
         flex-direction: ${isMobile ? 'column' : 'row'};
         .name {
+          
           font-size: 28px;
           line-height: 40px;
           color: #333435;
@@ -175,6 +176,7 @@ export const CartStyled = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 10px;
       .status {
         display: flex;
         align-items: center;
@@ -188,6 +190,15 @@ export const CartStyled = styled.div`
       .nfttype-status {
         color: #19a3dd;
         width: 100%;
+      }
+      .name-date{
+        display: flex;
+        font-weight: bold;
+        font-size: 28px;
+        line-height: 40px;
+        color: #333435;
+        opacity: 0.9;
+        margin-bottom: 12px;
       }
       .cancel {
         width: 98px;
@@ -208,13 +219,15 @@ export const CartStyled = styled.div`
       }
     }
     .name {
+      
       font-weight: bold;
       font-size: 28px;
       line-height: 40px;
       color: #333435;
       opacity: 0.9;
-      margin-bottom: 12px;
+      
     }
+    
     .header-card {
       @media (max-width: 991px) {
         display: flex;
@@ -288,12 +301,13 @@ export const CartStyled = styled.div`
       }
     }
     .number {
+      
       -webkit-flex: 1;
       -ms-flex: 1;
       flex: 1;
       cursor: pointer;
       text-decoration: underline;
-      background: #35a5fc;
+      background: #333435;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 16px;
@@ -304,6 +318,47 @@ export const CartStyled = styled.div`
         margin-left: 5px;
         width: 20px;
       }
+    }
+    .type{
+      margin-left: 4px;
+      color: #333435;
+     
+    }
+    .tokenId{
+      margin-left: 4px;
+      color: #333435;
+    }
+    .date{
+      margin-left: 4px;
+      color: #333435;
+    }
+    .tags{
+      list-style: none;
+      padding-left: 10px;
+      margin-bottom: 0;
+      .item{
+        display: inline-block;
+      }
+      .item + .item::before {
+        display: inline-block;
+        white-space: pre;
+        content: ", ";
+      }
+      li{
+        margin-bottom: 10px;
+        float: left;
+        a{
+          font-size: 16px;
+          text-decoration: none;
+          color: #333435;
+          border-radius: 25px;
+         
+        }
+      }
+    }
+    .title-card{
+      display: block;
+      
     }
     .content {
       font-weight: 500;
@@ -320,7 +375,7 @@ export const CartStyled = styled.div`
       align-items: center;
       > .name {
         margin: 0px 6px;
-        font-size: 14px;
+        font-size: 16px;
       }
     }
     .group-button {

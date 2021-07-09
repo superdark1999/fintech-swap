@@ -288,7 +288,7 @@ export const CartStyled = styled.div`
       flex: 1;
       cursor: pointer;
       text-decoration: underline;
-      background: #35a5fc;
+      background: #333435;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 16px;

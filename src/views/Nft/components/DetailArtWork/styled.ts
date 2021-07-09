@@ -300,7 +300,7 @@ export const DetailStyled = styled.div`
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
-    background: #35a5fc;
+    background: #333435;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 16px;
@@ -336,7 +336,7 @@ export const DetailStyled = styled.div`
         &.your-bid {
           font-weight: 600;
           font-size: 20px;
-          color: #1890ff;
+          color: #333435;
         }
       }
     }
