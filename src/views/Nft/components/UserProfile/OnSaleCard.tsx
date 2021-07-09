@@ -10,10 +10,16 @@ import { getPrice, getCompactString } from 'utils'
 import formatNumber from 'utils/formatNumber'
 import { isMobile } from 'react-device-detect'
 import { Link } from 'react-router-dom'
+import InfoCard from '../InfoCard'
+import QRCodeComp from 'components-v2/QRcode/index'
+import {
+  ShareAltOutlined,
+} from '@ant-design/icons'
 export default function OnSaleCard({ data }: any) {
   const [loading, setLoading] = useState(true)
   const [price, setPrice] = useState(0)
   const marketService = useMarketServices()
+  const [showQR, setShowQR] = useState(false)
 
   useEffect(() => {
     const getPriceToken = async () => {
@@ -50,6 +56,18 @@ export default function OnSaleCard({ data }: any) {
 
   if (loading) {
     return null
+  }
+  const renderQRCode = () => {
+    return (
+      <div
+        className="group-button qrCode-wrapper"
+        style={{ justifyContent: 'flex-end' }}
+      >
+        <button className="btn-qrCode" onClick={() => setShowQR(true)}>
+          <ShareAltOutlined style={{ fontSize: '24px' }} />
+        </button>
+      </div>
+    )
   }
   return (
     <CartStyled>
@@ -105,33 +123,18 @@ export default function OnSaleCard({ data }: any) {
           <div className="number">
             {formatNumber(price)} LUCKY <img src={Token} alt="" />
           </div>
-          <div style={{ display: 'flex' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </div>
-            <div className="number">
-              {' '}
-              {' ' + getCompactString(data?.TXHash, 6)}
-            </div>
-          </div>
-
-          {data?.description && (
-            <div className="content">{data?.description}</div>
-          )}
-          <div className="organize">
-            <span style={{ fontSize: '12px', fontWeight: 500 }}>Creator</span>
-            {/* <img style={{ width: '40px', borderRadius: '100px' }} src={data?.createdBy?.avatarImage} /> */}
-            <a
-              className="name"
-              href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`}
-              target="_blank"
-            >
-              {data?.createdBy?.name
-                ? data?.createdBy?.name
-                : data?.createdBy?.walletAddress}
-            </a>
-            {/* <img src={Checkmark} /> */}
-          </div>
+          <InfoCard value={data}/>
+          {renderQRCode()}
+          {/* anss */}
         </Col>
       </Row>
+      <QRCodeComp
+        isShow={showQR}
+        setShowQR={setShowQR}
+        url={`${window.location.origin}/artwork/detail/${
+          data?.NFTType || 'buy'
+        }/${data?._id}`}
+      />
     </CartStyled>
   )
 }
