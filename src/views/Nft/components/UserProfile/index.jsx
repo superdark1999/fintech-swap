@@ -184,12 +184,13 @@ const TabOnSale = ({ userAddress }) => {
 }
 
 const TabMyCollection = () => {
-  const { option } = useParams()
+  // const { option } = useParams()
   const [optionChecked, setOptionChecked] = useState(option)
   const [renderData, setRenderData] = useState([])
   const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
-
+  const match = useRouteMatch()
+  const { option= "" } = match?.params
   // useEffect(()=>{
   //   const query = {
   //     ownerWalletAddress: account,

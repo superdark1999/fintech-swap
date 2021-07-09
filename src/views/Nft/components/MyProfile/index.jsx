@@ -133,7 +133,7 @@ export default () => {
           </div>
           <Tabs
             className="tabs-profile"
-            activeKey={match.params.tab}
+            activeKey={match?.params?.tab}
             onChange={onChangeTab}
           >
             <TabPane tab="On Store" key="onstore">
@@ -163,9 +163,12 @@ const TabOnSale = () => {
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
-  const { tab } = useParams()
+  // const { tab } = useParams()
+  const match = useRouteMatch()
+  console.log('match', match)
+  
   useEffect(() => {
-    if (tab == 'onstore') {
+    if (match?.params?.tab == 'onstore') {
       const query = {
         status: 'readyToSell',
         NFTType: ['buy', 'auction', 'swap-store'],
@@ -177,7 +180,7 @@ const TabOnSale = () => {
         }
       })
     }
-  }, [tab])
+  }, [match?.params?.tab])
   return (
     <>
       {/* <Row align="middle" justify="space-between">     
@@ -200,9 +203,12 @@ const TabOnSale = () => {
 }
 
 const TabMyCollection = () => {
-  const { option } = useParams()
+  // const { option } = useParams()
+  // console.log('option: ', option)
   const formRef = useRef(null)
-  const [optionChecked, setOptionChecked] = useState(option)
+  const match = useRouteMatch()
+  console.log('match', match)
+  const [optionChecked, setOptionChecked] = useState(match?.params?.option || '')
 
   const [renderData, setRenderData] = useState([])
   const { getNFT } = useArtworkServices()
@@ -262,7 +268,7 @@ const TabMyCollection = () => {
   return (
     <>
       <Row align="middle" justify="space-between">
-        <GroupButton defaultValue={option}>
+        <GroupButton defaultValue={match?.params?.option}>
           <RadioButton
             width="auto"
             className="btn-filter"
