@@ -137,18 +137,18 @@ const App = () => {
               <Route path="/artwork/detail/:type/:id">
                 <DetailArtWork />
               </Route>
-              <CacheRoute path="/user-profile/:id/:tab/:option">
+              <Route path="/user-profile/:id/:tab/:option">
                 <UserProfile />
-              </CacheRoute>
-              <CacheRoute path="/my-profile/:tab/:option">
+              </Route>
+              <Route path="/my-profile/:tab/:option">
                 <MyProfile />
-              </CacheRoute>
-              <CacheRoute path="/user-profile/:id/:tab">
+              </Route>
+              <Route path="/user-profile/:id/:tab">
                 <UserProfile />
-              </CacheRoute>
-              <CacheRoute path="/my-profile/:tab">
+              </Route>
+              <Route path="/my-profile/:tab">
                 <MyProfile />
-              </CacheRoute>
+              </Route>
               <Route path="/swap/:id/step=:step">
                 <Swap />
               </Route>
