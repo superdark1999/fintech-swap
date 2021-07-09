@@ -10,6 +10,7 @@ import { getPrice, getCompactString } from 'utils'
 import formatNumber from 'utils/formatNumber'
 import { isMobile } from 'react-device-detect'
 import { Link } from 'react-router-dom'
+import InfoCard from '../InfoCard'
 export default function OnSaleCard({ data }: any) {
   const [loading, setLoading] = useState(true)
   const [price, setPrice] = useState(0)
@@ -101,23 +102,8 @@ export default function OnSaleCard({ data }: any) {
           <div className="number">
             {formatNumber(price)} LUCKY <img src={Token} alt="" />
           </div>
-          <div style={{ display: 'flex' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </div>
-            <div className="number">
-              {' '}
-              {' ' + getCompactString(data?.TXHash, 6)}
-            </div>
-          </div>
-
-          {data?.description && (
-            <div className="content">{data?.description}</div>
-          )}
-          <div className="organize">
-            <span style={{ fontSize: '12px', fontWeight: 500 }}>Creator</span>
-            {/* <img style={{ width: '40px', borderRadius: '100px' }} src={data?.createdBy?.avatarImage} /> */}
-            <a className="name" href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`} target="_blank">{data?.createdBy?.name ? data?.createdBy?.name : data?.createdBy?.walletAddress}</a>
-            {/* <img src={Checkmark} /> */}
-          </div>
+          <InfoCard value={data}/>
+          {/* anss */}
         </Col>
       </Row>
     </CartStyled>
