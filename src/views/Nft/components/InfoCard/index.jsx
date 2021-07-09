@@ -52,8 +52,7 @@ const InfoCard = (value) => {
         </div>
       )}
     </div><div
-      className="box-flex"
-      //style={{ display: 'flex', marginBottom: 10 }}
+      className="box-flex "
     >
         {data?.tokenId && (
           <div style={{ display: 'flex', width: '50%' }}>
@@ -96,7 +95,6 @@ const InfoCard = (value) => {
       </div>
       <div
         className="box-flex"
-        //style={{ display: 'flex', marginBottom: 10 }}
       >
         {data?.type && (
           <div
