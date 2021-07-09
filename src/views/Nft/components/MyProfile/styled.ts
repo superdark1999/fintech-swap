@@ -85,11 +85,14 @@ export const UserProfileStyled = styled.div<Props>`
         justify-content: space-between;
         flex-direction: ${isMobile ? 'column' : 'row'};
         .name {
-          
           font-size: 28px;
           line-height: 40px;
           color: #333435;
           font-weight: 600;
+          :hover {
+            cursor: pointer;
+            text-decoration: underline;
+          }
         }
         .copy {
           span {
@@ -191,7 +194,7 @@ export const CartStyled = styled.div`
         color: #19a3dd;
         width: 100%;
       }
-      .name-date{
+      .name-date {
         display: flex;
         font-weight: bold;
         font-size: 28px;
@@ -219,15 +222,18 @@ export const CartStyled = styled.div`
       }
     }
     .name {
-      
       font-weight: bold;
       font-size: 28px;
       line-height: 40px;
       color: #333435;
       opacity: 0.9;
-      
+      margin-bottom: 12px;
+      :hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
     }
-    
+
     .header-card {
       @media (max-width: 991px) {
         display: flex;
@@ -300,6 +306,83 @@ export const CartStyled = styled.div`
         }
       }
     }
+<<<<<<< HEAD
+=======
+    .number {
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      cursor: pointer;
+      text-decoration: underline;
+      background: #333435;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 16px;
+      margin-left: 4px;
+      font-weight: 600;
+      > img {
+        margin-top: -3px;
+        margin-left: 5px;
+        width: 20px;
+      }
+    }
+    .type {
+      margin-left: 4px;
+      color: #333435;
+    }
+    .tokenId {
+      margin-left: 4px;
+      color: #333435;
+    }
+    .date {
+      margin-left: 4px;
+      color: #333435;
+    }
+    .tags {
+      list-style: none;
+      padding-left: 10px;
+      margin-bottom: 0;
+      .item {
+        display: inline-block;
+      }
+      .item + .item::before {
+        display: inline-block;
+        white-space: pre;
+        content: ', ';
+      }
+      li {
+        margin-bottom: 10px;
+        float: left;
+        a {
+          font-size: 16px;
+          text-decoration: none;
+          color: #333435;
+          border-radius: 25px;
+        }
+      }
+    }
+    .title-card {
+      display: block;
+    }
+    .content {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      color: #333435;
+      margin: 12px 0px 0px 0px;
+    }
+    .organize {
+      font-weight: 600;
+      line-height: 20px;
+      color: #333435;
+      display: flex;
+      align-items: center;
+      > .name {
+        margin: 0px 6px;
+        font-size: 16px;
+      }
+    }
+>>>>>>> 398061f571cd86ec1712486565ddb98adc4838d5
     .group-button {
       display: flex;
       flex: 1;

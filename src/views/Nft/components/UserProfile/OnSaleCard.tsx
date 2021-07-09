@@ -54,7 +54,7 @@ export default function OnSaleCard({ data }: any) {
   }
   return (
     <CartStyled>
-      <Row gutter={24} align={"middle"}>
+      <Row gutter={24} align={'middle'}>
         <Col
           xl={{ span: 5 }}
           md={{ span: 24 }}
@@ -62,27 +62,26 @@ export default function OnSaleCard({ data }: any) {
           xxl={{ span: 5 }}
         >
           <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
-          {data?.type === 'video' ? (
-            <video
-              muted
-              controls
-              autoPlay={isMobile ? false : true}
-              loop
-              className="avatar"
-              style={{ objectFit: 'cover' }}
-            >
-              <source src={`${data?.contentUrl}#t=0.1`} type="video/mp4" />
-            </video>
-          ) : (
-            <img
-              className="avatar"
-              src={data?.contentUrl}
-              alt=""
-              loading="lazy"
-            />
-          )}
+            {data?.type === 'video' ? (
+              <video
+                muted
+                controls
+                autoPlay={isMobile ? false : true}
+                loop
+                className="avatar"
+                style={{ objectFit: 'cover' }}
+              >
+                <source src={`${data?.contentUrl}#t=0.1`} type="video/mp4" />
+              </video>
+            ) : (
+              <img
+                className="avatar"
+                src={data?.contentUrl}
+                alt=""
+                loading="lazy"
+              />
+            )}
           </Link>
-          
         </Col>
         <Col
           className="description"
@@ -98,7 +97,12 @@ export default function OnSaleCard({ data }: any) {
                 </div>
           </div> */}
 
-          <div className="name">{data?.title}</div>
+          <Link
+            className="name"
+            to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}
+          >
+            {data?.title}
+          </Link>
           <div className="number">
             {formatNumber(price)} LUCKY <img src={Token} alt="" />
           </div>
