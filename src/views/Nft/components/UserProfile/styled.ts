@@ -148,7 +148,7 @@ export const UserProfileStyled = styled.div<Props>`
         font-size: 16px;
         line-height: 24px;
         margin-top: 20px;
-        margin-left: 20px;
+        margin-left: ${isMobile ? '0px' : ' 20px'};
       }
     }
   }
@@ -166,7 +166,8 @@ export const CartStyled = styled.div`
     width: 210px;
     height: 210px;
     border-radius: 8px;
-    margin-right: 40px;
+    display: block;
+    margin: 0 auto;
   }
   .btn-swap {
     background: linear-gradient(45deg, #1cace8, #07dce6);

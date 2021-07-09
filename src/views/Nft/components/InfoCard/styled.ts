@@ -9,6 +9,9 @@ export const CartStyled = styled.div<Props>`
     .box-flex{
         display: ${isMobile ? 'block' : 'flex'};;
         margin-bottom: ${isMobile ? '0' : '10px'};
+        div{
+          max-width: ${isMobile ? 'unset' : '50%'};
+        }
     }
     
     .name {
@@ -75,7 +78,7 @@ export const CartStyled = styled.div<Props>`
       .item{
         display: inline-block;
       }
-      .item + .item::before {
+      .item:not(:last-child)::after {
         display: inline-block;
         white-space: pre;
         content: ", ";
