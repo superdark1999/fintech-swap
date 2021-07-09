@@ -402,8 +402,8 @@ export const FooterStyled = styled.div`
   }
 `
 export const OwenedBy = styled.div`
-  display:flex;
-  .view{
+  display: flex;
+  .view {
     margin: 0px auto auto 15px;
   }
   img {
@@ -451,7 +451,7 @@ export const HeaderStyled = styled.div`
   .date-time {
     font-weight: 600;
     font-size: 14px;
-    background-color: #fc636b;
+    background-color: #ff2b34;
     color: #ffffff;
     /* border: 2px solid #FC636B; */
     border-radius: 30px;

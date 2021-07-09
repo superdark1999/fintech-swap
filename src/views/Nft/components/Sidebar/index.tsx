@@ -18,7 +18,17 @@ import {
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { isEmpty } from 'lodash'
-const plainOptions = ['Apple', 'Pear', 'Orange']
+const plainOptions = [
+  'Art',
+  'Music',
+  'Games',
+  'DeFi',
+  'Meme',
+  'Sports',
+  'Abstract',
+  'Space',
+  'Lucky',
+]
 interface SidebarProps {
   setShowSidebar: any
   onShowSidebar: any
@@ -210,10 +220,10 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* { checkRenderSubMenu('tag') ? <CaretUpOutlined/> : <CaretDownOutlined /> } */}
         </div>
         <div className={true ? 'show-sub-menu list-sub-menu' : 'list-sub-menu'}>
-          <div className="input-search">
+          {/* <div className="input-search">
             <SearchOutlined className="icon-search" />
             <input placeholder="Search tag" />
-          </div>
+          </div> */}
           <Checkbox.Group
             options={plainOptions}
             value={checkedList}

@@ -85,11 +85,14 @@ export const UserProfileStyled = styled.div<Props>`
         justify-content: space-between;
         flex-direction: ${isMobile ? 'column' : 'row'};
         .name {
-          
           font-size: 28px;
           line-height: 40px;
           color: #333435;
           font-weight: 600;
+          :hover {
+            cursor: pointer;
+            text-decoration: underline;
+          }
         }
         .copy {
           span {
@@ -191,7 +194,7 @@ export const CartStyled = styled.div`
         color: #19a3dd;
         width: 100%;
       }
-      .name-date{
+      .name-date {
         display: flex;
         font-weight: bold;
         font-size: 28px;
@@ -219,15 +222,18 @@ export const CartStyled = styled.div`
       }
     }
     .name {
-      
       font-weight: bold;
       font-size: 28px;
       line-height: 40px;
       color: #333435;
       opacity: 0.9;
-      
+      margin-bottom: 12px;
+      :hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
     }
-    
+
     .header-card {
       @media (max-width: 991px) {
         display: flex;
@@ -301,7 +307,6 @@ export const CartStyled = styled.div`
       }
     }
     .number {
-      
       -webkit-flex: 1;
       -ms-flex: 1;
       flex: 1;
@@ -319,46 +324,43 @@ export const CartStyled = styled.div`
         width: 20px;
       }
     }
-    .type{
-      margin-left: 4px;
-      color: #333435;
-     
-    }
-    .tokenId{
+    .type {
       margin-left: 4px;
       color: #333435;
     }
-    .date{
+    .tokenId {
       margin-left: 4px;
       color: #333435;
     }
-    .tags{
+    .date {
+      margin-left: 4px;
+      color: #333435;
+    }
+    .tags {
       list-style: none;
       padding-left: 10px;
       margin-bottom: 0;
-      .item{
+      .item {
         display: inline-block;
       }
       .item + .item::before {
         display: inline-block;
         white-space: pre;
-        content: ", ";
+        content: ', ';
       }
-      li{
+      li {
         margin-bottom: 10px;
         float: left;
-        a{
+        a {
           font-size: 16px;
           text-decoration: none;
           color: #333435;
           border-radius: 25px;
-         
         }
       }
     }
-    .title-card{
+    .title-card {
       display: block;
-      
     }
     .content {
       font-weight: 500;
