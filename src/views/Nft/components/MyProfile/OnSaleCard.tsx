@@ -294,25 +294,6 @@ export default function OnSaleCard({ data }: any) {
               </div>
             </div>
 
-            {data?.description && (
-              <div style={{ display: 'flex', width: '50%' }}>
-                <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
-                Introduction:&nbsp;
-                </div>
-                <div
-                  className="description"
-                  style={{
-                    color: 'rgb(51, 52, 53)',
-                    marginLeft: 0,
-                    fontWeight: 600,
-                    marginBottom: 10,
-                  }}
-                >
-                  {data?.description}
-                </div>
-              </div>
-            )}
-
             <div
               className="box-flex"
               style={{ display: 'flex', marginBottom: 10 }}
@@ -344,6 +325,24 @@ export default function OnSaleCard({ data }: any) {
                 </div>
               )}
             </div>
+            {data?.description && (
+              <div style={{ display: 'flex'}}>
+                <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+                Introduction:&nbsp;
+                </div>
+                <div
+                  className="description"
+                  style={{
+                    color: 'rgb(51, 52, 53)',
+                    marginLeft: 0,
+                    fontWeight: 600,
+                    marginBottom: 10,
+                  }}
+                >
+                  {data?.description}
+                </div>
+              </div>
+            )}
 
           {/* <div style={{ display: 'flex' }}>
             <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
