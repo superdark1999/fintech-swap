@@ -84,7 +84,7 @@ const InfoCard = (value) => {
           </span>
           <a
             className="value"
-            style={{ lineHeight: '24px', fontWeight: 'unset' }}
+            style={{ lineHeight: '24px', fontWeight: 'unset'}}
             href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`}
             target="_blank"
           >
