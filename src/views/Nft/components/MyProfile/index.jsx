@@ -22,7 +22,10 @@ import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
 import { getCompactString } from 'utils'
 import { isMobile } from 'react-device-detect'
 import GetTypeSocial from 'components-v2/GetTypeSocial'
-import { isEmpty } from 'lodash'
+import _,{ isEmpty } from 'lodash'
+import useMarketServices, {
+  MARKET_ADDRESS,
+} from 'services/web3Services/MarketServices'
 const { TabPane } = Tabs
 export default () => {
   const [userState] = useUserStore()
@@ -204,6 +207,20 @@ const TabMyCollection = () => {
   const [renderData, setRenderData] = useState([])
   const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
+  const [offerList, setOfferList] = useState([])
+
+  const marketServicesMethod = useMarketServices()
+
+  useEffect(()=>{
+    if(marketServicesMethod){
+      marketServicesMethod.getOffersByWalletAddress(account).then((data)=>{
+        const tempOfferList = data.map(item=>{
+          return {tokenId:Number(item?.[0]),offerFor:Number(item?.[1])}
+        })
+        setOfferList(tempOfferList)
+      })
+    }
+  },[account,!!marketServicesMethod])
 
   useEffect(() => {
     if (optionChecked) {
@@ -234,6 +251,13 @@ const TabMyCollection = () => {
     setOptionChecked(e.target.value)
   }
 
+  const mergerData = renderData?.map?.(item=>{
+    const tData = _.find(offerList, it => it.tokenId == item.tokenId) || null
+    if(tData){
+      return {...item,...tData}
+    }
+    return item
+  })||[]
   return (
     <>
       <Row align="middle" justify="space-between">
@@ -282,7 +306,7 @@ const TabMyCollection = () => {
         <SearchInput maxWidth="300px" placeholder="Search items" />
       </Row>
       <ListCart className="list-artwork">
-        {renderData.map((item) => {
+        {mergerData.map((item) => {
           return (
             <MyCollectionCard
               key={item?._id}

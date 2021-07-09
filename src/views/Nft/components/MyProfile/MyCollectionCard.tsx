@@ -43,7 +43,6 @@ export default function MyCollectionCard({ data, option }: any) {
   const [ruleAuctionModal, setRuleAuctionModal] = useState(false)
   const [approvingMarket, setApprovingMarket] = useState(false)
   const [showQR, setShowQR] = useState(false)
-  console.log(data)
   const NFTServicesMethod = useNFTServices()
   const marketServicesMethod = useMarketServices()
   const { setPrice, cancelSellNFT } = useArtworkServices()
@@ -62,7 +61,7 @@ export default function MyCollectionCard({ data, option }: any) {
         })
         .catch((err) => console.log(err))
     }
-  }, [data?.tokenId, NFTServicesMethod])
+  }, [data?.tokenId, !!NFTServicesMethod])
 
   useEffect(() => {
     if (
@@ -84,7 +83,7 @@ export default function MyCollectionCard({ data, option }: any) {
         }
       })
     }
-  }, [data?.tokenId, NFTServicesMethod, account])
+  }, [data?.tokenId, !!NFTServicesMethod, account])
 
   const onSellItem = (value: any) => {
     setIsPrcessing(true)
