@@ -59,7 +59,7 @@ export default function Pool() {
       <AppBody>
         <FlexBox>
           <CardNav activeIndex={1} />
-          <PageHeader title="" description="" />
+          {/* <PageHeader title="" description="" /> */}
         </FlexBox>
 
         <div className="custom-btn">
