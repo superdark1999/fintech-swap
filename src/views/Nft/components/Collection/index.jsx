@@ -41,6 +41,7 @@ function Collection(props) {
   const { price } = props
 
   const [select, setSelect] = useState('')
+  const [selectDP, setSelectDP] = useState('asc')
   const [selectSort, setSelectSort] = useState('asc')
   const [NFTs, setNFTs] = useState({ data: [], total: 0 })
   const { getNFT } = useArtworkServices()
@@ -60,11 +61,12 @@ function Collection(props) {
         page,
         limit: 8,
         sort: selectSort,
-        sortBy: 'createdAt',
+        sortBy: selectDP === 'asc' || selectDP === 'desc' ? 'createdAt' : 'price',
         ...price,
       },
       _.identity,
     )
+    
     getNFT(params).then(({ status, data }) => {
       if (status == 200) {
         if (page === 1) {
@@ -78,6 +80,13 @@ function Collection(props) {
   const onChangeSelectType = (val) => {
     setPage(1)
     setSelect(val)
+  }
+  const onChangeSelectDatePrice = (val) => {
+    
+    if(val == 'asc' || val == 'low') setSelectSort('asc')
+    else setSelectSort('desc')
+    setPage(1)
+    setSelectDP(val)
   }
 
   useEffect(() => {
@@ -101,6 +110,7 @@ function Collection(props) {
   const nextPage = useCallback((page) => {
     setPage(page)
   }, [])
+  
 
   return (
     <CollectionStyled>
@@ -120,8 +130,10 @@ function Collection(props) {
           </Select>
           <Select
             style={{ minWidth: 100, borderRadius: 30 }}
-            onChange={setSelectSort}
-            defaultValue={selectSort}
+            // onChange={setSelectSort}
+            // defaultValue={selectSort}
+            onChange={onChangeSelectDatePrice}
+            defaultValue={selectDP}
           >
             {OptionSort.map((item, index) => (
               <Option key={index} value={item.value} label={item.label}>
