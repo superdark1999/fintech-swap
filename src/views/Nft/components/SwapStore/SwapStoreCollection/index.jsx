@@ -9,6 +9,8 @@ import {useHistory } from 'react-router-dom'
 import BannerBar from '../../../components/BannerBar/index'
 import { useHookNTF } from '../../../Store'
 import useIO from 'hooks/useIo'
+import ProgressBar from 'components-v2/ProgressBar'
+import {isMobile} from 'react-device-detect'
 
 
 // export const option: React.ReactElement<OptionProps> = Select.Option
@@ -20,7 +22,11 @@ function ExploreCollection() {
     ), []) 
   const [NFTs, setNFTs] = useState({data: [], total: 0})
   const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
+  //onst [selectDP, setSelectDP] = useState('asc')
+  const [sort, setSort] = useState('asc')
   const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(0)
+  //const [tags, setTags] = useState([])
   const { getNFT } = useArtworkServices()
   const [filterMethod, setFilterMethod] = useState('')
   const [filterType, setFilterType] = useState('')
@@ -28,20 +34,32 @@ function ExploreCollection() {
   const handleInputOnchange = (e) => {
     const { value } = e.target;
     setSearchParams(value);
+    setPage(1)
   }
 
-  const getArrNFT = useCallback(_.debounce((params) => 
-  getNFT(params).then(({ status, data }) => {
-    if (status == 200) {
-      if (page === 1) {
-        setNFTs({data: data?.data, total: data.total})
-        console.log("akjsd")
-      } else {
-        setNFTs({data: NFTs.data.concat(data?.data), total: data.total})
-      }
-    }
+  const getArrNFT = useCallback(
+    _.debounce(
+      (params) => 
+        getNFT(params).then(({ status, data }) => {
+          if (status == 200) {
+            setLoading(100)
+            if (page === 1) {
+              setNFTs({data: data?.data, total: data.total})
+              //console.log("akjsd")
+            } else {
+              setNFTs({data: NFTs.data.concat(data?.data), total: data.total})
+              !isMobile && handleScroll()
+            }
+          }
   }), 1000), [page])
 
+  function handleScroll() {
+    window.scroll({
+      top: document.body.scrollHeight,
+      left: 0,
+      behavior: 'smooth',
+    })
+  }
   const [observer, setElements, entries] = useIO({
     threshold: 0.25,
     root: null
@@ -56,9 +74,13 @@ function ExploreCollection() {
       title: searchParams?.toLowerCase(),
       page,
       limit: 8,
+      sort: sort,
+      sortBy: 'createdAt',
+      //tags,
     }, _.identity)
+    setLoading(Math.random() * (80 - 40 + 1) + 40)
     getArrNFT(params)
-  }, [filterMethod, filterType, searchParams, page])
+  }, [filterMethod, filterType, searchParams, page, sort])
 
   const [stateBanner, actions] = useHookNTF()
   useEffect(() => {
@@ -106,6 +128,10 @@ function ExploreCollection() {
         handleInputOnchange={handleInputOnchange}
         searchParams={searchParams} 
         setPage={setPage}
+        setSort={setSort}
+        sort={sort}
+        // selectDP={selectDP} 
+        // setSelectDP={setSelectDP}
       />
       <div className="content-collect">
         {NFTs.data.map((item) => {
@@ -119,6 +145,7 @@ function ExploreCollection() {
           <Button shape="round">Load more</Button>
         </div>
       </div>}
+      <ProgressBar loading={loading} setLoading={setLoading} />
     </ExploreCollectionStyled>
   )
 }

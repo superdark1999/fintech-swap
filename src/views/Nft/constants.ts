@@ -14,12 +14,20 @@ export const RegexWebsiteURL = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\.
 
 export const OptionSort = [
   {
-    label: 'New',
-    value: 'asc'
+    label: 'Newest',
+    value: 'asc',
   },
   {
-    label: 'Old',
-    value: 'desc'
+    label: 'Oldest',
+    value: 'desc',
+  },
+  {
+    label: 'Price Low',
+    value: 'low', 
+  },
+  {
+    label: 'Price Hight',
+    value: 'hight', 
   }
 ]
   
