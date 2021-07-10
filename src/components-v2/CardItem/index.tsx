@@ -24,7 +24,6 @@ export default function CardItem(props?: any) {
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const history = useHistory()
   const { data = {}, isLazy = false, srcSet, isHideButton } = props
-  console.log('props: ', props)
   const { account, chainId } = useActiveWeb3React()
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
