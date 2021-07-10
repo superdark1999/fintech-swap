@@ -298,6 +298,9 @@ export default function MyCollectionCard({ data, option }: any) {
     )
   }
   const renderGroupAction = (status: any) => {
+    if(isProcessing){
+      return null
+    }
     if (status === 'approved') {
       return (
         <div className="group-button">
@@ -333,7 +336,7 @@ export default function MyCollectionCard({ data, option }: any) {
           {renderQRCode()}
         </div>
       )
-    } else if (status === 'readyToSell' && data?.NFTType !== 'swap-personal') {
+    } else if (status === 'readyToSell') {
       return (
         <div className="group-button">
           <ButtonCancel height="40px" onClick={onCancelItemOnMarket}>
