@@ -22,7 +22,10 @@ import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
 import { getCompactString } from 'utils'
 import { isMobile } from 'react-device-detect'
 import GetTypeSocial from 'components-v2/GetTypeSocial'
-import { isEmpty } from 'lodash'
+import _, { isEmpty } from 'lodash'
+import useMarketServices, {
+  MARKET_ADDRESS,
+} from 'services/web3Services/MarketServices'
 const { TabPane } = Tabs
 export default () => {
   const [userState] = useUserStore()
@@ -130,7 +133,7 @@ export default () => {
           </div>
           <Tabs
             className="tabs-profile"
-            activeKey={match.params.tab}
+            activeKey={match?.params?.tab}
             onChange={onChangeTab}
           >
             <TabPane tab="On Store" key="onstore">
@@ -160,9 +163,12 @@ const TabOnSale = () => {
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
-  const { tab } = useParams()
+  // const { tab } = useParams()
+  const match = useRouteMatch()
+  console.log('match', match)
+  
   useEffect(() => {
-    if (tab == 'onstore') {
+    if (match?.params?.tab == 'onstore') {
       const query = {
         status: 'readyToSell',
         NFTType: ['buy', 'auction', 'swap-store'],
@@ -174,7 +180,7 @@ const TabOnSale = () => {
         }
       })
     }
-  }, [tab])
+  }, [match?.params?.tab])
   return (
     <>
       {/* <Row align="middle" justify="space-between">     
@@ -197,13 +203,30 @@ const TabOnSale = () => {
 }
 
 const TabMyCollection = () => {
-  const { option } = useParams()
+  // const { option } = useParams()
+  // console.log('option: ', option)
   const formRef = useRef(null)
-  const [optionChecked, setOptionChecked] = useState(option)
+  const match = useRouteMatch()
+  console.log('match', match)
+  const [optionChecked, setOptionChecked] = useState(match?.params?.option || '')
 
   const [renderData, setRenderData] = useState([])
   const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
+  const [offerList, setOfferList] = useState([])
+
+  const marketServicesMethod = useMarketServices()
+
+  useEffect(()=>{
+    if(marketServicesMethod){
+      marketServicesMethod.getOffersByWalletAddress(account).then((data)=>{
+        const tempOfferList = data.map(item=>{
+          return {tokenId:Number(item?.[0]),offerFor:Number(item?.[1])}
+        })
+        setOfferList(tempOfferList)
+      })
+    }
+  },[account,!!marketServicesMethod])
 
   useEffect(() => {
     if (optionChecked) {
@@ -234,10 +257,18 @@ const TabMyCollection = () => {
     setOptionChecked(e.target.value)
   }
 
+  const mergerData = renderData?.map?.(item=>{
+    const tData = _.find(offerList, it => it.tokenId == item.tokenId) || null
+    if(tData){
+      return {...item,...tData}
+    }
+    return item
+  })||[]
+
   return (
     <>
       <Row align="middle" justify="space-between">
-        <GroupButton defaultValue={option}>
+        <GroupButton defaultValue={match?.params?.option}>
           <RadioButton
             width="auto"
             className="btn-filter"

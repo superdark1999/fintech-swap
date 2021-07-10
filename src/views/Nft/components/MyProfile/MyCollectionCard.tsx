@@ -44,7 +44,6 @@ export default function MyCollectionCard({ data, option }: any) {
   const [ruleAuctionModal, setRuleAuctionModal] = useState(false)
   const [approvingMarket, setApprovingMarket] = useState(false)
   const [showQR, setShowQR] = useState(false)
-  console.log(data)
   const NFTServicesMethod = useNFTServices()
   const marketServicesMethod = useMarketServices()
   const { setPrice, cancelSellNFT } = useArtworkServices()
@@ -242,6 +241,30 @@ export default function MyCollectionCard({ data, option }: any) {
         setIsPrcessing(true)
         marketServicesMethod
           ?.cancelListNFT(data?.tokenId)
+          .then((dt) => {
+            cancelSellNFT({ id: data?._id }).then(({ status }) => {
+              if (status == 200) {
+                history.push('/my-profile/mycollection/checkingToSell')
+              } else {
+                notification('error', {
+                  message: 'Error',
+                  description: 'Something when wrong, please try again later.',
+                })
+                setIsPrcessing(false)
+              }
+            })
+          })
+          .catch((err) => {
+            notification('error', {
+              message: 'Error',
+              description: err.message,
+            })
+            setIsPrcessing(false)
+          })
+      }else if(data?.NFTType === 'swap-personal'&& data?.offerFor){
+        setIsPrcessing(true)
+        marketServicesMethod
+          ?.cancelOfferSwapNFT(data?.offerFor)
           .then((dt) => {
             cancelSellNFT({ id: data?._id }).then(({ status }) => {
               if (status == 200) {

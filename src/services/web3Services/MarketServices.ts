@@ -7,7 +7,7 @@ import { useActiveWeb3React } from 'wallet/hooks'
 import {getPrice, SUPPORT_CHAIN_IDS, getPriceFromEstimateGas} from 'utils'
 import useUserStore from 'store/userStore'
 
-export const MARKET_ADDRESS = '0xD584F38CD5889F39003dd5657eFb9A036f02C7D7';
+export const MARKET_ADDRESS = '0x7d6b6C226b8324AB469D6b5E40367451405a4ad2';
 
 const OUT_OF_BNB = `Insufficient balance of BNB`
 const OUT_OF_LUCKY = `Insufficient balance of LUCKY`
@@ -241,6 +241,10 @@ function useMarketServiceChain97(){
     return marketContract.getOffers(tokenId)
   },[marketContract])
 
+  const getOffersByWalletAddress = useCallback((address:string|undefined)=>{
+    return marketContract.getOffersByOwner(address)
+  },[marketContract])
+
 
     return {
       offerSwapNFT,
@@ -265,6 +269,7 @@ function useMarketServiceChain97(){
       getSwapOffers,
       cancelOfferSwapNFT,
       revokeBidToken,
+      getOffersByWalletAddress,
       marketContract
     }
 }
