@@ -457,3 +457,11 @@ button.btn-secondary.dropdown-toggle:focus{
 .style-color button[aria-label] {
   display: none;
 }
+
+.modal-setting {
+  padding: 0 24px 15px !important;
+}
+
+.modal-setting div:nth-child(2) {
+  padding: 0;
+}
