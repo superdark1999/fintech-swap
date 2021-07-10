@@ -96,7 +96,7 @@ const SlippageToleranceSettings = () => {
 
             return (
               <Option key={predefinedValue}>
-                <Button style={{ color: 'rgb(27, 28, 45)' }} variant={value === predefinedValue ? 'primary' : 'tertiary'} onClick={handleClick}>
+                <Button style={{ color: 'rgb(33 32 32)' }} variant={value === predefinedValue ? 'primary' : 'tertiary'} onClick={handleClick}>
                   {label}
                 </Button>
               </Option>
