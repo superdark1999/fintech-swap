@@ -153,11 +153,13 @@ export default function CardItem(props?: any) {
               >
                 <div className="name-artist">
                   <span style={{ fontSize: '10px' }}>Creator</span>{' '}
-                  {data?.createdBy?.name ? (
+                  {data?.createdBy?.avatarImage || data?.createdBy?.name ? (
                     <a
                       target="_blank"
                       href={`${window.location.href}user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell}`}
                     >
+                      
+                      <img className="avatar" src={data?.createdBy?.avatarImage}></img>
                       {data?.createdBy?.name}
                     </a>
                   ) : (
