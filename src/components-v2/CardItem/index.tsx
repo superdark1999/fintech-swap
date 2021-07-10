@@ -23,7 +23,8 @@ import { isMobile } from 'react-device-detect'
 export default function CardItem(props?: any) {
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const history = useHistory()
-  const { data={} , isLazy = false, srcSet, isHideButton } = props
+  const { data = {}, isLazy = false, srcSet, isHideButton } = props
+  console.log('props: ', props)
   const { account, chainId } = useActiveWeb3React()
   const [price, setPrice] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -66,10 +67,6 @@ export default function CardItem(props?: any) {
             controls
             muted
             ref={videoRef}
-            // className={isLazy ? "lazy" : ""}
-            // src={`${data?.contentUrl}`}
-            // data-srcset={srcSet}
-            // data-src={`${data?.contentUrl}#t=0.1`}
             loop
           >
             <source src={`${data?.contentUrl}#t=0.1`} type="video/mp4"></source>
@@ -79,16 +76,12 @@ export default function CardItem(props?: any) {
       default:
         return (
           <img
-            src={isLazy ? Loading : data?.contentUrl}
+            src={isLazy ? data?.contentInfo.thumbMedium : data?.contentUrl}
             className={isLazy ? 'avatar lazy' : 'avatar'}
-            alt=""
-            srcSet={isLazy ? '' : srcSet}
-            data-srcset={srcSet}
-            data-src={
-              data?.contentInfo?.thumbMedium && data?.type == 'image'
-                ? data?.contentInfo?.thumbMedium
-                : data?.contentUrl
-            }
+            alt={data?.title}
+            srcSet={isLazy ? '' : data?.contentInfo.thumbMedium}
+            data-srcset={data?.contentInfo.thumbMedium}
+            data-src={data?.contentUrl}
           />
         )
     }
@@ -236,9 +229,11 @@ export default function CardItem(props?: any) {
             </div>
             <div className="number">
               {isHideButton ? null : data?.NFTType !== 'swap-store' ? (
-                data?.price && <div>
-                  {formatNumber(data?.price)} LUCKY <img src={Token} alt="" />
-                </div>
+                data?.price && (
+                  <div>
+                    {formatNumber(data?.price)} LUCKY <img src={Token} alt="" />
+                  </div>
+                )
               ) : (
                 <ButtonBuy className="btn-swap" onClick={onSwapItem}>
                   Swap now

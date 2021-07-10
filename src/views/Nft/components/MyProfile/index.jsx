@@ -206,7 +206,6 @@ const TabMyCollection = () => {
   // console.log('option: ', option)
   const formRef = useRef(null)
   const match = useRouteMatch()
-  console.log('match', match)
   const [optionChecked, setOptionChecked] = useState(match?.params?.option || '')
 
   const [renderData, setRenderData] = useState([])
@@ -217,7 +216,7 @@ const TabMyCollection = () => {
   const marketServicesMethod = useMarketServices()
 
   useEffect(()=>{
-    if(marketServicesMethod){
+    if(marketServicesMethod&&account){
       marketServicesMethod.getOffersByWalletAddress(account).then((data)=>{
         const tempOfferList = data.map(item=>{
           return {tokenId:Number(item?.[0]),offerFor:Number(item?.[1])}

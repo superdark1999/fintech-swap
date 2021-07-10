@@ -144,7 +144,7 @@ const CreateArtWork: React.FC = () => {
         .catch((err: any) => {
           setIsProcessing(false)
           notification('error', {
-            message: 'Something went wrong please try again',
+            message: err?.message || 'Something went wrong please try again',
             description: '',
           })
         })
