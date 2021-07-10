@@ -109,6 +109,32 @@ const Section = styled.div`
     }
   }   
 
+  @media only screen and (min-width: 1320px) {
+    #slider {
+      height: 380px;
+      position: relative;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      label {
+        margin: auto;
+        max-width: 1130px;    
+        width: 100%;
+        height: 380px;
+        border-radius: 4px;
+        position: absolute;
+        left: 0; right: 0;
+        cursor: pointer;
+        transition: transform 0.4s ease;
+        border-radius: 24px;
+        > img {
+          max-width: 1130px;    
+          height: 380px;
+          width: 100%;
+        }
+      }     
+    }
+  }   
+
     
 
 #s1:checked ~ #slide4, #s2:checked ~ #slide5,

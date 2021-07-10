@@ -16,20 +16,9 @@ export interface BannerProps {
 }
 const BannerBar: React.FC<BannerProps> = ({ banners }) => {
     return (
-        <BannerBarStyled>       
-        {
-          !isMobile? (
-            <Carousel className="banner-body" autoplay>
-              {banners.length !== 0 && banners.map((src, i: number) => (
-                  <img key={i} src={`https://dashboard.luckyswap.exchange/${src.link}`} alt="banner" />
-              ))
-              }
-            </Carousel>
-          )
-          :
-          <StackedCard listItem={banners}/>
-        }
-        </BannerBarStyled>
+      <BannerBarStyled>
+        <StackedCard listItem={banners}/>
+      </BannerBarStyled>
     )
 }
 
@@ -61,10 +50,21 @@ const BannerBarStyled = styled.div`
     border-radius: 24px;
     height:  300px;
     .banner-body{
-      height:  110px;
+      height:  300px;
       width: 100%;
       img{ 
         height: 300px
+      }
+    }
+  }
+  @media only screen and (min-width: 1320px) {
+    border-radius: 24px;
+    height:  380px;
+    .banner-body{
+      height:  380px;
+      width: 100%;
+      img{ 
+        height: 380px
       }
     }
   }
