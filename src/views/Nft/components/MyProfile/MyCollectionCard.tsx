@@ -1,20 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { UserProfileStyled, CartStyled, ListCart } from './styled'
-import Checkmark from 'assets/images/checkmark.svg'
-import Crown from 'assets/images/crown.svg'
+import { CartStyled } from './styled'
 import { Row, Col, Menu, Dropdown } from 'antd'
 import {
   DownOutlined,
-  SyncOutlined,
-  CheckOutlined,
   ShareAltOutlined,
 } from '@ant-design/icons'
-import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
-import Loadmore from 'components-v2/Loadmore'
 import StatusBar from 'components-v2/StatusBar'
-import { ButtonTrade, ButtonBuy, ButtonCancel } from 'components-v2/Button'
-import ButtonProccesing from 'components-v2/Button/btnProcessing'
-import QRCodeIcon from 'assets/images/qr-code.svg'
+import { ButtonBuy, ButtonCancel } from 'components-v2/Button'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices, {
   MARKET_ADDRESS,
@@ -23,10 +15,7 @@ import useNFTServices from 'services/web3Services/NFTServices'
 import { Link, useHistory } from 'react-router-dom'
 //import OnsSaleCard from './OnSaleCard'
 import _ from 'lodash'
-import { Alert } from 'antd'
 import notification from 'components-v2/Alert'
-import { getCompactString } from 'utils'
-import { RegexNumber100000 } from '../../constants'
 import { useActiveWeb3React } from 'wallet/hooks'
 import ModalSetPriceAuction from './ModalSetPriceAuction'
 import ModalSetPriceSell from './ModalSetPriceSell'
@@ -34,13 +23,11 @@ import QRCodeComp from 'components-v2/QRcode/index'
 import { createFromIconfontCN } from '@ant-design/icons'
 import InfoCard from '../InfoCard'
 import moment from 'moment'
-const IconFont = createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
-})
 
 export default function MyCollectionCard({ data, option }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
-  const [isProcessing, setIsPrcessing] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [ruleAuctionModal, setRuleAuctionModal] = useState(false)
   const [approvingMarket, setApprovingMarket] = useState(false)
   const [showQR, setShowQR] = useState(false)
@@ -49,20 +36,23 @@ export default function MyCollectionCard({ data, option }: any) {
   const { setPrice, cancelSellNFT } = useArtworkServices()
   const history = useHistory()
   const { account, chainId } = useActiveWeb3React()
-
   const formRef = useRef()
   const [isShowModalSetPrice, setShowModalsetPrice] = useState(false)
 
   useEffect(() => {
     if (data?.tokenId && NFTServicesMethod) {
+      setIsLoading(true)
       const { isTokenReadyToSell } = NFTServicesMethod
       isTokenReadyToSell(data?.tokenId)
         .then((data) => {
           setIsNFTCanSell(data)
+          setIsLoading(false)
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          setIsLoading(false)
+        })
     }
-  }, [data?.tokenId, NFTServicesMethod])
+  }, [data?.tokenId, !!NFTServicesMethod])
 
   useEffect(() => {
     if (
@@ -80,16 +70,16 @@ export default function MyCollectionCard({ data, option }: any) {
         ) {
           setIsNFTCanSell(true)
           setApprovingMarket(false)
-          setIsPrcessing(false)
+          setIsProcessing(false)
         }
       })
     }
-  }, [data?.tokenId, NFTServicesMethod, account])
+  }, [data?.tokenId, !!NFTServicesMethod, account,isNFTCanSell])
 
   const onSellItem = (value: any) => {
-    setIsPrcessing(true)
+    setIsProcessing(true)
     const tokenId = data?.tokenId
-    setIsPrcessing(true)
+    setIsProcessing(true)
     marketServicesMethod
       ?.setTokenPrice(tokenId, value.lucky)
       .then((dt) => {
@@ -102,14 +92,14 @@ export default function MyCollectionCard({ data, option }: any) {
                 message: 'Error',
                 description: 'Something when wrong, please try again later.',
               })
-              setIsPrcessing(false)
+              setIsProcessing(false)
             }
           })
         }
       })
       .catch((err) => {
         notification('error', { message: 'Error', description: err?.message })
-        setIsPrcessing(false)
+        setIsProcessing(false)
       })
     setShowModalsetPrice(false)
   }
@@ -128,7 +118,7 @@ export default function MyCollectionCard({ data, option }: any) {
     const tokenId = data?.tokenId
     const startTime = value?.dateTime?.startTime || moment().unix()
     const endTime = value?.dateTime?.endTime || moment().add(1, 'days')?.unix()
-    setIsPrcessing(true)
+    setIsProcessing(true)
     marketServicesMethod
       ?.setTokenBidInfo(
         tokenId,
@@ -147,20 +137,20 @@ export default function MyCollectionCard({ data, option }: any) {
                 message: 'Error',
                 description: 'Something when wrong, please try again later.',
               })
-              setIsPrcessing(false)
+              setIsProcessing(false)
             }
           })
         }
       })
       .catch((err) => {
         notification('error', { message: 'Error', description: err?.message })
-        setIsPrcessing(false)
+        setIsProcessing(false)
       })
     setRuleAuctionModal(false)
   }
   const onSubmitSwapItem = () => {
     const tokenId = data?.tokenId
-    setIsPrcessing(true)
+    setIsProcessing(true)
     marketServicesMethod
       ?.listNFTToSWap(tokenId)
       .then((dt) => {
@@ -174,7 +164,7 @@ export default function MyCollectionCard({ data, option }: any) {
                   message: 'Error',
                   description: 'Something when wrong, please try again later.',
                 })
-                setIsPrcessing(false)
+                setIsProcessing(false)
               }
             },
           )
@@ -182,7 +172,7 @@ export default function MyCollectionCard({ data, option }: any) {
       })
       .catch((err) => {
         notification('error', { message: 'Error', description: err?.message })
-        setIsPrcessing(false)
+        setIsProcessing(false)
       })
     setRuleAuctionModal(false)
   }
@@ -190,7 +180,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const onCancelItemOnMarket = () => {
     if (marketServicesMethod) {
       if (data?.NFTType === 'buy') {
-        setIsPrcessing(true)
+        setIsProcessing(true)
         marketServicesMethod
           ?.cancelSellToken(data?.tokenId)
           .then((dt) => {
@@ -202,7 +192,7 @@ export default function MyCollectionCard({ data, option }: any) {
                   message: 'Error',
                   description: 'Something when wrong, please try again later.',
                 })
-                setIsPrcessing(false)
+                setIsProcessing(false)
               }
             })
           })
@@ -211,10 +201,10 @@ export default function MyCollectionCard({ data, option }: any) {
               message: 'Error',
               description: err.message,
             })
-            setIsPrcessing(false)
+            setIsProcessing(false)
           })
       } else if (data?.NFTType === 'auction') {
-        setIsPrcessing(true)
+        setIsProcessing(true)
         marketServicesMethod
           ?.revokeBidToken(data?.tokenId)
           .then((dt) => {
@@ -226,7 +216,7 @@ export default function MyCollectionCard({ data, option }: any) {
                   message: 'Error',
                   description: 'Something when wrong, please try again later.',
                 })
-                setIsPrcessing(false)
+                setIsProcessing(false)
               }
             })
           })
@@ -235,10 +225,10 @@ export default function MyCollectionCard({ data, option }: any) {
               message: 'Error',
               description: err.message,
             })
-            setIsPrcessing(false)
+            setIsProcessing(false)
           })
       } else if (data?.NFTType === 'swap-store') {
-        setIsPrcessing(true)
+        setIsProcessing(true)
         marketServicesMethod
           ?.cancelListNFT(data?.tokenId)
           .then((dt) => {
@@ -250,7 +240,7 @@ export default function MyCollectionCard({ data, option }: any) {
                   message: 'Error',
                   description: 'Something when wrong, please try again later.',
                 })
-                setIsPrcessing(false)
+                setIsProcessing(false)
               }
             })
           })
@@ -259,10 +249,10 @@ export default function MyCollectionCard({ data, option }: any) {
               message: 'Error',
               description: err.message,
             })
-            setIsPrcessing(false)
+            setIsProcessing(false)
           })
       }else if(data?.NFTType === 'swap-personal'&& data?.offerFor){
-        setIsPrcessing(true)
+        setIsProcessing(true)
         marketServicesMethod
           ?.cancelOfferSwapNFT(data?.offerFor)
           .then((dt) => {
@@ -274,7 +264,7 @@ export default function MyCollectionCard({ data, option }: any) {
                   message: 'Error',
                   description: 'Something when wrong, please try again later.',
                 })
-                setIsPrcessing(false)
+                setIsProcessing(false)
               }
             })
           })
@@ -283,7 +273,7 @@ export default function MyCollectionCard({ data, option }: any) {
               message: 'Error',
               description: err.message,
             })
-            setIsPrcessing(false)
+            setIsProcessing(false)
           })
       }
     }
@@ -298,7 +288,7 @@ export default function MyCollectionCard({ data, option }: any) {
     )
   }
   const renderGroupAction = (status: any) => {
-    if(isProcessing){
+    if(isProcessing&&isLoading){
       return null
     }
     if (status === 'approved') {
@@ -351,6 +341,7 @@ export default function MyCollectionCard({ data, option }: any) {
   }
 
   const renderActionItem = () => {
+    if(isLoading) return null
     if (
       isProcessing ||
       approvingMarket ||
