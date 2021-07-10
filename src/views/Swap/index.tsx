@@ -27,7 +27,8 @@ import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, us
 import { useExpertModeManager, useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton } from '../../components/Swap/Shared'
 import Loader from '../../components/Swap/Loader'
-import PageHeader from '../../components/Swap/PageHeader'
+// import PageHeader from '../../components/Swap/PageHeader'
+import SettingModal from '../../components/Swap/PageHeader/SettingsModal'
 import ConnectWalletButton from '../../components/Swap/ConnectWalletButton'
 import AppBody from '../AppBody'
 import AddressInputPanel from '../../components/Swap/AddressInputPanel'
@@ -270,7 +271,7 @@ const Swap = () => {
       <AppBody>
         <FlexBox>
           <CardNav/>
-          <PageHeader title="" description="" />
+          
         </FlexBox>
         <Wrapper id="swap-page">
           <ConfirmSwapModal
@@ -337,6 +338,7 @@ const Swap = () => {
                 otherCurrency={currencies[Field.INPUT]}
                 id="swap-currency-output"
               />
+              <SettingModal/>
 
               {recipient !== null && !showWrap ? (
                 <>

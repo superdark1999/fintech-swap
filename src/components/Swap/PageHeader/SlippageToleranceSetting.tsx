@@ -103,7 +103,7 @@ const SlippageToleranceSettings = () => {
             )
           })}
         </Flex>
-        <Flex alignItems="center">
+        <Flex className="space-input" alignItems="center">
           <Option>
             <Input
               type="number"
