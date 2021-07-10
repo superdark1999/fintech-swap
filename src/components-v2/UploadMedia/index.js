@@ -30,10 +30,12 @@ const UploadForm = (props) => {
   const [imageUrl, setUrlImage] = useState(false)
   const [type, setType] = useState(false)
   const [file, setFile] = useState(false)
+  
 
   const beforeUpload = (file) => {
     const isLtSize = file.size / 1024 / 1024 < size
     if (!isLtSize) {
+      handleRemove()
       notification('error', {
         message: 'Error',
         description: `Image must smaller than ${size}MB!`,
