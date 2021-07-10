@@ -15,12 +15,21 @@ function FilterBar(props) {
     handleInputOnchange,
     setPage,
     sort,
-    setSort
+    setSort,
+    selectDP, 
+    setSelectDP
   } = props
 
-  const onChangeSort = (value) => {
-    setSort(value)
+  // const onChangeSort = (value) => {
+  //   setSort(value)
+  //   setPage(1)
+  // }
+  const onChangeSelectDatePrice = (val) => {
+    
+    if(val == 'asc' || val == 'low') setSort('asc')
+    else setSort('desc')
     setPage(1)
+    setSelectDP(val)
   }
 
   const onChangeMethod = (e) => {
@@ -89,8 +98,8 @@ function FilterBar(props) {
           <label>Sort: </label>
           <Select
             style={{ width: 120, borderRadius: 30 }}
-            onChange={onChangeSort}
-            defaultValue={sort}
+            onChange={onChangeSelectDatePrice}
+            defaultValue={selectDP}
           >
             {OptionSort.map((item) => (
               <Option key={item.value} value={item.value} >
