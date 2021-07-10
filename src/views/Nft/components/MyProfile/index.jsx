@@ -46,7 +46,6 @@ export default () => {
       history.push(`/my-profile/earn/#`)
     }
   }
-  console.log('userState: ', userState)
   return (
     <UserProfileStyled urlCover={userState?.coverImage}>
       <Row className="section header-profile">
@@ -313,7 +312,7 @@ const TabMyCollection = () => {
         <SearchInput maxWidth="300px" placeholder="Search items" />
       </Row>
       <ListCart className="list-artwork">
-        {renderData.map((item) => {
+        {mergerData.map((item) => {
           return (
             <MyCollectionCard
               key={item?._id}
