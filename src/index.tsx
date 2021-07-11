@@ -9,7 +9,7 @@ import TransactionUpdater from './state/transactions/updater'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 if ('ethereum' in window) {
-  ;(window.ethereum as any).autoRefreshOnNetworkChange = false
+  (window.ethereum as any).autoRefreshOnNetworkChange = false
 }
 
 window.addEventListener('error', () => {
