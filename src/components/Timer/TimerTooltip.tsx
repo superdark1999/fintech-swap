@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, Link } from '@luckyswap/uikit'
 import Tooltip from '../../views/Farms/components/Tooltip/Tooltip'
+import { SCAN_SITES } from '../../constants/index'
 
 const StyledTooltip = styled(Tooltip)`
   bottom: -9px;
@@ -19,21 +20,23 @@ const StyledTooltip = styled(Tooltip)`
   }
 `
 
-const ToolTipInner = ({ blockNumber }) => {
+const ToolTipInner = ({ blockNumber, chainId }) => {
   return (
     <>
       <Text color="body" mb="10px" fontWeight="600">
         Block {blockNumber}
       </Text>
       <Link external href={`https://testnet.bscscan.com/block/${blockNumber}`}>
-        View on BscScan
+        View on {SCAN_SITES[chainId]}
       </Link>
     </>
   )
 }
 
-const TimerTooltip = ({ blockNumber, children }) => {
-  return <StyledTooltip content={<ToolTipInner blockNumber={blockNumber} />}>{children}</StyledTooltip>
+const TimerTooltip = ({ chainId, blockNumber, children }) => {
+  return (
+    <StyledTooltip content={<ToolTipInner chainId={chainId} blockNumber={blockNumber} />}>{children}</StyledTooltip>
+  )
 }
 
 export default TimerTooltip

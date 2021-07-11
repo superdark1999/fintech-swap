@@ -28,9 +28,9 @@ const StyledImage = styled(Image)`
 const StyledLink = styled(Link)`
   align-self: center;
   margin-top: 16px;
-  border: 1px solid #F3C111;
+  border: 1px solid #f3c111;
   background-color: transparent;
-  color: #F3C111;
+  color: #f3c111;
   padding: 10px 20px;
   border-radius: 14px;
 
@@ -48,7 +48,8 @@ const HowItWorks = () => {
         {TranslateString(632, 'How it works')}
       </StyledHeading>
       <Text fontSize="16px">
-        Spend LUCKY to buy tickets, contributing to the lottery pot.<br/> Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their exact order!
+        Spend LUCKY to buy tickets, contributing to the lottery pot.
+        <br /> Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their exact order!
       </Text>
       <StyledLink href="https://docs.luckyswap.io">{TranslateString(610, 'Read more')}</StyledLink>
     </LayoutWrapper>

@@ -34,7 +34,6 @@ const Wrapper = styled.div`
   margin-bottom: 32px;
 `
 
-
 const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
   display: grid;
   grid-template-columns: 1fr;
@@ -47,13 +46,13 @@ const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
 `
 
 const Dflex = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 40px;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 1200px;
-    margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+  margin-bottom: 30px;
 `
 
 const Lottery: React.FC = () => {
@@ -98,11 +97,10 @@ const Lottery: React.FC = () => {
     setActiveIndex(index)
   }
 
-
   return (
-    <>      
+    <>
       <Page>
-        <Hero/>
+        <Hero />
         <TotalPrizesCard />
         <SecondCardColumnWrapper isAWin={isAWin}>
           {!account ? (
@@ -118,7 +116,7 @@ const Lottery: React.FC = () => {
         <HowItWorks />
         <PastLotteryRoundViewer />
         <PastDrawsHistoryCard />
-        
+
         {/* <Wrapper>
           <ButtonMenu activeIndex={activeIndex} onItemClick={handleClick} scale="sm" variant="subtle">
             <ButtonMenuItem>{TranslateString(716, 'Next draw')}</ButtonMenuItem>

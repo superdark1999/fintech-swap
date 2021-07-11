@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useLottery, useContract } from 'hooks/useContract'
-import { getLotteryAddress ,getLotteryTicketAddress} from 'utils/addressHelpers'
+import { getLotteryAddress, getLotteryTicketAddress } from 'utils/addressHelpers'
 import lotteryAbi from 'config/abi/lottery.json'
 import lotteryTicketAbi from 'config/abi/lotteryNft.json'
 import { multiClaim, getMax, multiBuy } from '../utils/lotteryUtils'

@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from '@luckyswap/v2-sdk'
+import { Currency, NATIVE, Token } from '@luckyswap/v2-sdk'
 import React, { KeyboardEvent, RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Text, CloseIcon } from '@luckyswap/uikit'
 import { useSelector } from 'react-redux'
@@ -67,6 +67,8 @@ export function CurrencySearch({
 
   const audioPlay = useSelector<AppState, AppState['user']['audioPlay']>((state) => state.user.audioPlay)
 
+  // const ether = useMemo(() => chainId && NATIVE[chainId], [chainId])
+
   const filteredTokens: Token[] = useMemo(() => {
     if (isAddressSearch) return searchToken ? [searchToken] : []
     return filterTokens(Object.values(allTokens), searchQuery)
@@ -100,7 +102,7 @@ export function CurrencySearch({
         }
       }
     },
-    [onDismiss, onCurrencySelect, audioPlay]
+    [onDismiss, onCurrencySelect, audioPlay],
   )
 
   // clear the input on open
@@ -122,7 +124,7 @@ export function CurrencySearch({
       if (e.key === 'Enter') {
         const s = searchQuery.toLowerCase().trim()
         if (s === 'eth') {
-          handleCurrencySelect(ETHER)
+          handleCurrencySelect(NATIVE[chainId])
         } else if (filteredSortedTokens.length > 0) {
           if (
             filteredSortedTokens[0].symbol?.toLowerCase() === searchQuery.trim().toLowerCase() ||
@@ -133,7 +135,7 @@ export function CurrencySearch({
         }
       }
     },
-    [filteredSortedTokens, handleCurrencySelect, searchQuery]
+    [filteredSortedTokens, handleCurrencySelect, searchQuery, chainId],
   )
 
   const selectedListInfo = useSelectedListInfo()
@@ -147,7 +149,7 @@ export function CurrencySearch({
             <QuestionHelper
               text={TranslateString(
                 130,
-                'Find a token by searching for its name or symbol or by pasting its address below.'
+                'Find a token by searching for its name or symbol or by pasting its address below.',
               )}
             />
           </Text>
@@ -185,6 +187,7 @@ export function CurrencySearch({
               otherCurrency={otherSelectedCurrency}
               selectedCurrency={selectedCurrency}
               fixedListRef={fixedList}
+              chainId={chainId}
             />
           )}
         </AutoSizer>
@@ -204,7 +207,9 @@ export function CurrencySearch({
                       alt={`${selectedListInfo.current.name} list logo`}
                     />
                   ) : null}
-                  <Text id="currency-search-selected-list-name" color="red">{selectedListInfo.current.name}</Text>
+                  <Text id="currency-search-selected-list-name" color="red">
+                    {selectedListInfo.current.name}
+                  </Text>
                 </Row>
               ) : null}
               <LinkStyledButton

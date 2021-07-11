@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
-import { JSBI, Pair, Percent } from '@luckyswap/v2-sdk'
 import { Button, Card as UIKitCard, CardBody, Text } from '@luckyswap/uikit'
+import { JSBI, Pair, Percent } from '@luckyswap/v2-sdk'
+import { useActiveWeb3React } from 'hooks'
 import { darken } from 'polished'
+import React, { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { Link } from 'react-router-dom'
+import { useTokenBalance } from 'state/wallet/hooks'
 import styled from 'styled-components'
 import { currencyId } from 'utils/currencyId'
-import { useActiveWeb3React } from 'hooks'
-import { useTokenBalance } from 'state/wallet/hooks'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { useTotalSupply } from '../../../data/TotalSupply'
 import Card from '../Card'
 import { AutoColumn } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween, RowFixed } from '../Row'
 import { Dots } from '../swap/styleds'
-import { useTotalSupply } from '../../../data/TotalSupply'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -198,7 +198,12 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
             </FixedHeightRow>
 
             <RowBetween marginTop="10px">
-              <Button className="btn-supply" as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} style={{ width: '48%' }}>
+              <Button
+                className="btn-supply"
+                as={Link}
+                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                style={{ width: '48%' }}
+              >
                 Add
               </Button>
               <Button

@@ -5,7 +5,7 @@ import { Button } from 'reactstrap';
 import { AutoRenewIcon } from '@luckyswap/uikit'
 import BigNumber from 'bignumber.js'
 
-import useUtilityToken from 'hooks/useUtilityToken';
+import useUtilityToken from 'hooks/useUtilityToken'
 
 import CardValue from '../../Home/components/CardValue';
 
@@ -19,55 +19,55 @@ import CardValue from '../../Home/components/CardValue';
 const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
 export default function PoolCardDetails({
-  userRewardDebt, 
-  userAmount, 
+  userRewardDebt,
+  userAmount,
   onUnStakeToggle,
   onDepositToggle,
   stakingContract,
   addTransaction,
   account,
   stakingData,
-  getStatus, 
+  getStatus,
   isUnStaking,
   isDepositing,
   isHarvesting,
   setIsHarvesting,
 }) {
+  const { listenApproveEvent, approve, allowance } = useUtilityToken(stakingData.depositTokenAddress)
+  const [isApproved, setIsApproved] = useState(false)
+  const [isApproving, setIsApproving] = useState(false)
 
-  const {listenApproveEvent, approve, allowance} =  useUtilityToken(stakingData.depositTokenAddress);
-  const [isApproved, setIsApproved] = useState(false);
-  const [isApproving, setIsApproving] = useState(false);
-
-  const imageDepositToken = imageTokens[stakingData.depositTokenSymbol];
+  const imageDepositToken = imageTokens[stakingData.depositTokenSymbol]
   const imageRewardToken = imageTokens[stakingData.rewardTokenSymbol]
   useEffect(() => {
-    const fetchApproval = async() => {
-      const data = await allowance(account, stakingData.stakingAddress).catch(error => console.log("allowance error: ", error));
-      if (data)
-        setIsApproved(data.toString() !== '0')
+    const fetchApproval = async () => {
+      const data = await allowance(account, stakingData.stakingAddress).catch((error) =>
+        console.log('allowance error: ', error),
+      )
+      if (data) setIsApproved(data.toString() !== '0')
     }
     if (account) {
-      fetchApproval();
+      fetchApproval()
     }
-  },[account, allowance, stakingData.stakingAddress])
+  }, [account, allowance, stakingData.stakingAddress])
 
   useEffect(() => {
-    listenApproveEvent(() => setIsApproved(true));
-
-
-  },[listenApproveEvent])
+    listenApproveEvent(() => setIsApproved(true))
+  }, [listenApproveEvent])
 
   const handleApprove = async () => {
-    setIsApproving(true);
-    await approve(stakingData.stakingAddress);
+    setIsApproving(true)
+    await approve(stakingData.stakingAddress)
   }
 
   const handleHarvest = async () => {
     if (stakingContract) {
-      setIsHarvesting(true);
+      setIsHarvesting(true)
       const args = [new BigNumber(0).times(new BigNumber(10).pow(18)).toString()]
-      const gasAm = await stakingContract.estimateGas.deposit(...args).catch(() => console.log("Fails harvest"))
-      .catch(() => console.log("Fail estimate gas"));
+      const gasAm = await stakingContract.estimateGas
+        .deposit(...args)
+        .catch(() => console.log('Fails harvest'))
+        .catch(() => console.log('Fail estimate gas'))
 
       stakingContract
         .deposit(...args, { gasLimit: gasAm })
@@ -81,8 +81,6 @@ export default function PoolCardDetails({
         })
     }
   }
-
-  
 
   return (
     <div>

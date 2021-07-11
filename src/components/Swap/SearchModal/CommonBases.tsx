@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from '@luckyswap/uikit'
-import { ChainId, Currency, currencyEquals, ETHER, Token } from '@luckyswap/v2-sdk'
+import { ChainId, Currency, currencyEquals, NATIVE, Token } from '@luckyswap/v2-sdk'
 import styled from 'styled-components'
 
 import { SUGGESTED_BASES } from '../../../constants'
@@ -28,7 +28,7 @@ const BaseWrapper = styled.div<{ disable?: boolean }>`
 export default function CommonBases({
   chainId,
   onSelect,
-  selectedCurrency
+  selectedCurrency,
 }: {
   chainId?: ChainId
   selectedCurrency?: Currency | null
@@ -43,17 +43,17 @@ export default function CommonBases({
       <AutoRow gap="4px">
         <BaseWrapper
           onClick={() => {
-            if (!selectedCurrency || !currencyEquals(selectedCurrency, ETHER)) {
-              onSelect(ETHER)
+            if (!selectedCurrency || !currencyEquals(selectedCurrency, NATIVE[chainId])) {
+              onSelect(NATIVE[chainId])
             }
           }}
-          disable={selectedCurrency === ETHER}
+          disable={selectedCurrency?.isNative}
         >
-          <CurrencyLogo currency={ETHER} style={{ marginRight: 8 }} />
+          <CurrencyLogo currency={NATIVE[chainId]} style={{ marginRight: 8 }} />
           <Text>BNB</Text>
         </BaseWrapper>
         {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {
-          const selected = selectedCurrency instanceof Token && selectedCurrency.address === token.address
+          const selected = selectedCurrency?.isToken && selectedCurrency.address === token.address
           return (
             <BaseWrapper onClick={() => !selected && onSelect(token)} disable={selected} key={token.address}>
               <CurrencyLogo currency={token} style={{ marginRight: 8 }} />

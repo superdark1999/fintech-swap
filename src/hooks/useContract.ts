@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
 import useWeb3 from 'hooks/useWeb3'
 import { Contract } from '@ethersproject/contracts'
-import { ChainId, WETH } from '@luckyswap/v2-sdk'
+import { ChainId, ROUTER_ADDRESSES, FACTORY_ADDRESSES, WNATIVE } from '@luckyswap/v2-sdk'
 import { useActiveWeb3React } from 'hooks'
 import addresss from 'config/constants/contracts'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+import { useWeb3React } from '@web3-react/core'
 import {
   getBep20Contract,
   getCakeContract,
@@ -24,6 +25,8 @@ import {
   getEasterNftContract,
 } from '../utils/contractHelpers'
 import { getContract } from '../utils'
+import FACTORY_ABI from '../constants/abis/factory.json'
+import ROUTER_ABI from '../constants/abis/router.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
 import ERC20_ABI from '../constants/abis/erc20.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
@@ -36,12 +39,12 @@ import FARMS_ABI from '../config/abi/masterchef.json'
  * Helper hooks to get specific contracts (by ABI)
  */
 
-
 export const useLotteryTicket = () => {
   const web3 = useWeb3()
-  return useMemo(() => getLotteryTicketContract(web3), [web3])
-}
+  const { chainId } = useActiveWeb3React()
 
+  return useMemo(() => getLotteryTicketContract(web3, chainId), [web3, chainId])
+}
 
 export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
@@ -53,6 +56,11 @@ export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contrac
     }
   }
   return useContract(address, ENS_ABI, withSignerIfPossible)
+}
+
+export function useRouterContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(ROUTER_ADDRESSES[chainId], ROUTER_ABI, withSignerIfPossible)
 }
 
 export function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -86,36 +94,40 @@ export const useERC20 = (address: string) => {
   return useMemo(() => getBep20Contract(address, web3), [address, web3])
 }
 
-export const useCake = () => {
+export const useMasterchef = () => {
+  const { chainId } = useWeb3React()
   const web3 = useWeb3()
-  return useMemo(() => getCakeContract(web3), [web3])
+  return useMemo(() => getMasterchefContract(web3, chainId), [web3, chainId])
+}
+
+export const useCake = () => {
+  const { chainId } = useWeb3React()
+  const web3 = useWeb3()
+  return useMemo(() => getCakeContract(web3, chainId), [web3, chainId])
 }
 
 export const useBunnyFactory = () => {
+  const { chainId } = useWeb3React()
   const web3 = useWeb3()
-  return useMemo(() => getBunnyFactoryContract(web3), [web3])
+  return useMemo(() => getBunnyFactoryContract(web3, chainId), [web3, chainId])
 }
 
 export const usePancakeRabbits = () => {
+  const { chainId } = useWeb3React()
   const web3 = useWeb3()
-  return useMemo(() => getPancakeRabbitContract(web3), [web3])
+  return useMemo(() => getPancakeRabbitContract(web3, chainId), [web3, chainId])
 }
 
 export const useProfile = () => {
+  const { chainId } = useWeb3React()
   const web3 = useWeb3()
-  return useMemo(() => getProfileContract(web3), [web3])
+  return useMemo(() => getProfileContract(web3, chainId), [web3, chainId])
 }
 
 export const useLottery = () => {
+  const { chainId } = useWeb3React()
   const web3 = useWeb3()
-  return useMemo(() => getLotteryContract(web3), [web3])
-}
-
-
-
-export const useMasterchef = () => {
-  const web3 = useWeb3()
-  return useMemo(() => getMasterchefContract(web3), [web3])
+  return useMemo(() => getLotteryContract(web3, chainId), [web3, chainId])
 }
 
 export const useSousChef = (id) => {
@@ -124,28 +136,33 @@ export const useSousChef = (id) => {
 }
 
 export const usePointCenterIfoContract = () => {
+  const { chainId } = useWeb3React()
   const web3 = useWeb3()
-  return useMemo(() => getPointCenterIfoContract(web3), [web3])
+  return useMemo(() => getPointCenterIfoContract(web3, chainId), [web3, chainId])
 }
 
 export const useBunnySpecialContract = () => {
+  const { chainId } = useWeb3React()
   const web3 = useWeb3()
-  return useMemo(() => getBunnySpecialContract(web3), [web3])
+  return useMemo(() => getBunnySpecialContract(web3, chainId), [web3, chainId])
 }
 
 export const useClaimRefundContract = () => {
+  const { chainId } = useWeb3React()
   const web3 = useWeb3()
-  return useMemo(() => getClaimRefundContract(web3), [web3])
+  return useMemo(() => getClaimRefundContract(web3, chainId), [web3, chainId])
 }
 
 export const useTradingCompetitionContract = () => {
+  const { chainId } = useWeb3React()
   const web3 = useWeb3()
-  return useMemo(() => getTradingCompetitionContract(web3), [web3])
+  return useMemo(() => getTradingCompetitionContract(web3, chainId), [web3, chainId])
 }
 
 export const useEasterNftContract = () => {
+  const { chainId } = useWeb3React()
   const web3 = useWeb3()
-  return useMemo(() => getEasterNftContract(web3), [web3])
+  return useMemo(() => getEasterNftContract(web3, chainId), [web3, chainId])
 }
 
 export function useENSResolverContract(address: string | undefined, withSignerIfPossible?: boolean): Contract | null {
@@ -153,7 +170,7 @@ export function useENSResolverContract(address: string | undefined, withSignerIf
 }
 export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId ? WETH[chainId].address : undefined, WETH_ABI, withSignerIfPossible)
+  return useContract(chainId ? WNATIVE[chainId].address : undefined, WETH_ABI, withSignerIfPossible)
 }
 
 export function useMulticallContract(): Contract | null {
@@ -165,10 +182,10 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 }
 
 export function useFarmsContract(): Contract | null {
-  return useContract(addresss.masterChef[97], FARMS_ABI, true)
+  const { chainId } = useWeb3React()
+  return useContract(addresss.masterChef[chainId], FARMS_ABI, true)
 }
 
-export function useStakingContract(address: any | null ): Contract | null {
-
+export function useStakingContract(address: any | null): Contract | null {
   return useContract(address, SMART_CHEF_ABI, true)
 }

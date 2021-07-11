@@ -86,7 +86,7 @@ const config: MenuEntry[] = [
         label: 'Lottery',
         href: '/lottery',
         calloutClass: 'style-color',
-      }
+      },
     ],
   },
   {

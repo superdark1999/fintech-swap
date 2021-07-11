@@ -55,7 +55,7 @@ export function useInactiveListener(suppress = false) {
   useEffect(() => {
     const { ethereum } = window
 
-    if (ethereum && ethereum.on && !active && !error && !suppress) {
+    if (ethereum && ethereum.on && !suppress) {
       const handleChainChanged = () => {
         // eat errors
         activate(injected, undefined, true).catch((e) => {
@@ -82,6 +82,7 @@ export function useInactiveListener(suppress = false) {
         }
       }
     }
+
     return undefined
-  }, [active, error, suppress, activate])
+  }, [suppress, activate])
 }

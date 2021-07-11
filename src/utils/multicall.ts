@@ -3,6 +3,7 @@ import { Interface } from '@ethersproject/abi'
 import { getWeb3NoAccount } from 'utils/web3'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import { getMulticallAddress } from 'utils/addressHelpers'
+import { getChainId } from './web3React'
 
 interface Call {
   address: string // Address of the contract
@@ -11,8 +12,9 @@ interface Call {
 }
 
 const multicall = async (abi: any[], calls: Call[]) => {
-  const web3 = getWeb3NoAccount()
-  const multi = new web3.eth.Contract((MultiCallAbi as unknown) as AbiItem, getMulticallAddress())
+  const chainId = await getChainId()
+  const web3 = getWeb3NoAccount(chainId)
+  const multi = new web3.eth.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
   const itf = new Interface(abi)
 
   const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])

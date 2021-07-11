@@ -18,7 +18,7 @@ const Home: React.FC = () => {
       <BannerHome />
       <Page>
         {/* <BalanceHome /> */}
-        <BlockNFT/>
+        <BlockNFT />
         <ProfitHome />
         <InterestHome />
         <ListArtHome />

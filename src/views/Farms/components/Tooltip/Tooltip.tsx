@@ -7,7 +7,7 @@ export interface TooltipProps {
 }
 
 const TooltipContent = styled.div`
-  background:#FAF9FA;
+  background: #faf9fa;
   padding: 16px;
   border-radius: 16px;
   color: #000 !important;
@@ -28,7 +28,7 @@ const TooltipContent = styled.div`
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 10px solid #FAF9FA;
+    border-top: 10px solid #faf9fa;
     bottom: 0;
     position: absolute;
     transform: translate(-34px, 9px);

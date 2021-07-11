@@ -23,30 +23,35 @@ const ListArtHomeContainer = styled.div`
 `
 
 const artHomeData = [
-{
-  title:'Master Of Magic',
-  subtitle:'Wizard card for Master Of Magic.',
-  imageSrc:'https://cdnb.artstation.com/p/assets/images/images/037/876/569/large/iwo-widulinski-iwo-widulinski-mom-rjakjpg.jpg?1621538176',
-  cost:'0,00'
-},
-{
-  title:'Castlevania Season 4',
-  subtitle:'Some shots for Castlevania Season 4',
-  imageSrc:'https://cdna.artstation.com/p/assets/images/images/037/869/922/large/jose-vega-csv4-bg-dracscastle-ext-d-dawn-color-v01.jpg?1621526197',
-  cost:'0,00'
-},
-{
-  title:'Optic Adventure',
-  subtitle:'I had this dream last week... ',
-  imageSrc:'https://cdna.artstation.com/p/assets/images/images/037/867/130/large/ismail-inceoglu-optic-adventure.jpg?1621521374',
-  cost:'0,00'
-},
-{
-  title:'Tribute to Miura-Sensei',
-  subtitle:'We will miss you...',
-  imageSrc:'https://cdna.artstation.com/p/assets/images/images/037/872/892/large/anato-finnstark-anato-finnstark-berserk.jpg?1621531306',
-  cost:'0,00'
-}]
+  {
+    title: 'Master Of Magic',
+    subtitle: 'Wizard card for Master Of Magic.',
+    imageSrc:
+      'https://cdnb.artstation.com/p/assets/images/images/037/876/569/large/iwo-widulinski-iwo-widulinski-mom-rjakjpg.jpg?1621538176',
+    cost: '0,00',
+  },
+  {
+    title: 'Castlevania Season 4',
+    subtitle: 'Some shots for Castlevania Season 4',
+    imageSrc:
+      'https://cdna.artstation.com/p/assets/images/images/037/869/922/large/jose-vega-csv4-bg-dracscastle-ext-d-dawn-color-v01.jpg?1621526197',
+    cost: '0,00',
+  },
+  {
+    title: 'Optic Adventure',
+    subtitle: 'I had this dream last week... ',
+    imageSrc:
+      'https://cdna.artstation.com/p/assets/images/images/037/867/130/large/ismail-inceoglu-optic-adventure.jpg?1621521374',
+    cost: '0,00',
+  },
+  {
+    title: 'Tribute to Miura-Sensei',
+    subtitle: 'We will miss you...',
+    imageSrc:
+      'https://cdna.artstation.com/p/assets/images/images/037/872/892/large/anato-finnstark-anato-finnstark-berserk.jpg?1621531306',
+    cost: '0,00',
+  },
+]
 function ListArtHome() {
   return (
     <ListArtHomeContainer>
@@ -55,11 +60,13 @@ function ListArtHome() {
         <div className="label">Hottest Artworks in 2 weeks</div>
       </div>
       <Row gutter={[8, 8]}>
-        {artHomeData.map(item=>{return(
-          <Col span={12} md={6}>
-            <ArtItem data={item} />
-          </Col>
-        )})}
+        {artHomeData.map((item) => {
+          return (
+            <Col span={12} md={6}>
+              <ArtItem data={item} />
+            </Col>
+          )
+        })}
       </Row>
     </ListArtHomeContainer>
   )
@@ -83,17 +90,17 @@ const ArtItemStyled = styled.div`
     vertical-align: top;
 
     &:hover {
-      img{
+      img {
         -webkit-transform: scale3d(1, 1, 1);
-                transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
       }
     }
 
-    img{
+    img {
       -webkit-transition: all 0.5s linear;
-              transition: all 0.5s linear;
+      transition: all 0.5s linear;
       -webkit-transform: scale3d(1.2, 1.2, 1);
-              transform: scale3d(1.2, 1.2, 1);
+      transform: scale3d(1.2, 1.2, 1);
     }
 
     .thumb {
@@ -146,13 +153,8 @@ const ArtItemStyled = styled.div`
   }
 `
 
-const ArtItem = ({data}) => {
-  const {
-    title,
-    subtitle,
-    imageSrc,
-    cost
-  } = data;
+const ArtItem = ({ data }) => {
+  const { title, subtitle, imageSrc, cost } = data
   return (
     <ArtItemStyled className="art-item">
       <div className="thumb-container">
@@ -167,7 +169,9 @@ const ArtItem = ({data}) => {
           <img src="/images/logo-icon.png" alt="lucky-coin" className="lucky-coin" />
           <span className="coin-value">+ {cost}</span>
         </div>
-        <Button type="primary" href="#">Buy</Button>
+        <Button type="primary" href="#">
+          Buy
+        </Button>
       </div>
     </ArtItemStyled>
   )

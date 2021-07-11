@@ -31,9 +31,9 @@ const StyledHero = styled.div`
     background: url('../images/banner-tablet.png');
     background-repeat: no-repeat;
     background-size: cover;
- }
+  }
 
- @media (min-width: 991px) {
+  @media (min-width: 991px) {
     background: url('../images/large-pc.png');
     background-repeat: no-repeat;
     background-size: cover;
@@ -69,7 +69,7 @@ const Hero = () => {
         <Titletop>Luckyswap Launchpad</Titletop>
         <Blurb>{TranslateString(502, 'Finding the best investment opportunities for you')}</Blurb>
       </BoxTitle>
-  </StyledHero>
+    </StyledHero>
   )
 }
 

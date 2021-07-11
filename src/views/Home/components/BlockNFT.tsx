@@ -1,27 +1,29 @@
-import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
-import { Row, Col } from 'antd'
-import useTokenBalance, { BnbBalance } from 'hooks/useTokenBalance'
-import { XLUCKY_TESTNET } from 'config'
+import { Col, Row } from 'antd'
+import { XLUCKY_TESTNET_ADDRESSES } from 'config'
 import bep20Abi from 'config/abi/erc20.json'
-import { useERC20, useContract } from 'hooks/useContract'
+import { useContract } from 'hooks/useContract'
+// import { NativeBalance } from 'hooks/useTokenBalance'
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 import CardValue from './CardValue'
 
 const BlockNFT = () => {
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
   const [balanceToken, setBalanceToken] = useState(0)
-  const balance = BnbBalance() //
-  const useContractTemp = useContract(XLUCKY_TESTNET, bep20Abi)
+  // const balance = NativeBalance()
+  const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
   useEffect(() => {
     if (useContractTemp) {
-      useContractTemp.balanceOf(account).then((data) => {
-        setBalanceToken(data / 1e18)
-      })
+      useContractTemp
+        .balanceOf(account)
+        .then((data) => {
+          setBalanceToken(data / 1e18)
+        })
+        .catch((error) => console.log('block nft : ', error))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account])
+  }, [account, chainId])
   return (
     <WrapNFT>
       <Row gutter={[24, 24]}>

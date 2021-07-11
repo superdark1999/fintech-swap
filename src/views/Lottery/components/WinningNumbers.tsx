@@ -46,21 +46,27 @@ const WinningNumbers: React.FC = () => {
           </Row>
           <Column>
             <RowNoPadding>
-              <CenteredTextWithPadding style={{color:'#fff'}}>{TranslateString(442, 'Tickets matching 4 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding style={{ color: '#fff' }}>
+                {TranslateString(442, 'Tickets matching 4 numbers:')}
+              </CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{color:'#F3C111'}}>{MatchedNumber4}</strong>
+                <strong style={{ color: '#F3C111' }}>{MatchedNumber4}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
             <RowNoPadding>
-              <CenteredTextWithPadding style={{color:'#fff'}}>{TranslateString(444, 'Tickets matching 3 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding style={{ color: '#fff' }}>
+                {TranslateString(444, 'Tickets matching 3 numbers:')}
+              </CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{color:'#F3C111'}}>{MatchedNumber3}</strong>
+                <strong style={{ color: '#F3C111' }}>{MatchedNumber3}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
             <RowNoPadding>
-              <CenteredTextWithPadding style={{color:'#fff'}}>{TranslateString(446, 'Tickets matching 2 numbers:')}</CenteredTextWithPadding>
+              <CenteredTextWithPadding style={{ color: '#fff' }}>
+                {TranslateString(446, 'Tickets matching 2 numbers:')}
+              </CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{color:'#F3C111'}}>{MatchedNumber2}</strong>
+                <strong style={{ color: '#F3C111' }}>{MatchedNumber2}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
           </Column>
@@ -87,7 +93,7 @@ const Link = styled.a`
   margin-top: 1em;
   text-decoration: none;
   color: #101010;
-  background-color: #F3C111;
+  background-color: #f3c111;
   border-radius: 12px;
   padding: 17px 25px;
   font-weight: 500;
@@ -100,7 +106,7 @@ const Link = styled.a`
   &:hover {
     background-color: #ffda3b;
     color: #101010;
-    transition: .5s;
+    transition: 0.5s;
   }
 `
 
@@ -109,7 +115,7 @@ const Row = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-  border: 1px solid #F3C111;
+  border: 1px solid #f3c111;
   border-radius: 14px;
 `
 

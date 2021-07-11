@@ -25,34 +25,28 @@ const Mint: React.FC = () => {
   const bunnyFactoryContract = useBunnyFactory()
   const TranslateString = useI18n()
   const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeBalanceToMint)
-  const {
-    isApproving,
-    isApproved,
-    isConfirmed,
-    isConfirming,
-    handleApprove,
-    handleConfirm,
-  } = useApproveConfirmTransaction({
-    onRequiresApproval: async () => {
-      // TODO: Move this to a helper, this check will be probably be used many times
-      try {
-        const response = await cakeContract.methods.allowance(account, bunnyFactoryContract.options.address).call()
-        const currentAllowance = new BigNumber(response)
-        return currentAllowance.gte(minimumCakeRequired)
-      } catch (error) {
-        return false
-      }
-    },
-    onApprove: () => {
-      return cakeContract.methods
-        .approve(bunnyFactoryContract.options.address, allowance.toJSON())
-        .send({ from: account })
-    },
-    onConfirm: () => {
-      return bunnyFactoryContract.methods.mintNFT(bunnyId).send({ from: account })
-    },
-    onSuccess: () => actions.nextStep(),
-  })
+  const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
+    useApproveConfirmTransaction({
+      onRequiresApproval: async () => {
+        // TODO: Move this to a helper, this check will be probably be used many times
+        try {
+          const response = await cakeContract.methods.allowance(account, bunnyFactoryContract.options.address).call()
+          const currentAllowance = new BigNumber(response)
+          return currentAllowance.gte(minimumCakeRequired)
+        } catch (error) {
+          return false
+        }
+      },
+      onApprove: () => {
+        return cakeContract.methods
+          .approve(bunnyFactoryContract.options.address, allowance.toJSON())
+          .send({ from: account })
+      },
+      onConfirm: () => {
+        return bunnyFactoryContract.methods.mintNFT(bunnyId).send({ from: account })
+      },
+      onSuccess: () => actions.nextStep(),
+    })
 
   return (
     <>
@@ -62,8 +56,12 @@ const Mint: React.FC = () => {
       <Heading as="h3" size="xl" mb="24px" color="#2b2c3a">
         {TranslateString(776, 'Get Starter Collectible')}
       </Heading>
-      <Text as="p" color="#2b2c3a">{TranslateString(786, 'Every profile starts by making a “starter” collectible (NFT).')}</Text>
-      <Text as="p" color="#2b2c3a">{TranslateString(788, 'This starter will also become your first profile picture.')}</Text>
+      <Text as="p" color="#2b2c3a">
+        {TranslateString(786, 'Every profile starts by making a “starter” collectible (NFT).')}
+      </Text>
+      <Text as="p" color="#2b2c3a">
+        {TranslateString(788, 'This starter will also become your first profile picture.')}
+      </Text>
       <Text as="p" mb="24px" color="#2b2c3a">
         {TranslateString(790, 'You can change your profile pic later if you get another approved Pancake Collectible.')}
       </Text>
@@ -91,7 +89,9 @@ const Mint: React.FC = () => {
                 onChange={handleChange}
                 disabled={isApproving || isConfirming || isConfirmed || !hasMinimumCakeRequired}
               >
-                <Text bold color="#2b2c3a">{nft.name}</Text>
+                <Text bold color="#2b2c3a">
+                  {nft.name}
+                </Text>
               </SelectionCard>
             )
           })}
