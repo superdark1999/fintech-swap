@@ -1,22 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
-export default function index({listItem= []}) {
+export default ({listItem= []}) => {
+  const [checked, setItemChecked] = useState(1)
+  const onHover = (i) => {
+    setItemChecked(i)
+  }
   return (
     <Section>
       <section id="slider">
       {
         listItem.slice(0,5).map((item, i) => {
           return (
-              <input type="radio" name="slider" id={`s${i+1}`} defaultChecked={i===Math.round(listItem.length/2 -1)}/>
-              
+            <input type="radio" name="slider" id={`s${i+1}`} checked={checked === i} />            
           )
         })
       }
       {
         listItem.slice(0,5).map((src, i) => {
           return (
-            <label for={`s${i+1}`} id={`slide${i+1}`} >
+            <label for={`s${i+1}`} id={`slide${i+1}`} onMouseOver={()=>onHover(i)}>
               <img key={i} src={`https://dashboard.luckyswap.exchange/${src.link}`} alt="banner" />
             </label>
           )
@@ -83,7 +86,7 @@ const Section = styled.div`
     }
   }   
 
-  @media only screen and (min-width: 992px) {
+  @media only screen and (min-width: 1100px) {
     #slider {
       height: 300px;
       position: relative;
@@ -117,7 +120,7 @@ const Section = styled.div`
       transform-style: preserve-3d;
       label {
         margin: auto;
-        max-width: 1130px;    
+        max-width: 1000px;    
         width: 100%;
         height: 380px;
         border-radius: 4px;
@@ -127,7 +130,7 @@ const Section = styled.div`
         transition: transform 0.4s ease;
         border-radius: 24px;
         > img {
-          max-width: 1130px;    
+          max-width: 1000px;    
           height: 380px;
           width: 100%;
         }
@@ -142,6 +145,7 @@ const Section = styled.div`
 #s5:checked ~ #slide3 {
   box-shadow: 0 1px 4px 0 rgba(0,0,0,.37);
   transform: translate3d(-30%,0,-200px);
+  transition-duration: 800ms;
 }
 
 #s1:checked ~ #slide5, #s2:checked ~ #slide1,
@@ -149,6 +153,7 @@ const Section = styled.div`
 #s5:checked ~ #slide4 {
   box-shadow: 0 6px 10px 0 rgba(0,0,0,.3), 0 2px 2px 0 rgba(0,0,0,.2);
   transform: translate3d(-15%,0,-150px);
+  transition-duration: 800ms;
 }
 
 #s1:checked ~ #slide1, #s2:checked ~ #slide2,
@@ -156,6 +161,7 @@ const Section = styled.div`
 #s5:checked ~ #slide5 {
   box-shadow: 0 13px 25px 0 rgba(0,0,0,.3), 0 11px 7px 0 rgba(0,0,0,.19);
   transform: translate3d(0,0,0);
+  transition-duration: 800ms;
 }
 
 #s1:checked ~ #slide2, #s2:checked ~ #slide3,
@@ -163,6 +169,7 @@ const Section = styled.div`
 #s5:checked ~ #slide1 {
   box-shadow: 0 6px 10px 0 rgba(0,0,0,.3), 0 2px 2px 0 rgba(0,0,0,.2);
   transform: translate3d(15%,0,-150px);
+  transition-duration: 800ms;
 }
 
 #s1:checked ~ #slide3, #s2:checked ~ #slide4,
@@ -170,6 +177,7 @@ const Section = styled.div`
 #s5:checked ~ #slide2 {
   box-shadow: 0 1px 4px 0 rgba(0,0,0,.37);
   transform: translate3d(30%,0,-200px);
+  transition-duration: 800ms;
 }
 `
 

@@ -46,7 +46,7 @@ const BannerBarStyled = styled.div`
     } 
   }
 
-  @media only screen and (min-width: 992px) {
+  @media only screen and (min-width: 1100px) {
     border-radius: 24px;
     height:  300px;
     .banner-body{
