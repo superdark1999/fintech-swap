@@ -81,6 +81,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const onApply = () => {
     onChangePrice(price)
+    var elmnt = document.getElementById("collection-scroll-view");
+    elmnt.scrollIntoView();
   }
 
   if (!onShowSidebar) {

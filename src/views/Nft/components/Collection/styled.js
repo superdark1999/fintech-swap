@@ -4,7 +4,7 @@ import { isMobile } from 'react-device-detect'
 export const CollectionStyled = styled.div`
   .header-artists {
     height: 48px;
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     align-items: center;
     .title-artists {
