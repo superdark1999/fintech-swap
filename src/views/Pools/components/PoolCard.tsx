@@ -9,16 +9,17 @@ import { useFarms, usePriceLuckyBusd, useLucky2Price } from 'state/hooks'
 import { getPoolApy } from 'utils/apy'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useUtilityToken from 'hooks/useUtilityToken';
-import { LUCKY_PER_BLOCK  } from 'config'
+import { LUCKY_PER_BLOCK, BASE_API_ADMIN  } from 'config'
+
 import {Pool} from 'config/constants/types'
 import CardValue from '../../Home/components/CardValue';
 
 
-interface HarvestProps{
+interface PoolCardProps{
   pool: Pool
 }
 
-const PoolCard : React.FC<HarvestProps> = ({ pool })  => {
+const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
 
   const [apy, setApy] = useState('0');
   const [totalStaked, setTotalStaked] = useState(0);
@@ -61,7 +62,7 @@ const PoolCard : React.FC<HarvestProps> = ({ pool })  => {
             <span>Premium</span>
           </HeadLine>
           <figure>
-            <img src={pool.logo} alt=""/>
+            <img src={ BASE_API_ADMIN.concat('/') + pool.logo} alt=""/>
           </figure>
 
           <CardContent>
@@ -114,11 +115,9 @@ const PoolCard : React.FC<HarvestProps> = ({ pool })  => {
             </FlexSpace>
           </CardContent>
 
-          <Boxbtn>
-            <Button color="primary">
+          <BoxLink>
               <Link to={`/PoolCardsDetail/${pool._id}`}>Join</Link>
-            </Button>
-          </Boxbtn>
+          </BoxLink>
         </BoxPool>
       </Col>
     </div>
@@ -213,6 +212,33 @@ const Boxbtn = styled.div`
       &:hover {
         color: rgb(255, 253, 250);
       }
+    }
+  }
+`
+
+const BoxLink = styled.div`
+  display: flex;
+  justify-content: center;
+  color: #2b2e2f;
+
+  a {
+    display: block;
+    width: 232px;
+    height: 40px;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #2b2e2f;
+    text-align: center;
+    background: #f5c606;
+    border-radius: 10px;
+    text-decoration: none;
+
+    &:hover {
+      transition: 0.5s;
+      color: #2b2e2f;
+      background: #f5c606;
+      opacity: 0.8;
     }
   }
 `

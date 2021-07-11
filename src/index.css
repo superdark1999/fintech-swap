@@ -16,7 +16,6 @@ body {
   background-color: #f3a558 !important;
 }
 
-
 .bg-nav {
   background: #fdc99c;
 }
@@ -51,11 +50,9 @@ div.line {
   color: #fff !important;
 }
 
-
 input:focus {
   box-shadow: none !important;
 }
-
 
 .column-sl div span div {
   color: #fff;
@@ -180,7 +177,6 @@ input:focus {
 
 .nav-link {
   color: #979797 !important;
-
 }
 
 .nav-tabs .nav-link:hover {
@@ -221,7 +217,7 @@ input.input-search {
   border-radius: 6px !important;
   padding: 0 10px !important;
   min-height: 37px;
-  background: -webkit-linear-gradient(#f5c606,#29F4C4);
+  background: -webkit-linear-gradient(#f5c606, #29f4c4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -252,7 +248,7 @@ input.input-search {
 }
 
 .modal-dialog .modal-footer .btn-secondar {
-  background-color: #2E3F52;
+  background-color: #2e3f52;
 }
 
 .border-none {
@@ -291,8 +287,8 @@ button.button-connect:hover {
 
 @keyframes scaleIn {
   from {
-    transform: scale(.5, .5);
-    opacity: .5;
+    transform: scale(0.5, 0.5);
+    opacity: 0.5;
   }
   to {
     transform: scale(2.5, 2.5);
@@ -300,7 +296,7 @@ button.button-connect:hover {
   }
 }
 
-.custom-btn a#join-pool-button{
+.custom-btn a#join-pool-button {
   background-color: #f5c606;
   color: #2b2e2f !important;
   margin-top: 15px;
@@ -316,7 +312,7 @@ button.button-connect:hover {
   width: 100%;
 }
 
-.bot-btn #swap-button{
+.bot-btn #swap-button {
   background-color: #f5c606;
   color: #2b2e2f !important;
 }
@@ -346,16 +342,15 @@ button.button-connect:hover {
   opacity: 0;
 }
 
-
 @keyframes fadeinout {
   from {
-      opacity: 0;
+    opacity: 0;
   }
   33% {
-      opacity: 1;
+    opacity: 1;
   }
   to {
-      opacity: 0;
+    opacity: 0;
   }
 }
 
@@ -389,13 +384,13 @@ button.button-connect:hover {
 
 button.dropdown-toggle::after {
   display: inline-block;
-  margin-left: .255em;
-  vertical-align: .255em;
-  content: "";
-  border-top: .3em solid;
-  border-right: .3em solid transparent;
+  margin-left: 0.255em;
+  vertical-align: 0.255em;
+  content: '';
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
   border-bottom: 0;
-  border-left: .3em solid transparent;
+  border-left: 0.3em solid transparent;
   position: absolute;
   top: 47%;
   right: -4px;
@@ -412,12 +407,15 @@ button.btn-secondary:hover {
   border-color: transparent !important;
 }
 
-
-button.btn-secondary.dropdown-toggle:focus{
+button.btn-secondary.dropdown-toggle:focus {
   box-shadow: none !important;
 }
 
-.btn-check:active+.btn-secondary, .btn-check:checked+.btn-secondary, .btn-secondary.active, .btn-secondary:active, .show>.btn-secondary.dropdown-toggle {
+.btn-check:active + .btn-secondary,
+.btn-check:checked + .btn-secondary,
+.btn-secondary.active,
+.btn-secondary:active,
+.show > .btn-secondary.dropdown-toggle {
   background-color: transparent !important;
   border-color: transparent !important;
 }
@@ -433,14 +431,14 @@ button.btn-secondary.dropdown-toggle:focus{
 }
 
 .bg-yellow {
-  background-color: #F3C111 !important;
+  background-color: #f3c111 !important;
   color: #333333 !important;
 }
 
 .border-yellow {
-  border: 1px solid #F3C111 !important;
+  border: 1px solid #f3c111 !important;
   background-color: transparent !important;
-  color: #F3C111 !important;
+  color: #f3c111 !important;
 }
 
 .no-border {
@@ -451,7 +449,7 @@ button.btn-secondary.dropdown-toggle:focus{
 
 .box-lucky h2 {
   font-size: 40px;
-  color: #F3C111;
+  color: #f3c111;
 }
 
 .style-color button[aria-label] {
