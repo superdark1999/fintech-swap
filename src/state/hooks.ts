@@ -37,7 +37,7 @@ export const useFetchPublicData = () => {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      const blockNumber = await web3NoAccount.eth.getBlockNumber()
+      const blockNumber = web3NoAccount && (await web3NoAccount.eth.getBlockNumber())
       dispatch(setBlock(blockNumber))
     }, 6000)
 

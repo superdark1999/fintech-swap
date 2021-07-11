@@ -39,11 +39,11 @@ export const injected = new InjectedConnector({
   supportedChainIds: [56, 97, 137, 80001],
 })
 
-// export const bsc = new BscConnector({ supportedChainIds: [56] })
+export const bscConnector = new BscConnector({ supportedChainIds: [56] })
 
 // // mainnet only
 export const walletconnect = new WalletConnectConnector({
-  rpc: { 56: 'https://bsc-dataseed.binance.org/' },
+  rpc: { 97: 'https://data-seed-prebsc-1-s1.binance.org:8545/' },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
   pollingInterval: 15000,

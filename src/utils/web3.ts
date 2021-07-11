@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react'
 import getRpcUrl from 'utils/getRpcUrl'
 import Web3 from 'web3'
 import { HttpProviderOptions } from 'web3-core-helpers'
+import { useActiveWeb3React } from '../hooks/index'
 
 const useWeb3NoAccount = () => {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const [web3NoAccount, setWeb3NoAccount] = useState(null)
 
   useEffect(() => {

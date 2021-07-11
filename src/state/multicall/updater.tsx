@@ -33,8 +33,10 @@ async function fetchChunk(
   let resultsBlockNumber
   let returnData
   try {
-    [resultsBlockNumber, returnData] = await multicallContract.aggregate(
-      chunk.map((obj) => [obj.address, obj.callData]),
+    ;[resultsBlockNumber, returnData] = await multicallContract.aggregate(
+      chunk.map((obj) => {
+        return [obj.address, obj.callData]
+      }),
     )
   } catch (error) {
     console.info('Failed to fetch chunk inside retry', error)
@@ -60,7 +62,7 @@ export function activeListeningKeys(
   const listeners = allListeners[chainId]
   if (!listeners) return {}
 
-  return Object.keys(listeners).reduce<{ [callKey: string]: number }>((memo, callKey) => {
+  const result = Object.keys(listeners).reduce<{ [callKey: string]: number }>((memo, callKey) => {
     const keyListeners = listeners[callKey]
 
     memo[callKey] = Object.keys(keyListeners)
@@ -74,6 +76,8 @@ export function activeListeningKeys(
       }, Infinity)
     return memo
   }, {})
+
+  return result
 }
 
 /**

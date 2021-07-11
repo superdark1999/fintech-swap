@@ -174,8 +174,6 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay: Farm[]): FarmWithStakedValue[] => {
       let farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
-        console.log('farm.>', farm)
-
         if (!farm.lpTotalInQuoteToken || !prices) {
           return farm
         }
