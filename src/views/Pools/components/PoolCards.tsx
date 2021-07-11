@@ -1,28 +1,27 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
-import {Pool} from 'config/constants/types'
-import PoolCard from './PoolCard';
+import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
+import { Pool } from 'config/constants/types'
+import PoolCard from './PoolCard'
 
 interface HarvestProps {
-  pools: Pool[],
-  activeTab: string,
+  pools: Pool[]
+  activeTab: string
 }
 
-const PoolCards: React.FC<HarvestProps> = ({ pools, activeTab }) =>{
+const PoolCards: React.FC<HarvestProps> = ({ pools, activeTab }) => {
   const logos = ['../images/logo-icon.png', './images/lucky2-icon.png', './images/blink.png', './images/berry-icon.png']
 
-  for(let i = 0; i < pools.length; i++)
-    pools[i].logo = logos[i];
+  for (let i = 0; i < pools.length; i++) pools[i].logo = logos[i]
 
   return (
     <>
       <div>
         <TabContent activeTab={activeTab}>
-          <TabPane tabId="1">    
+          <TabPane tabId="1">
             <Row xs="1" sm="2" md="4">
-              {pools.map(pool => (
-                <PoolCard key={pool._id} pool={pool}/>
+              {pools.map((pool) => (
+                <PoolCard key={pool._id} pool={pool} />
               ))}
 
               {/* <Col>
@@ -1086,15 +1085,13 @@ const PoolCards: React.FC<HarvestProps> = ({ pools, activeTab }) =>{
           </TabPane>
          */}
         </TabContent>
-    </div>
-  </>
+      </div>
+    </>
   )
 }
 
-
-
 const HeadLine = styled.div`
-  background: linear-gradient(90deg, rgba(239,186,12,1) 0%, rgba(251,219,59,1) 100%);
+  background: linear-gradient(90deg, rgba(239, 186, 12, 1) 0%, rgba(251, 219, 59, 1) 100%);
   width: 100%;
   padding: 10px 0;
   position: absolute;
@@ -1161,7 +1158,7 @@ const ContentRight = styled.div`
 
 const Boxbtn = styled.div`
   text-align: center;
-  border-top: 1px solid #D8D8D8;
+  border-top: 1px solid #d8d8d8;
   padding-top: 15px;
 
   button {

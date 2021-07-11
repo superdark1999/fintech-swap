@@ -19,7 +19,6 @@ import multicall from './multicall/reducer'
 import transactions from './transactions/reducer'
 import mint from './mint/reducer'
 
-
 type MergedState = {
   user: {
     [key: string]: any
@@ -53,7 +52,7 @@ const store = configureStore({
     achievements: achievementsReducer,
     block: blockReducer,
   },
-  // middleware: [...getDefaultMiddleware({ thunk: false }) as any, save({ states: PERSISTED_KEYS })],
+  // middleware: [...(getDefaultMiddleware({ thunk: false }) as any), save({ states: PERSISTED_KEYS })],
   // preloadedState: loadedState,
 })
 

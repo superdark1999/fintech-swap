@@ -1,26 +1,25 @@
-import React, {useState, useEffect, useMemo, useCallback} from 'react'
-import styled from 'styled-components'
-import Page from 'components/layout/Page'
 import { useWeb3React } from '@web3-react/core'
+import Page from 'components/layout/Page'
+import SMART_CHEF_ABI from 'config/abi/smartChef.json'
+import { Pool } from 'config/constants/types'
+import { useContract, useStakingContract } from 'hooks/useContract'
+import useGetStateData from 'hooks/useGetStakeData'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Pool} from 'config/constants/types';
-import useGetStateData from 'hooks/useGetStakeData';
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
-import { useContract,  useStakingContract  } from 'hooks/useContract'
-import SMART_CHEF_ABI from 'config/abi/smartChef.json'
-import { useHookPools } from '../Store';
-
-
-
-import UnStakeModal from './UnStakeModal';
-import DepositModal from './DepositModal';
-import PoolCardDetails from './PoolCardDetails';
-
+import styled from 'styled-components'
+import { useHookPools } from '../Store'
+import DepositModal from './DepositModal'
+import PoolCardDetails from './PoolCardDetails'
+import UnStakeModal from './UnStakeModal'
 
 const logos = {
-  'Luckyswap':'../images/logo-icon.png','Luckyswap 2': './images/lucky2-icon.png', 'BLINk' :'./images/blink.png','Berry': './images/berry-icon.png'}
-
+  Luckyswap: '../images/logo-icon.png',
+  'Luckyswap 2': './images/lucky2-icon.png',
+  BLINk: './images/blink.png',
+  Berry: './images/berry-icon.png',
+}
 
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
@@ -33,57 +32,51 @@ interface HarvestProps {
 function FetchPoolData() {
   const param: any = useParams()
 
-  const [state, actions] = useHookPools();
-  const { poolDetail } = state;
+  const [state, actions] = useHookPools()
+  const { poolDetail } = state
 
   useEffect(() => {
     const fetchPool = () => {
       actions.getPoolDetail(param.id)
     }
 
-    fetchPool();
+    fetchPool()
   }, [actions, param.id])
 
-  if (poolDetail)
-    return <PoolCardsDetail stakingData={poolDetail}/>
+  if (poolDetail) return <PoolCardsDetail stakingData={poolDetail} />
   return <div></div>
 }
 
 const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
-
-  const [depositModal, setDepositModal] = useState(false);
-  const [withdrawModal, setWithdrawModel] = useState(false);
-  const [isUnStaking, setIsUnStaking] = useState(false);
-  const [isDepositing, setIsDepositing] = useState(false);
-  const [isHarvesting, setIsHarvesting] = useState(false);
+  const [depositModal, setDepositModal] = useState(false)
+  const [withdrawModal, setWithdrawModel] = useState(false)
+  const [isUnStaking, setIsUnStaking] = useState(false)
+  const [isDepositing, setIsDepositing] = useState(false)
+  const [isHarvesting, setIsHarvesting] = useState(false)
   const { account } = useWeb3React()
 
-  const stakingContract = useStakingContract(stakingData?.stakingAddress);
-  const { userAmount, userRewardDebt} = useGetStateData(stakingData);
+  const stakingContract = useStakingContract(stakingData?.stakingAddress)
+  const { userAmount, userRewardDebt } = useGetStateData(stakingData)
 
   const addTransaction = useTransactionAdder()
-  const contract = useContract(stakingData?.stakingAddress,SMART_CHEF_ABI );
-  
-  const logo = logos[stakingData.name];
+  const contract = useContract(stakingData?.stakingAddress, SMART_CHEF_ABI)
 
+  const logo = logos[stakingData.name]
 
   useEffect(() => {
-    if (contract){
-      contract.on('Withdraw',  () => {
-        setIsUnStaking(false);
-
+    if (contract) {
+      contract.on('Withdraw', () => {
+        setIsUnStaking(false)
       })
-      contract.on('Deposit',  () => {
-        if (isDepositing)
-          setIsDepositing(false);
-        else
-          setIsHarvesting(false);
+      contract.on('Deposit', () => {
+        if (isDepositing) setIsDepositing(false)
+        else setIsHarvesting(false)
       })
     }
   }, [contract, isDepositing])
 
-  const depositToggle = () => setDepositModal(!depositModal);
-  const unStakeToggle = () => setWithdrawModel(!withdrawModal);
+  const depositToggle = () => setDepositModal(!depositModal)
+  const unStakeToggle = () => setWithdrawModel(!withdrawModal)
 
   const allTransactions = useAllTransactions()
 
@@ -92,12 +85,10 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
 
-  const getStatus = useCallback(() =>{
+  const getStatus = useCallback(() => {
     const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
     return !!pending.length
-
   }, [sortedRecentTransactions])
-
 
   return (
     <>
@@ -105,15 +96,17 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
         <BoxDetail>
           <BoxHead>
             <figure>
-              <img src={logo} alt=""/>
+              <img src={logo} alt="" />
             </figure>
             <h2>{stakingData.name}</h2>
-            <span>Deposit {stakingData.depositTokenSymbol} Tokens and earn {stakingData.rewardTokenSymbol}</span>
+            <span>
+              Deposit {stakingData.depositTokenSymbol} Tokens and earn {stakingData.rewardTokenSymbol}
+            </span>
           </BoxHead>
 
-          <PoolCardDetails 
-            userRewardDebt={userRewardDebt} 
-            userAmount={userAmount} 
+          <PoolCardDetails
+            userRewardDebt={userRewardDebt}
+            userAmount={userAmount}
             onUnStakeToggle={unStakeToggle}
             onDepositToggle={depositToggle}
             stakingContract={stakingContract}
@@ -127,13 +120,14 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
             setIsHarvesting={setIsHarvesting}
           />
 
-          <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>
-          Every time you stake and unStake EL tokens, the contract will automatically harvest HCATS rewards for you!
+          <p className="line__bot">
+            <img src="../images/icon-starts.png" alt="" />
+            Every time you stake and unStake EL tokens, the contract will automatically harvest HCATS rewards for you!
           </p>
         </BoxDetail>
       </Page>
 
-      <DepositModal 
+      <DepositModal
         depositModal={depositModal}
         depositToggle={depositToggle}
         depositSymbol={stakingData.depositTokenSymbol}
@@ -144,19 +138,17 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
         setIsDepositing={setIsDepositing}
       />
 
-      <UnStakeModal 
-        withdrawModal={withdrawModal} 
+      <UnStakeModal
+        withdrawModal={withdrawModal}
         unStakeToggle={unStakeToggle}
         stakingContract={stakingContract}
         addTransaction={addTransaction}
         userAmount={userAmount}
         setIsUnStaking={setIsUnStaking}
-
       />
     </>
   )
 }
-
 
 const BoxHead = styled.div`
   display: flex;
@@ -241,7 +233,7 @@ const BoxDetail = styled.div`
     }
 
     &__footer {
-      border-top: 1px solid #D8D8D8;
+      border-top: 1px solid #d8d8d8;
       padding-top: 20px;
       width: 100%;
       text-align: center;
@@ -256,7 +248,6 @@ const BoxDetail = styled.div`
         min-height: 40px;
         border-color: transparent;
         color: #2b2e2f;
-
 
         &:hover {
           opacity: 0.7;
@@ -280,7 +271,5 @@ const BoxDetail = styled.div`
     }
   }
 `
-
-
 
 export default FetchPoolData

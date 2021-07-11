@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, ETHER, JSBI, Pair, Percent, Price, TokenAmount } from '@luckyswap/v2-sdk'
+import { Currency, CurrencyAmount, JSBI, Pair, Percent, Price, TokenAmount } from '@luckyswap/v2-sdk'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
@@ -6,7 +6,7 @@ import { useTotalSupply } from '../../data/TotalSupply'
 
 import { useActiveWeb3React } from '../../hooks'
 import { TranslateString } from '../../utils/translateTextHelpers'
-import { wrappedCurrency, wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
+import { wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
@@ -20,7 +20,7 @@ export function useMintState(): AppState['mint'] {
 
 export function useDerivedMintInfo(
   currencyA: Currency | undefined,
-  currencyB: Currency | undefined
+  currencyB: Currency | undefined,
 ): {
   dependentField: Field
   currencies: { [field in Field]?: Currency }
@@ -46,7 +46,7 @@ export function useDerivedMintInfo(
       [Field.CURRENCY_A]: currencyA ?? undefined,
       [Field.CURRENCY_B]: currencyB ?? undefined,
     }),
-    [currencyA, currencyB]
+    [currencyA, currencyB],
   )
 
   // pair
@@ -78,14 +78,14 @@ export function useDerivedMintInfo(
     if (independentAmount) {
       // we wrap the currencies just to get the price in terms of the other token
       const wrappedIndependentAmount = wrappedCurrencyAmount(independentAmount, chainId)
-      const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
+      const [tokenA, tokenB] = [currencyA?.wrapped, currencyB?.wrapped]
       if (tokenA && tokenB && wrappedIndependentAmount && pair) {
         const dependentCurrency = dependentField === Field.CURRENCY_B ? currencyB : currencyA
         const dependentTokenAmount =
           dependentField === Field.CURRENCY_B
             ? pair.priceOf(tokenA).quote(wrappedIndependentAmount)
             : pair.priceOf(tokenB).quote(wrappedIndependentAmount)
-        return dependentCurrency === ETHER ? CurrencyAmount.ether(dependentTokenAmount.raw) : dependentTokenAmount
+        return CurrencyAmount.fromRawAmount(dependentCurrency, dependentTokenAmount.raw)
       }
       return undefined
     }
@@ -105,9 +105,9 @@ export function useDerivedMintInfo(
       }
       return undefined
     }
-    const wrappedCurrencyA = wrappedCurrency(currencyA, chainId)
+    const wrappedCurrencyA = currencyA?.wrapped
     return pair && wrappedCurrencyA ? pair.priceOf(wrappedCurrencyA) : undefined
-  }, [chainId, currencyA, noLiquidity, pair, parsedAmounts])
+  }, [currencyA, noLiquidity, pair, parsedAmounts])
 
   // liquidity minted
   const liquidityMinted = useMemo(() => {
@@ -167,9 +167,7 @@ export function useDerivedMintInfo(
   }
 }
 
-export function useMintActionHandlers(
-  noLiquidity: boolean | undefined
-): {
+export function useMintActionHandlers(noLiquidity: boolean | undefined): {
   onFieldAInput: (typedValue: string) => void
   onFieldBInput: (typedValue: string) => void
 } {
@@ -179,13 +177,13 @@ export function useMintActionHandlers(
     (typedValue: string) => {
       dispatch(typeInput({ field: Field.CURRENCY_A, typedValue, noLiquidity: noLiquidity === true }))
     },
-    [dispatch, noLiquidity]
+    [dispatch, noLiquidity],
   )
   const onFieldBInput = useCallback(
     (typedValue: string) => {
       dispatch(typeInput({ field: Field.CURRENCY_B, typedValue, noLiquidity: noLiquidity === true }))
     },
-    [dispatch, noLiquidity]
+    [dispatch, noLiquidity],
   )
 
   return {

@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
+import BigNumber from 'bignumber.js'
+import { useEffect, useState } from 'react'
 import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
-import { getWeb3NoAccount } from 'utils/web3'
-import useWeb3 from './useWeb3'
+import { useWeb3NoAccount } from 'utils/web3'
 import useRefresh from './useRefresh'
+import useWeb3 from './useWeb3'
 
 const useTokenBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -15,7 +15,10 @@ const useTokenBalance = (tokenAddress: string) => {
   useEffect(() => {
     const fetchBalance = async () => {
       const contract = getBep20Contract(tokenAddress, web3)
-      const res =  await contract.methods.balanceOf(account).call()
+      const res = await contract.methods
+        .balanceOf(account)
+        .call()
+        .catch((error) => console.log('fetch balance error : ', error))
       setBalance(new BigNumber(res))
     }
 
@@ -62,21 +65,22 @@ export const useBurnedBalance = (tokenAddress: string) => {
   return balance
 }
 
-export const BnbBalance = () => {
+export const useNativeBalance = () => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { slowRefresh } = useRefresh()
-  const web3 = getWeb3NoAccount()
   const { account } = useWeb3React()
+  const web3NoAccount = useWeb3NoAccount()
+
   useEffect(() => {
-    if (account) {
+    if (account && web3NoAccount) {
       const fetchBalance = async () => {
-        const result = await web3.eth.getBalance(account)
+        const result = await web3NoAccount.eth.getBalance(account)
         setBalance(new BigNumber(result))
       }
 
       fetchBalance()
     }
-  }, [web3, account, slowRefresh])
+  }, [account, slowRefresh, web3NoAccount])
   return balance
 }
 

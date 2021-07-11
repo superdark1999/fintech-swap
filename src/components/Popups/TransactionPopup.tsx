@@ -7,6 +7,7 @@ import { getBscScanLink } from '../../utils'
 import { ExternalLink } from '../Shared'
 import { AutoColumn } from '../Column'
 import { AutoRow } from '../Row'
+import { SCAN_SITES } from '../../constants'
 
 const RowNoFlex = styled(AutoRow)`
   flex-wrap: nowrap;
@@ -37,7 +38,9 @@ export default function TransactionPopup({
       </div>
       <AutoColumn gap="8px">
         <Text>{summary ?? `Hash: ${hash.slice(0, 8)}...${hash.slice(58, 65)}`}</Text>
-        {chainId && <ExternalLink href={getBscScanLink(chainId, hash, 'transaction')}>View on bscscan</ExternalLink>}
+        {chainId && (
+          <ExternalLink href={getBscScanLink(chainId, hash, 'transaction')}>View on {SCAN_SITES[chainId]}</ExternalLink>
+        )}
       </AutoColumn>
     </RowNoFlex>
   )

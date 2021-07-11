@@ -1,6 +1,4 @@
-import { ChainId, JSBI, Percent, Token, WETH } from '@luckyswap/v2-sdk'
-
-export const ROUTER_ADDRESS = '0x4eED75a231D8A1d265B283A67b5b37D1Ec80d379'
+import { JSBI, Percent, Token, ChainId, WNATIVE } from '@luckyswap/v2-sdk'
 
 // a list of tokens by chain
 type ChainTokenList = {
@@ -15,12 +13,21 @@ export const UST = new Token(
   '0x23396cf899ca06c4472205fc903bdb4de249d6fc',
   18,
   'UST',
-  'Wrapped UST Token'
+  'Wrapped UST Token',
 )
 
+export const ROUTER_ADDRESSES: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac',
+  [ChainId.MATIC]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
+  [ChainId.MATIC_TESTNET]: '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd',
+  [ChainId.BSCTESTNET]: '0x09FceE7287f882c5eEAb8032A64FDE54Fc1dD055',
+}
+
 const WETH_ONLY: ChainTokenList = {
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
-  [ChainId.BSCTESTNET]: [WETH[ChainId.BSCTESTNET]],
+  [ChainId.MAINNET]: [WNATIVE[ChainId.MAINNET]],
+  [ChainId.BSCTESTNET]: [WNATIVE[ChainId.BSCTESTNET]],
+  [ChainId.MATIC]: [WNATIVE[ChainId.MATIC]],
+  [ChainId.MATIC_TESTNET]: [WNATIVE[ChainId.MATIC_TESTNET]],
 }
 
 // used to construct intermediary pairs for trading
@@ -57,7 +64,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     ],
     [BUSD, USDT],
     [DAI, USDT],
-  ]
+  ],
 }
 
 export const NetworkContextName = 'NETWORK'
@@ -81,3 +88,38 @@ export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(
 
 // used to ensure the user doesn't send so much ETH so they end up with <.01
 export const MIN_ETH: JSBI = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16)) // .01 ETH
+
+export const RPC_URLS: {
+  [chainId in ChainId]?: string[]
+} = {
+  [ChainId.MAINNET]: [
+    'https://bsc-dataseed.binance.org/',
+    'https://bsc-dataseed1.defibit.io/',
+    'https://bsc-dataseed1.ninicoin.io/',
+  ],
+  [ChainId.BSCTESTNET]: [
+    'https://data-seed-prebsc-1-s1.binance.org:8545/',
+    'https://data-seed-prebsc-2-s1.binance.org:8545/',
+    'https://data-seed-prebsc-1-s2.binance.org:8545/',
+  ],
+  [ChainId.MATIC]: ['https://rpc-mainnet.matic.network'],
+  [ChainId.MATIC_TESTNET]: ['https://rpc-mumbai.matic.today', 'https://rpc-mumbai.maticvigil.com'],
+}
+
+export const BLOCK_EXPLORER_URLS: {
+  [chainId in ChainId]?: string[]
+} = {
+  [ChainId.MAINNET]: ['https://bscscan.com'],
+  [ChainId.BSCTESTNET]: ['https://testnet.bscscan.com/'],
+  [ChainId.MATIC]: ['https://polygonscan.com/'],
+  [ChainId.MATIC_TESTNET]: ['https://mumbai.polygonscan.com/'],
+}
+
+export const SCAN_SITES: {
+  [chainId in ChainId]?: string
+} = {
+  [ChainId.MAINNET]: 'bscscan',
+  [ChainId.BSCTESTNET]: 'bscscan',
+  [ChainId.MATIC]: 'polygonscan',
+  [ChainId.MATIC_TESTNET]: 'polygonscan',
+}

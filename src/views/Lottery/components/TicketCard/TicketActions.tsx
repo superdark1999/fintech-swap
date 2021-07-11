@@ -7,7 +7,7 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useContract } from 'hooks/useContract'
 import { useApproveCallbackCustom } from 'hooks/useApproveCallback'
-import { XLUCKY_TESTNET } from 'config'
+import { XLUCKY_TESTNET_ADDRESSES } from 'config'
 import bep20Abi from 'config/abi/erc20.json'
 import lotteryAbi from 'config/abi/lottery.json'
 import useRefresh from 'hooks/useRefresh'
@@ -45,10 +45,10 @@ const TicketCard: React.FC = () => {
   // const allowance = useLotteryAllowance()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
 
-  const { account } = useWeb3React()
-  const contractBEP20 = useContract(XLUCKY_TESTNET, bep20Abi)
+  const { account, chainId } = useWeb3React()
+  const contractBEP20 = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
 
-  const useContractTemp = useContract(XLUCKY_TESTNET, bep20Abi)
+  const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
 
   const ticketsContract = useContract(getLotteryTicketAddress(), lotteryTicketAbi)
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
@@ -72,18 +72,24 @@ const TicketCard: React.FC = () => {
 
   useEffect(() => {
     if (useContractTemp) {
-      useContractTemp.balanceOf(account).then((data) => {
-        setBalanceToken(data.toString())
-      })
+      useContractTemp
+        .balanceOf(account)
+        .then((data) => {
+          setBalanceToken(data.toString())
+        })
+        .catch((error) => console.log('lottery : ', error))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account])
 
   useEffect(() => {
     if (useContractTemp) {
-      useContractTemp.balanceOf(account).then((data) => {
-        setBalanceToken(data.toString())
-      })
+      useContractTemp
+        .balanceOf(account)
+        .then((data) => {
+          setBalanceToken(data.toString())
+        })
+        .catch((error) => console.log('lottery : ', error))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, fastRefresh])
@@ -104,7 +110,7 @@ const TicketCard: React.FC = () => {
   }, [account, contractBEP20])
   const [requestedApproval, setRequestedApproval] = useState(false)
 
-  const [approval] = useApproveCallbackCustom(XLUCKY_TESTNET, getLotteryAddress())
+  const [approval] = useApproveCallbackCustom(XLUCKY_TESTNET_ADDRESSES[chainId], getLotteryAddress())
 
   async function onAttemptToApprove() {
     return approval()
@@ -138,7 +144,12 @@ const TicketCard: React.FC = () => {
           <Button className="bg-yellow" width="100%">
             {TranslateString(432, 'Connect Wallet')}
           </Button>
-          <Button className="border-yellow" width="100%" disabled={requestedApproval || getStatus()} onClick={handleApprove}>
+          <Button
+            className="border-yellow"
+            width="100%"
+            disabled={requestedApproval || getStatus()}
+            onClick={handleApprove}
+          >
             {getStatus() ? spinnerIcon : ''}
             {TranslateString(494, 'View your tickets')}
           </Button>

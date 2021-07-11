@@ -1,5 +1,5 @@
 import { parseUnits } from '@ethersproject/units'
-import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Trade } from '@luckyswap/v2-sdk'
+import { Currency, CurrencyAmount, JSBI, Token, TokenAmount, Trade } from '@luckyswap/v2-sdk'
 import { ParsedQs } from 'qs'
 import { useWeb3React } from '@web3-react/core'
 
@@ -34,11 +34,11 @@ export function useSwapActionHandlers(): {
       dispatch(
         selectCurrency({
           field,
-          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : '',
-        })
+          currencyId: currency?.isToken ? currency.address : currency?.isNative ? 'ETH' : '',
+        }),
       )
     },
-    [dispatch]
+    [dispatch],
   )
 
   const onSwitchTokens = useCallback(() => {
@@ -49,14 +49,14 @@ export function useSwapActionHandlers(): {
     (field: Field, typedValue: string) => {
       dispatch(typeInput({ field, typedValue }))
     },
-    [dispatch]
+    [dispatch],
   )
 
   const onChangeRecipient = useCallback(
     (recipient: string | null) => {
       dispatch(setRecipient({ recipient }))
     },
-    [dispatch]
+    [dispatch],
   )
 
   return {
@@ -75,9 +75,9 @@ export function tryParseAmount(value?: string, currency?: Currency): CurrencyAmo
   try {
     const typedValueParsed = parseUnits(value, currency.decimals).toString()
     if (typedValueParsed !== '0') {
-      return currency instanceof Token
+      return currency?.isToken
         ? new TokenAmount(currency, JSBI.BigInt(typedValueParsed))
-        : CurrencyAmount.ether(JSBI.BigInt(typedValueParsed))
+        : CurrencyAmount.fromRawAmount(currency, JSBI.BigInt(typedValueParsed))
     }
   } catch (error) {
     // should fail if the user specifies too many decimal places of precision (or maybe exceed max uint?)
@@ -261,9 +261,8 @@ export function useDefaultsFromURLSearch():
   const { chainId } = useWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
-  const [result, setResult] = useState<
-    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
-  >()
+  const [result, setResult] =
+    useState<{ inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined>()
 
   useEffect(() => {
     if (!chainId) return
@@ -276,7 +275,7 @@ export function useDefaultsFromURLSearch():
         inputCurrencyId: parsed[Field.INPUT].currencyId,
         outputCurrencyId: parsed[Field.OUTPUT].currencyId,
         recipient: parsed.recipient,
-      })
+      }),
     )
 
     setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId })

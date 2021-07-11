@@ -36,6 +36,7 @@ export class BscConnector extends AbstractConnector {
   }
 
   private handleChainChanged(chainId: string | number): void {
+    window.localStorage.setItem('chainId', chainId.toString())
     this.emitUpdate({ chainId, provider: window.BinanceChain } as any)
   }
 
@@ -68,14 +69,14 @@ export class BscConnector extends AbstractConnector {
     }
 
     if ((window.BinanceChain as any).isMetaMask) {
-      (window.BinanceChain as any).autoRefreshOnNetworkChange = false
+      ;(window.BinanceChain as any).autoRefreshOnNetworkChange = false
     }
 
     // try to activate + get account via eth_requestAccounts
     let account
     try {
       account = await (window.BinanceChain.send as Send)('eth_requestAccounts').then(
-        (sendReturn) => parseSendReturn(sendReturn)[0]
+        (sendReturn) => parseSendReturn(sendReturn)[0],
       )
     } catch (error) {
       if ((error as any).code === 4001) {
@@ -148,7 +149,7 @@ export class BscConnector extends AbstractConnector {
     let account
     try {
       account = await (window.BinanceChain.send as Send)('eth_accounts').then(
-        (sendReturn) => parseSendReturn(sendReturn)[0]
+        (sendReturn) => parseSendReturn(sendReturn)[0],
       )
     } catch {
       warning(false, 'eth_accounts was unsuccessful, falling back to enable')

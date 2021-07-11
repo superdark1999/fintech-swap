@@ -10,7 +10,7 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween } from '../Row'
 import { Input as NumericalInput } from '../NumericalInput'
 import { useActiveWeb3React } from '../../../hooks'
-import TranslatedText from "../TranslatedText"
+import TranslatedText from '../TranslatedText'
 import { TranslateString } from '../../../utils/translateTextHelpers'
 
 const InputRow = styled.div<{ selected: boolean }>`
@@ -38,7 +38,7 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   :focus,
   :hover {
     /* background-color: ${({ theme }) => darken(0.05, theme.colors.input)}; */
-    color:#f5c606 ;
+    color: #f5c606;
   }
 `
 
@@ -110,25 +110,30 @@ export default function CurrencyInputPanel({
   hideInput = false,
   otherCurrency,
   id,
-  showCommonBases
+  showCommonBases,
 }: CurrencyInputPanelProps) {
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-  const translatedLabel = label || TranslateString(132, 'Input')
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
   }, [setModalOpen])
+  const translatedLabel = label || TranslateString(132, 'Input')
 
   return (
     <InputPanel id={id}>
       <Container hideInput={hideInput}>
-      {!hideInput && (
+        {!hideInput && (
           <LabelRow>
             <RowBetween>
               <Text fontSize="14px">{translatedLabel}</Text>
               {account && (
-                <Text onClick={onMax} fontSize="16px" fontWeight="700" style={{ display: 'inline', cursor: 'pointer', letterSpacing: '1px'}}>
+                <Text
+                  onClick={onMax}
+                  fontSize="16px"
+                  fontWeight="700"
+                  style={{ display: 'inline', cursor: 'pointer', letterSpacing: '1px' }}
+                >
                   {!hideBalance && !!currency && selectedCurrencyBalance
                     ? `Balance: ${selectedCurrencyBalance?.toSignificant(6)}`
                     : ' -'}
@@ -138,16 +143,16 @@ export default function CurrencyInputPanel({
           </LabelRow>
         )}
         <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
-        {!hideInput && (
+          {!hideInput && (
             <>
               {account && currency && showMaxButton && label !== 'To' && (
                 <Button onClick={onMax} scale="sm" variant="text" className="btn-max">
-                  MAX 
+                  MAX
                 </Button>
               )}
             </>
           )}
-        <CurrencySelect
+          <CurrencySelect
             selected={!!currency}
             className="open-currency-select-button"
             onClick={() => {
@@ -169,9 +174,10 @@ export default function CurrencyInputPanel({
               ) : (
                 <Text>
                   {(currency && currency.symbol && currency.symbol.length > 20
-                    ? `${currency.symbol.slice(0, 4) 
-                      }...${ 
-                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)}`
+                    ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
+                        currency.symbol.length - 5,
+                        currency.symbol.length,
+                      )}`
                     : currency?.symbol) || <TranslatedText translationId={82}>Select a currency</TranslatedText>}
                 </Text>
               )}
@@ -184,13 +190,12 @@ export default function CurrencyInputPanel({
               <NumericalInput
                 className="token-amount-input"
                 value={value}
-                onUserInput={val => {
+                onUserInput={(val) => {
                   onUserInput(val)
                 }}
               />
             </>
           )}
-
         </InputRow>
       </Container>
       {!disableCurrencySelect && onCurrencySelect && (

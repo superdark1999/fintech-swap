@@ -1,10 +1,11 @@
-import { Currency, ETHER, Token } from '@luckyswap/v2-sdk'
+import { Currency, Token } from '@luckyswap/v2-sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import useHttpLocations from 'hooks/useHttpLocations'
 import { WrappedTokenInfo } from 'state/lists/hooks'
 import Logo from '../Logo'
 import CoinLogo from '../pancake/CoinLogo'
+import { useActiveWeb3React } from '../../../hooks/index'
 
 const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/assets/${address}/logo.png`
@@ -31,11 +32,25 @@ export default function CurrencyLogo({
   style?: React.CSSProperties
 }) {
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
+  const { chainId } = useActiveWeb3React()
+
+  const getNativeLogo = () => {
+    switch (chainId) {
+      case 56:
+      case 97:
+        return '/images/coins/bnb.png'
+      case 137:
+      case 80001:
+        return '/images/coins/polygon.svg'
+      default:
+        return ''
+    }
+  }
 
   const srcs: string[] = useMemo(() => {
-    if (currency === ETHER) return []
+    if (currency?.isNative) return []
 
-    if (currency instanceof Token) {
+    if (currency?.isToken) {
       if (currency instanceof WrappedTokenInfo) {
         return [...uriLocations, `/images/coins/${currency?.symbol ?? 'token'}.png`, getTokenLogoURL(currency.address)]
       }
@@ -45,8 +60,8 @@ export default function CurrencyLogo({
     return []
   }, [currency, uriLocations])
 
-  if (currency === ETHER) {
-    return <StyledBnbLogo src="/images/coins/bnb.png" size={size} style={style} />
+  if (currency?.isNative) {
+    return <StyledBnbLogo src={getNativeLogo()} size={size} style={style} />
   }
 
   return (currency as any)?.symbol ? (

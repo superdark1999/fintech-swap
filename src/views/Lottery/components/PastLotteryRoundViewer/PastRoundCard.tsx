@@ -13,12 +13,14 @@ interface PastRoundCardProps {
 }
 
 const PastRoundCard: React.FC<PastRoundCardProps> = ({ error, data }) => {
-  return <FullWidth>{error.message ? <PastRoundCardError error={error} /> : <PastRoundCardDetails data={data} />}</FullWidth>
+  return (
+    <FullWidth>{error.message ? <PastRoundCardError error={error} /> : <PastRoundCardDetails data={data} />}</FullWidth>
+  )
 }
 
 const FullWidth = styled.div`
   width: 100%;
-  background: linear-gradient(45deg,rgb(35 35 35) 30%,rgb(45 45 45) 100%);
+  background: linear-gradient(45deg, rgb(35 35 35) 30%, rgb(45 45 45) 100%);
   box-shadow: none;
   display: grid;
   grid-template-columns: 1fr;

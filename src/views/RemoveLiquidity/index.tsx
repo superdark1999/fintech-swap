@@ -1,41 +1,40 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react'
-import styled, { ThemeContext } from 'styled-components'
+import { BigNumber } from '@ethersproject/bignumber'
 import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, ETHER, Percent, WETH } from '@luckyswap/v2-sdk'
 import { Button, Flex, Text } from '@luckyswap/uikit'
+import { Currency, currencyEquals, Percent, WNATIVE } from '@luckyswap/v2-sdk'
+import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { ArrowDown, Plus } from 'react-feather'
 import { RouteComponentProps } from 'react-router'
-import { BigNumber } from '@ethersproject/bignumber'
 import { Field } from 'state/burn/actions'
-import { useBurnActionHandlers, useDerivedBurnInfo, useBurnState} from 'state/burn/hooks'
+import { useBurnActionHandlers, useBurnState, useDerivedBurnInfo } from 'state/burn/hooks'
+import styled, { ThemeContext } from 'styled-components'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
+import Slider from '../../components/Slider'
 import { AutoColumn, ColumnCenter } from '../../components/Swap/Column'
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/Swap/TransactionConfirmationModal'
 import CurrencyInputPanel from '../../components/Swap/CurrencyInputPanel'
+import CurrencyLogo from '../../components/Swap/CurrencyLogo'
 import DoubleCurrencyLogo from '../../components/Swap/DoubleLogo'
 import { AddRemoveTabs } from '../../components/Swap/NavigationTabs'
 import { MinimalPositionCard } from '../../components/Swap/PositionCard'
 import { RowBetween, RowFixed } from '../../components/Swap/Row'
-import Slider from '../../components/Slider'
-import CurrencyLogo from '../../components/Swap/CurrencyLogo'
-import { ROUTER_ADDRESS } from '../../constants'
+import { StyledInternalLink } from '../../components/Swap/Shared'
+import { Dots } from '../../components/Swap/swap/styleds'
+import TransactionConfirmationModal, {
+  ConfirmationModalContent,
+} from '../../components/Swap/TransactionConfirmationModal'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
-import { usePairContract } from '../../hooks/useContract'
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
+import { usePairContract, useRouterContract } from '../../hooks/useContract'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { StyledInternalLink } from '../../components/Swap/Shared'
-import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
+import { useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
+import { calculateGasMargin, calculateSlippageAmount } from '../../utils'
 import { currencyId } from '../../utils/currencyId'
 import useDebouncedChangeHandler from '../../utils/useDebouncedChangeHandler'
-import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody from '../AppBody'
 import { ClickableText, Wrapper } from '../Pool/styleds'
-import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
-import { Dots } from '../../components/Swap/swap/styleds'
-
-import { useUserDeadline, useUserSlippageTolerance } from '../../state/user/hooks'
 
 const OutlineCard = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.borderColor};
@@ -56,11 +55,7 @@ export default function RemoveLiquidity({
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, library } = useActiveWeb3React()
-  const [tokenA, tokenB] = useMemo(() => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)], [
-    currencyA,
-    currencyB,
-    chainId,
-  ])
+  const [tokenA, tokenB] = useMemo(() => [currencyA?.wrapped, currencyB?.wrapped], [currencyA, currencyB])
 
   const theme = useContext(ThemeContext)
 
@@ -99,9 +94,11 @@ export default function RemoveLiquidity({
   // pair contract
   const pairContract: Contract | null = usePairContract(pair?.liquidityToken?.address)
 
+  const routerContract = useRouterContract()
+
   // allowance handling
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
-  const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS)
+  const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], routerContract?.address)
   async function onAttemptToApprove() {
     if (!pairContract || !pair || !library) throw new Error('missing dependencies')
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
@@ -123,6 +120,7 @@ export default function RemoveLiquidity({
       chainId,
       verifyingContract: pair.liquidityToken.address,
     }
+    console.log('domain : ', domain)
     const Permit = [
       { name: 'owner', type: 'address' },
       { name: 'spender', type: 'address' },
@@ -132,7 +130,7 @@ export default function RemoveLiquidity({
     ]
     const message = {
       owner: account,
-      spender: ROUTER_ADDRESS,
+      spender: routerContract?.address,
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
       deadline: deadlineForSignature,
@@ -172,7 +170,7 @@ export default function RemoveLiquidity({
       setSignatureData(null)
       return _onUserInput(field, val)
     },
-    [_onUserInput]
+    [_onUserInput],
   )
 
   const onLiquidityInput = useCallback((val: string): void => onUserInput(Field.LIQUIDITY, val), [onUserInput])
@@ -187,7 +185,6 @@ export default function RemoveLiquidity({
     if (!currencyAmountA || !currencyAmountB) {
       throw new Error('missing currency amounts')
     }
-    const router = getRouterContract(chainId, library, account)
 
     const amountsMin = {
       [Field.CURRENCY_A]: calculateSlippageAmount(currencyAmountA, allowedSlippage)[0],
@@ -198,8 +195,8 @@ export default function RemoveLiquidity({
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) throw new Error('missing liquidity amount')
 
-    const currencyBIsETH = currencyB === ETHER
-    const oneCurrencyIsETH = currencyA === ETHER || currencyBIsETH
+    const currencyBIsETH = currencyB?.isNative
+    const oneCurrencyIsETH = currencyA?.isNative || currencyBIsETH
     const deadlineFromNow = Math.ceil(Date.now() / 1000) + deadline
 
     if (!tokenA || !tokenB) throw new Error('could not wrap')
@@ -274,17 +271,17 @@ export default function RemoveLiquidity({
     }
     const safeGasEstimates: (BigNumber | undefined)[] = await Promise.all(
       methodNames.map((methodName, index) =>
-        router.estimateGas[methodName](...args)
+        routerContract.estimateGas[methodName](...args)
           .then(calculateGasMargin)
           .catch((e) => {
             console.error(`estimateGas failed`, index, methodName, args, e)
             return undefined
-          })
-      )
+          }),
+      ),
     )
 
     const indexOfSuccessfulEstimation = safeGasEstimates.findIndex((safeGasEstimate) =>
-      BigNumber.isBigNumber(safeGasEstimate)
+      BigNumber.isBigNumber(safeGasEstimate),
     )
 
     // all estimations failed...
@@ -295,7 +292,7 @@ export default function RemoveLiquidity({
       const safeGasEstimate = safeGasEstimates[indexOfSuccessfulEstimation]
 
       setAttemptingTxn(true)
-      await router[methodName](...args, {
+      await routerContract[methodName](...args, {
         gasLimit: safeGasEstimate,
       })
         .then((response: TransactionResponse) => {
@@ -377,7 +374,11 @@ export default function RemoveLiquidity({
             </RowBetween>
           </>
         )}
-        <Button className="btn-supply" disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)} onClick={onRemove}>
+        <Button
+          className="btn-supply"
+          disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)}
+          onClick={onRemove}
+        >
           Confirm
         </Button>
       </>
@@ -392,14 +393,14 @@ export default function RemoveLiquidity({
     (value: number) => {
       onUserInput(Field.LIQUIDITY_PERCENT, value.toString())
     },
-    [onUserInput]
+    [onUserInput],
   )
 
-  const oneCurrencyIsETH = currencyA === ETHER || currencyB === ETHER
+  const oneCurrencyIsETH = currencyA?.isNative || currencyB?.isNative
   const oneCurrencyIsWETH = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
-        (currencyB && currencyEquals(WETH[chainId], currencyB)))
+      ((currencyA && currencyEquals(WNATIVE[chainId], currencyA)) ||
+        (currencyB && currencyEquals(WNATIVE[chainId], currencyB))),
   )
 
   const handleSelectCurrencyA = useCallback(
@@ -410,7 +411,7 @@ export default function RemoveLiquidity({
         history.push(`/remove/${currencyId(currency)}/${currencyIdB}`)
       }
     },
-    [currencyIdA, currencyIdB, history]
+    [currencyIdA, currencyIdB, history],
   )
   const handleSelectCurrencyB = useCallback(
     (currency: Currency) => {
@@ -420,7 +421,7 @@ export default function RemoveLiquidity({
         history.push(`/remove/${currencyIdA}/${currencyId(currency)}`)
       }
     },
-    [currencyIdA, currencyIdB, history]
+    [currencyIdA, currencyIdB, history],
   )
 
   const handleDismissConfirmation = useCallback(() => {
@@ -435,7 +436,7 @@ export default function RemoveLiquidity({
 
   const [innerLiquidityPercentage, setInnerLiquidityPercentage] = useDebouncedChangeHandler(
     Number.parseInt(parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0)),
-    liquidityPercentChangeCallback
+    liquidityPercentChangeCallback,
   )
 
   return (
@@ -481,13 +482,28 @@ export default function RemoveLiquidity({
                         <Slider value={innerLiquidityPercentage} onChange={setInnerLiquidityPercentage} />
                       </Flex>
                       <Flex justifyContent="space-around">
-                        <Button className="btn-blue" variant="tertiary" size="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '25')}>
+                        <Button
+                          className="btn-blue"
+                          variant="tertiary"
+                          size="sm"
+                          onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '25')}
+                        >
                           25%
                         </Button>
-                        <Button className="btn-blue" variant="tertiary" size="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '50')}>
+                        <Button
+                          className="btn-blue"
+                          variant="tertiary"
+                          size="sm"
+                          onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '50')}
+                        >
                           50%
                         </Button>
-                        <Button className="btn-blue" variant="tertiary" size="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '75')}>
+                        <Button
+                          className="btn-blue"
+                          variant="tertiary"
+                          size="sm"
+                          onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '75')}
+                        >
                           75%
                         </Button>
                         <Button
@@ -534,19 +550,19 @@ export default function RemoveLiquidity({
                         <RowBetween style={{ justifyContent: 'flex-end' }}>
                           {oneCurrencyIsETH ? (
                             <StyledInternalLink
-                              to={`/remove/${currencyA === ETHER ? WETH[chainId].address : currencyIdA}/${
-                                currencyB === ETHER ? WETH[chainId].address : currencyIdB
+                              to={`/remove/${currencyA?.isNative ? WNATIVE[chainId].address : currencyIdA}/${
+                                currencyB?.isNative ? WNATIVE[chainId].address : currencyIdB
                               }`}
                             >
-                              Receive WBNB
+                              Receive {WNATIVE[chainId].symbol}
                             </StyledInternalLink>
                           ) : oneCurrencyIsWETH ? (
                             <StyledInternalLink
                               to={`/remove/${
-                                currencyA && currencyEquals(currencyA, WETH[chainId]) ? 'ETH' : currencyIdA
-                              }/${currencyB && currencyEquals(currencyB, WETH[chainId]) ? 'ETH' : currencyIdB}`}
+                                currencyA && currencyEquals(currencyA, WNATIVE[chainId]) ? 'ETH' : currencyIdA
+                              }/${currencyB && currencyEquals(currencyB, WNATIVE[chainId]) ? 'ETH' : currencyIdB}`}
                             >
-                              Receive BNB
+                              Receive {WNATIVE[chainId].symbol}
                             </StyledInternalLink>
                           ) : null}
                         </RowBetween>
@@ -619,7 +635,7 @@ export default function RemoveLiquidity({
               )}
               <div style={{ position: 'relative' }}>
                 {!account ? (
-                  <ConnectWalletButton  />
+                  <ConnectWalletButton />
                 ) : (
                   <RowBetween>
                     <Button

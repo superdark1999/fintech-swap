@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex, Heading, Text } from '@luckyswap/uikit'
 import TimerTooltip from './TimerTooltip'
+import { useActiveWeb3React } from '../../hooks/index'
 
 export interface TimerProps {
   timerStage?: string
@@ -55,11 +56,12 @@ const Wrapper: React.FC<TimerProps> = ({
   HeadingTextComponent = DefaultHeadingTextComponent,
   BodyTextComponent = DefaultBodyTextComponent,
 }) => {
+  const { chainId } = useActiveWeb3React()
   return (
     <Flex alignItems="flex-end" position="relative">
       <BodyTextComponent mr="16px">{timerStage}</BodyTextComponent>
       {showTooltip ? (
-        <TimerTooltip blockNumber={blockNumber}>
+        <TimerTooltip chainId={chainId} blockNumber={blockNumber}>
           <Timer
             minutes={minutes}
             hours={hours}

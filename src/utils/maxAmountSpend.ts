@@ -1,4 +1,4 @@
-import { CurrencyAmount, ETHER, JSBI } from '@luckyswap/v2-sdk'
+import { CurrencyAmount, JSBI } from '@luckyswap/v2-sdk'
 import { MIN_ETH } from '../constants'
 
 /**
@@ -7,11 +7,11 @@ import { MIN_ETH } from '../constants'
  */
 export function maxAmountSpend(currencyAmount?: CurrencyAmount): CurrencyAmount | undefined {
   if (!currencyAmount) return undefined
-  if (currencyAmount.currency === ETHER) {
+  if (currencyAmount.currency?.isNative) {
     if (JSBI.greaterThan(currencyAmount.raw, MIN_ETH)) {
-      return CurrencyAmount.ether(JSBI.subtract(currencyAmount.raw, MIN_ETH))
+      return CurrencyAmount.fromRawAmount(currencyAmount.currency, JSBI.subtract(currencyAmount.raw, MIN_ETH))
     }
-    return CurrencyAmount.ether(JSBI.BigInt(0))
+    return CurrencyAmount.fromRawAmount(currencyAmount.currency, JSBI.BigInt(0))
   }
   return currencyAmount
 }

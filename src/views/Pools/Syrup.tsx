@@ -10,36 +10,33 @@ import useI18n from 'hooks/useI18n'
 import { usePools, useBlock } from 'state/hooks'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import {Pool} from 'config/constants/types'
+import { Pool } from 'config/constants/types'
 import PoolCards from './components/PoolCards'
-import NavBar from './components/NavBar';
-import { useHookPools } from './Store';
-
+import NavBar from './components/NavBar'
+import { useHookPools } from './Store'
 
 const Farm: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState('1')
 
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const { account } = useWeb3React()
   // const pools = usePools(account)
   const { currentBlock } = useBlock()
-  const [ state, actions] = useHookPools();
-  const { pools } = state;
+  const [state, actions] = useHookPools()
+  const { pools } = state
 
   useEffect(() => {
-   const fetchPools = () => {
-    actions.getPools()
-   } 
-   
-   fetchPools();
+    const fetchPools = () => {
+      actions.getPools()
+    }
+
+    fetchPools()
   })
-  
-  const toggle = tab => {
-    if(activeTab !== tab) setActiveTab(tab);
+
+  const toggle = (tab) => {
+    if (activeTab !== tab) setActiveTab(tab)
   }
-
-
 
   // const [stakedOnly, setStakedOnly] = useState(false)
 
@@ -69,8 +66,8 @@ const Farm: React.FC = () => {
       </Hero> */}
       {/* <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} /> */}
       {/* <Divider /> */}
-      <NavBar activeTab={activeTab} toggle={toggle}/>
-      <PoolCards pools={pools} activeTab={activeTab}/>
+      <NavBar activeTab={activeTab} toggle={toggle} />
+      <PoolCards pools={pools} activeTab={activeTab} />
       <FlexLayout>
         {/* <Route exact path={`${path}`}>
           <>
@@ -85,7 +82,6 @@ const Farm: React.FC = () => {
             <PoolCard key={pool.sousId} pool={pool} />
           ))}
         </Route> */}
-        
       </FlexLayout>
     </Page>
   )
