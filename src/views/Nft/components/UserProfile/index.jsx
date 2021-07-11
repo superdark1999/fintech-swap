@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
-import Checkmark from 'assets/images/checkmark.svg'
-import Crown from 'assets/images/crown.svg'
 import Gold from 'assets/ranking/gold.svg'
 import { Row, Col, Tabs } from 'antd'
-import { RadioButton, GroupButton } from 'components-v2/RadioGroup'
-import SearchInput from 'components-v2/SearchInput'
 import { ButtonStyle } from 'components-v2/cart/styled'
 import Copy from 'assets/images/copy.svg'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import { useActiveWeb3React } from 'wallet/hooks'
 import OnsSaleCard from './OnSaleCard'
-import MyCollectionCard from './MyCollectionCard'
 import useArtworkService from 'services/axiosServices/UserServices'
 import { HeartOutlined, CheckOutlined } from '@ant-design/icons'
-import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import useUserStore from 'store/userStore'
 import { getCompactString } from 'utils'
@@ -176,100 +170,6 @@ const TabOnSale = ({ userAddress }) => {
       <ListCart className="list-artwork">
         {NFTs.map((item) => {
           return <OnsSaleCard key={item?._id} data={item} />
-        })}
-      </ListCart>
-      {/* <Loadmore/>  */}
-    </>
-  )
-}
-
-const TabMyCollection = () => {
-  // const { option } = useParams()
-  const [optionChecked, setOptionChecked] = useState(option)
-  const [renderData, setRenderData] = useState([])
-  const { getNFT } = useArtworkServices()
-  const { account } = useActiveWeb3React()
-  const match = useRouteMatch()
-  const { option= "" } = match?.params
-  // useEffect(()=>{
-  //   const query = {
-  //     ownerWalletAddress: account,
-  //     status:'approved'
-  //   }
-  //   getNFT(query).then(({status, data})=>{
-  //     if(status==200){
-  //       setRenderData(data?.data||[])
-  //     }
-  //   })
-  // },[])
-
-  useEffect(() => {
-    if (optionChecked) {
-      const query = {
-        ownerWalletAddress: account,
-        status: optionChecked,
-      }
-      if (optionChecked === 'all') {
-        delete query.status
-      }
-      getNFT(query).then(({ status, data }) => {
-        if (status == 200) {
-          setRenderData(data?.data || [])
-        }
-      })
-    }
-  }, [optionChecked])
-
-  const onHandleOptionCheck = (e) => {
-    setOptionChecked(e.target.value)
-  }
-
-  return (
-    <>
-      <Row align="middle" justify="space-between">
-        <GroupButton defaultValue={option}>
-          <RadioButton
-            width="auto"
-            borderRadius="10px"
-            value="all"
-            onChange={onHandleOptionCheck}
-            checked={optionChecked == 'all'}
-          >
-            All{' '}
-          </RadioButton>
-          <RadioButton
-            width="auto"
-            borderRadius="10px"
-            value="approved"
-            onChange={onHandleOptionCheck}
-            checked={optionChecked == 'approved'}
-          >
-            Approved{' '}
-          </RadioButton>
-          <RadioButton
-            width="auto"
-            borderRadius="10px"
-            value="checkingReadyToSell"
-            onChange={onHandleOptionCheck}
-            checked={optionChecked == 'checkingReadyToSell'}
-          >
-            Pending{' '}
-          </RadioButton>
-          <RadioButton
-            width="auto"
-            borderRadius="10px"
-            value="reject"
-            onChange={onHandleOptionCheck}
-            checked={optionChecked == 'reject'}
-          >
-            Reject
-          </RadioButton>
-        </GroupButton>
-        <SearchInput maxWidth="300px" placeholder="Search items" />
-      </Row>
-      <ListCart className="list-artwork">
-        {renderData.map((item) => {
-          return <MyCollectionCard key={item?._id} data={item} />
         })}
       </ListCart>
       {/* <Loadmore/>  */}
