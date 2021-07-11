@@ -33,7 +33,7 @@ async function fetchChunk(
   let resultsBlockNumber
   let returnData
   try {
-    ;[resultsBlockNumber, returnData] = await multicallContract.aggregate(
+    [resultsBlockNumber, returnData] = await multicallContract.aggregate(
       chunk.map((obj) => {
         return [obj.address, obj.callData]
       }),

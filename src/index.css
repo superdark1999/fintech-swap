@@ -426,6 +426,10 @@ button.btn-secondary.dropdown-toggle:focus{
   .rm-margin {
     margin-right: 5px !important;
   }
+
+  .space-input {
+    margin-top: 10px;
+  }
 }
 
 .bg-yellow {
@@ -448,4 +452,16 @@ button.btn-secondary.dropdown-toggle:focus{
 .box-lucky h2 {
   font-size: 40px;
   color: #F3C111;
+}
+
+.style-color button[aria-label] {
+  display: none;
+}
+
+.modal-setting {
+  padding: 0 24px 15px !important;
+}
+
+.modal-setting div:nth-child(2) {
+  padding: 0;
 }
