@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { isMobile } from 'react-device-detect'
+import bannerDefault from 'assets/images/banner-profile-default.jpg'
 interface Props {
   urlCover?: string
 }
@@ -7,10 +8,14 @@ export const UserProfileStyled = styled.div<Props>`
   background: #f9fafb;
   .ant-radio-button-wrapper-checked span {
     background-color: #fff !important;
+    font-weight: bold !important;
   }
   .btn-filter {
     background: #fff;
     color: #333534;
+    span {
+      font-weight: bold;
+    }
     :hover {
       background: #333534 !important;
       color: #fff !important;
@@ -53,7 +58,7 @@ export const UserProfileStyled = styled.div<Props>`
       position: relative;
       justify-content: center;
       background: ${(props) =>
-        props.urlCover ? `url(${props.urlCover})` : '#F9FAFB'};
+        props.urlCover ? `url(${props.urlCover})` : `url(${bannerDefault})`};
       background-repeat: no-repeat;
       background-size: cover;
       .header-profile-col {

@@ -32,12 +32,19 @@ export const CartStyled = styled.div<Props>`
         margin-bottom: 10px;
         text-overflow: ellipsis;
         overflow: hidden;
-        width: ${isMobile ? ' 100% ' : (props) =>!!props.readMore ? '75%' : '100%' };
-        white-space: ${isMobile ? 'unset' : (props) =>!!props.readMore ? 'nowrap' : 'unset'};
+        width: ${
+          isMobile ? ' 100% ' : (props) => (!!props.readMore ? '70%' : '100%')
+        };
+        white-space: ${
+          isMobile
+            ? 'unset'
+            : (props) => (!!props.readMore ? 'nowrap' : 'unset')
+        };
     }
     .readMore{
-        display: ${isMobile ? 'none' :(props) => 
-        !!props.readMore ? 'block' : 'none'};
+        display: ${
+          isMobile ? 'none' : (props) => (!!props.readMore ? 'block' : 'none')
+        };
         color: #1890ff;
         cursor: pointer;
     }
