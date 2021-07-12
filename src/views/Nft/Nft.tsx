@@ -68,7 +68,11 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-top: none;
   background-color: #f9fafb;
+  
   .left-sidebar {
+    position: sticky;
+    left: 0px;
+    top: 0px;
     background-color: #fff;
     min-width: ${(props) => (props.onShowsidebar ? '320px' : '60px')};
     transition: 300ms;
@@ -83,13 +87,14 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
   }
   .main-nft {
     flex: ${(props: any) => (props.onShowsidebar ? 1 : '1 240px')};
+    max-width: 1344px;
+    margin: 0 auto;
     ::-webkit-scrollbar {
-      display: none;
+    display: none;
     }
     height: 100%;
     overflow-y: auto;
-    max-width: 1344px;
-    margin: 0 auto;
+    scroll-behavior: smooth;
     .trending-nft {
       width: 98%;
       height: 80px;

@@ -6,7 +6,7 @@ import Astronaut from 'assets/images/astronaut.svg'
 import Rocket from 'assets/images/Rocket.svg'
 import MoneyIcon from 'assets/images/money.svg'
 import token from 'assets/images/token.svg'
-import { Button, Select, Input, Checkbox } from 'antd'
+import { Button, Select, Input, Checkbox, Row, Col } from 'antd'
 import {
   PlusCircleOutlined,
   CaretUpOutlined,
@@ -18,17 +18,8 @@ import {
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { isEmpty } from 'lodash'
-const plainOptions = [
-  'Art',
-  'Music',
-  'Games',
-  'DeFi',
-  'Meme',
-  'Sports',
-  'Abstract',
-  'Space',
-  'Lucky',
-]
+const plainOptions = ['Art', 'Music', 'Games', 'DeFi', 'Lucky']
+const plainOptions1 = ['Meme', 'Sports', 'Abstract', 'Space']
 interface SidebarProps {
   setShowSidebar: any
   onShowSidebar: any
@@ -81,6 +72,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const onApply = () => {
     onChangePrice(price)
+    var elmnt = document.getElementById('collection-scroll-view')
+    elmnt.scrollIntoView()
   }
 
   if (!onShowSidebar) {
@@ -224,11 +217,22 @@ const Sidebar: React.FC<SidebarProps> = ({
             <SearchOutlined className="icon-search" />
             <input placeholder="Search tag" />
           </div> */}
-          <Checkbox.Group
-            options={plainOptions}
-            value={checkedList}
-            onChange={(e) => onChange(e)}
-          />
+          <Row>
+            <Col span={12}>
+              <Checkbox.Group
+                options={plainOptions}
+                value={checkedList}
+                onChange={(e) => onChange(e)}
+              />
+            </Col>
+            <Col span={12}>
+              <Checkbox.Group
+                options={plainOptions1}
+                value={checkedList}
+                onChange={(e) => onChange(e)}
+              />
+            </Col>
+          </Row>
         </div>
       </div>
     </SidebarStyled>

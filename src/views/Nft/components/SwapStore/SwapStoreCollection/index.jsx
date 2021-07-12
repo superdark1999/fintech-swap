@@ -45,7 +45,6 @@ function ExploreCollection() {
             setLoading(100)
             if (page === 1) {
               setNFTs({data: data?.data, total: data.total})
-              //console.log("akjsd")
             } else {
               setNFTs({data: NFTs.data.concat(data?.data), total: data.total})
               !isMobile && handleScroll()
