@@ -8,10 +8,14 @@ export const UserProfileStyled = styled.div<Props>`
   background: #f9fafb;
   .ant-radio-button-wrapper-checked span {
     background-color: #fff !important;
+    font-weight: bold !important;
   }
   .btn-filter {
     background: #fff;
     color: #333534;
+    span {
+      font-weight: bold;
+    }
     :hover {
       background: #333534 !important;
       color: #fff !important;
