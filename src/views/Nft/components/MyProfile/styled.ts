@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { isMobile } from 'react-device-detect'
+import bannerDefault from 'assets/images/banner-profile-default.jpg'
 interface Props {
   urlCover?: string
 }
@@ -53,7 +54,7 @@ export const UserProfileStyled = styled.div<Props>`
       position: relative;
       justify-content: center;
       background: ${(props) =>
-        props.urlCover ? `url(${props.urlCover})` : '#F9FAFB'};
+        props.urlCover ? `url(${props.urlCover})` : `url(${bannerDefault})`};
       background-repeat: no-repeat;
       background-size: cover;
       .header-profile-col {
