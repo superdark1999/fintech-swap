@@ -83,7 +83,7 @@ function ExploreCollection() {
 
   const [stateBanner, actions] = useHookNTF()
   useEffect(() => {
-    actions.getBanner('swap')
+    actions.getListBannerSwap()
   }, [])
 
   useEffect(() => {
@@ -117,7 +117,7 @@ function ExploreCollection() {
         <div className="title-artists">Swap Store</div>
       </div>
       <div className="banner-nft">
-        <BannerBar banners={stateBanner.banner} />
+        <BannerBar banners={stateBanner.listBannerSwap} />
       </div>
       <FilterBar 
         setFilterMethod={setFilterMethod} 

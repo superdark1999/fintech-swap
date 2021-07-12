@@ -16,6 +16,7 @@ import {
 } from './constants'
 import axios from 'axios'
 import { set } from 'react-ga'
+import { API_DASHBOARD } from '../../constants'
 var _ = require('lodash/core')
 
 const stateDefault = {
@@ -43,9 +44,10 @@ const stateDefault = {
   objCol: {},
   historys: []
 }
-const banner = []
+const listBannerHome = []
+const listBannerSwap = []
 const Store = createStore({
-  initialState: { ...stateDefault, banner },
+  initialState: { ...stateDefault, listBannerHome, listBannerSwap},
   actions: {
    
     getHistorys: () => ({ setState, getState }) => {
@@ -54,12 +56,19 @@ const Store = createStore({
         setState({ historys: operations })
       })
     },
-    getBanner: (type) => ({ setState, getState }) => {
-      axios(`https://dashboard.luckyswap.exchange/banner${type ? "/"+ type : ""}`).then((res) => {
+    getListBannerHome: () => ({ setState, getState }) => {
+      axios(`${API_DASHBOARD}/banner/home-nft`).then((res) => {
         console.log(res.data)
-        setState({banner: res.data})
+        setState({listBannerHome: res.data})
       })
     },
+    getListBannerSwap: () => ({ setState, getState }) => {
+      axios(`${API_DASHBOARD}/banner/swap`).then((res) => {
+        console.log(res.data)
+        setState({listBannerSwap: res.data})
+      })
+    },
+
   },
   name: 'Sale Store',
 })
