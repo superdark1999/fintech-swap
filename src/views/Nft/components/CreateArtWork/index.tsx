@@ -14,7 +14,8 @@ import { CreateArtWorkStyled } from './styled'
 import { GroupButton, RadioButton } from './styled'
 import ModalCreateArtist from './ModalCreateArtist'
 import notification from 'components-v2/Alert'
-import { handleAlertMessage } from 'utils'
+import { handleAlertMessage } from 'utils';
+import _ ,{get}  from 'lodash'
 const TextAreaStyled = styled(Input.TextArea)`
   &.ant-input-textarea > textarea {
     border-radius: 16px;
@@ -40,6 +41,7 @@ const CreateArtWork: React.FC = () => {
   const [isOnUpload, setIsOnUpload] = useState(false)
   const [NFTInfo, setNFTInfo] = useState(null)
   const [selectItems, setSelectItems] = useState([])
+  const [processPercent, setProcessPercent] = useState(0)
   const listTag: any = []
   const { Option } = Select
   const validateMessages = {
@@ -121,6 +123,14 @@ const CreateArtWork: React.FC = () => {
     }
   }, [isProccessing, isOnUpload, NFTInfo])
 
+  const onUploadProcess = (progressEvent:any)=>{
+    const tempProcessPercent = Number(((progressEvent.loaded /progressEvent.total)*100).toFixed(0)) ;
+    setProcessPercent(tempProcessPercent)
+    if(tempProcessPercent==100){
+      setIsOnUpload(false)
+    }
+  }
+
   const onCreateNFT = async (values: any) => {
     if (checkPolicy) {
       setIsProcessing(true)
@@ -132,6 +142,7 @@ const CreateArtWork: React.FC = () => {
         content: values?.[`content`] || '',
         ownerWalletAddress: account || '',
         tags: values?.tags || [],
+        onUploadProcess: onUploadProcess
       }
       createNFT(mintData)
         .then(({ data, status }) => {
@@ -144,7 +155,7 @@ const CreateArtWork: React.FC = () => {
         .catch((err: any) => {
           setIsProcessing(false)
           notification('error', {
-            message: err?.message || 'Something went wrong please try again',
+            message:  get(err, 'response.data.message') || get(err, 'response.data.error') || 'Something went wrong please try again',
             description: '',
           })
         })
@@ -190,13 +201,14 @@ const CreateArtWork: React.FC = () => {
       return (
         <ButtonStyle type="submit" style={{ width: 300, margin: '20px auto' }}>
           <div>
-            Processing{' '}
-            <Proccessing
-              timeProcess={typeArtWork ? timeUpload[typeArtWork] : 3000}
-              onEndProccess={() => {
-                setIsOnUpload(false)
-              }}
-            />
+            Uploading... {processPercent+'%'}
+            {/* <Progress
+              width={20}
+              strokeWidth={15}
+              type="circle"
+              percent={processPercent}
+              showInfo={false}
+            /> */}
           </div>
         </ButtonStyle>
       )
@@ -441,30 +453,6 @@ const CreateArtWork: React.FC = () => {
   )
 }
 export default CreateArtWork
-
-const Proccessing = ({ timeProcess, onEndProccess }: any) => {
-  const [processPercent, setProcessPercent] = useState(0)
-  useEffect(() => {
-    if (processPercent == 100) {
-      onEndProccess()
-    }
-    const timer = setInterval(() => {
-      setProcessPercent(processPercent + 1)
-    }, timeProcess / 100)
-    return () => {
-      clearInterval(timer)
-    }
-  }, [processPercent])
-  return (
-    <Progress
-      width={20}
-      strokeWidth={15}
-      type="circle"
-      percent={processPercent}
-      showInfo={false}
-    />
-  )
-}
 
 const ArtistInput = ({ value, setShowModalCreateArtist }: any) => {
   return (
