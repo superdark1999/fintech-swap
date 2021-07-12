@@ -25,13 +25,13 @@ const OptionSort = [
     value: 'desc',
   },
   {
-    label: 'Price Low',
-    value: 'low', // TODO: need handle more 
+    label: 'Low Price',
+    value: 'low', // TODO: need handle more
   },
   {
-    label: 'Price Hight',
-    value: 'hight', // TODO: need handle more 
-  }
+    label: 'High Price',
+    value: 'hight', // TODO: need handle more
+  },
 ]
 
 // export const option: React.ReactElement<OptionProps> = Select.Option
@@ -54,8 +54,8 @@ function Collection(props) {
   })
 
   function handleScroll() {
-    var elmnt = document.getElementById("load-more");
-    elmnt && elmnt.scrollIntoView();
+    var elmnt = document.getElementById('load-more')
+    elmnt && elmnt.scrollIntoView()
   }
 
   useEffect(() => {
@@ -67,12 +67,13 @@ function Collection(props) {
         page,
         limit: 8,
         sort: selectSort,
-        sortBy: selectDP === 'asc' || selectDP === 'desc' ? 'createdAt' : 'price',
+        sortBy:
+          selectDP === 'asc' || selectDP === 'desc' ? 'createdAt' : 'price',
         ...price,
       },
       _.identity,
     )
-    
+
     getNFT(params).then(({ status, data }) => {
       if (status == 200) {
         if (page === 1) {
@@ -90,7 +91,7 @@ function Collection(props) {
     setSelect(val)
   }
   const onChangeSelectDatePrice = (val) => {
-    if(val == 'asc' || val == 'low') setSelectSort('asc')
+    if (val == 'asc' || val == 'low') setSelectSort('asc')
     else setSelectSort('desc')
     setPage(1)
     setSelectDP(val)
@@ -117,7 +118,6 @@ function Collection(props) {
   const nextPage = useCallback((page) => {
     setPage(page)
   }, [])
-  
 
   return (
     <CollectionStyled id="collection-scroll-view">
