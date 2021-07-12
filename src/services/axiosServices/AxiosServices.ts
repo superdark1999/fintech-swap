@@ -41,7 +41,7 @@ export default function AxiosServices(baseUrl: string = '') {
     if (data) {
       if (data instanceof FormData) {
         options.onUploadProgress = onUploadProcess
-        options.timeout = 10 * 60 * 1000;
+        delete options.timeout 
         Object.assign(options, {
           data: data,
           headers: { ...headers,
