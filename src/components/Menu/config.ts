@@ -96,7 +96,7 @@ const config: MenuEntry[] = [
     items: [
       {
         label: 'Twitter',
-        href: 'https://twitter.com/LuckySwap_DeFi',
+        href: 'https://twitter.com/luckyswap_defi',
         calloutClass: 'style-color',
       },
       {
@@ -106,7 +106,7 @@ const config: MenuEntry[] = [
       },
       {
         label: 'Telegram',
-        href: 'https://t.me/luckyswap_official_ENG',
+        href: 'https://t.me/luckyswap_official',
         calloutClass: 'style-color',
       },
     ],
