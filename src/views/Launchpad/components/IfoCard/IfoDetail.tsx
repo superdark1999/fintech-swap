@@ -32,16 +32,17 @@ const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 // const activeIfo = ifosConfig.find((ifo) => ifo.isActive)
 const LoadingIfo = () => {
   const [state, actions] = useHookIFOs()
+  const [ isLoading, setIsLoading] = useState(true)
 
   const param: any = useParams()
   useEffect(() => {
-    actions.getDetailLaunch(param?.id)
+    actions.getDetailLaunch(param?.id).then(() => setIsLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  if (state.detailLaunchpad) {
+  if (state.detailLaunchpad && !isLoading) {
     return <IfoTitle activeIfo={state.detailLaunchpad} />
   }
-  return <div>loading</div>
+  return <div></div>
 }
 const IfoTitle = ({ activeIfo }: any) => {
   const [originBalance, setOriginBalance] = useState(0)
