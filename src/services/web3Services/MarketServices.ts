@@ -12,7 +12,7 @@ export const MARKET_ADDRESS = '0x7d6b6C226b8324AB469D6b5E40367451405a4ad2';
 const OUT_OF_BNB = `Insufficient balance of BNB`
 const OUT_OF_LUCKY = `Insufficient balance of LUCKY`
 
-function useMarketServiceChain56(){
+function useMarketServiceBinaceChain(){
         const marketContract = useContract(MARKET_ADDRESS,abiBid)
         const [userState, userActions] = useUserStore()
         const setTokenPrice = useCallback(async(tokenId:string|undefined,price:number|undefined)=>{
@@ -278,9 +278,9 @@ function useMarketServiceChain56(){
 
 export default function MarketService(){
   const { account, chainId } = useActiveWeb3React()
-  const MarketServiceChain56 = useMarketServiceChain56()
+  const MarketServiceBinaceChain = useMarketServiceBinaceChain()
   if(SUPPORT_CHAIN_IDS.includes(chainId)){
-      return MarketServiceChain56
+      return MarketServiceBinaceChain
   }
   return null
 }

@@ -14,7 +14,7 @@ const payableAmountDefault = '10000000000000000'
 
 const BNB_ERROR = `You don't have enough BNB`
 
-function useNFTServiceChain56(){
+function useNFTServiceBinaceChain(){
         const { account } = useActiveWeb3React()
         const nftContract = useContract(NFT_ADDRESS,abiNFT)
         const [userState, userActions] = useUserStore()
@@ -88,9 +88,9 @@ function useNFTServiceChain56(){
 
 export default function NFTService(){
     const { account, chainId } = useActiveWeb3React()
-    const LuckyServiceChain56 = useNFTServiceChain56()
+    const LuckyServiceBinaceChain = useNFTServiceBinaceChain()
     if(SUPPORT_CHAIN_IDS.includes(chainId)){
-        return LuckyServiceChain56
+        return LuckyServiceBinaceChain
     }
     return null
 }

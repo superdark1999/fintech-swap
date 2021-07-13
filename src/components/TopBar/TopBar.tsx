@@ -17,7 +17,7 @@ import useUserStore from 'store/userStore'
 import { Menu, Dropdown } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { getPrice, SUPPORT_CHAIN_IDS, binaceConfig, binaceText } from 'utils'
+import { getPrice, SUPPORT_CHAIN_IDS, binanceConfig, binaceText } from 'utils'
 import { Modal, Input, Form } from 'antd'
 import formatNumber from 'utils/formatNumber'
 import useAuth from 'hooks/useAuth'
@@ -76,7 +76,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           method: 'wallet_switchEthereumChain',
           params: [
             {
-              chainId: binaceConfig.chainId,
+              chainId: binanceConfig.chainId,
             },
           ],
         })
@@ -89,7 +89,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
               .request({
                 method: 'wallet_addEthereumChain',
                 params: [
-                  binaceConfig
+                  binanceConfig
                 ],
               })
               .then(() => {
@@ -98,7 +98,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
                     method: 'wallet_switchEthereumChain',
                     params: [
                       {
-                        chainId: binaceConfig.chainId,
+                        chainId: binanceConfig.chainId,
                       },
                     ],
                   })

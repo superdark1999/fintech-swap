@@ -65,37 +65,23 @@ export const embedTokenIdLinkBSCScan = (tokenId:number,contractAddress:string,ch
   return `${url + contractAddress +'?a='+tokenId}`
 }
 
-export const SUPPORT_CHAIN_IDS:Array<ChainId> = [56]
+export const SUPPORT_CHAIN_IDS:Array<ChainId> = [97]
 
-// export const binanceConfig = {
-//   chainId: '0x61',
-//   rpcUrls: [
-//     'https://data-seed-prebsc-1-s1.binance.org:8545/',
-//   ],
-//   chainName: 'Binance SmartChain Testnet',
-//   nativeCurrency: {
-//     name: 'TestnetBNB',
-//     symbol: 'BNB', // 2-6 characters long
-//     decimals: 18,
-//   },
-//   blockExplorerUrls: ['https://testnet.bscscan.com'],
-// }
-
-export const binaceConfig = {
-  chainId: '0x38',
+export const binanceConfig = {
+  chainId: '0x61',
   rpcUrls: [
-    'https://bsc-dataseed.binance.org/',
+    'https://data-seed-prebsc-1-s1.binance.org:8545/',
   ],
-  chainName: 'Binance SmartChain Mainnet',
+  chainName: 'Binance SmartChain Testnet',
   nativeCurrency: {
-    name: 'MainnetBNB',
+    name: 'TestnetBNB',
     symbol: 'BNB', // 2-6 characters long
     decimals: 18,
   },
-  blockExplorerUrls: ['https://bscscan.com'],
+  blockExplorerUrls: ['https://testnet.bscscan.com'],
 }
 
-export const binaceText = 'bsc-mainnet'
+export const binaceText = 'bsc-testnet'
 
 export const handleAlertMessage = (message:string)=>{
   if(message==`Error: [ethjs-query] while formatting outputs from RPC '{"value":{"code":-32603,"data":{"code":-32000,"message":"transaction underpriced"}}}'`){
