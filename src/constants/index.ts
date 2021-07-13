@@ -123,3 +123,52 @@ export const SCAN_SITES: {
   [ChainId.MATIC]: 'polygonscan',
   [ChainId.MATIC_TESTNET]: 'polygonscan',
 }
+
+export const NETWORKS: {
+  [chainId in ChainId]?: any
+} = {
+  [ChainId.MAINNET]: {
+    chainId: `0x${ChainId.MAINNET.toString(16)}`,
+    chainName: 'Binance Smart Chain Mainnet',
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'bnb',
+      decimals: 18,
+    },
+    rpcUrls: RPC_URLS[ChainId.MAINNET],
+    blockExplorerUrls: BLOCK_EXPLORER_URLS[ChainId.MAINNET],
+  },
+  [ChainId.BSCTESTNET]: {
+    chainId: `0x${ChainId.BSCTESTNET.toString(16)}`,
+    chainName: 'Binance Smart Chain Testnet',
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'bnb',
+      decimals: 18,
+    },
+    rpcUrls: RPC_URLS[ChainId.BSCTESTNET],
+    blockExplorerUrls: BLOCK_EXPLORER_URLS[ChainId.BSCTESTNET],
+  },
+  [ChainId.MATIC]: {
+    chainId: `0x${ChainId.MATIC.toString(16)}`,
+    chainName: 'Polygon Mainnet',
+    nativeCurrency: {
+      name: 'MATIC',
+      symbol: 'matic',
+      decimals: 18,
+    },
+    rpcUrls: RPC_URLS[ChainId.MATIC],
+    blockExplorerUrls: BLOCK_EXPLORER_URLS[ChainId.MATIC],
+  },
+  [ChainId.MATIC_TESTNET]: {
+    chainId: `0x${ChainId.MATIC_TESTNET.toString(16)}`,
+    chainName: 'Polygon Testnet',
+    nativeCurrency: {
+      name: 'MATIC',
+      symbol: 'matic',
+      decimals: 18,
+    },
+    rpcUrls: RPC_URLS[ChainId.MATIC_TESTNET],
+    blockExplorerUrls: BLOCK_EXPLORER_URLS[ChainId.MATIC_TESTNET],
+  },
+}

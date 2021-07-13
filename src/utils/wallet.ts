@@ -1,7 +1,7 @@
 // Set of helper functions to facilitate wallet setup
 
 import { ChainId } from '@luckyswap/v2-sdk'
-import { RPC_URLS, BLOCK_EXPLORER_URLS } from '../constants'
+import { NETWORKS } from '../constants'
 
 /**
  * Prompt the user to add BSC as a network on Metamask, or switch to BSC if the wallet is on a different network
@@ -10,23 +10,10 @@ import { RPC_URLS, BLOCK_EXPLORER_URLS } from '../constants'
 export const setupNetwork = async () => {
   const provider = (window as WindowChain).ethereum
   if (provider) {
-    const chainId = ChainId.MAINNET
     try {
       await provider.request({
         method: 'wallet_addEthereumChain',
-        params: [
-          {
-            chainId: `0x${chainId.toString(16)}`,
-            chainName: 'Binance Smart Chain Mainnet',
-            nativeCurrency: {
-              name: 'BNB',
-              symbol: 'bnb',
-              decimals: 18,
-            },
-            rpcUrls: RPC_URLS[ChainId.MAINNET],
-            blockExplorerUrls: BLOCK_EXPLORER_URLS[ChainId.MAINNET],
-          },
-        ],
+        params: [NETWORKS[ChainId.BSCTESTNET]],
       })
       return true
     } catch (error) {
