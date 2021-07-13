@@ -192,7 +192,7 @@ const DetaiArtWork = ({ id }: any) => {
         <HeaderStyled className="header-detail">
           <Row align="middle">
             <div className="social-icon">
-              <CloseOutlined className="icon" onClick={priviousPage}/>
+              <CloseOutlined className="icon" onClick={priviousPage} />
             </div>
             <div className="rating">
               4.8 <StarFilled style={{ color: '#fadb14' }} />{' '}
@@ -282,13 +282,12 @@ const DetaiArtWork = ({ id }: any) => {
             >
               <p className="organize">
                 <img
-                  style={{ borderRadius: '100px' }}
-                  width="40px"
-                  src={
-                    NFTDetail?.createdBy
-                      ? NFTDetail?.createdBy?.avatarImage
-                      : Luckyswap
-                  }
+                  style={{
+                    height: '40px',
+                    width: '40px',
+                    borderRadius: '100px',
+                  }}
+                  src={NFTDetail?.createdBy?.avatarImage}
                 />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
                 {/* <img src={Checkmark} /> */}
@@ -299,14 +298,14 @@ const DetaiArtWork = ({ id }: any) => {
 
           <Tabs defaultActiveKey="1">
             <TabPane tab="Detail" key="1">
-            <NFTInformation NFTDetail={NFTDetail} />
+              <NFTInformation NFTDetail={NFTDetail} />
             </TabPane>
 
             <TabPane tab="History" key="2">
               <TableHistory tokenId={NFTDetail.tokenId} />
             </TabPane>
             <TabPane tab="Reviews" key="4">
-              <Reviews/>
+              <Reviews />
             </TabPane>
           </Tabs>
 

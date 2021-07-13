@@ -12,7 +12,7 @@ export const OptionSort = [
   {
     label: 'Oldest',
     value: 'desc',
-  }
+  },
 ]
 // const OptionSort = ['Hangzhou', 'Ningbo', 'Sort by']
 const { Option } = Select
@@ -26,8 +26,8 @@ function FilterBar(props) {
     handleInputOnchange,
     setPage,
     setSort,
-    sort
-    // selectDP, 
+    sort,
+    // selectDP,
     // setSelectDP
   } = props
 
@@ -41,7 +41,6 @@ function FilterBar(props) {
     setPage(1)
   }
   const onChangeSelectDatePrice = (val) => {
-    
     // if(val == 'asc' || val == 'low') setSort('asc')
     // else setSort('desc')
     setPage(1)
@@ -50,7 +49,7 @@ function FilterBar(props) {
   return (
     <FilterBarStyled>
       <div className="left-action">
-        <div className="list-filter" style={{ marginBottom: '24px'}}>
+        <div className="list-filter" style={{ marginBottom: '24px' }}>
           <span className="filter-label">Type</span>
           <Radio.Group
             className="filter-group"
@@ -84,10 +83,8 @@ function FilterBar(props) {
           value={searchParams}
           onChange={handleInputOnchange}
           enterButton
-          
         />
-        <div>
-          <label>Sort: </label>
+        <div className="right-action-sort">
           <Select
             style={{ width: 120, borderRadius: 30 }}
             onChange={setSelect}
