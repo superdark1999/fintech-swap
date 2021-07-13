@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { Route, useRouteMatch, useLocation } from 'react-router-dom'
+import { Route, useRouteMatch, useLocation, Redirect } from 'react-router-dom'
 import { orderBy } from 'lodash'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
@@ -7,6 +7,7 @@ import { Image, Heading, RowType, Text } from '@luckyswap/uikit'
 import styled from 'styled-components'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
+import { ChainId } from '@luckyswap/v2-sdk'
 import { useFarms, usePriceLuckyBusd, useGetApiPrices } from '../../state/hooks'
 import useRefresh from '../../hooks/useRefresh'
 import { fetchFarmUserDataAsync } from '../../state/actions'
@@ -126,7 +127,7 @@ const Farms: React.FC = () => {
   const cakePrice = usePriceLuckyBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
   const [sortOption, setSortOption] = useState('hot')
   const prices = useGetApiPrices()
 
@@ -139,6 +140,7 @@ const Farms: React.FC = () => {
   }, [account, dispatch, fastRefresh])
 
   const [stakedOnly, setStakedOnly] = useState(false)
+
   const isActive = !pathname.includes('history')
 
   const activeFarms = farmsLP.filter((farm) => farm.multiplier !== '0X')
@@ -195,6 +197,10 @@ const Farms: React.FC = () => {
     },
     [cakePrice, prices, query, isActive],
   )
+
+  if (chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
+    return <Redirect to="/" />
+  }
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
