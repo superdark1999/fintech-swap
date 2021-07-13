@@ -38,10 +38,10 @@ export default function CurrencyLogo({
     switch (chainId) {
       case 56:
       case 97:
-        return '/images/coinslist/bnb.png'
+        return '/images/coinslist/BNB.png'
       case 137:
       case 80001:
-        return '/images/coinslist/polygon.svg'
+        return '/images/coinslist/POLYGON.svg'
       default:
         return ''
     }
