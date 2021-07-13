@@ -596,19 +596,11 @@ const StyledTopBar = styled.div`
       margin-left: 14px;
       position: relative;
       cursor: pointer;
-<<<<<<< HEAD
-      color:#333435;
-      border:2px solid #35A5FC;   
-      .number-balance{
-        margin-right:4px;
-      }  
-=======
       color: #35a5fc;
       border: 2px solid #35a5fc;
       .number-balance {
         margin-right: 4px;
       }
->>>>>>> e360223ae8bcc612da7ae137cc98d84118ea3ff2
       @media (max-width: 756px) {
         display: none;
       }
