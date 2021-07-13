@@ -16,6 +16,7 @@ import CardValue from '../../Home/components/CardValue';
   'BRY': '../images/enlin.svg',
   'BUSD': './images/coinslist/busd.png'}
 
+  //
 const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
 export default function PoolCardDetails({
