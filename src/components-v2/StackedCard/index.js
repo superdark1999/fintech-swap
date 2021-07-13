@@ -38,14 +38,14 @@ const Section = styled.div`
 
   @media only screen and (max-width: 600px) {
       #slider {
-      height: 120px;
+      height: 100px;
       position: relative;
       perspective: 1000px;
       transform-style: preserve-3d;
       label {
         margin: auto;
-        width: 340px;
-        height: 120px;
+        width: 320px;
+        height: 100px;
         border-radius: 4px;
         position: absolute;
         left: 0; right: 0;
@@ -53,8 +53,8 @@ const Section = styled.div`
         transition: transform 0.4s ease;
         border-radius: 24px;
         > img {
-          width: 340px;
-          height: 120px;
+          width: 320px;
+          height: 100px;
         }
       }
     }
