@@ -12,6 +12,7 @@ import { useNativeBalance } from 'hooks/useTokenBalance'
 import React, { useContext, useEffect, useState } from 'react'
 import { useProfile } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { NETWORKS } from '../../constants'
 import config from './config'
 
 const Menu = (props) => {
@@ -62,12 +63,8 @@ const Menu = (props) => {
     if (provider) {
       try {
         await provider.request({
-          method: 'wallet_switchEthereumChain',
-          params: [
-            {
-              chainId: `0x${chainIdToChange.toString(16)}`,
-            },
-          ],
+          method: 'wallet_addEthereumChain',
+          params: [NETWORKS[chainIdToChange]],
         })
         window.location.reload()
       } catch (error) {
