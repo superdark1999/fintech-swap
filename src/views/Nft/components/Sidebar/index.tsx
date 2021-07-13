@@ -142,7 +142,6 @@ const Sidebar: React.FC<SidebarProps> = ({
             onChange={handeChangeSlider}
             tipFormatter={value => formatNumber(value)}
             style={{margin: '30px 30px'}}
-            tooltipVisible
           />
 
           <div className="button sub-menu">
