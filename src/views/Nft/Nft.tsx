@@ -21,7 +21,7 @@ const NFTContainer = (props: any) => {
   }
 
   useEffect(() => {
-    actions.getBanner('home-nft')
+    actions.getListBannerHome()
   }, [])
   return (
     <Switch>
@@ -40,7 +40,7 @@ const NFTContainer = (props: any) => {
           <div className="main-nft">
             {/* <ModalLucky/> */}
             <div className="banner-nft">
-              <BannerBar banners={stateBanner.banner} />
+              <BannerBar banners={stateBanner.listBannerHome} />
             </div>
             <div className="hot-artists-nft space-collection">
               <HotArtists />
@@ -108,7 +108,7 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
     .banner-nft {
       /* height: ${isMobile ? '110px' : '380px'}; */
       width: 100%;
-      margin: 40px auto;
+      margin: 24px auto;
       /* padding: 0 30px; */
       max-width: 1280px;
       border-radius: 12px;

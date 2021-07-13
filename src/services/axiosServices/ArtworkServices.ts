@@ -6,7 +6,9 @@ export default function useArtworkService() {
     'https://api.luckyswap.center',
   )
   const createNFT = useCallback((body) => {
-    return POST('/artwork', JSONToFormData(body), false, false)
+    const onUploadProcess = body.onUploadProcess
+    delete body.onUploadProcess
+    return POST('/artwork', JSONToFormData(body), false, false,onUploadProcess)
   }, [])
 
   const updateHashInfoNFT = useCallback(({ NFTid, txHash }) => {
