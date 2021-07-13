@@ -116,12 +116,6 @@ const App = () => {
         }
         <Web3ReactManager>
           <>
-            {
-              isMobile &&
-              (
-                <SidebarMobile setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
-              )
-            }
             <TopBar setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
             {/* <div style={{marginTop: 80}}> */}
             <CacheSwitch >

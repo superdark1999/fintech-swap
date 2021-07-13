@@ -138,10 +138,9 @@ function ExploreCollection() {
           return (
             <Cart
               key={item.id}
-              width="320px"
-              height="480px"
               data={item}
               isLazy
+              width="100%"
             />
           )
         })}
