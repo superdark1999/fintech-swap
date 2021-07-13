@@ -11,10 +11,10 @@ import CardValue from '../../Home/components/CardValue';
 
 
   const imageTokens = {
-  'XLUCKY': '../images/coins/xlucky.png',
-  'XLUCKY2': '../images/coins/lucky.png',
+  'XLUCKY': '../images/coinslist/xlucky.png',
+  'XLUCKY2': '../images/coinslist/lucky.png',
   'BRY': '../images/enlin.svg',
-  'BUSD': './images/coins/busd.png'}
+  'BUSD': './images/coinslist/busd.png'}
 
 const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
