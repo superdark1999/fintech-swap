@@ -354,18 +354,6 @@ button.button-connect:hover {
   }
 }
 
-.icon-hot a:hover ::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: url('https://luckyswap.finance/images/incipia-coming-soon.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 82px;
-  height: 82px;
-  transition: 1s;
-}
 
 .logo-mobile {
   max-width: 40px;
