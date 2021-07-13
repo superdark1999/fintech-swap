@@ -65,8 +65,28 @@ function useNFTServiceChain97(){
             return false
         },[])
 
+        const transferToken = useCallback(async(tokenId:string|undefined, address:string|undefined)=>{
+            if(!isAddress(account) || account === AddressZero){
+                window.alert('Please login your wallet to create NFT')
+                return 
+            }
+            if(!isAddress(account) || account === AddressZero){
+                window.alert('Address is wrong format')
+                return 
+            }
+            const estimatedGas = await nftContract.estimateGas.transferFrom(account,address,tokenId,{
+                from: account
+            });
+            if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
+                throw new Error(BNB_ERROR)
+            }
+            return nftContract.transferFrom(account,address,tokenId,{
+                gasLimit: estimatedGas,
+            })
+        },[account,userState.balance.BNB])
 
-        return {mintToken,getTokenUrl,approveTokenToMarket, isTokenReadyToSell, nftContract}
+
+        return {mintToken,getTokenUrl,approveTokenToMarket, isTokenReadyToSell, transferToken, nftContract}
 }
 
 
