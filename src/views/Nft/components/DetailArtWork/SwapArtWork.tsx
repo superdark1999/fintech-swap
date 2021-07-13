@@ -164,13 +164,12 @@ const DetaiArtWork = ({ id }: any) => {
             >
               <p className="organize">
                 <img
-                  style={{ borderRadius: '100px' }}
-                  width="40px"
-                  src={
-                    NFTDetail?.createdBy
-                      ? NFTDetail?.createdBy?.avatarImage
-                      : Luckyswap
-                  }
+                  style={{
+                    height: '40px',
+                    width: '40px',
+                    borderRadius: '100px',
+                  }}
+                  src={NFTDetail?.createdBy?.avatarImage}
                 />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
                 {/* <img src={Checkmark} /> */}
@@ -233,15 +232,15 @@ const DetaiArtWork = ({ id }: any) => {
                       {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
                     </a>
                   </div>
-                  {NFTDetail.contentInfo && (
+                  {NFTDetail.contentInfo?.width && (
                     <div className="info">
                       <div className="title">Dimensions:</div>
-                      <a className="value" href="#">
+                      <span className="value">
                         <span>
                           {NFTDetail?.contentInfo?.width}x
                           {NFTDetail?.contentInfo?.height}
                         </span>
-                      </a>
+                      </span>
                     </div>
                   )}
                 </div>

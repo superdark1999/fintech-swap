@@ -36,7 +36,7 @@ const Section = styled.div`
     display: none;
   }
   
-  @media only screen and (max-width: 375px) {
+  @media only screen and (min-width: 375px) {
       #slider {
       height: 100px;
       position: relative;
@@ -60,7 +60,7 @@ const Section = styled.div`
     }
   }
 
-  @media only screen and (min-width: 414px) {
+  @media only screen and (min-width: 400px) {
       #slider {
       height: 120px;
       position: relative;

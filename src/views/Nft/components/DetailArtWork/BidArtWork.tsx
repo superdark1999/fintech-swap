@@ -331,7 +331,7 @@ const DetaiArtWork = ({ id }: any) => {
           <Row align="middle">
             <div className="social-icon">
               {/* <Link to="/"> */}
-              <CloseOutlined className="icon" onClick={priviousPage}/>
+              <CloseOutlined className="icon" onClick={priviousPage} />
               {/* </Link> */}
             </div>
             <div className="date-time">{renderTime()}</div>
@@ -499,13 +499,8 @@ const DetaiArtWork = ({ id }: any) => {
             >
               <p className="organize">
                 <img
-                  style={{ borderRadius: '100px' }}
-                  width="40px"
-                  src={
-                    NFTDetail?.createdBy
-                      ? NFTDetail?.createdBy?.avatarImage
-                      : Luckyswap
-                  }
+                  style={{ width: '40px', borderRadius: '100px' }}
+                  src={NFTDetail?.createdBy?.avatarImage}
                 />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
                 {/* <img src={Checkmark} /> */}
@@ -540,7 +535,7 @@ const DetaiArtWork = ({ id }: any) => {
               />
             </TabPane>
             <TabPane tab="Reviews" key="4">
-              <Reviews/>
+              <Reviews />
             </TabPane>
           </Tabs>
 
@@ -604,6 +599,5 @@ const DetaiArtWork = ({ id }: any) => {
     </Row>
   )
 }
-
 
 export default DetaiArtWork
