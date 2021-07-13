@@ -3,12 +3,13 @@ import { AddressZero } from '@ethersproject/constants'
 import  abiLucky from './AbiLucky'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useContract } from 'wallet/hooks/useContract'
-import { useCallback } from 'react'
+import { SUPPORT_CHAIN_IDS} from 'utils'
 import { ethers } from 'ethers'
+
 import _ from 'lodash'
 export const LUCKY_TOKEN_ADDRESS = '0x5C2AaAdD1FcE223baaEFB1cF41ce872e9d8B986A';
 
-function useLuckyServiceChain97(){
+function useLuckyServiceChain56(){
         const { account, chainId } = useActiveWeb3React()
         const LuckyTokenContract = useContract(LUCKY_TOKEN_ADDRESS,abiLucky)
 
@@ -47,9 +48,9 @@ function useLuckyServiceChain97(){
 
 export default function LuckyService(){
     const { account, chainId } = useActiveWeb3React()
-    const LuckyServiceChain97 = useLuckyServiceChain97()
-    if(chainId==97){
-        return LuckyServiceChain97
+    const LuckyServiceChain56 = useLuckyServiceChain56()
+    if(SUPPORT_CHAIN_IDS.includes(chainId)){
+        return LuckyServiceChain56
     }
     return null
 }
