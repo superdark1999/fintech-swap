@@ -161,9 +161,11 @@ export default function (props: Props) {
       if (myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId) {
         setIsProcessing(true)
         const { confirmSwapNFT } = marketServiceMethod
-        confirmSwapNFT(itemSwap?.[0]?.tokenId, myItems?.[0]?.tokenId, myItems?.[0]?.ownerWalletAddress).then((data) => {
+        console.log(itemSwap?.[0]?.tokenId, myItems?.[0]?.tokenId?.toString(), myItems?.[0]?.ownerWalletAddress)
+        confirmSwapNFT(itemSwap?.[0]?.tokenId, myItems?.[0]?.tokenId?.toString(), myItems?.[0]?.ownerWalletAddress).then((data) => {
           nextStep && nextStep(3)
         }).catch((err) => {
+          console.log(err)
           setIsProcessing(false)
           notification('error', {
             message: 'Error',

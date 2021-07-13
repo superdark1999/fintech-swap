@@ -39,7 +39,6 @@ const CreateArtWork: React.FC = () => {
   const [checkPolicy, setCheckPolicy] = useState(false)
   const [typeArtWork, setTypeArtWork] = useState('image')
   const [isOnUpload, setIsOnUpload] = useState(false)
-  const [NFTInfo, setNFTInfo] = useState(null)
   const [selectItems, setSelectItems] = useState([])
   const [processPercent, setProcessPercent] = useState(0)
   const listTag: any = []
@@ -90,9 +89,8 @@ const CreateArtWork: React.FC = () => {
     history.push('/my-profile/mycollection/pending')
   }
 
-  useEffect(() => {
-    if (isProccessing && !isOnUpload && NFTInfo && NFTServiceMethod) {
-      const { url, NFTid } = NFTInfo
+  const onMintNFT = (url:any, NFTid:any)=>{
+    if (NFTServiceMethod) {
       const { mintToken } = NFTServiceMethod
       mintToken(url)
         .then((mintData: any) => {
@@ -113,7 +111,6 @@ const CreateArtWork: React.FC = () => {
           })
         })
         .catch((err: any) => {
-          setNFTInfo(null)
           setIsProcessing(false)
           notification('error', {
             message: handleAlertMessage(err?.message),
@@ -121,7 +118,7 @@ const CreateArtWork: React.FC = () => {
           })
         })
     }
-  }, [isProccessing, isOnUpload, NFTInfo])
+  }
 
   const onUploadProcess = (progressEvent:any)=>{
     const tempProcessPercent = Number(((progressEvent.loaded /progressEvent.total)*100).toFixed(0)) ;
@@ -132,7 +129,7 @@ const CreateArtWork: React.FC = () => {
   }
 
   const onCreateNFT = async (values: any) => {
-    if (checkPolicy) {
+    if (checkPolicy && !isProccessing && !isOnUpload ) {
       setIsProcessing(true)
       setIsOnUpload(true)
       const mintData = {
@@ -149,7 +146,7 @@ const CreateArtWork: React.FC = () => {
           if (status === 200) {
             const url = data?.data?.contentUrl || ''
             const NFTid = data?.data?._id || ''
-            setNFTInfo({ url, NFTid })
+            onMintNFT(url, NFTid)
           }
         })
         .catch((err: any) => {
