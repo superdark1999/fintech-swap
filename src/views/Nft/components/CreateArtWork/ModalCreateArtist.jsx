@@ -35,6 +35,7 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
         borderRadius: '16px',
         overflow: 'hidden',
         paddingBottom: 0,
+        
       }}
       width={1000}
     >
@@ -44,6 +45,7 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
         name="nest-messages"
         onFinish={createArtist}
         layout="vertical"
+        style={{ width: '100%', padding: '0px 16px',}}
       >
         <Row gutter={24}>
           <Col xl={{ span: 24 }} md={{ span: 24 }} xs={{ span: 24 }}>
