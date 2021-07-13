@@ -55,6 +55,17 @@ const Dflex = styled.div`
   margin-bottom: 30px;
 `
 
+const BoxImg = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 100%;
+    max-width: 750px;
+  }
+`
+
 const Lottery: React.FC = () => {
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
 
@@ -100,7 +111,10 @@ const Lottery: React.FC = () => {
   return (
     <>
       <Page>
-        <Hero />
+        <BoxImg>
+          <img src="../images/coming-soon-lot.png" alt=""/>
+        </BoxImg>
+        {/* <Hero />
         <TotalPrizesCard />
         <SecondCardColumnWrapper isAWin={isAWin}>
           {!account ? (
@@ -115,7 +129,7 @@ const Lottery: React.FC = () => {
         <WinningNumbers />
         <HowItWorks />
         <PastLotteryRoundViewer />
-        <PastDrawsHistoryCard />
+        <PastDrawsHistoryCard /> */}
 
         {/* <Wrapper>
           <ButtonMenu activeIndex={activeIndex} onItemClick={handleClick} scale="sm" variant="subtle">
