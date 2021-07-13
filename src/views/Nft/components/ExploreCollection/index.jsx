@@ -8,7 +8,7 @@ import TrendingBar from '../TrendingBar/index'
 import _ from 'lodash'
 import { useHistory } from 'react-router-dom'
 import useIO from 'hooks/useIo'
-import {isMobile} from 'react-device-detect'
+import { isMobile } from 'react-device-detect'
 import ProgressBar from 'components-v2/ProgressBar'
 
 function ExploreCollection() {
@@ -21,7 +21,7 @@ function ExploreCollection() {
   const [NFTs, setNFTs] = useState({ data: [], total: 0 })
   const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
   const { getNFT } = useArtworkServices()
-  
+
   const [filterMethod, setFilterMethod] = useState('')
   const [filterType, setFilterType] = useState('')
   const [selectDP, setSelectDP] = useState('asc')
@@ -55,7 +55,7 @@ function ExploreCollection() {
             }
           }
         }),
-        NFTs.length === 0 ? 0 : 1000,
+      NFTs.length === 0 ? 0 : 1000,
     ),
     [page],
   )
@@ -77,11 +77,12 @@ function ExploreCollection() {
         status: 'readyToSell',
         NFTType: filterMethod ? filterMethod : ['auction', 'swap-store', 'buy'],
         type: filterType,
-        title: searchParams?.toLowerCase(),
+        title: '' || searchParams?.toLowerCase(),
         page,
         limit: 8,
         sort: sort,
-        sortBy: selectDP === 'asc' || selectDP === 'desc' ? 'createdAt' : 'price',
+        sortBy:
+          selectDP === 'asc' || selectDP === 'desc' ? 'createdAt' : 'price',
         tags,
       },
       _.identity,
@@ -108,8 +109,6 @@ function ExploreCollection() {
     }
   }, [NFTs, setElements])
 
-  
-
   return (
     <ExploreCollectionStyled>
       <div className="header-artists">
@@ -128,7 +127,7 @@ function ExploreCollection() {
         setPage={setPage}
         setSort={setSort}
         sort={sort}
-        selectDP={selectDP} 
+        selectDP={selectDP}
         setSelectDP={setSelectDP}
       />
       <h1 style={{ fontWeight: 'bold' }}>
@@ -156,7 +155,6 @@ function ExploreCollection() {
       )}
 
       <ProgressBar loading={loading} setLoading={setLoading} />
-      
     </ExploreCollectionStyled>
   )
 }

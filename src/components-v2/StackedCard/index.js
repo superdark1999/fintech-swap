@@ -35,8 +35,32 @@ const Section = styled.div`
   [type=radio] {
     display: none;
   }
+  
+  @media only screen and (min-width: 375px) {
+      #slider {
+      height: 100px;
+      position: relative;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      label {
+        margin: auto;
+        width: 280px;
+        height: 100px;
+        border-radius: 4px;
+        position: absolute;
+        left: 0; right: 0;
+        cursor: pointer;
+        transition: transform 0.4s ease;
+        border-radius: 24px;
+        > img {
+          width: 280px;
+          height: 100px;
+        }
+      }
+    }
+  }
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (min-width: 400px) {
       #slider {
       height: 120px;
       position: relative;
@@ -44,7 +68,7 @@ const Section = styled.div`
       transform-style: preserve-3d;
       label {
         margin: auto;
-        width: 340px;
+        width: 320px;
         height: 120px;
         border-radius: 4px;
         position: absolute;
@@ -53,7 +77,7 @@ const Section = styled.div`
         transition: transform 0.4s ease;
         border-radius: 24px;
         > img {
-          width: 340px;
+          width: 320px;
           height: 120px;
         }
       }
@@ -86,7 +110,7 @@ const Section = styled.div`
     }
   }   
 
-  @media only screen and (min-width: 1100px) {
+  @media only screen and (min-width: 1024px) {
     #slider {
       height: 300px;
       position: relative;

@@ -108,7 +108,7 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
     .banner-nft {
       /* height: ${isMobile ? '110px' : '380px'}; */
       width: 100%;
-      margin: 40px auto;
+      margin: 24px auto;
       /* padding: 0 30px; */
       max-width: 1280px;
       border-radius: 12px;

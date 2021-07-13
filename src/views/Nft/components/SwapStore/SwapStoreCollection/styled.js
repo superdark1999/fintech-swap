@@ -137,6 +137,10 @@ export const FilterBarStyled = styled.div`
     /* text-decoration: underline; */
     cursor: pointer;
     display: flex;
+    .right-action-sort {
+      display: flex;
+      justify-content: flex-end;
+    }
     .search-input {
       margin-bottom: 24px;
       input {

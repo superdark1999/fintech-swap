@@ -1,24 +1,26 @@
-import { ButtonTrade } from "components-v2/Button";
+import { ButtonTrade } from 'components-v2/Button'
 import React from 'react'
 import styled from 'styled-components'
 import { API_TESTNET, API_S3 } from '../../../../constants'
 
 const ID = styled.div`
   text-align: right;
-  white-space: nowrap; 
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 `
 const IMG = styled.img`
-  width: 35px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 `
 const A = styled.a`
-  display: flex
+  display: flex;
 `
 const SPAN = styled.span`
   margin: auto 0;
-  margin-left: 10px
+  margin-left: 5px;
+  font-size: 12px;
 `
 
 export const columnHistory = [
@@ -36,88 +38,154 @@ export const columnHistory = [
     title: 'From',
     dataIndex: 'from',
     width: 200,
-    render: (from) =>  
-    <A href={((String(from[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == API_S3
-      || String(from[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == 'null')
-      ? window.location.origin+`/user-profile/${from[0]}/onstore/readyToSell`
-      :`${API_TESTNET}/address/${from[0]}`)} target="_blank">
-      <IMG src={from[1]} >  
-      </IMG>
-      <SPAN>{from[2]}</SPAN>
-    </A>
-    
+    render: (from) => (
+      <A
+        href={
+          String(from[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gim) ==
+            API_S3 ||
+          String(from[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gim) ==
+            'null'
+            ? window.location.origin +
+              `/user-profile/${from[0]}/onstore/readyToSell`
+            : `${API_TESTNET}/address/${from[0]}`
+        }
+        target="_blank"
+      >
+        <IMG src={from[1]}></IMG>
+        <SPAN>{from[2]}</SPAN>
+      </A>
+    ),
   },
   {
     title: 'To',
     dataIndex: 'to',
     width: 200,
-    render: (to) => 
-    <A href={((String(to[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == API_S3 
-      || String(to[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gmi) == 'null')
-    ? window.location.origin+`/user-profile/${to[0]}/onstore/readyToSell`
-    :`${API_TESTNET}/address/${to[0]}`)} target="_blank">
-      <IMG src={to[1]} >  
-      </IMG>
-      <SPAN>{to[2]}</SPAN>
-    </A>
+    render: (to) => (
+      <A
+        href={
+          String(to[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gim) ==
+            API_S3 ||
+          String(to[1]).match(/^(?:https?:\/\/)?(?:www\.)?([^:\/\n?]+)/gim) ==
+            'null'
+            ? window.location.origin +
+              `/user-profile/${to[0]}/onstore/readyToSell`
+            : `${API_TESTNET}/address/${to[0]}`
+        }
+        target="_blank"
+      >
+        <IMG src={to[1]}></IMG>
+        <SPAN>{to[2]}</SPAN>
+      </A>
+    ),
   },
   {
     title: 'Date',
     dataIndex: 'date',
     width: 220,
-    render: (date) => 
-    <A href={`${API_TESTNET}/tx/${date[1]}`} target="_blank">
-      {date[0]}
-    </A>
+    render: (date) => (
+      <A href={`${API_TESTNET}/tx/${date[1]}`} target="_blank">
+        {date[0]}
+      </A>
+    ),
   },
-];
+]
 
 export const dataHistory = [
   {
-    event: "Bid", price: 505, from: '0x2433bE070fAeE3F9608154', to: '0x2433bE070fAeE3F9608154', date: '4 weeks ago'
+    event: 'Bid',
+    price: 505,
+    from: '0x2433bE070fAeE3F9608154',
+    to: '0x2433bE070fAeE3F9608154',
+    date: '4 weeks ago',
   },
   {
-    event: "Bid", price: 505, from: '0x2433bE070fAeE3F9608154', to: '0x2433bE070fAeE3F9608154', date: '4 weeks ago'
+    event: 'Bid',
+    price: 505,
+    from: '0x2433bE070fAeE3F9608154',
+    to: '0x2433bE070fAeE3F9608154',
+    date: '4 weeks ago',
   },
   {
-    event: "Bid", price: 505, from: '0x2433bE070fAeE3F9608154', to: '0x2433bE070fAeE3F9608154', date: '4 weeks ago'
+    event: 'Bid',
+    price: 505,
+    from: '0x2433bE070fAeE3F9608154',
+    to: '0x2433bE070fAeE3F9608154',
+    date: '4 weeks ago',
   },
   {
-    event: "Bid", price: 505, from: '0x2433bE070fAeE3F9608154', to: '0x2433bE070fAeE3F9608154', date: '4 weeks ago'
+    event: 'Bid',
+    price: 505,
+    from: '0x2433bE070fAeE3F9608154',
+    to: '0x2433bE070fAeE3F9608154',
+    date: '4 weeks ago',
   },
   {
-    event: "Bid", price: 505, from: '0x2433bE070fAeE3F9608154', to: '0x2433bE070fAeE3F9608154', date: '4 weeks ago'
+    event: 'Bid',
+    price: 505,
+    from: '0x2433bE070fAeE3F9608154',
+    to: '0x2433bE070fAeE3F9608154',
+    date: '4 weeks ago',
   },
   {
-    event: "Bid", price: 505, from: '0x2433bE070fAeE3F9608154', to: '0x2433bE070fAeE3F9608154', date: '4 weeks ago'
+    event: 'Bid',
+    price: 505,
+    from: '0x2433bE070fAeE3F9608154',
+    to: '0x2433bE070fAeE3F9608154',
+    date: '4 weeks ago',
   },
   {
-    event: "Bid", price: 505, from: '0x2433bE070fAeE3F9608154', to: '0x2433bE070fAeE3F9608154', date: '4 weeks ago'
+    event: 'Bid',
+    price: 505,
+    from: '0x2433bE070fAeE3F9608154',
+    to: '0x2433bE070fAeE3F9608154',
+    date: '4 weeks ago',
   },
   {
-    event: "Bid", price: 505, from: '0x2433bE070fAeE3F9608154', to: '0x2433bE070fAeE3F9608154', date: '4 weeks ago'
+    event: 'Bid',
+    price: 505,
+    from: '0x2433bE070fAeE3F9608154',
+    to: '0x2433bE070fAeE3F9608154',
+    date: '4 weeks ago',
   },
   {
-    event: "Bid", price: 505, from: '0x2433bE070fAeE3F9608154', to: '0x2433bE070fAeE3F9608154', date: '4 weeks ago'
+    event: 'Bid',
+    price: 505,
+    from: '0x2433bE070fAeE3F9608154',
+    to: '0x2433bE070fAeE3F9608154',
+    date: '4 weeks ago',
   },
   {
-    event: "Bid", price: 505, from: '0x2433bE070fAeE3F9608154', to: '0x2433bE070fAeE3F9608154', date: '4 weeks ago'
+    event: 'Bid',
+    price: 505,
+    from: '0x2433bE070fAeE3F9608154',
+    to: '0x2433bE070fAeE3F9608154',
+    date: '4 weeks ago',
   },
   {
-    event: "Bid", price: 505, from: '0x2433bE070fAeE3F9608154', to: '0x2433bE070fAeE3F9608154', date: '4 weeks ago'
+    event: 'Bid',
+    price: 505,
+    from: '0x2433bE070fAeE3F9608154',
+    to: '0x2433bE070fAeE3F9608154',
+    date: '4 weeks ago',
   },
   {
-    event: "Bid", price: 505, from: '0x2433bE070fAeE3F9608154', to: '0x2433bE070fAeE3F9608154', date: '4 weeks ago'
-  }
-];
+    event: 'Bid',
+    price: 505,
+    from: '0x2433bE070fAeE3F9608154',
+    to: '0x2433bE070fAeE3F9608154',
+    date: '4 weeks ago',
+  },
+]
 
 export const dataBidding = [
   {
-    address: "Bid", price: 505
+    address: 'Bid',
+    price: 505,
   },
   {
-    address: "Bid", price: 505
-  }
+    address: 'Bid',
+    price: 505,
+  },
 ]
 
 export const columnBidding = [
@@ -125,7 +193,6 @@ export const columnBidding = [
     title: 'Address',
     dataIndex: 'address',
     width: 100,
-    
   },
   {
     title: 'Price',
@@ -137,5 +204,5 @@ export const columnBidding = [
     dataIndex: 'action',
     render: (record) => <ButtonTrade>Confirm</ButtonTrade>,
     width: 100,
-  }
+  },
 ]
