@@ -1,22 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { Route, useRouteMatch } from 'react-router-dom'
-import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
+import { ChainId } from '@luckyswap/v2-sdk'
 import { useWeb3React } from '@web3-react/core'
-import { Heading } from '@luckyswap/uikit'
-import orderBy from 'lodash/orderBy'
-import partition from 'lodash/partition'
-import useI18n from 'hooks/useI18n'
-import { usePools, useBlock } from 'state/hooks'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import { Pool } from 'config/constants/types'
-import PoolCards from './components/PoolCards'
+import useI18n from 'hooks/useI18n'
+import React, { useEffect, useState } from 'react'
+import { Redirect, useRouteMatch } from 'react-router-dom'
+import { useBlock } from 'state/hooks'
+import styled from 'styled-components'
+import { useActiveWeb3React } from '../../hooks/index'
 import NavBar from './components/NavBar'
+import PoolCards from './components/PoolCards'
 import { useHookPools } from './Store'
 
 const Farm: React.FC = () => {
   const [activeTab, setActiveTab] = useState('1')
+  const { chainId } = useActiveWeb3React()
 
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
@@ -33,6 +31,10 @@ const Farm: React.FC = () => {
 
     fetchPools()
   })
+
+  if (chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
+    return <Redirect to="/" />
+  }
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab)

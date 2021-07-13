@@ -1,4 +1,4 @@
-import { Menu as UikitMenu } from '@luckyswap/uikit'
+import { Menu as UikitMenu, MenuEntry } from '@luckyswap/uikit'
 import { ChainId } from '@luckyswap/v2-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { XLUCKY_TESTNET_ADDRESSES } from 'config'
@@ -12,7 +12,6 @@ import { useNativeBalance } from 'hooks/useTokenBalance'
 import React, { useContext, useEffect, useState } from 'react'
 import { useProfile } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { BLOCK_EXPLORER_URLS, RPC_URLS } from '../../constants'
 import config from './config'
 
 const Menu = (props) => {
@@ -21,11 +20,27 @@ const Menu = (props) => {
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
   const { profile } = useProfile()
+  const [links, setLinks] = useState<MenuEntry[]>(config)
   const nativeBalance = useNativeBalance()
 
   const [balanceToken, setBalanceToken] = useState(0)
 
   const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
+
+  useEffect(() => {
+    if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
+      setLinks(
+        config.map((item) => {
+          if (item.label === 'Launchpad' || item.label === 'Farms' || item.label === 'Pools') {
+            item.href = '#'
+            item.calloutClass += ' icon-hot'
+          }
+
+          return item
+        }),
+      )
+    }
+  }, [chainId])
 
   useEffect(() => {
     if (useContractTemp) {
@@ -62,6 +77,7 @@ const Menu = (props) => {
       console.error("Can't setup the BSC network on metamask because window.ethereum is undefined")
     }
   }
+
   return (
     <UikitMenu
       account={account}
@@ -74,7 +90,7 @@ const Menu = (props) => {
       langs={allLanguages}
       setLang={setSelectedLanguage}
       cakePriceUsd={0}
-      links={config}
+      links={links}
       profile={{
         username: profile?.username,
         image: profile?.nft ? `/images/nfts/${profile.nft?.images.sm}` : undefined,
