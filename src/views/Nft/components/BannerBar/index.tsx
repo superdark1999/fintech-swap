@@ -25,12 +25,12 @@ const BannerBar: React.FC<BannerProps> = ({ banners }) => {
 const BannerBarStyled = styled.div`
 @media only screen and (max-width: 600) {
     border-radius: 24px;
-    height:  110px;
+    height:  100px;
     .banner-body{
-      height:  110px;
+      height:  100px;
       width: 100%;
       img{ 
-        height: 110px;
+        height: 10px;
       }
     }
   }
