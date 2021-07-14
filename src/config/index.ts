@@ -27,7 +27,7 @@ export const LOTTERY_TICKET_PRICE = 1
 // export const XLUCKY_TESTNET = '0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a'
 export const BASE_API_ADMIN = 'https://dashboard.luckyswap.exchange'
 export const LUCKY_PRICE = 0.0001 // TODO: this one will call api
-export const LUCKY2_PRICE = 0.1
+export const LUCKY2_PRICE = 15
 export const LUCKY_PER_YEAR = LUCKY_PER_BLOCK.times(BLOCKS_PER_YEAR)
 
 // TODO : Deploy XLUCKY to multiple networks
