@@ -120,7 +120,6 @@ export default function RemoveLiquidity({
       chainId,
       verifyingContract: pair.liquidityToken.address,
     }
-    console.log('domain : ', domain)
     const Permit = [
       { name: 'owner', type: 'address' },
       { name: 'spender', type: 'address' },
