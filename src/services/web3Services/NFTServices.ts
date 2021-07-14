@@ -87,7 +87,7 @@ function useNFTServiceBinaceChain(){
 export default function NFTService(){
     const { account, chainId } = useActiveWeb3React()
     const LuckyServiceBinaceChain = useNFTServiceBinaceChain()
-    if(SUPPORT_CHAIN_IDS.includes(chainId)){
+    if(SUPPORT_CHAIN_IDS.includes(chainId)&&binanceAddress.NFT){
         return LuckyServiceBinaceChain
     }
     return null

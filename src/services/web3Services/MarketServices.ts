@@ -276,7 +276,7 @@ function useMarketServiceBinaceChain(){
 export default function MarketService(){
   const { account, chainId } = useActiveWeb3React()
   const MarketServiceBinaceChain = useMarketServiceBinaceChain()
-  if(SUPPORT_CHAIN_IDS.includes(chainId)){
+  if(SUPPORT_CHAIN_IDS.includes(chainId)&&binanceAddress.MARKET){
       return MarketServiceBinaceChain
   }
   return null

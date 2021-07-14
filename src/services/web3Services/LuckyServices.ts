@@ -49,7 +49,7 @@ function useLuckyServiceBinaceChain(){
 export default function LuckyService(){
     const { account, chainId } = useActiveWeb3React()
     const LuckyServiceBinaceChain = useLuckyServiceBinaceChain()
-    if(SUPPORT_CHAIN_IDS.includes(chainId)){
+    if(SUPPORT_CHAIN_IDS.includes(chainId)&&binanceAddress.LUCKY){
         return LuckyServiceBinaceChain
     }
     return null
