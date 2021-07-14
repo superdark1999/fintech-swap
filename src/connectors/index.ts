@@ -1,11 +1,10 @@
 import { Web3Provider } from '@ethersproject/providers'
+import { ChainId } from '@luckyswap/v2-sdk'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-import { ChainId } from '@luckyswap/v2-sdk'
-import { NetworkConnector } from './NetworkConnector'
 import { BscConnector } from './bsc/bscConnector'
-import getNodeUrl from '../utils/getRpcUrl'
+import { NetworkConnector } from './NetworkConnector'
 
 const RPC = {
   [ChainId.MATIC]: 'https://rpc-mainnet.maticvigil.com',

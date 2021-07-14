@@ -21,6 +21,8 @@ const BlockNFT = () => {
           setBalanceToken(data / 1e18)
         })
         .catch((error) => console.log('block nft : ', error))
+    } else {
+      setBalanceToken(0)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, chainId])

@@ -13,7 +13,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useProfile } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { NETWORKS } from '../../constants'
-import config from './config'
+import { config, configRestricted } from './config'
 
 const Menu = (props) => {
   const { account, chainId } = useWeb3React()
@@ -29,19 +29,17 @@ const Menu = (props) => {
   const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
 
   useEffect(() => {
-    if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
-      setLinks(
-        config.map((item) => {
-          if (item.label === 'Launchpad' || item.label === 'Farms' || item.label === 'Pools') {
-            item.href = '#'
-            item.calloutClass += ' icon-hot'
-          }
-
-          return item
-        }),
-      )
+    if (chainId === ChainId.MATIC || chainId === ChainId.MATIC_TESTNET) {
+      setLinks(configRestricted)
+    } else if (chainId === ChainId.BSCTESTNET || chainId === ChainId.MAINNET) {
+      setLinks(config)
+    } else if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
+      setLinks(config)
+      logout()
+    } else {
+      setLinks(config)
     }
-  }, [chainId])
+  }, [chainId, logout])
 
   useEffect(() => {
     if (useContractTemp) {
@@ -54,6 +52,8 @@ const Menu = (props) => {
           console.log('get xlucky balance error : ', error)
           setBalanceToken(0)
         })
+    } else {
+      setBalanceToken(0)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, chainId])
