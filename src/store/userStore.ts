@@ -24,7 +24,6 @@ const userStore = createStore({
     updateUserBalance:(balance)=>({getState, setState})=>{
       const userInfoState = getState()
       const userBalanceState = getState()?.balance
-      console.log({...userBalanceState,...balance})
       setState({...userInfoState,balance:{...userBalanceState,...balance}})
     },
     clearUserInfo: ()=>({getState, setState})=>{

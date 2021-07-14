@@ -11,13 +11,12 @@ import Token from 'assets/images/token.svg'
 import { isMobile } from 'react-device-detect'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import BSCScanServices from 'services/axiosServices/BSCScanServices'
-import { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
 import { Menu, Dropdown } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { getPrice, SUPPORT_CHAIN_IDS, binanceConfig, binaceText } from 'utils'
+import { getPrice, SUPPORT_CHAIN_IDS, binanceConfig, binaceText, binanceAddress } from 'utils'
 import { Modal, Input, Form } from 'antd'
 import formatNumber from 'utils/formatNumber'
 import useAuth from 'hooks/useAuth'
@@ -124,7 +123,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
       const filter = LuckyTokenContract.filters.Approval(account)
 
       LuckyTokenContract.on(filter, (author, allowAddress, value) => {
-        if (author === account && allowAddress === MARKET_ADDRESS) {
+        if (author === account && allowAddress === binanceAddress.MARKET) {
           userActions.updateUserInfo({
             isCanBuy: true,
             isProcessingCanBuy: false,
@@ -150,7 +149,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         }
         if (luckyMethod) {
           luckyMethod
-            .checkApproveLevelAmount(MARKET_ADDRESS)
+            .checkApproveLevelAmount(binanceAddress.MARKET)
             .then((dt: any) => {
               const allowance = Number(dt?._hex || 0) > 0
               userActions.updateUserInfo({ isCanBuy: allowance })

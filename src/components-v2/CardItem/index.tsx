@@ -126,7 +126,7 @@ export default function CardItem(props?: any) {
   }, [playVideo])
   return (
     <div className="create-nav">
-      <StyledCart src={data?.contentUrl}>
+      <StyledCart src={data?.contentUrl} width={props.width}>
         <div className="card-art-work">
           <Link to={`/artwork/detail/${data?.NFTType || 'buy'}/${data?._id}`}>
             <div

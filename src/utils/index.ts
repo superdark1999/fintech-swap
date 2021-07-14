@@ -81,6 +81,14 @@ export const binanceConfig = {
   blockExplorerUrls: ['https://bscscan.com'],
 }
 
+export const binanceAddress = {
+  MARKET:'',
+  LUCKY:'',
+  NFT:''
+}
+
+export const BINANCE_DOMAIN_API = 'https://api.bscscan.com'
+
 export const binaceText = 'bsc-mainnet'
 
 export const handleAlertMessage = (message:string)=>{

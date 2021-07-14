@@ -13,21 +13,15 @@ export const StyledCart = styled.div<PropsStyled>`
   position: relative;
   video {
     object-fit: cover;
+    width: ${(props) => props.width || '300px'};
   }
   .card-art-work {
-    max-width: ${(props) => props.width || '300px'};
-    /* max-height: ${(props) => props.height || '530px'}; */
-    /* border: 1px solid #E7EBEF; */
+    width: 100%;
     box-sizing: border-box;
     overflow: hidden;
-    /* :hover{ 
-      box-shadow: 1px 4px 8px #ececec;
-      -webkit-transition:  box-shadow .3s ease-in;
-    } */
-
+    width: ${(props) => props.width || '300px'};
     .wrapper-image {
-      min-width: ${(props) => props.width || '300px'};
-      min-height: ${(props) => props.height || '450px'};
+      height: 450px;
       border: 1px solid #e7ebef;
       box-sizing: border-box;
       overflow: hidden;

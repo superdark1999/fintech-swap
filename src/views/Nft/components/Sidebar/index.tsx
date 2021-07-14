@@ -1,23 +1,21 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { SidebarStyled } from './styled'
 import NotifyIcon from 'assets/images/notify.svg'
-import Collection from 'assets/images/collection.svg'
-import Astronaut from 'assets/images/astronaut.svg'
 import Rocket from 'assets/images/Rocket.svg'
 import MoneyIcon from 'assets/images/money.svg'
 import token from 'assets/images/token.svg'
-import { Button, Select, Input, Checkbox, Row, Col } from 'antd'
+import { Button, Select, Input, Checkbox, Row, Col, Slider } from 'antd'
 import {
-  PlusCircleOutlined,
-  CaretUpOutlined,
   TagFilled,
-  SearchOutlined,
   MenuUnfoldOutlined,
-  CaretDownOutlined,
   LeftOutlined,
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { isEmpty } from 'lodash'
+import formatNumber from 'utils/formatNumber'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
+import { useActiveWeb3React } from 'wallet/hooks'
+
 const plainOptions = ['Art', 'Music', 'Games', 'DeFi', 'Lucky']
 const plainOptions1 = ['Meme', 'Sports', 'Abstract', 'Space']
 interface SidebarProps {
@@ -38,14 +36,33 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [select, setSelect] = React.useState<string | null>(
     'LUCKY TOKEN (LUCKY)',
   )
+
+  const { getNFT } = useArtworkServices()
+  const { account } = useActiveWeb3React()
+  const [sellLength, setSellLength] = useState(0)
+
+  useEffect(()=>{
+    const query = {
+      status: 'readyToSell',
+      NFTType: ['buy', 'auction', 'swap-store'],
+      ownerWalletAddress: account,
+    }
+    getNFT(query).then(({ status, data }:any) => {
+      if (status == 200) {
+        setSellLength(data?.data?.length||0)
+      }
+    })
+  },[])
   const [configMenu, setConfigMenu] = React.useState<any | null>([
     'collection',
     'price',
     'tag',
   ])
+
+
   const [checkedList, setCheckedList] = React.useState<[string] | null>([''])
 
-  const [price, setPrice] = useState<any>({})
+  const [price, setPrice] = useState<any>({ minPrice: 0, maxPrice: 100000 })
 
   const onTogleMenu = (value: string) => {
     if (!configMenu.find((menu: string) => value === menu))
@@ -64,10 +81,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     [configMenu],
   )
 
-  const handeChangePriceInput = (e: any) => {
-    const value = +e.target.value
-    const name = e.target.name
-    setPrice({ ...price, [name]: value })
+  const handeChangeSlider = (value: any) => {   
+    setPrice({ ...price, minPrice: +value[0], maxPrice: +value[1]})
   }
 
   const onApply = () => {
@@ -75,6 +90,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     var elmnt = document.getElementById('collection-scroll-view')
     elmnt.scrollIntoView()
   }
+
+
 
   if (!onShowSidebar) {
     return (
@@ -90,7 +107,12 @@ const Sidebar: React.FC<SidebarProps> = ({
           onClick={() => setShowSidebar(!onShowSidebar)}
         >
           <img src={NotifyIcon} alt="" />
-          <span className="number-notify">5</span>
+          {sellLength>0&&
+          <span className="number-notify">
+            {
+              sellLength>8?'9+':sellLength
+            }
+          </span>}
           <img src={token} alt="" />
           <img src={MoneyIcon} alt="" />
           <TagFilled />
@@ -111,7 +133,11 @@ const Sidebar: React.FC<SidebarProps> = ({
       <Link className="button on-sale" to="/my-profile/onstore/readyToSell">
         <img src={NotifyIcon} alt="" style={{ marginRight: '10px' }} />
         On sale
-        <span className="number-notify">5</span>
+        {sellLength>0&&<span className="number-notify">
+            {
+              sellLength>8?'9+':sellLength
+            }
+        </span>}
       </Link>
       <a
         className="button buy-lucky"
@@ -121,31 +147,6 @@ const Sidebar: React.FC<SidebarProps> = ({
         <img src={Rocket} alt="" style={{ marginRight: '10px' }} />
         <span>Buy LUCKY</span>
       </a>
-      {/* <div className="group-menu">
-      <div className="button menu" onClick={() => onTogleMenu('collection')}>
-        <div className="group-title">
-          <img src={Collection} alt=""/>
-          My collection
-        </div>
-        { checkRenderSubMenu('collection') ? <CaretUpOutlined/> : <CaretDownOutlined /> }
-      </div>
-      <div className={checkRenderSubMenu('collection') ? 'show-sub-menu list-sub-menu' : 'list-sub-menu'}>
-        <div className="button sub-menu bordered">
-          Game 🎮
-        </div>
-        <div className="button sub-menu bordered">
-          Art 🖼
-        </div>
-        <div className="button sub-menu ">
-          Music 🎧
-        </div>
-        <div className="button sub-menu ">
-          <Button shape="round">
-            <PlusCircleOutlined /> Create collection
-          </Button>
-        </div>
-      </div>
-    </div> */}
 
       <div className="group-menu">
         <div className="button menu" onClick={() => onTogleMenu('price')}>
@@ -153,7 +154,6 @@ const Sidebar: React.FC<SidebarProps> = ({
             <img src={MoneyIcon} alt="" />
             Price
           </div>
-          {/* { checkRenderSubMenu('price') ? <CaretUpOutlined/> : <CaretDownOutlined /> } */}
         </div>
         <div className={true ? 'show-sub-menu list-sub-menu' : 'list-sub-menu'}>
           <Select onChange={setSelect} defaultValue={select}>
@@ -163,37 +163,20 @@ const Sidebar: React.FC<SidebarProps> = ({
               </Option>
             ))}
           </Select>
-          <div className="button group-input">
-            <Input
-              type="number"
-              min={0}
-              placeholder="min"
-              name="minPrice"
-              value={price.minPrice}
-              onChange={handeChangePriceInput}
-            />
-            to
-            <Input
-              type="number"
-              min={0}
-              placeholder="max"
-              name="maxPrice"
-              value={price.maxPrice}
-              onChange={handeChangePriceInput}
-            />
-          </div>
-          {price?.minPrice > price?.maxPrice && (
-            <span style={{ color: 'red', width: '300px', padding: '0 24px' }}>
-              Your minimum item price must be greater than the minimum
-            </span>
-          )}
+          
+          <Slider
+            range
+            step={100}
+            max={100000}
+            min={0}
+            defaultValue={[0, 100000]}
+            onChange={handeChangeSlider}
+            tipFormatter={value => formatNumber(value)}
+            style={{margin: '30px 30px'}}
+          />
+
           <div className="button sub-menu">
             <Button
-              disabled={
-                !price.maxPrice ||
-                !price.minPrice ||
-                price?.minPrice > price?.maxPrice
-              }
               shape="round"
               style={{ fontWeight: 'bold' }}
               onClick={onApply}

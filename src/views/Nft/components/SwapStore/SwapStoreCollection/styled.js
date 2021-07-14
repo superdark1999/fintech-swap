@@ -3,7 +3,7 @@ import { isMobile } from 'react-device-detect'
 
 export const ExploreCollectionStyled = styled.div`
   max-width: 1320px;
-  padding: 20px 0;
+  padding: 20px;
   margin: auto;
   .banner-nft {
     margin: 30px 0;
@@ -69,7 +69,7 @@ export const ExploreCollectionStyled = styled.div`
   }
   .content-collect {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     grid-gap: 24px;
     align-items: stretch;
     padding: 24px 0px;

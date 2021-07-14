@@ -8,7 +8,7 @@ import { ButtonBuy, ButtonCancel } from 'components-v2/Button'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useHistory } from 'react-router-dom'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
-import useMarketServices,{MARKET_ADDRESS} from 'services/web3Services/MarketServices'
+import useMarketServices from 'services/web3Services/MarketServices'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import notification from 'components-v2/Alert'
 

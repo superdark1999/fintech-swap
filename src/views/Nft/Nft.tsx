@@ -9,6 +9,8 @@ import HotArtWorks from './components/HotArtWorks/index'
 import HotSwap from './components/HotSwap/index'
 import Collection from './components/Collection/index'
 import { isMobile } from 'react-device-detect'
+import SidebarMobile from 'views/Nft/components/Sidebar/SidebarMobile'
+
 import { useHookNTF } from './Store'
 
 const NFTContainer = (props: any) => {
@@ -27,6 +29,17 @@ const NFTContainer = (props: any) => {
     <Switch>
       <Page>
         <NFTContainerStyled onShowsidebar={onShowSidebar}>
+            {
+              isMobile &&
+              (
+                <SidebarMobile 
+                  setMobileMenu={props.setMobileMenu} 
+                  mobileMenu={props.mobileMenu} 
+                  price={price}
+                  onChangePrice={onChangePrice}
+                />
+              )
+            }
           {!isMobile && (
             <div className="left-sidebar">
               <Sidebar
