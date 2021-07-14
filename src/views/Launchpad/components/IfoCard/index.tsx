@@ -46,6 +46,8 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
 
 const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
   const { sympol, typePool, banner, logo, name, currency } = ifo
+  // console.log("banner: ",BASE_API_ADMIN +  banner);
+  // console.log("logo: ", logo)
   const { offeringAmount, raisingAmount, totalAmount, getAddressListLength, status } = useGetPublicIfoData(ifo)
   const TranslateString = useI18n()
   const Ribbon = getRibbonComponent(status, TranslateString)
@@ -89,12 +91,12 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
               <CardValue
                 bold
                 color=""
-                value={parseFloat(offeringAmount.div(1e18).toFixed(2))}
+                value={parseFloat(offeringAmount.div(1e18).toFixed(2)) / parseFloat(priceRate) }
                 decimals={0}
                 fontSize="10px"
                 fontWeight="600"
               ></CardValue>
-              {sympol}
+              $
             </h2>
           </Total>
 
@@ -115,7 +117,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
             </CardColumn>
 
             <CardColumn>
-              <p>
+              {/* <p>
                 Max<span>{` ${currency}`}</span>
               </p>
               <h3>
@@ -127,7 +129,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
                   fontSize="10px"
                   fontWeight="600"
                 ></CardValue>
-              </h3>
+              </h3> */}
             </CardColumn>
 
             <CardColumn>
@@ -327,7 +329,7 @@ const ItemHead = styled(Card)<{ img: string }>`
   ${({ img }) =>
     img &&
     `
-  background-image: url(${BASE_API_ADMIN + img});
+  background-image: url(${BASE_API_ADMIN  + img});
 
   `}
   position: relative;
