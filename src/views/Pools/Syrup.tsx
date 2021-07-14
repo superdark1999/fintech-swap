@@ -32,7 +32,7 @@ const Farm: React.FC = () => {
     fetchPools()
   })
 
-  if (chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
+  if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
     return <Redirect to="/" />
   }
 

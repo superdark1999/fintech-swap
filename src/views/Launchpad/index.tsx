@@ -19,7 +19,7 @@ const Ifos = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
+  if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
     return <Redirect to="/" />
   }
 
