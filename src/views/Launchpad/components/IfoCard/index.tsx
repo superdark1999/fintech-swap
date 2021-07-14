@@ -46,6 +46,8 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
 
 const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
   const { sympol, typePool, banner, logo, name, currency } = ifo
+  // console.log("banner: ",BASE_API_ADMIN +  banner);
+  // console.log("logo: ", logo)
   const { offeringAmount, raisingAmount, totalAmount, getAddressListLength, status } = useGetPublicIfoData(ifo)
   const TranslateString = useI18n()
   const Ribbon = getRibbonComponent(status, TranslateString)
@@ -327,7 +329,7 @@ const ItemHead = styled(Card)<{ img: string }>`
   ${({ img }) =>
     img &&
     `
-  background-image: url(${BASE_API_ADMIN + img});
+  background-image: url(${BASE_API_ADMIN  + img});
 
   `}
   position: relative;
