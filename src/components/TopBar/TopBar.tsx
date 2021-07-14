@@ -66,13 +66,11 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   useEffect(() => {
     const { ethereum, BinanceChain } = window as any
     if (
-      chainId &&
-      !SUPPORT_CHAIN_IDS.includes(chainId) &&
+      !SUPPORT_CHAIN_IDS.includes(Number(ethereum?.chainId)) &&
       ethereum?.selectedAddress
       &&ethereum?.chainId!=binanceConfig.chainId
     ) {
-      ethereum
-        .request({
+      ethereum.request({
           method: 'wallet_switchEthereumChain',
           params: [
             {
