@@ -67,7 +67,11 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
   const { account } = useWeb3React()
 
   const stakingContract = useStakingContract(stakingData?.stakingAddress);
-  const { userAmount, userRewardDebt} = useGetStateData(stakingData);
+  const { userAmount, userRewardDebt, pendingReward} = useGetStateData(stakingData);
+
+  console.log("pendingReward", pendingReward.toFixed(5))
+
+
 
   const addTransaction = useTransactionAdder()
   const contract = useContract(stakingData?.stakingAddress,SMART_CHEF_ABI );
@@ -119,7 +123,7 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
           </BoxHead>
 
           <PoolCardDetails 
-            userRewardDebt={userRewardDebt} 
+            userRewardDebt={pendingReward} 
             userAmount={userAmount} 
             onUnStakeToggle={unStakeToggle}
             onDepositToggle={depositToggle}

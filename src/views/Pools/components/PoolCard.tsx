@@ -26,6 +26,7 @@ const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
 
   const {  userRewardDebt } = useGetStateData(pool);
 
+
   const {balanceOf} =  useUtilityToken(pool.depositTokenAddress);
 
   const rewardTokenPrice = usePriceLuckyBusd()
