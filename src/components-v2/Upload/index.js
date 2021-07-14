@@ -58,7 +58,7 @@ export function Upload(props) {
 
   const onChange = (imageList, addUpdateIndex) => {
     setImages(imageList[0]?.data_url)
-    props.onChange(imageList[0]?.data_url)
+    props.onChange(imageList[0]?.file)
     setErrors(null)
   }
   console.log(errors)
