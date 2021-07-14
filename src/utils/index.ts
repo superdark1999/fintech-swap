@@ -66,7 +66,8 @@ export const embedTokenIdLinkBSCScan = (tokenId:number,contractAddress:string,ch
 }
 
 export const SUPPORT_CHAIN_IDS:Array<ChainId> = [97]
-
+export const NETWORK_URL = 'https://data-seed-prebsc-1-s1.binance.org:8545'
+export const REACT_APP_CHAIN_ID = '97'
 export const binanceConfig = {
   chainId: '0x61',
   rpcUrls: [
@@ -87,7 +88,7 @@ export const binanceAddress = {
   NFT:'0x969a82989D9e410ed0ae36C12479552421C93eB2'
 }
 
-export const BINANCE_DOMAIN_API = 'https://api.bscscan.com'
+export const BINANCE_DOMAIN_API = 'https://api-testnet.bscscan.com'
 export const LUCKY_DOMAIN_API = 'https://api.luckyswap.center'
 
 export const binaceText = 'bsc-testnet'
