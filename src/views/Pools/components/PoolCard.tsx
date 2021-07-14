@@ -36,7 +36,7 @@ const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
   const fetchTotalStaked = async () => {
   if (balanceOf){
     const result =  await balanceOf(pool.stakingAddress);
-    const balance = new BigNumber(result._hex).div(1e18).toNumber();
+    const balance = new BigNumber(result && result._hex ||0).div(1e18).toNumber();
     setTotalStaked(balance)
 
     const apyValue = getPoolApy(
