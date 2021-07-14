@@ -32,6 +32,9 @@ const Nav = ({ activeIndex = 0 }: { activeIndex?: number }) => (
         >
           <TranslatedText translationId={74}>Liquidity</TranslatedText>
         </ButtonMenuItem>
+        <ButtonMenuItem>
+          <a href="https://www.binance.org/en/bridge?utm_source=luckyswap" target="_blank" rel="noopener noreferrer">Bridge</a>
+        </ButtonMenuItem>
       </ButtonMenu>
     </BoxNav>
   </StyledNav>
