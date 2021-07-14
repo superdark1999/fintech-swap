@@ -5,11 +5,7 @@ import Rocket from 'assets/images/Rocket.svg'
 import MoneyIcon from 'assets/images/money.svg'
 import token from 'assets/images/token.svg'
 import { Button, Select, Input, Checkbox, Row, Col, Slider } from 'antd'
-import {
-  TagFilled,
-  MenuUnfoldOutlined,
-  LeftOutlined,
-} from '@ant-design/icons'
+import { TagFilled, MenuUnfoldOutlined, LeftOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { isEmpty } from 'lodash'
 import formatNumber from 'utils/formatNumber'
@@ -81,8 +77,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     [configMenu],
   )
 
-  const handeChangeSlider = (value: any) => {   
-    setPrice({ ...price, minPrice: +value[0], maxPrice: +value[1]})
+  const handeChangeSlider = (value: any) => {
+    setPrice({ ...price, minPrice: +value[0], maxPrice: +value[1] })
   }
 
   const onApply = () => {
@@ -90,8 +86,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     var elmnt = document.getElementById('collection-scroll-view')
     elmnt.scrollIntoView()
   }
-
-
 
   if (!onShowSidebar) {
     return (
@@ -163,16 +157,16 @@ const Sidebar: React.FC<SidebarProps> = ({
               </Option>
             ))}
           </Select>
-          
+
           <Slider
             range
-            step={100}
-            max={100000}
+            step={1000}
+            max={1000000}
             min={0}
-            defaultValue={[0, 100000]}
+            defaultValue={[0, 10000]}
             onChange={handeChangeSlider}
-            tipFormatter={value => formatNumber(value)}
-            style={{margin: '30px 30px'}}
+            tipFormatter={(value) => formatNumber(value)}
+            style={{ margin: '30px 30px' }}
           />
 
           <div className="button sub-menu">
