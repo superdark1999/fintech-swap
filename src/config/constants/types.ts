@@ -69,6 +69,7 @@ export interface Pool {
   depositTokenAddress: string
   rewardTokenAddress: string
   stakingAddress: string
+  chainId: number
 }
 
 export interface PoolConfig {

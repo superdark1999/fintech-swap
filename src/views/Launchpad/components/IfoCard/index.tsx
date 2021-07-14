@@ -94,7 +94,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
                 fontSize="10px"
                 fontWeight="600"
               ></CardValue>
-              {currency}
+              {sympol}
             </h2>
           </Total>
 

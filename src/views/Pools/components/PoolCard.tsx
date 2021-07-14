@@ -24,7 +24,7 @@ const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
   const [apy, setApy] = useState('0');
   const [totalStaked, setTotalStaked] = useState(0);
 
-  const {  userRewardDebt} = useGetStateData(pool);
+  const {  userRewardDebt } = useGetStateData(pool);
 
   const {balanceOf} =  useUtilityToken(pool.depositTokenAddress);
 

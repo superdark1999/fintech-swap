@@ -13,11 +13,12 @@ const Ifos = () => {
   const [state, actions] = useHookIFOs()
   const { chainId } = useActiveWeb3React()
   let { launchpads } = state
+  launchpads = launchpads.filter(l => l.chainId === chainId);
 
   useEffect(() => {
     actions.getLaunchpads()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [chainId])
 
   if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
     return <Redirect to="/" />
