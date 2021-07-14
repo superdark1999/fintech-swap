@@ -17,10 +17,11 @@ import useUserStore from 'store/userStore'
 import { Menu, Dropdown } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { getPrice, SUPPORT_CHAIN_IDS } from 'utils'
+import { getPrice, SUPPORT_CHAIN_IDS, binanceConfig, binaceText } from 'utils'
 import { Modal, Input, Form } from 'antd'
 import formatNumber from 'utils/formatNumber'
 import useAuth from 'hooks/useAuth'
+
 interface TopBarProps {
   setMobileMenu?: (value: boolean) => void
   mobileMenu?: boolean
@@ -75,7 +76,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           method: 'wallet_switchEthereumChain',
           params: [
             {
-              chainId: '0x61',
+              chainId: binanceConfig.chainId,
             },
           ],
         })
@@ -88,19 +89,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
               .request({
                 method: 'wallet_addEthereumChain',
                 params: [
-                  {
-                    chainId: '0x61',
-                    rpcUrls: [
-                      'https://data-seed-prebsc-1-s1.binance.org:8545/',
-                    ],
-                    chainName: 'Binance SmartChain Testnet',
-                    nativeCurrency: {
-                      name: 'TestnetBNB',
-                      symbol: 'BNB', // 2-6 characters long
-                      decimals: 18,
-                    },
-                    blockExplorerUrls: ['https://testnet.bscscan.com'],
-                  },
+                  binanceConfig
                 ],
               })
               .then(() => {
@@ -109,7 +98,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
                     method: 'wallet_switchEthereumChain',
                     params: [
                       {
-                        chainId: '0x61',
+                        chainId: binanceConfig.chainId,
                       },
                     ],
                   })
@@ -123,8 +112,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           }
         })
     } else if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)) {
-      console.log('lsls', chainId, account)
-      BinanceChain.switchNetwork('bsc-testnet').then(() => {
+      BinanceChain.switchNetwork(binaceText).then(() => {
         window.location.reload()
       })
     }
@@ -608,19 +596,11 @@ const StyledTopBar = styled.div`
       margin-left: 14px;
       position: relative;
       cursor: pointer;
-<<<<<<< HEAD
-      color:#333435;
-      border:2px solid #35A5FC;   
-      .number-balance{
-        margin-right:4px;
-      }  
-=======
       color: #35a5fc;
       border: 2px solid #35a5fc;
       .number-balance {
         margin-right: 4px;
       }
->>>>>>> e360223ae8bcc612da7ae137cc98d84118ea3ff2
       @media (max-width: 756px) {
         display: none;
       }

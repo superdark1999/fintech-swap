@@ -67,6 +67,22 @@ export const embedTokenIdLinkBSCScan = (tokenId:number,contractAddress:string,ch
 
 export const SUPPORT_CHAIN_IDS:Array<ChainId> = [97]
 
+export const binanceConfig = {
+  chainId: '0x61',
+  rpcUrls: [
+    'https://data-seed-prebsc-1-s1.binance.org:8545/',
+  ],
+  chainName: 'Binance SmartChain Testnet',
+  nativeCurrency: {
+    name: 'TestnetBNB',
+    symbol: 'BNB', // 2-6 characters long
+    decimals: 18,
+  },
+  blockExplorerUrls: ['https://testnet.bscscan.com'],
+}
+
+export const binaceText = 'bsc-testnet'
+
 export const handleAlertMessage = (message:string)=>{
   if(message==`Error: [ethjs-query] while formatting outputs from RPC '{"value":{"code":-32603,"data":{"code":-32000,"message":"transaction underpriced"}}}'`){
     return 'Low gas'

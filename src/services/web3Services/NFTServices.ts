@@ -1,24 +1,20 @@
 import { isAddress} from 'wallet/utils'
 import { AddressZero } from '@ethersproject/constants'
 import  abiNFT from './AbiNFT'
-import  abiBid from './AbiBid'
-import  abiLucky from './AbiLucky'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useContract } from 'wallet/hooks/useContract'
 import { useCallback } from 'react'
 import useUserStore from 'store/userStore'
-import { ethers } from 'ethers'
 import _ from 'lodash'
 import {MARKET_ADDRESS} from './MarketServices'
-import { BigNumber } from 'Jus'
-import { getPrice , getPriceFromEstimateGas} from 'utils'
+import { getPrice , getPriceFromEstimateGas, SUPPORT_CHAIN_IDS} from 'utils'
 
 export const NFT_ADDRESS = '0x969a82989D9e410ed0ae36C12479552421C93eB2';
 const payableAmountDefault = '10000000000000000'
 
 const BNB_ERROR = `You don't have enough BNB`
 
-function useNFTServiceChain97(){
+function useNFTServiceBinaceChain(){
         const { account } = useActiveWeb3React()
         const nftContract = useContract(NFT_ADDRESS,abiNFT)
         const [userState, userActions] = useUserStore()
@@ -92,9 +88,9 @@ function useNFTServiceChain97(){
 
 export default function NFTService(){
     const { account, chainId } = useActiveWeb3React()
-    const LuckyServiceChain97 = useNFTServiceChain97()
-    if(chainId==97){
-        return LuckyServiceChain97
+    const LuckyServiceBinaceChain = useNFTServiceBinaceChain()
+    if(SUPPORT_CHAIN_IDS.includes(chainId)){
+        return LuckyServiceBinaceChain
     }
     return null
 }
