@@ -22,7 +22,8 @@ const Farm: React.FC = () => {
   // const pools = usePools(account)
   const { currentBlock } = useBlock()
   const [state, actions] = useHookPools()
-  const { pools } = state
+  let { pools } = state
+  pools = pools.filter(p => p.chainId === chainId);
 
   useEffect(() => {
     const fetchPools = () => {
@@ -30,7 +31,7 @@ const Farm: React.FC = () => {
     }
 
     fetchPools()
-  })
+  }, [chainId, actions])
 
   if (chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
     return <Redirect to="/" />

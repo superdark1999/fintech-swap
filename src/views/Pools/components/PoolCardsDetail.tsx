@@ -2,12 +2,13 @@ import React, {useState, useEffect, useMemo, useCallback} from 'react'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'
 import { useWeb3React } from '@web3-react/core'
-import { useParams } from 'react-router-dom'
+import { useParams, Redirect } from 'react-router-dom'
 import { Pool} from 'config/constants/types';
 import useGetStateData from 'hooks/useGetStakeData';
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { useContract,  useStakingContract  } from 'hooks/useContract'
+import { useActiveWeb3React } from 'hooks'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
 import { BASE_API_ADMIN} from 'config';
 import { useHookPools } from '../Store';
@@ -16,6 +17,7 @@ import { useHookPools } from '../Store';
 import UnStakeModal from './UnStakeModal';
 import DepositModal from './DepositModal';
 import PoolCardDetails from './PoolCardDetails';
+
 
 
 
@@ -29,6 +31,8 @@ interface HarvestProps {
 
 function FetchPoolData() {
   const param: any = useParams()
+  const { chainId } = useActiveWeb3React()
+
 
   const [state, actions] = useHookPools();
   const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +47,11 @@ function FetchPoolData() {
   }, [actions, param.id])
 
   if (poolDetail && !isLoading)
-    return <PoolCardsDetail stakingData={poolDetail}/>
+    {
+      if (chainId !== poolDetail.chainId)
+        return <Redirect to="/" />
+      return <PoolCardsDetail stakingData={poolDetail}/>
+    }
   return <div>
     {/* <img src="./images/loading.gif" alt=''/> */}
   </div>

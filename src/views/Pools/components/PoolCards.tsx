@@ -15,6 +15,7 @@ const PoolCards: React.FC<PoolCardsProps> = ({ pools, activeTab }) =>{
   // for(let i = 0; i < pools.length; i++)
   //   pools[i].logo = logos[i];
 
+  console.log("pools in cards", pools)
   return (
     <>
       <div>
