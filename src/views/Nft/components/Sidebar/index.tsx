@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { SidebarStyled } from './styled'
 import NotifyIcon from 'assets/images/notify.svg'
 import Rocket from 'assets/images/Rocket.svg'
@@ -13,6 +13,9 @@ import {
 import { Link } from 'react-router-dom'
 import { isEmpty } from 'lodash'
 import formatNumber from 'utils/formatNumber'
+import useArtworkServices from 'services/axiosServices/ArtworkServices'
+import { useActiveWeb3React } from 'wallet/hooks'
+
 const plainOptions = ['Art', 'Music', 'Games', 'DeFi', 'Lucky']
 const plainOptions1 = ['Meme', 'Sports', 'Abstract', 'Space']
 interface SidebarProps {
@@ -33,11 +36,30 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [select, setSelect] = React.useState<string | null>(
     'LUCKY TOKEN (LUCKY)',
   )
+
+  const { getNFT } = useArtworkServices()
+  const { account } = useActiveWeb3React()
+  const [sellLength, setSellLength] = useState(0)
+
+  useEffect(()=>{
+    const query = {
+      status: 'readyToSell',
+      NFTType: ['buy', 'auction', 'swap-store'],
+      ownerWalletAddress: account,
+    }
+    getNFT(query).then(({ status, data }:any) => {
+      if (status == 200) {
+        setSellLength(data?.data?.length||0)
+      }
+    })
+  },[])
   const [configMenu, setConfigMenu] = React.useState<any | null>([
     'collection',
     'price',
     'tag',
   ])
+
+
   const [checkedList, setCheckedList] = React.useState<[string] | null>([''])
 
   const [price, setPrice] = useState<any>({ minPrice: 0, maxPrice: 100000 })
@@ -85,7 +107,12 @@ const Sidebar: React.FC<SidebarProps> = ({
           onClick={() => setShowSidebar(!onShowSidebar)}
         >
           <img src={NotifyIcon} alt="" />
-          <span className="number-notify">5</span>
+          {sellLength>0&&
+          <span className="number-notify">
+            {
+              sellLength>8?'9+':sellLength
+            }
+          </span>}
           <img src={token} alt="" />
           <img src={MoneyIcon} alt="" />
           <TagFilled />
@@ -106,7 +133,11 @@ const Sidebar: React.FC<SidebarProps> = ({
       <Link className="button on-sale" to="/my-profile/onstore/readyToSell">
         <img src={NotifyIcon} alt="" style={{ marginRight: '10px' }} />
         On sale
-        <span className="number-notify">5</span>
+        {sellLength>0&&<span className="number-notify">
+            {
+              sellLength>8?'9+':sellLength
+            }
+        </span>}
       </Link>
       <a
         className="button buy-lucky"

@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 export default function ProcessBar(props: {step: Number}) {
-  console.log('step: ', props.step)
   return (
     <Styled className="container">
       <ul className="progressbar">

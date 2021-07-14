@@ -6,17 +6,15 @@ import { useContract } from 'wallet/hooks/useContract'
 import { useCallback } from 'react'
 import useUserStore from 'store/userStore'
 import _ from 'lodash'
-import {MARKET_ADDRESS} from './MarketServices'
-import { getPrice , getPriceFromEstimateGas, SUPPORT_CHAIN_IDS} from 'utils'
+import { getPrice , getPriceFromEstimateGas, SUPPORT_CHAIN_IDS, binanceAddress} from 'utils'
 
-export const NFT_ADDRESS = '0x969a82989D9e410ed0ae36C12479552421C93eB2';
 const payableAmountDefault = '10000000000000000'
 
 const BNB_ERROR = `You don't have enough BNB`
 
 function useNFTServiceBinaceChain(){
         const { account } = useActiveWeb3React()
-        const nftContract = useContract(NFT_ADDRESS,abiNFT)
+        const nftContract = useContract(binanceAddress.NFT,abiNFT)
         const [userState, userActions] = useUserStore()
 
         const mintToken = useCallback(async(URI: string)=>{
@@ -44,18 +42,18 @@ function useNFTServiceBinaceChain(){
         },[])
 
         const approveTokenToMarket = useCallback(async(tokenId:string|undefined)=>{
-            const estimatedGas = await nftContract.estimateGas.approve(MARKET_ADDRESS,tokenId);
+            const estimatedGas = await nftContract.estimateGas.approve(binanceAddress.MARKET,tokenId);
             if(userState.balance.BNB<getPrice(Number(payableAmountDefault))+getPriceFromEstimateGas(Number(estimatedGas))){
                 throw new Error(BNB_ERROR)
             }
-            return nftContract.approve(MARKET_ADDRESS,tokenId, {
+            return nftContract.approve(binanceAddress.MARKET,tokenId, {
                 gasLimit: estimatedGas,
               })
         },[userState.balance.BNB])
 
         const isTokenReadyToSell = useCallback(async(tokenId:string|undefined)=>{
             const approvedAddress = await nftContract.getApproved(tokenId)
-            if(approvedAddress===MARKET_ADDRESS){
+            if(approvedAddress===binanceAddress.MARKET){
                 return true
             }
             return false

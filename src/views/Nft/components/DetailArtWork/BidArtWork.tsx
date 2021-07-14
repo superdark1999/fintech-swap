@@ -32,15 +32,13 @@ import {
 import { isMobile } from 'react-device-detect'
 import { dataHistory, columnHistory } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import useMarketServices from 'services/web3Services/MarketServices'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
-import { getPrice, getCompactString, embedTokenIdLinkBSCScan } from 'utils'
+import { getPrice, getCompactString, embedTokenIdLinkBSCScan, binanceAddress } from 'utils'
 import formatNumber from 'utils/formatNumber'
 import _ from 'lodash'
 import Hammer from 'assets/images/hammer.svg'
@@ -139,7 +137,7 @@ const DetaiArtWork = ({ id }: any) => {
   const onApproveBuyOnMarket = () => {
     userActions?.updateUserInfo({ isProcessingCanBuy: true })
     luckyServicesMethod
-      ?.approveLevelAmount?.(MARKET_ADDRESS)
+      ?.approveLevelAmount?.(binanceAddress.MARKET)
       .then()
       .catch(() => {
         notification('error', {

@@ -6,15 +6,13 @@ import {
   TableStyled,
 } from './styled'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import useMarketServices from 'services/web3Services/MarketServices'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
-import { getPrice, getCompactString, embedTokenIdLinkBSCScan } from 'utils'
+import { getPrice, getCompactString,  } from 'utils'
 import formatNumber from 'utils/formatNumber'
 import _ from 'lodash'
 import { useHistory } from 'react-router-dom'

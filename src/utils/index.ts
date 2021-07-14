@@ -81,6 +81,14 @@ export const binanceConfig = {
   blockExplorerUrls: ['https://testnet.bscscan.com'],
 }
 
+export const binanceAddress = {
+  MARKET:'0x7d6b6C226b8324AB469D6b5E40367451405a4ad2',
+  LUCKY:'0x5C2AaAdD1FcE223baaEFB1cF41ce872e9d8B986A',
+  NFT:'0x969a82989D9e410ed0ae36C12479552421C93eB2'
+}
+
+export const BINANCE_DOMAIN_API = 'https://api-testnet.bscscan.com'
+
 export const binaceText = 'bsc-testnet'
 
 export const handleAlertMessage = (message:string)=>{
