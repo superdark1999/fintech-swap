@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
 import useAxiosServices from './AxiosServices'
-
+import {LUCKY_DOMAIN_API} from 'utils'
 export default function useArtworkService(){
 
-    const {GET,POST, PATCH, PUT} = useAxiosServices('https://api.luckyswap.center')
+    const {GET,POST, PATCH, PUT} = useAxiosServices(LUCKY_DOMAIN_API)
 
     const login = (body:any)=>{
         return POST('/user/login',body,false, false)

@@ -87,7 +87,8 @@ export const binanceAddress = {
   NFT:'0x969a82989D9e410ed0ae36C12479552421C93eB2'
 }
 
-export const BINANCE_DOMAIN_API = 'https://api-testnet.bscscan.com'
+export const BINANCE_DOMAIN_API = 'https://api.bscscan.com'
+export const LUCKY_DOMAIN_API = 'https://api.luckyswap.center'
 
 export const binaceText = 'bsc-testnet'
 
