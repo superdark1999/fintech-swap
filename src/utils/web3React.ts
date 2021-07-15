@@ -2,7 +2,6 @@ import { Web3Provider } from '@ethersproject/providers'
 import { ConnectorNames } from '@luckyswap/uikit'
 import { ChainId } from '@luckyswap/v2-sdk'
 import { bscConnector, injected, walletconnect } from 'connectors'
-import getNodeUrl from './getRpcUrl'
 
 const POLLING_INTERVAL = 12000
 const chainId = parseInt(process.env.REACT_APP_CHAIN_ID) || 56
