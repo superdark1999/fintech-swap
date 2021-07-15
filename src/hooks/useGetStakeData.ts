@@ -15,12 +15,13 @@ const useGetStateData = (staking: Pool) => {
   const slowRefresh = useRefresh()
   const contract = useStakingContract(staking.stakingAddress)
 
+
   useEffect(() => {
     const fetchStakingData = async () => {
       if (contract && account) {
         try {
           const userAmount = await contract.userInfo(account).catch((error) => {
-            console.log('error pending reward')
+            console.log('error userAmount')
           })
           const pendingReward = await contract.pendingReward(account).catch((error) => {
             console.log('error pending reward')

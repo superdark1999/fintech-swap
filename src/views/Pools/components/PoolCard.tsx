@@ -26,12 +26,11 @@ const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
 
   const {  userRewardDebt } = useGetStateData(pool);
 
-
+  // console.log(`pool.deposittokenAddress`, pool.depositTokenAddress)
   const {balanceOf} =  useUtilityToken(pool.depositTokenAddress);
 
   const rewardTokenPrice = usePriceLuckyBusd()
   const stakingTokenPrice = useLucky2Price()
-
 
   useEffect(() => { 
   const fetchTotalStaked = async () => {
