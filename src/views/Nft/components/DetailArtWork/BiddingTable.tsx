@@ -7,8 +7,6 @@ import {
 } from './styled'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices from 'services/web3Services/MarketServices'
-import useLuckyServices from 'services/web3Services/LuckyServices'
-import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
 import { ButtonCancel, ButtonTrade } from 'components-v2/Button'

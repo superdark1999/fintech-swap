@@ -1,8 +1,9 @@
 import { useCallback } from 'react'
 import useAxiosServices, { JSONToFormData } from './AxiosServices'
-import { LUCKY_DOMAIN_API } from 'utils'
+import {BINANCE_CONFIG}  from 'configs'
 
 export default function useArtworkService() {
+  const {LUCKY_DOMAIN_API} = BINANCE_CONFIG
   const { GET, POST, PATCH, PUT } = useAxiosServices(LUCKY_DOMAIN_API)
 
   const login = (body: any) => {

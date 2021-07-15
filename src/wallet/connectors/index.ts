@@ -5,9 +5,10 @@ import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { BscConnector } from './bsc/bscConnector'
 
 import { PortisConnector } from '@web3-react/portis-connector'
-import {NETWORK_URL, REACT_APP_CHAIN_ID} from 'utils'
+import {BINANCE_CONFIG} from 'configs'
 import { NetworkConnector } from './NetworkConnector'
 const PORTIS_ID = process.env.REACT_APP_PORTIS_ID
+const {NETWORK_URL, REACT_APP_CHAIN_ID} = BINANCE_CONFIG
 
 export const NETWORK_CHAIN_ID: number = parseInt(REACT_APP_CHAIN_ID)
 if (typeof NETWORK_URL === 'undefined') {

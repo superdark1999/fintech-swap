@@ -4,14 +4,15 @@ import { useContract } from 'wallet/hooks/useContract'
 import { useCallback } from 'react'
 import _ from 'lodash'
 import { useActiveWeb3React } from 'wallet/hooks'
-import {getPrice, SUPPORT_CHAIN_IDS, getPriceFromEstimateGas, binanceAddress} from 'utils'
+import {getPrice, getPriceFromEstimateGas} from 'utils'
+import {BINANCE_CONFIG} from 'configs'
 import useUserStore from 'store/userStore'
 
 const OUT_OF_BNB = `Insufficient balance of BNB`
 const OUT_OF_LUCKY = `Insufficient balance of LUCKY`
-
+const {MARKET_ADDRESS,SUPPORT_CHAIN_IDS} = BINANCE_CONFIG
 function useMarketServiceBinaceChain(){
-        const marketContract = useContract(binanceAddress.MARKET,abiBid)
+        const marketContract = useContract(MARKET_ADDRESS,abiBid)
         const [userState, userActions] = useUserStore()
         const setTokenPrice = useCallback(async(tokenId:string|undefined,price:number|undefined)=>{
             const unitPrice = price + '000000000000000000'
@@ -276,7 +277,7 @@ function useMarketServiceBinaceChain(){
 export default function MarketService(){
   const { account, chainId } = useActiveWeb3React()
   const MarketServiceBinaceChain = useMarketServiceBinaceChain()
-  if(SUPPORT_CHAIN_IDS.includes(chainId)&&binanceAddress.MARKET){
+  if(SUPPORT_CHAIN_IDS.includes(chainId)&&MARKET_ADDRESS){
       return MarketServiceBinaceChain
   }
   return null

@@ -15,13 +15,14 @@ import _, { isEmpty } from 'lodash'
 import { useActiveWeb3React } from 'wallet/hooks'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
-import { getCompactString, getPrice, binanceAddress } from 'utils'
+import { getCompactString } from 'utils'
 import formatNumber from 'utils/formatNumber'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import notification from 'components-v2/Alert'
+import {BINANCE_CONFIG}  from 'configs'
 
-
+const {MARKET_ADDRESS} = BINANCE_CONFIG
 interface Props {
   nextStep: (step: number) => void,
   myItems: any,
@@ -174,7 +175,7 @@ export default function (props: Props) {
 
   const onApproveBuyOnMarket = () => {
     userActions?.updateUserInfo({ isProcessingCanBuy: true })
-    luckyServicesMethod?.approveLevelAmount?.(binanceAddress.MARKET)
+    luckyServicesMethod?.approveLevelAmount?.(MARKET_ADDRESS)
       .then()
       .catch(() => {
         notification('error', {

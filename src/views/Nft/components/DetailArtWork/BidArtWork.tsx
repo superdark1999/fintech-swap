@@ -4,8 +4,6 @@ import Copy from 'assets/images/copy.svg'
 import Facebook from 'assets/images/facebook.svg'
 import Telegram from 'assets/images/telegram.svg'
 import Token from 'assets/images/token.svg'
-import Luckyswap from 'assets/images/luckyswap.svg'
-import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
 import CountVisit from './CountVisit'
@@ -19,26 +17,20 @@ import {
 } from '@ant-design/icons'
 import {
   DetailStyled,
-  ReviewStyled,
-  ScrollReview,
-  FooterStyled,
   ImageStyled,
-  DetailTabpane,
   OwenedBy,
   HeaderStyled,
-  TableStyled,
   VideoStyled,
 } from './styled'
 import { isMobile } from 'react-device-detect'
-import { dataHistory, columnHistory } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import useMarketServices from 'services/web3Services/MarketServices'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { useParams } from 'react-router-dom'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
-import { getPrice, getCompactString, embedTokenIdLinkBSCScan, binanceAddress } from 'utils'
+import { getPrice } from 'utils'
+import {BINANCE_CONFIG} from 'configs'
 import formatNumber from 'utils/formatNumber'
 import _ from 'lodash'
 import Hammer from 'assets/images/hammer.svg'
@@ -48,7 +40,7 @@ import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import TableHistory from './TableHistory'
 import Countdown from 'react-countdown'
-import moment, { max } from 'moment'
+import moment from 'moment'
 import { useHookDetail } from './Store'
 import BiddingTable from './BiddingTable'
 import NFTInformation from './NFTInformation'
@@ -57,6 +49,7 @@ import Reviews from './Reviews'
 const { TabPane } = Tabs
 
 const DetaiArtWork = ({ id }: any) => {
+  const {MARKET_ADDRESS} = BINANCE_CONFIG
   const { getDetailNFT, buyItem } = useArtworkServices()
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const { account, chainId } = useActiveWeb3React()
@@ -137,7 +130,7 @@ const DetaiArtWork = ({ id }: any) => {
   const onApproveBuyOnMarket = () => {
     userActions?.updateUserInfo({ isProcessingCanBuy: true })
     luckyServicesMethod
-      ?.approveLevelAmount?.(binanceAddress.MARKET)
+      ?.approveLevelAmount?.(MARKET_ADDRESS)
       .then()
       .catch(() => {
         notification('error', {

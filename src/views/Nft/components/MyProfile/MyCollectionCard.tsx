@@ -22,7 +22,7 @@ import QRCodeComp from 'components-v2/QRcode/index'
 import { createFromIconfontCN } from '@ant-design/icons'
 import InfoCard from '../InfoCard'
 import moment from 'moment'
-import {binanceAddress} from 'utils'
+import {BINANCE_CONFIG} from 'configs'
 
 export default function MyCollectionCard({ data, option }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
@@ -39,6 +39,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const formRef = useRef()
   const [isShowModalSetPrice, setShowModalsetPrice] = useState(false)
   const [isShowModalSetAddressTransfer,setShowModalSetAddressTransfer] = useState(false)
+  const {MARKET_ADDRESS} = BINANCE_CONFIG
 
   useEffect(() => {
     if (data?.tokenId && NFTServicesMethod) {
@@ -70,7 +71,7 @@ export default function MyCollectionCard({ data, option }: any) {
         if (
           Number(tokenId) == data?.tokenId &&
           userAddress == account &&
-          marketAddress == binanceAddress.MARKET
+          marketAddress == MARKET_ADDRESS
         ) {
           setIsNFTCanSell(true)
           setApprovingMarket(false)

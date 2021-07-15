@@ -16,7 +16,8 @@ import useUserStore from 'store/userStore'
 import { Menu, Dropdown } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { getPrice, SUPPORT_CHAIN_IDS, binanceConfig, binaceText, binanceAddress } from 'utils'
+import { getPrice} from 'utils'
+import {BINANCE_CONFIG} from 'configs'
 import { Modal, Input, Form } from 'antd'
 import formatNumber from 'utils/formatNumber'
 import useAuth from 'hooks/useAuth'
@@ -40,6 +41,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   const [userState, userActions] = useUserStore()
   const [configState, configAction] = useConfigStore()
   const [isShowAlert, setIsShowAlert] = useState(false)
+  const {SUPPORT_CHAIN_IDS, binanceConfig, binaceText, MARKET_ADDRESS } = BINANCE_CONFIG
 
   var prevScrollpos = window.pageYOffset
   let location = useLocation()
@@ -121,7 +123,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
       const filter = LuckyTokenContract.filters.Approval(account)
 
       LuckyTokenContract.on(filter, (author, allowAddress, value) => {
-        if (author === account && allowAddress === binanceAddress.MARKET) {
+        if (author === account && allowAddress === MARKET_ADDRESS) {
           userActions.updateUserInfo({
             isCanBuy: true,
             isProcessingCanBuy: false,
@@ -147,7 +149,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
         }
         if (luckyMethod) {
           luckyMethod
-            .checkApproveLevelAmount(binanceAddress.MARKET)
+            .checkApproveLevelAmount(MARKET_ADDRESS)
             .then((dt: any) => {
               const allowance = Number(dt?._hex || 0) > 0
               userActions.updateUserInfo({ isCanBuy: allowance })

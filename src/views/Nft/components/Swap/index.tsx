@@ -99,16 +99,15 @@ export default  () => {
       })
       marketContract.on('SwapNFTs',(tokenIdA, tokenIdB, accountB, event)=>{
         if(itemSwap?.[0]?.ownerWalletAddress==accountB&& myItems?.[0]?.tokenId ==Number(tokenIdB) && itemSwap?.[0]?.tokenId == Number(tokenIdA)){
-          buyItem({ id: [myItems?.[0]?._id,itemSwap?.[0]?._id]}).then(({data,status})=>{
-            setStatus('success')
-          })
+          setStatus('success')
         }
       })
       marketContract.on('CancelOfferNFT',(author, tokenId)=>{
         if(author===account&&Number(tokenId)==itemSwap?.[0]?.tokenId){
-          cancelSellNFT({ id: myItems?.[0]?._id }).then(({ status }) => {
-            setStatus('canceled')
-          })
+          setStatus('canceled')
+          // cancelSellNFT({ id: myItems?.[0]?._id }).then(({ status }) => {
+          //   setStatus('canceled')
+          // })
         }
       })
     }

@@ -6,15 +6,18 @@ import { useContract } from 'wallet/hooks/useContract'
 import { useCallback } from 'react'
 import useUserStore from 'store/userStore'
 import _ from 'lodash'
-import { getPrice , getPriceFromEstimateGas, SUPPORT_CHAIN_IDS, binanceAddress} from 'utils'
+import { getPrice , getPriceFromEstimateGas} from 'utils'
+import {BINANCE_CONFIG} from 'configs'
 
 const payableAmountDefault = '10000000000000000'
 
 const BNB_ERROR = `You don't have enough BNB`
 
+const {SUPPORT_CHAIN_IDS, NFT_ADDRESS, MARKET_ADDRESS} = BINANCE_CONFIG
+
 function useNFTServiceBinaceChain(){
         const { account } = useActiveWeb3React()
-        const nftContract = useContract(binanceAddress.NFT,abiNFT)
+        const nftContract = useContract(NFT_ADDRESS,abiNFT)
         const [userState, userActions] = useUserStore()
 
         const mintToken = useCallback(async(URI: string)=>{
@@ -42,18 +45,18 @@ function useNFTServiceBinaceChain(){
         },[])
 
         const approveTokenToMarket = useCallback(async(tokenId:string|undefined)=>{
-            const estimatedGas = await nftContract.estimateGas.approve(binanceAddress.MARKET,tokenId);
+            const estimatedGas = await nftContract.estimateGas.approve(MARKET_ADDRESS,tokenId);
             if(userState.balance.BNB<getPrice(Number(payableAmountDefault))+getPriceFromEstimateGas(Number(estimatedGas))){
                 throw new Error(BNB_ERROR)
             }
-            return nftContract.approve(binanceAddress.MARKET,tokenId, {
+            return nftContract.approve(MARKET_ADDRESS,tokenId, {
                 gasLimit: estimatedGas,
               })
         },[userState.balance.BNB])
 
         const isTokenReadyToSell = useCallback(async(tokenId:string|undefined)=>{
             const approvedAddress = await nftContract.getApproved(tokenId)
-            if(approvedAddress===binanceAddress.MARKET){
+            if(approvedAddress===MARKET_ADDRESS){
                 return true
             }
             return false
@@ -87,7 +90,7 @@ function useNFTServiceBinaceChain(){
 export default function NFTService(){
     const { account, chainId } = useActiveWeb3React()
     const LuckyServiceBinaceChain = useNFTServiceBinaceChain()
-    if(SUPPORT_CHAIN_IDS.includes(chainId)&&binanceAddress.NFT){
+    if(SUPPORT_CHAIN_IDS.includes(chainId)&&NFT_ADDRESS){
         return LuckyServiceBinaceChain
     }
     return null
