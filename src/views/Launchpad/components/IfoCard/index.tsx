@@ -246,7 +246,7 @@ const Item = styled.div`
   height: 100%;
 
   &:hover {
-    box-shadow: 1px 2px 20px #fff0c1;
+    box-shadow: 1px 2px 20px #f5c606;
     transition: 0.5s;
   }
 
@@ -323,6 +323,10 @@ const BoxHead = styled.div`
       }
     }
   }
+
+  p {
+      font-size: 22px;
+    }
 `
 
 const ItemHead = styled(Card)<{ img: string }>`
@@ -347,10 +351,12 @@ const ItemHead = styled(Card)<{ img: string }>`
     position: absolute;
     top: 16px;
     left: 0px;
-    background: rgb(165, 165, 165);
+    /* background: rgb(165, 165, 165); */
+    background-color: #f5c606;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
-    color: rgb(255, 253, 250);
+    /* color: rgb(255, 253, 250); */
+    color: #2b2e2f;
     font-family: 'Baloo Da';
     font-weight: 400;
     padding: 6px 12px;
@@ -359,7 +365,7 @@ const ItemHead = styled(Card)<{ img: string }>`
       box-sizing: border-box;
       margin: 0px;
       min-width: 0px;
-      font-size: 12px;
+      font-size: 20px;
       font-weight: 600;
       text-transform: capitalize;
     }
