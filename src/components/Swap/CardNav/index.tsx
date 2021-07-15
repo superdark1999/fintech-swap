@@ -32,7 +32,7 @@ const Nav = ({ activeIndex = 0 }: { activeIndex?: number }) => (
         >
           <TranslatedText translationId={74}>Liquidity</TranslatedText>
         </ButtonMenuItem>
-        <ButtonMenuItem>
+        <ButtonMenuItem className="btn-yellow">
           <a href="https://www.binance.org/en/bridge?utm_source=luckyswap" target="_blank" rel="noopener noreferrer">Bridge</a>
         </ButtonMenuItem>
       </ButtonMenu>
@@ -44,4 +44,20 @@ export default Nav
 
 const BoxNav = styled.div`
   height: 48px;
+
+  .btn-yellow {
+    position: unset;
+    right: 0;
+    background-color: #f5c607;
+    color: #1a1a1a;
+
+    @media (min-width: 768px) {
+      position: absolute;
+    }
+
+    &:hover {
+      background-color: #d8ad00;
+      opacity: 1 !important;
+    }
+  }
 `

@@ -485,4 +485,5 @@ export default Swap
 const FlexBox = styled.div`
   display: flex;
   justify-content: space-between;
+  position: relative;
 `
