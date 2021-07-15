@@ -14,7 +14,7 @@ import { useHookPools } from './Store'
 
 const Farm: React.FC = () => {
   const [activeTab, setActiveTab] = useState('1')
-  const { chainId } = useActiveWeb3React()
+  let { chainId } = useActiveWeb3React()
 
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
@@ -23,6 +23,9 @@ const Farm: React.FC = () => {
   const { currentBlock } = useBlock()
   const [state, actions] = useHookPools()
   let { pools } = state
+
+  chainId = chainId || 56
+
   pools = pools.filter(p => p.chainId === chainId);
 
   useEffect(() => {
