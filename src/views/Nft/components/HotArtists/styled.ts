@@ -23,8 +23,9 @@ export const HotArtistsStyled = styled.div`
     }
   }
   .scroll-left {
+    font-size: 36px;
     position: absolute;
-    right: -8px;
+    right: -14px;
     top: 50%;
     color: #e7ebef;
     border-radius: 50%;
@@ -33,8 +34,9 @@ export const HotArtistsStyled = styled.div`
     z-index: 1;
   }
   .scroll-right {
+    font-size: 36px;
     position: absolute;
-    left: -8px;
+    left: -14px;
     top: 50%;
     color: #e7ebef;
     border-radius: 50%;

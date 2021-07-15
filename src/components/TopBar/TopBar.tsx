@@ -11,13 +11,13 @@ import Token from 'assets/images/token.svg'
 import { isMobile } from 'react-device-detect'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import BSCScanServices from 'services/axiosServices/BSCScanServices'
-import { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
 import { Menu, Dropdown } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { getPrice, SUPPORT_CHAIN_IDS, binanceConfig, binaceText } from 'utils'
+import { getPrice} from 'utils'
+import {BINANCE_CONFIG} from 'configs'
 import { Modal, Input, Form } from 'antd'
 import formatNumber from 'utils/formatNumber'
 import useAuth from 'hooks/useAuth'
@@ -41,6 +41,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   const [userState, userActions] = useUserStore()
   const [configState, configAction] = useConfigStore()
   const [isShowAlert, setIsShowAlert] = useState(false)
+  const {SUPPORT_CHAIN_IDS, binanceConfig, binaceText, MARKET_ADDRESS } = BINANCE_CONFIG
 
   var prevScrollpos = window.pageYOffset
   let location = useLocation()
@@ -63,16 +64,13 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   //     window.removeEventListener('scroll', () => handleScroll);
   //   };
   // }, []);
+  const { ethereum, BinanceChain } = window as any
 
   useEffect(() => {
-    const { ethereum, BinanceChain } = window as any
     if (
-      chainId &&
-      !SUPPORT_CHAIN_IDS.includes(chainId) &&
-      ethereum.selectedAddress
+      !SUPPORT_CHAIN_IDS.includes(Number(ethereum?.chainId)) && ethereum &&ethereum?.chainId!=binanceConfig.chainId
     ) {
-      ethereum
-        .request({
+      ethereum.request({
           method: 'wallet_switchEthereumChain',
           params: [
             {
@@ -111,12 +109,13 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
               })
           }
         })
-    } else if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)) {
+    }
+    if ( !SUPPORT_CHAIN_IDS.includes(Number(BinanceChain?.chainId)) && BinanceChain &&BinanceChain?.chainId!=binanceConfig?.chainId) {
       BinanceChain.switchNetwork(binaceText).then(() => {
         window.location.reload()
       })
     }
-  }, [chainId])
+  }, [chainId,BinanceChain?.chainId,ethereum?.chainId])
 
   useEffect(() => {
     if (luckyMethod) {

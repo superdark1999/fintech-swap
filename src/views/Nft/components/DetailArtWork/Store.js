@@ -6,8 +6,6 @@ import {
 } from 'react-sweet-state'
 import { API_DASHBOARD } from '../../../../constants'
 import axios from 'axios'
-import { getCompactString } from 'utils'
-import moment from 'moment'
 //moment.setDefault("America/New_York");
 const stateDefault = {
   historys: [],

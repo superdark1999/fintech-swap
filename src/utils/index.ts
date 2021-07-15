@@ -3,13 +3,14 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { getAddress } from '@ethersproject/address'
 import { ChainId } from '@juiceswap/v2-sdk'
-import useMarketServices from 'services/web3Services/MarketServices'
+import { BINANCE_CONFIG} from 'configs'
 import _ from 'lodash'
 
 export { default as formatAddress } from './formatAddress'
 
 const OUT_OF_BNB = `Insufficient balance of BNB`
 const OUT_OF_LUCKY = `Insufficient balance of LUCKY`
+const {BINANCE_DOMAIN_API} = BINANCE_CONFIG
 
 export const getParam = (name: string) => {
 
@@ -60,28 +61,10 @@ export const getCompactString=(str:string, sepLen:number)=>{
 export const embedTokenIdLinkBSCScan = (tokenId:number,contractAddress:string,chainId:ChainId)=>{
   let url = ''
   if(chainId==97){
-    url = 'https://testnet.bscscan.com/token/'
+    url = `${BINANCE_DOMAIN_API}/token/`
   }
   return `${url + contractAddress +'?a='+tokenId}`
 }
-
-export const SUPPORT_CHAIN_IDS:Array<ChainId> = [97]
-
-export const binanceConfig = {
-  chainId: '0x61',
-  rpcUrls: [
-    'https://data-seed-prebsc-1-s1.binance.org:8545/',
-  ],
-  chainName: 'Binance SmartChain Testnet',
-  nativeCurrency: {
-    name: 'TestnetBNB',
-    symbol: 'BNB', // 2-6 characters long
-    decimals: 18,
-  },
-  blockExplorerUrls: ['https://testnet.bscscan.com'],
-}
-
-export const binaceText = 'bsc-testnet'
 
 export const handleAlertMessage = (message:string)=>{
   if(message==`Error: [ethjs-query] while formatting outputs from RPC '{"value":{"code":-32603,"data":{"code":-32000,"message":"transaction underpriced"}}}'`){

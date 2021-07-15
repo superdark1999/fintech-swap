@@ -30,8 +30,9 @@ export const HotArtWorksStyled = styled.div`
     cursor: pointer;
   }
   .scroll-left {
+    font-size: 36px;
     position: absolute;
-    right: -12px;
+    right: -14px;
     top: 50%;
     color: #e7ebef;
     border-radius: 50%;
@@ -40,8 +41,9 @@ export const HotArtWorksStyled = styled.div`
     z-index: 1;
   }
   .scroll-right {
+    font-size: 36px;
     position: absolute;
-    left: -8px;
+    left: -14px;
     top: 50%;
     color: #e7ebef;
     border-radius: 50%;

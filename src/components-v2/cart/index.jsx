@@ -9,9 +9,7 @@ import Hammer2 from 'assets/images/hammer2.svg'
 import { Link } from 'react-router-dom'
 
 import { Rate } from 'antd'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import useMarketServices from 'services/web3Services/MarketServices'
 import formatNumber from 'utils/formatNumber'
 import { getPrice } from 'utils'
 import _ from 'lodash'

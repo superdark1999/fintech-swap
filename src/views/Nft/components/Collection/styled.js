@@ -4,7 +4,6 @@ import { isMobile } from 'react-device-detect'
 export const CollectionStyled = styled.div`
   .header-artists {
     height: 48px;
-    /* width: 100%; */
     display: flex;
     align-items: center;
     .title-artists {
@@ -17,7 +16,6 @@ export const CollectionStyled = styled.div`
       font-size: ${isMobile ? '16px' : '20px'};
       text-align: ${isMobile && 'right'};
       width: 108px;
-      /* text-decoration: underline; */
       cursor: pointer;
       display: flex;
       margin-right: 112px;
@@ -36,7 +34,7 @@ export const CollectionStyled = styled.div`
   }
   .content-collect {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     grid-gap: 24px;
     align-items: stretch;
     padding: 24px 0px;

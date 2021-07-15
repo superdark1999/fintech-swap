@@ -8,9 +8,7 @@ import {
 import StatusBar from 'components-v2/StatusBar'
 import { ButtonBuy, ButtonCancel } from 'components-v2/Button'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import useMarketServices from 'services/web3Services/MarketServices'
 import useNFTServices from 'services/web3Services/NFTServices'
 import { Link, useHistory } from 'react-router-dom'
 //import OnsSaleCard from './OnSaleCard'
@@ -24,6 +22,7 @@ import QRCodeComp from 'components-v2/QRcode/index'
 import { createFromIconfontCN } from '@ant-design/icons'
 import InfoCard from '../InfoCard'
 import moment from 'moment'
+import {BINANCE_CONFIG} from 'configs'
 
 export default function MyCollectionCard({ data, option }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
@@ -40,6 +39,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const formRef = useRef()
   const [isShowModalSetPrice, setShowModalsetPrice] = useState(false)
   const [isShowModalSetAddressTransfer,setShowModalSetAddressTransfer] = useState(false)
+  const {MARKET_ADDRESS} = BINANCE_CONFIG
 
   useEffect(() => {
     if (data?.tokenId && NFTServicesMethod) {
@@ -348,7 +348,6 @@ export default function MyCollectionCard({ data, option }: any) {
   }
 
   const renderActionItem = () => {
-    console.log(isLoading,data.status)
     if(isLoading) return null
     if (
       isProcessing ||

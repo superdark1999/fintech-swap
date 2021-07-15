@@ -1,10 +1,10 @@
 import { useCallback } from 'react'
 import useAxiosServices, { JSONToFormData } from './AxiosServices'
+import {BINANCE_CONFIG} from 'configs'
 
 export default function useArtworkService() {
-  const { GET, POST, PATCH, PUT } = useAxiosServices(
-    'https://api.luckyswap.center',
-  )
+  const {LUCKY_DOMAIN_API} = BINANCE_CONFIG
+  const { GET, POST, PATCH, PUT } = useAxiosServices(LUCKY_DOMAIN_API)
   const createNFT = useCallback((body) => {
     const onUploadProcess = body.onUploadProcess
     delete body.onUploadProcess

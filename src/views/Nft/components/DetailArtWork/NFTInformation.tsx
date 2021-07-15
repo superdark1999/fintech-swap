@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import 'antd/dist/antd.css'
 import { DetailTabpane } from './styled'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { getPrice, getCompactString, embedTokenIdLinkBSCScan } from 'utils'
+import {  getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import _ from 'lodash'
 
 const NFTInformation = ({ NFTDetail }: any) => {

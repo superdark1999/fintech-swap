@@ -15,15 +15,14 @@ import _, { isEmpty } from 'lodash'
 import { useActiveWeb3React } from 'wallet/hooks'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
-import { getCompactString, getPrice } from 'utils'
+import { getCompactString } from 'utils'
 import formatNumber from 'utils/formatNumber'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import notification from 'components-v2/Alert'
-import {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import {BINANCE_CONFIG}  from 'configs'
 
+const {MARKET_ADDRESS} = BINANCE_CONFIG
 interface Props {
   nextStep: (step: number) => void,
   myItems: any,
@@ -161,11 +160,9 @@ export default function (props: Props) {
       if (myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId) {
         setIsProcessing(true)
         const { confirmSwapNFT } = marketServiceMethod
-        console.log(itemSwap?.[0]?.tokenId, myItems?.[0]?.tokenId?.toString(), myItems?.[0]?.ownerWalletAddress)
         confirmSwapNFT(itemSwap?.[0]?.tokenId, myItems?.[0]?.tokenId?.toString(), myItems?.[0]?.ownerWalletAddress).then((data) => {
           nextStep && nextStep(3)
         }).catch((err) => {
-          console.log(err)
           setIsProcessing(false)
           notification('error', {
             message: 'Error',

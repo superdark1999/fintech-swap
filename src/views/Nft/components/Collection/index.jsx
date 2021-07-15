@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Select, Button } from 'antd'
 import { CollectionStyled } from './styled'
-import Cart from 'components-v2/CardItem'
+import Card from 'components-v2/CardItem'
 import useIO from 'hooks/useIo'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import _ from 'lodash'
@@ -33,8 +33,6 @@ const OptionSort = [
     value: 'hight', // TODO: need handle more
   },
 ]
-
-// export const option: React.ReactElement<OptionProps> = Select.Option
 
 const { Option } = Select
 
@@ -125,7 +123,6 @@ function Collection(props) {
         <div className="title-artists">Collection</div>
         <div className="more-action">
           <Select
-            style={{ width: 120, borderRadius: 30 }}
             onChange={onChangeSelectType}
             defaultValue={select}
           >
@@ -136,9 +133,6 @@ function Collection(props) {
             ))}
           </Select>
           <Select
-            style={{ minWidth: 100, borderRadius: 30 }}
-            // onChange={setSelectSort}
-            // defaultValue={selectSort}
             onChange={onChangeSelectDatePrice}
             defaultValue={selectDP}
           >
@@ -152,7 +146,7 @@ function Collection(props) {
       </div>
       <div className="content-collect">
         {NFTs?.data?.map((item) => (
-          <Cart key={item.id} width="320px" height="480px" data={item} isLazy />
+          <Card key={item.id} width="100%" data={item} isLazy />
         ))}
       </div>
       {NFTs?.data?.length < NFTs?.total && (

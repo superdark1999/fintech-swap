@@ -6,15 +6,11 @@ import {
   TableStyled,
 } from './styled'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
-import useLuckyServices from 'services/web3Services/LuckyServices'
-import useUserStore from 'store/userStore'
+import useMarketServices from 'services/web3Services/MarketServices'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useParams } from 'react-router-dom'
-import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
-import { getPrice, getCompactString, embedTokenIdLinkBSCScan } from 'utils'
+import { ButtonCancel, ButtonTrade } from 'components-v2/Button'
+import { getPrice, getCompactString,  } from 'utils'
 import formatNumber from 'utils/formatNumber'
 import _ from 'lodash'
 import { useHistory } from 'react-router-dom'
@@ -33,17 +29,18 @@ const BiddingTable = ({
   const history = useHistory()
 
   const onCancelBidToken = (record: any) => () => {
+    console.log(record)
     setIsProccessing(true)
     if (marketServicesMethod) {
-      marketServicesMethod
-        ?.cancelBidToken(NFTInfo?.tokenId)
+      marketServicesMethod?.cancelBidToken(NFTInfo?.tokenId)
         .then(() => {
           onSetProccessing(true)
           _.debounce(() => {
             refreshingAfterCancelBid && refreshingAfterCancelBid()
           }, 30000)()
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err)
           setIsProccessing(false)
         })
     }
@@ -154,30 +151,6 @@ const BiddingTable = ({
                 <img src={Token} alt="" />
               </div>
             ),
-          },
-          {
-            title: 'Action',
-            dataIndex: 'action',
-            render: (_: any, record: any) => {
-              if (record?.key == account) {
-                return (
-                  <>
-                    {isProcessing ? (
-                      <ButtonProccesing />
-                    ) : (
-                      <ButtonTrade
-                        style={{ background: '#FC636B' }}
-                        onClick={onCancelBidToken(record)}
-                      >
-                        Cancel
-                      </ButtonTrade>
-                    )}
-                  </>
-                )
-              }
-              return null
-            },
-            width: 100,
           },
         ]
   return (

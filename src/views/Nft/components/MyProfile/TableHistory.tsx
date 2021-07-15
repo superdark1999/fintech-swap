@@ -55,7 +55,6 @@ export default function TableHistory(){
   const [bids, setBids] = useState([])
   useEffect(()=>{
     getBidsByUser(account).then(data=>{
-      console.log(data)
     })
   },[])
   return (
