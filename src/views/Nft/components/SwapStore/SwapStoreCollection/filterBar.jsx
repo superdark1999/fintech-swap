@@ -1,19 +1,21 @@
 import React, { useState } from 'react'
 import { FilterBarStyled } from './styled'
 import { Select, Radio, Input } from 'antd'
+//import { OptionSort, OptionData } from '../../constants'
+import SearchSort from '../../SearchSort'
 //import { OptionSort, OptionMethods, OptionTypeNft } from '../../../constants'
 
-const OptionData = ['Hangzhou', 'Ningbo', 'All items']
-export const OptionSort = [
-  {
-    label: 'Newest',
-    value: 'asc',
-  },
-  {
-    label: 'Oldest',
-    value: 'desc',
-  },
-]
+// const OptionData = ['Hangzhou', 'Ningbo', 'All items']
+// export const OptionSort = [
+//   {
+//     label: 'Newest',
+//     value: 'desc',
+//   },
+//   {
+//     label: 'Oldest',
+//     value: 'asc',
+//   }
+// ]
 // const OptionSort = ['Hangzhou', 'Ningbo', 'Sort by']
 const { Option } = Select
 const { Search } = Input
@@ -27,8 +29,8 @@ function FilterBar(props) {
     setPage,
     setSort,
     sort,
-    // selectDP,
-    // setSelectDP
+    selectDP, 
+    setSelectDP
   } = props
 
   const [select, setSelect] = useState('All items')
@@ -40,12 +42,13 @@ function FilterBar(props) {
     setFilterType(value)
     setPage(1)
   }
-  const onChangeSelectDatePrice = (val) => {
-    // if(val == 'asc' || val == 'low') setSort('asc')
-    // else setSort('desc')
-    setPage(1)
-    setSort(val)
-  }
+  // const onChangeSelectDatePrice = (val) => {
+    
+  //   // if(val == 'asc' || val == 'low') setSort('asc')
+  //   // else setSort('desc')
+  //   setPage(1)
+  //   setSort(val)
+  // }
   return (
     <FilterBarStyled>
       <div className="left-action">
@@ -75,7 +78,18 @@ function FilterBar(props) {
           </Radio.Group>
         </div>
       </div>
-      <div className="right-action">
+      <SearchSort
+        handleInputOnchange={handleInputOnchange}
+        setPage={setPage}
+        searchParams={searchParams}
+        //selectType={select}
+        //setSelectType={setSelect}
+        setSelectSort={setSort}
+        selectDP={selectDP} 
+        setSelectDP={setSelectDP}
+        setTypeSortDate={true}
+      />
+      {/* <div className="right-action">
         <Search
           className="search-input"
           placeholder="Search name, collections,..."
@@ -109,7 +123,7 @@ function FilterBar(props) {
             ))}
           </Select>
         </div>
-      </div>
+      </div> */}
     </FilterBarStyled>
   )
 }

@@ -70,7 +70,8 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   useEffect(() => {
     if (
       !SUPPORT_CHAIN_IDS.includes(Number(ethereum?.chainId)) &&
-      ethereum &&
+      ethereum?.selectedAddress &&
+      account &&
       ethereum?.chainId != binanceConfig.chainId
     ) {
       ethereum
@@ -114,14 +115,15 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
     }
     if (
       !SUPPORT_CHAIN_IDS.includes(Number(BinanceChain?.chainId)) &&
-      BinanceChain &&
+      !ethereum?.selectedAddress &&
+      !!BinanceChain &&
       BinanceChain?.chainId != binanceConfig?.chainId
     ) {
       BinanceChain.switchNetwork(binaceText).then(() => {
         window.location.reload()
       })
     }
-  }, [chainId, BinanceChain?.chainId, ethereum?.chainId])
+  }, [chainId, BinanceChain?.chainId, ethereum?.chainId, account])
 
   useEffect(() => {
     if (luckyMethod) {
