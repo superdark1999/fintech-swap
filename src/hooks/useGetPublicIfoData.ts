@@ -1,13 +1,18 @@
+
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { useIfoContract } from 'hooks/useContract'
-import { useEffect, useState } from 'react'
 import makeBatchRequest from 'utils/makeBatchRequest'
+import { getWeb3NoAccount } from 'utils/web3'
 import { useWeb3React } from '@web3-react/core'
 import { useHookIFOs } from '../views/Launchpad/Store'
 
 import { useBlockNumber } from '../state/application/hooks'
+import { AppState } from '../state'
+
 
 export interface PublicIfoState {
   status: IfoStatus
@@ -71,11 +76,69 @@ const useGetPublicIfoData = (ifo: Ifo) => {
 
   const currentBlock = useBlockNumber()
   const contract = useIfoContract(address)
+  const web3 = getWeb3NoAccount(56)
 
+
+  // library.getBalanceNumber().then(data => )
+
+  // const blockNumberWithDefaultChainId =  useSelector((states: AppState) => states.application.blockNumber[56]) 
+  // console.log("blockNumberWithDefaultChainId", blockNumberWithDefaultChainId)
   useEffect(() => {
-    const fetchProgress = async () => {
-      if (!account || address === '0x0000000000000000000000000000000000000000') return
+    const fetchIfoWithoutAccount = async () => {
+      const [
+        startBlock,
+        endBlock,
+        raisingAmount,
+        offeringAmount,
+        maxDepositAmount,
+        totalAmount,
+        getAddressListLength,
+      ] = (await makeBatchRequest([
+        contract.methods.startBlock().call,
+        contract.methods.endBlock().call,
+        contract.methods.raisingAmount().call,
+        contract.methods.offeringAmount().call,
+        contract.methods.maxTokenForCommunityUser().call,
+        contract.methods.totalAmount().call,
+        contract.methods.getAddressListLength().call,
+      ])) as [string, string, string, string, string, string, string]
 
+      const startBlockNum = parseInt(startBlock, 10)
+      const endBlockNum = parseInt(endBlock, 10)
+
+      const blockNumberWithDefaultChainId = await web3.eth.getBlockNumber()
+
+
+      const status = getStatus(blockNumberWithDefaultChainId, startBlockNum, endBlockNum);
+      const totalBlocks = endBlockNum - startBlockNum
+      const blocksRemaining = endBlockNum - blockNumberWithDefaultChainId
+      // Calculate the total progress until finished or until start
+      const progress =
+        currentBlock > startBlockNum
+          ? ((currentBlock - startBlockNum) / totalBlocks) * 100
+          : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
+      actionsIFO.updateStatusLaunchPad(ifo && ifo.id, status)
+
+      setState({
+        secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
+        secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
+        raisingAmount: new BigNumber(raisingAmount),
+        offeringAmount: new BigNumber(offeringAmount),
+        totalAmount: new BigNumber(totalAmount),
+        maxDepositAmount: new BigNumber(maxDepositAmount),
+        depositedAmount: new BigNumber(0),
+        claimAmount: new BigNumber(0),
+        hasHarvest: false,
+        getAddressListLength: parseInt(getAddressListLength),
+        status,
+        progress,
+        blocksRemaining,
+        startBlockNum,
+        endBlockNum,
+      })
+    
+    }
+    const fetchProgress = async () => {
       const [
         startBlock,
         endBlock,
@@ -132,8 +195,10 @@ const useGetPublicIfoData = (ifo: Ifo) => {
         endBlockNum,
       })
     }
-
-    fetchProgress()
+    if (account)
+      fetchProgress()
+    else 
+      fetchIfoWithoutAccount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, currentBlock, contract, releaseBlockNumber, setState, account])
 

@@ -14,7 +14,7 @@ import { useHookPools } from './Store'
 
 const Farm: React.FC = () => {
   const [activeTab, setActiveTab] = useState('1')
-  const { chainId } = useActiveWeb3React()
+  let { chainId } = useActiveWeb3React()
 
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
@@ -22,7 +22,11 @@ const Farm: React.FC = () => {
   // const pools = usePools(account)
   const { currentBlock } = useBlock()
   const [state, actions] = useHookPools()
-  const { pools } = state
+  let { pools } = state
+
+  chainId = chainId || 56
+
+  pools = pools.filter(p => p.chainId === chainId);
 
   useEffect(() => {
     const fetchPools = () => {
@@ -30,7 +34,7 @@ const Farm: React.FC = () => {
     }
 
     fetchPools()
-  })
+  }, [chainId, actions])
 
   if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
     return <Redirect to="/" />

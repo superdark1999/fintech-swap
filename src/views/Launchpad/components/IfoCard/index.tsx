@@ -46,6 +46,8 @@ const getRibbonComponent = (status: IfoStatus, TranslateString: (translationId: 
 
 const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
   const { sympol, typePool, banner, logo, name, currency } = ifo
+  // console.log("banner: ",BASE_API_ADMIN +  banner);
+  // console.log("logo: ", logo)
   const { offeringAmount, raisingAmount, totalAmount, getAddressListLength, status } = useGetPublicIfoData(ifo)
   const TranslateString = useI18n()
   const Ribbon = getRibbonComponent(status, TranslateString)
@@ -89,12 +91,12 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
               <CardValue
                 bold
                 color=""
-                value={parseFloat(offeringAmount.div(1e18).toFixed(2))}
+                value={parseFloat(offeringAmount.div(1e18).toFixed(2)) / parseFloat(priceRate) }
                 decimals={0}
                 fontSize="10px"
                 fontWeight="600"
               ></CardValue>
-              {currency}
+              $
             </h2>
           </Total>
 
@@ -115,7 +117,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
             </CardColumn>
 
             <CardColumn>
-              <p>
+              {/* <p>
                 Max<span>{` ${currency}`}</span>
               </p>
               <h3>
@@ -127,7 +129,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo }) => {
                   fontSize="10px"
                   fontWeight="600"
                 ></CardValue>
-              </h3>
+              </h3> */}
             </CardColumn>
 
             <CardColumn>
@@ -244,7 +246,7 @@ const Item = styled.div`
   height: 100%;
 
   &:hover {
-    box-shadow: 1px 2px 20px #fff0c1;
+    box-shadow: 1px 2px 20px #f5c606;
     transition: 0.5s;
   }
 
@@ -321,13 +323,17 @@ const BoxHead = styled.div`
       }
     }
   }
+
+  p {
+      font-size: 22px;
+    }
 `
 
 const ItemHead = styled(Card)<{ img: string }>`
   ${({ img }) =>
     img &&
     `
-  background-image: url(${BASE_API_ADMIN + img});
+  background-image: url(${BASE_API_ADMIN  + img});
 
   `}
   position: relative;
@@ -345,10 +351,12 @@ const ItemHead = styled(Card)<{ img: string }>`
     position: absolute;
     top: 16px;
     left: 0px;
-    background: rgb(165, 165, 165);
+    /* background: rgb(165, 165, 165); */
+    background-color: #f5c606;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
-    color: rgb(255, 253, 250);
+    /* color: rgb(255, 253, 250); */
+    color: #2b2e2f;
     font-family: 'Baloo Da';
     font-weight: 400;
     padding: 6px 12px;
@@ -357,7 +365,7 @@ const ItemHead = styled(Card)<{ img: string }>`
       box-sizing: border-box;
       margin: 0px;
       min-width: 0px;
-      font-size: 12px;
+      font-size: 20px;
       font-weight: 600;
       text-transform: capitalize;
     }

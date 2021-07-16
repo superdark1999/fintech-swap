@@ -24,19 +24,19 @@ const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
   const [apy, setApy] = useState('0');
   const [totalStaked, setTotalStaked] = useState(0);
 
-  const {  userRewardDebt} = useGetStateData(pool);
+  const {  userRewardDebt } = useGetStateData(pool);
 
+  // console.log(`pool.deposittokenAddress`, pool.depositTokenAddress)
   const {balanceOf} =  useUtilityToken(pool.depositTokenAddress);
 
   const rewardTokenPrice = usePriceLuckyBusd()
   const stakingTokenPrice = useLucky2Price()
 
-
   useEffect(() => { 
   const fetchTotalStaked = async () => {
   if (balanceOf){
     const result =  await balanceOf(pool.stakingAddress);
-    const balance = new BigNumber(result._hex).div(1e18).toNumber();
+    const balance = new BigNumber(result && result._hex ||0).div(1e18).toNumber();
     setTotalStaked(balance)
 
     const apyValue = getPoolApy(

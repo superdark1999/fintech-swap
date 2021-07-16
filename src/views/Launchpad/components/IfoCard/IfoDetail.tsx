@@ -8,6 +8,7 @@ import { Button } from 'reactstrap'
 import { useWeb3React } from '@web3-react/core'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
+import { useActiveWeb3React } from 'hooks'
 import bep20Abi from 'config/abi/erc20.json'
 import useGetPublicIfoData from 'hooks/useGetPublicIfoData'
 import useOldApproveConfirmTransaction from 'hooks/useOldApproveConfirmTransaction'
@@ -50,6 +51,9 @@ const IfoTitle = ({ activeIfo }: any) => {
   const [isApproved, setIsApproved] = useState(false)
   const [isWaningAllowedDepositAmount, setIsWaningAllowedDepositAmount] = useState(false)
   const [value, setValue] = useState('')
+
+  const { chainId } = useActiveWeb3React()
+
   const {
     typePool,
     banner,
@@ -80,7 +84,6 @@ const IfoTitle = ({ activeIfo }: any) => {
   const { account } = useWeb3React()
   const LPContract = useContract(currencyAddress, bep20Abi)
   const raisingTokenContract = useContract(address, ifoAbi)
-  const { balanceOf, approve, allowance } = useUtilityToken(currencyAddress)
 
   const valueWithTokenDecimals = new BigNumber(value).times(new BigNumber(10).pow(18))
   const maxDeposit = maxDepositAmount.div(1e18).toNumber() - depositedAmount.div(1e18).toNumber()
@@ -146,7 +149,7 @@ const IfoTitle = ({ activeIfo }: any) => {
           const response = await LPContract?.allowance?.(account, contract.options.address)
           setIsApproved(response.toString() !== '0')
         } catch (error) {
-          console.log(' error fetch approval data')
+          console.log('Error fetch approval data')
         }
       }
     }
@@ -157,7 +160,7 @@ const IfoTitle = ({ activeIfo }: any) => {
   const { toastSuccess, toastError } = useToast()
 
   const handleContributeSuccess = (amount: BigNumber) => {
-    toastSuccess('Success!', `You have contributed ${getBalanceNumber(amount)} CAKE-BNB LP tokens to this IFO!`)
+    toastSuccess('Success!', `You have contributed ${getBalanceNumber(amount)}  tokens to this IFO!`)
     // addUserContributedAmount(amount)
   }
 
@@ -402,7 +405,7 @@ const IfoTitle = ({ activeIfo }: any) => {
         </BoxContent>
 
         <BoxForm>
-          {status !== 'finished' && typePool === 'Whitelisted' ? (
+          { chainId && status !== 'finished' && typePool === 'Whitelisted' ? (
             <button
               type="submit"
               className="whitelist"
@@ -420,7 +423,7 @@ const IfoTitle = ({ activeIfo }: any) => {
           )}
 
           <div className="box-input">
-            {status !== 'finished' && (
+            {chainId && status !== 'finished' && (
               <div className="d-flex">
                 <div className="box-max">
                   <div className="balance">
@@ -449,7 +452,7 @@ const IfoTitle = ({ activeIfo }: any) => {
               </div>
             )}
             {isWaningAllowedDepositAmount && <div className="waning">Current amount exceeds the limit</div>}
-            {status === 'live' &&
+            {chainId && status === 'live' &&
               (!(isConfirmed || isConfirming || isApproved) ? (
                 <Button
                   className={`finished ${(isConfirmed || isConfirming || isApproved) && 'disabled'}`}
