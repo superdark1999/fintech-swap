@@ -9,11 +9,7 @@ import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
 import CountVisit from './CountVisit'
-import {
-  CloseOutlined,
-  StarFilled,
-  CheckOutlined,
-} from '@ant-design/icons'
+import { CloseOutlined, StarFilled, CheckOutlined } from '@ant-design/icons'
 import {
   DetailStyled,
   ImageStyled,
@@ -29,7 +25,7 @@ import { useActiveWeb3React } from 'wallet/hooks'
 import { ButtonBuy } from 'components-v2/Button'
 import { Link } from 'react-router-dom'
 import { getPrice } from 'utils'
-import {BINANCE_CONFIG} from 'configs'
+import { BINANCE_CONFIG } from 'configs'
 import notification from 'components-v2/Alert'
 import { useHistory } from 'react-router-dom'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
@@ -55,7 +51,7 @@ const DetaiArtWork = ({ id }: any) => {
   const luckyServiceMethod = useLuckyServices()
   const [isProcessing, setIsProccessing] = useState(false)
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
-  const {MARKET_ADDRESS} = BINANCE_CONFIG
+  const { MARKET_ADDRESS } = BINANCE_CONFIG
   const history = useHistory()
   useEffect(() => {
     getDetailNFT({ id }).then(({ status, data }) => {
@@ -86,7 +82,8 @@ const DetaiArtWork = ({ id }: any) => {
   const onApproveBuyOnMarket = () => {
     userActions?.updateUserInfo({ isProcessingCanBuy: true })
     if (luckyServiceMethod) {
-      luckyServiceMethod?.approveLevelAmount(MARKET_ADDRESS)
+      luckyServiceMethod
+        ?.approveLevelAmount(MARKET_ADDRESS)
         .then()
         .catch(() => {
           userActions?.updateUserInfo({ isProcessingCanBuy: false })
@@ -270,14 +267,7 @@ const DetaiArtWork = ({ id }: any) => {
               to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
             >
               <p className="organize">
-                <img
-                  style={{
-                    height: '40px',
-                    width: '40px',
-                    borderRadius: '100px',
-                  }}
-                  src={NFTDetail?.createdBy?.avatarImage}
-                />
+                <img src={NFTDetail?.createdBy?.avatarImage} />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
                 {/* <img src={Checkmark} /> */}
               </p>

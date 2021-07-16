@@ -318,6 +318,12 @@ export const DetailStyled = styled.div`
     > .name {
       margin: 0px 6px;
     }
+    img {
+      height: 40px;
+      width: 40px;
+      border-radius: 100px;
+      object-fit: cover;
+    }
   }
   .bid-info {
     display: flex;

@@ -163,14 +163,7 @@ const DetaiArtWork = ({ id }: any) => {
               to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
             >
               <p className="organize">
-                <img
-                  style={{
-                    height: '40px',
-                    width: '40px',
-                    borderRadius: '100px',
-                  }}
-                  src={NFTDetail?.createdBy?.avatarImage}
-                />
+                <img src={NFTDetail?.createdBy?.avatarImage} />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
                 {/* <img src={Checkmark} /> */}
               </p>
