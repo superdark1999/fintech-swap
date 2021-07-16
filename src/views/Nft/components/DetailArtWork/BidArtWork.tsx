@@ -30,7 +30,7 @@ import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import { getPrice } from 'utils'
-import {BINANCE_CONFIG} from 'configs'
+import { BINANCE_CONFIG } from 'configs'
 import formatNumber from 'utils/formatNumber'
 import _ from 'lodash'
 import Hammer from 'assets/images/hammer.svg'
@@ -49,7 +49,7 @@ import Reviews from './Reviews'
 const { TabPane } = Tabs
 
 const DetaiArtWork = ({ id }: any) => {
-  const {MARKET_ADDRESS} = BINANCE_CONFIG
+  const { MARKET_ADDRESS } = BINANCE_CONFIG
   const { getDetailNFT, buyItem } = useArtworkServices()
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const { account, chainId } = useActiveWeb3React()

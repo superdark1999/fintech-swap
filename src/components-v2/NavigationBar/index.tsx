@@ -2,37 +2,66 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { isMobile } from 'react-device-detect'
-import { SwapOutlined, HomeOutlined, ArrowsAltOutlined } from '@ant-design/icons'
+import {
+  SwapOutlined,
+  HomeOutlined,
+  ArrowsAltOutlined,
+  CompassOutlined,
+  UserOutlined,
+  PlusCircleOutlined,
+} from '@ant-design/icons'
 
 const listMenu = [
   { label: 'Home', value: 'home', url: '/', icon: <HomeOutlined /> },
-  { label: 'Swap store', value: 'home', url: '/swap-store', icon: <SwapOutlined /> },
-  { label: 'Explore', value: 'home', url: '/explore', icon: <ArrowsAltOutlined />},
+  {
+    label: 'Swap store',
+    value: 'home',
+    url: '/swap-store',
+    icon: <SwapOutlined />,
+  },
+  {
+    label: 'Create',
+    value: 'create',
+    url: '/create/artwork',
+    icon: <PlusCircleOutlined />,
+  },
+  {
+    label: 'Explore',
+    value: 'home',
+    url: '/explore',
+    icon: <CompassOutlined />,
+  },
+  {
+    label: 'Profile',
+    value: 'profile',
+    url: '/my-profile/onstore/readyToSell',
+    icon: <UserOutlined />,
+  },
   // { label: 'INO', value: 'home', url: '/ino' }
 ]
 
-export default  () => {
-
+export default () => {
   if (!isMobile) return null
 
   let url = window.location.pathname
 
-  if (url.includes("detail")) url = ''
-  const [activeMenu, setActiveMenu]  = useState(url)
-
+  if (url.includes('detail')) url = ''
+  const [activeMenu, setActiveMenu] = useState(url)
   return (
     <NavigationStyled>
-      {
-        listMenu.map((menu) => {
-          return (
-            <Link onClick={() => setActiveMenu(menu.url)} className={activeMenu === menu.url ? "menu active" : "menu"} key={menu.value} to={menu.url}> 
-              <div className="icon">{menu.icon}</div>
-              <div className="label">{menu.label} </div>
-            </Link>
-          )
-        })
-      }
-      
+      {listMenu.map((menu) => {
+        return (
+          <Link
+            onClick={() => setActiveMenu(menu.url)}
+            className={activeMenu === menu.url ? 'menu active' : 'menu'}
+            key={menu.value}
+            to={menu.url}
+          >
+            <div className="icon">{menu.icon}</div>
+            <div className="label">{menu.label} </div>
+          </Link>
+        )
+      })}
     </NavigationStyled>
   )
 }
