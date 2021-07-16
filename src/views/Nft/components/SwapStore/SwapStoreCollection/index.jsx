@@ -5,30 +5,22 @@ import Cart from 'components-v2/CardItem'
 import FilterBar from './filterBar'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import _ from 'lodash'
-import {useHistory } from 'react-router-dom'
 import BannerBar from '../../../components/BannerBar/index'
 import { useHookNTF } from '../../../Store'
 import useIO from 'hooks/useIo'
 import ProgressBar from 'components-v2/ProgressBar'
 import {isMobile} from 'react-device-detect'
 
-
-// export const option: React.ReactElement<OptionProps> = Select.Option
 function ExploreCollection() {
-
-  const history = useHistory()
   let paramsSearch = useMemo(() => new URLSearchParams(
     window.document.location.search.substring(1),
     ), []) 
   const [NFTs, setNFTs] = useState({data: [], total: 0})
   const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
-  //onst [selectDP, setSelectDP] = useState('asc')
   const [sort, setSort] = useState('desc')
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(0)
-  //const [tags, setTags] = useState([])
   const { getNFT } = useArtworkServices()
-  const [filterMethod, setFilterMethod] = useState('')
   const [filterType, setFilterType] = useState('')
   
   const handleInputOnchange = (e) => {
@@ -64,7 +56,6 @@ function ExploreCollection() {
     root: null
   });
 
-
   useEffect(() => {
     const params = _.pickBy({
       status: 'readyToSell',
@@ -75,11 +66,10 @@ function ExploreCollection() {
       limit: 8,
       sort: sort,
       sortBy: 'createdAt',
-      //tags,
     }, _.identity)
     setLoading(Math.random() * (80 - 40 + 1) + 40)
     getArrNFT(params)
-  }, [filterMethod, filterType, searchParams, page, sort])
+  }, [ filterType, searchParams, page, sort])
 
   const [stateBanner, actions] = useHookNTF()
   useEffect(() => {
@@ -120,15 +110,12 @@ function ExploreCollection() {
         <BannerBar banners={stateBanner.listBannerSwap} />
       </div>
       <FilterBar 
-        setFilterMethod={setFilterMethod} 
-        filterMethod={filterMethod}
         filterType={filterType}
         setFilterType={setFilterType}
         handleInputOnchange={handleInputOnchange}
         searchParams={searchParams} 
         setPage={setPage}
         setSort={setSort}
-        sort={sort}
         selectDP={sort} 
         setSelectDP={setSort}
       />

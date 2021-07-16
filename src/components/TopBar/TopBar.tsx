@@ -491,7 +491,7 @@ const StyledTopBar = styled.div`
       box-sizing: border-box;
       border-radius: 100px;
       height: 40px;
-      margin: 0 40px;
+      margin: 0 24px;
       max-width: 250px;
     }
     .home-nav {
@@ -663,7 +663,7 @@ const StyledTopBar = styled.div`
   background: #ffffff;
   box-shadow: 0px 4px 16px -4px rgba(35, 35, 35, 0.06);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  position: sticky;
+  position: fixed;
   &.hidden {
     height: 0px;
     overflow: hidden;

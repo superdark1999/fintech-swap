@@ -10,6 +10,8 @@ import HotSwap from './components/HotSwap/index'
 import Collection from './components/Collection/index'
 import { isMobile } from 'react-device-detect'
 import SidebarMobile from 'views/Nft/components/Sidebar/SidebarMobile'
+import NavigationBar from 'components-v2/NavigationBar'
+
 
 import { useHookNTF } from './Store'
 
@@ -30,26 +32,31 @@ const NFTContainer = (props: any) => {
       <Page>
         <NFTContainerStyled onShowsidebar={onShowSidebar}>
             {
-              isMobile &&
+              isMobile ?
               (
-                <SidebarMobile 
-                  setMobileMenu={props.setMobileMenu} 
-                  mobileMenu={props.mobileMenu} 
-                  price={price}
-                  onChangePrice={onChangePrice}
-                />
+                <>
+                  <SidebarMobile 
+                    setMobileMenu={props.setMobileMenu} 
+                    mobileMenu={props.mobileMenu} 
+                    price={price}
+                    onChangePrice={onChangePrice}
+                  />
+                  {/* <NavigationBar /> */}
+                </>
+              )
+              : 
+              (
+                <div className="left-sidebar">
+                  <Sidebar
+                    setShowSidebar={setShowSidebar}
+                    onShowSidebar={onShowSidebar}
+                    price={price}
+                    onChangePrice={onChangePrice}
+                  />
+                </div>
               )
             }
-          {!isMobile && (
-            <div className="left-sidebar">
-              <Sidebar
-                setShowSidebar={setShowSidebar}
-                onShowSidebar={onShowSidebar}
-                price={price}
-                onChangePrice={onChangePrice}
-              />
-            </div>
-          )}
+ 
           <div className="main-nft">
             {/* <ModalLucky/> */}
             <div className="banner-nft">
@@ -76,23 +83,23 @@ const NFTContainer = (props: any) => {
 const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
   display: flex;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   margin: auto;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  /* border: 1px solid rgba(0, 0, 0, 0.2); */
   border-top: none;
   background-color: #f9fafb;
-  
   .left-sidebar {
     position: sticky;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
+    bottom: 0;
     background-color: #fff;
     min-width: ${(props) => (props.onShowsidebar ? '320px' : '60px')};
     transition: 300ms;
     height: ${(props) => (props.onShowsidebar ? '100%' : 'calc(100vh - 80px)')};
     border-right: ${(props) =>
     props.onShowsidebar && '1px solid rgba(0,0,0,0.2)'};
-    max-height: 100vh;
+    height: calc(100vh - 80px);
     overflow-y: auto;
     ::-webkit-scrollbar {
       display: none;
@@ -102,12 +109,10 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
     flex: ${(props: any) => (props.onShowsidebar ? 1 : '1 240px')};
     max-width: 1344px;
     margin: 0 auto;
-    ::-webkit-scrollbar {
-    display: none;
-    }
-    height: 100%;
-    overflow-y: auto;
-    scroll-behavior: smooth;
+    width: calc(100% - 320px);
+    overflow: hidden;
+    padding: ${isMobile && '0px 5px'};
+    
     .trending-nft {
       width: 98%;
       height: 80px;
@@ -119,10 +124,8 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
       border-radius: 12px;
     }
     .banner-nft {
-      /* height: ${isMobile ? '110px' : '380px'}; */
       width: 100%;
       margin: 24px auto;
-      /* padding: 0 30px; */
       max-width: 1280px;
       border-radius: 12px;
       img {

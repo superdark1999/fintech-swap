@@ -39,6 +39,7 @@ import Lottie from 'react-lottie';
 import LogoAnimation from "assets/animation/Logo_animation.json";
 import InoEvent from 'views/Nft/components/InoEvent'
 import CacheRoute, { CacheSwitch } from 'react-router-cache-route'
+import NavigationBar from 'components-v2/NavigationBar'
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if ('ethereum' in window) {
@@ -115,56 +116,58 @@ const App = () => {
           </LoadingPage>
         }
         <Web3ReactManager>
-          <>
+          <Container>
             <TopBar setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
-            {/* <div style={{marginTop: 80}}> */}
-            <CacheSwitch >
-              <CacheRoute path="/" exact>
-                <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
-              </CacheRoute>
-              <Route path="/nfts">
-                <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
-              </Route>
-              <Route path="/create/artwork">
-                <CreateArtWork />
-              </Route>
-              <Route path="/artwork/detail/:type/:id">
-                <DetailArtWork />
-              </Route>
-              <CacheRoute path="/user-profile/:id/:tab/:option">
-                <UserProfile />
-              </CacheRoute>
-              <CacheRoute path="/my-profile/:tab/:option">
-                <MyProfile />
-              </CacheRoute>
-              <CacheRoute path="/user-profile/:id/:tab">
-                <UserProfile />
-              </CacheRoute>
-              <CacheRoute path="/my-profile/:tab">
-                <MyProfile />
-              </CacheRoute>
-              <Route path="/swap/:id/step=:step">
-                <Swap />
-              </Route>
-              <Route path="/swap/step=:step">
-                <Swap />
-              </Route>
-              <CacheRoute path="/swap-store">
-                <SwapStore />
-              </CacheRoute>
-              <CacheRoute path="/explore">
-                <Explore />
-              </CacheRoute>
-              <Route path="/ino">
-                <InoEvent />
-              </Route>
-              <Route component={Page404} />
-            </CacheSwitch>
-            {/* </div> */}
-
-          </>
+              <Main>
+                <CacheSwitch >
+                  <CacheRoute path="/" exact>
+                    <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
+                  </CacheRoute>
+                  <Route path="/nfts">
+                    <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
+                  </Route>
+                  <Route path="/create/artwork">
+                    <CreateArtWork />
+                  </Route>
+                  <Route path="/artwork/detail/:type/:id">
+                    <DetailArtWork />
+                  </Route>
+                  <CacheRoute path="/user-profile/:id/:tab/:option">
+                    <UserProfile />
+                  </CacheRoute>
+                  <CacheRoute path="/my-profile/:tab/:option">
+                    <MyProfile />
+                  </CacheRoute>
+                  <CacheRoute path="/user-profile/:id/:tab">
+                    <UserProfile />
+                  </CacheRoute>
+                  <CacheRoute path="/my-profile/:tab">
+                    <MyProfile />
+                  </CacheRoute>
+                  <Route path="/swap/:id/step=:step">
+                    <Swap />
+                  </Route>
+                  <Route path="/swap/step=:step">
+                    <Swap />
+                  </Route>
+                  <CacheRoute path="/swap-store">
+                    <SwapStore />
+                  </CacheRoute>
+                  <CacheRoute path="/explore">
+                    <Explore />
+                  </CacheRoute>
+                  <Route path="/ino">
+                    <InoEvent />
+                  </Route>
+                  <Route component={Page404} />
+                </CacheSwitch>
+              </Main>       
+            <NavigationBar />
+          </Container>
         </Web3ReactManager>
+        
       </Router>
+     
     </Providers>
   )
 }
@@ -247,4 +250,22 @@ const LoadingPage = styled.div`
     }
   }
 
+`
+
+const Main = styled.div`
+  align-items: center;
+  height: 100vh;
+  /* min-height: calc(100vh - ${(props) => props.theme.topBarSize * 1.1}px); */
+  /* padding: 80px 0px 60px 0px; */
+  padding-top: 80px;
+  padding-bottom: ${isMobile && '80px'};
+  overflow: scroll;
+  scroll-behavior: smooth;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`
+
+const Container =  styled.div`
+ height: 100vh
 `
