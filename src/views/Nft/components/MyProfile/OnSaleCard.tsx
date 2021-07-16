@@ -39,24 +39,21 @@ export default function OnSaleCard({ data }: any) {
   const { getNFT } = useArtworkServices()
   const [state, setState] = useState<any>(true);
   const [myItems, setMyItems] = useState<any>([]);
-  const [status, setStatus] = useState<string>('processing')
   
 
   //console.log(data)
 
   useEffect(()=>{
-    console.log('a')
     if(marketServicesMethod && data?.tokenId && myItems?.tokenId){
       const {marketContract} =  marketServicesMethod
-      console.log('b')
       marketContract.on('SwapNFTs',(tokenIdA, tokenIdB, accountB, event)=>{
-        console.log(tokenIdA,tokenIdB,accountB)
+        console.log('runn',tokenIdA,tokenIdB,accountB)
         if(data?.ownerWalletAddress==accountB 
           && data?.tokenId ==Number(tokenIdB) 
           && myItems?.tokenId == Number(tokenIdA)){
-          setTimeout(() => {
-            setStatus('success')
-          }, 10000)
+         _.debounce(()=>{
+           //Do something here
+         },10000)
         }
       })
       
@@ -65,7 +62,6 @@ export default function OnSaleCard({ data }: any) {
   
   const getSwapOffers = (itemSwap:any)=>{
     const tokenId = itemSwap?.tokenId;
-    console.log(itemSwap)
     if(marketServicesMethod&&tokenId){
       const {getSwapOffers} =  marketServicesMethod
       getSwapOffers(tokenId).then((data:any)=>{
@@ -111,18 +107,7 @@ export default function OnSaleCard({ data }: any) {
     const { confirmSwapNFT } = marketServicesMethod
     setIsProcessing(true)
     confirmSwapNFT(itemSwap?.tokenId, myItems?.tokenId, myItems?.ownerWalletAddress).then((data) => {
-      if(status == 'success') {
-        notification(
-          'open',
-          {
-            message:
-              'Swap NFT success,you can check NFT on approved collection',
-            description: '',
-            titleBtn: 'View detail',
-          },
-          onGoToApprovedArtWork,
-        )
-      }
+      setMyItems(myItems)
     }).catch((err) => {
       setIsProcessing(false)
       notification('error', {
@@ -134,7 +119,6 @@ export default function OnSaleCard({ data }: any) {
 
   const renderButon = (myItems: any)=>{
       //console.log(myItems)
-      setMyItems(myItems)
       if(isProcessing){
         return( <ButtonProccesing/>)
       }else {

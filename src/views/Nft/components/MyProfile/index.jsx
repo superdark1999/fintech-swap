@@ -162,7 +162,6 @@ const TabOnSale = () => {
   const { account } = useActiveWeb3React()
   // const { tab } = useParams()
   const match = useRouteMatch()
-  console.log('match', match)
   
   useEffect(() => {
     if (match?.params?.tab == 'onstore') {
