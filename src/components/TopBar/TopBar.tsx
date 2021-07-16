@@ -68,7 +68,10 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
 
   useEffect(() => {
     if (
-      !SUPPORT_CHAIN_IDS.includes(Number(ethereum?.chainId)) && ethereum &&ethereum?.chainId!=binanceConfig.chainId
+      !SUPPORT_CHAIN_IDS.includes(Number(ethereum?.chainId)) 
+      && ethereum?.selectedAddress
+      && account
+      &&ethereum?.chainId!=binanceConfig.chainId
     ) {
       ethereum.request({
           method: 'wallet_switchEthereumChain',
@@ -110,12 +113,15 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           }
         })
     }
-    if ( !SUPPORT_CHAIN_IDS.includes(Number(BinanceChain?.chainId)) && BinanceChain &&BinanceChain?.chainId!=binanceConfig?.chainId) {
-      BinanceChain.switchNetwork(binaceText).then(() => {
-        window.location.reload()
-      })
-    }
-  }, [chainId,BinanceChain?.chainId,ethereum?.chainId])
+    if ( !SUPPORT_CHAIN_IDS.includes(Number(BinanceChain?.chainId)) 
+          && !ethereum?.selectedAddress
+          && !!BinanceChain 
+          && BinanceChain?.chainId!=binanceConfig?.chainId) {
+          BinanceChain.switchNetwork(binaceText).then(() => {
+            window.location.reload()
+          })
+      }
+  }, [chainId,BinanceChain?.chainId,ethereum?.chainId,account])
 
   useEffect(() => {
     if (luckyMethod) {
