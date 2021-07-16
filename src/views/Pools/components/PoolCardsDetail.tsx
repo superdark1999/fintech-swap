@@ -67,10 +67,7 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
   const { account } = useWeb3React()
 
   const stakingContract = useStakingContract(stakingData?.stakingAddress);
-  const { userAmount, userRewardDebt, pendingReward} = useGetStateData(stakingData);
-
-  console.log("pendingReward", pendingReward.toFixed(5))
-
+  const { userAmount, pendingReward} = useGetStateData(stakingData);
 
 
   const addTransaction = useTransactionAdder()
@@ -119,7 +116,10 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
               <img src={ BASE_API_ADMIN.concat('/') + stakingData.logo} alt=""/>
             </figure>
             <h2>{stakingData.name}</h2>
-            <span>Deposit {stakingData.depositTokenSymbol} Tokens and earn {stakingData.rewardTokenSymbol}</span>
+            <span>
+              Deposit <span className="token">{stakingData.depositTokenSymbol}</span> Tokens 
+              and earn <span className="token">{stakingData.rewardTokenSymbol}</span> Tokens
+            </span>
           </BoxHead>
 
           <PoolCardDetails 
@@ -139,7 +139,8 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
           />
 
           <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>
-          Every time you stake and unStake EL tokens, the contract will automatically harvest HCATS rewards for you!
+          Every time you stake and unStake {stakingData.depositTokenSymbol} tokens,
+           the contract will automatically harvest {stakingData.rewardTokenSymbol} rewards for you!
           </p>
         </BoxDetail>
       </Page>
@@ -162,7 +163,7 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
         addTransaction={addTransaction}
         userAmount={userAmount}
         setIsUnStaking={setIsUnStaking}
-
+        rewardTokenSymbol={stakingData.rewardTokenSymbol}
       />
     </>
   )
@@ -204,6 +205,11 @@ const BoxHead = styled.div`
     color: #fff;
     font-size: 18px;
     line-height: 18px;
+    
+    .token{
+      font-size: 22px;
+      color: #f5c606;
+    }
   }
 `
 
