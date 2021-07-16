@@ -56,6 +56,14 @@
       "chainId": 80001,
       "decimals": 18,
       "logoURI": "/images/coinslist/lucky.png"
+    },
+    {
+      "name": "Token Demo",
+      "symbol": "DEMO",
+      "address": "0x438b38A747242e09240537Ef5be76Ee89b64C06c",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/coinslist/lucky.png"
     }
   ]
 }
