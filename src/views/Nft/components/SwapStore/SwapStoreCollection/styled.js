@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import { isMobile } from 'react-device-detect'
 
 export const ExploreCollectionStyled = styled.div`
-  max-width: 1320px;
-  padding: 20px;
+  max-width: 1360px;
+  padding: 20px 40px;
   margin: auto;
   .banner-nft {
     margin: 30px 0;
@@ -42,20 +42,21 @@ export const ExploreCollectionStyled = styled.div`
       font-weight: ${isMobile ? '500' : '700'};
       font-size: ${isMobile ? '16px' : '20px'};
       text-align: ${isMobile && 'right'};
-      width: 108px;
+      display: flex;
+      flex-direction: column;
       /* text-decoration: underline; */
       cursor: pointer;
       display: flex;
-      margin-right: 112px;
-      .ant-select {
-        margin-right: 16px;
-        .ant-select-selector {
-          border-radius: 30px;
-          .ant-select-selection-item {
-            font-weight: 500;
-            font-size: 14px;
-            text-decoration: unset;
-          }
+      width: ${isMobile && '100%'};
+      .search-input {
+        margin-bottom: 24px;
+        input {
+          border-top-left-radius: 100px;
+          border-bottom-left-radius: 100px;
+        }
+        .ant-btn-primary {
+          background: #333435;
+          border: 1px solid #333435;
         }
       }
     }
@@ -106,25 +107,35 @@ export const FilterBarStyled = styled.div`
       color: #333435;
       margin-right: 24px;
     }
-    .ant-radio-wrapper {
-      background: #fff;
-      color: #333435;
-      margin: 0px 8px;
-      padding: 4px 16px;
-      font-weight: 600;
-      border: 1px solid #e7ebef;
-      box-sizing: border-box;
-      border-radius: 100px;
-      &.ant-radio-wrapper-checked {
-        background: #333435;
-        color: #fff;
+    .filter-group-mobile {
+      list-style: none;
+      font-feature-settings: 'tnum', "tnum";
+      display: flex;
+      font-size: 0;
+      line-height: unset;
+      max-width: calc(100vw - 80px);
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      .ant-radio-wrapper {
+        background: #fff;
+        color: #333435;
+        margin: 8px;
+        padding: 4px 16px;
+        font-weight: 600;
+        border: 1px solid #e7ebef;
+        box-sizing: border-box;
+        border-radius: 100px;
+        &.ant-radio-wrapper-checked {
+          background: #333435;
+          color: #fff;
+        }
       }
-    }
-    .ant-radio .ant-radio-inner {
-      display: none;
-    }
-    .ant-radio {
-      display: none;
+      .ant-radio .ant-radio-inner {
+        display: none;
+      }
+      .ant-radio {
+        display: none;
+      }
     }
   }
   .right-action {
@@ -135,8 +146,10 @@ export const FilterBarStyled = styled.div`
     display: flex;
     flex-direction: column;
     /* text-decoration: underline; */
+    width: ${isMobile && '100%'};
     cursor: pointer;
     display: flex;
+    margin-bottom: 20px;
     .right-action-sort {
       display: flex;
       justify-content: flex-end;
