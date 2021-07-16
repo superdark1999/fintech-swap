@@ -10,7 +10,7 @@ import {
   UserOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons'
-
+import { useActiveWeb3React } from 'wallet/hooks'
 const listMenu = [
   { label: 'Home', value: 'home', url: '/', icon: <HomeOutlined /> },
   {
@@ -41,6 +41,7 @@ const listMenu = [
 ]
 
 export default () => {
+  const { account, chainId } = useActiveWeb3React()
   if (!isMobile) return null
 
   let url = window.location.pathname
@@ -50,6 +51,22 @@ export default () => {
   return (
     <NavigationStyled>
       {listMenu.map((menu) => {
+        if (
+          (!account && menu.url == '/create/artwork') ||
+          (!account && menu.url == '/my-profile/onstore/readyToSell')
+        ) {
+          return (
+            <Link
+              onClick={() => alert('Unblock your wallet before create NFT')}
+              className={activeMenu === menu.url ? 'menu active' : 'menu'}
+              key={menu.value}
+              to={'/'}
+            >
+              <div className="icon">{menu.icon}</div>
+              <div className="label">{menu.label} </div>
+            </Link>
+          )
+        }
         return (
           <Link
             onClick={() => setActiveMenu(menu.url)}

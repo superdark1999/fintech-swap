@@ -86,7 +86,7 @@ export const ExploreCollectionStyled = styled.div`
 `
 export const FilterBarStyled = styled.div`
   display: flex;
-  margin: 20px 0 10px 0;
+  margin: ${isMobile ? 'none' : ' 20px 0 10px 0'};
   .left-action {
     flex: 1;
     .filter-label {
@@ -118,14 +118,14 @@ export const FilterBarStyled = styled.div`
       }
     }
     .filter-group-mobile {
-        list-style: none;
-        font-feature-settings: 'tnum', "tnum";
-        display: flex;
-        font-size: 0;
-        line-height: unset;
-        max-width: calc(100vw - 80px);
-        flex-wrap: nowrap;
-        overflow-x: auto;
+      list-style: none;
+      font-feature-settings: 'tnum', 'tnum';
+      display: flex;
+      font-size: 0;
+      line-height: unset;
+      max-width: calc(100vw - 80px);
+      flex-wrap: nowrap;
+      overflow-x: auto;
       .ant-radio-wrapper {
         background: #fff;
         color: #333435;

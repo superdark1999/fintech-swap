@@ -311,26 +311,25 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
                     </div>
                   </div>
                   <div className="menu-item">
-                    <Link to={'/create/artwork'}>
-                      <ButtonBuy>Create</ButtonBuy>
-                    </Link>
-                  </div>
-                  <div className="menu-item">
                     <Link to={'/swap/step=1'}>
                       <ButtonBuy>Swap</ButtonBuy>
                     </Link>
                   </div>
                 </>
               )}
-              <Link to="/my-profile/onstore/readyToSell">
-                <div className="menu-item">My profile</div>
-              </Link>
-              <Link to="/my-profile/mycollection/all">
-                <div className="menu-item">My collection</div>
-              </Link>
-              <Link to="/my-profile/settings">
-                <div className="menu-item">Settings</div>
-              </Link>
+              {!isMobile && (
+                <>
+                  <Link to="/my-profile/onstore/readyToSell">
+                    <div className="menu-item">My profile</div>
+                  </Link>
+                  <Link to="/my-profile/mycollection/all">
+                    <div className="menu-item">My collection</div>
+                  </Link>
+                  <Link to="/my-profile/settings">
+                    <div className="menu-item">Settings</div>
+                  </Link>
+                </>
+              )}
               {/* <Link to="/my-profile/login"> */}
               <div
                 className="menu-item"
@@ -364,15 +363,6 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
                           <div className="connect-wallet">
                             <Web3Status />
                           </div>
-                        </div>
-                        <div className="menu-item">
-                          <a
-                            onClick={() => {
-                              alert('Unblock your wallet before create NFT')
-                            }}
-                          >
-                            <ButtonBuy>Create</ButtonBuy>
-                          </a>
                         </div>
                         <div className="menu-item">
                           <a
