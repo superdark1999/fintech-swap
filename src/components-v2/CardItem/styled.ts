@@ -148,12 +148,13 @@ export const StyledCart = styled.div<PropsStyled>`
           color: #333435;
           opacity: 0.75;
           font-weight: 600;
-          .avatar{
+          .avatar {
             width: 25px;
             height: 25px;
             border-radius: 50%;
             margin-right: 5px;
             margin-left: 10px;
+            object-fit: cover;
           }
         }
         .copy {

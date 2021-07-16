@@ -1,42 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
+import React from 'react'
 import {
   Form,
   Input,
-  InputNumber,
-  Button,
-  Radio,
-  Modal,
   Row,
   Col,
-  Checkbox,
+  Modal
 } from 'antd'
 import UploadFile from 'components-v2/Upload/index'
 import { ButtonStyle } from 'components-v2/cart/styled'
-import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import useNFTServices from 'services/web3Services/NFTServices'
-import { useActiveWeb3React } from 'wallet/hooks'
-import useUserStore from 'store/userStore'
-import { GroupButton, RadioButton } from './styled'
-import axios from 'axios'
+import { ModalStyled } from './styled'
 import { RegexWebsiteURL } from '../../constants'
+import { isMobile } from 'react-device-detect'
 const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
   const formArtistRef = React.useRef()
-
+  const ModalCompoent = isMobile ? ModalStyled : Modal
   return (
-    <Modal
+    <ModalCompoent
       title="Create Artist"
       visible={visible}
       onCancel={onCancel}
       footer={false}
       destroyOnClose
       maskClosable={false}
-      style={{
-        borderRadius: '16px',
-        overflow: 'hidden',
-        paddingBottom: 0,
-        
-      }}
       width={1000}
     >
       <Form
@@ -119,7 +104,7 @@ const ModalCreateArtist = ({ visible, onCancel, createArtist }) => {
           </Col>
         </Row>
       </Form>
-    </Modal>
+    </ModalCompoent>
   )
 }
 

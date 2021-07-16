@@ -30,11 +30,11 @@ import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
 import { getPrice } from 'utils'
-import {BINANCE_CONFIG} from 'configs'
+import { BINANCE_CONFIG } from 'configs'
 import formatNumber from 'utils/formatNumber'
 import _ from 'lodash'
 import Hammer from 'assets/images/hammer.svg'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import notification from 'components-v2/Alert'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
@@ -49,7 +49,7 @@ import Reviews from './Reviews'
 const { TabPane } = Tabs
 
 const DetaiArtWork = ({ id }: any) => {
-  const {MARKET_ADDRESS} = BINANCE_CONFIG
+  const { MARKET_ADDRESS } = BINANCE_CONFIG
   const { getDetailNFT, buyItem } = useArtworkServices()
   const [isCopied, handleCopy] = useCopyToClipboard(3000)
   const { account, chainId } = useActiveWeb3React()
@@ -304,9 +304,9 @@ const DetaiArtWork = ({ id }: any) => {
       return <>Bid time is over</>
     }
   }
-
+  let history = useHistory()
   const priviousPage = () => {
-    window.history.back()
+    history.goBack()
   }
 
   return (
@@ -489,10 +489,7 @@ const DetaiArtWork = ({ id }: any) => {
               to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
             >
               <p className="organize">
-                <img
-                  style={{ width: '40px', borderRadius: '100px' }}
-                  src={NFTDetail?.createdBy?.avatarImage}
-                />
+                <img src={NFTDetail?.createdBy?.avatarImage} />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
                 {/* <img src={Checkmark} /> */}
               </p>

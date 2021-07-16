@@ -3,7 +3,7 @@ import { isMobile } from 'react-device-detect'
 
 export const FilterBarStyled = styled.div`
   display: flex;
-  margin: 20px 0 10px 0;
+  margin: ${isMobile ? 'none' : ' 20px 0 10px 0'};
   .left-action {
     flex: 1;
     .filter-label {

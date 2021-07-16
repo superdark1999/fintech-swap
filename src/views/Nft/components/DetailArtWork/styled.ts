@@ -318,6 +318,12 @@ export const DetailStyled = styled.div`
     > .name {
       margin: 0px 6px;
     }
+    img {
+      height: 40px;
+      width: 40px;
+      border-radius: 100px;
+      object-fit: cover;
+    }
   }
   .bid-info {
     display: flex;
@@ -380,14 +386,14 @@ export const FooterStyled = styled.div`
   /* height: 80px; */
   left: 0px;
   right: 0px;
-  bottom: 0px;
+  bottom: 60px;
   box-shadow: 0px -4px 16px -4px rgba(35, 35, 35, 0.06);
   background-color: #ffffff;
   border-top: 2px solid #e7ebef;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 32px;
+  padding: 12px 32px;
   > input {
     border: 1px solid #e7ebef;
     box-sizing: border-box;

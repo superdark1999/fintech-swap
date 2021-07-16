@@ -57,6 +57,8 @@ export const SidebarStyled = styled.div<PropsStyled>`
     }
     &.button-collapse {
       border-bottom: 1px solid #e7ebef;
+      font-weight: 600;
+      text-align: right;
       .title {
         text-decoration: underline;
         color: #333435;

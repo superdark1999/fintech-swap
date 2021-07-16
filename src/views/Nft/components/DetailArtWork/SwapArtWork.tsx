@@ -25,9 +25,8 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { ButtonBuy } from 'components-v2/Button'
 import Hammer from 'assets/images/hammer.svg'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
-import { useHistory } from 'react-router-dom'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import _ from 'lodash'
 import TableHistory from './TableHistory'
@@ -64,9 +63,8 @@ const DetaiArtWork = ({ id }: any) => {
   }
 
   const priviousPage = () => {
-    window.history.back()
+    history.goBack()
   }
-
   return (
     <Row>
       <Col
@@ -163,14 +161,7 @@ const DetaiArtWork = ({ id }: any) => {
               to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
             >
               <p className="organize">
-                <img
-                  style={{
-                    height: '40px',
-                    width: '40px',
-                    borderRadius: '100px',
-                  }}
-                  src={NFTDetail?.createdBy?.avatarImage}
-                />
+                <img src={NFTDetail?.createdBy?.avatarImage} />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
                 {/* <img src={Checkmark} /> */}
               </p>
