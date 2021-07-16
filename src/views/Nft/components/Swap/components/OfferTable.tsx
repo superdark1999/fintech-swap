@@ -57,6 +57,7 @@ const OfferTable = ({ offerData, isRenderAction, chooseOffer, state, renderButon
       {
         title: 'Created By',
         render: (record: any) => {
+            console.log(record)
           return (
             <div>
               <TextGradient width="auto" fontSize="14px">{record?.createdBy?.name} </TextGradient>
