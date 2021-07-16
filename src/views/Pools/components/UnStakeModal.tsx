@@ -10,7 +10,8 @@ export default function UnStakeModal({
   stakingContract,
   addTransaction,
   userAmount,
-  setIsUnStaking
+  setIsUnStaking,
+  rewardTokenSymbol
 }) 
 {
   const [value, setValue] = useState('');
@@ -45,15 +46,15 @@ export default function UnStakeModal({
           <ModalHeader toggle={unStakeToggle}></ModalHeader>
 
           <ModalBody>
-            <Title>UnStake LuckySwap Tokens</Title>
-            <Available>{userAmount.div(1e18).toFixed(4)} Lucky Available</Available>
+            <Title>UnStake <span>{rewardTokenSymbol}</span> Tokens</Title>
+            <Available><span>{userAmount.div(1e18).toFixed(2)} </span>  {rewardTokenSymbol}</Available>
 
             <BoxInput>
               <input type="text" id="fname" name="fname" placeholder="0.000"
                 value={value}
                onChange={(e) => setValue(e.target.value)}/>
               <BoxLink>
-                <span className="text-lucky">lucky</span>
+                <span className="text-lucky">{rewardTokenSymbol}</span>
                 <BoxButton>
                   <Button onClick={handleMaxAmount}>Max</Button>
                 </BoxButton>
@@ -100,10 +101,16 @@ const BoxInput = styled.div`
 
 const Title = styled.h5`
   color: #fff;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   text-align: center;
   margin-bottom: 25px;
+
+  span {
+    font-size: 24px;
+    color: #f5c606
+  }
+
 `
 const Available = styled.div`
   display: flex;
@@ -112,6 +119,12 @@ const Available = styled.div`
   color: #fff;
   font-size: 14px;
   font-weight: 600;
+
+  span {
+    font-size: 20px;
+    margin-right: 5px;
+    color: #f5c606;
+  }
 `
 
 const BoxLink = styled.div`

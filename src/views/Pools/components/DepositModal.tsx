@@ -74,8 +74,8 @@ interface DepositModalProp {
         <ModalHeader toggle={depositToggle}></ModalHeader>
 
         <ModalBody>
-          <Title>Deposit LuckySwap Tokens</Title>
-          <Available>{balance} {depositSymbol}</Available>
+          <Title>Deposit <span>{depositSymbol}</span> Tokens</Title>
+          <Available><span>{balance}</span> {depositSymbol}</Available>
 
           <BoxInput>
             <input type="text" id="fname" name="fname" placeholder="0.000"
@@ -131,10 +131,16 @@ const BoxInput = styled.div`
 
 const Title = styled.h5`
   color: #fff;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   text-align: center;
   margin-bottom: 25px;
+
+  span {
+    font-size: 24px;
+    color: #f5c606
+  }
+
 `
 const Available = styled.div`
   display: flex;
@@ -143,6 +149,12 @@ const Available = styled.div`
   color: #fff;
   font-size: 14px;
   font-weight: 600;
+
+  span {
+    font-size: 20px;
+    margin-right: 5px;
+    color: #f5c606;
+  }
 `
 
 const BoxLink = styled.div`
