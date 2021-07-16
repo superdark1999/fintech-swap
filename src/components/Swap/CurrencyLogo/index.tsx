@@ -43,7 +43,7 @@ export default function CurrencyLogo({
       case 80001:
         return '/images/coinslist/POLYGON.svg'
       default:
-        return ''
+        return '/images/coinslist/BNB.png'
     }
   }
 
@@ -52,7 +52,11 @@ export default function CurrencyLogo({
 
     if (currency?.isToken) {
       if (currency instanceof WrappedTokenInfo) {
-        return [...uriLocations, `/images/coinslist/${currency?.symbol ?? 'token'}.png`, getTokenLogoURL(currency.address)]
+        return [
+          ...uriLocations,
+          `/images/coinslist/${currency?.symbol ?? 'token'}.png`,
+          getTokenLogoURL(currency.address),
+        ]
       }
 
       return [`/images/coinslist/${currency?.symbol ?? 'token'}.png`, getTokenLogoURL(currency.address)]

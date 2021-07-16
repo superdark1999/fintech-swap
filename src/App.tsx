@@ -1,35 +1,34 @@
-import React, { useState, useEffect, lazy } from 'react'
-import { HashRouter, Redirect, BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Credentials, StringTranslations } from '@crowdin/crowdin-api-client'
 import { ResetCSS } from '@luckyswap/uikit'
+import 'antd/dist/antd.css'
 import BigNumber from 'bignumber.js'
-import useEagerConnect from 'hooks/useEagerConnect'
+import useWeb3ReactManager from 'hooks/useWeb3ReactManager'
+import React, { lazy, useEffect, useState } from 'react'
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { useFetchPriceList, useFetchProfile, useFetchPublicData } from 'state/hooks'
-import GlobalStyle from './style/Global'
+import EasterEgg from './components/EasterEgg'
 import Menu from './components/Menu'
+import PageLoader from './components/PageLoader'
+import Popups from './components/Popups'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 import ToastListener from './components/ToastListener'
-import PageLoader from './components/PageLoader'
-import EasterEgg from './components/EasterEgg'
-import Pools from './views/Pools'
-import GlobalCheckClaimStatus from './views/Collectibles/components/GlobalCheckClaimStatus'
-import history from './routerHistory'
-import Swap from './views/Swap'
-import { RedirectPathToSwapOnly } from './views/Swap/redirects'
-import AddLiquidity from './views/AddLiquidity'
-import Pool from './views/Pool'
-import RemoveLiquidity from './views/RemoveLiquidity'
-import { RedirectOldRemoveLiquidityPathStructure } from './views/RemoveLiquidity/redirects'
-import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './views/AddLiquidity/redirects'
-import './index.css'
-import 'antd/dist/antd.css'
-import PoolDetail from './views/Pools/components/PoolCardsDetail'
-import IfoDetail from './views/Launchpad/components/IfoCard/IfoDetail'
-
+import { allLanguages, EN } from './constants/localisation/languageCodes'
 import { LanguageContext } from './hooks/LanguageContext'
 import { TranslationsContext } from './hooks/TranslationsContext'
-import { EN, allLanguages } from './constants/localisation/languageCodes'
-import Popups from './components/Popups'
+import './index.css'
+import GlobalStyle from './style/Global'
+import AddLiquidity from './views/AddLiquidity'
+import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './views/AddLiquidity/redirects'
+import GlobalCheckClaimStatus from './views/Collectibles/components/GlobalCheckClaimStatus'
+import IfoDetail from './views/Launchpad/components/IfoCard/IfoDetail'
+import Pool from './views/Pool'
+import Pools from './views/Pools'
+import PoolDetail from './views/Pools/components/PoolCardsDetail'
+import RemoveLiquidity from './views/RemoveLiquidity'
+import { RedirectOldRemoveLiquidityPathStructure } from './views/RemoveLiquidity/redirects'
+import Swap from './views/Swap'
+import { RedirectPathToSwapOnly } from './views/Swap/redirects'
+
 
 // Route-based code splitting2
 // Only pool is included in the main bundle because of it's the most visited page .
@@ -57,7 +56,8 @@ const App: React.FC = () => {
     console.warn = () => null
   }, [])
 
-  useEagerConnect()
+  // useEagerConnect()
+  useWeb3ReactManager()
   useFetchPublicData()
   useFetchProfile()
   useFetchPriceList()
