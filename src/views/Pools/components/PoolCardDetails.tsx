@@ -2,10 +2,12 @@ import React, {useState, useEffect}from 'react'
 import styled from 'styled-components'
 import { Row, Col } from 'antd'
 import { Button } from 'reactstrap';
-import { AutoRenewIcon } from '@luckyswap/uikit'
+import { AutoRenewIcon, MetamaskIcon } from '@luckyswap/uikit'
 import BigNumber from 'bignumber.js'
 
 import useUtilityToken from 'hooks/useUtilityToken'
+import { registerToken } from 'utils/wallet'
+import { BASE_URL } from 'config'
 
 import CardValue from '../../Home/components/CardValue';
 
@@ -44,6 +46,7 @@ export default function PoolCardDetails({
 
   const imageDepositToken = imageTokens[stakingData.depositTokenSymbol]
   const imageRewardToken = imageTokens[stakingData.rewardTokenSymbol]
+
   useEffect(() => {
     const fetchApproval = async () => {
       const data = await allowance(account, stakingData.stakingAddress).catch((error) =>
@@ -96,6 +99,7 @@ export default function PoolCardDetails({
                 <figure className="background">
                   <img src={imageRewardToken} alt=""/>
                 </figure>
+                
 
                 <div className="content">
                   <h3 className="content__title">
@@ -109,7 +113,18 @@ export default function PoolCardDetails({
                     ></CardValue>
                   </h3>
                   <span className="content__symbol">{stakingData.rewardTokenSymbol} earned</span>
+                    <Button className="btn-addToken"
+                     onClick={() => {
+                       const imaUrl = BASE_URL + imageRewardToken.slice(1); console.log("imaUrl", imaUrl)
+                      registerToken(stakingData.rewardTokenAddress, stakingData.rewardTokenSymbol, 1, imaUrl)
+                      }
+                    }>
+                      Add {stakingData.rewardTokenSymbol} to Metamask
+                      <MetamaskIcon ml="4px" />
+                    </Button>
+                  
                 </div>
+                
 
                 <div className="box__footer">
                   <Button color="danger" 
@@ -144,6 +159,16 @@ export default function PoolCardDetails({
                     ></CardValue>
                   </h3>
                   <span className="content__symbol">{stakingData.depositTokenSymbol}</span>
+                  <Button className="btn-addToken" 
+                    onClick={() => {
+                      const imaUrl = BASE_URL + imageDepositToken.slice(1);
+                      registerToken(stakingData.depositTokenAddress, stakingData.depositTokenSymbol, 18, imaUrl)
+                    }
+                  }>
+                      Add {stakingData.depositTokenSymbol} to Metamask 
+                      <MetamaskIcon ml="4px" />
+
+                    </Button>
                 </div>
 
                 <div className="box__footer">
@@ -211,8 +236,8 @@ const BoxDetail = styled.div`
       }
 
       .content {
-        margin-top: 36px;
-        margin-bottom: 26px;
+        margin-top: 30px;
+        margin-bottom: 10px;
         text-align: center;
 
         &__title {
@@ -226,6 +251,27 @@ const BoxDetail = styled.div`
           font-size: 20px;
           font-weight: 600;
           color: #fff;
+        }
+
+        .btn-addToken {
+          display: block;
+          color: white;
+          background: none;
+
+          margin-top: 5px;
+          max-width: 300px;
+          min-height: 40px;
+          font-size: 15px;
+
+          text-decoration: underline;
+
+          :hover {
+            border: none;
+          }
+
+          :active {
+            border: none;
+          }
         }
       }
     }
@@ -247,6 +293,9 @@ const BoxDetail = styled.div`
         border-color: transparent;
         color: #2b2e2f;
 
+        @media(max-width: 1000px) {
+          margin-bottom: 10px;
+        }
 
         &:hover {
           opacity: 0.7;
