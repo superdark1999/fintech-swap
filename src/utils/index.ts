@@ -60,9 +60,7 @@ export const getCompactString=(str:string, sepLen:number)=>{
 
 export const embedTokenIdLinkBSCScan = (tokenId:number,contractAddress:string,chainId:ChainId)=>{
   let url = ''
-  if(chainId==97){
     url = `${binanceConfig.blockExplorerUrls?.[0]}/token/`
-  }
   return `${url + contractAddress +'?a='+tokenId}`
 }
 

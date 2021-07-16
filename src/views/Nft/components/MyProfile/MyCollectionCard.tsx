@@ -542,7 +542,7 @@ export default function MyCollectionCard({ data, option, setReList }: any) {
   const handleMenuSwapClick = (dt: any) => {
     if (dt.key === 'swap') {
       history.push('/swap/step=1')
-    } else if (dt.key === 'pushlish') {
+    } else if (dt.key === 'publish') {
       onSubmitSwapItem()
     }
   }
@@ -550,7 +550,7 @@ export default function MyCollectionCard({ data, option, setReList }: any) {
   const menuSwap = (
     <Menu onClick={handleMenuSwapClick}>
       <Menu.Item key="swap">Swap</Menu.Item>
-      <Menu.Item key="pushlish">Pushlish</Menu.Item>
+      <Menu.Item key="publish">Publish</Menu.Item>
     </Menu>
   )
 
