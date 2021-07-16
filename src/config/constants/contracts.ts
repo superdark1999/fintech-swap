@@ -8,7 +8,7 @@ export default {
     56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',
   },
   lottery: {
-    97: '0xdA4CE3ce2C2A5d4739ded2657cfEC608f08d180f',
+    97: '0xaf61E3b4DC734724dBdee49819f152df0cD24ca2',
     56: '0x3C3f2049cc17C136a604bE23cF7E42745edf3b91',
   },
   lotteryV2: {
@@ -16,7 +16,7 @@ export default {
     56: '0x5aF6D33DE2ccEC94efb1bDF8f92Bd58085432d2c',
   },
   lotteryNFT: {
-    97: '0x4edb937bce38266621df9e5a46900a708150994b',
+    97: '0x6576387E0FFbA9bCA1b1a1e1A9584800B808B4b3',
     56: '0x5e74094Cd416f55179DBd0E45b1a8ED030e396A1',
   },
   mulltiCall: {
