@@ -17,8 +17,6 @@ import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
 import { SwapState } from './reducer'
 
-
-
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
 }
@@ -88,10 +86,11 @@ export function tryParseAmount(value?: string, currency?: Currency): CurrencyAmo
   return undefined
 }
 
+// TODO : Improve this for multiple chain ids
 const BAD_RECIPIENT_ADDRESSES: string[] = [
-  '0xBCfCcbde45cE874adCB698cC183deBcF17952812', // v2 factory
+  '0x86325Af801Eb418eCE6Ff2Bb8F4C6322543858E4', // v2 factory
   '0xf164fC0Ec4E93095b804a4795bBe1e041497b92a', // v2 router 01
-  '0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F', // v2 router 02
+  '0x5c75d3A4342f4874b33DE6E0609535Da0b9e4C5B', // v2 router 02
 ]
 
 /**
@@ -166,6 +165,7 @@ export function useDerivedSwapInfo(): {
   }
 
   const formattedTo = isAddress(to)
+  console.log('formattedTo : ', formattedTo)
   if (!to || !formattedTo) {
     inputError = inputError ?? 'Enter a recipient'
   } else if (

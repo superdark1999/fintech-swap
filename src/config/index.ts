@@ -32,7 +32,7 @@ export const LUCKY_PER_YEAR = LUCKY_PER_BLOCK.times(BLOCKS_PER_YEAR)
 
 // TODO : Deploy XLUCKY to multiple networks
 export const XLUCKY_TESTNET_ADDRESSES: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: '0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a',
+  [ChainId.MAINNET]: '0x438b38A747242e09240537Ef5be76Ee89b64C06c',
   [ChainId.BSCTESTNET]: '0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a',
   [ChainId.MATIC]: '0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a',
   [ChainId.MATIC_TESTNET]: '0xC2Ab68f3bE82a87DAFfE3386A13958A2B936260D',
