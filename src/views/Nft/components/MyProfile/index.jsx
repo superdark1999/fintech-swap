@@ -212,6 +212,8 @@ const TabMyCollection = () => {
   const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
   const [offerList, setOfferList] = useState([])
+  const [list, setList] = useState([])
+  const [reList, setReList] = useState(false)
 
   const marketServicesMethod = useMarketServices()
 
@@ -227,6 +229,7 @@ const TabMyCollection = () => {
   },[account,!!marketServicesMethod])
 
   useEffect(() => {
+    console.log(reList)
     if (optionChecked) {
       const query = {
         ownerWalletAddress: account,
@@ -249,19 +252,20 @@ const TabMyCollection = () => {
         }
       })
     }
-  }, [optionChecked])
+  }, [optionChecked,reList])
 
   const onHandleOptionCheck = (e) => {
     setOptionChecked(e.target.value)
   }
-
-  const mergerData = renderData?.map?.(item=>{
-    const tData = _.find(offerList, it => it.tokenId == item.tokenId) || null
-    if(tData){
-      return {...item,...tData}
-    }
-    return item
-  })||[]
+  
+    const mergerData = renderData?.map?.(item=>{
+      const tData = _.find(offerList, it => it.tokenId == item.tokenId) || null
+      if(tData){
+        return {...item,...tData}
+      }
+      return item
+    })||[] 
+    
 
   return (
     <>
@@ -317,6 +321,7 @@ const TabMyCollection = () => {
               key={item?._id}
               data={item}
               option={optionChecked}
+              setReList={setReList}
             />
           )
         })}

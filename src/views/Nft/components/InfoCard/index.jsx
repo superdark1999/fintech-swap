@@ -4,6 +4,7 @@ import { CartStyled } from './styled'
 import { Link } from 'react-router-dom'
 import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import { useActiveWeb3React } from 'wallet/hooks'
+import { Row, Col } from 'antd'
 
 const Tags = (tag, key) => {
   //console.log(tag, key)
@@ -23,41 +24,38 @@ const InfoCard = (value) => {
   const data = value.value
   const leng = data.description.length
 
-  console.log(zmore)
+  //console.log(zmore)
   const pushClick = (n) => {
-    console.log(n)
+    //console.log(n)
     setMore(!n)
   }
 
   return (
     <CartStyled readMore={zmore}>
-      <div
-        className="box-flex"
-        // style={{ display: 'flex', marginBottom: 10 }}
-      >
+      <Row>
         {data?.TXHash && (
-          <div style={{ display: 'flex', width: '50%' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </div>
+          <Col sm={12} span={24}>
+            <span style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </span>
             <span className="number">{getCompactString(data?.TXHash, 10)}</span>
-          </div>
+          </Col>
         )}
         {data?.createdAt && (
-          <div style={{ display: 'flex' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+          <Col sm={12} span={24}>
+            <span style={{ color: '#AFBAC5', fontWeight: 600 }}>
               Date create:&nbsp;
-            </div>
+            </span>
             <span className="date">
               {moment(data?.createdAt).format('MM/DD/YYYY HH:mm')}
             </span>
-          </div>
+          </Col>
         )}
-      </div>
-      <div className="box-flex ">
+      </Row>
+      <Row>
         {data?.tokenId && (
-          <div style={{ display: 'flex', width: '50%' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+          <Col sm={12} span={24}>
+            <span style={{ color: '#AFBAC5', fontWeight: 600 }}>
               Token ID:&nbsp;
-            </div>
+            </span>
             <a
               className="value"
               href={embedTokenIdLinkBSCScan(
@@ -69,9 +67,9 @@ const InfoCard = (value) => {
             >
               {data?.tokenId}
             </a>
-          </div>
+          </Col>
         )}
-        <div className="organize">
+        <Col sm={12} span={24}>
           <span
             style={{
               fontSize: '16px',
@@ -91,18 +89,18 @@ const InfoCard = (value) => {
               ? data?.createdBy?.name
               : data?.createdBy?.walletAddress}
           </a>
-        </div>
-      </div>
-      <div className="box-flex">
+        </Col>
+      </Row>
+      <Row>
         {data?.type && (
-          <div style={{ display: 'flex', width: '50%' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>Type:&nbsp;</div>
+          <Col sm={12} span={24}>
+            <span style={{ color: '#AFBAC5', fontWeight: 600 }}>Type:&nbsp;</span>
             <span className="type">{data?.type}</span>
-          </div>
+          </Col>
         )}
         {data?.tags && (
-          <div style={{ display: 'flex' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>Tags:&nbsp;</div>
+          <Col sm={12} span={24} style={{display:'flex'}}>
+            <span style={{ color: '#AFBAC5', fontWeight: 600 }}>Tags:&nbsp;</span>
             <ul className="tags">
               <React.Fragment>
                 {data?.tags.map((item, i) => {
@@ -110,15 +108,27 @@ const InfoCard = (value) => {
                 })}
               </React.Fragment>
             </ul>
-          </div>
+          </Col>
         )}
-      </div>
+      </Row>
+      <Row>
+        {(data?.contentInfo?.width || data?.contentInfo?.height) && (
+          <Col sm={12} span={24}>
+            <span style={{ color: '#AFBAC5', fontWeight: 600 }}>
+              Dimensions:&nbsp;
+            </span>
+            <span>
+              {`${data?.contentInfo.width}x${data?.contentInfo.height}`}
+            </span>
+          </Col>
+        )}
+      </Row>
       {data?.description && (
-        <div className="intro">
-          <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+        <Row>
+          <Col sm={4} span={24} style={{ color: '#AFBAC5', fontWeight: 600 }}>
             Introduction:&nbsp;
-          </div>
-          <div className="des">{data?.description}</div>
+          </Col>
+          <Col className="des" sm={20} span={24}>{data?.description}</Col>
           {leng > 75 ? (
             <span onClick={() => pushClick(zmore)} className="readMore">
               Read more
@@ -126,7 +136,7 @@ const InfoCard = (value) => {
           ) : (
             ''
           )}
-        </div>
+        </Row>
       )}
     </CartStyled>
   )

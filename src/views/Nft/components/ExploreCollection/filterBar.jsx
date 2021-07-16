@@ -1,6 +1,7 @@
 import React from 'react'
 import { FilterBarStyled } from './styled'
 import { Select, Radio, Input } from 'antd'
+import SearchSort from '../SearchSort'
 import { OptionSort, OptionMethods, OptionTypeNft } from '../../constants'
 const { Option } = Select
 const { Search } = Input
@@ -19,18 +20,6 @@ function FilterBar(props) {
     selectDP, 
     setSelectDP
   } = props
-
-  // const onChangeSort = (value) => {
-  //   setSort(value)
-  //   setPage(1)
-  // }
-  const onChangeSelectDatePrice = (val) => {
-    
-    if(val == 'asc' || val == 'low') setSort('asc')
-    else setSort('desc')
-    setPage(1)
-    setSelectDP(val)
-  }
 
   const onChangeMethod = (e) => {
     let value = e.target.value
@@ -85,30 +74,17 @@ function FilterBar(props) {
           </Radio.Group>
         </div>
       </div>
-      <div className="right-action">
-        <Search
-          className="search-input"
-          placeholder="Search name, collections,..."
-          loading={false}
-          value={searchParams}
-          onChange={handleInputOnchange}
-          enterButton
-        />
-        <div>
-          <label>Sort: </label>
-          <Select
-            style={{ width: 120, borderRadius: 30 }}
-            onChange={onChangeSelectDatePrice}
-            defaultValue={selectDP}
-          >
-            {OptionSort.map((item) => (
-              <Option key={item.value} value={item.value} >
-                {item.label}
-              </Option>
-            ))}
-          </Select>
-        </div>
-      </div>
+      <SearchSort
+        handleInputOnchange={handleInputOnchange}
+        setPage={setPage}
+        searchParams={searchParams}
+        //selectType={select}
+        //setSelectType={setSelect}
+        setSelectSort={setSort}
+        selectDP={selectDP} 
+        setSelectDP={setSelectDP}
+        // setTypeSortDate={true}
+      />
     </FilterBarStyled>
   )
 }

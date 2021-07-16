@@ -24,8 +24,8 @@ function ExploreCollection() {
   
   const [filterMethod, setFilterMethod] = useState('')
   const [filterType, setFilterType] = useState('')
-  const [selectDP, setSelectDP] = useState('asc')
-  const [sort, setSort] = useState('asc')
+  const [selectDP, setSelectDP] = useState('desc')
+  const [sort, setSort] = useState('desc')
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(0)
   const [tags, setTags] = useState([])
