@@ -33,7 +33,7 @@ export const SidebarStyled = styled.div<PropsStyled>`
       justify-content: center;
       align-items: center;
       margin-left: 6px;
-      font-size: 14px;
+      font-size: 13px;
       top: -14px;
       right: 6px;
       width: 20px;
@@ -80,7 +80,7 @@ export const SidebarStyled = styled.div<PropsStyled>`
         justify-content: center;
         align-items: center;
         margin-left: 6px;
-        font-size: 15px;
+        font-size: 13px;
         width: 24px;
         height: 24px;
       }

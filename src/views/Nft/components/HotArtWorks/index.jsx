@@ -13,10 +13,10 @@ function HotArtWorks() {
   const [loading, setLoading] = useState(true)
   const [configState, configAction] = useConfigStore()
   const scrollLeft = () => {
-    divRef.current.scrollLeft += 260
+    divRef.current.scrollLeft += 320
   }
   const scrollRight = () => {
-    divRef.current.scrollLeft -= 260
+    divRef.current.scrollLeft -= 320
   }
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
@@ -76,12 +76,10 @@ function HotArtWorks() {
       <RightCircleOutlined
         className="scroll-left"
         onClick={scrollLeft}
-        style={{ fontSize: 24 }}
       />
       <LeftCircleOutlined
         className="scroll-right"
         onClick={scrollRight}
-        style={{ fontSize: 24 }}
       />
       <div className="content-artwork" ref={divRef}>
         {/* {
@@ -103,7 +101,7 @@ function HotArtWorks() {
             <Cart width="320px" height="480px" data={item} isLazy/>
             ))} */}
         {NFTs.map((item, i) => (
-          <Cart key={i} width="320px" height="480px" data={item} isLazy />
+          <Cart key={i} data={item} isLazy />
         ))}
       </div>
     </HotArtWorksStyled>

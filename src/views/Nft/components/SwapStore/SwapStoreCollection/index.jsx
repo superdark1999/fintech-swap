@@ -135,7 +135,7 @@ function ExploreCollection() {
       <div className="content-collect">
         {NFTs.data.map((item) => {
           return (
-              <Cart key={item.id} width="320px" height="480px" data={item} isLazy/>
+              <Cart key={item.id} data={item} isLazy width="100%"/>
             )
         })}
       </div>

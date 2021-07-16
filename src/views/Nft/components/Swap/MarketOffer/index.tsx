@@ -5,7 +5,7 @@ import { Select, Row, Image } from 'antd'
 import Swap from 'assets/images/swap.svg'
 import Token from 'assets/images/token.svg'
 import Plus from 'assets/images/plus.svg'
-import { RightCircleOutlined, LeftCircleOutlined, ConsoleSqlOutlined } from '@ant-design/icons'
+import { RightCircleOutlined, LeftCircleOutlined } from '@ant-design/icons'
 import { data, column } from './mock'
 import { isMobile } from 'react-device-detect'
 import { ButtonBuy } from 'components-v2/Button'
@@ -20,10 +20,11 @@ import formatNumber from 'utils/formatNumber'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import notification from 'components-v2/Alert'
-import {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+//import {MARKET_ADDRESS} from 'services/web3Services/MarketServices'
+import { BINANCE_CONFIG } from 'configs'
 import OfferTable from '../components/OfferTable'
+
+const {MARKET_ADDRESS} = BINANCE_CONFIG
 
 interface Props {
   nextStep: (step: number) => void,
@@ -47,7 +48,6 @@ const METHOD_SWAP = {
   NFT_ONLY: 1,
   NFT_TOKEN: 2,
 }
-
 export default function (props: Props) {
   const {
     myItems, setVisible, itemSwap, selectMetodSwap, setSelectMethod, nextStep, setMyItems, offerData
@@ -56,7 +56,7 @@ export default function (props: Props) {
   const [offerPrice, setOfferPrice] = useState<number>(0)
   const [isProccessing, setIsProcessing] = useState<boolean>(false)
   const [userState, userActions] = useUserStore()
-  console.log(myItems, itemSwap)
+
   const marketServiceMethod = useMarketService()
 
   const { account } = useActiveWeb3React()
@@ -189,7 +189,6 @@ export default function (props: Props) {
   }
 
   const chooseOffer = (data: any) => {
-    console.log(data)
     if (data?.price > 0) {
       setSelectMethod(2)
     } else {
@@ -261,85 +260,7 @@ export default function (props: Props) {
   )
 }
 
-// const OfferTable = ({ offerData, isRenderAction, chooseOffer }: any) => {
-//   const column = [
-//     {
-//       title: 'Buyer',
-//       render: (record: any) => {
-//         return (
-//           <div>
-//             {record?.ownerWalletAddress > 0 && (
-//               <TextGradient width="auto" fontSize="14px">{getCompactString(record?.ownerWalletAddress, 6)} </TextGradient>
-//             )}
-//           </div>
-//         )
-//       }
-//     },
-//     {
-//       title: 'Item',
-//       render: (record: any) => {
-//         return (
-//           <div>
-//             {record?.price > 0 && (<Row>
-//               <TextGradient width="auto" fontSize="14px">{formatNumber(record?.price)} </TextGradient>
-//               {' '}<img src={Token} />
-//             </Row>)}
-//            { record?.type!='video'?
-//            <Image style={{ width: 80, height: 80, borderRadius: '8px' }} src={record?.contentUrl} />:
-//             <video
-//             className="nft-image"
-//             width='80px'
-//             height='80px'
-//             style={{objectFit:'cover'}}
-//             playsInline
-//             controls
-//             muted
-//             src={`${record?.contentUrl}`}
-//             data-srcset={record?.contentUrl}
-//             data-src={`${record?.contentUrl}#t=0.1`}
-//             loop
-//           />}
-//           </div>
-//         )
-//       }
-//     },
-//     {
-//       title: 'Price',
-//       dataIndex: 'price',
-//     },
-//     {
-//       title: 'Created By',
-//       render: (record: any) => {
-//         return (
-//           <div>
-//             <TextGradient width="auto" fontSize="14px">{record?.createdBy?.name} </TextGradient>
-//           </div>
-//         )
-//       }
-//     },
-//     {
-//       title: 'Note',
-//       dataIndex: 'note',
-//     },
-//     {
-//       title: 'Action',
-//       render: (record: any) => {
-//         return (<>
-//           {isRenderAction ? <ButtonBuy onClick={() => { chooseOffer(record) }}>View</ButtonBuy> : null}
-//         </>)
-//       }
-//     },
-//   ];
-//   return (
-//     <TableStyled
-//       columns={column}
-//       dataSource={offerData}
-//       size="middle"
-//       scroll={{ x: 300 }}
-//       style={{ width: '1100px', margin: 'auto' }}
-//     />
-//   )
-// }
+
 
 
 

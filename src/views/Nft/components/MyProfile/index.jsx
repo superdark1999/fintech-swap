@@ -23,9 +23,7 @@ import { getCompactString } from 'utils'
 import { isMobile } from 'react-device-detect'
 import GetTypeSocial from 'components-v2/GetTypeSocial'
 import _, { isEmpty } from 'lodash'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import useMarketServices from 'services/web3Services/MarketServices'
 const { TabPane } = Tabs
 export default () => {
   const [userState] = useUserStore()

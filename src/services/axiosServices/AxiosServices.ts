@@ -19,6 +19,7 @@ export default function AxiosServices(baseUrl: string = '') {
     isQuery: boolean,
     showLoading: boolean,
     showError: boolean,
+    onUploadProcess:any,
   ) {
     let route = `${baseUrl}${url}`
     if (isQuery && !_.isEmpty(data)) {
@@ -31,16 +32,21 @@ export default function AxiosServices(baseUrl: string = '') {
       method,
       url: route,
       headers: headers,
-      timeout: 30 * 1000,
+      timeout: 60 * 1000,
       credentials: 'same-origin',
       origin: '*',
+      onUploadProgress:()=>{}
     }
 
     if (data) {
       if (data instanceof FormData) {
+        options.onUploadProgress = onUploadProcess
+        delete options.timeout 
         Object.assign(options, {
           data: data,
-          headers: { ...headers, 'Content-Type': 'multipart/form-data' },
+          headers: { ...headers,
+             'Content-Type': 'multipart/form-data' 
+          },
         })
       } else {
         Object.assign(options, { data: JSON.stringify(data) })
@@ -57,35 +63,35 @@ export default function AxiosServices(baseUrl: string = '') {
   }
   const GET = useCallback(
     (route, query, showLoading = false, showError = false) => {
-      return fetch(route, 'GET', query, true, showLoading, showError)
+      return fetch(route, 'GET', query, true, showLoading, showError,()=>{})
     },
     [],
   )
 
   const POST = useCallback(
-    (route, body, showLoading = false, showError = false) => {
-      return fetch(route, 'POST', body, false, showLoading, showError)
+    (route, body, showLoading = false, showError = false,onUploadProcess = ()=>{}) => {
+      return fetch(route, 'POST', body, false, showLoading, showError, onUploadProcess)
     },
     [],
   )
 
   const PUT = useCallback(
     (route, body, showLoading = false, showError = false) => {
-      return fetch(route, 'PUT', body, false, showLoading, showError)
+      return fetch(route, 'PUT', body, false, showLoading, showError,()=>{})
     },
     [],
   )
 
   const PATCH = useCallback(
     (route, body, showLoading = false, showError = false) => {
-      return fetch(route, 'PATCH', body, false, showLoading, showError)
+      return fetch(route, 'PATCH', body, false, showLoading, showError,()=>{})
     },
     [],
   )
 
   const DELETE = useCallback(
     (route, query, showLoading = false, showError = false) => {
-      return fetch(route, 'DELETE', query, true, showLoading, showError)
+      return fetch(route, 'DELETE', query, true, showLoading, showError,()=>{})
     },
     [],
   )

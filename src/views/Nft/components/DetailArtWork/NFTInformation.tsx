@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import 'antd/dist/antd.css'
-import {
-  DetailTabpane,
-} from './styled'
+import { DetailTabpane } from './styled'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { getPrice, getCompactString, embedTokenIdLinkBSCScan } from 'utils'
+import {  getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import _ from 'lodash'
 
-const NFTInformation = ({NFTDetail}:any)=>{
-    const { account, chainId } = useActiveWeb3React()
-    return(
-      <DetailTabpane>
+const NFTInformation = ({ NFTDetail }: any) => {
+  const { account, chainId } = useActiveWeb3React()
+  return (
+    <DetailTabpane>
       <div className="group-info">
         <div className="info">
           <div className="title">NFT Contract ID:</div>
@@ -62,20 +60,19 @@ const NFTInformation = ({NFTDetail}:any)=>{
             {getCompactString(NFTDetail?.ownerWalletAddress, 6)}
           </a>
         </div>
-        {NFTDetail.contentInfo && (
+        {NFTDetail.contentInfo?.width && (
           <div className="info">
             <div className="title">Dimensions:</div>
-            <a className="value" href="#">
+            <span className="value">
               <span>
-                {NFTDetail?.contentInfo?.width}x
-                {NFTDetail?.contentInfo?.height}
+                {NFTDetail?.contentInfo?.width}x{NFTDetail?.contentInfo?.height}
               </span>
-            </a>
+            </span>
           </div>
         )}
       </div>
     </DetailTabpane>
-    )
+  )
 }
 
 export default NFTInformation

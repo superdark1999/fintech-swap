@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Select, Button } from 'antd'
 import { CollectionStyled } from './styled'
-import Cart from 'components-v2/CardItem'
+import Card from 'components-v2/CardItem'
 import useIO from 'hooks/useIo'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import _ from 'lodash'
@@ -106,7 +106,7 @@ function Collection(props) {
       
       <div className="content-collect">
         {NFTs?.data?.map((item) => (
-          <Cart key={item.id} width="320px" height="480px" data={item} isLazy />
+          <Card key={item.id} width="100%" data={item} isLazy />
         ))}
       </div>
       {NFTs?.data?.length < NFTs?.total && (

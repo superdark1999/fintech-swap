@@ -9,38 +9,27 @@ import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
 import CountVisit from './CountVisit'
-import { ButtonStyle, ButtonBuyStyle } from 'components-v2/cart/styled'
 import {
-  SwapOutlined,
   CloseOutlined,
   StarFilled,
   CheckOutlined,
 } from '@ant-design/icons'
 import {
   DetailStyled,
-  ReviewStyled,
-  ScrollReview,
-  FooterStyled,
   ImageStyled,
-  DetailTabpane,
   OwenedBy,
   HeaderStyled,
-  TableStyled,
   VideoStyled,
 } from './styled'
-import { dataHistory, columnHistory } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import useMarketServices from 'services/web3Services/MarketServices'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { useParams } from 'react-router-dom'
-import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
-import Hammer from 'assets/images/hammer.svg'
+import { ButtonBuy } from 'components-v2/Button'
 import { Link } from 'react-router-dom'
-import { getPrice, getCompactString, embedTokenIdLinkBSCScan } from 'utils'
+import { getPrice } from 'utils'
+import {BINANCE_CONFIG} from 'configs'
 import notification from 'components-v2/Alert'
 import { useHistory } from 'react-router-dom'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
@@ -66,6 +55,7 @@ const DetaiArtWork = ({ id }: any) => {
   const luckyServiceMethod = useLuckyServices()
   const [isProcessing, setIsProccessing] = useState(false)
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
+  const {MARKET_ADDRESS} = BINANCE_CONFIG
   const history = useHistory()
   useEffect(() => {
     getDetailNFT({ id }).then(({ status, data }) => {
@@ -96,8 +86,7 @@ const DetaiArtWork = ({ id }: any) => {
   const onApproveBuyOnMarket = () => {
     userActions?.updateUserInfo({ isProcessingCanBuy: true })
     if (luckyServiceMethod) {
-      luckyServiceMethod
-        ?.approveLevelAmount(MARKET_ADDRESS)
+      luckyServiceMethod?.approveLevelAmount(MARKET_ADDRESS)
         .then()
         .catch(() => {
           userActions?.updateUserInfo({ isProcessingCanBuy: false })
@@ -192,7 +181,7 @@ const DetaiArtWork = ({ id }: any) => {
         <HeaderStyled className="header-detail">
           <Row align="middle">
             <div className="social-icon">
-              <CloseOutlined className="icon" onClick={priviousPage}/>
+              <CloseOutlined className="icon" onClick={priviousPage} />
             </div>
             <div className="rating">
               4.8 <StarFilled style={{ color: '#fadb14' }} />{' '}
@@ -282,13 +271,12 @@ const DetaiArtWork = ({ id }: any) => {
             >
               <p className="organize">
                 <img
-                  style={{ borderRadius: '100px' }}
-                  width="40px"
-                  src={
-                    NFTDetail?.createdBy
-                      ? NFTDetail?.createdBy?.avatarImage
-                      : Luckyswap
-                  }
+                  style={{
+                    height: '40px',
+                    width: '40px',
+                    borderRadius: '100px',
+                  }}
+                  src={NFTDetail?.createdBy?.avatarImage}
                 />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
                 {/* <img src={Checkmark} /> */}
@@ -299,14 +287,14 @@ const DetaiArtWork = ({ id }: any) => {
 
           <Tabs defaultActiveKey="1">
             <TabPane tab="Detail" key="1">
-            <NFTInformation NFTDetail={NFTDetail} />
+              <NFTInformation NFTDetail={NFTDetail} />
             </TabPane>
 
             <TabPane tab="History" key="2">
               <TableHistory tokenId={NFTDetail.tokenId} />
             </TabPane>
             <TabPane tab="Reviews" key="4">
-              <Reviews/>
+              <Reviews />
             </TabPane>
           </Tabs>
 

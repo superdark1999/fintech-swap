@@ -7,11 +7,9 @@ import Luckyswap from 'assets/images/luckyswap.svg'
 import usrMarketServices from 'services/web3Services/MarketServices'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import _ from 'lodash'
-import { getPrice, getCompactString } from 'utils'
+import { getPrice } from 'utils'
 import formatNumber from 'utils/formatNumber'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import useMarketServices from 'services/web3Services/MarketServices'
 import notification from 'components-v2/Alert'
 import { isMobile } from 'react-device-detect'
 import { Link, useHistory } from 'react-router-dom'
@@ -86,6 +84,7 @@ export default function OnSaleCard({ data }: any) {
             })
           })
           .catch((err) => {
+            console.log('err',err)
             notification('error', {
               message: 'Error',
               description: err.message,

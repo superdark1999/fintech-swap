@@ -11,16 +11,17 @@ import Token from 'assets/images/token.svg'
 import { isMobile } from 'react-device-detect'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import BSCScanServices from 'services/axiosServices/BSCScanServices'
-import { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
 import { Menu, Dropdown } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { getPrice, SUPPORT_CHAIN_IDS } from 'utils'
+import { getPrice} from 'utils'
+import {BINANCE_CONFIG} from 'configs'
 import { Modal, Input, Form } from 'antd'
 import formatNumber from 'utils/formatNumber'
 import useAuth from 'hooks/useAuth'
+
 interface TopBarProps {
   setMobileMenu?: (value: boolean) => void
   mobileMenu?: boolean
@@ -40,6 +41,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   const [userState, userActions] = useUserStore()
   const [configState, configAction] = useConfigStore()
   const [isShowAlert, setIsShowAlert] = useState(false)
+  const {SUPPORT_CHAIN_IDS, binanceConfig, binaceText, MARKET_ADDRESS } = BINANCE_CONFIG
 
   var prevScrollpos = window.pageYOffset
   let location = useLocation()
@@ -62,20 +64,17 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   //     window.removeEventListener('scroll', () => handleScroll);
   //   };
   // }, []);
+  const { ethereum, BinanceChain } = window as any
 
   useEffect(() => {
-    const { ethereum, BinanceChain } = window as any
     if (
-      chainId &&
-      !SUPPORT_CHAIN_IDS.includes(chainId) &&
-      ethereum.selectedAddress
+      !SUPPORT_CHAIN_IDS.includes(Number(ethereum?.chainId)) && ethereum &&ethereum?.chainId!=binanceConfig.chainId
     ) {
-      ethereum
-        .request({
+      ethereum.request({
           method: 'wallet_switchEthereumChain',
           params: [
             {
-              chainId: '0x61',
+              chainId: binanceConfig.chainId,
             },
           ],
         })
@@ -88,19 +87,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
               .request({
                 method: 'wallet_addEthereumChain',
                 params: [
-                  {
-                    chainId: '0x61',
-                    rpcUrls: [
-                      'https://data-seed-prebsc-1-s1.binance.org:8545/',
-                    ],
-                    chainName: 'Binance SmartChain Testnet',
-                    nativeCurrency: {
-                      name: 'TestnetBNB',
-                      symbol: 'BNB', // 2-6 characters long
-                      decimals: 18,
-                    },
-                    blockExplorerUrls: ['https://testnet.bscscan.com'],
-                  },
+                  binanceConfig
                 ],
               })
               .then(() => {
@@ -109,7 +96,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
                     method: 'wallet_switchEthereumChain',
                     params: [
                       {
-                        chainId: '0x61',
+                        chainId: binanceConfig.chainId,
                       },
                     ],
                   })
@@ -122,13 +109,13 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
               })
           }
         })
-    } else if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)) {
-      console.log('lsls', chainId, account)
-      BinanceChain.switchNetwork('bsc-testnet').then(() => {
+    }
+    if ( !SUPPORT_CHAIN_IDS.includes(Number(BinanceChain?.chainId)) && BinanceChain &&BinanceChain?.chainId!=binanceConfig?.chainId) {
+      BinanceChain.switchNetwork(binaceText).then(() => {
         window.location.reload()
       })
     }
-  }, [chainId])
+  }, [chainId,BinanceChain?.chainId,ethereum?.chainId])
 
   useEffect(() => {
     if (luckyMethod) {
@@ -608,19 +595,11 @@ const StyledTopBar = styled.div`
       margin-left: 14px;
       position: relative;
       cursor: pointer;
-<<<<<<< HEAD
-      color:#333435;
-      border:2px solid #35A5FC;   
-      .number-balance{
-        margin-right:4px;
-      }  
-=======
       color: #35a5fc;
       border: 2px solid #35a5fc;
       .number-balance {
         margin-right: 4px;
       }
->>>>>>> e360223ae8bcc612da7ae137cc98d84118ea3ff2
       @media (max-width: 756px) {
         display: none;
       }

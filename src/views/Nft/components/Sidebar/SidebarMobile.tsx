@@ -4,9 +4,10 @@ import NotifyIcon from 'assets/images/notify.svg'
 import Rocket from 'assets/images/Rocket.svg'
 import MoneyIcon from 'assets/images/money.svg'
 
-import { Button, Select, Input, Checkbox } from 'antd'
+import { Button, Select, Input, Checkbox, Slider } from 'antd'
 import { TagFilled, SearchOutlined} from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import formatNumber from 'utils/formatNumber'
 const plainOptions = ['Apple', 'Pear', 'Orange'];
 
 const { Option } = Select
@@ -15,6 +16,8 @@ const options = ["LUCKY TOKEN (LUCKY)"]
 interface SideBarProps {
   setMobileMenu?: (value: boolean) => void,
   mobileMenu?: boolean
+  onChangePrice?: (value: any) => void,
+  price?: any
 }
 
 const SidebarMobile = (props: SideBarProps) => {
@@ -26,6 +29,20 @@ const SidebarMobile = (props: SideBarProps) => {
   const onChange = (list: any) => {
     setCheckedList(list);
   };
+
+  const [price, setPrice] = React.useState<any>({ minPrice: 0, maxPrice: 100000 })
+
+
+  const handeChangeSlider = (value: any) => {   
+    setPrice({ ...price, minPrice: +value[0], maxPrice: +value[1]})
+  }
+
+  const onApply = () => {
+    props.onChangePrice(price)
+    var elmnt = document.getElementById('collection-scroll-view')
+    elmnt.scrollIntoView()
+    props.setMobileMenu(false)
+  }
 
   return (
     <DrawerStyled
@@ -55,19 +72,19 @@ const SidebarMobile = (props: SideBarProps) => {
               {/* { checkRenderSubMenu('price') ? <CaretUpOutlined/> : <CaretDownOutlined /> } */}
             </div>
             <div className={true ? 'show-sub-menu list-sub-menu' : 'list-sub-menu'}>
-              <Select onChange={setSelect} defaultValue={select}>
-                {options.map((item) => (
-                  <Option key={item} value={item}>{item}</Option>
-                ))}
-              </Select>
-              <div className="button group-input">
-                <Input placeholder="min" />
-                to
-                <Input placeholder="max" />
-              </div>
-              <div className="button sub-menu">
+              <Slider
+                range
+                step={100}
+                max={100000}
+                min={0}
+                defaultValue={[0, 100000]}
+                onChange={handeChangeSlider}
+                tipFormatter={value => formatNumber(value)}
+                style={{margin: '30px 30px'}}
+              />
+            <div className="button sub-menu">
 
-                <Button shape="round" style={{ fontWeight: 'bold' }}>
+                <Button shape="round" style={{ fontWeight: 'bold' }} onClick={onApply}>
                   Apply
                 </Button>
               </div>

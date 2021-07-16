@@ -8,9 +8,7 @@ import {
 import StatusBar from 'components-v2/StatusBar'
 import { ButtonBuy, ButtonCancel } from 'components-v2/Button'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import useMarketServices from 'services/web3Services/MarketServices'
 import useNFTServices from 'services/web3Services/NFTServices'
 import { Link, useHistory, useParams } from 'react-router-dom'
 //import OnsSaleCard from './OnSaleCard'
@@ -19,6 +17,7 @@ import notification from 'components-v2/Alert'
 import { useActiveWeb3React } from 'wallet/hooks'
 import ModalSetPriceAuction from './ModalSetPriceAuction'
 import ModalSetPriceSell from './ModalSetPriceSell'
+import ModalSetAddressTransfer from './ModalSetAddressTransfer'
 import QRCodeComp from 'components-v2/QRcode/index'
 import { createFromIconfontCN } from '@ant-design/icons'
 import InfoCard from '../InfoCard'
@@ -27,6 +26,7 @@ import OfferTable from '../Swap/components/OfferTable'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
+import {BINANCE_CONFIG} from 'configs'
 
 
 import {getPrice} from 'utils'
@@ -35,7 +35,7 @@ import {getPrice} from 'utils'
 export default function MyCollectionCard({ data, option, setReList }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [ruleAuctionModal, setRuleAuctionModal] = useState(false)
   const [approvingMarket, setApprovingMarket] = useState(false)
   const [showQR, setShowQR] = useState(false)
@@ -45,6 +45,8 @@ export default function MyCollectionCard({ data, option, setReList }: any) {
   const { account, chainId } = useActiveWeb3React()
   const formRef = useRef()
   const [isShowModalSetPrice, setShowModalsetPrice] = useState(false)
+  const [isShowModalSetAddressTransfer,setShowModalSetAddressTransfer] = useState(false)
+  const {MARKET_ADDRESS} = BINANCE_CONFIG
 
   const [offerData, setOfferData] = useState([])
   const { getNFT, setPrice, cancelSellNFT } = useArtworkServices()
@@ -161,8 +163,11 @@ export default function MyCollectionCard({ data, option, setReList }: any) {
           setIsLoading(false)
         })
         .catch((err) => {
+          setIsNFTCanSell(false)
           setIsLoading(false)
         })
+    }else{
+      setIsLoading(false)
     }
   }, [data?.tokenId, !!NFTServicesMethod])
 
@@ -185,11 +190,15 @@ export default function MyCollectionCard({ data, option, setReList }: any) {
           setIsProcessing(false)
         }
       })
+      nftContract.on('Transfer',(from, to, tokenId)=>{
+        if(Number(tokenId)==data.tokenId&&account==from){
+          setIsProcessing(true)
+        }
+      })
     }
   }, [data?.tokenId, !!NFTServicesMethod, account,isNFTCanSell])
 
   const onSellItem = (value: any) => {
-    setIsProcessing(true)
     const tokenId = data?.tokenId
     setIsProcessing(true)
     marketServicesMethod
@@ -400,31 +409,29 @@ export default function MyCollectionCard({ data, option, setReList }: any) {
     )
   }
   const renderGroupAction = (status: any) => {
-    if(isProcessing&&isLoading){
+    if(isProcessing||isLoading){
       return null
     }
     if (status === 'approved') {
       return (
         <div className="group-button">
           {!isNFTCanSell && !approvingMarket && (
-            <ButtonBuy height="40px" style={{ marginRight: '10px' }}>
+            <ButtonBuy height="40px" style={{ marginRight: '10px' }} onClick={()=>{setShowModalSetAddressTransfer(true)}}>
               Transfer
             </ButtonBuy>
           )}
           {isNFTCanSell && !isProcessing && (
             <>
-              <Dropdown className="dropdown-action" overlay={menu}>
+              <Dropdown className="dropdown-action" overlay={menuSell}>
                 <ButtonBuy style={{ marginRight: '10px' }}>
                   Sell <DownOutlined style={{ marginLeft: 10 }} />
                 </ButtonBuy>
               </Dropdown>
-              <ButtonBuy
-                style={{ marginRight: '10px' }}
-                className="btn-swap"
-                onClick={onSubmitSwapItem}
-              >
-                Swap
-              </ButtonBuy>
+              <Dropdown className="dropdown-action btn-swap" overlay={menuSwap}>
+                <ButtonBuy style={{ marginRight: '10px' }}>
+                  Swap <DownOutlined style={{ marginLeft: 10 }} />
+                </ButtonBuy>
+              </Dropdown>
             </>
           )}
           {approvingMarket && !isNFTCanSell && (
@@ -516,7 +523,7 @@ export default function MyCollectionCard({ data, option, setReList }: any) {
     }
   }
   
-  const handleMenuClick = (dt: any) => {
+  const handleMenuSellClick = (dt: any) => {
     if (dt.key === 'sell') {
       setShowModalsetPrice(true)
     } else if (dt.key === 'auction') {
@@ -524,14 +531,45 @@ export default function MyCollectionCard({ data, option, setReList }: any) {
     }
   }
   // menu dropdown choose allow to sell
-  const menu = (
-    <Menu onClick={handleMenuClick}>
+  const menuSell = (
+    <Menu onClick={handleMenuSellClick}>
       <Menu.Item key="sell">Sell</Menu.Item>
       <Menu.Item key="auction">Auction</Menu.Item>
     </Menu>
   )
 
+  
+  const handleMenuSwapClick = (dt: any) => {
+    if (dt.key === 'swap') {
+      history.push('/swap/step=1')
+    } else if (dt.key === 'pushlish') {
+      onSubmitSwapItem()
+    }
+  }
+  // menu dropdown choose allow to sell
+  const menuSwap = (
+    <Menu onClick={handleMenuSwapClick}>
+      <Menu.Item key="swap">Swap</Menu.Item>
+      <Menu.Item key="pushlish">Pushlish</Menu.Item>
+    </Menu>
+  )
+
   //render status from API
+  const onTransferItem = (value: any)=>{
+    if(NFTServicesMethod){
+      const tokenId = data?.tokenId
+      setIsProcessing(true)
+      NFTServicesMethod.transferToken(data?.tokenId,value.address)
+      .then((dt) => {
+       
+      })
+      .catch((err) => {
+        notification('error', { message: 'Error', description: err?.message })
+        setIsProcessing(false)
+      })
+      setShowModalSetAddressTransfer(false)
+    }
+  }
   return (
     <CartStyled>
       <Row gutter={24} align={'middle'}>
@@ -603,6 +641,13 @@ export default function MyCollectionCard({ data, option, setReList }: any) {
         formRef={formRef}
         onSubmitRuleAuction={onSubmitRuleAuction}
       />
+      <ModalSetAddressTransfer
+        isShowModalSetAddressTransfer={isShowModalSetAddressTransfer}
+        setShowModalSetAddressTransfer={setShowModalSetAddressTransfer}
+        formRef={formRef}
+        onTransferItem={onTransferItem}
+      />
+      
       <QRCodeComp
         isShow={showQR}
         setShowQR={setShowQR}

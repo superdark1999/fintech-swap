@@ -6,6 +6,7 @@ import { useActiveWeb3React } from 'wallet/hooks'
 import {getPrice} from 'utils'
 import formatNumber from 'utils/formatNumber'
 import _ from 'lodash'
+import notification from 'components-v2/Alert'
 export const columnHistory = [
   {
     title: 'Event',
@@ -84,7 +85,10 @@ export default () => {
         setIsProcessing(false)
       })
     },20000))
-    .catch(()=>{
+    .catch((err)=>{
+      if(err.data.code==3){
+        notification('warning',{message:'Please wait auction confirm by seller',description:''})
+      }
       setIsProcessing(false)
     })
   }

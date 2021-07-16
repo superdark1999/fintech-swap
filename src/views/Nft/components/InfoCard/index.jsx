@@ -124,19 +124,25 @@ const InfoCard = (value) => {
         )}
       </Row>
       {data?.description && (
+        (zmore ?
         <Row>
-          <Col sm={4} span={24} style={{ color: '#AFBAC5', fontWeight: 600 }}>
-            Introduction:&nbsp;
-          </Col>
-          <Col className="des" sm={20} span={24}>{data?.description}</Col>
-          {leng > 75 ? (
-            <span onClick={() => pushClick(zmore)} className="readMore">
-              Read more
-            </span>
-          ) : (
-            ''
-          )}
+            <Col sm={4} span={24} style={{ color: '#AFBAC5', fontWeight: 600 }}>
+              Introduction:&nbsp;
+            </Col>
+            <Col className="des" sm={17} span={24}>{data?.description}</Col>
+            <Col sm={3} span={24} onClick={() => pushClick(zmore)} className="readMore">
+            &nbsp;Read more
+            </Col>
+          
+          
         </Row>
+        :
+        <Row>
+            <Col sm={4} span={24} style={{ color: '#AFBAC5', fontWeight: 600 }}>
+              Introduction:&nbsp;
+            </Col>
+            <Col className="des" sm={20} span={24}>{data?.description}</Col>
+        </Row>)
       )}
     </CartStyled>
   )
