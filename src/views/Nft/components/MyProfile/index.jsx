@@ -226,8 +226,8 @@ const TabMyCollection = () => {
     }
   },[account,!!marketServicesMethod])
 
-  useEffect(() => {
-    console.log(reList)
+
+  function getDataRender() {
     if (optionChecked) {
       const query = {
         ownerWalletAddress: account,
@@ -250,7 +250,12 @@ const TabMyCollection = () => {
         }
       })
     }
-  }, [optionChecked,reList])
+  }
+
+  
+  useEffect(() => {
+    getDataRender()
+  }, [optionChecked])
 
   const onHandleOptionCheck = (e) => {
     setOptionChecked(e.target.value)
@@ -319,7 +324,7 @@ const TabMyCollection = () => {
               key={item?._id}
               data={item}
               option={optionChecked}
-              setReList={setReList}
+              reloadList={getDataRender}
             />
           )
         })}

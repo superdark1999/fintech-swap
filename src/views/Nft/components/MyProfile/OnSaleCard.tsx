@@ -14,11 +14,15 @@ import notification from 'components-v2/Alert'
 import { isMobile } from 'react-device-detect'
 import { Link, useHistory } from 'react-router-dom'
 import StatusBar from 'components-v2/StatusBar'
-import { ButtonCancel } from 'components-v2/Button'
+import { ButtonCancel, ButtonBuy } from 'components-v2/Button'
 import InfoCard from '../InfoCard'
 import QRCodeComp from 'components-v2/QRcode/index'
 import { ShareAltOutlined } from '@ant-design/icons'
-import moment from 'moment'
+// import moment from 'moment'
+import { useActiveWeb3React } from 'wallet/hooks'
+import ButtonProccesing from 'components-v2/Button/btnProcessing'
+import OfferTable from '../Swap/components/OfferTable'
+
 
 export default function OnSaleCard({ data }: any) {
   const [loading, setLoading] = useState(true)
@@ -30,6 +34,125 @@ export default function OnSaleCard({ data }: any) {
   const marketServicesMethod = useMarketServices()
   const [showQR, setShowQR] = useState(false)
   //console.log(data)
+  const { account, chainId } = useActiveWeb3React()
+  const [offerData, setOfferData] = useState([])
+  const { getNFT } = useArtworkServices()
+  const [state, setState] = useState<any>(true);
+  const [myItems, setMyItems] = useState<any>([]);
+  const [status, setStatus] = useState<string>('processing')
+  
+
+  //console.log(data)
+
+  useEffect(()=>{
+    console.log('a')
+    if(marketServicesMethod && data?.tokenId && myItems?.tokenId){
+      const {marketContract} =  marketServicesMethod
+      console.log('b')
+      marketContract.on('SwapNFTs',(tokenIdA, tokenIdB, accountB, event)=>{
+        console.log(tokenIdA,tokenIdB,accountB)
+        if(data?.ownerWalletAddress==accountB 
+          && data?.tokenId ==Number(tokenIdB) 
+          && myItems?.tokenId == Number(tokenIdA)){
+          setTimeout(() => {
+            setStatus('success')
+          }, 10000)
+        }
+      })
+      
+    }
+  },[marketServicesMethod,account, data?.tokenId, myItems?.tokenId])
+  
+  const getSwapOffers = (itemSwap:any)=>{
+    const tokenId = itemSwap?.tokenId;
+    console.log(itemSwap)
+    if(marketServicesMethod&&tokenId){
+      const {getSwapOffers} =  marketServicesMethod
+      getSwapOffers(tokenId).then((data:any)=>{
+        const rawNFTs = data?.map((item:any)=>{
+          return {
+            ownerWalletAddress: item[0],
+            tokenId: Number(item[1]),
+            price: getPrice(Number(item[2])),
+            isCancel:item[3]
+          }
+        })?.filter((i:any)=>!i?.isCancel)
+        if(!_.isEmpty(rawNFTs)){
+          getNFT({
+            tokenId: rawNFTs.map((it:any)=>it.tokenId)
+          }).then(({status,data})=>{
+            if(status==200){
+             const offerData = data?.data?.map((item:any)=>{
+                const rawNFTByTokenId = rawNFTs.find((it:any)=>item?.tokenId==it?.tokenId)||{}
+                return {
+                  ...item,
+                  ...rawNFTByTokenId,
+                }
+              })
+          
+            setOfferData(offerData)
+            //console.log(offerData)
+            }
+          })
+        }
+      })
+  }
+  }
+
+  useEffect(()=>{
+    getSwapOffers(data)
+  },[data?.tokenId])
+
+  const onGoToApprovedArtWork = () => {
+    history.push('/my-profile/mycollection/approved')
+  }
+
+  const onOfferItem = (itemSwap:any, myItems:any) => {
+    const { confirmSwapNFT } = marketServicesMethod
+    setIsProcessing(true)
+    confirmSwapNFT(itemSwap?.tokenId, myItems?.tokenId, myItems?.ownerWalletAddress).then((data) => {
+      if(status == 'success') {
+        notification(
+          'open',
+          {
+            message:
+              'Swap NFT success,you can check NFT on approved collection',
+            description: '',
+            titleBtn: 'View detail',
+          },
+          onGoToApprovedArtWork,
+        )
+      }
+    }).catch((err) => {
+      setIsProcessing(false)
+      notification('error', {
+        message: 'Error',
+        description: err.message,
+      })
+    })
+  }
+
+  const renderButon = (myItems: any)=>{
+      //console.log(myItems)
+      setMyItems(myItems)
+      if(isProcessing){
+        return( <ButtonProccesing/>)
+      }else {
+        return(
+          <ButtonBuy width="135px" 
+            onClick={() => onOfferItem(data, myItems)} 
+            > Swap now
+          </ButtonBuy>
+        )}
+    
+    
+  }
+
+  const onChangeState = (data: any) => {
+    //console.log(data)
+    setState(!data)
+  }
+
 
   useEffect(() => {
     const getPriceToken = async () => {
@@ -171,6 +294,14 @@ export default function OnSaleCard({ data }: any) {
     )
   }
 
+  const renderGroupAction = () => {
+    return (
+      <div className="group-button" style={{marginTop: '10px'}}>
+        <button className="info-swap" style={{minWidth:'100px'}} onClick={()=> onChangeState(state)}>v</button>
+        {renderQRCode()}
+      </div>
+    )
+  }
 
   if (loading) {
     return null
@@ -239,7 +370,7 @@ export default function OnSaleCard({ data }: any) {
           )}
 
           <InfoCard value={data}/>
-          {renderQRCode()}
+          {renderGroupAction()}
 
           {/* <div style={{ display: 'flex' }}>
             <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
@@ -257,6 +388,10 @@ export default function OnSaleCard({ data }: any) {
             
           </div>  */}
         </Col>
+        <div style={ {display:(data?.NFTType == 'swap-store' && data?.status == 'readyToSell' ? 'unset' : 'none'), width:'100%'} }>
+          {/* <button className="info-swap" onClick={()=> onChangeState(state)} style={{minWidth:'200px'}}>v</button> */}
+          <OfferTable state={state} offerData={offerData} isRenderAction={true} renderButon={renderButon}/>
+        </div>
       </Row>
       <QRCodeComp
         isShow={showQR}

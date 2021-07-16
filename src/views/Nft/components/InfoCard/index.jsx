@@ -1,5 +1,5 @@
 import moment from 'moment'
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { CartStyled } from './styled'
 import { Link } from 'react-router-dom'
 import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
@@ -7,7 +7,7 @@ import { useActiveWeb3React } from 'wallet/hooks'
 import { Row, Col } from 'antd'
 
 const Tags = (tag, key) => {
-  //console.log(tag, key)
+  
   return (
     <li className="item">
       <Link to="/explore">
@@ -18,17 +18,28 @@ const Tags = (tag, key) => {
 }
 
 const InfoCard = (value) => {
-  const a = true
   const [zmore, setMore] = useState(true)
   const { account, chainId } = useActiveWeb3React()
   const data = value.value
-  const leng = data.description.length
+  const [width, setWidth] = useState(0);
+  const [widthChild, setWidthChild] = useState(0);
+  const elementRefParent = useRef(null);
+  const elementRefChild = useRef(null);
+  
 
-  //console.log(zmore)
+  
   const pushClick = (n) => {
-    //console.log(n)
+    
     setMore(!n)
   }
+  useEffect(() => {
+    function handleResize() {
+      if(elementRefParent?.current) setWidth(elementRefParent?.current.offsetWidth);
+      if(elementRefChild?.current) setWidthChild(elementRefChild?.current.offsetWidth);
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+  }, [elementRefParent?.current,elementRefChild?.current]);
 
   return (
     <CartStyled readMore={zmore}>
@@ -129,10 +140,13 @@ const InfoCard = (value) => {
             <Col sm={4} span={24} style={{ color: '#AFBAC5', fontWeight: 600 }}>
               Introduction:&nbsp;
             </Col>
-            <Col className="des" sm={17} span={24}>{data?.description}</Col>
-            <Col sm={3} span={24} onClick={() => pushClick(zmore)} className="readMore">
-            &nbsp;Read more
+            <Col ref={elementRefParent} className="des" sm={17} span={24}>
+              <span ref={elementRefChild}>{data?.description}</span>
             </Col>
+            {(width < widthChild ? <Col sm={3} span={24} onClick={() => pushClick(zmore)} className="readMore">
+            &nbsp;Read more
+            </Col>: '')}
+            
           
           
         </Row>

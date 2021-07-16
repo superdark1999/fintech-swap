@@ -324,6 +324,7 @@ export const CartStyled = styled.div`
     }
     .group-button {
       display: flex;
+      margin-top: 10px;
       flex: 1;
       > div {
         margin-right: 10px;
