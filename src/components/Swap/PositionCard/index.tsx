@@ -116,7 +116,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
 }
 
 export default function FullPositionCard({ pair }: PositionCardProps) {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)
@@ -201,7 +201,7 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
               <Button
                 className="btn-supply"
                 as={Link}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                to={`/add/${currencyId(currency0, chainId)}/${currencyId(currency1, chainId)}`}
                 style={{ width: '48%' }}
               >
                 Add
@@ -210,7 +210,7 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
                 className="btn-supply"
                 as={Link}
                 style={{ width: '48%' }}
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
+                to={`/remove/${currencyId(currency0, chainId)}/${currencyId(currency1, chainId)}`}
               >
                 Remove
               </Button>

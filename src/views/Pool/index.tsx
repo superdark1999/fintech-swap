@@ -1,29 +1,27 @@
-import React, { useContext, useMemo } from 'react'
-import styled, { ThemeContext } from 'styled-components'
-import { Pair } from '@luckyswap/v2-sdk'
 import { Button, CardBody, Text } from '@luckyswap/uikit'
-import { Link } from 'react-router-dom'
-import { useActiveWeb3React } from 'hooks'
+import { NATIVE, Pair } from '@luckyswap/v2-sdk'
 import { usePairs } from 'data/Reserves'
-import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
+import { useActiveWeb3React } from 'hooks'
+import React, { useContext, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
+import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
+import styled, { ThemeContext } from 'styled-components'
 import { TranslateString } from 'utils/translateTextHelpers'
-
-import CardNav from '../../components/Swap/CardNav'
-import Question from '../../components/Swap/QuestionHelper'
-import FullPositionCard from '../../components/Swap/PositionCard'
-import { StyledInternalLink } from '../../components/Swap/Shared'
 import { LightCard } from '../../components/Swap/Card'
-import { RowBetween } from '../../components/Swap/Row'
+import CardNav from '../../components/Swap/CardNav'
 import { AutoColumn } from '../../components/Swap/Column'
+import FullPositionCard from '../../components/Swap/PositionCard'
+import { RowBetween } from '../../components/Swap/Row'
+import { StyledInternalLink } from '../../components/Swap/Shared'
 import { Dots } from '../../components/Swap/swap/styleds'
 import TranslatedText from '../../components/Swap/TranslatedText'
-import PageHeader from '../../components/Swap/PageHeader'
 import AppBody from '../AppBody'
+
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
@@ -65,7 +63,7 @@ export default function Pool() {
         </FlexBox>
 
         <div className="custom-btn">
-          <Button id="join-pool-button" as={Link} to="/add/ETH">
+          <Button id="join-pool-button" as={Link} to={`/add/${NATIVE[chainId]?.symbol}`}>
             <TranslatedText translationId={100}>Add Liquidity</TranslatedText>
           </Button>
         </div>

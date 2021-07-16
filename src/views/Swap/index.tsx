@@ -49,6 +49,7 @@ const Swap = () => {
     useCurrency(loadedUrlParams?.inputCurrencyId),
     useCurrency(loadedUrlParams?.outputCurrencyId),
   ]
+
   const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
   const [isSyrup, setIsSyrup] = useState<boolean>(false)
   const [syrupTransactionType, setSyrupTransactionType] = useState<string>('')
@@ -275,8 +276,7 @@ const Swap = () => {
 
       <AppBody>
         <FlexBox>
-          <CardNav/>
-          
+          <CardNav />
         </FlexBox>
         <Wrapper id="swap-page">
           <ConfirmSwapModal
@@ -343,7 +343,7 @@ const Swap = () => {
                 otherCurrency={currencies[Field.INPUT]}
                 id="swap-currency-output"
               />
-              <SettingModal/>
+              <SettingModal />
 
               {recipient !== null && !showWrap ? (
                 <>

@@ -105,7 +105,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
   const { chainId } = useActiveWeb3React()
 
-  const isETH = currencyId?.toUpperCase() === 'ETH'
-  const token = useToken(isETH ? undefined : currencyId)
-  return isETH ? NATIVE[chainId] : token
+  const isNative = currencyId?.toUpperCase() === NATIVE[chainId]?.symbol
+  const token = useToken(isNative ? undefined : currencyId)
+  return isNative ? NATIVE[chainId] : token
 }

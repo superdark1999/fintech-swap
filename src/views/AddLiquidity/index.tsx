@@ -25,7 +25,7 @@ import Pane from '../../components/Swap/Pane'
 import { MinimalPositionCard } from '../../components/Swap/PositionCard'
 import Row, { RowBetween, RowFlat } from '../../components/Swap/Row'
 import TransactionConfirmationModal, {
-  ConfirmationModalContent,
+  ConfirmationModalContent
 } from '../../components/Swap/TransactionConfirmationModal'
 import { useRouterContract } from '../../hooks/useContract'
 import AppBody from '../AppBody'
@@ -253,18 +253,18 @@ export default function AddLiquidity({
 
   const handleCurrencyASelect = useCallback(
     (currA: Currency) => {
-      const newCurrencyIdA = currencyId(currA)
+      const newCurrencyIdA = currencyId(currA, chainId)
       if (newCurrencyIdA === currencyIdB) {
         history.push(`/add/${currencyIdB}/${currencyIdA}`)
       } else {
         history.push(`/add/${newCurrencyIdA}/${currencyIdB}`)
       }
     },
-    [currencyIdB, history, currencyIdA],
+    [currencyIdB, history, currencyIdA, chainId],
   )
   const handleCurrencyBSelect = useCallback(
     (currB: Currency) => {
-      const newCurrencyIdB = currencyId(currB)
+      const newCurrencyIdB = currencyId(currB, chainId)
       if (currencyIdA === newCurrencyIdB) {
         if (currencyIdB) {
           history.push(`/add/${currencyIdB}/${newCurrencyIdB}`)
@@ -275,7 +275,7 @@ export default function AddLiquidity({
         history.push(`/add/${currencyIdA || 'ETH'}/${newCurrencyIdB}`)
       }
     },
-    [currencyIdA, history, currencyIdB],
+    [currencyIdA, history, currencyIdB, chainId],
   )
 
   const handleDismissConfirmation = useCallback(() => {
