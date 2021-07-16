@@ -46,7 +46,7 @@ function useNFTServiceBinaceChain(){
 
         const approveTokenToMarket = useCallback(async(tokenId:string|undefined)=>{
             const estimatedGas = await nftContract.estimateGas.approve(MARKET_ADDRESS,tokenId);
-            if(userState.balance.BNB<getPrice(Number(payableAmountDefault))+getPriceFromEstimateGas(Number(estimatedGas))){
+            if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
                 throw new Error(BNB_ERROR)
             }
             return nftContract.approve(MARKET_ADDRESS,tokenId, {
