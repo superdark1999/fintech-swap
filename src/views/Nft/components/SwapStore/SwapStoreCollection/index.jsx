@@ -23,7 +23,7 @@ function ExploreCollection() {
   const [NFTs, setNFTs] = useState({data: [], total: 0})
   const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
   //onst [selectDP, setSelectDP] = useState('asc')
-  const [sort, setSort] = useState('asc')
+  const [sort, setSort] = useState('desc')
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(0)
   //const [tags, setTags] = useState([])
@@ -129,8 +129,8 @@ function ExploreCollection() {
         setPage={setPage}
         setSort={setSort}
         sort={sort}
-        // selectDP={selectDP} 
-        // setSelectDP={setSelectDP}
+        selectDP={sort} 
+        setSelectDP={setSort}
       />
       <div className="content-collect">
         {NFTs.data.map((item) => {

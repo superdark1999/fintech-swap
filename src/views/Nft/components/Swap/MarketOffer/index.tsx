@@ -15,14 +15,17 @@ import _, { isEmpty } from 'lodash'
 import { useActiveWeb3React } from 'wallet/hooks'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
-import { getCompactString } from 'utils'
+import { getCompactString, getPrice } from 'utils'
 import formatNumber from 'utils/formatNumber'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import notification from 'components-v2/Alert'
-import {BINANCE_CONFIG}  from 'configs'
+//import {MARKET_ADDRESS} from 'services/web3Services/MarketServices'
+import { BINANCE_CONFIG } from 'configs'
+import OfferTable from '../components/OfferTable'
 
 const {MARKET_ADDRESS} = BINANCE_CONFIG
+
 interface Props {
   nextStep: (step: number) => void,
   myItems: any,
@@ -45,7 +48,6 @@ const METHOD_SWAP = {
   NFT_ONLY: 1,
   NFT_TOKEN: 2,
 }
-
 export default function (props: Props) {
   const {
     myItems, setVisible, itemSwap, selectMetodSwap, setSelectMethod, nextStep, setMyItems, offerData
@@ -160,7 +162,7 @@ export default function (props: Props) {
       if (myItems?.[0]?.tokenId && itemSwap?.[0]?.tokenId) {
         setIsProcessing(true)
         const { confirmSwapNFT } = marketServiceMethod
-        confirmSwapNFT(itemSwap?.[0]?.tokenId, myItems?.[0]?.tokenId?.toString(), myItems?.[0]?.ownerWalletAddress).then((data) => {
+        confirmSwapNFT(itemSwap?.[0]?.tokenId, myItems?.[0]?.tokenId, myItems?.[0]?.ownerWalletAddress).then((data) => {
           nextStep && nextStep(3)
         }).catch((err) => {
           setIsProcessing(false)
@@ -258,85 +260,7 @@ export default function (props: Props) {
   )
 }
 
-const OfferTable = ({ offerData, isRenderAction, chooseOffer }: any) => {
-  const column = [
-    {
-      title: 'Buyer',
-      render: (record: any) => {
-        return (
-          <div>
-            {record?.ownerWalletAddress > 0 && (
-              <TextGradient width="auto" fontSize="14px">{getCompactString(record?.ownerWalletAddress, 6)} </TextGradient>
-            )}
-          </div>
-        )
-      }
-    },
-    {
-      title: 'Item',
-      render: (record: any) => {
-        return (
-          <div>
-            {record?.price > 0 && (<Row>
-              <TextGradient width="auto" fontSize="14px">{formatNumber(record?.price)} </TextGradient>
-              {' '}<img src={Token} />
-            </Row>)}
-           { record?.type!='video'?
-           <Image style={{ width: 80, height: 80, borderRadius: '8px' }} src={record?.contentUrl} />:
-            <video
-            className="nft-image"
-            width='80px'
-            height='80px'
-            style={{objectFit:'cover'}}
-            playsInline
-            controls
-            muted
-            src={`${record?.contentUrl}`}
-            data-srcset={record?.contentUrl}
-            data-src={`${record?.contentUrl}#t=0.1`}
-            loop
-          />}
-          </div>
-        )
-      }
-    },
-    {
-      title: 'Price',
-      dataIndex: 'price',
-    },
-    {
-      title: 'Created By',
-      render: (record: any) => {
-        return (
-          <div>
-            <TextGradient width="auto" fontSize="14px">{record?.createdBy?.name} </TextGradient>
-          </div>
-        )
-      }
-    },
-    {
-      title: 'Note',
-      dataIndex: 'note',
-    },
-    {
-      title: 'Action',
-      render: (record: any) => {
-        return (<>
-          {isRenderAction ? <ButtonBuy onClick={() => { chooseOffer(record) }}>View</ButtonBuy> : null}
-        </>)
-      }
-    },
-  ];
-  return (
-    <TableStyled
-      columns={column}
-      dataSource={offerData}
-      size="middle"
-      scroll={{ x: 300 }}
-      style={{ width: '1100px', margin: 'auto' }}
-    />
-  )
-}
+
 
 
 
