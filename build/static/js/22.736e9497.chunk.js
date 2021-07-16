@@ -1,2 +1,0 @@
-(this["webpackJsonpluckyswap-exchange-v2"]=this["webpackJsonpluckyswap-exchange-v2"]||[]).push([[22],{1720:function(e,s,a){"use strict";a.r(s);var c=a(1460);s.default=c.Line}}]);
-//# sourceMappingURL=22.736e9497.chunk.js.map
