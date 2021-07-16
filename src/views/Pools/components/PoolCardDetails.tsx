@@ -16,7 +16,7 @@ import CardValue from '../../Home/components/CardValue';
   'BRY': '../images/enlin.svg',
   'BUSD': './images/coinslist/busd.png',
   'PRI' : './images/coinslist/PRI.png',
-  'CLT' : './images/coinslist/CLT.png',
+  'CTL' : './images/coinslist/CTL.png',
   'NAV' : './images/coinslist/NAV.png',
 }
 
