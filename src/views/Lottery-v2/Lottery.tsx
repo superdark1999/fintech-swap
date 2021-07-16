@@ -131,7 +131,7 @@ const Lottery: React.FC = () => {
         <PastLotteryRoundViewer />
         <PastDrawsHistoryCard /> 
 
-        <Wrapper>
+        {/* <Wrapper>
           <ButtonMenu activeIndex={activeIndex} onItemClick={handleClick} scale="sm" variant="subtle">
             <ButtonMenuItem>{TranslateString(716, 'Next draw')}</ButtonMenuItem>
             <ButtonMenuItem>{TranslateString(718, 'Past draws')}</ButtonMenuItem>
@@ -142,7 +142,7 @@ const Lottery: React.FC = () => {
           value={{ historyError, historyData, mostRecentLotteryNumber, currentLotteryNumber }}
         >
           {activeIndex === 0 ? <NextDrawPage /> : <PastDrawsPage />}
-        </PastLotteryDataContext.Provider>
+        </PastLotteryDataContext.Provider> */}
       </Page>
     </>
   )
