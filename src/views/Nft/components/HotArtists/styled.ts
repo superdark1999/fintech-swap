@@ -86,6 +86,7 @@ export const HotArtistsStyled = styled.div`
         color: #333435;
         text-align: center;
         cursor: pointer;
+        object-fit: cover;
       }
       .rank-artists {
         font-weight: 600;

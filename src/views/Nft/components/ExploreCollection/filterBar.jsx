@@ -1,10 +1,9 @@
 import React from 'react'
 import { FilterBarStyled } from './styled'
-import { Select, Radio, Input } from 'antd'
+import { Radio } from 'antd'
 import SearchSort from '../SearchSort'
-import { OptionSort, OptionMethods, OptionTypeNft } from '../../constants'
-const { Option } = Select
-const { Search } = Input
+import { OptionMethods, OptionTypeNft } from '../../constants'
+import { isMobile } from 'react-device-detect'
 
 function FilterBar(props) {
   const {
@@ -15,7 +14,6 @@ function FilterBar(props) {
     filterType,
     handleInputOnchange,
     setPage,
-    sort,
     setSort,
     selectDP, 
     setSelectDP
@@ -38,7 +36,7 @@ function FilterBar(props) {
         <div className="list-filter" style={{ marginBottom: '24px' }}>
           <span className="filter-label">Type</span>
           <Radio.Group
-            className="filter-group"
+            className={isMobile ? 'filter-group-mobile' : 'filter-group'}
             onChange={onChangeType}
             value={filterType}
             defaultChecked
@@ -57,7 +55,7 @@ function FilterBar(props) {
         <div className="list-filter" style={{ marginBottom: '24px' }}>
           <span className="filter-label">Method</span>
           <Radio.Group
-            className="filter-group"
+            className={isMobile ? 'filter-group-mobile' : 'filter-group'}
             onChange={onChangeMethod}
             value={filterMethod}
             defaultChecked
@@ -78,12 +76,9 @@ function FilterBar(props) {
         handleInputOnchange={handleInputOnchange}
         setPage={setPage}
         searchParams={searchParams}
-        //selectType={select}
-        //setSelectType={setSelect}
         setSelectSort={setSort}
         selectDP={selectDP} 
         setSelectDP={setSelectDP}
-        // setTypeSortDate={true}
       />
     </FilterBarStyled>
   )
