@@ -164,7 +164,7 @@ const DetaiArtWork = ({ id }: any) => {
   }
 
   const priviousPage = () => {
-    window.history.back()
+    history.goBack()
   }
   return (
     <Row>

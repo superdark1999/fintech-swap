@@ -25,9 +25,8 @@ import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { ButtonBuy } from 'components-v2/Button'
 import Hammer from 'assets/images/hammer.svg'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
-import { useHistory } from 'react-router-dom'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import _ from 'lodash'
 import TableHistory from './TableHistory'
@@ -64,9 +63,8 @@ const DetaiArtWork = ({ id }: any) => {
   }
 
   const priviousPage = () => {
-    window.history.back()
+    history.goBack()
   }
-
   return (
     <Row>
       <Col
