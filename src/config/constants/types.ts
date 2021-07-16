@@ -68,7 +68,8 @@ export interface Pool {
   rewardTokenSymbol: string
   depositTokenAddress: string
   rewardTokenAddress: string
-  stakingAddress: string
+  stakingAddress: string, 
+  isPremium: boolean,
   chainId: number
 }
 
