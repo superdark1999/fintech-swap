@@ -28,7 +28,7 @@ const TrendingBar = (props: { setTags?: (value: any) => void, tags?: any }) => {
 
   return (
     <TrendingBarStyled>
-      {!isMobile && <div className="title-bar">Trending</div>}
+      <div className="title-bar">Trending</div>
       <div className="filter-bar">
         {OPTIONS.map((item, i) => (
           <div key={i} className={props?.tags?.includes(item) ? "filter-bar-item active" :"filter-bar-item"} onClick={() => onSelectTags(item)}>

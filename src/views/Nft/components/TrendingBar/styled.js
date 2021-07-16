@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { isMobile } from 'react-device-detect'
 export const TrendingBarStyled = styled.div`
   display: flex;
   padding: 14px;
@@ -6,15 +7,15 @@ export const TrendingBarStyled = styled.div`
   .title-bar {
     display: flex;
     align-items: center;
-    width: 150px;
+    width: ${!isMobile && '150px'};
     height: 100%;
     font-weight: 700;
-    font-size: 18px;
+    font-size: ${!isMobile && '18px'};
     justify-content: center;
     border-radius: 6px;
     color: #fff;
     margin-right: 10px;
-    padding: 14px;
+    padding: ${isMobile ?  '8px' : '14px'};
     background-image: linear-gradient(190deg, #fb5d5d 0%, #f9a054 74%);
   }
   .filter-bar {
@@ -22,7 +23,7 @@ export const TrendingBarStyled = styled.div`
     align-items: center;
     flex: 1;
     max-width: 1280px;
-    min-width: 300px;
+    /* min-width: 300px; */
     overflow-x: auto;
     .filter-bar-item {
       border: 1px solid #e7ebef;

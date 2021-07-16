@@ -2,6 +2,7 @@ import React from 'react'
 import { FilterBarStyled } from './styled'
 import { Select, Radio, Input } from 'antd'
 import { OptionSort, OptionMethods, OptionTypeNft } from '../../constants'
+import { isMobile } from 'react-device-detect'
 const { Option } = Select
 const { Search } = Input
 
@@ -49,7 +50,7 @@ function FilterBar(props) {
         <div className="list-filter" style={{ marginBottom: '24px' }}>
           <span className="filter-label">Type</span>
           <Radio.Group
-            className="filter-group"
+            className={isMobile ? 'filter-group-mobile' : 'filter-group'}
             onChange={onChangeType}
             value={filterType}
             defaultChecked
@@ -68,7 +69,7 @@ function FilterBar(props) {
         <div className="list-filter" style={{ marginBottom: '24px' }}>
           <span className="filter-label">Method</span>
           <Radio.Group
-            className="filter-group"
+            className={isMobile ? 'filter-group-mobile' : 'filter-group'}
             onChange={onChangeMethod}
             value={filterMethod}
             defaultChecked
