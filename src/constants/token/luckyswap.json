@@ -13,14 +13,6 @@
     {
       "name": "LUCKY Token",
       "symbol": "XLUCKY",
-      "address": "0x82dbc381a54554532b738e2bb11cf337b5e78e80",
-      "chainId": 56,
-      "decimals": 18,
-      "logoURI": "/images/coinslist/lucky.png"
-    },
-    {
-      "name": "LUCKY Token",
-      "symbol": "XLUCKY",
       "address": "0x5C2AaAdD1FcE223baaEFB1cF41ce872e9d8B986A",
       "chainId": 97,
       "decimals": 18,
