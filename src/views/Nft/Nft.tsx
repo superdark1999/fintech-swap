@@ -90,15 +90,16 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
   background-color: #f9fafb;
   .left-sidebar {
     position: sticky;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
+    bottom: 0;
     background-color: #fff;
     min-width: ${(props) => (props.onShowsidebar ? '320px' : '60px')};
     transition: 300ms;
     height: ${(props) => (props.onShowsidebar ? '100%' : 'calc(100vh - 80px)')};
     border-right: ${(props) =>
     props.onShowsidebar && '1px solid rgba(0,0,0,0.2)'};
-    height: 100vh;
+    height: calc(100vh - 80px);
     overflow-y: auto;
     ::-webkit-scrollbar {
       display: none;
@@ -110,6 +111,7 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
     margin: 0 auto;
     width: calc(100% - 320px);
     overflow: hidden;
+    padding: ${isMobile && '0px 5px'};
     
     .trending-nft {
       width: 98%;
