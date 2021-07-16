@@ -115,8 +115,8 @@ export default function PoolCardDetails({
                   <span className="content__symbol">{stakingData.rewardTokenSymbol} earned</span>
                     <Button className="btn-addToken"
                      onClick={() => {
-                       const imaUrl = BASE_URL + imageRewardToken.slice(1); console.log("imaUrl", imaUrl)
-                      registerToken(stakingData.rewardTokenAddress, stakingData.rewardTokenSymbol, 1, imaUrl)
+                       const imaUrl = BASE_URL + imageRewardToken.slice(1); 
+                      registerToken(stakingData.rewardTokenAddress, stakingData.rewardTokenSymbol, 18, imaUrl)
                       }
                     }>
                       Add {stakingData.rewardTokenSymbol} to Metamask
