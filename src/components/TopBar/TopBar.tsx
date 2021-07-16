@@ -16,8 +16,8 @@ import useUserStore from 'store/userStore'
 import { Menu, Dropdown } from 'antd'
 import useConfigStore from 'store/configStore'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { getPrice} from 'utils'
-import {BINANCE_CONFIG} from 'configs'
+import { getPrice } from 'utils'
+import { BINANCE_CONFIG } from 'configs'
 import { Modal, Input, Form } from 'antd'
 import formatNumber from 'utils/formatNumber'
 import useAuth from 'hooks/useAuth'
@@ -41,7 +41,8 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
   const [userState, userActions] = useUserStore()
   const [configState, configAction] = useConfigStore()
   const [isShowAlert, setIsShowAlert] = useState(false)
-  const {SUPPORT_CHAIN_IDS, binanceConfig, binaceText, MARKET_ADDRESS } = BINANCE_CONFIG
+  const { SUPPORT_CHAIN_IDS, binanceConfig, binaceText, MARKET_ADDRESS } =
+    BINANCE_CONFIG
 
   var prevScrollpos = window.pageYOffset
   let location = useLocation()
@@ -68,9 +69,12 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
 
   useEffect(() => {
     if (
-      !SUPPORT_CHAIN_IDS.includes(Number(ethereum?.chainId)) && ethereum &&ethereum?.chainId!=binanceConfig.chainId
+      !SUPPORT_CHAIN_IDS.includes(Number(ethereum?.chainId)) &&
+      ethereum &&
+      ethereum?.chainId != binanceConfig.chainId
     ) {
-      ethereum.request({
+      ethereum
+        .request({
           method: 'wallet_switchEthereumChain',
           params: [
             {
@@ -86,9 +90,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
             ethereum
               .request({
                 method: 'wallet_addEthereumChain',
-                params: [
-                  binanceConfig
-                ],
+                params: [binanceConfig],
               })
               .then(() => {
                 ethereum
@@ -110,12 +112,16 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           }
         })
     }
-    if ( !SUPPORT_CHAIN_IDS.includes(Number(BinanceChain?.chainId)) && BinanceChain &&BinanceChain?.chainId!=binanceConfig?.chainId) {
+    if (
+      !SUPPORT_CHAIN_IDS.includes(Number(BinanceChain?.chainId)) &&
+      BinanceChain &&
+      BinanceChain?.chainId != binanceConfig?.chainId
+    ) {
       BinanceChain.switchNetwork(binaceText).then(() => {
         window.location.reload()
       })
     }
-  }, [chainId,BinanceChain?.chainId,ethereum?.chainId])
+  }, [chainId, BinanceChain?.chainId, ethereum?.chainId])
 
   useEffect(() => {
     if (luckyMethod) {
@@ -197,10 +203,14 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
     <StyledTopBar className={classtSicky}>
       {isMobile ? (
         <div style={{ display: 'flex', alignItems: 'center', zIndex: 10 }}>
-          <MenuUnfoldOutlined
-            onClick={() => setMobileMenu(true)}
-            style={{ marginLeft: 12, fontSize: 24, marginRight: 12 }}
-          />
+          {location.pathname === '/' ? (
+            <MenuUnfoldOutlined
+              onClick={() => setMobileMenu(true)}
+              style={{ fontSize: 24, margin: '0 12px' }}
+            />
+          ) : (
+            <div style={{ width: '24px', margin: '0 12px' }}></div>
+          )}
           <Link to="/">
             <img src={logo} width="30px" />
           </Link>
@@ -485,7 +495,7 @@ const StyledTopBar = styled.div`
       box-sizing: border-box;
       border-radius: 100px;
       height: 40px;
-      margin: 0 40px;
+      margin: ${isMobile ? '0 20px' : ' 0 40px'};
       max-width: 250px;
     }
     .home-nav {

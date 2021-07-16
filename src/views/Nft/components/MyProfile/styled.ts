@@ -71,6 +71,7 @@ export const UserProfileStyled = styled.div<Props>`
           box-sizing: border-box;
           border-radius: 80px;
           position: absolute;
+          object-fit: cover;
         }
       }
     }
@@ -173,6 +174,7 @@ export const CartStyled = styled.div`
     height: 210px;
     border-radius: 8px;
     display: block;
+    object-fit: cover;
     margin: 0 auto;
     margin-bottom: ${isMobile ? '10px' : ' 0px'};
   }

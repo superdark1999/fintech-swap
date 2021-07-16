@@ -68,6 +68,7 @@ export const UserProfileStyled = styled.div<Props>`
           box-sizing: border-box;
           border-radius: 80px;
           position: absolute;
+          object-fit: cover;
         }
       }
     }
@@ -170,6 +171,7 @@ export const CartStyled = styled.div`
     border-radius: 8px;
     display: block;
     margin: 0 auto;
+    object-fit: cover;
   }
   .btn-swap {
     background: linear-gradient(45deg, #1cace8, #07dce6);
