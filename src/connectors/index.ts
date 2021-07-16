@@ -3,6 +3,7 @@ import { ChainId } from '@luckyswap/v2-sdk'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
+import getLibrary from 'utils/getLibrary'
 import { BscConnector } from './bsc/bscConnector'
 import { NetworkConnector } from './NetworkConnector'
 
@@ -25,13 +26,13 @@ export const NETWORK_CHAIN_ID: number = parseInt('56' ?? '56')
 
 export const network = new NetworkConnector({
   urls: RPC,
-  defaultChainId: 1,
+  defaultChainId: 56,
 })
 
 let networkLibrary: Web3Provider | undefined
 export function getNetworkLibrary(): Web3Provider {
   // eslint-disable-next-line no-return-assign
-  return (networkLibrary = networkLibrary ?? new Web3Provider(network.provider as any))
+  return (networkLibrary = networkLibrary ?? getLibrary(network.provider))
 }
 
 export const injected = new InjectedConnector({

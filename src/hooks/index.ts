@@ -11,6 +11,7 @@ import { NetworkContextName } from '../constants'
 export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & { chainId?: ChainId } {
   const context = useWeb3ReactCore<Web3Provider>()
   const contextNetwork = useWeb3ReactCore<Web3Provider>(NetworkContextName)
+  // console.log('context network : ', contextNetwork)
   return context.active ? context : contextNetwork
 }
 
@@ -20,12 +21,11 @@ export function useEagerConnect() {
 
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
-      const hasSignedIn = window.localStorage.getItem('accountStatus')
-      if (isAuthorized && hasSignedIn) {
+      if (isAuthorized) {
         activate(injected, undefined, true).catch(() => {
           setTried(true)
         })
-      } else if (isMobile && window.ethereum && hasSignedIn) {
+      } else if (isMobile && window.ethereum) {
         activate(injected, undefined, true).catch(() => {
           setTried(true)
         })
@@ -55,7 +55,7 @@ export function useInactiveListener(suppress = false) {
   useEffect(() => {
     const { ethereum } = window
 
-    if (ethereum && ethereum.on && !suppress) {
+    if (ethereum && ethereum.on && !active && !error && !suppress) {
       const handleChainChanged = () => {
         // eat errors
         activate(injected, undefined, true).catch((e) => {
@@ -84,5 +84,5 @@ export function useInactiveListener(suppress = false) {
     }
 
     return undefined
-  }, [suppress, activate])
+  }, [active, error, suppress, activate])
 }

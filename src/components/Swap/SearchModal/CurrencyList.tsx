@@ -18,7 +18,7 @@ import Loader from '../Loader'
 import { isTokenOnList } from '../../../utils'
 
 function currencyKey(currency: Currency): string {
-  return currency?.isToken ? currency.address : currency?.isNative ? 'ETHER' : ''
+  return currency?.isToken ? currency?.address : currency?.isNative ? 'ETHER' : ''
 }
 
 const StyledBalanceText = styled(Text)`
@@ -114,7 +114,7 @@ function CurrencyRow({
     >
       <CurrencyLogo currency={currency} size="24px" />
       <Column>
-        <Text title={currency.name}>{currency.symbol}</Text>
+        <Text title={currency?.name}>{currency?.symbol}</Text>
         <FadedSpan>
           {!isOnSelectedList && customAdded && !(currency instanceof WrappedTokenInfo) ? (
             <Text>
@@ -122,7 +122,7 @@ function CurrencyRow({
               <LinkStyledButton
                 onClick={(event) => {
                   event.stopPropagation()
-                  if (chainId && currency?.isToken) removeToken(chainId, currency.address)
+                  if (chainId && currency?.isToken) removeToken(chainId, currency?.address)
                 }}
               >
                 (Remove)
