@@ -9,7 +9,7 @@ import { useMultiBuyLottery, useMaxNumber } from 'hooks/useBuyLottery'
 import useI18n from 'hooks/useI18n'
 import { LOTTERY_MAX_NUMBER_OF_TICKETS, LOTTERY_TICKET_PRICE } from 'config'
 import { useWeb3React } from '@web3-react/core'
-import { useContract } from 'hooks/useContract'
+import { useContract, useLotteryV2Contract } from 'hooks/useContract'
 import { getLotteryAddress } from 'utils/addressHelpers'
 import lotteryAbi from 'config/abi/lottery.json'
 import { useTransactionAdder } from 'state/transactions/hooks'
@@ -33,11 +33,23 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     return parseInt(getFullDisplayBalance(max.div(LOTTERY_TICKET_PRICE)), 10)
   }, [max])
 
+  // const {
+  //   maxNumberTicketsPerBuyOrClaim,
+  //   currentLotteryId,
+  //   currentRound: {
+  //     priceTicketInCake,
+  //     discountDivisor,
+  //     userTickets: { tickets: userCurrentTickets },
+  //   },
+  // } = useLottery()
+
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => setVal(e.currentTarget.value)
 
   const { onMultiBuy } = useMultiBuyLottery()
   const maxNumber = useMaxNumber()
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
+  const lotteryV2Contract = useLotteryV2Contract()
+
   const addTransaction = useTransactionAdder()
 
   const handleBuy = useCallback(async () => {
@@ -69,6 +81,11 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onMultiBuy, setRequestedBuy, maxNumber, val])
+
+  // const handleBuy = useCallback(async () => {
+  //   const ticketsForPurchase = getTicketsForPurchase()
+  //   return lotteryContract.buyTickets(currentLotteryId, ticketsForPurchase)
+  // }, [lotteryContract])
 
   const handleSelectMax = useCallback(() => {
     if (Number(maxTickets) > LOTTERY_MAX_NUMBER_OF_TICKETS) {

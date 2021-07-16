@@ -114,7 +114,7 @@ const Lottery: React.FC = () => {
         {/* <BoxImg>
           <img src="../images/coming-soon-lot.png" alt=""/>
         </BoxImg> */}
-        {/* {/* <Hero /> */}
+         <Hero />
         <TotalPrizesCard />
         <SecondCardColumnWrapper isAWin={isAWin}>
           {!account ? (

@@ -60,7 +60,7 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data }) => 
               Round #{lotteryNumber}
             </Heading>
             <TopLotteryCardHeading
-              valueToDisplay={`${lotteryNumbers[0]}, ${lotteryNumbers[1]}, ${lotteryNumbers[2]}, ${lotteryNumbers[3]}`}
+              valueToDisplay={`${lotteryNumbers[0]}, ${lotteryNumbers[1]}, ${lotteryNumbers[2]}, ${lotteryNumbers[3]}, 5, 8`}
               // Icon={TicketRound}
             >
               {TranslateString(999, 'Winning numbers')}

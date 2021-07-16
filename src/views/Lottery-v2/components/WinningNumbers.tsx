@@ -15,6 +15,8 @@ const WinningNumbers: React.FC = () => {
   const MatchedNumber2 = useMatchingRewardLength(2)
   const TranslateString = useI18n()
 
+  // long dep trai winning number
+
   return (
     <CardWrapper>
       <CardBodyNew>
@@ -43,11 +45,18 @@ const WinningNumbers: React.FC = () => {
                 <CenteredText>{number}</CenteredText>
               </TicketNumberBox>
             ))}
+               <TicketNumberBox>
+                <CenteredText>5</CenteredText>
+              </TicketNumberBox>
+              <TicketNumberBox>
+                <CenteredText>8</CenteredText>
+              </TicketNumberBox>
+
           </Row>
           <Column>
-            <RowNoPadding>
+          <RowNoPadding>
               <CenteredTextWithPadding style={{ color: '#fff' }}>
-                {TranslateString(442, 'Tickets matching 4 numbers:')}
+                {TranslateString(442, 'Tickets matching 6 numbers:')}
               </CenteredTextWithPadding>
               <CenteredTextWithPadding>
                 <strong style={{ color: '#F3C111' }}>{MatchedNumber4}</strong>
@@ -55,7 +64,15 @@ const WinningNumbers: React.FC = () => {
             </RowNoPadding>
             <RowNoPadding>
               <CenteredTextWithPadding style={{ color: '#fff' }}>
-                {TranslateString(444, 'Tickets matching 3 numbers:')}
+                {TranslateString(442, 'Tickets matching 5 numbers:')}
+              </CenteredTextWithPadding>
+              <CenteredTextWithPadding>
+                <strong style={{ color: '#F3C111' }}>{MatchedNumber4}</strong>
+              </CenteredTextWithPadding>
+            </RowNoPadding>
+            <RowNoPadding>
+              <CenteredTextWithPadding style={{ color: '#fff' }}>
+                {TranslateString(444, 'Tickets matching 4 numbers:')}
               </CenteredTextWithPadding>
               <CenteredTextWithPadding>
                 <strong style={{ color: '#F3C111' }}>{MatchedNumber3}</strong>
@@ -63,7 +80,23 @@ const WinningNumbers: React.FC = () => {
             </RowNoPadding>
             <RowNoPadding>
               <CenteredTextWithPadding style={{ color: '#fff' }}>
+                {TranslateString(446, 'Tickets matching 3 numbers:')}
+              </CenteredTextWithPadding>
+              <CenteredTextWithPadding>
+                <strong style={{ color: '#F3C111' }}>{MatchedNumber2}</strong>
+              </CenteredTextWithPadding>
+            </RowNoPadding>
+            <RowNoPadding>
+              <CenteredTextWithPadding style={{ color: '#fff' }}>
                 {TranslateString(446, 'Tickets matching 2 numbers:')}
+              </CenteredTextWithPadding>
+              <CenteredTextWithPadding>
+                <strong style={{ color: '#F3C111' }}>{MatchedNumber2}</strong>
+              </CenteredTextWithPadding>
+            </RowNoPadding>
+            <RowNoPadding>
+              <CenteredTextWithPadding style={{ color: '#fff' }}>
+                {TranslateString(446, 'Tickets matching 1 numbers:')}
               </CenteredTextWithPadding>
               <CenteredTextWithPadding>
                 <strong style={{ color: '#F3C111' }}>{MatchedNumber2}</strong>
@@ -191,15 +224,15 @@ const TicketNumberBox = styled.div`
   font-weight: 900;
   margin: 10px;
   margin-bottom: 7px;
-  width: 40px;
+  width: 20px;
 
   @media (min-width: 768px) {
     font-size: 40px;
     margin: 20px;
     background: url('../images/bg-number.svg');
     background-repeat: no-repeat;
-    width: 120px;
-    min-height: 150px;
+    width: 69px;
+    min-height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
