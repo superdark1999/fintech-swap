@@ -179,6 +179,14 @@ export const CartStyled = styled.div`
   .btn-swap {
     background: linear-gradient(45deg, #1cace8, #07dce6);
   }
+  .info-swap{
+      display: block;
+      background: unset;
+      cursor: pointer;
+      border: 0;
+      margin: 0 auto;
+      
+    }
   .description {
     width: 100%;
     margin-top: 0px !important;
@@ -228,13 +236,14 @@ export const CartStyled = styled.div`
         }
       }
     }
+    
     .name {
       font-weight: bold;
       font-size: 28px;
       line-height: 40px;
       color: #333435;
       opacity: 0.9;
-      margin-bottom: 12px;
+      
       :hover {
         cursor: pointer;
         text-decoration: underline;
