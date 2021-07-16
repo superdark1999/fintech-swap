@@ -16,6 +16,7 @@ import ModalCreateArtist from './ModalCreateArtist'
 import notification from 'components-v2/Alert'
 import { handleAlertMessage } from 'utils';
 import _ ,{get}  from 'lodash'
+import { isMobile } from 'react-device-detect'
 const TextAreaStyled = styled(Input.TextArea)`
   &.ant-input-textarea > textarea {
     border-radius: 16px;
@@ -224,7 +225,8 @@ const CreateArtWork: React.FC = () => {
   ]
   const filteredOptions = OPTIONS.filter((o: any) => !selectItems.includes(o))
   return (
-    <Row gutter={24} style={{ justifyContent: 'center' }}>
+    <Row gutter={24} style={{ justifyContent: 'center', marginTop: 20}}>
+       {isMobile && <h2 className="title-create-artwork">Create Artwork</h2>}
       <Col xl={{ span: 18 }} md={{ span: 18 }} xs={{ span: 24 }}>
         <CreateArtWorkStyled>
           <Form
@@ -244,34 +246,31 @@ const CreateArtWork: React.FC = () => {
             >
               <GroupButton defaultValue="image">
                 <RadioButton
-                  style={{ height: 100 }}
                   value="image"
                   onChange={onHandleTypeArtWork}
                 >
                   Picture
                 </RadioButton>
                 <RadioButton
-                  style={{ height: 100 }}
                   value="gif"
                   onChange={onHandleTypeArtWork}
                 >
                   Gif
                 </RadioButton>
                 <RadioButton
-                  style={{ height: 100 }}
                   value="video"
                   onChange={onHandleTypeArtWork}
                 >
                   Video
                 </RadioButton>
                 <RadioButton
-                  style={{ height: 100, background: '#f3f3f3', opacity: '.5' }}
+                  style={{ background: '#f3f3f3', opacity: '.5' }}
                   onChange={onHandleTypeArtWork}
                 >
                   Audio
                 </RadioButton>
                 <RadioButton
-                  style={{ height: 100, background: '#f3f3f3', opacity: '.5' }}
+                  style={{ background: '#f3f3f3', opacity: '.5' }}
                   onChange={onHandleTypeArtWork}
                 >
                   Special
@@ -294,7 +293,7 @@ const CreateArtWork: React.FC = () => {
                   initialValue="Bep721"
                 >
                   <GroupButton defaultValue="Bep721">
-                    <RadioButton style={{ height: 60 }} value="Bep721">
+                    <RadioButton  value="Bep721">
                       Bep721
                     </RadioButton>
                     {/* <RadioButton style={{ height: 60 }} value="Bep1155">
