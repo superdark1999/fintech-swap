@@ -10,7 +10,7 @@ export { default as formatAddress } from './formatAddress'
 
 const OUT_OF_BNB = `Insufficient balance of BNB`
 const OUT_OF_LUCKY = `Insufficient balance of LUCKY`
-const {BINANCE_DOMAIN_API} = BINANCE_CONFIG
+const {binanceConfig} = BINANCE_CONFIG
 
 export const getParam = (name: string) => {
 
@@ -61,7 +61,7 @@ export const getCompactString=(str:string, sepLen:number)=>{
 export const embedTokenIdLinkBSCScan = (tokenId:number,contractAddress:string,chainId:ChainId)=>{
   let url = ''
   if(chainId==97){
-    url = `${BINANCE_DOMAIN_API}/token/`
+    url = `${binanceConfig.blockExplorerUrls?.[0]}/token/`
   }
   return `${url + contractAddress +'?a='+tokenId}`
 }
