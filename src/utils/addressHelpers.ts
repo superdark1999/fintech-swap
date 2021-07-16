@@ -22,6 +22,9 @@ export const getMulticallAddress = (chainId?: ChainId) => {
 export const getWbnbAddress = (chainId?: ChainId) => {
   return getAddress(tokens.wbnb.address, chainId)
 }
+export const getLotteryV2Address = () => {
+  return getAddress(addresses.lotteryV2)
+}
 export const getLotteryAddress = (chainId?: ChainId) => {
   return getAddress(addresses.lottery, chainId)
 }

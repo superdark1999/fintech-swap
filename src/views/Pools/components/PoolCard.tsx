@@ -26,7 +26,6 @@ const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
 
   const {  userRewardDebt } = useGetStateData(pool);
 
-  // console.log(`pool.deposittokenAddress`, pool.depositTokenAddress)
   const {balanceOf} =  useUtilityToken(pool.depositTokenAddress);
 
   const rewardTokenPrice = usePriceLuckyBusd()
@@ -58,9 +57,9 @@ const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
     <div>
     <Col>
         <BoxPool>
-          <HeadLine>
+        {  pool.isPremium && (<HeadLine>
             <span>Premium</span>
-          </HeadLine>
+          </HeadLine>)}
           <figure>
             <img src={ BASE_API_ADMIN.concat('/') + pool.logo} alt=""/>
           </figure>
@@ -72,7 +71,7 @@ const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
          
               <ContentLeft>Deposit:</ContentLeft>
               <ContentRight>
-              <CardValue
+              {/* <CardValue
                 bold
                 color=""
                 value={totalStaked}
@@ -80,14 +79,15 @@ const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
                 fontSize="60px"
                 text={pool.depositTokenSymbol}
                 fontWeight="600"
-              ></CardValue>
+              ></CardValue> */}
+              {pool.depositTokenSymbol}
               </ContentRight>
             </FlexSpace>
 
             <FlexSpace>
               <ContentLeft>Earn:</ContentLeft>
               <ContentRight>     
-                <CardValue
+                {/* <CardValue
                     bold
                     color=""
                     value={parseFloat(userRewardDebt.div(1e18).toFixed(2))}
@@ -95,7 +95,8 @@ const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
                     fontSize="60px"
                     text={pool.rewardTokenSymbol}
                     fontWeight="600"
-                  ></CardValue>
+                  ></CardValue> */}
+                  {pool.rewardTokenSymbol}
                   </ContentRight>
             </FlexSpace>
 

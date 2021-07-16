@@ -14,7 +14,11 @@ import CardValue from '../../Home/components/CardValue';
   'XLUCKY': '../images/coinslist/xlucky.png',
   'XLUCKY2': '../images/coinslist/lucky.png',
   'BRY': '../images/enlin.svg',
-  'BUSD': './images/coinslist/busd.png'}
+  'BUSD': './images/coinslist/busd.png',
+  'PRI' : './images/coinslist/PRI.png',
+  'CTL' : './images/coinslist/CTL.png',
+  'NAV' : './images/coinslist/NAV.png',
+}
 
   //
 const spinnerIcon = <AutoRenewIcon spin color="currentColor" />

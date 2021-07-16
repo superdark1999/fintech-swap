@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import useWeb3 from 'hooks/useWeb3'
+import useWeb3Provider from 'hooks/useWeb3Provider'
 import { Contract } from '@ethersproject/contracts'
 import { ChainId, ROUTER_ADDRESSES, FACTORY_ADDRESSES, WNATIVE } from '@luckyswap/v2-sdk'
 import { useActiveWeb3React } from 'hooks'
@@ -23,6 +24,7 @@ import {
   getClaimRefundContract,
   getTradingCompetitionContract,
   getEasterNftContract,
+  getLotteryV2Contract
 } from '../utils/contractHelpers'
 import { getContract } from '../utils'
 import FACTORY_ABI from '../constants/abis/factory.json'
@@ -88,6 +90,12 @@ export const useIfoContract = (address: string) => {
   const web3 = useWeb3()
   return useMemo(() => getIfoContract(address, web3), [address, web3])
 }
+
+export const useLotteryV2Contract = () => {
+  const provider = useWeb3Provider()
+  return useMemo(() => getLotteryV2Contract(provider.getSigner()), [provider])
+}
+
 
 export const useERC20 = (address: string) => {
   const web3 = useWeb3()

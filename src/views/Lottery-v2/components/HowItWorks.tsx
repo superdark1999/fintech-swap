@@ -49,7 +49,7 @@ const HowItWorks = () => {
       </StyledHeading>
       <Text fontSize="16px">
         Spend LUCKY to buy tickets, contributing to the lottery pot.
-        <br /> Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their exact order!
+        <br /> Win prizes if 1, 2, 3, 4, 5 or 6 of your ticket numbers match the winning numbers and their exact order!
       </Text>
       <StyledLink href="https://docs.luckyswap.io">{TranslateString(610, 'Read more')}</StyledLink>
     </LayoutWrapper>

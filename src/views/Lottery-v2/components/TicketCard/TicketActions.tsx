@@ -5,7 +5,7 @@ import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { useContract } from 'hooks/useContract'
+import { useContract, useLotteryV2Contract } from 'hooks/useContract'
 import { useApproveCallbackCustom } from 'hooks/useApproveCallback'
 import { XLUCKY_TESTNET_ADDRESSES } from 'config'
 import bep20Abi from 'config/abi/erc20.json'
@@ -37,6 +37,7 @@ const CardActions = styled.div`
   }
 `
 
+// long dep trai view tickets
 const TicketCard: React.FC = () => {
   const TranslateString = useI18n()
   const [balanceToken, setBalanceToken] = useState(0)
@@ -49,6 +50,8 @@ const TicketCard: React.FC = () => {
   const contractBEP20 = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
 
   const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
+
+  const lotteryV2Contract = useLotteryV2Contract()
 
   const ticketsContract = useContract(getLotteryTicketAddress(), lotteryTicketAbi)
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)

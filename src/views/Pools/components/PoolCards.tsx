@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom'
+import { Button, Row, Col, TabContent, TabPane,  Nav, NavItem, NavLink } from 'reactstrap';
 import {Pool} from 'config/constants/types'
 import PoolCard from './PoolCard';
 
