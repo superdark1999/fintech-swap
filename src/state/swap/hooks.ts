@@ -165,7 +165,6 @@ export function useDerivedSwapInfo(): {
   }
 
   const formattedTo = isAddress(to)
-  console.log('formattedTo : ', formattedTo)
   if (!to || !formattedTo) {
     inputError = inputError ?? 'Enter a recipient'
   } else if (
