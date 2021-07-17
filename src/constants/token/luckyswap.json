@@ -34,9 +34,9 @@
       "logoURI": "/images/coinslist/busd.png"
     },
     {
-      "name": "LUCKY Token",
-      "symbol": "XLUCKY",
-      "address": "0x82dbc381a54554532b738e2bb11cf337b5e78e80",
+      "name": "Token Demo",
+      "symbol": "DEMO",
+      "address": "0x09FceE7287f882c5eEAb8032A64FDE54Fc1dD055",
       "chainId": 137,
       "decimals": 18,
       "logoURI": "/images/coinslist/lucky.png"
