@@ -37,7 +37,7 @@ export default  () => {
   const [userNFTs, setUserNFTs] = useState([])
   const [offerData, setOfferData] = useState([])
   const { getNFT, getDetailNFT, setPrice, buyItem, cancelSellNFT } = useArtworkServices()
-  const {id} = useParams()
+  const id = useParams()
 
 
 

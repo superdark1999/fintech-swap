@@ -6,7 +6,7 @@ import {Row, Image } from 'antd'
 import Token from 'assets/images/token.svg'
 import formatNumber from 'utils/formatNumber'
 import { ButtonBuy } from 'components-v2/Button'
-
+//import { API_DASHBOARD } from '../../../../../constants'
 const OfferTable = ({ offerData, isRenderAction, chooseOffer, state, renderButon }: any) => {
     //console.log(offerData)
     const column = [
@@ -18,6 +18,18 @@ const OfferTable = ({ offerData, isRenderAction, chooseOffer, state, renderButon
               {record?.ownerWalletAddress > 0 && (
                 <TextGradient width="auto" fontSize="14px">{getCompactString(record?.ownerWalletAddress, 6)} </TextGradient>
               )}
+            </div>
+          )
+        }
+      },
+      {
+        title: 'Id Product',
+        render: (record: any) => {
+          return (
+            <div>
+              <a href={`/artwork/detail/buy/${record?._id}`} target="_blank">
+                <TextGradient width="auto" fontSize="14px">{getCompactString(record?.ownerWalletAddress, 6)} </TextGradient>
+              </a>
             </div>
           )
         }

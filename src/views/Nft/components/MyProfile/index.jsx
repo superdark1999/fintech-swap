@@ -162,7 +162,6 @@ const TabOnSale = () => {
   const { account } = useActiveWeb3React()
   // const { tab } = useParams()
   const match = useRouteMatch()
-  console.log('match', match)
   
   useEffect(() => {
     if (match?.params?.tab == 'onstore') {
@@ -226,8 +225,8 @@ const TabMyCollection = () => {
     }
   },[account,!!marketServicesMethod])
 
-  useEffect(() => {
-    console.log(reList)
+
+  function getDataRender() {
     if (optionChecked) {
       const query = {
         ownerWalletAddress: account,
@@ -250,7 +249,12 @@ const TabMyCollection = () => {
         }
       })
     }
-  }, [optionChecked,reList])
+  }
+
+  
+  useEffect(() => {
+    getDataRender()
+  }, [optionChecked])
 
   const onHandleOptionCheck = (e) => {
     setOptionChecked(e.target.value)
@@ -319,7 +323,7 @@ const TabMyCollection = () => {
               key={item?._id}
               data={item}
               option={optionChecked}
-              setReList={setReList}
+              reloadList={getDataRender}
             />
           )
         })}
