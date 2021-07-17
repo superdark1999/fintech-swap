@@ -141,53 +141,26 @@ const configRestricted: MenuEntry[] = [
     label: 'Farms',
     icon: 'FarmIcon',
     href: '#',
-    calloutClass: 'style-color icon-hot',
+    calloutClass: 'style-color icon-new',
   },
   {
     label: 'Pools',
     icon: 'PoolIcon',
     href: '#',
-    calloutClass: 'style-color icon-hot',
+    calloutClass: 'style-color icon-new',
   },
 
-  // {
-  //   label: 'Analytics',
-  //   icon: 'InfoIcon',
-  //   calloutClass: 'style-color',
-  //   items: [
-  //     {
-  //       label: 'Overview',
-  //       href: '#',
-  //       calloutClass: 'style-color',
-  //     },
-  //     {
-  //       label: 'Tokens',
-  //       href: '#',
-  //       calloutClass: 'style-color',
-  //     },
-  //     {
-  //       label: 'Pairs',
-  //       href: '#',
-  //       calloutClass: 'style-color',
-  //     },
-  //     {
-  //       label: 'Accounts',
-  //       href: '#',
-  //       calloutClass: 'style-color',
-  //     },
-  //   ],
-  // },
   {
     label: 'Launchpad',
     icon: 'IfoIcon',
     href: '#',
-    calloutClass: 'style-color icon-hot',
+    calloutClass: 'style-color icon-new',
   },
   {
     label: 'NFT',
     icon: 'NftIcon',
     href: '#',
-    calloutClass: 'style-color icon-hot',
+    calloutClass: 'style-color icon-new',
   },
   {
     label: 'Gamefi',
@@ -226,6 +199,4 @@ const configRestricted: MenuEntry[] = [
   },
 ]
 
-export {
-  config, configRestricted
-}
+export { config, configRestricted }
