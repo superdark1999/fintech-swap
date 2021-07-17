@@ -38,7 +38,7 @@ export default function OnSaleCard({ data }: any) {
   const { getNFT } = useArtworkServices()
   const [state, setState] = useState<any>(true);
   const [myItems, setMyItems] = useState<any>([]);
-  
+  const [status, setStatus] = useState<any>('none')
 
   //console.log(data)
 
@@ -52,16 +52,7 @@ export default function OnSaleCard({ data }: any) {
           && data?.tokenId == Number(tokenIdA)){
             
          _.debounce(()=>{
-          notification(
-            'open',
-            {
-              message:
-                'Swap NFT success, you can check NFT on approved collection',
-              description: '',
-              titleBtn: 'View detail',
-            },
-            history.push('/my-profile/mycollection/approved'),
-          )
+          setStatus('success')
          },10000)()
         }
       })
@@ -103,6 +94,20 @@ export default function OnSaleCard({ data }: any) {
       })
   }
   }
+
+  useEffect(()=>{
+    if(status == 'success'){
+      notification(
+        'open',
+        {
+          message:
+            'Swap NFT success, you can check NFT on approved collection',
+          description: '',
+          titleBtn: 'View detail',
+        },
+        history.push('/my-profile/mycollection/approved'),
+      )}
+  },[status])
 
   useEffect(()=>{
     getSwapOffers(data)
@@ -288,7 +293,9 @@ export default function OnSaleCard({ data }: any) {
   const renderGroupAction = () => {
     return (
       <div className="group-button" style={{marginTop: '10px'}}>
-        <button className="info-swap" style={{minWidth:'100px'}} onClick={()=> onChangeState(state)}>v</button>
+        {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell') &&(
+          <button className="info-swap" style={{minWidth:'100px'}} onClick={()=> onChangeState(state)}>v</button>
+        )}
         {renderQRCode()}
       </div>
     )
@@ -348,11 +355,6 @@ export default function OnSaleCard({ data }: any) {
             )}
           </div>
           <div className="name">{data?.title}</div>
-          {/* <div className="name-data">
-            <div className="name">{data?.title}</div>
-            <div className="date">sadsa</div>
-
-          </div> */}
 
           {(data?.NFTType == 'buy' || data?.NFTType === 'auction') && (
             <div className="number" style={{ marginBottom: 10 }}>
@@ -364,9 +366,11 @@ export default function OnSaleCard({ data }: any) {
           {renderGroupAction()}
 
         </Col>
-        <div style={ {display:(data?.NFTType == 'swap-store' && data?.status == 'readyToSell' ? 'unset' : 'none'), width:'100%'} }>
+        {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell') &&(
+          <div style={{width:'100%'}} >
           <OfferTable state={state} offerData={offerData} isRenderAction={true} renderButon={renderButon}/>
         </div>
+        )}
       </Row>
       <QRCodeComp
         isShow={showQR}
