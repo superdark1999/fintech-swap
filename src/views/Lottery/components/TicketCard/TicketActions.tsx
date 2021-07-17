@@ -11,6 +11,7 @@ import { XLUCKY_TESTNET_ADDRESSES } from 'config'
 import bep20Abi from 'config/abi/erc20.json'
 import lotteryAbi from 'config/abi/lottery.json'
 import useRefresh from 'hooks/useRefresh'
+import useUtilityToken from 'hooks/useUtilityToken'
 import { getLotteryAddress, getLotteryTicketAddress } from 'utils/addressHelpers'
 import lotteryTicketAbi from 'config/abi/lotteryNft.json'
 import { isTransactionRecent, useAllTransactions } from 'state/transactions/hooks'
@@ -59,6 +60,8 @@ const TicketCard: React.FC = () => {
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)
   const [onPresentBuy] = useModal(<BuyTicketModal max={new BigNumber(balanceToken)} tokenName="CAKE" />)
 
+  const { listenApproveEvent } = useUtilityToken(XLUCKY_TESTNET_ADDRESSES[chainId])
+
   useEffect(() => {
     const fetchBalance = async () => {
       const res = await getTickets(lotteryContract, ticketsContract, account, null)
@@ -69,6 +72,21 @@ const TicketCard: React.FC = () => {
       fetchBalance()
     }
   }, [account, lotteryContract, fastRefresh, ticketsContract])
+
+  useEffect(() => {
+    const fetchApprovalData = async () => {
+      if (account && contractBEP20) {
+        try {
+          const response = await contractBEP20?.allowance?.(account, getLotteryAddress())
+          setAllowance(response.toString())
+        } catch (error) {
+          console.log(' error fetch approval data')
+        }
+      }
+    }
+    listenApproveEvent(() => fetchApprovalData())
+  }, [listenApproveEvent, account, contractBEP20])
+
 
   useEffect(() => {
     if (useContractTemp) {
@@ -118,7 +136,7 @@ const TicketCard: React.FC = () => {
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      await onAttemptToApprove()
+      await onAttemptToApprove().then()
     } catch (e) {
       console.error(e)
     }
