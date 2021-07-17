@@ -77,8 +77,8 @@ const TicketCard: React.FC = () => {
     const fetchApprovalData = async () => {
       if (account && contractBEP20) {
         try {
-          const response = await contractBEP20?.allowance?.(account, getLotteryAddress())
-          setAllowance(response.toString())
+          // const response = await contractBEP20?.allowance?.(account, getLotteryAddress())
+          setAllowance(new BigNumber('10000000000000000000000000000000').toNumber())
         } catch (error) {
           console.log(' error fetch approval data')
         }
@@ -117,6 +117,7 @@ const TicketCard: React.FC = () => {
       if (account && contractBEP20) {
         try {
           const response = await contractBEP20?.allowance?.(account, getLotteryAddress())
+          console.log("response", response.toString())
           setAllowance(response.toString())
         } catch (error) {
           console.log(' error fetch approval data')
