@@ -2,6 +2,7 @@ import { Credentials, StringTranslations } from '@crowdin/crowdin-api-client'
 import { ResetCSS } from '@luckyswap/uikit'
 import 'antd/dist/antd.css'
 import BigNumber from 'bignumber.js'
+import { useActiveWeb3React } from 'hooks'
 import useWeb3ReactManager from 'hooks/useWeb3ReactManager'
 import React, { lazy, useEffect, useState } from 'react'
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
@@ -28,7 +29,6 @@ import RemoveLiquidity from './views/RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './views/RemoveLiquidity/redirects'
 import Swap from './views/Swap'
 import { RedirectPathToSwapOnly } from './views/Swap/redirects'
-
 
 // Route-based code splitting2
 // Only pool is included in the main bundle because of it's the most visited page .
@@ -63,6 +63,7 @@ const App: React.FC = () => {
   useFetchProfile()
   useFetchPriceList()
 
+  const { chainId } = useActiveWeb3React()
   const [selectedLanguage, setSelectedLanguage] = useState<any>(undefined)
   const [translatedLanguage, setTranslatedLanguage] = useState<any>(undefined)
   const [translations, setTranslations] = useState<Array<any>>([])
@@ -81,6 +82,12 @@ const App: React.FC = () => {
       return language.code === storedLangCode
     })[0]
   }
+
+  useEffect(() => {
+    if (chainId) {
+      window.localStorage.setItem('chainId', chainId.toString())
+    }
+  }, [chainId])
 
   useEffect(() => {
     // const storedLangCode = localStorage.getItem('pancakeSwapLanguage')
