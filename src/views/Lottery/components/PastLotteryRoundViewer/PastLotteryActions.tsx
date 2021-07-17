@@ -47,7 +47,13 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
   return (
     <Wrapper>
       <div>
-        <Button disabled={ticketsLength === 0} onClick={onPresentMyTickets} width="100%">
+        <Button
+          style={{ marginRight: '8px' }}
+          width="100%"
+          variant="secondary"
+          disabled={ticketsLength === 0}
+          onClick={onPresentMyTickets}
+        >
           {TranslateString(432, 'View your tickets')}
         </Button>
       </div>

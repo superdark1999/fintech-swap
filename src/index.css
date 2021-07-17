@@ -325,11 +325,13 @@ button.button-connect:hover {
   color: #ffdb4a !important;
 }
 
-.icon-hot a {
+.icon-new a,
+.icon-hot a  {
   position: relative;
 }
 
-.icon-hot a:before {
+.icon-new a:before,
+.icon-hot:before {
   content: '';
   position: absolute;
   top: -4px;
@@ -340,6 +342,21 @@ button.button-connect:hover {
   height: 30px;
   animation: 2s linear 0s infinite normal forwards running fadeinout;
   opacity: 0;
+}
+
+.icon-hot {
+  position: relative;
+}
+
+.icon-hot:before {
+  background: url('https://luckyswap.finance/images/icon-hot.png');
+  width: 60px;
+  height: 60px;
+  background-size: cover;
+  left: 137px;
+  top: -26px;
+  animation: unset;
+  opacity: 1;
 }
 
 @keyframes fadeinout {

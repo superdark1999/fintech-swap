@@ -74,13 +74,13 @@ const config: MenuEntry[] = [
     label: 'NFT',
     icon: 'NftIcon',
     href: 'https://staging-marketplace.luckyswap.center/',
-    calloutClass: 'style-color icon-hot',
+    calloutClass: 'style-color icon-new',
   },
   {
-    label: 'Gamefi',
+    label: 'Play to Earn',
     icon: 'TicketIcon',
     href: '#',
-    calloutClass: 'style-color ',
+    calloutClass: 'style-color icon-hot',
     items: [
       {
         label: 'Lottery',
