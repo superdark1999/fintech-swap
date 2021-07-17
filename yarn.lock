@@ -2812,10 +2812,10 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.50.0.tgz#29c6419e8379d496ab6d0426eadf3c4d100cd186"
   integrity sha512-swKHYCOZUGyVt4ge0u8a7AwNcA//h4nx5wIi0sruGye1IJ5Cva0GyK9L2/WdX+kWVTKp92ZiEo1df31lrWGPgA==
 
-"@luckyswap/uikit@^0.14.3":
-  version "0.14.3"
-  resolved "https://registry.yarnpkg.com/@luckyswap/uikit/-/uikit-0.14.3.tgz#d367e680832c93d4702a9cdca659822702de819f"
-  integrity sha512-+g00kcoWMWHDGjnlQJUm8sw8yqzq7XUjl5erXqs11ilZaYdG7dhvaelzZ2uLEL/Qkr6kZsDBVeywpZQnw1OO4w==
+"@luckyswap/uikit@^0.14.8":
+  version "0.14.8"
+  resolved "https://registry.yarnpkg.com/@luckyswap/uikit/-/uikit-0.14.8.tgz#21238afa55be4e2d19378c0227e03d108baf1813"
+  integrity sha512-mW43gD70hk1jbAAFpDp5Zs+ZOwH0nIQDlAv6bJcxRSnD9DXllMQZxiCuBYKEldE0/zH0JFlnCEI07ONOUm0ZmQ==
   dependencies:
     "@rollup/plugin-url" "^6.0.0"
     "@types/lodash" "^4.14.162"
@@ -2836,10 +2836,10 @@
     truffle-flattener "^1.4.4"
     truffle-hdwallet-provider "^1.0.17"
 
-"@luckyswap/v2-sdk@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@luckyswap/v2-sdk/-/v2-sdk-1.1.4.tgz#eaa90506e569276c7f483189c2bc7551b8741e4f"
-  integrity sha512-qW1O+w6eM56bLJntjwHLAXP3plb2p8Vd8J1WH1SgJjQvbayuTG8eY+kkr1oSkPf0nTsUZ9SrmvQayhhsknbAcA==
+"@luckyswap/v2-sdk@^1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@luckyswap/v2-sdk/-/v2-sdk-1.1.6.tgz#35bfacd71d0d216ed83a2c850dc713d7a3e5478f"
+  integrity sha512-ZmX6zzt2Z1ZDJ4sE+s6ZA7bOjkBmeQPBw8s58GwsMjej9jE8rr2k025bCjUPH0XL9kvfflA0/SE2d1kCQc+/5g==
   dependencies:
     "@luckyswap/v2-core" "^0.2.4"
     big.js "^5.2.2"
