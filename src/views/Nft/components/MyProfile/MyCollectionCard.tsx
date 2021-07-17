@@ -52,7 +52,7 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
   const { getNFT, setPrice, cancelSellNFT } = useArtworkServices()
   const [state, setState] = useState<any>(true);
   const [myItems, setMyItems] = useState<any>([]);
-
+  const [status, setStatus] = useState<any>('none')
   useEffect(()=>{
     if(marketServicesMethod && data?.tokenId && myItems?.tokenId){
       const {marketContract} =  marketServicesMethod
@@ -63,16 +63,7 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
           && data?.tokenId == Number(tokenIdA)){
             
          _.debounce(()=>{
-          notification(
-            'open',
-            {
-              message:
-                'Swap NFT success, you can check NFT on approved collection',
-              description: '',
-              titleBtn: 'View detail',
-            },
-            reloadList(),
-          )
+          setStatus('success')
          },5000)()
         }
       })
@@ -116,6 +107,19 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
       })
   }
   }
+  useEffect(()=>{
+    if(status == 'success'){
+    notification(
+      'open',
+      {
+        message:
+          'Swap NFT success, you can check NFT on approved collection',
+        description: '',
+        titleBtn: 'View detail',
+      },
+      reloadList(),
+    )}
+  },[status])
 
   useEffect(()=>{
     getSwapOffers(data)
@@ -454,7 +458,9 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
           <ButtonCancel height="40px" onClick={onCancelItemOnMarket}>
             Cancel
           </ButtonCancel>
+          {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell') &&(
           <button className="info-swap" style={{minWidth:'100px'}} onClick={()=> onChangeState(state)}>v</button>
+          )}
           {renderQRCode()}
         </div>
       )
@@ -626,10 +632,11 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
           <div>{renderGroupAction(data?.status)}</div>          
           
         </Col>
-        <div style={ {display:(data?.NFTType == 'swap-store' && data?.status == 'readyToSell' ? 'unset' : 'none'), width:'100%'} }>
-          {/* <button className="info-swap" onClick={()=> onChangeState(state)} style={{minWidth:'200px'}}>v</button> */}
+        {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell') &&(
+          <div style={{width:'100%'}} >
           <OfferTable state={state} offerData={offerData} isRenderAction={true} renderButon={renderButon}/>
         </div>
+        )}
         
       </Row>
       <ModalSetPriceSell
