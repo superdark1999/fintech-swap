@@ -16,13 +16,6 @@ export const UST = new Token(
   'Wrapped UST Token',
 )
 
-export const ROUTER_ADDRESSES: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac',
-  [ChainId.MATIC]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.MATIC_TESTNET]: '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd',
-  [ChainId.BSCTESTNET]: '0x09FceE7287f882c5eEAb8032A64FDE54Fc1dD055',
-}
-
 const WETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [WNATIVE[ChainId.MAINNET]],
   [ChainId.BSCTESTNET]: [WNATIVE[ChainId.BSCTESTNET]],
