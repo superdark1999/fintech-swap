@@ -3,7 +3,6 @@ import { ConnectorNames } from '@luckyswap/uikit'
 import { ChainId } from '@luckyswap/v2-sdk'
 import { bscConnector, injected, walletconnect } from 'connectors'
 
-
 // const injected = new InjectedConnector({ supportedChainIds: [chainId] })
 // const injected = new InjectedConnector({ supportedChainIds: [56, 97, 137, 80001] })
 
@@ -19,8 +18,6 @@ export default function getLibrary(provider: any): Web3Provider {
   return library
 }
 
-export const getChainId = async (): Promise<ChainId> => {
-  const result = await injected.getChainId()
-
-  return parseInt(result.toString(), 16)
+export const getChainId = (): ChainId => {
+  return parseInt(window.localStorage.getItem('chainId')) as ChainId
 }

@@ -7,7 +7,7 @@ import farmsConfig from 'config/constants/farms'
 import { getChainId } from '../../utils/web3React'
 
 const fetchFarms = async () => {
-  const chainId = await getChainId()
+  const chainId = getChainId()
   const data = await Promise.all(
     farmsConfig.map(async (farmConfig) => {
       const lpAddress = getAddress(farmConfig.lpAddresses)

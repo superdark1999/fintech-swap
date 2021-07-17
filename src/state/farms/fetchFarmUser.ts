@@ -7,7 +7,7 @@ import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { getChainId } from '../../utils/web3React'
 
 export const fetchFarmUserAllowances = async (account: string) => {
-  const chainId = await getChainId()
+  const chainId = getChainId()
   const masterChefAddress = getMasterChefAddress(chainId)
 
   const calls = farmsConfig.map((farm) => {

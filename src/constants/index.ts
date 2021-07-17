@@ -165,3 +165,10 @@ export const NETWORKS: {
     blockExplorerUrls: BLOCK_EXPLORER_URLS[ChainId.MATIC_TESTNET],
   },
 }
+
+export const ALL_SUPPORTED_CHAIN_IDS: ChainId[] = [
+  ChainId.MAINNET,
+  ChainId.MATIC,
+  ChainId.BSCTESTNET,
+  ChainId.MATIC_TESTNET,
+]
