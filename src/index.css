@@ -344,6 +344,9 @@ button.button-connect:hover {
   opacity: 0;
 }
 
+.icon-hot {
+  position: relative;
+}
 
 .icon-hot:before {
   background: url('https://luckyswap.finance/images/icon-hot.png');
