@@ -16,18 +16,6 @@ export default function NavBar({ activeTab, toggle }) {
             Hot
           </NavLink>
         </NavItem>
-
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === '2' })}
-            onClick={() => {
-              toggle('2')
-            }}
-          >
-            Earn
-          </NavLink>
-        </NavItem>
-
         <NavItem>
           <NavLink
             className={classnames({ active: activeTab === '3' })}
@@ -35,7 +23,7 @@ export default function NavBar({ activeTab, toggle }) {
               toggle('3')
             }}
           >
-            Staking
+            Earn Token
           </NavLink>
         </NavItem>
 
@@ -43,13 +31,12 @@ export default function NavBar({ activeTab, toggle }) {
           <NavLink
             className={classnames({ active: activeTab === '4' })}
             onClick={() => {
-              toggle('4')
+              toggle('3')
             }}
           >
-            Others
+            NFT Staking
           </NavLink>
         </NavItem>
-
         <NavItem>
           <NavLink
             className={classnames({ active: activeTab === '5' })}
@@ -60,23 +47,11 @@ export default function NavBar({ activeTab, toggle }) {
             Earn NFT
           </NavLink>
         </NavItem>
-
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === '6' })}
+            className={classnames({ active: activeTab === '5' })}
             onClick={() => {
-              toggle('6')
-            }}
-          >
-            NFT Staking
-          </NavLink>
-        </NavItem>
-
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === '7' })}
-            onClick={() => {
-              toggle('7')
+              toggle('5')
             }}
           >
             Ended
