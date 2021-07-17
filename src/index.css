@@ -331,7 +331,7 @@ button.button-connect:hover {
 }
 
 .icon-new a:before,
-.icon-hot a:before {
+.icon-hot:before {
   content: '';
   position: absolute;
   top: -4px;
@@ -345,10 +345,15 @@ button.button-connect:hover {
 }
 
 
-.icon-hot a:before {
+.icon-hot:before {
   background: url('https://luckyswap.finance/images/icon-hot.png');
-  width: 35px;
-  height: 35px;
+  width: 60px;
+  height: 60px;
+  background-size: cover;
+  left: 137px;
+  top: -26px;
+  animation: unset;
+  opacity: 1;
 }
 
 @keyframes fadeinout {
