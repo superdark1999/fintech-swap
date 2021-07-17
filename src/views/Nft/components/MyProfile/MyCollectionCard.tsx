@@ -52,34 +52,38 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
   const { getNFT, setPrice, cancelSellNFT } = useArtworkServices()
   const [state, setState] = useState<any>(true);
   const [myItems, setMyItems] = useState<any>([]);
-  const [status, setStatus] = useState<string>('processing')
-  // const [itemSwap, setItemSwap] = useState<any>([]);
-  // const [userNFTs, setUserNFTs] = useState([])
-  // const [NFTs, setNFTs] = useState([]);
-  // const [selectMetodSwap, setSelectMethod] = useState<number | null>()
-  // const luckyServicesMethod = useLuckyServices()
-  // const [userState, userActions] = useUserStore()
-  
-  //console.log(data)
 
   useEffect(()=>{
     if(marketServicesMethod && data?.tokenId && myItems?.tokenId){
       const {marketContract} =  marketServicesMethod
-      
       marketContract.on('SwapNFTs',(tokenIdA, tokenIdB, accountB, event)=>{
-        if(myItems?.ownerWalletAddress==accountB&& myItems?.tokenId ==Number(tokenIdB) && data?.tokenId == Number(tokenIdA)){
-          setTimeout(() => {
-            setStatus('success')
-          }, 10000)
+        
+        if(data?.ownerWalletAddress==accountB 
+          && myItems?.tokenId ==Number(tokenIdB) 
+          && data?.tokenId == Number(tokenIdA)){
+            
+         _.debounce(()=>{
+          notification(
+            'open',
+            {
+              message:
+                'Swap NFT success, you can check NFT on approved collection',
+              description: '',
+              titleBtn: 'View detail',
+            },
+            reloadList(),
+          )
+         },5000)()
         }
       })
       
     }
   },[marketServicesMethod,account, data?.tokenId, myItems?.tokenId])
+
   
   const getSwapOffers = (itemSwap:any)=>{
     const tokenId = itemSwap?.tokenId;
-    console.log(itemSwap)
+    //console.log(itemSwap)
     if(marketServicesMethod&&tokenId){
       const {getSwapOffers} =  marketServicesMethod
       getSwapOffers(tokenId).then((data:any)=>{
@@ -121,7 +125,7 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
     const { confirmSwapNFT } = marketServicesMethod
     setIsProcessing(true)
     confirmSwapNFT(itemSwap?.tokenId, myItems?.tokenId, myItems?.ownerWalletAddress).then((data) => {
-      if(status == 'success') reloadList()
+      setMyItems(myItems)
     }).catch((err) => {
       setIsProcessing(false)
       notification('error', {

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { UserProfileStyled, CartStyled, ListCart } from './styled'
-import Checkmark from 'assets/images/checkmark.svg'
-import { Row, Col, Tabs } from 'antd'
+import { CartStyled } from './styled'
+import { Row, Col } from 'antd'
 import Token from 'assets/images/token.svg'
-import Luckyswap from 'assets/images/luckyswap.svg'
 import usrMarketServices from 'services/web3Services/MarketServices'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import _ from 'lodash'
@@ -34,6 +32,7 @@ export default function OnSaleCard({ data }: any) {
   const marketServicesMethod = useMarketServices()
   const [showQR, setShowQR] = useState(false)
   //console.log(data)
+
   const { account, chainId } = useActiveWeb3React()
   const [offerData, setOfferData] = useState([])
   const { getNFT } = useArtworkServices()
@@ -47,13 +46,23 @@ export default function OnSaleCard({ data }: any) {
     if(marketServicesMethod && data?.tokenId && myItems?.tokenId){
       const {marketContract} =  marketServicesMethod
       marketContract.on('SwapNFTs',(tokenIdA, tokenIdB, accountB, event)=>{
-        console.log('runn',tokenIdA,tokenIdB,accountB)
+        
         if(data?.ownerWalletAddress==accountB 
-          && data?.tokenId ==Number(tokenIdB) 
-          && myItems?.tokenId == Number(tokenIdA)){
+          && myItems?.tokenId ==Number(tokenIdB) 
+          && data?.tokenId == Number(tokenIdA)){
+            
          _.debounce(()=>{
-           //Do something here
-         },10000)
+          notification(
+            'open',
+            {
+              message:
+                'Swap NFT success, you can check NFT on approved collection',
+              description: '',
+              titleBtn: 'View detail',
+            },
+            history.push('/my-profile/mycollection/approved'),
+          )
+         },10000)()
         }
       })
       
@@ -99,9 +108,6 @@ export default function OnSaleCard({ data }: any) {
     getSwapOffers(data)
   },[data?.tokenId])
 
-  const onGoToApprovedArtWork = () => {
-    history.push('/my-profile/mycollection/approved')
-  }
 
   const onOfferItem = (itemSwap:any, myItems:any) => {
     const { confirmSwapNFT } = marketServicesMethod
@@ -123,6 +129,7 @@ export default function OnSaleCard({ data }: any) {
         return( <ButtonProccesing/>)
       }else {
         return(
+          
           <ButtonBuy width="135px" 
             onClick={() => onOfferItem(data, myItems)} 
             > Swap now
@@ -356,24 +363,8 @@ export default function OnSaleCard({ data }: any) {
           <InfoCard value={data}/>
           {renderGroupAction()}
 
-          {/* <div style={{ display: 'flex' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID:</div>
-            <div className="number">{getCompactString(data?.TXHash, 6)}</div>
-          </div>
-
-          {data?.description && (
-            <div className="content">{data?.description}</div>
-          )}*/}
-
-          {/* <div className="organize">
-            <span style={{ fontSize: '12px', fontWeight: 500 }}>Creator</span>
-            <a className="name" href={`/user-profile/${data?.createdBy?.walletAddress}/onstore/readyToSell`} target="_blank">{data?.createdBy?.name ? data?.createdBy?.name : data?.createdBy?.walletAddress}</a>
-            
-            
-          </div>  */}
         </Col>
         <div style={ {display:(data?.NFTType == 'swap-store' && data?.status == 'readyToSell' ? 'unset' : 'none'), width:'100%'} }>
-          {/* <button className="info-swap" onClick={()=> onChangeState(state)} style={{minWidth:'200px'}}>v</button> */}
           <OfferTable state={state} offerData={offerData} isRenderAction={true} renderButon={renderButon}/>
         </div>
       </Row>
