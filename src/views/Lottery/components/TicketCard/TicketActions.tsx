@@ -141,8 +141,14 @@ const TicketCard: React.FC = () => {
     if (allowance.toString() === '0') {
       return (
         <Dflex>
-          <Button className="bg-yellow" width="100%">
-            {TranslateString(432, 'Connect Wallet')}
+          <Button
+            style={{ marginRight: '8px' }}
+            width="100%"
+            disabled={ticketsLength === 0}
+            variant="secondary"
+            onClick={onPresentMyTickets}
+          >
+            {TranslateString(432, 'View your tickets')}
           </Button>
           <Button
             className="border-yellow"
@@ -151,7 +157,7 @@ const TicketCard: React.FC = () => {
             onClick={handleApprove}
           >
             {getStatus() ? spinnerIcon : ''}
-            {TranslateString(494, 'View your tickets')}
+            {TranslateString(494, 'Approve')}
           </Button>
         </Dflex>
       )
@@ -174,7 +180,6 @@ const TicketCard: React.FC = () => {
       </>
     )
   }
-
 
   return (
     <CardActions>
