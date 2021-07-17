@@ -4,20 +4,9 @@ import { Link } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem } from '@luckyswap/uikit'
 import TranslatedText from '../TranslatedText'
 
-const StyledNav = styled.div`
-  // margin-bottom: 40px;
-  display: flex;
-  justify-content: flex-start;
 
-  .active {
-    border: 1px double transparent !important;
-    background-image: linear-gradient(#444444, #444444), linear-gradient(31deg, #0993ec, #29f4c3) !important;
-    background-origin: border-box !important;
-    background-clip: padding-box, border-box !important;
-  }
-`
 
-const Nav = ({ activeIndex = 0 }: { activeIndex?: number }) => (
+const Nav = ({ activeIndex = 0 } : { activeIndex?: number }) => (
   <StyledNav className="nav-swap">
     <BoxNav>
       <ButtonMenu activeIndex={activeIndex} variant="subtle">
@@ -40,7 +29,18 @@ const Nav = ({ activeIndex = 0 }: { activeIndex?: number }) => (
   </StyledNav>
 )
 
-export default Nav
+const StyledNav = styled.div`
+  // margin-bottom: 40px;
+  display: flex;
+  justify-content: flex-start;
+
+  .active {
+    border: 1px double transparent !important;
+    background-image: linear-gradient(#444444, #444444), linear-gradient(31deg, #0993ec, #29f4c3) !important;
+    background-origin: border-box !important;
+    background-clip: padding-box, border-box !important;
+  }
+`
 
 const BoxNav = styled.div`
   height: 48px;
@@ -61,3 +61,6 @@ const BoxNav = styled.div`
     }
   }
 `
+
+export default Nav
+
