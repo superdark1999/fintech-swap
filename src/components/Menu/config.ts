@@ -77,7 +77,7 @@ const config: MenuEntry[] = [
     calloutClass: 'style-color icon-hot',
   },
   {
-    label: 'Gamefi',
+    label: 'Play to Earn',
     icon: 'TicketIcon',
     href: '#',
     calloutClass: 'style-color ',
