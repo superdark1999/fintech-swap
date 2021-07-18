@@ -204,13 +204,19 @@ const TopBar: React.FC<TopBarProps> = ({ showNofitication, setShowNotification})
             <Link to={'/swap/step=1'} className="create-nav">
               Swap
             </Link>
-            <UserBalance />
-            <div className="connect-wallet">
+            
+            <div className="mr-14" >
+              <UserBalance />
+            </div>
+
+            <div className="connect-wallet mr-14">
               <Web3Status />
             </div>
+
             <div onClick={() => setShowNotification(!showNofitication)}>
               <Notification />  
             </div>
+
             <div className="view-more">
             <ButtonTrade
               padding="10px"
@@ -468,6 +474,9 @@ const StyledTopBar = styled.div`
         display: none;
       }
     }
+    .mr-14 {
+      margin-right: 14px;
+    }
     .create-nav-balance {
       padding: 0 10px;
       height: 40px;
@@ -480,7 +489,6 @@ const StyledTopBar = styled.div`
       font-weight: 600;
       font-size: 16px;
       line-height: 24px;
-      margin-left: 14px;
       position: relative;
       cursor: pointer;
       color: #35a5fc;
