@@ -3,7 +3,7 @@ import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Button, Flex, Text } from '@luckyswap/uikit'
-import { Currency, currencyEquals, Percent, WNATIVE } from '@luckyswap/v2-sdk'
+import { Currency, currencyEquals, NATIVE, Percent, WNATIVE } from '@luckyswap/v2-sdk'
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { ArrowDown, Plus } from 'react-feather'
 import { RouteComponentProps } from 'react-router'
@@ -558,8 +558,14 @@ export default function RemoveLiquidity({
                           ) : oneCurrencyIsWETH ? (
                             <StyledInternalLink
                               to={`/remove/${
-                                currencyA && currencyEquals(currencyA, WNATIVE[chainId]) ? 'ETH' : currencyIdA
-                              }/${currencyB && currencyEquals(currencyB, WNATIVE[chainId]) ? 'ETH' : currencyIdB}`}
+                                currencyA && currencyEquals(currencyA, WNATIVE[chainId])
+                                  ? NATIVE[chainId]?.symbol
+                                  : currencyIdA
+                              }/${
+                                currencyB && currencyEquals(currencyB, WNATIVE[chainId])
+                                  ? NATIVE[chainId]?.symbol
+                                  : currencyIdB
+                              }`}
                             >
                               Receive {WNATIVE[chainId].symbol}
                             </StyledInternalLink>

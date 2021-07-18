@@ -27,17 +27,18 @@ export function useSwapActionHandlers(): {
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
 } {
+  const { chainId } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
       dispatch(
         selectCurrency({
           field,
-          currencyId: currency?.isToken ? currency.address : currency?.isNative ? 'ETH' : '',
+          currencyId: currency?.isToken ? currency.address : currency?.isNative ? NATIVE[chainId]?.symbol : '',
         }),
       )
     },
-    [dispatch],
+    [dispatch, chainId],
   )
 
   const onSwitchTokens = useCallback(() => {
@@ -198,11 +199,11 @@ export function useDerivedSwapInfo(): {
   }
 }
 
-function parseCurrencyFromURLParameter(urlParam: any): string {
+function parseCurrencyFromURLParameter(urlParam: any, chainId: ChainId): string {
   if (typeof urlParam === 'string') {
     const valid = isAddress(urlParam)
     if (valid) return valid
-    if (urlParam.toUpperCase() === 'ETH') return 'ETH'
+    if (urlParam.toUpperCase() === NATIVE[chainId]?.symbol) return NATIVE[chainId]?.symbol
   }
   return ''
 }
@@ -228,8 +229,8 @@ function validatedRecipient(recipient: any): string | null {
 }
 
 export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId): SwapState {
-  let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
-  let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency)
+  let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency, chainId)
+  let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency, chainId)
 
   if (inputCurrency === '' && outputCurrency === '') {
     inputCurrency = NATIVE[chainId]?.symbol
