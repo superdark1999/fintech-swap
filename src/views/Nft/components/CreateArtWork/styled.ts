@@ -115,7 +115,7 @@ export const ModalStyled  = styled(Modal) `
   border-radius: 0;padding-bottom: 80px;
   .ant-modal-body {
     overflow: scroll;
-    max-height: calc(100vh - 110px);
+    max-height: calc(100vh - 55px);
     border-radius: 0;
   }
 `

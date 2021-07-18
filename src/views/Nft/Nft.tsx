@@ -11,6 +11,7 @@ import Collection from './components/Collection/index'
 import { isMobile } from 'react-device-detect'
 import SidebarMobile from 'views/Nft/components/Sidebar/SidebarMobile'
 import NavigationBar from 'components-v2/NavigationBar'
+import IconSideBar from 'assets/images/icon-sidebar.png'
 
 
 import { useHookNTF } from './Store'
@@ -35,13 +36,15 @@ const NFTContainer = (props: any) => {
               isMobile ?
               (
                 <>
+                  <IconMenu >
+                      <img src={IconSideBar} alt="" onClick={() => setShowSidebar(true)} />
+                  </IconMenu>
                   <SidebarMobile 
-                    setMobileMenu={props.setMobileMenu} 
-                    mobileMenu={props.mobileMenu} 
+                    setMobileMenu={setShowSidebar} 
+                    mobileMenu={onShowSidebar} 
                     price={price}
                     onChangePrice={onChangePrice}
                   />
-                  {/* <NavigationBar /> */}
                 </>
               )
               : 
@@ -134,8 +137,31 @@ const NFTContainerStyled = styled.div<{ onShowsidebar: boolean }>`
     }
     .space-collection {
       width: 100%;
-      padding: 0 30px;
+      padding: 0 30px 30px 30px;
     }
   }
+`
+
+const IconMenu = styled.div`
+  position: fixed;
+  left: -12px;
+  top: 40vh;
+  box-shadow: rgb(0 0 0 / 36%) 0px 4px 12px -4px;
+  box-sizing: border-box;
+  /* border-radius: 80px; */
+  border-radius: 8px;
+
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  >img {
+    width: 24px;
+    height: 24px;
+    border-radius: 80px;
+    margin-left: 8px;
+  }
+  z-index: 1;
 `
 export default NFTContainer

@@ -39,6 +39,7 @@ import Lottie from 'react-lottie'
 import LogoAnimation from 'assets/animation/Logo_animation.json'
 import InoEvent from 'views/Nft/components/InoEvent'
 import NavigationBar from 'components-v2/NavigationBar'
+import NotificationMobile from 'components/TopBar/components/NotificationMobile'
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if ('ethereum' in window) {
@@ -83,6 +84,7 @@ const App = () => {
   const [userState] = useUserStore()
   const [mobileMenu, setMobileMenu] = useState(false)
   const [timeLoading, setTimeLoading] = useState(true)
+  const [showNofitication, setShowNotification] = useState(false)
   const [configState, configAction] = useConfigStore()
   useEffect(() => {
     setTimeout(() => {
@@ -117,7 +119,16 @@ const App = () => {
         )}
         <Web3ReactManager>
           <Container>
-            <TopBar setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
+            <TopBar 
+              setMobileMenu={setMobileMenu} 
+              mobileMenu={mobileMenu} 
+              showNofitication={showNofitication} 
+              setShowNotification={setShowNotification}
+            />
+            <NotificationMobile 
+              showNofitication={showNofitication} 
+              setShowNotification={setShowNotification}
+            />
             <Main>
               <Switch>
                 <Route path="/" exact>
