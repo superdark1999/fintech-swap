@@ -1,4 +1,5 @@
 import React from 'react'
+import { Currency } from '@luckyswap/v2-sdk'
 import Modal from '../Modal'
 import { useActiveWeb3React } from '../../../hooks'
 import ConfirmationPendingContent from './ConfirmationPendingContent'
@@ -11,6 +12,7 @@ interface ConfirmationModalProps {
   content: () => React.ReactNode
   attemptingTxn: boolean
   pendingText: string
+  currencyToAdd?: Currency
 }
 
 const TransactionConfirmationModal = ({
@@ -20,6 +22,7 @@ const TransactionConfirmationModal = ({
   hash,
   pendingText,
   content,
+  currencyToAdd,
 }: ConfirmationModalProps) => {
   const { chainId } = useActiveWeb3React()
 
@@ -31,7 +34,12 @@ const TransactionConfirmationModal = ({
       {attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
       ) : hash ? (
-        <TransactionSubmittedContent chainId={chainId} hash={hash} onDismiss={onDismiss} />
+        <TransactionSubmittedContent
+          currencyToAdd={currencyToAdd}
+          chainId={chainId}
+          hash={hash}
+          onDismiss={onDismiss}
+        />
       ) : (
         content()
       )}

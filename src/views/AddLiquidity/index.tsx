@@ -307,6 +307,7 @@ export default function AddLiquidity({
               />
             )}
             pendingText={pendingText}
+            currencyToAdd={pair?.liquidityToken}
           />
           <CardBody>
             <AutoColumn gap="20px">
