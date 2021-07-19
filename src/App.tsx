@@ -52,7 +52,7 @@ BigNumber.config({
 
 const App: React.FC = () => {
   // Monkey patch warn() because of web3 flood
-  // To be removed when web3 1.3.5 is released
+  // To be removed when web3 1.3.5 is released 12
   useEffect(() => {
     console.warn = () => null
   }, [])
