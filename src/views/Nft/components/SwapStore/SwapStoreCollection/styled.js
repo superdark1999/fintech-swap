@@ -107,6 +107,28 @@ export const FilterBarStyled = styled.div`
       color: #333435;
       margin-right: 24px;
     }
+    .filter-group {
+      .ant-radio-wrapper {
+        background: #fff;
+        color: #333435;
+        margin: 8px;
+        padding: 4px 16px;
+        font-weight: 600;
+        border: 1px solid #e7ebef;
+        box-sizing: border-box;
+        border-radius: 100px;
+        &.ant-radio-wrapper-checked {
+          background: #333435;
+          color: #fff;
+        }
+      }
+      .ant-radio .ant-radio-inner {
+        display: none;
+      }
+      .ant-radio {
+        display: none;
+      }
+    }
     .filter-group-mobile {
       list-style: none;
       font-feature-settings: 'tnum', 'tnum';
