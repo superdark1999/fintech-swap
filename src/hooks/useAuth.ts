@@ -51,7 +51,12 @@ const useAuth = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return { login, logout: deactivate }
+  const logout = useCallback(() => {
+    deactivate()
+    localStorage.removeItem(ConnectorNames.WalletConnect)
+  }, [deactivate])
+
+  return { login, logout }
 }
 
 export default useAuth

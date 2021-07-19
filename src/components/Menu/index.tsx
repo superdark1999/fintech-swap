@@ -1,10 +1,11 @@
 import { Menu as UikitMenu, MenuEntry } from '@luckyswap/uikit'
 import { ChainId } from '@luckyswap/v2-sdk'
-import { useWeb3React } from '@web3-react/core'
+import { InjectedConnector } from '@web3-react/injected-connector'
 import { XLUCKY_TESTNET_ADDRESSES } from 'config'
 import bep20Abi from 'config/abi/erc20.json'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
+import { useActiveWeb3React } from 'hooks'
 import useAuth from 'hooks/useAuth'
 import { useContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
@@ -16,26 +17,34 @@ import { NETWORKS } from '../../constants'
 import { config, configRestricted } from './config'
 
 const Menu = (props) => {
-  const { account, chainId } = useWeb3React()
+  const { account, chainId, connector } = useActiveWeb3React()
   const { login, logout } = useAuth()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
   const { profile } = useProfile()
   const [links, setLinks] = useState<MenuEntry[]>(config)
   const nativeBalance = useNativeBalance()
+  const [showDropdown, setShowDropdown] = useState<boolean>(false)
 
   const [balanceToken, setBalanceToken] = useState(0)
 
   const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
 
   useEffect(() => {
+    if (connector instanceof InjectedConnector) {
+      setShowDropdown(true)
+    } else {
+      setShowDropdown(false)
+    }
+  }, [connector])
+
+  useEffect(() => {
+    if (chainId && !Object.values(ChainId).includes(chainId)) {
+      logout()
+    }
+
     if (chainId === ChainId.MATIC || chainId === ChainId.MATIC_TESTNET) {
       setLinks(configRestricted)
-    } else if (chainId === ChainId.BSCTESTNET || chainId === ChainId.MAINNET) {
-      setLinks(config)
-    } else if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
-      setLinks(config)
-      logout()
     } else {
       setLinks(config)
     }
@@ -58,7 +67,7 @@ const Menu = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, chainId])
 
-  const changeChainIdHandler = async (chainIdToChange: ChainId) => {
+  const chainChangeHandler = async (chainIdToChange: ChainId) => {
     const provider = (window as WindowChain).ethereum
     if (provider) {
       try {
@@ -97,7 +106,8 @@ const Menu = (props) => {
       }}
       balanceBNB={getBalanceNumber(nativeBalance).toFixed(3)}
       balanceLUCKY={balanceToken.toFixed(3)}
-      onChainChange={changeChainIdHandler}
+      onChainChange={chainChangeHandler}
+      showDropdown={showDropdown}
       {...props}
     />
   )
