@@ -32,10 +32,10 @@ function FilterBar(props) {
     if(setPage) setPage(1)
     setSelectType(val)
   }
-
   return (
-    <FilterBarStyled style={style}>
-      <div className="right-action">
+    <FilterBarStyled style={( style !== 'f-direction' ? style :'')}>
+      <div className="right-action" 
+      style={{flexDirection: (style.direction == 'f-direction' ? 'unset' : '')}}>
         <Search
           style={
             handleInputOnchange ? { display: 'unset' } : { display: 'none' }

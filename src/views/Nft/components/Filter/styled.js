@@ -8,8 +8,8 @@ export const FilterBarStyled = styled.div`
     text-align: ${isMobile && 'right'};
     display: flex;
     flex-direction: column;
+    grid-gap: 20px;
     .search-input {
-      margin-bottom: 24px;
       input {
         border-top-left-radius: 100px;
         border-bottom-left-radius: 100px;
