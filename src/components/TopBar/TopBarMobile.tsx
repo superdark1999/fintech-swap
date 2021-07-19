@@ -4,7 +4,7 @@ import Web3Status from '../../wallet/Web3Status'
 import logo from '../../assets/img/logo-no-text.svg'
 import { SearchOutlined } from '@ant-design/icons'
 import { Link, useLocation } from 'react-router-dom'
-import { ButtonTrade } from 'components-v2/Button'
+import { ButtonBuy, ButtonTrade } from 'components-v2/Button'
 import ViewMore from 'assets/images/view-more.svg'
 import BinanceCoin from 'assets/symbol/binance.png'
 import Token from 'assets/images/token.svg'
@@ -13,14 +13,15 @@ import useLuckyServices from 'services/web3Services/LuckyServices'
 import BSCScanServices from 'services/axiosServices/BSCScanServices'
 import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
-import { Menu, Dropdown, Row } from 'antd'
-import { useActiveWeb3React } from 'wallet/hooks'
+import { Menu, Dropdown } from 'antd'
 import { getPrice } from 'utils'
 import { BINANCE_CONFIG } from 'configs'
 import { Input } from 'antd'
 import formatNumber from 'utils/formatNumber'
 import useAuth from 'hooks/useAuth'
 import Notification from './components/IconNotification'
+import { useActiveWeb3React } from 'wallet/hooks'
+
 
 interface TopBarProps {
   setMobileMenu?: (value: boolean) => void
@@ -40,6 +41,7 @@ const TopBar: React.FC<TopBarProps> = ({ showNofitication, setShowNotification})
   const luckyMethod = useLuckyServices()
   const { login } = useUserServices()
   const [, userActions] = useUserStore()
+
   const { SUPPORT_CHAIN_IDS, binanceConfig, binaceText, MARKET_ADDRESS } =
     BINANCE_CONFIG
 
@@ -51,7 +53,7 @@ const TopBar: React.FC<TopBarProps> = ({ showNofitication, setShowNotification})
       !SUPPORT_CHAIN_IDS.includes(Number(ethereum?.chainId)) &&
       ethereum?.selectedAddress &&
       account &&
-      ethereum?.chainId != binanceConfig.chainId
+      ethereum?.chainId !== binanceConfig.chainId
     ) {
       ethereum
         .request({
@@ -66,7 +68,7 @@ const TopBar: React.FC<TopBarProps> = ({ showNofitication, setShowNotification})
           window.location.reload()
         })
         .catch((err: any) => {
-          if (err.code == 4902) {
+          if (err.code === 4902) {
             ethereum
               .request({
                 method: 'wallet_addEthereumChain',
@@ -155,9 +157,9 @@ const TopBar: React.FC<TopBarProps> = ({ showNofitication, setShowNotification})
 
   return (
     <StyledTopBar >
-        <Link to="/">
-          <img src={logo} className="logo-h" alt=""/>
-       </Link>
+        <a href="/">
+          <img src={logo} className="logo-h" />
+        </a>
 
       <div className="nav-bar-wrapper">
         <Input
@@ -166,150 +168,81 @@ const TopBar: React.FC<TopBarProps> = ({ showNofitication, setShowNotification})
           className="search-nav"
           onPressEnter={onSearching}
         ></Input>
-        <Link
-          to="/"
-          className={`home-nav ${location.pathname === '/' ? 'active' : ''}`}
-        >
-          Home
-        </Link>
-        <Link
-          to="/swap-store"
-          className={`swap-nav ${
-            location.pathname === '/swap-store' ? 'active' : ''
-          }`}
-        >
-          Swap Store
-        </Link>
-        <Link
-          to="/explore"
-          className={`home-nav ${
-            location.pathname === '/explore' ? 'active' : ''
-          }`}
-        >
-          Explore
-        </Link>
-        <Link
-          to="/ino"
-          className={`ino-nav ${location.pathname === '/ino' ? 'active' : ''}`}
-        >
-          <span className="label">New</span>
-          <span className="btn-ino">INO</span>
-        </Link>
-        <span className="explore-nav"></span>
         {account ? (
           <>
-            <Link to={'/create/artwork'} className="create-nav">
-              Create
-            </Link>
-            <Link to={'/swap/step=1'} className="create-nav">
-              Swap
-            </Link>
-            
-            <div className="mr-14" >
-              <UserBalance />
-            </div>
-
-            <div className="connect-wallet mr-14">
-              <Web3Status />
-            </div>
-
+            <UserBalance />
             <div onClick={() => setShowNotification(!showNofitication)}>
               <Notification />  
             </div>
-
-            <div className="view-more">
-            <ButtonTrade
-              padding="10px"
-              borderRadius="100px"
-              height="30px"
-              width="30px"
-            >
-              <img src={ViewMore} />
-            </ButtonTrade>
-            <div className="menu">       
-              <Link to="/my-profile/onstore/readyToSell">
-                <div className="menu-item">My profile</div>
-              </Link>
-              <Link to="/my-profile/mycollection/all">
-                <div className="menu-item">My collection</div>
-              </Link>
-              <Link to="/my-profile/settings">
-                <div className="menu-item">Settings</div>
-              </Link>
-              <div
-                className="menu-item"
-                onClick={() => {
-                  logout()
-                  window.localStorage.removeItem('connectorId')
-                }}
-              >
-                Log out
+              <div className="view-more">
+                <ButtonTrade
+                  padding="10px"
+                  borderRadius="100px"
+                  height="30px"
+                  width="30px"
+                >
+                  <img src={ViewMore} />
+                </ButtonTrade>
+                <div className="menu">
+                  <div className="menu-item">
+                    <div className="connect-wallet">
+                      <Web3Status />
+                    </div>
+                  </div>
+                  <div className="menu-item">
+                    <Link to={'/swap/step=1'}>
+                      <ButtonBuy>Swap</ButtonBuy>
+                    </Link>
+                  </div>
+                  <div
+                    className="menu-item"
+                    onClick={() => {
+                      logout()
+                      window.localStorage.removeItem('connectorId')
+                    }}
+                  >
+                  Log out
+                </div>
               </div>
             </div>
-          </div>
           </>
         ) : (
-          <Row style={{padding: 24}}>
-            <a
-              onClick={() => {
-                alert('Unblock your wallet before create NFT')
-              }}
-              className="create-nav"
-            >
-              Create
-            </a>
-            <a
-              onClick={() => {
-                alert('Unblock your wallet before create NFT')
-              }}
-              className="create-nav"
-            >
-              Swap
-            </a>
-            <div className="connect-wallet">
-              <Web3Status />
+          <>
+            <div className="view-more">
+              <ButtonTrade
+                padding="10px"
+                borderRadius="100px"
+                height="40px"
+                width="40px"
+              >
+                <img src={ViewMore} />
+              </ButtonTrade>
+              <div className="menu">
+                <div className="menu-item">
+                  <div className="connect-wallet">
+                    <Web3Status />
+                  </div>
+                </div>
+                <div className="menu-item">
+                  <a
+                    onClick={() => {
+                      alert('Unblock your wallet before create NFT')
+                    } }
+                  >
+                    <ButtonBuy>Swap</ButtonBuy>
+                  </a>
+                </div>
+              </div>
             </div>
-          </Row>
-        )}   
+          </>
+        )}
       </div>
-
-      {/* <Modal
-        title="Notification"
-        visible={isShowAlert}
-        footer={null}
-        width={400}
-        style={{ borderRadius: '12px' }}
-      >
-        <Form
-          onFinish={() => {
-            window.location.reload()
-          }}
-        >
-          <Form.Item name="pricePlaceBid">
-            <label>
-              Currently selected chain is not supported, please check provider
-              window to change to 'Binance Smart Chain Testnet Network'
-            </label>
-          </Form.Item>
-          <Form.Item>
-            <div
-              style={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <ButtonTrade type="submit">Reload</ButtonTrade>
-            </div>
-          </Form.Item>
-        </Form>
-      </Modal> */}
     </StyledTopBar>
   )
 }
 
 const UserBalance = () => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const [userState, userActions] = useUserStore()
   const { getBNBBalance } = BSCScanServices()
   const luckyMethod = useLuckyServices()
@@ -363,7 +296,7 @@ const StyledTopBar = styled.div`
   align-items: center;
   .logo-h {
     margin-left: 30px;
-    height: 50px;
+    height: 40px;
   }
   .nav-bar-wrapper {
     flex: 1;
@@ -382,101 +315,6 @@ const StyledTopBar = styled.div`
       margin: 0 24px;
       max-width: 250px;
     }
-    .home-nav {
-      height: 80px;
-      background-color: #35a5fc;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      margin-right: 24px;
-      font-weight: 600;
-      @media (max-width: 756px) {
-        display: none;
-      }
-    }
-    .swap-nav {
-      height: 80px;
-      margin-right: 24px;
-      background-color: #35a5fc;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 16px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      @media (max-width: 756px) {
-        display: none;
-      }
-    }
-    .ino-nav {
-      height: 80px;
-      display: flex;
-      align-items: center;
-      color: #35a5fc;
-      font-size: 16px;
-      font-weight: 600;
-      position: relative;
-      .btn-ino {
-      }
-      .label {
-        position: absolute;
-        top: 20px;
-        right: -20px;
-        transform: rotate(35deg);
-        font-size: 10px;
-        text-transform: capitalize;
-        color: #fff;
-        background: #ff5917;
-        padding: 0 6px;
-        border-radius: 10px;
-      }
-      @media (max-width: 756px) {
-        display: none;
-      }
-    }
-    .explore-nav {
-      height: 80px;
-      margin-right: 24px;
-      flex: 1;
-      background-color: #35a5fc;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: flex;
-      align-items: center;
-      font-size: 16px;
-      font-weight: 600;
-      @media (max-width: 756px) {
-        display: none;
-      }
-    }
-    .create-nav {
-      width: 100px;
-      height: 40px;
-      background: #35a5fc;
-      border-radius: 100px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: '8px 24px';
-      font-weight: 600;
-      font-size: 16px;
-      line-height: 24px;
-      margin-right: 14px;
-      color: #fff;
-      position: relative;
-      cursor: pointer;
-      @media (max-width: 756px) {
-        display: none;
-      }
-      @media (max-width: 756px) {
-        display: none;
-      }
-    }
-    .mr-14 {
-      margin-right: 14px;
-    }
     .create-nav-balance {
       padding: 0 10px;
       height: 40px;
@@ -489,6 +327,7 @@ const StyledTopBar = styled.div`
       font-weight: 600;
       font-size: 16px;
       line-height: 24px;
+      margin-left: 14px;
       position: relative;
       cursor: pointer;
       color: #35a5fc;
@@ -518,7 +357,6 @@ const StyledTopBar = styled.div`
         position: absolute;
         background-color: #ffffff;
         color: #333333;
-        /* bottom: ${isMobile ? '-380px' : '-235px'}; */
         left: -160px;
         border: 1px solid #e7ebef;
         box-sizing: border-box;
