@@ -100,7 +100,6 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
                 }
               })
             setOfferData(offerDatas)
-            console.log(offerData)
             }
           })
         }
