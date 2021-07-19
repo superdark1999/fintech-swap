@@ -5,17 +5,17 @@ const InfoCard = styled.button<{ active?: boolean }>`
   background-color: ${({ theme, active }) => (active ? theme.bg3 : theme.bg2)};
   padding: 1rem;
   outline: none;
-  border: 1px solid;
-  border-radius: 12px;
+  border: 0;
+  // border-radius: 12px;
   width: 100% !important;
 
   &:focus {
-    border: 1px solid #bce8e8 !important;
+    //border: 1px solid #bce8e8 !important;
   }
-  border-color: ${({ theme, active }) => (active ? 'transparent' : theme.bg3)};
+  //border-color: ${({ theme, active }) => (active ? 'transparent' : theme.bg3)};
 
   &:hover{
-    border: 1px solid #bce8e8 !important;
+    //border: 1px solid #bce8e8 !important;
   }
 `
 
@@ -35,18 +35,42 @@ const OptionCardLeft = styled.div`
 `
 
 const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean }>`
-    box-shadow: 1px 4px 8px #ececec;
+    // box-shadow: 1px 4px 8px #ececec;
     background:white;
-    border-radius: 30px;
+    //border-radius: 30px;
   &:hover {
     cursor: ${({ clickable }) => (clickable ? 'pointer' : '')};
-    border: solid 1px #035fd8!important;
+    .icon-hover{
+      display: block;
+      border-radius: 50%;
+      background-color: rgb(1 36 69 / 23%);
+      width: 70px;
+      height: 70px;
+      top: 0;
+      position: absolute;
+      opacity: 0;
+      animation: 1.5s cubic-bezier(0.36, 0.11, 0.89, 0.32) 0s infinite normal none running scaleIn;
+    }
   }
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.5, 0.5);
+      opacity: 0.5;
+    }
+    to {
+      transform: scale(2.5, 2.5);
+      opacity: 0;
+    }
+  }  
 
   &:focus{
-    border: solid 1px #035fd8!important;
+    //border: solid 1px #035fd8!important;
   }
   opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
+  grid-template-columns: 1fr 1fr;
+  flex-direction: column-reverse;
+  
+
 `
 
 const GreenCircle = styled.div`
@@ -73,8 +97,9 @@ const CircleWrapper = styled.div`
 const HeaderText = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
   color: ${props => (props.color === 'blue' ? ({ theme }) => theme.primary1 : ({ theme }) => theme.text1)};
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
 `
 
 const SubHeader = styled.div`
@@ -85,6 +110,7 @@ const SubHeader = styled.div`
 
 const IconWrapper = styled.div<{ size?: number | null }>`
   ${({ theme }) => theme.flexColumnNoWrap};
+  position: relative;
   align-items: center;
   justify-content: center;
   & > img,
@@ -93,6 +119,9 @@ const IconWrapper = styled.div<{ size?: number | null }>`
     width: ${({ size }) => (size ? size + 'px' : '24px')};
   }
 
+`
+const IconHover = styled.div`
+  display: none;
 `
 
 export default function Option({
@@ -137,6 +166,7 @@ export default function Option({
       </OptionCardLeft>
       <IconWrapper size={size}>
         <img src={icon} alt={'Icon'} />
+        <IconHover className="icon-hover"></IconHover>
       </IconWrapper>
     </OptionCardClickable>
   )
