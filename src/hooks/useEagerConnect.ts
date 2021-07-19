@@ -5,6 +5,7 @@ import useAuth from 'hooks/useAuth'
 
 const useQuickConnect = () => {
   const { login } = useAuth()
+  const [tried, setTried] = useState<boolean>(false)
 
   useEffect(() => {
     const connectorId = window.localStorage.getItem(connectorLocalStorageKey) as ConnectorNames
@@ -16,9 +17,15 @@ const useQuickConnect = () => {
         login(connectorId)
       } catch (error) {
         console.log('Login error : ', error)
+      } finally {
+        setTried(true)
       }
+    } else {
+      setTried(true)
     }
   }, [login])
+
+  return tried
 }
 
 export default useQuickConnect
