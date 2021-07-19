@@ -16,6 +16,7 @@ function FilterBar(props) {
     selectDatePrice,
     setSelectDatePrice,
     setTypeSortDate,
+    style,
   } = props
 
   
@@ -33,7 +34,7 @@ function FilterBar(props) {
   }
 
   return (
-    <FilterBarStyled>
+    <FilterBarStyled style={style}>
       <div className="right-action">
         <Search
           style={

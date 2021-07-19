@@ -28,6 +28,7 @@ import Filter from '../Filter'
 import ProgressBar from 'components-v2/ProgressBar'
 
 
+
 const { TabPane } = Tabs
 export default () => {
   const [userState] = useUserStore()
@@ -239,39 +240,6 @@ const TabMyCollection = () => {
     }
   },[account,!!marketServicesMethod])
 
-
-  // function getDataRender() {
-  //   if (optionChecked) {
-  //     const query = {
-  //       ownerWalletAddress: account,
-  //       status: optionChecked,
-  //     }
-  //     if (optionChecked === 'all') {
-  //       delete query.status
-  //     }
-  //     if (optionChecked === 'pending') {
-  //       query.status = [
-  //         'pending',
-  //         'checkingReadyToSell',
-  //         'checkingBuying',
-  //         'checkingCancelling',
-  //       ]
-  //     }
-  //     getNFT(query).then(({ status, data }) => {
-  //       if (status == 200) {
-  //         setLoading(100)
-  //         setRenderData(data?.data || [])
-  //       }
-  //     })
-  //   }
-  // }
-
-  
-  // useEffect(() => {
-  //   getDataRender()
-  // }, [optionChecked])
-
-
   useEffect(() => {
     if (optionChecked) {
       const query = {
@@ -338,7 +306,7 @@ const TabMyCollection = () => {
   return (
     <>
       <Row align="middle" justify="space-between">
-        <GroupButton defaultValue={match?.params?.option}>
+        <GroupButton style={{justifyContent:"space-around"}} defaultValue={match?.params?.option}>
           <RadioButton
             width="auto"
             className="btn-filter"
@@ -382,6 +350,7 @@ const TabMyCollection = () => {
         </GroupButton>
         {/* <SearchInput maxWidth="300px" placeholder="Search items" /> */}
         <Filter
+        style={{width:(isMobile? '100%': 'unset'), marginTop:'30px'}}
         selectType={filterType}
         setSelectType={setFilterType}
         handleInputOnchange={handleInputOnchange}
