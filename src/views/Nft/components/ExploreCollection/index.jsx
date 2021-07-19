@@ -24,8 +24,8 @@ function ExploreCollection() {
 
   const [filterMethod, setFilterMethod] = useState('')
   const [filterType, setFilterType] = useState('')
-  const [selectDP, setSelectDP] = useState('desc')
-  const [sort, setSort] = useState('desc')
+  const [selectDatePrice, setSelectDatePrice] = useState('desc')
+  const [sort, setTypeSort] = useState('desc')
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(0)
   const [tags, setTags] = useState([])
@@ -82,7 +82,7 @@ function ExploreCollection() {
         limit: 8,
         sort: sort,
         sortBy:
-          selectDP === 'asc' || selectDP === 'desc' ? 'createdAt' : 'price',
+          selectDatePrice === 'asc' || selectDatePrice === 'desc' ? 'createdAt' : 'price',
         tags,
       },
       _.identity,
@@ -125,10 +125,10 @@ function ExploreCollection() {
         handleInputOnchange={handleInputOnchange}
         searchParams={searchParams}
         setPage={setPage}
-        setSort={setSort}
+        setTypeSort={setTypeSort}
         sort={sort}
-        selectDP={selectDP}
-        setSelectDP={setSelectDP}
+        selectDatePrice={selectDatePrice}
+        setSelectDatePrice={setSelectDatePrice}
       />
       <h1 style={{ fontWeight: 'bold' }}>
         {NFTs?.total} results for "lucky swap studio"

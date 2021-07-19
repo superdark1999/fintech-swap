@@ -1,7 +1,7 @@
 import React from 'react'
 import { FilterBarStyled } from './styled'
 import { Radio } from 'antd'
-import SearchSort from '../../SearchSort'
+import Filter from '../../Filter'
 import { isMobile } from 'react-device-detect'
 
 function FilterBar(props) {
@@ -11,9 +11,9 @@ function FilterBar(props) {
     filterType,
     handleInputOnchange,
     setPage,
-    setSort,
-    selectDP, 
-    setSelectDP
+    setTypeSort,
+    selectDatePrice, 
+    setSelectDatePrice
   } = props
 
   const onChangeType = (e) => {
@@ -51,13 +51,13 @@ function FilterBar(props) {
           </Radio.Group>
         </div>
       </div>
-      <SearchSort
+      <Filter
         handleInputOnchange={handleInputOnchange}
         setPage={setPage}
         searchParams={searchParams}
-        setSelectSort={setSort}
-        selectDP={selectDP} 
-        setSelectDP={setSelectDP}
+        setSelectSort={setTypeSort}
+        selectDatePrice={selectDatePrice} 
+        setSelectDatePrice={setSelectDatePrice}
         setTypeSortDate={true}
       />
     </FilterBarStyled>

@@ -16,7 +16,9 @@ const OfferTable = ({ offerData, isRenderAction, chooseOffer, state, renderButon
           return (
             <div>
               {record?.ownerWalletAddress > 0 && (
+              <a href={`/user-profile/${record?.ownerWalletAddress}/onstore/readyToSell`} target="_blank">
                 <TextGradient width="auto" fontSize="14px">{getCompactString(record?.ownerWalletAddress, 6)} </TextGradient>
+              </a>
               )}
             </div>
           )
@@ -71,7 +73,9 @@ const OfferTable = ({ offerData, isRenderAction, chooseOffer, state, renderButon
         render: (record: any) => {
           return (
             <div>
-              <TextGradient width="auto" fontSize="14px">{record?.createdBy?.name} </TextGradient>
+              <a href={`/user-profile/${record?.createdBy?.walletAddress}/onstore/readyToSell`} target="_blank">
+                <TextGradient width="auto" fontSize="14px">{record?.createdBy?.name} </TextGradient>
+              </a>
             </div>
           )
         }

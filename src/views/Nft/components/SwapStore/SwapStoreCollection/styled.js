@@ -138,48 +138,5 @@ export const FilterBarStyled = styled.div`
       }
     }
   }
-  .right-action {
-    font-weight: ${isMobile ? '500' : '700'};
-    font-size: ${isMobile ? '16px' : '20px'};
-    text-align: ${isMobile && 'right'};
-    height: 32px;
-    display: flex;
-    flex-direction: column;
-    /* text-decoration: underline; */
-    width: ${isMobile && '100%'};
-    cursor: pointer;
-    display: flex;
-    margin-bottom: 20px;
-    .right-action-sort {
-      display: flex;
-      justify-content: flex-end;
-    }
-    .search-input {
-      margin-bottom: 24px;
-      input {
-        border-top-left-radius: 100px;
-        border-bottom-left-radius: 100px;
-      }
-      .ant-btn-primary {
-        background: #333435;
-        border: 1px solid #333435;
-      }
-    }
-    .ant-select {
-      margin-left: 16px;
-      .ant-select-selector {
-        border-radius: 30px;
-        .ant-select-selection-item {
-          font-weight: 500;
-          font-size: 14px;
-          text-decoration: unset;
-        }
-      }
-    }
-  }
-  @media (max-width: 765px) {
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-  }
+  
 `

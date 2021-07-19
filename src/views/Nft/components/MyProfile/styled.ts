@@ -1,8 +1,11 @@
 import styled from 'styled-components'
 import { isMobile } from 'react-device-detect'
 import bannerDefault from 'assets/images/banner-profile-default.jpg'
+import arrowDown from '../../../../assets/images/down-filled-triangular-arrow.svg'
+
 interface Props {
-  urlCover?: string
+  urlCover?: string;
+  state?: boolean;
 }
 export const UserProfileStyled = styled.div<Props>`
   background: #f9fafb;
@@ -161,7 +164,7 @@ export const UserProfileStyled = styled.div<Props>`
   }
 `
 
-export const CartStyled = styled.div`
+export const CartStyled = styled.div<Props>`
   /* display: flex; */
   margin: 20px 0;
   padding: 30px;
@@ -183,10 +186,36 @@ export const CartStyled = styled.div`
   }
   .info-swap{
       display: block;
+      position: relative;
       background: unset;
       cursor: pointer;
       border: 0;
       margin: 0 auto;
+      font-weight: bold;
+      border: 1px solid #efefef;
+      border-radius: 100px;
+      color: #333435;
+      padding: 0px 45px 0 15px;
+      .arrowDown{
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        right: -1px;
+        top: -1px;
+        background: #efefef;
+        border-radius: 50%;
+        &::before{
+          content: '';
+          background: url(${arrowDown});
+          width: 11px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%) rotate( ${(props) => props.state ? '0deg' : '180deg'});
+          height: 10px;
+          background-size: cover;
+        }
+      }
       
     }
   .description {
