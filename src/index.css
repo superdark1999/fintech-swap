@@ -308,6 +308,7 @@ button.button-connect:hover {
 }
 
 .bot-btn button {
+  background-color: #f5c606;
   max-width: 340px;
   width: 100%;
 }
@@ -476,3 +477,5 @@ button.btn-secondary.dropdown-toggle:focus {
 .modal-setting div:nth-child(2) {
   padding: 0;
 }
+
+
