@@ -1,4 +1,4 @@
-import { currencyEquals, Trade } from '@luckyswap/v2-sdk'
+import { Currency, currencyEquals, Trade } from '@luckyswap/v2-sdk'
 import React, { useCallback, useMemo } from 'react'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
@@ -104,6 +104,7 @@ export default function ConfirmSwapModal({
       hash={txHash}
       content={confirmationContent}
       pendingText={pendingText}
+      currencyToAdd={trade?.outputAmount.currency}
     />
   )
 }

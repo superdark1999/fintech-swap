@@ -1,13 +1,13 @@
-import { Currency, Token } from '@luckyswap/v2-sdk'
-import React, { useMemo } from 'react'
-import styled from 'styled-components'
+import { Currency } from '@luckyswap/v2-sdk'
 import useHttpLocations from 'hooks/useHttpLocations'
+import React, { useMemo } from 'react'
 import { WrappedTokenInfo } from 'state/lists/hooks'
+import styled from 'styled-components'
+import { useActiveWeb3React } from '../../../hooks/index'
 import Logo from '../Logo'
 import CoinLogo from '../pancake/CoinLogo'
-import { useActiveWeb3React } from '../../../hooks/index'
 
-const getTokenLogoURL = (address: string) =>
+export const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/assets/${address}/logo.png`
 
 const StyledBnbLogo = styled.img<{ size: string }>`

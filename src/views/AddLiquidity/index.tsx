@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { AddIcon, Button, CardBody, Text as UIKitText } from '@luckyswap/uikit'
-import { Currency, currencyEquals, TokenAmount, WNATIVE } from '@luckyswap/v2-sdk'
+import { Currency, currencyEquals, NATIVE, TokenAmount, WNATIVE } from '@luckyswap/v2-sdk'
 import { PairState } from 'data/Reserves'
 import { useActiveWeb3React } from 'hooks'
 import { useCurrency } from 'hooks/Tokens'
@@ -25,7 +25,7 @@ import Pane from '../../components/Swap/Pane'
 import { MinimalPositionCard } from '../../components/Swap/PositionCard'
 import Row, { RowBetween, RowFlat } from '../../components/Swap/Row'
 import TransactionConfirmationModal, {
-  ConfirmationModalContent
+  ConfirmationModalContent,
 } from '../../components/Swap/TransactionConfirmationModal'
 import { useRouterContract } from '../../hooks/useContract'
 import AppBody from '../AppBody'
@@ -272,7 +272,7 @@ export default function AddLiquidity({
           history.push(`/add/${newCurrencyIdB}`)
         }
       } else {
-        history.push(`/add/${currencyIdA || 'ETH'}/${newCurrencyIdB}`)
+        history.push(`/add/${currencyIdA || NATIVE[chainId]?.symbol}/${newCurrencyIdB}`)
       }
     },
     [currencyIdA, history, currencyIdB, chainId],
@@ -307,6 +307,7 @@ export default function AddLiquidity({
               />
             )}
             pendingText={pendingText}
+            currencyToAdd={pair?.liquidityToken}
           />
           <CardBody>
             <AutoColumn gap="20px">

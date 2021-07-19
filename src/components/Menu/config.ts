@@ -141,36 +141,36 @@ const configRestricted: MenuEntry[] = [
     label: 'Farms',
     icon: 'FarmIcon',
     href: '#',
-    calloutClass: 'style-color icon-new',
+    calloutClass: 'style-color not-allow',
   },
   {
     label: 'Pools',
     icon: 'PoolIcon',
     href: '#',
-    calloutClass: 'style-color icon-new',
+    calloutClass: 'style-color not-allow',
   },
 
   {
     label: 'Launchpad',
     icon: 'IfoIcon',
     href: '#',
-    calloutClass: 'style-color icon-new',
+    calloutClass: 'style-color not-allow',
   },
   {
     label: 'NFT',
     icon: 'NftIcon',
     href: '#',
-    calloutClass: 'style-color icon-new',
+    calloutClass: 'style-color not-allow',
   },
   {
     label: 'Gamefi',
     icon: 'TicketIcon',
     href: '#',
-    calloutClass: 'style-color ',
+    calloutClass: 'style-color not-allowed',
     items: [
       {
         label: 'Lottery',
-        href: '/lottery',
+        href: '#',
         calloutClass: 'style-color',
       },
     ],

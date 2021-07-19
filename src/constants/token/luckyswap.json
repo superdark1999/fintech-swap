@@ -34,6 +34,13 @@
       "logoURI": "/images/coinslist/busd.png"
     },
     {
+      "name": "WBNB Token",
+      "symbol": "WBNB",
+      "address": "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+      "chainId": 97,
+      "decimals": 18
+    },
+    {
       "name": "Token Demo",
       "symbol": "DEMO",
       "address": "0x09FceE7287f882c5eEAb8032A64FDE54Fc1dD055",

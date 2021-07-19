@@ -13,7 +13,7 @@ export const setupNetwork = async () => {
     try {
       await provider.request({
         method: 'wallet_addEthereumChain',
-        params: [NETWORKS[ChainId.BSCTESTNET]],
+        params: [NETWORKS[ChainId.MAINNET]],
       })
       return true
     } catch (error) {

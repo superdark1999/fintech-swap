@@ -326,7 +326,7 @@ button.button-connect:hover {
 }
 
 .icon-new a,
-.icon-hot a  {
+.icon-hot a {
   position: relative;
 }
 
@@ -359,6 +359,15 @@ button.button-connect:hover {
   opacity: 1;
 }
 
+.not-allow > a {
+  cursor: not-allowed !important;
+}
+
+.not-allowed[role='button'],
+.not-allowed + div a {
+  cursor: not-allowed !important;
+}
+
 @keyframes fadeinout {
   from {
     opacity: 0;
@@ -370,7 +379,6 @@ button.button-connect:hover {
     opacity: 0;
   }
 }
-
 
 .logo-mobile {
   max-width: 40px;
