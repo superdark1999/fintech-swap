@@ -13,29 +13,28 @@ function FilterBar(props) {
     selectType,
     setSelectType,
     setSelectSort,
-    selectDP,
-    setSelectDP,
+    selectDatePrice,
+    setSelectDatePrice,
     setTypeSortDate,
+    style,
   } = props
 
-  // const onChangeSort = (value) => {
-  //   setSort(value)
-  //   setPage(1)
-  // }
+  
   const onChangeSelectDatePrice = (val) => {
     if (val == 'desc' || val == 'hight') setSelectSort('desc')
     else setSelectSort('asc')
-    setPage(1)
-    setSelectDP(val)
+    //(setPage && setPage(1))
+    if(setPage) setPage(1)
+    setSelectDatePrice(val)
   }
   const onChangeSelectType = (val) => {
-    console.log(val)
-    setPage(1)
+    //(setPage && setPage(1))
+    if(setPage) setPage(1)
     setSelectType(val)
   }
 
   return (
-    <FilterBarStyled>
+    <FilterBarStyled style={style}>
       <div className="right-action">
         <Search
           style={
@@ -49,7 +48,6 @@ function FilterBar(props) {
           enterButton
         />
         <div style={{ display: 'flex' }}>
-          {/* <div className="type"> */}
           <Select
             style={{ width: 120, borderRadius: 30 }}
             onChange={onChangeSelectType}
@@ -62,15 +60,11 @@ function FilterBar(props) {
               </Option>
             ))}
           </Select>
-          {/* </div>
-          
-          <div className="data-price"> */}
           <Select
             style={{ width: 120, borderRadius: 30 }}
             onChange={onChangeSelectDatePrice}
-            defaultValue={selectDP}
+            defaultValue={selectDatePrice}
           >
-            {/* : OptionSort.slice(0,2).map((item))  */}
             {setTypeSortDate
               ? OptionSort.slice(0, 2).map((item) => (
                   <Option key={item.value} value={item.value}>
@@ -83,7 +77,6 @@ function FilterBar(props) {
                   </Option>
                 ))}
           </Select>
-          {/* </div> */}
         </div>
       </div>
     </FilterBarStyled>

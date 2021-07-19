@@ -280,7 +280,7 @@ export default function OnSaleCard({ data }: any) {
   const renderQRCode = () => {
     return (
       <div
-        className="group-button qrCode-wrapper"
+        className="qrCode-wrapper"
         style={{ justifyContent: 'flex-end' }}
       >
         <button className="btn-qrCode" onClick={() => setShowQR(true)}>
@@ -293,8 +293,11 @@ export default function OnSaleCard({ data }: any) {
   const renderGroupAction = () => {
     return (
       <div className="group-button" style={{marginTop: '10px'}}>
-        {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell') &&(
-          <button className="info-swap" style={{minWidth:'100px'}} onClick={()=> onChangeState(state)}>v</button>
+        {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell' && offerData.length > 0) &&(
+          <button className="info-swap" style={{minWidth:'100px'}} onClick={()=> onChangeState(state)}>
+            <span>Offers</span>  
+            <span className="arrowDown"></span>
+          </button>
         )}
         {renderQRCode()}
       </div>
@@ -305,7 +308,7 @@ export default function OnSaleCard({ data }: any) {
     return null
   }
   return (
-    <CartStyled>
+    <CartStyled state={state}>
       <Row gutter={24} align={'middle'}>
         <Col
           xl={{ span: 5 }}
@@ -366,7 +369,7 @@ export default function OnSaleCard({ data }: any) {
           {renderGroupAction()}
 
         </Col>
-        {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell') &&(
+        {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell' && offerData.length > 0) &&(
           <div style={{width:'100%'}} >
           <OfferTable state={state} offerData={offerData} isRenderAction={true} renderButon={renderButon}/>
         </div>

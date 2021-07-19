@@ -6,7 +6,7 @@ import useIO from 'hooks/useIo'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import _ from 'lodash'
 import { isMobile } from 'react-device-detect'
-import FilterBar from '../SearchSort'
+import FilterBar from '../Filter'
 import ProgressBar from 'components-v2/ProgressBar'
 
 const { Option } = Select
@@ -14,8 +14,8 @@ const { Option } = Select
 function Collection(props) {
   const { price } = props
 
-  const [select, setSelect] = useState('all')
-  const [selectDP, setSelectDP] = useState('desc')
+  const [filterType, setFilterType] = useState('all')
+  const [selectDatePrice, setSelectDatePrice] = useState('desc')
   const [selectSort, setSelectSort] = useState('desc')
   const [NFTs, setNFTs] = useState({ data: [], total: 0 })
   const { getNFT } = useArtworkServices()
@@ -37,12 +37,12 @@ function Collection(props) {
       {
         status: 'readyToSell',
         NFTType: ['buy', 'auction', 'swap-store'],
-        type: select === 'all' ? '' : select,
+        type: filterType === 'all' ? '' : filterType,
         page,
         limit: 8,
         sort: selectSort,
         sortBy:
-          selectDP === 'asc' || selectDP === 'desc' ? 'createdAt' : 'price',
+          selectDatePrice === 'asc' || selectDatePrice === 'desc' ? 'createdAt' : 'price',
         ...price,
       },
       _.identity,
@@ -60,11 +60,11 @@ function Collection(props) {
       }
     })
     setLoading(Math.random() * (80 - 40 + 1) + 40)
-  }, [page, selectSort, select, price])
+  }, [page, selectSort, filterType, price])
 
   const onChangeSelectType = (val) => {
     setPage(1)
-    setSelect(val)
+    setFilterType(val)
   }
 
   useEffect(() => {
@@ -95,11 +95,11 @@ function Collection(props) {
         <div className="title-artists">Collection</div>
         <FilterBar
         setPage={setPage}
-        selectType={select}
-        setSelectType={setSelect}
+        selectType={filterType}
+        setSelectType={setFilterType}
         setSelectSort={setSelectSort}
-        selectDP={selectDP} 
-        setSelectDP={setSelectDP}
+        selectDatePrice={selectDatePrice} 
+        setSelectDatePrice={setSelectDatePrice}
         />
 
       </div>

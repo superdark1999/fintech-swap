@@ -27,6 +27,7 @@ import OfferTable from '../Swap/components/OfferTable'
 // import useUserStore from 'store/userStore'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import {BINANCE_CONFIG} from 'configs'
+import arrowDown from '../../../../assets/images/down-filled-triangular-arrow.svg'
 
 
 import {getPrice} from 'utils'
@@ -91,16 +92,15 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
             tokenId: rawNFTs.map((it:any)=>it.tokenId)
           }).then(({status,data})=>{
             if(status==200){
-             const offerData = data?.data?.map((item:any)=>{
+             const offerDatas = data?.data?.map((item:any)=>{
                 const rawNFTByTokenId = rawNFTs.find((it:any)=>item?.tokenId==it?.tokenId)||{}
                 return {
                   ...item,
                   ...rawNFTByTokenId,
                 }
               })
-          
-            setOfferData(offerData)
-            //console.log(offerData)
+            setOfferData(offerDatas)
+            console.log(offerData)
             }
           })
         }
@@ -458,8 +458,11 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
           <ButtonCancel height="40px" onClick={onCancelItemOnMarket}>
             Cancel
           </ButtonCancel>
-          {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell') &&(
-          <button className="info-swap" style={{minWidth:'100px'}} onClick={()=> onChangeState(state)}>v</button>
+          {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell' && offerData.length > 0) &&(
+          <button className="info-swap" onClick={()=> onChangeState(state)}>
+            <span>Offers</span>  
+            <span className="arrowDown"></span>
+          </button>
           )}
           {renderQRCode()}
         </div>
@@ -580,7 +583,7 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
     }
   }
   return (
-    <CartStyled>
+    <CartStyled state={state}>
       <Row gutter={24} align={'middle'}>
         <Col
           xl={{ span: 5 }}
@@ -632,7 +635,7 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
           <div>{renderGroupAction(data?.status)}</div>          
           
         </Col>
-        {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell') &&(
+        {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell' && offerData.length > 0) &&(
           <div style={{width:'100%'}} >
           <OfferTable state={state} offerData={offerData} isRenderAction={true} renderButon={renderButon}/>
         </div>
