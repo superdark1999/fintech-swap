@@ -58,9 +58,26 @@ export const getLotteryDrawTime = (currentMillis): string => {
 export const getTicketSaleStep = () => (1 / 12) * 100
 
 export const getLotteryDrawStep = (currentMillis) => {
-  const msBetweenLotteries = 43200000
+  const msBetweenLotteries = 43200000 * 2
   const endTime = getNextLotteryDrawTime(currentMillis)
   const msUntilLotteryDraw = endTime - currentMillis
   const percentageRemaining = (msUntilLotteryDraw / msBetweenLotteries) * 100
   return 100 - percentageRemaining
+}
+
+
+export const getTimeRemainDraw = (endTime: Date) => {
+  const now = new Date();
+  if (now > endTime)
+    endTime.setDate(endTime.getDate() + 1);
+  const remain = ((endTime.getTime() - now.getTime()) / 1000);
+  const hh = pad(Math.floor((remain / 60 / 60) % 60));
+  const mm = pad(Math.floor((remain / 60) % 60));
+
+
+  return `${hh}h: ${mm}m`;
+}
+
+function pad(num) {
+  return ("0".concat(num.toString())).substr(-2);
 }

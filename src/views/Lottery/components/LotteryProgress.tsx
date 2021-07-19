@@ -9,6 +9,7 @@ import {
   getLotteryDrawStep,
   getTicketSaleTime,
   getTicketSaleStep,
+  getTimeRemainDraw,
 } from '../helpers/CountdownHelpers'
 
 const ProgressWrapper = styled.div`
@@ -34,19 +35,31 @@ const BottomTextWrapper = styled.div`
 const StyledPrimaryText = styled(Text)`
   margin-right: 16px;
 `
+const timeEndLottery = new Date;
+timeEndLottery.setHours(23, 0, 0);
+
+const timeStartLottery = new Date;
+timeStartLottery.setHours(24, 0, 0);
+
+// const timeStartLottery = new Date(19, 0, 0);
+
 const LotteryProgress = () => {
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
-  const currentMillis = useCurrentTime()
-  const timeUntilTicketSale = getTicketSaleTime(currentMillis)
-  const timeUntilLotteryDraw = getLotteryDrawTime(currentMillis)
+  const currentMillis = useCurrentTime()  
+  const timeRemainDraw = getTimeRemainDraw(timeEndLottery)
+  const timeRemainSale = getTimeRemainDraw(timeStartLottery);
+
+
+  // const timeUntilTicketSale = getTicketSaleTime(currentMillis)
+  // const timeUntilLotteryDraw = getLotteryDrawTime(currentMillis)
 
   return (
     <ProgressWrapper>
       <Progress primaryStep={getLotteryDrawStep(currentMillis)} secondaryStep={getTicketSaleStep()} showProgressBunny />
       <TopTextWrapper>
         <StyledPrimaryText fontSize="20px" bold color="yellow">
-          {lotteryHasDrawn ? timeUntilTicketSale : timeUntilLotteryDraw}
+          {lotteryHasDrawn ? timeRemainSale : timeRemainDraw}
         </StyledPrimaryText>
         <Text fontSize="20px" bold color="invertedContrast">
           {lotteryHasDrawn ? TranslateString(434, 'Until ticket sale') : TranslateString(492, 'Until lottery draw')}
@@ -55,7 +68,7 @@ const LotteryProgress = () => {
       {lotteryHasDrawn && (
         <BottomTextWrapper>
           <Text color="invertedContrast">
-            {timeUntilLotteryDraw} {TranslateString(492, 'Until lottery draw')}
+            {/* {timeUntilLotteryDraw} {TranslateString(492, 'Until lottery draw')} */}
           </Text>
         </BottomTextWrapper>
       )}
