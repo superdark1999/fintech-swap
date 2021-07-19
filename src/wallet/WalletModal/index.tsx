@@ -17,6 +17,7 @@ import {Modal, Row} from 'antd'
 import Option from './Option'
 import PendingView from './PendingView'
 import { connectorLocalStorageKey, ConnectorNames } from '@luckyswap/uikit'
+import question from '../../assets/images/question-connect.svg'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -42,9 +43,14 @@ const Wrapper = styled.div`
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.5;
   color: ${(props) =>
     props.color === 'blue' ? ({ theme }) => theme.text1 : 'inherit'};
+  @media screen and (min-width: 968px) {
+    font-size: 25px;
+  }
 `
 
 const ContentWrapper = styled.div`
@@ -73,6 +79,20 @@ const UpperSection = styled.div`
     font-weight: 500;
   }
 `
+const LearnConnect = styled.a`
+  display: flex;
+  align-self: center;
+  align-items: center;
+  margin-top: 24px;
+  color: #000000D9;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  &:hover {
+    color: #0a58ca;
+    text-decoration: underline;
+  }
+`
 
 const Blurb = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -85,6 +105,7 @@ const Blurb = styled.div`
 const OptionGrid = styled.div`
   display: grid;
   grid-gap: 10px;
+  grid-template-columns: 1fr 1fr;
 `
 
 const HoverText = styled.div`
@@ -220,6 +241,7 @@ export default function WalletModal({
                   tryActivation(option.connector)
               }}
               id={`connect-${key}`}
+              size={70}
               key={key}
               active={option.connector && option.connector === connector}
               color={option.color}
@@ -241,6 +263,7 @@ export default function WalletModal({
               <Option
                 id={`connect-${key}`}
                 key={key}
+                size={70}
                 color={'#E8831D'}
                 header={'Install Metamask'}
                 subheader={null}
@@ -274,6 +297,7 @@ export default function WalletModal({
                 : !option.href && tryActivation(option.connector)
             }}
             key={key}
+            size={70}
             active={option.connector === connector}
             color={option.color}
             link={option.href}
@@ -335,7 +359,7 @@ export default function WalletModal({
           </HeaderRow>
         ) : (
           <HeaderRow>
-            <HoverText>Unblock Wallet</HoverText>
+            <HoverText>Connect to a wallet</HoverText>
           </HeaderRow>
         )}
         <ContentWrapper>
@@ -354,6 +378,9 @@ export default function WalletModal({
               <span>New to Ethereum? &nbsp;</span>{" "}
             </Blurb>
           )} */}
+          <LearnConnect href="http://docs.luckyswap.io" target="_blank">
+            <img style={{marginRight: '6px'}} src={question} alt="" />
+            Learn how to connect</LearnConnect>
         </ContentWrapper>
       </UpperSection>
     )
