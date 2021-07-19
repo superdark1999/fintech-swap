@@ -167,31 +167,71 @@ const TabOnSale = () => {
   // const { tab } = useParams()
   const match = useRouteMatch()
   
+  let paramsSearch = useMemo(
+    () => new URLSearchParams(window.document.location.search.substring(1)),
+    [],
+  )
+
+  const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
+  //const [filterMethod, setFilterMethod] = useState('')
+  const [filterType, setFilterType] = useState('all')
+  const [selectDatePrice, setSelectDatePrice] = useState('desc')
+  const [typeSort, setTypeSort] = useState('desc')
+  const [loading, setLoading] = useState(true)
+
   useEffect(() => {
     if (match?.params?.tab == 'onstore') {
-      const query = {
-        status: 'readyToSell',
-        NFTType: ['buy', 'auction', 'swap-store'],
-        ownerWalletAddress: account,
-      }
-      getNFT(query).then(({ status, data }) => {
+  
+      const params = _.pickBy(
+        {
+          status: 'readyToSell',
+          NFTType: ['buy', 'auction', 'swap-store'],
+          ownerWalletAddress: account,type: filterType === 'all' ? '' : filterType,
+          title: '' || searchParams?.toLowerCase(),
+          sort: typeSort,
+          sortBy:
+            selectDatePrice === 'asc' || selectDatePrice === 'desc'
+              ? 'createdAt'
+              : 'price',
+        },
+        _.identity,
+      )
+
+      setLoading(Math.random() * (80 - 40 + 1) + 40)
+      getNFT(params).then(({ status, data }) => {
         if (status == 200) {
+          setLoading(100)
           setNFTs(data?.data || [])
         }
       })
     }
-  }, [match?.params?.tab])
+  }, [match?.params?.tab, filterType, searchParams, typeSort])
+
+  const handleInputOnchange = (e) => {
+    const { value } = e.target
+    setSearchParams(value) 
+  }
+  const a = 'f-direction'
+
   return (
     <>
-      {/* <Row align="middle" justify="space-between">     
-        <GroupButton>
-          <RadioButton width="auto" borderRadius="10px" value="All">All </RadioButton>
-          <RadioButton width="auto" borderRadius="10px" value="Pending" disabled>Pending</RadioButton>
-          <RadioButton width="auto" borderRadius="10px" value="Approved" >Approved</RadioButton>
-          <RadioButton width="auto" borderRadius="10px" value="Cancelled" disabled>Cancelled</RadioButton>
-        </GroupButton>
-        <SearchInput maxWidth="300px" placeholder="Search items"/>
-      </Row>  */}
+      <Row align="middle" justify="end">
+        <Filter
+        style={{direction:'f-direction'}}
+        selectType={filterType}
+        setSelectType={setFilterType}
+        handleInputOnchange={handleInputOnchange}
+        // setPage={setPage}
+        searchParams={searchParams}
+        setSelectSort={setTypeSort}
+        sort={typeSort}
+        selectDatePrice={selectDatePrice} 
+        setSelectDatePrice={setSelectDatePrice}
+        
+      />
+      <ProgressBar loading={loading} setLoading={setLoading} />
+
+      </Row>
       <ListCart className="list-artwork">
         {NFTs.map((item) => {
           return <OnsSaleCard key={item?._id} data={item} />
