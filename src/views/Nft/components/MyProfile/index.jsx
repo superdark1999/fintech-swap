@@ -214,7 +214,7 @@ const TabOnSale = () => {
   
   return (
     <>
-      <Row align="middle" justify="end">
+      <Row align="middle" justify={(isMobile ? "center": "end")}>
         <Filter
         styleFilter={'onstore'}
         selectType={filterType}
@@ -344,7 +344,7 @@ const TabMyCollection = () => {
 
   return (
     <>
-      <Row align="middle" justify="space-between">
+      <Row align="middle" justify='space-between'>
         <GroupButton style={{justifyContent:"space-around"}} defaultValue={match?.params?.option}>
           <RadioButton
             width="auto"
@@ -393,7 +393,6 @@ const TabMyCollection = () => {
         selectType={filterType}
         setSelectType={setFilterType}
         handleInputOnchange={handleInputOnchange}
-        // setPage={setPage}
         searchParams={searchParams}
         setSelectSort={setTypeSort}
         sort={typeSort}

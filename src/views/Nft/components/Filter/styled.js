@@ -6,12 +6,18 @@ import { isMobile } from 'react-device-detect'
 // }
 
 export const FilterBarStyled = styled.div`
+  width:${(props) =>
+    props?.styleFilter == 'collection' 
+  && isMobile? '100%': 'unset'};
+  margin-top: ${(props) =>
+    props?.styleFilter == 'collection' && '30px'};
   .right-action {
     font-weight: ${isMobile ? '500' : '700'};
     font-size: ${isMobile ? '16px' : '20px'};
     text-align: ${isMobile && 'right'};
     display: flex;
-    flex-direction: column;
+    flex-direction: ${(props) =>
+      (props?.styleFilter == 'onstore' && !isMobile) ? 'unset': 'column'};
     grid-gap: 20px;
     .search-input {
       input {
