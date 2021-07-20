@@ -16,11 +16,11 @@ export const RegexWebsiteURL =
 export const OptionSort = [
   {
     label: 'Newest',
-    value: 'asc',
+    value: 'desc',
   },
   {
     label: 'Oldest',
-    value: 'desc',
+    value: 'asc',
   },
   {
     label: 'Low Price ',
@@ -30,6 +30,14 @@ export const OptionSort = [
     label: 'High Price',
     value: 'hight',
   },
+]
+
+export const OptionData = [
+  { label: 'All items', value: 'all' },
+  { label: 'Image', value: 'image' },
+  { label: 'Video', value: 'video' },
+  { label: 'Gif', value: 'gif' },
+  { label: 'Audio', value: 'audio' },
 ]
 
 export const OptionMethods = [

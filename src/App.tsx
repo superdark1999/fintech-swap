@@ -23,7 +23,7 @@ import CreateArtWork from 'views/Nft/components/CreateArtWork/index'
 import DetailArtWork from 'views/Nft/components/DetailArtWork'
 import Swap from 'views/Nft/components/Swap'
 import UserProfile from 'views/Nft/components/UserProfile'
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.css'
 import MyProfile from 'views/Nft/components/MyProfile'
 import Page404 from 'views/Nft/components/404'
 import Explore from 'views/Nft/components/Explore'
@@ -35,14 +35,15 @@ import Lucky from 'assets/icon/lucky.svg'
 import Lucky1 from 'assets/icon/lucky-1.svg'
 import Lucky2 from 'assets/icon/lucky-2.svg'
 import Lucky3 from 'assets/icon/lucky-3.svg'
-import Lottie from 'react-lottie';
-import LogoAnimation from "assets/animation/Logo_animation.json";
+import Lottie from 'react-lottie'
+import LogoAnimation from 'assets/animation/Logo_animation.json'
 import InoEvent from 'views/Nft/components/InoEvent'
-import CacheRoute, { CacheSwitch } from 'react-router-cache-route'
+import NavigationBar from 'components-v2/NavigationBar'
+import NotificationMobile from 'components/TopBar/components/NotificationMobile'
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if ('ethereum' in window) {
-  ; (window.ethereum as any).autoRefreshOnNetworkChange = false
+  ;(window.ethereum as any).autoRefreshOnNetworkChange = false
 }
 
 const GOOGLE_ANALYTICS_ID: string | undefined =
@@ -53,8 +54,8 @@ if (typeof GOOGLE_ANALYTICS_ID === 'string') {
     customBrowserType: !isMobile
       ? 'desktop'
       : 'web3' in window || 'ethereum' in window
-        ? 'mobileWeb3'
-        : 'mobileRegular',
+      ? 'mobileWeb3'
+      : 'mobileRegular',
   })
 } else {
   ReactGA.initialize('test', { testMode: true, debug: true })
@@ -83,24 +84,26 @@ const App = () => {
   const [userState] = useUserStore()
   const [mobileMenu, setMobileMenu] = useState(false)
   const [timeLoading, setTimeLoading] = useState(true)
+  const [showNofitication, setShowNotification] = useState(false)
   const [configState, configAction] = useConfigStore()
   useEffect(() => {
     setTimeout(() => {
       setTimeLoading(false)
-    }, 2500);
+    }, 2500)
   }, [])
   const defaultOptions = {
     loop: true,
     autoplay: true,
     animationData: LogoAnimation,
-  };
+  }
   return (
     <Providers>
       <Updaters />
       <Router>
-        {(configState?.showLoading || timeLoading) &&
+        {(configState?.showLoading || timeLoading) && (
           <LoadingPage>
-            <Lottie options={defaultOptions}
+            <Lottie
+              options={defaultOptions}
               height={150}
               width={150}
               style={{ marginBottom: '40px' }}
@@ -113,62 +116,65 @@ const App = () => {
               <span className=""></span>
             </div>
           </LoadingPage>
-        }
+        )}
         <Web3ReactManager>
-          <>
-            {
-              isMobile &&
-              (
-                <SidebarMobile setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
-              )
-            }
-            <TopBar setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
-            {/* <div style={{marginTop: 80}}> */}
-            <CacheSwitch >
-              <CacheRoute path="/" exact>
-                <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
-              </CacheRoute>
-              <Route path="/nfts">
-                <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
-              </Route>
-              <Route path="/create/artwork">
-                <CreateArtWork />
-              </Route>
-              <Route path="/artwork/detail/:type/:id">
-                <DetailArtWork />
-              </Route>
-              <CacheRoute path="/user-profile/:id/:tab/:option">
-                <UserProfile />
-              </CacheRoute>
-              <CacheRoute path="/my-profile/:tab/:option">
-                <MyProfile />
-              </CacheRoute>
-              <CacheRoute path="/user-profile/:id/:tab">
-                <UserProfile />
-              </CacheRoute>
-              <CacheRoute path="/my-profile/:tab">
-                <MyProfile />
-              </CacheRoute>
-              <Route path="/swap/:id/step=:step">
-                <Swap />
-              </Route>
-              <Route path="/swap/step=:step">
-                <Swap />
-              </Route>
-              <CacheRoute path="/swap-store">
-                <SwapStore />
-              </CacheRoute>
-              <CacheRoute path="/explore">
-                <Explore />
-              </CacheRoute>
-              <Route path="/ino">
-                <InoEvent />
-              </Route>
-              <Route component={Page404} />
-            </CacheSwitch>
-            {/* </div> */}
-
-          </>
+          <Container>
+            <TopBar 
+              setMobileMenu={setMobileMenu} 
+              mobileMenu={mobileMenu} 
+              showNofitication={showNofitication} 
+              setShowNotification={setShowNotification}
+            />
+            <NotificationMobile 
+              showNofitication={showNofitication} 
+              setShowNotification={setShowNotification}
+            />
+            <Main>
+              <Switch>
+                <Route path="/" exact>
+                  <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
+                </Route>
+                <Route path="/nfts">
+                  <Nft setMobileMenu={setMobileMenu} mobileMenu={mobileMenu} />
+                </Route>
+                <Route path="/create/artwork">
+                  <CreateArtWork />
+                </Route>
+                <Route path="/artwork/detail/:type/:id">
+                  <DetailArtWork />
+                </Route>
+                <Route path="/user-profile/:id/:tab/:option">
+                  <UserProfile />
+                </Route>
+                <Route path="/my-profile/:tab/:option">
+                  <MyProfile />
+                </Route>
+                <Route path="/user-profile/:id/:tab">
+                  <UserProfile />
+                </Route>
+                <Route path="/my-profile/:tab">
+                  <MyProfile />
+                </Route>
+                <Route path="/swap/:id/step=:step">
+                  <Swap />
+                </Route>
+                <Route path="/swap/step=:step">
+                  <Swap />
+                </Route>
+                <Route path="/swap-store">
+                  <SwapStore />
+                </Route>
+                <Route path="/explore">
+                  <Explore />
+                </Route>
+                <Route path="/ino">
+                  <InoEvent />
+                </Route>
+                <Route path="*" component={Page404} />
+              </Switch>
+            </Main>
+            <NavigationBar />
+          </Container>
         </Web3ReactManager>
       </Router>
     </Providers>
@@ -176,7 +182,6 @@ const App = () => {
 }
 
 const Providers: React.FC = ({ children }) => {
-
   return (
     <ThemeProvider theme={theme as any}>
       <Web3ReactProvider getLibrary={getLibrary}>
@@ -199,22 +204,22 @@ const LoadingPage = styled.div`
   position: fixed;
   z-index: 1000;
   display: flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
   background: #212223;
   flex-direction: column;
   .loader {
-  text-align: center;
-  vertical-align: middle;
-  position: relative;
-  display: flex;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    display: flex;
     span {
       display: block;
       width: 30px;
       height: 30px;
       background: url(${Lucky}) no-repeat center;
       border-radius: 50%;
-      margin: 0 5px;      
+      margin: 0 5px;
       :nth-child(2) {
         background: url(${Lucky1}) no-repeat center;
       }
@@ -234,23 +239,39 @@ const LoadingPage = styled.div`
         animation: animate 2.5s infinite;
       }
     }
-    
   }
   @keyframes animate {
     0% {
       opacity: 1;
     }
     25% {
-      opacity: .75;
+      opacity: 0.75;
     }
 
     50% {
-      opacity: .5;
+      opacity: 0.5;
     }
 
     100% {
-      opacity: .25;
+      opacity: 0.25;
     }
   }
+`
 
+const Main = styled.div`
+  align-items: center;
+  height: 100vh;
+  /* min-height: calc(100vh - ${(props) => props.theme.topBarSize * 1.1}px); */
+  /* padding: 80px 0px 60px 0px; */
+  padding-top: 80px;
+  padding-bottom: ${isMobile && '80px'};
+  overflow: scroll;
+  scroll-behavior: smooth;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`
+
+const Container = styled.div`
+  height: 100vh;
 `

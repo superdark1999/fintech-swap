@@ -3,15 +3,15 @@ import { AddressZero } from '@ethersproject/constants'
 import  abiLucky from './AbiLucky'
 import { useActiveWeb3React } from 'wallet/hooks'
 import { useContract } from 'wallet/hooks/useContract'
-import { SUPPORT_CHAIN_IDS} from 'utils'
+import {BINANCE_CONFIG}  from 'configs'
 import { ethers } from 'ethers'
 
 import _ from 'lodash'
-export const LUCKY_TOKEN_ADDRESS = '0x5C2AaAdD1FcE223baaEFB1cF41ce872e9d8B986A';
-
+const {SUPPORT_CHAIN_IDS, LUCKY_ADDRESS} = BINANCE_CONFIG
 function useLuckyServiceBinaceChain(){
-        const { account, chainId } = useActiveWeb3React()
-        const LuckyTokenContract = useContract(LUCKY_TOKEN_ADDRESS,abiLucky)
+        const { account } = useActiveWeb3React()
+
+        const LuckyTokenContract = useContract(LUCKY_ADDRESS,abiLucky)
 
 
         const approveLevelAmount = (address:string)=>{
@@ -49,7 +49,7 @@ function useLuckyServiceBinaceChain(){
 export default function LuckyService(){
     const { account, chainId } = useActiveWeb3React()
     const LuckyServiceBinaceChain = useLuckyServiceBinaceChain()
-    if(SUPPORT_CHAIN_IDS.includes(chainId)){
+    if(SUPPORT_CHAIN_IDS.includes(chainId)&&LUCKY_ADDRESS){
         return LuckyServiceBinaceChain
     }
     return null

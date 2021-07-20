@@ -16,7 +16,6 @@ export default function CardSwap(props: any) {
       }
     }
   }, [playVideo])
-  console.log('checkk',!!props.value && !!props.setVisible)
   return (
     <CardSwapStyled style={{ ...props.style }} onMouseEnter={() => setplayVideo(true)} onMouseLeave={() => setplayVideo(false)}>
       {/* <img src={props.data?.contentUrl}/> */}

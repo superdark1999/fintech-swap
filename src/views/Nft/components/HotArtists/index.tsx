@@ -36,12 +36,10 @@ function HotArtists() {
       <RightCircleOutlined
         className="scroll-left"
         onClick={scrollLeft}
-        style={{ fontSize: 24 }}
       />
       <LeftCircleOutlined
         className="scroll-right"
         onClick={scrollRight}
-        style={{ fontSize: 24 }}
       />
       <div className="content-artists" ref={divRef}>
         {users.map((item, i) => (

@@ -1,12 +1,13 @@
 import moment from 'moment'
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { CartStyled } from './styled'
 import { Link } from 'react-router-dom'
 import { getCompactString, embedTokenIdLinkBSCScan } from 'utils'
 import { useActiveWeb3React } from 'wallet/hooks'
+import { Row, Col } from 'antd'
 
 const Tags = (tag, key) => {
-  //console.log(tag, key)
+  
   return (
     <li className="item">
       <Link to="/explore">
@@ -17,47 +18,55 @@ const Tags = (tag, key) => {
 }
 
 const InfoCard = (value) => {
-  const a = true
   const [zmore, setMore] = useState(true)
   const { account, chainId } = useActiveWeb3React()
   const data = value.value
-  const leng = data.description.length
+  const [width, setWidth] = useState(0);
+  const [widthChild, setWidthChild] = useState(0);
+  const elementRefParent = useRef(null);
+  const elementRefChild = useRef(null);
+  
 
-  console.log(zmore)
+  
   const pushClick = (n) => {
-    console.log(n)
+    
     setMore(!n)
   }
+  useEffect(() => {
+    function handleResize() {
+      if(elementRefParent?.current) setWidth(elementRefParent?.current.offsetWidth);
+      if(elementRefChild?.current) setWidthChild(elementRefChild?.current.offsetWidth);
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+  }, [elementRefParent?.current,elementRefChild?.current]);
 
   return (
     <CartStyled readMore={zmore}>
-      <div
-        className="box-flex"
-        // style={{ display: 'flex', marginBottom: 10 }}
-      >
+      <Row>
         {data?.TXHash && (
-          <div style={{ display: 'flex', width: '50%' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </div>
+          <Col sm={12} span={24}>
+            <span style={{ color: '#AFBAC5', fontWeight: 600 }}>ID: </span>
             <span className="number">{getCompactString(data?.TXHash, 10)}</span>
-          </div>
+          </Col>
         )}
         {data?.createdAt && (
-          <div style={{ display: 'flex' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+          <Col sm={12} span={24}>
+            <span style={{ color: '#AFBAC5', fontWeight: 600 }}>
               Date create:&nbsp;
-            </div>
+            </span>
             <span className="date">
               {moment(data?.createdAt).format('MM/DD/YYYY HH:mm')}
             </span>
-          </div>
+          </Col>
         )}
-      </div>
-      <div className="box-flex ">
+      </Row>
+      <Row>
         {data?.tokenId && (
-          <div style={{ display: 'flex', width: '50%' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
+          <Col sm={12} span={24}>
+            <span style={{ color: '#AFBAC5', fontWeight: 600 }}>
               Token ID:&nbsp;
-            </div>
+            </span>
             <a
               className="value"
               href={embedTokenIdLinkBSCScan(
@@ -69,9 +78,9 @@ const InfoCard = (value) => {
             >
               {data?.tokenId}
             </a>
-          </div>
+          </Col>
         )}
-        <div className="organize">
+        <Col sm={12} span={24}>
           <span
             style={{
               fontSize: '16px',
@@ -91,18 +100,18 @@ const InfoCard = (value) => {
               ? data?.createdBy?.name
               : data?.createdBy?.walletAddress}
           </a>
-        </div>
-      </div>
-      <div className="box-flex">
+        </Col>
+      </Row>
+      <Row>
         {data?.type && (
-          <div style={{ display: 'flex', width: '50%' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>Type:&nbsp;</div>
+          <Col sm={12} span={24}>
+            <span style={{ color: '#AFBAC5', fontWeight: 600 }}>Type:&nbsp;</span>
             <span className="type">{data?.type}</span>
-          </div>
+          </Col>
         )}
         {data?.tags && (
-          <div style={{ display: 'flex' }}>
-            <div style={{ color: '#AFBAC5', fontWeight: 600 }}>Tags:&nbsp;</div>
+          <Col sm={12} span={24} style={{display:'flex'}}>
+            <span style={{ color: '#AFBAC5', fontWeight: 600 }}>Tags:&nbsp;</span>
             <ul className="tags">
               <React.Fragment>
                 {data?.tags.map((item, i) => {
@@ -110,23 +119,44 @@ const InfoCard = (value) => {
                 })}
               </React.Fragment>
             </ul>
-          </div>
+          </Col>
         )}
-      </div>
-      {data?.description && (
-        <div className="intro">
-          <div style={{ color: '#AFBAC5', fontWeight: 600 }}>
-            Introduction:&nbsp;
-          </div>
-          <div className="des">{data?.description}</div>
-          {leng > 75 ? (
-            <span onClick={() => pushClick(zmore)} className="readMore">
-              Read more
+      </Row>
+      <Row>
+        {(data?.contentInfo?.width || data?.contentInfo?.height) && (
+          <Col sm={12} span={24}>
+            <span style={{ color: '#AFBAC5', fontWeight: 600 }}>
+              Dimensions:&nbsp;
             </span>
-          ) : (
-            ''
-          )}
-        </div>
+            <span>
+              {`${data?.contentInfo.width}x${data?.contentInfo.height}`}
+            </span>
+          </Col>
+        )}
+      </Row>
+      {data?.description && (
+        (zmore ?
+        <Row>
+            <Col sm={4} span={24} style={{ color: '#AFBAC5', fontWeight: 600 }}>
+              Introduction:&nbsp;
+            </Col>
+            <Col ref={elementRefParent} className="des" sm={17} span={24}>
+              <span ref={elementRefChild}>{data?.description}</span>
+            </Col>
+            {(width < widthChild ? <Col sm={3} span={24} onClick={() => pushClick(zmore)} className="readMore">
+            &nbsp;Read more
+            </Col>: '')}
+            
+          
+          
+        </Row>
+        :
+        <Row>
+            <Col sm={4} span={24} style={{ color: '#AFBAC5', fontWeight: 600 }}>
+              Introduction:&nbsp;
+            </Col>
+            <Col className="des" sm={20} span={24}>{data?.description}</Col>
+        </Row>)
       )}
     </CartStyled>
   )

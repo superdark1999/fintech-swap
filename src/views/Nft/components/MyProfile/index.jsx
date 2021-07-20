@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { UserProfileStyled, CartStyled, ListCart } from './styled'
 import Checkmark from 'assets/images/checkmark.svg'
 import Crown from 'assets/images/crown.svg'
@@ -23,9 +23,12 @@ import { getCompactString } from 'utils'
 import { isMobile } from 'react-device-detect'
 import GetTypeSocial from 'components-v2/GetTypeSocial'
 import _, { isEmpty } from 'lodash'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import useMarketServices from 'services/web3Services/MarketServices'
+import Filter from '../Filter'
+import ProgressBar from 'components-v2/ProgressBar'
+
+
+
 const { TabPane } = Tabs
 export default () => {
   const [userState] = useUserStore()
@@ -158,39 +161,76 @@ export default () => {
 }
 
 const TabOnSale = () => {
-  const [loading, setLoading] = useState(true)
   const [NFTs, setNFTs] = useState([])
   const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
   // const { tab } = useParams()
   const match = useRouteMatch()
-  console.log('match', match)
   
+  let paramsSearch = useMemo(
+    () => new URLSearchParams(window.document.location.search.substring(1)),
+    [],
+  )
+
+  const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
+  //const [filterMethod, setFilterMethod] = useState('')
+  const [filterType, setFilterType] = useState('all')
+  const [selectDatePrice, setSelectDatePrice] = useState('desc')
+  const [typeSort, setTypeSort] = useState('desc')
+  const [loading, setLoading] = useState(true)
+
   useEffect(() => {
     if (match?.params?.tab == 'onstore') {
-      const query = {
-        status: 'readyToSell',
-        NFTType: ['buy', 'auction', 'swap-store'],
-        ownerWalletAddress: account,
-      }
-      getNFT(query).then(({ status, data }) => {
+  
+      const params = _.pickBy(
+        {
+          status: 'readyToSell',
+          NFTType: ['buy', 'auction', 'swap-store'],
+          ownerWalletAddress: account,type: filterType === 'all' ? '' : filterType,
+          title: '' || searchParams?.toLowerCase(),
+          sort: typeSort,
+          sortBy:
+            selectDatePrice === 'asc' || selectDatePrice === 'desc'
+              ? 'createdAt'
+              : 'price',
+        },
+        _.identity,
+      )
+
+      setLoading(Math.random() * (80 - 40 + 1) + 40)
+      getNFT(params).then(({ status, data }) => {
         if (status == 200) {
+          setLoading(100)
           setNFTs(data?.data || [])
         }
       })
     }
-  }, [match?.params?.tab])
+  }, [match?.params?.tab, filterType, searchParams, typeSort])
+
+  const handleInputOnchange = (e) => {
+    const { value } = e.target
+    setSearchParams(value) 
+  }
+  
   return (
     <>
-      {/* <Row align="middle" justify="space-between">     
-        <GroupButton>
-          <RadioButton width="auto" borderRadius="10px" value="All">All </RadioButton>
-          <RadioButton width="auto" borderRadius="10px" value="Pending" disabled>Pending</RadioButton>
-          <RadioButton width="auto" borderRadius="10px" value="Approved" >Approved</RadioButton>
-          <RadioButton width="auto" borderRadius="10px" value="Cancelled" disabled>Cancelled</RadioButton>
-        </GroupButton>
-        <SearchInput maxWidth="300px" placeholder="Search items"/>
-      </Row>  */}
+      <Row align="middle" justify="end">
+        <Filter
+        styleFilter={'onstore'}
+        selectType={filterType}
+        setSelectType={setFilterType}
+        handleInputOnchange={handleInputOnchange}
+        // setPage={setPage}
+        searchParams={searchParams}
+        setSelectSort={setTypeSort}
+        sort={typeSort}
+        selectDatePrice={selectDatePrice} 
+        setSelectDatePrice={setSelectDatePrice}
+        
+      />
+      <ProgressBar loading={loading} setLoading={setLoading} />
+
+      </Row>
       <ListCart className="list-artwork">
         {NFTs.map((item) => {
           return <OnsSaleCard key={item?._id} data={item} />
@@ -204,14 +244,27 @@ const TabOnSale = () => {
 const TabMyCollection = () => {
   // const { option } = useParams()
   // console.log('option: ', option)
-  const formRef = useRef(null)
+  //const formRef = useRef(null)
   const match = useRouteMatch()
   const [optionChecked, setOptionChecked] = useState(match?.params?.option || '')
 
+  const [loading, setLoading] = useState(true)
   const [renderData, setRenderData] = useState([])
   const { getNFT } = useArtworkServices()
   const { account } = useActiveWeb3React()
   const [offerList, setOfferList] = useState([])
+  const [refresh, setRefresh] = useState(false)
+
+  let paramsSearch = useMemo(
+    () => new URLSearchParams(window.document.location.search.substring(1)),
+    [],
+  )
+
+  const [searchParams, setSearchParams] = useState(paramsSearch.get('search'))
+  //const [filterMethod, setFilterMethod] = useState('')
+  const [filterType, setFilterType] = useState('all')
+  const [selectDatePrice, setSelectDatePrice] = useState('desc')
+  const [typeSort, setTypeSort] = useState('desc')
 
   const marketServicesMethod = useMarketServices()
 
@@ -229,9 +282,9 @@ const TabMyCollection = () => {
   useEffect(() => {
     if (optionChecked) {
       const query = {
-        ownerWalletAddress: account,
         status: optionChecked,
       }
+
       if (optionChecked === 'all') {
         delete query.status
       }
@@ -243,30 +296,56 @@ const TabMyCollection = () => {
           'checkingCancelling',
         ]
       }
-      getNFT(query).then(({ status, data }) => {
+      const params = _.pickBy(
+        {
+          ownerWalletAddress: account,
+          status: query.status,
+          // NFTType: filterMethod ? filterMethod : ['auction', 'swap-store', 'buy'],
+          type: filterType === 'all' ? '' : filterType,
+          title: '' || searchParams?.toLowerCase(),
+          sort: typeSort,
+          sortBy:
+            selectDatePrice === 'asc' || selectDatePrice === 'desc'
+              ? 'createdAt'
+              : 'price',
+        },
+        _.identity,
+      )
+
+      setLoading(Math.random() * (80 - 40 + 1) + 40)
+      getNFT(params).then(({ status, data }) => {
         if (status == 200) {
+          setLoading(100)
           setRenderData(data?.data || [])
         }
       })
     }
-  }, [optionChecked])
+  }, [optionChecked, filterType, searchParams, typeSort, refresh])
 
   const onHandleOptionCheck = (e) => {
     setOptionChecked(e.target.value)
   }
 
-  const mergerData = renderData?.map?.(item=>{
-    const tData = _.find(offerList, it => it.tokenId == item.tokenId) || null
-    if(tData){
-      return {...item,...tData}
-    }
-    return item
-  })||[]
+  const mergerData =
+    renderData?.map?.((item) => {
+      const tData =
+        _.find(offerList, (it) => it.tokenId == item.tokenId) || null
+      if (tData) {
+        return { ...item, ...tData }
+      }
+      return item
+    }) || []
+  
+
+  const handleInputOnchange = (e) => {
+    const { value } = e.target
+    setSearchParams(value) 
+  }
 
   return (
     <>
       <Row align="middle" justify="space-between">
-        <GroupButton defaultValue={match?.params?.option}>
+        <GroupButton style={{justifyContent:"space-around"}} defaultValue={match?.params?.option}>
           <RadioButton
             width="auto"
             className="btn-filter"
@@ -308,7 +387,22 @@ const TabMyCollection = () => {
             Reject
           </RadioButton>
         </GroupButton>
-        <SearchInput maxWidth="300px" placeholder="Search items" />
+        {/* <SearchInput maxWidth="300px" placeholder="Search items" /> */}
+        <Filter
+        styleFilter={'collection'}
+        selectType={filterType}
+        setSelectType={setFilterType}
+        handleInputOnchange={handleInputOnchange}
+        // setPage={setPage}
+        searchParams={searchParams}
+        setSelectSort={setTypeSort}
+        sort={typeSort}
+        selectDatePrice={selectDatePrice} 
+        setSelectDatePrice={setSelectDatePrice}
+        
+      />
+      <ProgressBar loading={loading} setLoading={setLoading} />
+
       </Row>
       <ListCart className="list-artwork">
         {mergerData.map((item) => {
@@ -317,6 +411,7 @@ const TabMyCollection = () => {
               key={item?._id}
               data={item}
               option={optionChecked}
+              reloadList={setRefresh}
             />
           )
         })}

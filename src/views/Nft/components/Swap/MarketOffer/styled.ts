@@ -153,8 +153,29 @@ export const CardStyled = styled.div<PropsStyled>`
     margin-top: 2px;
   }
 `
-
-export const TableStyled = styled(Table)`
+interface PropsState {
+  state?: boolean
+}
+export const TableStyled = styled(Table)<PropsState>`
+  .ant-spin-nested-loading{
+    margin-top: 20px;
+    animation: growDown 300ms ease-in-out forwards;
+    transform-origin: top center;
+    display: ${(props => !!props.state ? 'none' : 'block')};
+    
+    @keyframes growDown {
+      0% {
+          transform: scaleY(0)
+      }
+      80% {
+          transform: scaleY(1.1)
+      }
+      100% {
+          transform: scaleY(1)
+      }
+    }
+  }
+  
   .ant-table {
     border-radius: 32px;
     overflow: hidden;

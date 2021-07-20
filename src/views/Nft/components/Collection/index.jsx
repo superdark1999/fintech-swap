@@ -1,52 +1,26 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Select, Button } from 'antd'
 import { CollectionStyled } from './styled'
-import Cart from 'components-v2/CardItem'
+import Card from 'components-v2/CardItem'
 import useIO from 'hooks/useIo'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
 import _ from 'lodash'
 import { isMobile } from 'react-device-detect'
-
-const OptionData = [
-  { label: 'All items', value: '' },
-  { label: 'Image', value: 'image' },
-  { label: 'Video', value: 'video' },
-  { label: 'Gif', value: 'gif' },
-  { label: 'Audio', value: 'audio' },
-]
-
-const OptionSort = [
-  {
-    label: 'Newest',
-    value: 'asc',
-  },
-  {
-    label: 'Oldest',
-    value: 'desc',
-  },
-  {
-    label: 'Low Price',
-    value: 'low', // TODO: need handle more
-  },
-  {
-    label: 'High Price',
-    value: 'hight', // TODO: need handle more
-  },
-]
-
-// export const option: React.ReactElement<OptionProps> = Select.Option
+import FilterBar from '../Filter'
+import ProgressBar from 'components-v2/ProgressBar'
 
 const { Option } = Select
 
 function Collection(props) {
   const { price } = props
 
-  const [select, setSelect] = useState('')
-  const [selectDP, setSelectDP] = useState('asc')
-  const [selectSort, setSelectSort] = useState('asc')
+  const [filterType, setFilterType] = useState('all')
+  const [selectDatePrice, setSelectDatePrice] = useState('desc')
+  const [selectSort, setSelectSort] = useState('desc')
   const [NFTs, setNFTs] = useState({ data: [], total: 0 })
   const { getNFT } = useArtworkServices()
   const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(0)
 
   const [observer, setElements, entries] = useIO({
     threshold: 0.25,
@@ -63,12 +37,12 @@ function Collection(props) {
       {
         status: 'readyToSell',
         NFTType: ['buy', 'auction', 'swap-store'],
-        type: select === 'all' ? '' : select,
+        type: filterType === 'all' ? '' : filterType,
         page,
         limit: 8,
         sort: selectSort,
         sortBy:
-          selectDP === 'asc' || selectDP === 'desc' ? 'createdAt' : 'price',
+          selectDatePrice === 'asc' || selectDatePrice === 'desc' ? 'createdAt' : 'price',
         ...price,
       },
       _.identity,
@@ -76,6 +50,7 @@ function Collection(props) {
 
     getNFT(params).then(({ status, data }) => {
       if (status == 200) {
+        setLoading(100)
         if (page === 1) {
           setNFTs({ data: data?.data, total: data.total })
         } else {
@@ -84,17 +59,12 @@ function Collection(props) {
         }
       }
     })
-  }, [page, selectSort, select, price])
+    setLoading(Math.random() * (80 - 40 + 1) + 40)
+  }, [page, selectSort, filterType, price])
 
   const onChangeSelectType = (val) => {
     setPage(1)
-    setSelect(val)
-  }
-  const onChangeSelectDatePrice = (val) => {
-    if (val == 'asc' || val == 'low') setSelectSort('asc')
-    else setSelectSort('desc')
-    setPage(1)
-    setSelectDP(val)
+    setFilterType(val)
   }
 
   useEffect(() => {
@@ -123,36 +93,20 @@ function Collection(props) {
     <CollectionStyled id="collection-scroll-view">
       <div className="header-artists">
         <div className="title-artists">Collection</div>
-        <div className="more-action">
-          <Select
-            style={{ width: 120, borderRadius: 30 }}
-            onChange={onChangeSelectType}
-            defaultValue={select}
-          >
-            {OptionData.map((item, index) => (
-              <Option key={index} value={item.value} label={item.label}>
-                {item.label}
-              </Option>
-            ))}
-          </Select>
-          <Select
-            style={{ minWidth: 100, borderRadius: 30 }}
-            // onChange={setSelectSort}
-            // defaultValue={selectSort}
-            onChange={onChangeSelectDatePrice}
-            defaultValue={selectDP}
-          >
-            {OptionSort.map((item, index) => (
-              <Option key={index} value={item.value} label={item.label}>
-                {item.label}
-              </Option>
-            ))}
-          </Select>
-        </div>
+        <FilterBar
+        setPage={setPage}
+        selectType={filterType}
+        setSelectType={setFilterType}
+        setSelectSort={setSelectSort}
+        selectDatePrice={selectDatePrice} 
+        setSelectDatePrice={setSelectDatePrice}
+        />
+
       </div>
+      
       <div className="content-collect">
         {NFTs?.data?.map((item) => (
-          <Cart key={item.id} width="320px" height="480px" data={item} isLazy />
+          <Card key={item.id} width="100%" data={item} isLazy />
         ))}
       </div>
       {NFTs?.data?.length < NFTs?.total && (
@@ -164,6 +118,8 @@ function Collection(props) {
           </div>
         </div>
       )}
+      <ProgressBar loading={loading} setLoading={setLoading} />
+
     </CollectionStyled>
   )
 }

@@ -1,22 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FilterBarStyled } from './styled'
-import { Select, Radio, Input } from 'antd'
-//import { OptionSort, OptionMethods, OptionTypeNft } from '../../../constants'
-
-const OptionData = ['Hangzhou', 'Ningbo', 'All items']
-export const OptionSort = [
-  {
-    label: 'Newest',
-    value: 'asc',
-  },
-  {
-    label: 'Oldest',
-    value: 'desc',
-  },
-]
-// const OptionSort = ['Hangzhou', 'Ningbo', 'Sort by']
-const { Option } = Select
-const { Search } = Input
+import { Radio } from 'antd'
+import Filter from '../../Filter'
+import { isMobile } from 'react-device-detect'
 
 function FilterBar(props) {
   const {
@@ -25,34 +11,24 @@ function FilterBar(props) {
     filterType,
     handleInputOnchange,
     setPage,
-    setSort,
-    sort,
-    // selectDP,
-    // setSelectDP
+    setTypeSort,
+    selectDatePrice, 
+    setSelectDatePrice
   } = props
-
-  const [select, setSelect] = useState('All items')
-
-  //const [selectSort, setSelectSort] = useState('Sort by')
 
   const onChangeType = (e) => {
     let value = e.target.value
     setFilterType(value)
     setPage(1)
   }
-  const onChangeSelectDatePrice = (val) => {
-    // if(val == 'asc' || val == 'low') setSort('asc')
-    // else setSort('desc')
-    setPage(1)
-    setSort(val)
-  }
+
   return (
     <FilterBarStyled>
       <div className="left-action">
         <div className="list-filter" style={{ marginBottom: '24px' }}>
           <span className="filter-label">Type</span>
           <Radio.Group
-            className="filter-group"
+            className={isMobile ? 'filter-group-mobile' : 'filter-group'}
             onChange={onChangeType}
             value={filterType}
             defaultChecked
@@ -75,41 +51,15 @@ function FilterBar(props) {
           </Radio.Group>
         </div>
       </div>
-      <div className="right-action">
-        <Search
-          className="search-input"
-          placeholder="Search name, collections,..."
-          loading={false}
-          value={searchParams}
-          onChange={handleInputOnchange}
-          enterButton
-        />
-        <div className="right-action-sort">
-          <Select
-            style={{ width: 120, borderRadius: 30 }}
-            onChange={setSelect}
-            defaultValue={select}
-            style={{ display: 'none' }}
-          >
-            {OptionData.map((item) => (
-              <Option key={item} value={item}>
-                {item}
-              </Option>
-            ))}
-          </Select>
-          <Select
-            style={{ width: 120, borderRadius: 30 }}
-            onChange={onChangeSelectDatePrice}
-            defaultValue={sort}
-          >
-            {OptionSort.map((item) => (
-              <Option key={item.value} value={item.value}>
-                {item.label}
-              </Option>
-            ))}
-          </Select>
-        </div>
-      </div>
+      <Filter
+        handleInputOnchange={handleInputOnchange}
+        setPage={setPage}
+        searchParams={searchParams}
+        setSelectSort={setTypeSort}
+        selectDatePrice={selectDatePrice} 
+        setSelectDatePrice={setSelectDatePrice}
+        setTypeSortDate={true}
+      />
     </FilterBarStyled>
   )
 }

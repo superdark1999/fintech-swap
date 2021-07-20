@@ -8,11 +8,9 @@ import {
 import StatusBar from 'components-v2/StatusBar'
 import { ButtonBuy, ButtonCancel } from 'components-v2/Button'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import useMarketServices from 'services/web3Services/MarketServices'
 import useNFTServices from 'services/web3Services/NFTServices'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom'
 //import OnsSaleCard from './OnSaleCard'
 import _ from 'lodash'
 import notification from 'components-v2/Alert'
@@ -21,11 +19,21 @@ import ModalSetPriceAuction from './ModalSetPriceAuction'
 import ModalSetPriceSell from './ModalSetPriceSell'
 import ModalSetAddressTransfer from './ModalSetAddressTransfer'
 import QRCodeComp from 'components-v2/QRcode/index'
-import { createFromIconfontCN } from '@ant-design/icons'
+// import { createFromIconfontCN } from '@ant-design/icons'
 import InfoCard from '../InfoCard'
 import moment from 'moment'
+import OfferTable from '../Swap/components/OfferTable'
+// import useLuckyServices from 'services/web3Services/LuckyServices'
+// import useUserStore from 'store/userStore'
+import ButtonProccesing from 'components-v2/Button/btnProcessing'
+import {BINANCE_CONFIG} from 'configs'
+import arrowDown from '../../../../assets/images/down-filled-triangular-arrow.svg'
 
-export default function MyCollectionCard({ data, option }: any) {
+
+import {getPrice} from 'utils'
+
+
+export default function MyCollectionCard({ data, option, reloadList }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -34,12 +42,122 @@ export default function MyCollectionCard({ data, option }: any) {
   const [showQR, setShowQR] = useState(false)
   const NFTServicesMethod = useNFTServices()
   const marketServicesMethod = useMarketServices()
-  const { setPrice, cancelSellNFT } = useArtworkServices()
   const history = useHistory()
   const { account, chainId } = useActiveWeb3React()
   const formRef = useRef()
   const [isShowModalSetPrice, setShowModalsetPrice] = useState(false)
   const [isShowModalSetAddressTransfer,setShowModalSetAddressTransfer] = useState(false)
+  const {MARKET_ADDRESS} = BINANCE_CONFIG
+
+  const [offerData, setOfferData] = useState([])
+  const { getNFT, setPrice, cancelSellNFT } = useArtworkServices()
+  const [state, setState] = useState<any>(true);
+  const [myItems, setMyItems] = useState<any>([]);
+  const [status, setStatus] = useState<any>('none')
+  useEffect(()=>{
+    if(marketServicesMethod && data?.tokenId && myItems?.tokenId){
+      const {marketContract} =  marketServicesMethod
+      marketContract.on('SwapNFTs',(tokenIdA, tokenIdB, accountB, event)=>{
+        
+        if(data?.ownerWalletAddress==accountB 
+          && myItems?.tokenId ==Number(tokenIdB) 
+          && data?.tokenId == Number(tokenIdA)){
+            
+         _.debounce(()=>{
+          setStatus('success')
+         },5000)()
+        }
+      })
+      
+    }
+  },[marketServicesMethod,account, data?.tokenId, myItems?.tokenId])
+
+  
+  const getSwapOffers = (itemSwap:any)=>{
+    const tokenId = itemSwap?.tokenId;
+    //console.log(itemSwap)
+    if(marketServicesMethod&&tokenId){
+      const {getSwapOffers} =  marketServicesMethod
+      getSwapOffers(tokenId).then((data:any)=>{
+        const rawNFTs = data?.map((item:any)=>{
+          return {
+            ownerWalletAddress: item[0],
+            tokenId: Number(item[1]),
+            price: getPrice(Number(item[2])),
+            isCancel:item[3]
+          }
+        })?.filter((i:any)=>!i?.isCancel)
+        if(!_.isEmpty(rawNFTs)){
+          getNFT({
+            tokenId: rawNFTs.map((it:any)=>it.tokenId)
+          }).then(({status,data})=>{
+            if(status==200){
+             const offerDatas = data?.data?.map((item:any)=>{
+                const rawNFTByTokenId = rawNFTs.find((it:any)=>item?.tokenId==it?.tokenId)||{}
+                return {
+                  ...item,
+                  ...rawNFTByTokenId,
+                }
+              })
+            setOfferData(offerDatas)
+            }
+          })
+        }
+      })
+  }
+  }
+  useEffect(()=>{
+    if(status == 'success'){
+    notification(
+      'open',
+      {
+        message:
+          'Swap NFT success, you can check NFT on approved collection',
+        description: '',
+        titleBtn: 'View detail',
+      },
+      reloadList(),
+    )}
+  },[status])
+
+  useEffect(()=>{
+    getSwapOffers(data)
+  },[data?.tokenId])
+
+  const onOfferItem = (itemSwap:any, myItems:any) => {
+    const { confirmSwapNFT } = marketServicesMethod
+    setIsProcessing(true)
+    confirmSwapNFT(itemSwap?.tokenId, myItems?.tokenId, myItems?.ownerWalletAddress).then((data) => {
+      setMyItems(myItems)
+    }).catch((err) => {
+      setIsProcessing(false)
+      notification('error', {
+        message: 'Error',
+        description: err.message,
+      })
+    })
+  }
+
+  const renderButon = (myItems: any)=>{
+      //console.log(myItems)
+      setMyItems(myItems)
+      if(isProcessing){
+        return( <ButtonProccesing/>)
+      }else {
+        return(
+          <ButtonBuy width="135px" 
+            onClick={() => onOfferItem(data, myItems)} 
+            > Swap now
+          </ButtonBuy>
+        )}
+    
+    
+  }
+
+  const onChangeState = (data: any) => {
+    //console.log(data)
+    setState(!data)
+  }
 
   useEffect(() => {
     if (data?.tokenId && NFTServicesMethod) {
@@ -335,10 +453,16 @@ export default function MyCollectionCard({ data, option }: any) {
       )
     } else if (status === 'readyToSell') {
       return (
-        <div className="group-button">
+        <div className="group-button" style={{marginTop: '10px'}}>
           <ButtonCancel height="40px" onClick={onCancelItemOnMarket}>
             Cancel
           </ButtonCancel>
+          {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell' && offerData.length > 0) &&(
+          <button className="info-swap" onClick={()=> onChangeState(state)}>
+            <span>Offers</span>  
+            <span className="arrowDown"></span>
+          </button>
+          )}
           {renderQRCode()}
         </div>
       )
@@ -348,7 +472,6 @@ export default function MyCollectionCard({ data, option }: any) {
   }
 
   const renderActionItem = () => {
-    console.log(isLoading,data.status)
     if(isLoading) return null
     if (
       isProcessing ||
@@ -430,7 +553,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const handleMenuSwapClick = (dt: any) => {
     if (dt.key === 'swap') {
       history.push('/swap/step=1')
-    } else if (dt.key === 'pushlish') {
+    } else if (dt.key === 'publish') {
       onSubmitSwapItem()
     }
   }
@@ -438,7 +561,7 @@ export default function MyCollectionCard({ data, option }: any) {
   const menuSwap = (
     <Menu onClick={handleMenuSwapClick}>
       <Menu.Item key="swap">Swap</Menu.Item>
-      <Menu.Item key="pushlish">Pushlish</Menu.Item>
+      <Menu.Item key="publish">Publish</Menu.Item>
     </Menu>
   )
 
@@ -459,7 +582,7 @@ export default function MyCollectionCard({ data, option }: any) {
     }
   }
   return (
-    <CartStyled>
+    <CartStyled state={state}>
       <Row gutter={24} align={'middle'}>
         <Col
           xl={{ span: 5 }}
@@ -506,11 +629,17 @@ export default function MyCollectionCard({ data, option }: any) {
               {renderActionItem()}
             </div>
             <InfoCard value={data} />
-            
           </div>
 
-          <div>{renderGroupAction(data?.status)}</div>
+          <div>{renderGroupAction(data?.status)}</div>          
+          
         </Col>
+        {(data?.NFTType == 'swap-store' && data?.status == 'readyToSell' && offerData.length > 0) &&(
+          <div style={{width:'100%'}} >
+          <OfferTable state={state} offerData={offerData} isRenderAction={true} renderButon={renderButon}/>
+        </div>
+        )}
+        
       </Row>
       <ModalSetPriceSell
         isShowModalSetPrice={isShowModalSetPrice}

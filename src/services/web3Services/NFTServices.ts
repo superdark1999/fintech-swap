@@ -6,13 +6,14 @@ import { useContract } from 'wallet/hooks/useContract'
 import { useCallback } from 'react'
 import useUserStore from 'store/userStore'
 import _ from 'lodash'
-import {MARKET_ADDRESS} from './MarketServices'
-import { getPrice , getPriceFromEstimateGas, SUPPORT_CHAIN_IDS} from 'utils'
+import { getPrice , getPriceFromEstimateGas} from 'utils'
+import {BINANCE_CONFIG} from 'configs'
 
-export const NFT_ADDRESS = '0x969a82989D9e410ed0ae36C12479552421C93eB2';
 const payableAmountDefault = '10000000000000000'
 
 const BNB_ERROR = `You don't have enough BNB`
+
+const {SUPPORT_CHAIN_IDS, NFT_ADDRESS, MARKET_ADDRESS} = BINANCE_CONFIG
 
 function useNFTServiceBinaceChain(){
         const { account } = useActiveWeb3React()
@@ -45,7 +46,7 @@ function useNFTServiceBinaceChain(){
 
         const approveTokenToMarket = useCallback(async(tokenId:string|undefined)=>{
             const estimatedGas = await nftContract.estimateGas.approve(MARKET_ADDRESS,tokenId);
-            if(userState.balance.BNB<getPrice(Number(payableAmountDefault))+getPriceFromEstimateGas(Number(estimatedGas))){
+            if(userState.balance.BNB<getPriceFromEstimateGas(Number(estimatedGas))){
                 throw new Error(BNB_ERROR)
             }
             return nftContract.approve(MARKET_ADDRESS,tokenId, {
@@ -89,7 +90,7 @@ function useNFTServiceBinaceChain(){
 export default function NFTService(){
     const { account, chainId } = useActiveWeb3React()
     const LuckyServiceBinaceChain = useNFTServiceBinaceChain()
-    if(SUPPORT_CHAIN_IDS.includes(chainId)){
+    if(SUPPORT_CHAIN_IDS.includes(chainId)&&NFT_ADDRESS){
         return LuckyServiceBinaceChain
     }
     return null

@@ -9,38 +9,23 @@ import Checkmark from 'assets/images/checkmark.svg'
 import 'antd/dist/antd.css'
 import { Tabs } from 'antd'
 import CountVisit from './CountVisit'
-import { ButtonStyle, ButtonBuyStyle } from 'components-v2/cart/styled'
-import {
-  SwapOutlined,
-  CloseOutlined,
-  StarFilled,
-  CheckOutlined,
-} from '@ant-design/icons'
+import { CloseOutlined, StarFilled, CheckOutlined } from '@ant-design/icons'
 import {
   DetailStyled,
-  ReviewStyled,
-  ScrollReview,
-  FooterStyled,
   ImageStyled,
-  DetailTabpane,
   OwenedBy,
   HeaderStyled,
-  TableStyled,
   VideoStyled,
 } from './styled'
-import { dataHistory, columnHistory } from './Mock'
 import useArtworkServices from 'services/axiosServices/ArtworkServices'
-import useMarketServices, {
-  MARKET_ADDRESS,
-} from 'services/web3Services/MarketServices'
+import useMarketServices from 'services/web3Services/MarketServices'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import useUserStore from 'store/userStore'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { useParams } from 'react-router-dom'
-import { ButtonTrade, ButtonBuy } from 'components-v2/Button'
-import Hammer from 'assets/images/hammer.svg'
+import { ButtonBuy } from 'components-v2/Button'
 import { Link } from 'react-router-dom'
-import { getPrice, getCompactString, embedTokenIdLinkBSCScan } from 'utils'
+import { getPrice } from 'utils'
+import { BINANCE_CONFIG } from 'configs'
 import notification from 'components-v2/Alert'
 import { useHistory } from 'react-router-dom'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
@@ -66,6 +51,7 @@ const DetaiArtWork = ({ id }: any) => {
   const luckyServiceMethod = useLuckyServices()
   const [isProcessing, setIsProccessing] = useState(false)
   const [isShowModalSetPrice, setIsShowModalSetPrice] = useState(false)
+  const { MARKET_ADDRESS } = BINANCE_CONFIG
   const history = useHistory()
   useEffect(() => {
     getDetailNFT({ id }).then(({ status, data }) => {
@@ -178,7 +164,7 @@ const DetaiArtWork = ({ id }: any) => {
   }
 
   const priviousPage = () => {
-    window.history.back()
+    history.goBack()
   }
   return (
     <Row>
@@ -281,14 +267,7 @@ const DetaiArtWork = ({ id }: any) => {
               to={`/user-profile/${NFTDetail?.createdBy?.walletAddress}/onstore/readyToSell`}
             >
               <p className="organize">
-                <img
-                  style={{
-                    height: '40px',
-                    width: '40px',
-                    borderRadius: '100px',
-                  }}
-                  src={NFTDetail?.createdBy?.avatarImage}
-                />
+                <img src={NFTDetail?.createdBy?.avatarImage} />
                 <span className="name">{NFTDetail?.createdBy?.name}</span>
                 {/* <img src={Checkmark} /> */}
               </p>

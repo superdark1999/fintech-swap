@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { isMobile } from 'react-device-detect'
+import { Modal } from 'antd'
  
 import { Radio } from 'antd';
 export const GroupButton = styled(Radio.Group)`
@@ -8,10 +9,10 @@ export const GroupButton = styled(Radio.Group)`
   flex-wrap: wrap;
  `
 export const CreateArtWorkStyled = styled.div`
-  margin: 40px auto;
+  margin: ${!isMobile && '40px auto'};
   max-width: 1100px;
   background: ${!isMobile && '#F9FAFB'};
-  padding: ${isMobile ? "10px" : "40px"};
+  padding: ${isMobile ? "24px" : "40px"};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,8 +42,8 @@ export const CreateArtWorkStyled = styled.div`
 `
 export const RadioButton= styled(Radio.Button)`
 &.ant-radio-button-wrapper-checked ::before {
-    min-width: 172px;
-    /* height: 100px; */
+    width: ${isMobile? '80px' : '172px'};
+    height: ${isMobile? '60px' : '100px'};
     content:"";
     position:absolute;
     top:0;
@@ -79,22 +80,42 @@ export const RadioButton= styled(Radio.Button)`
    ::before {
     content: none;
   }
+  height: ${isMobile? '60px' : '100px'};
   border-radius: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 46px;
+  padding: ${isMobile ? '8px':  '20px 46px'};
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
   box-sizing: border-box;
   position: relative;
   cursor: pointer;
-  width: 172px;
+  width: ${isMobile? '80px' : '172px'};
   :hover {
     border:1px solid #35A5FC;
     background:#fff;
     color:#35A5FC;
   }
 }
+`
+
+export const ModalStyled  = styled(Modal) `
+  background: #ffffff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100% !important; 
+  max-width: unset;
+  padding: 0;
+  margin: 0 !important;
+  border-radius: 0;padding-bottom: 80px;
+  .ant-modal-body {
+    overflow: scroll;
+    max-height: calc(100vh - 55px);
+    border-radius: 0;
+  }
 `

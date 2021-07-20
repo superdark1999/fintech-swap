@@ -6,12 +6,8 @@ interface Props {
 
 export const CartStyled = styled.div<Props>`
     
-    .box-flex{
-        display: ${isMobile ? 'block' : 'flex'};;
-        margin-bottom: ${isMobile ? '0' : '10px'};
-        div{
-          max-width: ${isMobile ? 'unset' : '50%'};
-        }
+    .ant-row{
+      line-height: 30px;
     }
     
     .name {
@@ -27,14 +23,9 @@ export const CartStyled = styled.div<Props>`
     }
     
     .des{
-        margin-left: 0,
-        font-weight: 600,
-        margin-bottom: 10px;
+        margin-left: ${isMobile ? '0' : '-18px'};
         text-overflow: ellipsis;
         overflow: hidden;
-        width: ${
-          isMobile ? ' 100% ' : (props) => (!!props.readMore ? '70%' : '100%')
-        };
         white-space: ${
           isMobile
             ? 'unset'
@@ -42,9 +33,7 @@ export const CartStyled = styled.div<Props>`
         };
     }
     .readMore{
-        display: ${
-          isMobile ? 'none' : (props) => (!!props.readMore ? 'block' : 'none')
-        };
+        display: ${isMobile ? 'none' : 'block'};
         color: #1890ff;
         cursor: pointer;
     }

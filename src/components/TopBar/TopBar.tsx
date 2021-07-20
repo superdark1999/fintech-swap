@@ -1,30 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import Web3Status from '../../wallet/Web3Status'
 import logo from '../../assets/img/logo-no-text.svg'
-import { SearchOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
-import { Link, useHistory, useParams, useLocation } from 'react-router-dom'
-import { ButtonBuy, ButtonTrade } from 'components-v2/Button'
+import { SearchOutlined } from '@ant-design/icons'
+import { Link, useLocation } from 'react-router-dom'
+import { ButtonTrade } from 'components-v2/Button'
 import ViewMore from 'assets/images/view-more.svg'
 import BinanceCoin from 'assets/symbol/binance.png'
 import Token from 'assets/images/token.svg'
 import { isMobile } from 'react-device-detect'
 import useLuckyServices from 'services/web3Services/LuckyServices'
 import BSCScanServices from 'services/axiosServices/BSCScanServices'
-import { MARKET_ADDRESS } from 'services/web3Services/MarketServices'
 import useUserServices from 'services/axiosServices/UserServices'
 import useUserStore from 'store/userStore'
-import { Menu, Dropdown } from 'antd'
-import useConfigStore from 'store/configStore'
+import { Menu, Dropdown, Row } from 'antd'
 import { useActiveWeb3React } from 'wallet/hooks'
-import { getPrice, SUPPORT_CHAIN_IDS, binanceConfig, binaceText } from 'utils'
-import { Modal, Input, Form } from 'antd'
+import { getPrice } from 'utils'
+import { BINANCE_CONFIG } from 'configs'
+import { Input } from 'antd'
 import formatNumber from 'utils/formatNumber'
 import useAuth from 'hooks/useAuth'
+import Notification from './components/IconNotification'
 
 interface TopBarProps {
   setMobileMenu?: (value: boolean) => void
   mobileMenu?: boolean
+  setShowNotification?: (value: boolean) => void
+  showNofitication?: boolean
 }
 declare global {
   interface Window {
@@ -32,44 +34,24 @@ declare global {
   }
 }
 const { SubMenu } = Menu
-const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
-  const [classtSicky, setClassSticky] = useState('')
+const TopBar: React.FC<TopBarProps> = ({ showNofitication, setShowNotification}) => {
   const { logout } = useAuth()
   const { account, chainId } = useActiveWeb3React()
   const luckyMethod = useLuckyServices()
   const { login } = useUserServices()
-  const [userState, userActions] = useUserStore()
-  const [configState, configAction] = useConfigStore()
-  const [isShowAlert, setIsShowAlert] = useState(false)
+  const [, userActions] = useUserStore()
+  const { SUPPORT_CHAIN_IDS, binanceConfig, binaceText, MARKET_ADDRESS } =
+    BINANCE_CONFIG
 
-  var prevScrollpos = window.pageYOffset
   let location = useLocation()
-  console.log('location: ', location.pathname)
-  // const handleScroll = () => {
-  //   const currentScrollPos = window.pageYOffset
-  //   if (prevScrollpos > currentScrollPos) {
-  //     setClassSticky('fixed')
-  //     console.log('fixed: ')
-  //   } else {
-  //     setClassSticky('hidden')
-  //   }
-  //   prevScrollpos = currentScrollPos;
-  // }
-
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener('scroll', () => handleScroll);
-  //   };
-  // }, []);
+  const { ethereum, BinanceChain } = window as any
 
   useEffect(() => {
-    const { ethereum, BinanceChain } = window as any
     if (
-      chainId &&
-      !SUPPORT_CHAIN_IDS.includes(chainId) &&
-      ethereum.selectedAddress
+      !SUPPORT_CHAIN_IDS.includes(Number(ethereum?.chainId)) &&
+      ethereum?.selectedAddress &&
+      account &&
+      ethereum?.chainId != binanceConfig.chainId
     ) {
       ethereum
         .request({
@@ -88,9 +70,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
             ethereum
               .request({
                 method: 'wallet_addEthereumChain',
-                params: [
-                  binanceConfig
-                ],
+                params: [binanceConfig],
               })
               .then(() => {
                 ethereum
@@ -111,12 +91,18 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
               })
           }
         })
-    } else if (chainId && !SUPPORT_CHAIN_IDS.includes(chainId)) {
+    }
+    if (
+      !SUPPORT_CHAIN_IDS.includes(Number(BinanceChain?.chainId)) &&
+      !ethereum?.selectedAddress &&
+      !!BinanceChain &&
+      BinanceChain?.chainId != binanceConfig?.chainId
+    ) {
       BinanceChain.switchNetwork(binaceText).then(() => {
         window.location.reload()
       })
     }
-  }, [chainId])
+  }, [chainId, BinanceChain?.chainId, ethereum?.chainId, account])
 
   useEffect(() => {
     if (luckyMethod) {
@@ -163,54 +149,15 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
     }
   }, [account])
 
-  const onChangeAnimation = (checked: any, e: any) => {
-    configAction.updateConfig({ isUsingAnimation: checked })
-  }
-
   const onSearching = (e: any) => {
-    //history.push(`/explore?search=${e.target.value}`)
     window.location.replace(`/explore?search=${e.target.value}`)
   }
-  const authenAccount = () => {
-    const { ethereum } = window as any
-    ethereum
-      .request({
-        method: 'wallet_getPermissions',
-        params: [{ eth_accounts: {} }],
-      })
-      .then((permissions: any) => {
-        const accountsPermission = permissions.find(
-          (permission: any) => permission.parentCapability === 'eth_accounts',
-        )
-        if (accountsPermission) {
-          console.log('eth_accounts permission successfully requested!')
-        }
-      })
-      .catch((error: any) => {
-        if (error.code === 4001) {
-          console.log('Permissions needed to continue.')
-        } else {
-          console.error(error)
-        }
-      })
-  }
+
   return (
-    <StyledTopBar className={classtSicky}>
-      {isMobile ? (
-        <div style={{ display: 'flex', alignItems: 'center', zIndex: 10 }}>
-          <MenuUnfoldOutlined
-            onClick={() => setMobileMenu(true)}
-            style={{ marginLeft: 12, fontSize: 24, marginRight: 12 }}
-          />
-          <Link to="/">
-            <img src={logo} width="30px" />
-          </Link>
-        </div>
-      ) : (
-        <a href="/">
-          <img src={logo} height="50px" className="logo-h" />
-        </a>
-      )}
+    <StyledTopBar >
+        <Link to="/">
+          <img src={logo} className="logo-h" alt=""/>
+       </Link>
 
       <div className="nav-bar-wrapper">
         <Input
@@ -249,68 +196,37 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
           <span className="btn-ino">INO</span>
         </Link>
         <span className="explore-nav"></span>
-        {!!account ? (
+        {account ? (
           <>
             <Link to={'/create/artwork'} className="create-nav">
               Create
             </Link>
-          </>
-        ) : (
-          <a
-            onClick={() => {
-              alert('Unblock your wallet before create NFT')
-            }}
-            className="create-nav"
-          >
-            Create
-          </a>
-        )}
-        <Link to={'/swap/step=1'} className="create-nav">
-          Swap
-        </Link>
-        {/* <Switch
-              checkedChildren="Animation"
-              unCheckedChildren="Animation"
-              onChange={onChangeAnimation}
-            /> */}
-        {!isMobile && (
-          <>
-            <div className="connect-wallet">
+            <Link to={'/swap/step=1'} className="create-nav">
+              Swap
+            </Link>
+            
+            <div className="mr-14" >
+              <UserBalance />
+            </div>
+
+            <div className="connect-wallet mr-14">
               <Web3Status />
             </div>
-          </>
-        )}
-        {!!account ? <UserBalance /> : null}
-        {account ? (
-          <div className="view-more">
+
+            <div onClick={() => setShowNotification(!showNofitication)}>
+              <Notification />  
+            </div>
+
+            <div className="view-more">
             <ButtonTrade
               padding="10px"
               borderRadius="100px"
-              height="40px"
-              width="40px"
+              height="30px"
+              width="30px"
             >
               <img src={ViewMore} />
             </ButtonTrade>
-            <div className="menu">
-              {isMobile && (
-                <>
-                  <div className="menu-item">
-                    <div className="connect-wallet">
-                      <Web3Status />
-                    </div>
-                  </div>
-                  <div className="menu-item">
-                    <Link to={'/create/artwork'}>
-                      <ButtonBuy>Create</ButtonBuy>
-                    </Link>
-                  </div>
-                  <div className="menu-item">
-                    <Link to={'/swap/step=1'}>
-                      <ButtonBuy>Swap</ButtonBuy>
-                    </Link>
-                  </div>
-                </>
-              )}
+            <div className="menu">       
               <Link to="/my-profile/onstore/readyToSell">
                 <div className="menu-item">My profile</div>
               </Link>
@@ -320,7 +236,6 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
               <Link to="/my-profile/settings">
                 <div className="menu-item">Settings</div>
               </Link>
-              {/* <Link to="/my-profile/login"> */}
               <div
                 className="menu-item"
                 onClick={() => {
@@ -330,58 +245,35 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
               >
                 Log out
               </div>
-              {/* </Link> */}
             </div>
           </div>
-        ) : (
-          <>
-            <div className="view-more">
-              {isMobile && (
-                <>
-                  <ButtonTrade
-                    padding="10px"
-                    borderRadius="100px"
-                    height="40px"
-                    width="40px"
-                  >
-                    <img src={ViewMore} />
-                  </ButtonTrade>
-                  <div className="menu">
-                    {isMobile && (
-                      <>
-                        <div className="menu-item">
-                          <div className="connect-wallet">
-                            <Web3Status />
-                          </div>
-                        </div>
-                        <div className="menu-item">
-                          <a
-                            onClick={() => {
-                              alert('Unblock your wallet before create NFT')
-                            }}
-                          >
-                            <ButtonBuy>Create</ButtonBuy>
-                          </a>
-                        </div>
-                        <div className="menu-item">
-                          <a
-                            onClick={() => {
-                              alert('Unblock your wallet before create NFT')
-                            }}
-                          >
-                            <ButtonBuy>Swap</ButtonBuy>
-                          </a>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
           </>
-        )}
+        ) : (
+          <Row style={{padding: 24}}>
+            <a
+              onClick={() => {
+                alert('Unblock your wallet before create NFT')
+              }}
+              className="create-nav"
+            >
+              Create
+            </a>
+            <a
+              onClick={() => {
+                alert('Unblock your wallet before create NFT')
+              }}
+              className="create-nav"
+            >
+              Swap
+            </a>
+            <div className="connect-wallet">
+              <Web3Status />
+            </div>
+          </Row>
+        )}   
       </div>
-      <Modal
+
+      {/* <Modal
         title="Notification"
         visible={isShowAlert}
         footer={null}
@@ -411,7 +303,7 @@ const TopBar: React.FC<TopBarProps> = ({ setMobileMenu, mobileMenu }) => {
             </div>
           </Form.Item>
         </Form>
-      </Modal>
+      </Modal> */}
     </StyledTopBar>
   )
 }
@@ -471,6 +363,7 @@ const StyledTopBar = styled.div`
   align-items: center;
   .logo-h {
     margin-left: 30px;
+    height: 50px;
   }
   .nav-bar-wrapper {
     flex: 1;
@@ -486,7 +379,7 @@ const StyledTopBar = styled.div`
       box-sizing: border-box;
       border-radius: 100px;
       height: 40px;
-      margin: 0 40px;
+      margin: 0 24px;
       max-width: 250px;
     }
     .home-nav {
@@ -581,6 +474,9 @@ const StyledTopBar = styled.div`
         display: none;
       }
     }
+    .mr-14 {
+      margin-right: 14px;
+    }
     .create-nav-balance {
       padding: 0 10px;
       height: 40px;
@@ -593,7 +489,6 @@ const StyledTopBar = styled.div`
       font-weight: 600;
       font-size: 16px;
       line-height: 24px;
-      margin-left: 14px;
       position: relative;
       cursor: pointer;
       color: #35a5fc;
@@ -658,7 +553,7 @@ const StyledTopBar = styled.div`
   background: #ffffff;
   box-shadow: 0px 4px 16px -4px rgba(35, 35, 35, 0.06);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  position: sticky;
+  position: fixed;
   &.hidden {
     height: 0px;
     overflow: hidden;
