@@ -8,6 +8,7 @@ import Telegram from 'assets/images/telegram.svg'
 import { CheckOutlined } from '@ant-design/icons'
 import useCopyToClipboard from 'components-v2/CopyToClipBoard/index'
 import { CardDefault, CardSwap } from '../components'
+import { isMobile } from 'react-device-detect'
 
 interface Props {
   nextStep: (step: number) => void,
@@ -34,8 +35,8 @@ export default function (props: Props) {
         props.itemSwap ?
           <CardSwap
             style={{
-              minWidth: 380,
-              height: 530,
+              minWidth: isMobile ? 280 : 380,
+              height: isMobile ? '' : 530,
               margin: 10,
               zIndex: 1,
             }}
@@ -48,8 +49,8 @@ export default function (props: Props) {
             setVisible={props.setVisible}
             value='item-swap'
             style={{
-              minWidth: 380,
-              height: 530,
+              minWidth: isMobile ? 280 : 380,
+              height: isMobile ? '' : 530,
               margin: 10,
               zIndex: 1,
             }}

@@ -8,10 +8,10 @@ export const OfferStyled = styled.div`
   max-width: 1100px;
   margin: 40px auto;
   padding: 40px;
-  border: 2px solid #E7EBEF;
+  border: ${!isMobile && '2px solid #E7EBEF'};
   box-sizing: border-box;
   border-radius: 32px;
-  background: #F9FAFB;
+  background: ${!isMobile && '#F9FAFB'};
   .btn-back{
     height: max-content;
     background: transparent;
@@ -47,13 +47,6 @@ export const OfferStyled = styled.div`
     }
   }
 `
-
-
-
-
-
-
-
 
 export const TradeArtWorkStyled = styled.div`
   max-width: 1320px;
@@ -157,6 +150,7 @@ interface PropsState {
   state?: boolean
 }
 export const TableStyled = styled(Table)<PropsState>`
+  padding: ${isMobile && '12px'};
   .ant-spin-nested-loading{
     margin-top: 20px;
     animation: growDown 300ms ease-in-out forwards;
@@ -177,7 +171,7 @@ export const TableStyled = styled(Table)<PropsState>`
   }
   
   .ant-table {
-    border-radius: 32px;
+    border-radius: ${!isMobile && '32px'};
     overflow: hidden;
     border: 1px solid #E7EBEF;
     .ant-table-thead > tr > th {
