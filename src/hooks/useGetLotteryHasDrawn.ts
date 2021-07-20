@@ -3,6 +3,8 @@ import { getLotteryStatus } from 'utils/lotteryUtils'
 import { useContract } from 'hooks/useContract'
 import { getLotteryAddress } from 'utils/addressHelpers'
 import lotteryAbi from 'config/abi/lottery.json'
+import useRefresh from 'hooks/useRefresh'
+
 
 /**
  * Returns whether or not the current lottery has drawn numbers
@@ -10,6 +12,8 @@ import lotteryAbi from 'config/abi/lottery.json'
  * @return {Boolean}
  */
 const useGetLotteryHasDrawn = () => {
+  const { fastRefresh } = useRefresh()
+
   const [lotteryHasDrawn, setLotteryHasDrawn] = useState(true)
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
 
@@ -22,7 +26,7 @@ const useGetLotteryHasDrawn = () => {
 
       fetchLotteryStatus()
     }
-  }, [lotteryContract])
+  }, [lotteryContract, fastRefresh])
 
   return lotteryHasDrawn
 }
