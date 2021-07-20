@@ -13,6 +13,7 @@ export const OfferStyled = styled.div`
   border-radius: 32px;
   background: ${!isMobile && '#F9FAFB'};
   .btn-back{
+    width: ${isMobile && '100%'};
     height: max-content;
     background: transparent;
     border-radius: 100px;
@@ -27,7 +28,8 @@ export const OfferStyled = styled.div`
     -ms-flex-align: center;
     align-items: center;
     padding: 8px 24px;
-    margin-right:10px;
+    margin-right:${!isMobile && '10px'};
+    margin-bottom:${isMobile && '20px'};
     font-weight: 600;
     font-size: 16px;
     line-height: 24px;

@@ -7,11 +7,11 @@ interface Props {
 export const OnSaleStyled = styled.div<Props>`
   /* width: 100%; */
   max-width: 1100px;
-  margin: ${isMobile ? '20px' : '40px auto'};
+  margin: ${!isMobile && '40px auto'};
   padding: ${isMobile ? '20px' : '50px'};
   border: 2px solid #E7EBEF;
   box-sizing: border-box;
-  border-radius: 32px;
+  border-radius: ${!isMobile && '32px'};
   overflow: hidden;
   display: flex;
   flex-wrap: wrap;
@@ -79,10 +79,13 @@ export const OnSaleStyled = styled.div<Props>`
     }
     .social-icon  {
       display: flex;
+      justify-content: flex-end;
+      margin-top: ${isMobile && '16px'};
+      width: 100%;
       .icon {
         background: #FFFFFF;
-        width: 40px;
-        height: 40px;
+        width: ${isMobile ? '24px' : '40px'};
+        height: ${isMobile ? '24px' : '40px'};
         border-radius: 50%;
         border: 1px solid #000000;
         margin: 5px;
@@ -90,8 +93,8 @@ export const OnSaleStyled = styled.div<Props>`
         justify-content: center;
         align-items: center;
         img {
-          width: 30px;
-          height: 30px;
+          width: ${isMobile ? '16px' : '30px'};
+          height: ${isMobile ? '16px' : '30px'};
           padding: 1px;
         }
       }
