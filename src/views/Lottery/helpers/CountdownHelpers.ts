@@ -66,14 +66,13 @@ export const getLotteryDrawStep = (currentMillis) => {
 }
 
 
-export const getTimeRemainDraw = (endTime: Date) => {
-  const now = new Date();
-  if (now > endTime)
+export const getTimeRemainDraw = (endTime: Date, current) => {
+  if (current > endTime.getTime()){
     endTime.setDate(endTime.getDate() + 1);
-  const remain = ((endTime.getTime() - now.getTime()) / 1000);
+  }
+  const remain = ((endTime.getTime() - current) / 1000);
   const hh = pad(Math.floor((remain / 60 / 60) % 60));
   const mm = pad(Math.floor((remain / 60) % 60));
-
 
   return `${hh}h: ${mm}m`;
 }

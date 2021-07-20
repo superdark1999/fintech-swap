@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Text, Progress } from '@luckyswap/uikit'
+import axios from 'axios'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useCurrentTime } from 'hooks/useTimer'
+import { BASE_API_ADMIN } from 'config'
 import {
   getLotteryDrawTime,
   getLotteryDrawStep,
@@ -35,24 +37,42 @@ const BottomTextWrapper = styled.div`
 const StyledPrimaryText = styled(Text)`
   margin-right: 16px;
 `
-const timeEndLottery = new Date;
-timeEndLottery.setHours(23, 0, 0);
+// const timeEndLottery = new Date;
+// timeEndLottery.setHours(23, 0, 0);
 
-const timeStartLottery = new Date;
-timeStartLottery.setHours(24, 0, 0);
+// const timeStartLottery = new Date;
+// timeStartLottery.setHours(24, 0, 0);
 
 // const timeStartLottery = new Date(19, 0, 0);
 
 const LotteryProgress = () => {
+  // const [timeEndLottery, setTimeEndLottery] = useState(new Date())
+  // const [timeStartLottery, setTimeStartLottery] = useState(new Date())
+  const [timeRemainDraw, setTimeRemainDraw] = useState("");
+  const [timeRemainSale, setTimeRemainSale] = useState("");
+  
+
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const currentMillis = useCurrentTime()  
-  const timeRemainDraw = getTimeRemainDraw(timeEndLottery)
-  const timeRemainSale = getTimeRemainDraw(timeStartLottery);
 
 
-  // const timeUntilTicketSale = getTicketSaleTime(currentMillis)
-  // const timeUntilLotteryDraw = getLotteryDrawTime(currentMillis)
+  useEffect(() => {
+    const fetchTimeLottery = async () => {
+      const timeEndLottery = new Date();
+      const timeStartLottery = new Date();
+      const {data} = await axios.get(`${BASE_API_ADMIN}/lotteries`);
+
+      // set time remain to end lottery phase
+      timeEndLottery.setHours(data[0].timeDrawLottery.hh, data[0].timeDrawLottery.mm, 0);
+      setTimeRemainDraw(getTimeRemainDraw(timeEndLottery, currentMillis));
+
+      // set time remain to start new lottery phase
+      timeStartLottery.setHours(data[0].timeStartNewPhase.hh, data[0].timeStartNewPhase.mm, 0);
+      setTimeRemainSale(getTimeRemainDraw(timeStartLottery, currentMillis));
+    }
+    fetchTimeLottery();
+  },[currentMillis])
 
   return (
     <ProgressWrapper>
