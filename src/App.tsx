@@ -57,7 +57,6 @@ const App: React.FC = () => {
     console.warn = () => null
   }, [])
 
-  // useEagerConnect()
   useWeb3ReactManager()
   useFetchPublicData()
   useFetchProfile()
