@@ -27,13 +27,14 @@ import OfferTable from '../Swap/components/OfferTable'
 // import useUserStore from 'store/userStore'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import {BINANCE_CONFIG} from 'configs'
-import arrowDown from '../../../../assets/images/down-filled-triangular-arrow.svg'
-
+//import arrowDown from '../../../../assets/images/down-filled-triangular-arrow.svg'
+import {Image } from 'antd'
 
 import {getPrice} from 'utils'
 
 
 export default function MyCollectionCard({ data, option, reloadList }: any) {
+  console.log(data)
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -100,7 +101,6 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
                 }
               })
             setOfferData(offerDatas)
-            console.log(offerData)
             }
           })
         }
@@ -115,7 +115,6 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
         message:
           'Swap NFT success, you can check NFT on approved collection',
         description: '',
-        titleBtn: 'View detail',
       },
       reloadList(),
     )}
@@ -512,6 +511,8 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
       data?.status == 'approved'
     ) {
       return (
+        !isNFTCanSell &&
+        !approvingMarket &&
         <div className="group-btn-action">
           <ButtonBuy height="40px" onClick={onAllowSellItem}>
             Approve NFT
@@ -602,7 +603,7 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
               Your browser does not support HTML5 video.
             </video>
           ) : (
-            <img className="avatar" src={data?.contentUrl} />
+            <Image className="avatar" src={data?.contentUrl} />
           )}
         </Col>
         <Col

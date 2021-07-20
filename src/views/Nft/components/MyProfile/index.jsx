@@ -211,13 +211,12 @@ const TabOnSale = () => {
     const { value } = e.target
     setSearchParams(value) 
   }
-  const a = 'f-direction'
-
+  
   return (
     <>
       <Row align="middle" justify="end">
         <Filter
-        style={{direction:'f-direction'}}
+        styleFilter={'onstore'}
         selectType={filterType}
         setSelectType={setFilterType}
         handleInputOnchange={handleInputOnchange}
@@ -390,7 +389,7 @@ const TabMyCollection = () => {
         </GroupButton>
         {/* <SearchInput maxWidth="300px" placeholder="Search items" /> */}
         <Filter
-        style={{width:(isMobile? '100%': 'unset'), marginTop:'30px'}}
+        styleFilter={'collection'}
         selectType={filterType}
         setSelectType={setFilterType}
         handleInputOnchange={handleInputOnchange}

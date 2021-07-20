@@ -2,6 +2,8 @@ import React from 'react'
 import { FilterBarStyled } from './styled'
 import { Select, Radio, Input } from 'antd'
 import { OptionSort, OptionData } from '../../constants'
+import { isMobile } from 'react-device-detect'
+
 const { Option } = Select
 const { Search } = Input
 
@@ -16,7 +18,7 @@ function FilterBar(props) {
     selectDatePrice,
     setSelectDatePrice,
     setTypeSortDate,
-    style,
+    styleFilter,
   } = props
 
   
@@ -33,9 +35,10 @@ function FilterBar(props) {
     setSelectType(val)
   }
   return (
-    <FilterBarStyled style={( style !== 'f-direction' ? style :'')}>
+    <FilterBarStyled style={{width:( ( styleFilter == 'collection') 
+    && isMobile? '100%': 'unset'), marginTop:( styleFilter == 'collection' && '30px')}}>
       <div className="right-action" 
-      style={{flexDirection: (style.direction == 'f-direction' ? 'unset' : '')}}>
+      style={{flexDirection: (styleFilter == 'onstore' && 'unset')}}>
         <Search
           style={
             handleInputOnchange ? { display: 'unset' } : { display: 'none' }
