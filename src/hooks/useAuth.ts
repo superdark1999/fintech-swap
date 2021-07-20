@@ -1,6 +1,6 @@
-import { useCallback } from 'react'
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
 import { NoBscProviderError } from '@binance-chain/bsc-connector'
+import { connectorLocalStorageKey, ConnectorNames } from '@luckyswap/uikit'
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import {
   NoEthereumProviderError,
   UserRejectedRequestError as UserRejectedRequestErrorInjected,
@@ -9,13 +9,16 @@ import {
   UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
   WalletConnectConnector,
 } from '@web3-react/walletconnect-connector'
-import { ConnectorNames, connectorLocalStorageKey } from '@luckyswap/uikit'
+import { useCallback } from 'react'
 import { useToast } from 'state/hooks'
-import { connectorsByName } from 'utils/web3React'
+import { profileClear } from 'state/profile'
 import { setupNetwork } from 'utils/wallet'
+import { connectorsByName } from 'utils/web3React'
+import { useAppDispatch } from '../state'
 
 const useAuth = () => {
   const { activate, deactivate } = useWeb3React()
+  const dispatch = useAppDispatch()
   const { toastError } = useToast()
 
   const login = useCallback((connectorID: ConnectorNames) => {
@@ -52,9 +55,14 @@ const useAuth = () => {
   }, [])
 
   const logout = useCallback(() => {
+    dispatch(profileClear())
     deactivate()
-    localStorage.removeItem(ConnectorNames.WalletConnect)
-  }, [deactivate])
+    // This localStorage key is set by @web3-react/walletconnect-connector
+    if (window.localStorage.getItem('walletconnect')) {
+      connectorsByName.walletconnect.close()
+      connectorsByName.walletconnect.walletConnectProvider = null
+    }
+  }, [deactivate, dispatch])
 
   return { login, logout }
 }
