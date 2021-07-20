@@ -16,7 +16,7 @@ import useUserStore from 'store/userStore'
 import { Menu, Dropdown } from 'antd'
 import { getPrice } from 'utils'
 import { BINANCE_CONFIG } from 'configs'
-import { Input } from 'antd'
+import { Input, Row } from 'antd'
 import formatNumber from 'utils/formatNumber'
 import useAuth from 'hooks/useAuth'
 import Notification from './components/IconNotification'
@@ -169,7 +169,7 @@ const TopBar: React.FC<TopBarProps> = ({ showNofitication, setShowNotification})
           onPressEnter={onSearching}
         ></Input>
         {account ? (
-          <>
+          <Row>
             <UserBalance />
             <div onClick={() => setShowNotification(!showNofitication)}>
               <Notification />  
@@ -205,7 +205,7 @@ const TopBar: React.FC<TopBarProps> = ({ showNofitication, setShowNotification})
                 </div>
               </div>
             </div>
-          </>
+          </Row>
         ) : (
           <>
             <div className="view-more">
@@ -303,6 +303,7 @@ const StyledTopBar = styled.div`
     display: flex;
     z-index: 5;
     align-items: center;
+    justify-content: space-between;
     .active {
       border-bottom: 4px solid;
     }

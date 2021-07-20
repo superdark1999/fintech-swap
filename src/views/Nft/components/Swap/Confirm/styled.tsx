@@ -6,14 +6,15 @@ export const ConfirmStyled = styled.div<{isGrayFilter:any}>`
   max-width: 1100px;
   margin: 40px auto;
   padding: 40px;
-  border: 2px solid #E7EBEF;
+  border: ${!isMobile && '2px solid #E7EBEF' };
   box-sizing: border-box;
   border-radius: 32px;
-  background: #F9FAFB;
+  background: ${!isMobile && '2px solid  #F9FAF' };
   display: flex;
   justify-content: center;
   flex-direction: column;
   filter: ${props=> props.isGrayFilter ? 'grayscale(100%)':''} ;
+  zoom: ${ isMobile? '0.7' : '1' };
   .nft-image {
     width: 180px;
     height: 180px;
@@ -46,6 +47,7 @@ export const ConfirmStyled = styled.div<{isGrayFilter:any}>`
     .row-content{
       display: flex;
       margin-top: 8px;
+      
       .label {
         min-width: 140px;
         font-weight: 500;
