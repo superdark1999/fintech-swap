@@ -511,7 +511,6 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
       data?.status == 'approved'
     ) {
       return (
-        
         <div className="group-btn-action">
           <ButtonBuy height="40px" onClick={onAllowSellItem}>
             Approve NFT
