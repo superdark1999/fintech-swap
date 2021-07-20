@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 import { isMobile } from 'react-device-detect'
 
+// interface Props {
+//   styleFilter?: string;
+// }
+
 export const FilterBarStyled = styled.div`
   .right-action {
     font-weight: ${isMobile ? '500' : '700'};
