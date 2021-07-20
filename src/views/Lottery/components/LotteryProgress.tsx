@@ -6,6 +6,7 @@ import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useCurrentTime } from 'hooks/useTimer'
 import { BASE_API_ADMIN } from 'config'
+import useRefresh from 'hooks/useRefresh'
 import {
   getLotteryDrawTime,
   getLotteryDrawStep,
@@ -46,8 +47,7 @@ const StyledPrimaryText = styled(Text)`
 // const timeStartLottery = new Date(19, 0, 0);
 
 const LotteryProgress = () => {
-  // const [timeEndLottery, setTimeEndLottery] = useState(new Date())
-  // const [timeStartLottery, setTimeStartLottery] = useState(new Date())
+  const { fastRefresh } = useRefresh()
   const [timeRemainDraw, setTimeRemainDraw] = useState("");
   const [timeRemainSale, setTimeRemainSale] = useState("");
   
@@ -65,14 +65,14 @@ const LotteryProgress = () => {
 
       // set time remain to end lottery phase
       timeEndLottery.setHours(data[0].timeDrawLottery.hh, data[0].timeDrawLottery.mm, 0);
-      setTimeRemainDraw(getTimeRemainDraw(timeEndLottery, currentMillis));
+      setTimeRemainDraw(getTimeRemainDraw(timeEndLottery));
 
       // set time remain to start new lottery phase
       timeStartLottery.setHours(data[0].timeStartNewPhase.hh, data[0].timeStartNewPhase.mm, 0);
-      setTimeRemainSale(getTimeRemainDraw(timeStartLottery, currentMillis));
+      setTimeRemainSale(getTimeRemainDraw(timeStartLottery));
     }
     fetchTimeLottery();
-  },[currentMillis])
+  },[fastRefresh])
 
   return (
     <ProgressWrapper>
