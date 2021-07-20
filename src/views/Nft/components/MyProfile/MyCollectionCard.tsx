@@ -511,8 +511,7 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
       data?.status == 'approved'
     ) {
       return (
-        !isNFTCanSell &&
-        !approvingMarket &&
+        
         <div className="group-btn-action">
           <ButtonBuy height="40px" onClick={onAllowSellItem}>
             Approve NFT
@@ -603,7 +602,9 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
               Your browser does not support HTML5 video.
             </video>
           ) : (
-            <Image className="avatar" src={data?.contentUrl} />
+            <div className="avatar">
+              <Image className="avatar" src={data?.contentUrl} />
+            </div>
           )}
         </Col>
         <Col
