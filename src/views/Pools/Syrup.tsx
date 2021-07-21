@@ -28,6 +28,8 @@ const Farm: React.FC = () => {
 
   pools = pools.filter(p => p.chainId === chainId);
 
+  pools.sort((a, b) => (!a.isPremium && b.isPremium)? 1 : -1)
+
   useEffect(() => {
     const fetchPools = () => {
       actions.getPools()
