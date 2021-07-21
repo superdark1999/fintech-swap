@@ -25,6 +25,19 @@ const PlayToEarn = () => {
     align-self: flex-end;
     position: relative;
 
+    img {
+      -webkit-filter: drop-shadow(0px 0px 0px rgba(255,255,255,0.80));
+      -webkit-transition: all 0.3s linear;
+      -o-transition: all 0.3s linear;
+      transition: all 0.3s linear;
+    }
+
+    &:hover {
+     img {
+      -webkit-filter: drop-shadow(0px 0px 8px rgba(0, 231, 255, 0.8));
+     }
+    }
+
     > img {
       width: 100%;
       max-width: 450px;
@@ -76,6 +89,16 @@ const PlayToEarn = () => {
       img.vert-move {
         -webkit-animation: mover 1.5s infinite alternate;
         animation: mover 1.5s infinite alternate;
+      }
+
+      &:hover {
+        -webkit-filter: drop-shadow(0px 0px 8px rgba(0, 231, 255, 0.8));
+      }
+    }
+
+    &.active-island {
+      img {
+        -webkit-filter: drop-shadow(0px 0px 8px rgba(0, 231, 255, 0.8));
       }
     }
 
