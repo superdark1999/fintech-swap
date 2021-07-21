@@ -66,6 +66,7 @@ const BoxImg = styled.div`
   }
 `
 
+
 const Lottery: React.FC = () => {
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
 
