@@ -34,7 +34,7 @@ import {getPrice} from 'utils'
 import ModalEditNft from './ModalEditNft'
 
 
-export default function MyCollectionCard({ data, option, reloadList }: any) {
+export default function MyCollectionCard({ data, option, refresh, setRefresh }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -111,13 +111,13 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
   useEffect(()=>{
     if(status == 'success'){
     notification(
-      'open',
+      'success',
       {
         message:
           'Swap NFT success, you can check NFT on approved collection',
         description: '',
       },
-      reloadList(true),
+      setRefresh(!refresh),
     )}
   },[status])
 
@@ -600,13 +600,13 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
        _.debounce(()=>{
        setIsProcessing(false)
        notification(
-        'open',
+        'success',
         {
           message:
             'Update info NFT success, you can check NFT on approved collection',
           description: '',
         },
-        reloadList(true)
+        setRefresh(!refresh)
        )},5000)()
         
       })

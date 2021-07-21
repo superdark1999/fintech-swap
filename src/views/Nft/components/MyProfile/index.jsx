@@ -180,7 +180,7 @@ const TabOnSale = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (match?.params?.tab == 'onstore') {
+    if (match?.params?.tab == 'onstore' && account) {
   
       const params = _.pickBy(
         {
@@ -205,7 +205,7 @@ const TabOnSale = () => {
         }
       })
     }
-  }, [match?.params?.tab, filterType, searchParams, typeSort])
+  }, [match?.params?.tab, filterType, searchParams, typeSort, account])
 
   const handleInputOnchange = (e) => {
     const { value } = e.target
@@ -280,7 +280,7 @@ const TabMyCollection = () => {
   },[account,!!marketServicesMethod])
 
   useEffect(() => {
-    if (optionChecked) {
+    if (optionChecked && account) {
       const query = {
         status: optionChecked,
       }
@@ -320,7 +320,7 @@ const TabMyCollection = () => {
         }
       })
     }
-  }, [optionChecked, filterType, searchParams, typeSort, refresh])
+  }, [optionChecked, filterType, searchParams, typeSort, refresh, account])
 
   const onHandleOptionCheck = (e) => {
     setOptionChecked(e.target.value)
@@ -410,7 +410,8 @@ const TabMyCollection = () => {
               key={item?._id}
               data={item}
               option={optionChecked}
-              reloadList={setRefresh}
+              refresh={refresh}
+              setRefresh={setRefresh}
             />
           )
         })}
