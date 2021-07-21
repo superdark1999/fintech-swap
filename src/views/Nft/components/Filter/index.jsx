@@ -53,7 +53,7 @@ function FilterBar(props) {
         />
         <div style={{ display: 'flex' }}>
           <Select
-            style={{ width: 120, borderRadius: 30 }}
+            style={{ width:"max-content", borderRadius: 30 }}
             onChange={onChangeSelectType}
             defaultValue={selectType}
             style={selectType ? { display: 'unset' } : { display: 'none' }}
@@ -65,7 +65,7 @@ function FilterBar(props) {
             ))}
           </Select>
           <Select
-            style={{ width: 120, borderRadius: 30 }}
+            style={{ width:"max-content", borderRadius: 30 }}
             onChange={onChangeSelectDatePrice}
             defaultValue={selectDatePrice}
           >

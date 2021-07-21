@@ -288,6 +288,7 @@ export const CartStyled = styled.div<Props>`
       }
       .group-btn-action {
         height: 40px;
+        display: flex;
         .dropdown-action {
           border: none;
           width: 184px;
@@ -349,6 +350,26 @@ export const CartStyled = styled.div<Props>`
             display: flex;
             justify-content: center;
             align-items: center;
+          }
+        }
+        .buttonBuy{
+          margin-left: 15px;
+        }
+        .edit-info{
+          display: block;
+          background: unset;
+          cursor: pointer;
+          margin: 0 auto;
+          font-weight: bold;
+          border: 1px solid #efefef;
+          border-radius: 8px;
+          color: #333435;
+          padding: 0 8px;
+          img{
+            width: 25px;
+          }
+          &:hover{
+            transform: scale(1.1);
           }
         }
       }

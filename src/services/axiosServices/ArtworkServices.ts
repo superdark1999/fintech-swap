@@ -24,10 +24,10 @@ export default function useArtworkService() {
     return GET(`/artwork/${id}`, {}, false, false)
   }
 
-  const updateNFTInfo = (data: any) => {
+  const updateNFTInfo = (data: any, value:any) => {
     const id = data?.id
     delete data.id
-    return PATCH(`/artwork/${id}`, data, false, false)
+    return PATCH(`/artwork/${id}`, value, false, false)
   }
 
   const setPrice = (body: any) => {
