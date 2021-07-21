@@ -1,319 +1,316 @@
-import React , {useState} from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-
-
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 const PlayToEarn = () => {
+  const [gameId, setGame] = useState(1)
   const BgGame = styled.div`
-  width: 100%;
-  height: calc(100vh - 64px);
-  background: url('../images/bg-game.png') center center  no-repeat;
-  background-size: cover;
-`
-
-const BoxIsland = styled.div`
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  height: calc(100vh - 64px);
-`
-
-const MainIsland = styled.div`
-  display: grid;
-  justify-self: center;
-  align-self: flex-end;
-  position: relative;
-
-  > img {
     width: 100%;
-    max-width: 450px;
-  }
+    height: calc(100vh - 64px);
+    background: url('../images/bg-game.png') center center no-repeat;
+    background-size: cover;
+  `
 
-  .full {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-  }
-`
+  const BoxIsland = styled.div`
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 64px);
+  `
 
-const BoxAstronaut = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  const MainIsland = styled.div`
+    display: grid;
+    justify-self: center;
+    align-self: flex-end;
+    position: relative;
 
-  .astronaut {
-    position: absolute;
-    top: -7px;
-    left: 34%;
-    width: 100%;
-    max-width: 120px;
-    z-index: 1;
-  }
-
-  .astronaut-atm {
-    position: absolute;
-    top: -57px;
-    right: 92px;
-    width: 100%;
-    max-width: 100px;
-  }
-`
-
-const ThreeIsland = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-`
-
-const Item = styled.div`
-  justify-content: center;
-  position: relative;
-  cursor: pointer;
-
-  &:hover {
-    img.vert-move {
-      -webkit-animation: mover 1.5s  infinite  alternate;
-      animation: mover 1.5s  infinite  alternate;
+    > img {
+      width: 100%;
+      max-width: 450px;
     }
-  }
 
-  @keyframes mover {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-10px); }
-  }
+    .full {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+    }
+  `
 
+  const BoxAstronaut = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 
-  &:first-of-type {
-    img {
-      width: 98px;
+    .astronaut {
+      position: absolute;
+      top: -7px;
+      left: 34%;
+      width: 100%;
+      max-width: 120px;
+      z-index: 1;
+    }
 
-      @media(min-width: 768px) {
-        width: 240px;
+    .astronaut-atm {
+      position: absolute;
+      top: -57px;
+      right: 92px;
+      width: 100%;
+      max-width: 100px;
+    }
+  `
+
+  const ThreeIsland = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  `
+
+  const Item = styled.div`
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+      img.vert-move {
+        -webkit-animation: mover 1.5s infinite alternate;
+        animation: mover 1.5s infinite alternate;
       }
     }
-  }
 
-  &:nth-child(2) {
-    img {
-      width: 340px;
-    }
-  }
-
-  &:nth-child(3) {
-    text-align: right;
-
-    img {
-      width: 100px;
-
-      @media(min-width: 768px) {
-        width: 140px;
+    @keyframes mover {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(-10px);
       }
     }
-  }
-`
 
-const BoxThumb = styled.div`
-  position: absolute;
-  
-  &.left {
-    top: -19%;
-    left: 22%;
+    &:first-of-type {
+      img {
+        width: 98px;
 
-    @media(min-width: 768px) {
-      top: -15px;
-      left: 28%;
-    }
-
-    img {
-      max-width: 55px;
-
-      @media(min-width: 768px) {
-        max-width: 95px;
+        @media (min-width: 768px) {
+          width: 240px;
+        }
       }
     }
-  }
 
-  &.center {
-    top: -63%;
-    left: 30%;
+    &:nth-child(2) {
+      img {
+        width: 340px;
+      }
+    }
 
-    @media(min-width: 768px) {
-      top: -18px;
-      left: 42%;
+    &:nth-child(3) {
+      text-align: right;
+
+      img {
+        width: 100px;
+
+        @media (min-width: 768px) {
+          width: 140px;
+        }
+      }
+    }
+  `
+
+  const BoxThumb = styled.div`
+    position: absolute;
+
+    &.left {
+      top: -19%;
+      left: 22%;
+
+      @media (min-width: 768px) {
+        top: -15px;
+        left: 28%;
+      }
+
+      img {
+        max-width: 55px;
+
+        @media (min-width: 768px) {
+          max-width: 95px;
+        }
+      }
+    }
+
+    &.center {
+      top: -63%;
+      left: 30%;
+
+      @media (min-width: 768px) {
+        top: -18px;
+        left: 42%;
+      }
+
+      img {
+        max-width: 50px;
+      }
+    }
+
+    &.right {
+      top: -20%;
+      right: 37px;
+
+      @media (min-width: 768px) {
+        top: -10px;
+        right: 53px;
+      }
+
+      img {
+        max-width: 30px;
+      }
     }
 
     img {
-      max-width: 50px;
+      width: 100%;
     }
-  }
+  `
 
-  &.right {
-    top: -20%;
-    right: 37px;
+  const WrapBox = styled.div`
+    position: fixed;
+    top: 12%;
+    left: -24%;
+    width: 64%;
 
-    @media(min-width: 768px) {
-      top: -10px;
-      right: 53px;
+    svg {
+      overflow: inherit;
     }
 
-    img {
-      max-width: 30px;
+    .mover {
+      animation: mover 4s infinite;
     }
-  }
-  
-  img {
-    width: 100%;
-  }
-`
 
-const WrapBox = styled.div`
-  position: fixed;
-  top: 12%;
-  left: -24%;
-  width: 64%;
-
-  svg {
-    overflow: inherit;
-  }
-
-  .mover {
-    animation: mover 4s infinite;
-  }
-
-  @keyframes mover {
-    0% {
-      transform: translateY(0px);
+    @keyframes mover {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(10px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
     }
-    50% {
-      transform: translateY(10px);
-    }
-    100% {
-      transform: translateY(0px);
-    }
-  }
 
-  .head {
-    transform-origin: 20% 80%;
-    animation: head 4s infinite;
-    transition: all linear;
-  }
+    .head {
+      transform-origin: 20% 80%;
+      animation: head 4s infinite;
+      transition: all linear;
+    }
 
-  @keyframes head {
-    0% {
-      transform: translate(0px, 0px) rotate(0deg);
+    @keyframes head {
+      0% {
+        transform: translate(0px, 0px) rotate(0deg);
+      }
+      50% {
+        transform: translate(-2px, -12px) rotate(1deg);
+      }
+      100% {
+        transform: translate(0px, 0px) rotate(0deg);
+      }
     }
-    50% {
-      transform: translate(-2px, -12px) rotate(1deg);
-    }
-    100% {
-      transform: translate(0px, 0px) rotate(0deg);
-    }
-  }
 
-  #perna_esquerda {
-    transform-origin: top left;
-    transform-origin: 0% 20%;
-    animation: perna_esquerda 4s infinite;
-    transition: all linear;
-  }
-
-  @keyframes perna_esquerda {
-    0% {
-      transform: translate(0px, 0px) rotate(0deg);
+    #perna_esquerda {
+      transform-origin: top left;
+      transform-origin: 0% 20%;
+      animation: perna_esquerda 4s infinite;
+      transition: all linear;
     }
-    50% {
-      transform: translate(-9px, 31px) rotate(-2deg);
-    }
-    100% {
-      transform: translate(0px, 0px) rotate(0deg);
-    }
-  }
 
-  #perna_direita {
-    transform-origin: 10% 0%;
-    animation: perna_direita 4s infinite;
-    animation-delay: 0.07s;
-    transition: all linear;
-    transform: translate(-1px, 0px) rotate(0deg);
-  }
+    @keyframes perna_esquerda {
+      0% {
+        transform: translate(0px, 0px) rotate(0deg);
+      }
+      50% {
+        transform: translate(-9px, 31px) rotate(-2deg);
+      }
+      100% {
+        transform: translate(0px, 0px) rotate(0deg);
+      }
+    }
 
-  @keyframes perna_direita {
-    0% {
+    #perna_direita {
+      transform-origin: 10% 0%;
+      animation: perna_direita 4s infinite;
+      animation-delay: 0.07s;
+      transition: all linear;
       transform: translate(-1px, 0px) rotate(0deg);
     }
-    50% {
-      transform: translate(-13px, 42px) rotate(-2.2deg);
-      transform: translate(-13px, 42px) rotate(-2.3deg);
-      transform: translate(-19px, 38px) rotate(-2.1deg);
-      transform: translate(-15px, 38px) rotate(-2.3deg);
-      transform: translate(-27px, 56px) rotate(-4deg);
-    }
-    100% {
-      transform: translate(-1x, 0px) rotate(0deg);
-    }
-  }
 
-  @keyframes tagClose {
-    0% {
-      transform: translateX(0px);
+    @keyframes perna_direita {
+      0% {
+        transform: translate(-1px, 0px) rotate(0deg);
+      }
+      50% {
+        transform: translate(-13px, 42px) rotate(-2.2deg);
+        transform: translate(-13px, 42px) rotate(-2.3deg);
+        transform: translate(-19px, 38px) rotate(-2.1deg);
+        transform: translate(-15px, 38px) rotate(-2.3deg);
+        transform: translate(-27px, 56px) rotate(-4deg);
+      }
+      100% {
+        transform: translate(-1x, 0px) rotate(0deg);
+      }
     }
-    50% {
-      transform: translateX(5px);
-    }
-    100% {
-      transform: translateX(0px);
-    }
-  }
 
-  .notebook g {
-    animation: notebook 4s infinite;
-    transition: all linear;
-  }
+    @keyframes tagClose {
+      0% {
+        transform: translateX(0px);
+      }
+      50% {
+        transform: translateX(5px);
+      }
+      100% {
+        transform: translateX(0px);
+      }
+    }
 
-  @keyframes notebook {
-    0% {
-      transform: translateY(0px);
+    .notebook g {
+      animation: notebook 4s infinite;
+      transition: all linear;
     }
-    50% {
-      transform: translateY(-2px);
-    }
-    100% {
-      transform: translateY(0px);
-    }
-  }
 
-  .notebook-light g {
-    animation: notebook-light 4s infinite;
-    transition: all linear;
-  }
+    @keyframes notebook {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-2px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
+    }
 
-  @keyframes notebook-light {
-    0% {
-      opacity: 1;
+    .notebook-light g {
+      animation: notebook-light 4s infinite;
+      transition: all linear;
     }
-    50% {
-      opacity: 0.2;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-`
 
-const TitleGame = styled.h2`
-  text-align: center;
-  color: #ffffff;
-  font-size: 50px;
-  font-weight: 700;
-`
+    @keyframes notebook-light {
+      0% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.2;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  `
+
+  const TitleGame = styled.h2`
+    text-align: center;
+    color: #ffffff;
+    font-size: 50px;
+    font-weight: 700;
+  `
 
   return (
     <BgGame>
@@ -329,31 +326,12 @@ const TitleGame = styled.h2`
               y2="453.8773"
               gradientUnits="userSpaceOnUse"
             >
-              <stop
-                offset="0"
-                stopColor="#f27075"
-                stopOpacity="0"
-              />
-              <stop
-                offset="0.5248"
-                stopColor="#2d6cea"
-              />
-              <stop
-                offset="0.5932"
-                stopColor="#457dec"
-              />
-              <stop
-                offset="0.7376"
-                stopColor="#82a8f3"
-              />
-              <stop
-                offset="0.9447"
-                stopColor="#e4ecfc"
-              />
-              <stop
-                offset="1"
-                stopColor="#fff"
-              />
+              <stop offset="0" stopColor="#f27075" stopOpacity="0" />
+              <stop offset="0.5248" stopColor="#2d6cea" />
+              <stop offset="0.5932" stopColor="#457dec" />
+              <stop offset="0.7376" stopColor="#82a8f3" />
+              <stop offset="0.9447" stopColor="#e4ecfc" />
+              <stop offset="1" stopColor="#fff" />
             </linearGradient>
             <linearGradient
               id="Gradiente_sem_nome_16"
@@ -364,35 +342,13 @@ const TitleGame = styled.h2`
               y2="243.7888"
               gradientUnits="userSpaceOnUse"
             >
-              <stop
-                offset="0"
-                stopColor="#2d3d54"
-              />
-              <stop
-                offset="0.1341"
-                stopColor="#2d3d54"
-                stopOpacity="0.7621"
-              />
-              <stop
-                offset="0.4043"
-                stopColor="#2d3d54"
-                stopOpacity="0.3478"
-              />
-              <stop
-                offset="0.6262"
-                stopColor="#2d3d54"
-                stopOpacity="0.0928"
-              />
-              <stop
-                offset="0.7707"
-                stopColor="#2d3d54"
-                stopOpacity="0"
-              />
+              <stop offset="0" stopColor="#2d3d54" />
+              <stop offset="0.1341" stopColor="#2d3d54" stopOpacity="0.7621" />
+              <stop offset="0.4043" stopColor="#2d3d54" stopOpacity="0.3478" />
+              <stop offset="0.6262" stopColor="#2d3d54" stopOpacity="0.0928" />
+              <stop offset="0.7707" stopColor="#2d3d54" stopOpacity="0" />
             </linearGradient>
-            <filter
-              id="AI_Desfoquegaussiano_4"
-              name="AI_Desfoquegaussiano_4"
-            >
+            <filter id="AI_Desfoquegaussiano_4" name="AI_Desfoquegaussiano_4">
               <feGaussianBlur stdDeviation="4" />
             </filter>
             <linearGradient
@@ -403,18 +359,9 @@ const TitleGame = styled.h2`
               y2="491.971"
               gradientUnits="userSpaceOnUse"
             >
-              <stop
-                offset="0"
-                stopColor="#b9b9bd"
-              />
-              <stop
-                offset="0.5039"
-                stopColor="#fee7d5"
-              />
-              <stop
-                offset="1"
-                stopColor="#fff"
-              />
+              <stop offset="0" stopColor="#b9b9bd" />
+              <stop offset="0.5039" stopColor="#fee7d5" />
+              <stop offset="1" stopColor="#fff" />
             </linearGradient>
             <linearGradient
               id="linear-gradient-2"
@@ -424,14 +371,8 @@ const TitleGame = styled.h2`
               y2="662.471"
               gradientUnits="userSpaceOnUse"
             >
-              <stop
-                offset="0"
-                stopColor="#401737"
-              />
-              <stop
-                offset="1"
-                stopColor="#2d6cea"
-              />
+              <stop offset="0" stopColor="#401737" />
+              <stop offset="1" stopColor="#2d6cea" />
             </linearGradient>
             <linearGradient
               id="linear-gradient-3"
@@ -466,34 +407,13 @@ const TitleGame = styled.h2`
               y2="315.0461"
               gradientUnits="userSpaceOnUse"
             >
-              <stop
-                offset="0"
-                stopColor="#2d3d54"
-              />
-              <stop
-                offset="0.1808"
-                stopColor="#7b7c84"
-              />
-              <stop
-                offset="0.3611"
-                stopColor="#c1b6b0"
-              />
-              <stop
-                offset="0.4899"
-                stopColor="#edd9cb"
-              />
-              <stop
-                offset="0.5551"
-                stopColor="#fee7d5"
-              />
-              <stop
-                offset="0.765"
-                stopColor="#fef1e6"
-              />
-              <stop
-                offset="1"
-                stopColor="#fff"
-              />
+              <stop offset="0" stopColor="#2d3d54" />
+              <stop offset="0.1808" stopColor="#7b7c84" />
+              <stop offset="0.3611" stopColor="#c1b6b0" />
+              <stop offset="0.4899" stopColor="#edd9cb" />
+              <stop offset="0.5551" stopColor="#fee7d5" />
+              <stop offset="0.765" stopColor="#fef1e6" />
+              <stop offset="1" stopColor="#fff" />
             </linearGradient>
             <linearGradient
               id="linear-gradient-7"
@@ -513,14 +433,8 @@ const TitleGame = styled.h2`
               gradientTransform="matrix(-0.9977, -0.0673, -0.0673, 0.9977, 2069.0162, 74.1349)"
               gradientUnits="userSpaceOnUse"
             >
-              <stop
-                offset="0"
-                stopColor="#fee7d5"
-              />
-              <stop
-                offset="1"
-                stopColor="#ffc5a9"
-              />
+              <stop offset="0" stopColor="#fee7d5" />
+              <stop offset="1" stopColor="#ffc5a9" />
             </linearGradient>
             <linearGradient
               id="Gradiente_sem_nome_13-2"
@@ -556,30 +470,12 @@ const TitleGame = styled.h2`
               y2="360.5009"
               gradientUnits="userSpaceOnUse"
             >
-              <stop
-                offset="0"
-                stopColor="#f27075"
-              />
-              <stop
-                offset="0.5248"
-                stopColor="#2d6cea"
-              />
-              <stop
-                offset="0.5932"
-                stopColor="#457dec"
-              />
-              <stop
-                offset="0.7376"
-                stopColor="#82a8f3"
-              />
-              <stop
-                offset="0.9447"
-                stopColor="#e4ecfc"
-              />
-              <stop
-                offset="1"
-                stopColor="#fff"
-              />
+              <stop offset="0" stopColor="#f27075" />
+              <stop offset="0.5248" stopColor="#2d6cea" />
+              <stop offset="0.5932" stopColor="#457dec" />
+              <stop offset="0.7376" stopColor="#82a8f3" />
+              <stop offset="0.9447" stopColor="#e4ecfc" />
+              <stop offset="1" stopColor="#fff" />
             </linearGradient>
             <linearGradient
               id="linear-gradient-10"
@@ -670,35 +566,12 @@ const TitleGame = styled.h2`
               y2="103.1882"
               gradientUnits="userSpaceOnUse"
             >
-              <stop
-                offset="0"
-                stopColor="#4eca7a"
-              />
-              <stop
-                offset="0.047"
-                stopColor="#4dc278"
-                stopOpacity="0.939"
-              />
-              <stop
-                offset="0.3699"
-                stopColor="#438c69"
-                stopOpacity="0.5406"
-              />
-              <stop
-                offset="0.6354"
-                stopColor="#3c645d"
-                stopOpacity="0.2487"
-              />
-              <stop
-                offset="0.8302"
-                stopColor="#384b57"
-                stopOpacity="0.0684"
-              />
-              <stop
-                offset="0.9336"
-                stopColor="#364254"
-                stopOpacity="0"
-              />
+              <stop offset="0" stopColor="#4eca7a" />
+              <stop offset="0.047" stopColor="#4dc278" stopOpacity="0.939" />
+              <stop offset="0.3699" stopColor="#438c69" stopOpacity="0.5406" />
+              <stop offset="0.6354" stopColor="#3c645d" stopOpacity="0.2487" />
+              <stop offset="0.8302" stopColor="#384b57" stopOpacity="0.0684" />
+              <stop offset="0.9336" stopColor="#364254" stopOpacity="0" />
             </linearGradient>
             <linearGradient
               id="linear-gradient-21"
@@ -708,30 +581,12 @@ const TitleGame = styled.h2`
               y2="454.2961"
               gradientUnits="userSpaceOnUse"
             >
-              <stop
-                offset="0"
-                stopColor="#401737"
-              />
-              <stop
-                offset="0.076"
-                stopColor="#433e45"
-              />
-              <stop
-                offset="0.2046"
-                stopColor="#487a5c"
-              />
-              <stop
-                offset="0.3143"
-                stopColor="#4ba56c"
-              />
-              <stop
-                offset="0.3994"
-                stopColor="#4dc076"
-              />
-              <stop
-                offset="0.4494"
-                stopColor="#4eca7a"
-              />
+              <stop offset="0" stopColor="#401737" />
+              <stop offset="0.076" stopColor="#433e45" />
+              <stop offset="0.2046" stopColor="#487a5c" />
+              <stop offset="0.3143" stopColor="#4ba56c" />
+              <stop offset="0.3994" stopColor="#4dc076" />
+              <stop offset="0.4494" stopColor="#4eca7a" />
             </linearGradient>
             <linearGradient
               id="Gradiente_sem_nome_8"
@@ -742,34 +597,13 @@ const TitleGame = styled.h2`
               y2="344.12"
               gradientUnits="userSpaceOnUse"
             >
-              <stop
-                offset="0"
-                stopColor="#401737"
-              />
-              <stop
-                offset="0.1108"
-                stopColor="#411e3a"
-              />
-              <stop
-                offset="0.277"
-                stopColor="#423341"
-              />
-              <stop
-                offset="0.4782"
-                stopColor="#45554e"
-              />
-              <stop
-                offset="0.7066"
-                stopColor="#488360"
-              />
-              <stop
-                offset="0.955"
-                stopColor="#4dbe76"
-              />
-              <stop
-                offset="1"
-                stopColor="#4eca7a"
-              />
+              <stop offset="0" stopColor="#401737" />
+              <stop offset="0.1108" stopColor="#411e3a" />
+              <stop offset="0.277" stopColor="#423341" />
+              <stop offset="0.4782" stopColor="#45554e" />
+              <stop offset="0.7066" stopColor="#488360" />
+              <stop offset="0.955" stopColor="#4dbe76" />
+              <stop offset="1" stopColor="#4eca7a" />
             </linearGradient>
             <linearGradient
               id="linear-gradient-22"
@@ -829,10 +663,7 @@ const TitleGame = styled.h2`
               y2="385.073"
               gradientUnits="userSpaceOnUse"
             >
-              <stop
-                offset="0"
-                stopColor="#fff"
-              />
+              <stop offset="0" stopColor="#fff" />
               <stop offset="1" />
             </linearGradient>
             <linearGradient
@@ -844,21 +675,15 @@ const TitleGame = styled.h2`
               xlinkHref="#linear-gradient-28"
             />
           </defs>
-          <g style={{isolation: 'isolate' }}>
-            <g
-              id="corda"
-              className="mover"
-            >
+          <g style={{ isolation: 'isolate' }}>
+            <g id="corda" className="mover">
               <path
                 d="M10.1381,523.7887a129.9984,129.9984,0,0,1,23.4478-28.0481,137.2,137.2,0,0,1,14.4833-11.4312,131.4185,131.4185,0,0,1,16.0282-9.3232A122.8008,122.8008,0,0,1,81.43,468.0534c2.9868-.9311,6.0182-1.7484,9.0912-2.4311q4.6143-.999,9.3441-1.5545a84.3237,84.3237,0,0,1,19.1751-.1527,64.1678,64.1678,0,0,1,19.0137,5.03,54.4889,54.4889,0,0,1,8.8048,4.9313,51.29,51.29,0,0,1,7.7448,6.6289,50.2482,50.2482,0,0,1,3.3489,3.8652l1.3657,1.7187c.416.5431.8833,1.0634,1.3227,1.5959,1.8007,2.11,3.7375,4.1481,5.7635,6.1129a126.0336,126.0336,0,0,0,27.638,19.9649A122.0777,122.0777,0,0,0,225.73,525.7655a88.8416,88.8416,0,0,0,32.9611,1.2545,76.21,76.21,0,0,0,7.9761-1.7469,72.5878,72.5878,0,0,0,7.7339-2.557,77.53,77.53,0,0,0,14.45-7.5716,100.2369,100.2369,0,0,0,23.87-23.0338,141.4885,141.4885,0,0,0,9.3889-14.208c1.4575-2.4627,2.7775-4.9956,4.1448-7.5432,1.4553-2.7422,2.9114-5.4836,4.4589-8.1762q4.6074-8.0952,9.8-15.8476,5.2212-7.7251,11.0333-15.0424A213.69,213.69,0,0,1,377.2119,404.11a180.8723,180.8723,0,0,1,30.526-22.0113,139.9645,139.9645,0,0,1,35.2769-14.33,104.4177,104.4177,0,0,1,38.5771-2.51,92.4736,92.4736,0,0,1,36.7547,12.78,110.5846,110.5846,0,0,1,28.7541,25.4918,144.872,144.872,0,0,1,10.9053,15.5219c1.6008,2.7056,3.2016,5.4117,4.6519,8.1864l1.113,2.0693,1.0443,2.0983,2.05,4.1369a222.2631,222.2631,0,0,0,17.4,30.2127,121.9379,121.9379,0,0,0,22.8687,25.18c8.7006,6.9742,18.6615,12.1735,29.2445,13.9654a50.7067,50.7067,0,0,0,15.9747.2238,56.6979,56.6979,0,0,0,15.497-4.6532,78.1028,78.1028,0,0,0,26.11-20.4673,99.4568,99.4568,0,0,0,9.81-13.8993c1.4532-2.45,2.7643-4.9855,4.01-7.5516l1.8876-4.0331c.6459-1.3956,1.3241-2.7754,1.9944-4.1585A228.387,228.387,0,0,1,730.51,418.6864a166.08,166.08,0,0,1,24.5238-27.74,121.2878,121.2878,0,0,1,14.8163-11.38,96.6508,96.6508,0,0,1,16.6384-8.7412,80.1964,80.1964,0,0,1,37.0089-5.8268c12.5584,1,24.5831,5.0685,35.5046,10.7034a148.2251,148.2251,0,0,1,30.0062,20.9443,250.8421,250.8421,0,0,1,25.2756,26.0567,1.5,1.5,0,0,1-2.2388,1.9964l-.0118-.0127a247.1063,247.1063,0,0,0-25.9278-24.6038,149.2618,149.2618,0,0,0-29.6935-19.15c-10.57-5.0008-21.9084-8.3606-33.3851-8.8706a72.891,72.891,0,0,0-33.3863,6.2489,88.3078,88.3078,0,0,0-14.9883,8.4326,112.4246,112.4246,0,0,0-13.4363,10.9474A144.7821,144.7821,0,0,0,749.3,410.4347a174.8567,174.8567,0,0,0-10.548,14.0031A217.9769,217.9769,0,0,0,721.4548,455.05c-.61,1.3342-1.2277,2.6648-1.8134,4.009l-1.8452,4.1693c-1.3191,2.8651-2.7168,5.6987-4.2729,8.45a110.8506,110.8506,0,0,1-10.6422,15.7293,88.3839,88.3839,0,0,1-29.8157,24.1271,69.0633,69.0633,0,0,1-18.8281,5.937,64.6783,64.6783,0,0,1-29.6086-2.2692,70.4885,70.4885,0,0,1-9.1971-3.605,88.2479,88.2479,0,0,1-16.52-10.25,135.2446,135.2446,0,0,1-25.883-27.606A225.59,225.59,0,0,1,554.0734,441.79l-1.9915-3.9177-.9819-1.9264-1.0427-1.8875c-1.358-2.5383-2.8467-4.9868-4.3273-7.4382a130.3666,130.3666,0,0,0-9.9445-13.85,95.8119,95.8119,0,0,0-25.1086-21.86,77.3089,77.3089,0,0,0-30.941-10.4064,85.0584,85.0584,0,0,0-16.4912-.2871,102.278,102.278,0,0,0-16.4418,2.7483,124.3046,124.3046,0,0,0-31.251,12.85,165.08,165.08,0,0,0-27.766,20.183,197.75,197.75,0,0,0-23.6736,25.2571q-5.3815,6.8186-10.2329,14.0516-4.8208,7.2434-9.1024,14.8357c-1.4388,2.5216-2.7905,5.0918-4.1444,7.66-1.4657,2.75-2.9455,5.5342-4.5528,8.2408a157.572,157.572,0,0,1-10.5269,15.8081,112.9818,112.9818,0,0,1-27.968,26.5646,93.3378,93.3378,0,0,1-17.5092,8.9514,89.2817,89.2817,0,0,1-19.0534,4.9525,102.9441,102.9441,0,0,1-38.6288-2.0733,134.4123,134.4123,0,0,1-35.1971-14.2581,139.3158,139.3158,0,0,1-29.8981-23.1059c-2.2146-2.29-4.3481-4.68-6.3677-7.2067-.4977-.6411-1.0125-1.2589-1.4918-1.9224l-1.3794-1.8546a37.9246,37.9246,0,0,0-2.4531-3.024,42.1378,42.1378,0,0,0-12.4763-9.4316c-9.5687-4.7971-21.0189-6.2548-32.3023-5.4208a107.2722,107.2722,0,0,0-33.3739,8.3137,134.2376,134.2376,0,0,0-30.1162,17.8426,136.8208,136.8208,0,0,0-24.7194,25.2979,1.5014,1.5014,0,0,1-2.48-1.6879Z"
                 transform="translate(-9.9166 -135.4679)"
                 fill="url(#Gradiente_sem_nome_150)"
               />
             </g>
-            <g
-              id="sombra"
-              className="mover"
-            >
+            <g id="sombra" className="mover">
               <polygon
                 points="1014.415 579.28 1445.083 506 1445.083 0 935.544 179.578 964.718 478.747 1006.173 481.74 1014.415 579.28"
                 opacity="0.5"
@@ -971,10 +796,7 @@ const TitleGame = styled.h2`
               </g>
             </g>
 
-            <g
-              id="corpo"
-              className="mover"
-            >
+            <g id="corpo" className="mover">
               <path
                 d="M899.7687,393.6377,932.6274,408.38l21.5834-3.8334,16.75-9.5s12-21.75,7.75-42-15-29-33.25-38c-9,5.75-34.25,29.75-34.25,29.75S894.5187,374.1377,899.7687,393.6377Z"
                 transform="translate(-9.9166 -135.4679)"
@@ -1070,18 +892,8 @@ const TitleGame = styled.h2`
                   transform="translate(-9.9166 -135.4679)"
                   fill="#401737"
                 />
-                <circle
-                  cx="942.1138"
-                  cy="242.2421"
-                  r="0.5304"
-                  fill="#fff"
-                />
-                <circle
-                  cx="926.361"
-                  cy="238.8282"
-                  r="0.5304"
-                  fill="#fff"
-                />
+                <circle cx="942.1138" cy="242.2421" r="0.5304" fill="#fff" />
+                <circle cx="926.361" cy="238.8282" r="0.5304" fill="#fff" />
                 <path
                   d="M944.71,391.7078l-1.22,3.32s-.33-.04-.88-.14c-.32-.06-.72-.15-1.17-.26v-.01a17.5925,17.5925,0,0,1-8.07-4.19,2.4355,2.4355,0,0,1-.27-.29,9.7757,9.7757,0,0,1-1.3-1.68,7.771,7.771,0,0,1,1.78.65,37.16,37.16,0,0,0,10.43,2.56C944.24,391.6878,944.48,391.6978,944.71,391.7078Z"
                   transform="translate(-9.9166 -135.4679)"
@@ -1341,10 +1153,7 @@ const TitleGame = styled.h2`
             </g>
 
             <g className="notebook-light mover">
-              <g
-                id="Luz_notebook"
-                data-name="Luz notebook"
-              >
+              <g id="Luz_notebook" data-name="Luz notebook">
                 <polygon
                   points="920.544 340.836 699.044 171.078 943.044 50.578 1024.185 309.17 968.019 340.836 920.544 340.836"
                   opacity="0.3"
@@ -1522,10 +1331,8 @@ const TitleGame = styled.h2`
                   strokeLinejoin="round"
                   strokeWidth="1.5"
                 />
-
               </g>
             </g>
-
           </g>
         </svg>
       </WrapBox>
@@ -1533,35 +1340,35 @@ const TitleGame = styled.h2`
       <BoxIsland>
         <MainIsland>
           <BoxAstronaut>
-            <img className="astronaut" src="../images/astronaut.png" alt=""/>
-            <img className="astronaut-atm" src="../images/astronaut-atm.png" alt=""/>
+            <img className="astronaut" src="../images/astronaut.png" alt="" />
+            <img className="astronaut-atm" src="../images/astronaut-atm.png" alt="" />
           </BoxAstronaut>
-          <img src="../images/bg-island-main.png" alt=""/>
+          <img src="../images/bg-island-main.png" alt="" />
 
           <TitleGame>Lottery</TitleGame>
           <Link to="/lottery" className="full"></Link>
         </MainIsland>
 
         <ThreeIsland>
-          <Item>
+          <Item onClick={() => setGame(1)} className={gameId === 1 ? 'active-island' : ''}>
             <BoxThumb className="left">
-              <img src="../images/astronaut-thumb.png" alt=""/>
+              <img src="../images/astronaut-thumb.png" alt="" />
             </BoxThumb>
-            <img src="../images/bg-island-left.png" alt="" className="vert-move"/>
+            <img src="../images/bg-island-left.png" alt="" className="vert-move" />
           </Item>
 
-          <Item>
+          <Item onClick={() => setGame(2)} className={gameId === 2 ? 'active-island' : ''}>
             <BoxThumb className="center">
-              <img src="../images/bg-question.png" alt="" className="element"/>
+              <img src="../images/bg-question.png" alt="" className="element" />
             </BoxThumb>
-            <img src="../images/bg-island-center.png" alt="" className="vert-move"/>
+            <img src="../images/bg-island-center.png" alt="" className="vert-move" />
           </Item>
 
-          <Item>
+          <Item onClick={() => setGame(3)} className={gameId === 3 ? 'active-island' : ''}>
             <BoxThumb className="right">
-              <img src="../images/bg-question.png" alt="" className="element"/>
+              <img src="../images/bg-question.png" alt="" className="element" />
             </BoxThumb>
-            <img src="../images/bg-island-right.png" alt="" className="vert-move"/>
+            <img src="../images/bg-island-right.png" alt="" className="vert-move" />
           </Item>
         </ThreeIsland>
       </BoxIsland>
