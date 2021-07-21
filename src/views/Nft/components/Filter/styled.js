@@ -1,13 +1,24 @@
 import styled from 'styled-components'
 import { isMobile } from 'react-device-detect'
 
+// interface Props {
+//   styleFilter?: string;
+// }
+
 export const FilterBarStyled = styled.div`
+  width:${(props) =>
+    props?.styleFilter == 'collection' 
+  && isMobile? '100%': 'unset'};
+  margin-top: ${(props) =>
+    props?.styleFilter == 'collection' && '30px'};
   .right-action {
     font-weight: ${isMobile ? '500' : '700'};
     font-size: ${isMobile ? '16px' : '20px'};
     text-align: ${isMobile && 'right'};
+    margin-bottom: ${(props) => props.styleFilter == "explore-collection" && (isMobile && '20px')};
     display: flex;
-    flex-direction: column;
+    flex-direction: ${(props) =>
+      (props?.styleFilter == 'onstore' && !isMobile) ? 'unset': 'column'};
     grid-gap: 20px;
     .search-input {
       input {
@@ -20,7 +31,9 @@ export const FilterBarStyled = styled.div`
       }
     }
     .ant-select {
-      margin-left: 16px;
+      &:first-child{
+        margin-right: 16px;
+      }
       .ant-select-selector {
         border-radius: 30px;
         .ant-select-selection-item {

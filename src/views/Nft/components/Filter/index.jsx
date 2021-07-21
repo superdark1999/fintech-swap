@@ -30,15 +30,16 @@ function FilterBar(props) {
     setSelectDatePrice(val)
   }
   const onChangeSelectType = (val) => {
-    //(setPage && setPage(1))
+    //(setPage && setPage(1))style={{width:( ( styleFilter == 'collection') 
+    // && isMobile? '100%': 'unset'), marginTop:( styleFilter == 'collection' && '30px')}}
     if(setPage) setPage(1)
     setSelectType(val)
   }
   return (
-    <FilterBarStyled style={{width:( ( styleFilter == 'collection') 
-    && isMobile? '100%': 'unset'), marginTop:( styleFilter == 'collection' && '30px')}}>
+    <FilterBarStyled styleFilter={styleFilter} >
       <div className="right-action" 
-      style={{flexDirection: (styleFilter == 'onstore' && 'unset')}}>
+      // style={{flexDirection: (styleFilter == 'onstore' && 'unset')}}
+      >
         <Search
           style={
             handleInputOnchange ? { display: 'unset' } : { display: 'none' }
@@ -52,7 +53,7 @@ function FilterBar(props) {
         />
         <div style={{ display: 'flex' }}>
           <Select
-            style={{ width: 120, borderRadius: 30 }}
+            style={{ width:"max-content", borderRadius: 30 }}
             onChange={onChangeSelectType}
             defaultValue={selectType}
             style={selectType ? { display: 'unset' } : { display: 'none' }}
@@ -64,7 +65,7 @@ function FilterBar(props) {
             ))}
           </Select>
           <Select
-            style={{ width: 120, borderRadius: 30 }}
+            style={{ width:"max-content", borderRadius: 30 }}
             onChange={onChangeSelectDatePrice}
             defaultValue={selectDatePrice}
           >

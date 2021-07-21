@@ -195,14 +195,15 @@ const Sidebar: React.FC<SidebarProps> = ({
             <input placeholder="Search tag" />
           </div> */}
           <Row>
-            <Col span={12}>
+            <Col span={12} onClick={onApply}>
               <Checkbox.Group
                 options={plainOptions}
                 value={checkedList}
-                onChange={(e) => onChange(e)}
+                onChange={(e) => onChange(e) }
+                
               />
             </Col>
-            <Col span={12}>
+            <Col span={12} onClick={onApply}>
               <Checkbox.Group
                 options={plainOptions1}
                 value={checkedList}

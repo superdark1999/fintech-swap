@@ -21,7 +21,7 @@ margin: 40px auto;
 .progressbar {
   counter-reset: step;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
 }
 .progressbar li {
   list-style: none;

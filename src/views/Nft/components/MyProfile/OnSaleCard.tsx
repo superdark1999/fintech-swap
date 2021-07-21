@@ -103,7 +103,6 @@ export default function OnSaleCard({ data }: any) {
           message:
             'Swap NFT success, you can check NFT on approved collection',
           description: '',
-          titleBtn: 'View detail',
         },
         history.push('/my-profile/mycollection/approved'),
       )}

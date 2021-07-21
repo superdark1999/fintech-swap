@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { isMobile } from 'react-device-detect'
+import { isMoment } from 'moment'
 
 export const ExploreCollectionStyled = styled.div`
   max-width: 1360px;
@@ -97,7 +98,7 @@ export const ExploreCollectionStyled = styled.div`
   }
 `
 export const FilterBarStyled = styled.div`
-  display: flex;
+  display:${isMobile ? 'block' : 'flex'} ;
   margin: ${isMobile ? 'none' : ' 20px 0 10px 0'};
   .left-action {
     flex: 1;

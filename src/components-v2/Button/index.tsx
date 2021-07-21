@@ -73,6 +73,7 @@ export const ButtonBuy = styled.button<StyledButtonProps>`
   cursor: pointer;
   color: #fff;
   border:none;
+  margin-left: 15px;
   &.disabled {
     background: #bdbdbd;
     color: #fff;

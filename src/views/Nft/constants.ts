@@ -33,7 +33,7 @@ export const OptionSort = [
 ]
 
 export const OptionData = [
-  { label: 'All items', value: 'all' },
+  { label: 'All types', value: 'all' },
   { label: 'Image', value: 'image' },
   { label: 'Video', value: 'video' },
   { label: 'Gif', value: 'gif' },

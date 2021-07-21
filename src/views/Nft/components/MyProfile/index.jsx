@@ -180,7 +180,7 @@ const TabOnSale = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (match?.params?.tab == 'onstore') {
+    if (match?.params?.tab == 'onstore' && account) {
   
       const params = _.pickBy(
         {
@@ -205,7 +205,7 @@ const TabOnSale = () => {
         }
       })
     }
-  }, [match?.params?.tab, filterType, searchParams, typeSort])
+  }, [match?.params?.tab, filterType, searchParams, typeSort, account])
 
   const handleInputOnchange = (e) => {
     const { value } = e.target
@@ -214,7 +214,7 @@ const TabOnSale = () => {
   
   return (
     <>
-      <Row align="middle" justify="end">
+      <Row align="middle" justify={(isMobile ? "center": "end")}>
         <Filter
         styleFilter={'onstore'}
         selectType={filterType}
@@ -280,7 +280,7 @@ const TabMyCollection = () => {
   },[account,!!marketServicesMethod])
 
   useEffect(() => {
-    if (optionChecked) {
+    if (optionChecked && account) {
       const query = {
         status: optionChecked,
       }
@@ -320,7 +320,7 @@ const TabMyCollection = () => {
         }
       })
     }
-  }, [optionChecked, filterType, searchParams, typeSort, refresh])
+  }, [optionChecked, filterType, searchParams, typeSort, refresh, account])
 
   const onHandleOptionCheck = (e) => {
     setOptionChecked(e.target.value)
@@ -344,7 +344,7 @@ const TabMyCollection = () => {
 
   return (
     <>
-      <Row align="middle" justify="space-between">
+      <Row align="middle" justify='space-between'>
         <GroupButton style={{justifyContent:"space-around"}} defaultValue={match?.params?.option}>
           <RadioButton
             width="auto"
@@ -393,7 +393,6 @@ const TabMyCollection = () => {
         selectType={filterType}
         setSelectType={setFilterType}
         handleInputOnchange={handleInputOnchange}
-        // setPage={setPage}
         searchParams={searchParams}
         setSelectSort={setTypeSort}
         sort={typeSort}
@@ -411,7 +410,8 @@ const TabMyCollection = () => {
               key={item?._id}
               data={item}
               option={optionChecked}
-              reloadList={setRefresh}
+              refresh={refresh}
+              setRefresh={setRefresh}
             />
           )
         })}

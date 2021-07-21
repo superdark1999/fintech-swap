@@ -27,13 +27,14 @@ import OfferTable from '../Swap/components/OfferTable'
 // import useUserStore from 'store/userStore'
 import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import {BINANCE_CONFIG} from 'configs'
-import arrowDown from '../../../../assets/images/down-filled-triangular-arrow.svg'
-
-
+//import arrowDown from '../../../../assets/images/down-filled-triangular-arrow.svg'
+import {Image } from 'antd'
+import edit from '../../../../assets/images/edit-list.svg'
 import {getPrice} from 'utils'
+import ModalEditNft from './ModalEditNft'
 
 
-export default function MyCollectionCard({ data, option, reloadList }: any) {
+export default function MyCollectionCard({ data, option, refresh, setRefresh }: any) {
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -47,10 +48,11 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
   const formRef = useRef()
   const [isShowModalSetPrice, setShowModalsetPrice] = useState(false)
   const [isShowModalSetAddressTransfer,setShowModalSetAddressTransfer] = useState(false)
+  const [isShowModalEdit,setShowModalEdit] = useState(false)
   const {MARKET_ADDRESS} = BINANCE_CONFIG
-
+  //console.log(data)
   const [offerData, setOfferData] = useState([])
-  const { getNFT, setPrice, cancelSellNFT } = useArtworkServices()
+  const { getNFT, setPrice, cancelSellNFT, updateNFTInfo } = useArtworkServices()
   const [state, setState] = useState<any>(true);
   const [myItems, setMyItems] = useState<any>([]);
   const [status, setStatus] = useState<any>('none')
@@ -109,14 +111,13 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
   useEffect(()=>{
     if(status == 'success'){
     notification(
-      'open',
+      'success',
       {
         message:
           'Swap NFT success, you can check NFT on approved collection',
         description: '',
-        titleBtn: 'View detail',
       },
-      reloadList(),
+      setRefresh(!refresh),
     )}
   },[status])
 
@@ -506,15 +507,22 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
         </div>
       )
     } else if (
-      !isNFTCanSell &&
-      !approvingMarket &&
       data?.status == 'approved'
     ) {
       return (
+        
         <div className="group-btn-action">
+          <button className="edit-info" onClick={()=>{setShowModalEdit(true)}}>
+            <img src={edit} alt="edit-nft" />
+          </button>
+          {(!isNFTCanSell &&
+          !approvingMarket &&
           <ButtonBuy height="40px" onClick={onAllowSellItem}>
             Approve NFT
-          </ButtonBuy>
+          </ButtonBuy>)}
+          {/* <ButtonBuy height="40px" onClick={onAllowSellItem}>
+            Approve NFT
+          </ButtonBuy> */}
         </div>
       )
     }
@@ -581,6 +589,34 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
       setShowModalSetAddressTransfer(false)
     }
   }
+
+  const onEditNFT = (value: any)=>{
+    if(NFTServicesMethod){
+      const tokenId = data?.tokenId
+      setIsProcessing(true)
+      updateNFTInfo(data,value)
+      .then((dt) => {
+       ///andz
+       _.debounce(()=>{
+       setIsProcessing(false)
+       notification(
+        'success',
+        {
+          message:
+            'Update info NFT success, you can check NFT on approved collection',
+          description: '',
+        },
+        setRefresh(!refresh)
+       )},5000)()
+        
+      })
+      .catch((err) => {
+        notification('error', { message: 'Error', description: err?.message })
+        setIsProcessing(false)
+      })
+      setShowModalEdit(false)
+    }
+  }
   return (
     <CartStyled state={state}>
       <Row gutter={24} align={'middle'}>
@@ -601,7 +637,9 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
               Your browser does not support HTML5 video.
             </video>
           ) : (
-            <img className="avatar" src={data?.contentUrl} />
+            <div className="avatar">
+              <Image className="avatar" src={data?.contentUrl} />
+            </div>
           )}
         </Col>
         <Col
@@ -659,7 +697,13 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
         formRef={formRef}
         onTransferItem={onTransferItem}
       />
-      
+      <ModalEditNft
+        isShowModalEdit={isShowModalEdit}
+        setShowModalEdit={setShowModalEdit}
+        formRef={formRef}
+        onEditNFT={onEditNFT}
+        data={data}
+      />
       <QRCodeComp
         isShow={showQR}
         setShowQR={setShowQR}
