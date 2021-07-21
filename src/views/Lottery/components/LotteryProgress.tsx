@@ -50,6 +50,7 @@ const LotteryProgress = () => {
   const { fastRefresh } = useRefresh()
   const [timeRemainDraw, setTimeRemainDraw] = useState("");
   const [timeRemainSale, setTimeRemainSale] = useState("");
+  const [percentRemain, setPercentRemain] = useState(0)
   
 
   const TranslateString = useI18n()
@@ -70,13 +71,20 @@ const LotteryProgress = () => {
       // set time remain to start new lottery phase
       timeStartLottery.setHours(data[0].timeStartNewPhase.hh, data[0].timeStartNewPhase.mm, 0);
       setTimeRemainSale(getTimeRemainDraw(timeStartLottery));
+
+      if (lotteryHasDrawn){
+        setPercentRemain( 100 - ((timeStartLottery.getTime() - currentMillis) * 100 / 86400000));
+      }
+      else 
+        setPercentRemain( 100 - ((timeEndLottery.getTime() - currentMillis) * 100 / 86400000));
+
     }
     fetchTimeLottery();
-  },[fastRefresh])
+  },[fastRefresh, lotteryHasDrawn, currentMillis])
 
   return (
     <ProgressWrapper>
-      <Progress primaryStep={getLotteryDrawStep(currentMillis)} secondaryStep={getTicketSaleStep()} showProgressBunny />
+      <Progress primaryStep={percentRemain} secondaryStep={ (1/24) / 100} />
       <TopTextWrapper>
         <StyledPrimaryText fontSize="20px" bold color="yellow">
           {lotteryHasDrawn ? timeRemainSale : timeRemainDraw}
