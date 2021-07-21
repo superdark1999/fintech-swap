@@ -15,6 +15,7 @@ export const FilterBarStyled = styled.div`
     font-weight: ${isMobile ? '500' : '700'};
     font-size: ${isMobile ? '16px' : '20px'};
     text-align: ${isMobile && 'right'};
+    margin-bottom: ${(props) => props.styleFilter == "explore-collection" && (isMobile && '20px')};
     display: flex;
     flex-direction: ${(props) =>
       (props?.styleFilter == 'onstore' && !isMobile) ? 'unset': 'column'};
@@ -30,7 +31,9 @@ export const FilterBarStyled = styled.div`
       }
     }
     .ant-select {
-      margin-left: 16px;
+      &:first-child{
+        margin-right: 16px;
+      }
       .ant-select-selector {
         border-radius: 30px;
         .ant-select-selection-item {

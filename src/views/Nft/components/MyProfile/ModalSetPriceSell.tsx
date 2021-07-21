@@ -13,6 +13,7 @@ const { Option } = Select;
 function ModalSetPriceSell(props: any) {
     const { isShowModalSetPrice, setShowModalsetPrice, onSellItem, formRef } = props
     const [select, setSelect] = React.useState<string | null>('Lucky');
+    
     return (
         <Modal
             title="Set price"

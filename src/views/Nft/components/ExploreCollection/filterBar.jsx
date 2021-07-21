@@ -73,6 +73,7 @@ function FilterBar(props) {
         </div>
       </div>
       <Filter
+      styleFilter={"explore-collection"}
         handleInputOnchange={handleInputOnchange}
         setPage={setPage}
         searchParams={searchParams}

@@ -29,12 +29,12 @@ import ButtonProccesing from 'components-v2/Button/btnProcessing'
 import {BINANCE_CONFIG} from 'configs'
 //import arrowDown from '../../../../assets/images/down-filled-triangular-arrow.svg'
 import {Image } from 'antd'
-
+import edit from '../../../../assets/images/edit-list.svg'
 import {getPrice} from 'utils'
+import ModalEditNft from './ModalEditNft'
 
 
 export default function MyCollectionCard({ data, option, reloadList }: any) {
-  console.log(data)
   const [isNFTCanSell, setIsNFTCanSell] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -48,10 +48,11 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
   const formRef = useRef()
   const [isShowModalSetPrice, setShowModalsetPrice] = useState(false)
   const [isShowModalSetAddressTransfer,setShowModalSetAddressTransfer] = useState(false)
+  const [isShowModalEdit,setShowModalEdit] = useState(false)
   const {MARKET_ADDRESS} = BINANCE_CONFIG
-
+  //console.log(data)
   const [offerData, setOfferData] = useState([])
-  const { getNFT, setPrice, cancelSellNFT } = useArtworkServices()
+  const { getNFT, setPrice, cancelSellNFT, updateNFTInfo } = useArtworkServices()
   const [state, setState] = useState<any>(true);
   const [myItems, setMyItems] = useState<any>([]);
   const [status, setStatus] = useState<any>('none')
@@ -116,7 +117,7 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
           'Swap NFT success, you can check NFT on approved collection',
         description: '',
       },
-      reloadList(),
+      reloadList(true),
     )}
   },[status])
 
@@ -506,15 +507,22 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
         </div>
       )
     } else if (
-      !isNFTCanSell &&
-      !approvingMarket &&
       data?.status == 'approved'
     ) {
       return (
+        
         <div className="group-btn-action">
+          <button className="edit-info" onClick={()=>{setShowModalEdit(true)}}>
+            <img src={edit} alt="edit-nft" />
+          </button>
+          {(!isNFTCanSell &&
+          !approvingMarket &&
           <ButtonBuy height="40px" onClick={onAllowSellItem}>
             Approve NFT
-          </ButtonBuy>
+          </ButtonBuy>)}
+          {/* <ButtonBuy height="40px" onClick={onAllowSellItem}>
+            Approve NFT
+          </ButtonBuy> */}
         </div>
       )
     }
@@ -579,6 +587,34 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
         setIsProcessing(false)
       })
       setShowModalSetAddressTransfer(false)
+    }
+  }
+
+  const onEditNFT = (value: any)=>{
+    if(NFTServicesMethod){
+      const tokenId = data?.tokenId
+      setIsProcessing(true)
+      updateNFTInfo(data,value)
+      .then((dt) => {
+       ///andz
+       _.debounce(()=>{
+       setIsProcessing(false)
+       notification(
+        'open',
+        {
+          message:
+            'Update info NFT success, you can check NFT on approved collection',
+          description: '',
+        },
+        reloadList(true)
+       )},5000)()
+        
+      })
+      .catch((err) => {
+        notification('error', { message: 'Error', description: err?.message })
+        setIsProcessing(false)
+      })
+      setShowModalEdit(false)
     }
   }
   return (
@@ -661,7 +697,13 @@ export default function MyCollectionCard({ data, option, reloadList }: any) {
         formRef={formRef}
         onTransferItem={onTransferItem}
       />
-      
+      <ModalEditNft
+        isShowModalEdit={isShowModalEdit}
+        setShowModalEdit={setShowModalEdit}
+        formRef={formRef}
+        onEditNFT={onEditNFT}
+        data={data}
+      />
       <QRCodeComp
         isShow={showQR}
         setShowQR={setShowQR}

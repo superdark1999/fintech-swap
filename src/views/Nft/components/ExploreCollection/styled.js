@@ -46,7 +46,7 @@ export const ExploreCollectionStyled = styled.div`
   }
 `
 export const FilterBarStyled = styled.div`
-  display: flex;
+  display: ${isMobile ? 'block' : 'flex'};
   margin: ${isMobile ? 'none' : ' 20px 0 10px 0'};
   .left-action {
     flex: 1;
