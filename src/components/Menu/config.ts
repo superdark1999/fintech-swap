@@ -79,15 +79,15 @@ const config: MenuEntry[] = [
   {
     label: 'Play to Earn',
     icon: 'TicketIcon',
-    href: '#',
+    href: '/earn',
     calloutClass: 'style-color icon-hot',
-    items: [
-      {
-        label: 'Lottery',
-        href: '/lottery',
-        calloutClass: 'style-color',
-      },
-    ],
+    // items: [
+    //   {
+    //     label: 'Lottery',
+    //     href: '/lottery',
+    //     calloutClass: 'style-color',
+    //   },
+    // ],
   },
   {
     label: 'Channel',
