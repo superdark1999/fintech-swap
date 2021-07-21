@@ -1,5 +1,6 @@
-import React from 'react'
+import React , {useState} from 'react'
 import styled from 'styled-components'
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -33,6 +34,15 @@ const MainIsland = styled.div`
   > img {
     width: 100%;
     max-width: 450px;
+  }
+
+  .full {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
   }
 `
 
@@ -108,31 +118,26 @@ const Item = styled.div`
       }
     }
   }
-
-  .full {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-  }
 `
 
 const BoxThumb = styled.div`
   position: absolute;
   
   &.left {
-    top: -35%;
-    left: 35%;
+    top: -19%;
+    left: 22%;
 
     @media(min-width: 768px) {
-      top: -5px;
-      left: 38%;
+      top: -15px;
+      left: 28%;
     }
 
     img {
-      max-width: 30px;
+      max-width: 55px;
+
+      @media(min-width: 768px) {
+        max-width: 95px;
+      }
     }
   }
 
@@ -301,6 +306,13 @@ const WrapBox = styled.div`
       opacity: 1;
     }
   }
+`
+
+const TitleGame = styled.h2`
+  text-align: center;
+  color: #ffffff;
+  font-size: 50px;
+  font-weight: 700;
 `
 
   return (
@@ -1525,15 +1537,17 @@ const WrapBox = styled.div`
             <img className="astronaut-atm" src="../images/astronaut-atm.png" alt=""/>
           </BoxAstronaut>
           <img src="../images/bg-island-main.png" alt=""/>
+
+          <TitleGame>Lottery</TitleGame>
+          <Link to="/lottery" className="full"></Link>
         </MainIsland>
 
         <ThreeIsland>
           <Item>
             <BoxThumb className="left">
-              <img src="../images/bg-question.png" alt="" className="element"/>
+              <img src="../images/astronaut-thumb.png" alt=""/>
             </BoxThumb>
             <img src="../images/bg-island-left.png" alt="" className="vert-move"/>
-            <Link to="/lottery" className="full"></Link>
           </Item>
 
           <Item>
