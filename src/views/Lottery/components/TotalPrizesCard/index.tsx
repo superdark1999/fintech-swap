@@ -9,11 +9,13 @@ import { getLotteryAddress, getLotteryTicketAddress } from 'utils/addressHelpers
 import { useContract } from 'hooks/useContract'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
 import lotteryAbi from 'config/abi/lottery.json'
+import { getLotteryIssueIndex } from 'utils/lotteryUtils'
 import ExpandableSectionButton from 'components/ExpandableSectionButton/ExpandableSectionButton'
 import { BigNumber } from 'bignumber.js'
 import { usePriceLuckyBusd } from 'state/hooks'
 import PrizeGrid from '../PrizeGrid'
 import CardBusdValue from '../../../Home/components/CardBusdValue'
+import CardValue from '../../../Home/components/CardValue'
 
 // const Container = styled.div`
 //   margin-left: auto;
@@ -120,13 +122,16 @@ const TotalPrizesCard = () => {
   const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
   const { currentLotteryNumber } = useContext(PastLotteryDataContext)
 
+
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
 
   useEffect(() => {
     const fetchLotteryIndex = async () => {
-      console.log("lotteryContract",  lotteryContract)
-      const index = await lotteryContract.issueIndex();
-      setIndexRoute(index)
+      if (lotteryContract) {
+        const index = await getLotteryIssueIndex(lotteryContract)
+
+        setIndexRoute(index)
+      }
     }
 
     fetchLotteryIndex()
@@ -169,6 +174,7 @@ const TotalPrizesCard = () => {
                 </Heading>
               </BoxLucky>
               <Dollar>{lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}</Dollar>
+
             </PrizeCountWrapper>
           </Left>
           <Right>
