@@ -18,7 +18,7 @@ const Blurb = styled(Text)`
 const StyledHero = styled.div`
   display: flex;
   align-items: center;
-  background: url('../images/banner-mobile.png');
+  background: url('../images/banner-launchpad.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
@@ -28,13 +28,11 @@ const StyledHero = styled.div`
   margin-bottom: 32px;
 
   @media (min-width: 768px) {
-    background: url('../images/banner-tablet.png');
     background-repeat: no-repeat;
     background-size: cover;
   }
 
   @media (min-width: 991px) {
-    background: url('../images/large-pc.png');
     background-repeat: no-repeat;
     background-size: cover;
   }

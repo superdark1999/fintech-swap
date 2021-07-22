@@ -39,6 +39,7 @@ const Lottery = lazy(() => import('./views/Lottery'))
 const LotteryV2 = lazy(() => import('./views/Lottery-v2'))
 const Ifos = lazy(() => import('./views/Launchpad'))
 const PlayToEarn = lazy(() => import('./views/PlayToEarn'))
+const Staking = lazy(() => import('./views/Staking'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const Collectibles = lazy(() => import('./views/Collectibles'))
 const Teams = lazy(() => import('./views/Teams'))
@@ -160,6 +161,9 @@ const App: React.FC = () => {
                 </Route>
                 <Route path="/earn">
                   <PlayToEarn />
+                </Route>
+                <Route path="/staking">
+                  <Staking />
                 </Route>
                 <Route path="/lottery-dev">
                   <LotteryV2 />
