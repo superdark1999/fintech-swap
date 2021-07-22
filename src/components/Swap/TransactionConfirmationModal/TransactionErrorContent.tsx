@@ -21,7 +21,7 @@ const TransactionErrorContent = ({ message, onDismiss }: TransactionErrorContent
         </AutoColumn>
       </Section>
       <BottomSection gap="12px">
-        <Button onClick={onDismiss}>Dismiss</Button>
+        <Button className="btn-supply" onClick={onDismiss}>Dismiss</Button>
       </BottomSection>
     </Wrapper>
   )

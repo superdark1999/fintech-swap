@@ -99,7 +99,7 @@ const StyledImage = styled(Image)`
 
 const Header = styled.div`
   padding: 32px 0px;
-  background: url('../images/bg-farm-mobile.png');
+  background: url('../images/bg-farm.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -111,7 +111,6 @@ const Header = styled.div`
   padding-left: 50px;
 
   @media (min-width: 768px) {
-    background: url('../images/bg-farm.png');
     background-repeat: no-repeat;
     background-position: unset;
     background-size: cover;

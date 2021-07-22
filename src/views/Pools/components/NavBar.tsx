@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
+import styled from 'styled-components'
 import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import classnames from 'classnames'
 
 export default function NavBar({ activeTab, toggle }) {
   return (
-    <div>
+    <BoxNav>
       <Nav tabs>
         <NavItem>
           <NavLink
@@ -49,15 +50,19 @@ export default function NavBar({ activeTab, toggle }) {
         </NavItem>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === '5' })}
+            className={classnames({ active: activeTab === '6' })}
             onClick={() => {
-              toggle('5')
+              toggle('6')
             }}
           >
             Ended
           </NavLink>
         </NavItem>
       </Nav>
-    </div>
+    </BoxNav>
   )
 }
+
+const BoxNav = styled.div`
+  margin-top: 20px;
+`

@@ -98,7 +98,7 @@ export default function SwapModalFooter({
         </RowBetween>
       </AutoColumn>
 
-      <AutoRow>
+      <AutoRow styled={{justifyContent: 'center'}}>
         <Button
           className="btn-supply"
           onClick={onConfirm}

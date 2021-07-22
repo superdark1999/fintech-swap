@@ -478,6 +478,10 @@ button.btn-secondary.dropdown-toggle:focus {
   padding: 0;
 }
 
+#confirm-swap-or-send {
+  margin: auto;
+}
+
 
 
 /*=====Animation Astronaut======*/
@@ -496,3 +500,5 @@ button.btn-secondary.dropdown-toggle:focus {
     transform: rotateY(70deg);
   }
 }
+
+

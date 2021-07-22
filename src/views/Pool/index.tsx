@@ -130,4 +130,5 @@ export default function Pool() {
 const FlexBox = styled.div`
   display: flex;
   justify-content: space-between;
+  position: relative;
 `
