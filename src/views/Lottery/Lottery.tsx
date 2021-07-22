@@ -83,9 +83,13 @@ const Lottery: React.FC = () => {
   const isAWin = winnings > 0
 
   useEffect(() => {
-    fetch(`https://api.pancakeswap.com/api/lotteryHistory`)
+    fetch(`https://dashboard.luckyswap.exchange/lotteries/history`)
       .then((response) => response.json())
-      .then((data) => setHistoryData(data))
+      .then((data) => {
+        data.sort((a, b) => a.lotteryNumber > b.lotteryNumber ? -1 : 1)
+        setHistoryData(data)}
+        )
+      
       .catch(() => {
         setHistoryError(true)
       })
@@ -129,8 +133,12 @@ const Lottery: React.FC = () => {
         </SecondCardColumnWrapper>
         <WinningNumbers />
         <HowItWorks />
-        <PastLotteryRoundViewer />
-        <PastDrawsHistoryCard />
+        <PastLotteryDataContext.Provider
+          value={{ historyError, historyData, mostRecentLotteryNumber, currentLotteryNumber }}
+        >
+          <PastLotteryRoundViewer />
+          <PastDrawsHistoryCard />
+        </PastLotteryDataContext.Provider>
 
         {/* <Wrapper>
           <ButtonMenu activeIndex={activeIndex} onItemClick={handleClick} scale="sm" variant="subtle">
