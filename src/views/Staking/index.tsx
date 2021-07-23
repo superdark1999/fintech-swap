@@ -25,7 +25,7 @@ const Staking: React.FC = () => {
               <Col sm="12" md="3" className="align-center space-mb">
                 <BoxCenter>
                   <Figure>
-                    <img src="/images/staking/demo.jpeg" className="thumb" alt=""/>
+                    <img src="/images/staking/staking-1.jpeg" className="thumb" alt=""/>
                     <img src="/images/staking/box-img.png" alt="" className="line-box"/>
                   </Figure>
                   
@@ -50,7 +50,7 @@ const Staking: React.FC = () => {
               <Col sm="12" md="3"  className="align-center space-mb">
                 <BoxCenter>
                   <Figure>
-                    <img src="/images/staking/demo.jpeg" className="thumb" alt=""/>
+                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
                     <img src="/images/staking/box-img.png" alt="" className="line-box"/>
                   </Figure>
                   
@@ -75,7 +75,7 @@ const Staking: React.FC = () => {
               <Col sm="12" md="3" className="align-center space-mb">
                 <BoxCenter>
                   <Figure>
-                    <img src="/images/staking/demo.jpeg" className="thumb" alt=""/>
+                    <img src="/images/staking/staking-3.jpeg" className="thumb" alt=""/>
                     <img src="/images/staking/box-img.png" alt="" className="line-box"/>
                   </Figure>
                   
@@ -100,7 +100,7 @@ const Staking: React.FC = () => {
               <Col sm="12" md="3" className="align-center space-mb">
                 <BoxCenter>
                   <Figure>
-                    <img src="/images/staking/demo.jpeg" className="thumb" alt=""/>
+                    <img src="/images/staking/staking-4.jpeg" className="thumb" alt=""/>
                     <img src="/images/staking/box-img.png" alt="" className="line-box"/>
                   </Figure>
                   
@@ -131,7 +131,7 @@ const Staking: React.FC = () => {
             <Col sm="12" md="3" className="align-center space-mb">
                 <BoxCenter>
                   <Figure>
-                    <img src="/images/staking/demo.jpeg" className="thumb" alt=""/>
+                    <img src="/images/staking/staking-1.jpeg" className="thumb" alt=""/>
                     <img src="/images/staking/box-img.png" alt="" className="line-box"/>
                   </Figure>
                   
@@ -156,7 +156,7 @@ const Staking: React.FC = () => {
               <Col sm="12" md="3" className="align-center space-mb">
                 <BoxCenter>
                   <Figure>
-                    <img src="/images/staking/demo.jpeg" className="thumb" alt=""/>
+                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
                     <img src="/images/staking/box-img.png" alt="" className="line-box"/>
                   </Figure>
                   
@@ -185,7 +185,7 @@ const Staking: React.FC = () => {
               <Col sm="12" md="3" className="align-center space-mb">
                 <BoxCenter>
                   <Figure>
-                    <img src="/images/staking/demo.jpeg" className="thumb" alt=""/>
+                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
                     <img src="/images/staking/box-img.png" alt="" className="line-box"/>
                   </Figure>
                   
@@ -227,7 +227,8 @@ const StakingPage = styled.div`
       cursor: pointer;
 
       .thumb {
-        transform: scale(1.3);
+        transform: scale(0.9);
+        transition: all 0.9s;
       }
 
       .effect-light {
@@ -279,6 +280,7 @@ const Figure = styled.div`
     height: inherit;
     transform: scale(1);
     transition: all 0.9s;
+    object-fit: cover;
   }
 
   .line-box {
