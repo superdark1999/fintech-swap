@@ -1,10 +1,40 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
+const data = [
+  {
+    id: 1,
+    title: 'Lottery',
+    imgMini1: '../images/astronaut-thumb.png',
+    imgMini2: '../images/bg-island-left.png',
+    imgMain: '../images/bg-island-main.png',
+    imgMain1: '../images/astronaut.png',
+    imgMain2: '../images/astronaut-atm.png',
+    route:'/lottery'
+  },
+  {
+    id: 2,
+    title: 'Staking NFT',
+    imgMini1: '../images/cardNFT.png',
+    imgMini2: '../images/bg-island-center.png',
+    imgMain1: '',
+    imgMain2: '',
+    route:'/staking'
+  },
+  {
+    id: 3,
+    title: 'Coming soon',
+    imgMini1: '../images/bg-question.png',
+    imgMini2: '../images/bg-island-right.png',
+    imgMain1: '',
+    imgMain2: '',
+    route:''
+  },
+]
 const PlayToEarn = () => {
   const [gameId, setGame] = useState(1)
+  const [island, setIsland] = useState(data[0])
   const BgGame = styled.div`
     width: 100%;
     height: calc(100vh - 64px);
@@ -26,16 +56,16 @@ const PlayToEarn = () => {
     position: relative;
 
     img {
-      -webkit-filter: drop-shadow(0px 0px 0px rgba(255,255,255,0.80));
+      -webkit-filter: drop-shadow(0px 0px 0px rgba(255, 255, 255, 0.8));
       -webkit-transition: all 0.3s linear;
       -o-transition: all 0.3s linear;
       transition: all 0.3s linear;
     }
 
     &:hover {
-     img {
-      -webkit-filter: drop-shadow(0px 0px 8px rgba(0, 231, 255, 0.8));
-     }
+      img {
+        -webkit-filter: drop-shadow(0px 0px 8px rgba(0, 231, 255, 0.8));
+      }
     }
 
     > img {
@@ -1363,35 +1393,53 @@ const PlayToEarn = () => {
       <BoxIsland>
         <MainIsland>
           <BoxAstronaut>
-            <img className="astronaut" src="../images/astronaut.png" alt="" />
-            <img className="astronaut-atm" src="../images/astronaut-atm.png" alt="" />
+            <img className="astronaut" src={island.imgMain1} alt="" />
+            <img className="astronaut-atm" src={island.imgMain2} alt="" />
           </BoxAstronaut>
-          <img src="../images/bg-island-main.png" alt="" />
+          <img src={island.imgMain} alt="" />
 
-          <TitleGame>Lottery</TitleGame>
-          <Link to="/lottery" className="full"></Link>
+          <TitleGame>{island.title}</TitleGame>
+          <Link to={island.route} className="full"></Link>
         </MainIsland>
 
         <ThreeIsland>
-          <Item onClick={() => setGame(1)} className={gameId === 1 ? 'active-island' : ''}>
+          <Item
+            onClick={() => {
+              setGame(1)
+              setIsland(data[0])
+            }}
+            className={gameId === 1 ? 'active-island' : ''}
+          >
             <BoxThumb className="left">
-              <img src="../images/astronaut-thumb.png" alt="" />
+              <img src={data[0].imgMini1} alt="" />
             </BoxThumb>
-            <img src="../images/bg-island-left.png" alt="" className="vert-move" />
+            <img src={data[0].imgMini2} alt="" className="vert-move" />
           </Item>
 
-          <Item onClick={() => setGame(2)} className={gameId === 2 ? 'active-island' : ''}>
+          <Item
+            onClick={() => {
+              setGame(2)
+              setIsland(data[1])
+            }}
+            className={gameId === 2 ? 'active-island' : ''}
+          >
             <BoxThumb className="center">
-              <img src="../images/bg-question.png" alt="" className="element" />
+              <img src={data[1].imgMini1} alt="" className="element" />
             </BoxThumb>
-            <img src="../images/bg-island-center.png" alt="" className="vert-move" />
+            <img src={data[1].imgMini2} alt="" className="vert-move" />
           </Item>
 
-          <Item onClick={() => setGame(3)} className={gameId === 3 ? 'active-island' : ''}>
+          <Item
+            onClick={() => {
+              setGame(3)
+              setIsland(data[2])
+            }}
+            className={gameId === 3 ? 'active-island' : ''}
+          >
             <BoxThumb className="right">
-              <img src="../images/bg-question.png" alt="" className="element" />
+              <img src={data[2].imgMini1} alt="" className="element" />
             </BoxThumb>
-            <img src="../images/bg-island-right.png" alt="" className="vert-move" />
+            <img src={data[2].imgMini2} alt="" className="vert-move" />
           </Item>
         </ThreeIsland>
       </BoxIsland>
