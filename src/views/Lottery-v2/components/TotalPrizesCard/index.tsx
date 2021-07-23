@@ -107,6 +107,7 @@ const Dollar = styled.div`
   padding-left: 60px;
 `
 
+
 const TotalPrizesCard = () => {
   const TranslateString = useI18n()
   const { account } = useWeb3React()

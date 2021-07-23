@@ -112,6 +112,39 @@ const Dollar = styled.div`
   padding-left: 60px;
 `
 
+const RoundPrize = styled.div`
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: 36px;
+  line-height: 44px;
+    color: #252525;
+    text-shadow: 1px 1px 0 #F3C111,
+    -1px 1px 0 #F3C111,
+    1px -1px 0 #F3C111,
+    -1px -1px 0 #F3C111,
+    0px 1px 0 #F3C111,
+    0px -1px 0 #F3C111,
+    -1px 0px 0 #F3C111,
+    1px 0px 0 #F3C111,
+    2px 2px 0 #F3C111,
+    -2px 2px 0 #F3C111,
+    2px -2px 0 #F3C111,
+    -2px -2px 0 #F3C111,
+    0px 2px 0 #F3C111,
+    0px -2px 0 #F3C111,
+    -2px 0px 0 #F3C111,
+    2px 0px 0 #F3C111,
+    1px 2px 0 #F3C111,
+    -1px 2px 0 #F3C111,
+    1px -2px 0 #F3C111,
+    -1px -2px 0 #F3C111,
+    2px 1px 0 #F3C111,
+    -2px 1px 0 #F3C111,
+    2px -1px 0 #F3C111,
+    -2px -1px 0 #F3C111;
+`
+
 const TotalPrizesCard = () => {
   const [indexRoute, setIndexRoute]  = useState(0)
   const TranslateString = useI18n()
@@ -142,12 +175,18 @@ const TotalPrizesCard = () => {
     <BoxTotal>
       <CardBody>
         {account && (
-          <Flex mb="16px" alignItems="center" justifyContent="space-between" style={{ height: '20px' }}>
+          <Flex mb="55px" alignItems="center" justifyContent="space-between">
             {currentLotteryNumber === 0 && <Skeleton height={20} width={56} />}
             <>
+<<<<<<< HEAD
+              <RoundPrize>
+                {TranslateString(720, `Round #${currentLotteryNumber}`, { num: currentLotteryNumber })}
+              </RoundPrize>
+=======
               <Text fontSize="12px" style={{ fontWeight: 600 }}>
                 {TranslateString(720, `Round #${indexRoute}`, { num: currentLotteryNumber })}
               </Text>
+>>>>>>> ebdfeb004537c4c0c657d3e35346272ae7202261
             </>
             {/* {currentLotteryNumber > 0 && (
                 <>
@@ -158,7 +197,6 @@ const TotalPrizesCard = () => {
               )} */}
           </Flex>
         )}
-
         <CardHeading>
           <Left>
             <PrizeCountWrapper>
@@ -167,7 +205,7 @@ const TotalPrizesCard = () => {
               </Text>
               <BoxLucky>
                 <IconWrapper>
-                  <img width="55px" alt="" src="/images/icon-logo-y.png" />
+                  <img width="75px" alt="" src="/images/icon-logo-y.png" />
                 </IconWrapper>
                 <Heading style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px', fontSize: '44' }} size="lg">
                   {lotteryPrizeWithCommaSeparators} <span>LUCKY</span>
