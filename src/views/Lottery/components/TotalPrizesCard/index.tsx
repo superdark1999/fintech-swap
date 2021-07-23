@@ -169,7 +169,6 @@ const TotalPrizesCard = () => {
               )} */}
           </Flex>
         )}
-
         <CardHeading>
           <Left>
             <PrizeCountWrapper>
