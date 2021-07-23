@@ -3,6 +3,7 @@ import { TranslatableText } from 'state/types'
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 
 export interface Ifo {
+  _id: string
   id: string
   isActive: boolean
   address: string
@@ -21,6 +22,10 @@ export interface Ifo {
   tokenSymbol: string
   releaseBlockNumber: number
   campaignId?: string
+  banner?: string
+  logo?: string
+  typePool?: string
+  sympol?: string
 }
 
 export enum PoolCategory {
@@ -54,6 +59,18 @@ export interface FarmConfig {
     earnLabel: string
     endBlock: number
   }
+}
+export interface Pool {
+  _id: string
+  name: string
+  logo: string
+  depositTokenSymbol: string
+  rewardTokenSymbol: string
+  depositTokenAddress: string
+  rewardTokenAddress: string
+  stakingAddress: string, 
+  isPremium: boolean,
+  chainId: number
 }
 
 export interface PoolConfig {

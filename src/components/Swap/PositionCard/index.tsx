@@ -1,31 +1,32 @@
-import React, { useState } from 'react'
-import { JSBI, Pair, Percent } from '@beswap/sdk'
 import { Button, Card as UIKitCard, CardBody, Text } from '@luckyswap/uikit'
+import { JSBI, Pair, Percent } from '@luckyswap/v2-sdk'
+import { useActiveWeb3React } from 'hooks'
 import { darken } from 'polished'
+import React, { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { Link } from 'react-router-dom'
+import { useTokenBalance } from 'state/wallet/hooks'
 import styled from 'styled-components'
 import { currencyId } from 'utils/currencyId'
-import { useActiveWeb3React } from 'hooks'
-import { useTokenBalance } from 'state/wallet/hooks'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { useTotalSupply } from '../../../data/TotalSupply'
 import Card from '../Card'
 import { AutoColumn } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween, RowFixed } from '../Row'
 import { Dots } from '../swap/styleds'
-import { useTotalSupply } from '../../../data/TotalSupply'
 
 export const FixedHeightRow = styled(RowBetween)`
   height: 24px;
 `
 
 export const HoverCard = styled(Card)`
-  border: 1px solid ${({ theme }) => theme.colors.invertedContrast};
-  :hover {
+  background: rgb(41 41 41);
+  box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
+  /* :hover {
     border: 1px solid ${({ theme }) => darken(0.06, theme.colors.invertedContrast)};
-  }
+  } */
 `
 
 interface PositionCardProps {
@@ -115,7 +116,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
 }
 
 export default function FullPositionCard({ pair }: PositionCardProps) {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)
@@ -197,14 +198,19 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
             </FixedHeightRow>
 
             <RowBetween marginTop="10px">
-              <Button className="btn-supply" as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} style={{ width: '48%' }}>
+              <Button
+                className="btn-supply"
+                as={Link}
+                to={`/add/${currencyId(currency0, chainId)}/${currencyId(currency1, chainId)}`}
+                style={{ width: '48%' }}
+              >
                 Add
               </Button>
               <Button
                 className="btn-supply"
                 as={Link}
                 style={{ width: '48%' }}
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
+                to={`/remove/${currencyId(currency0, chainId)}/${currencyId(currency1, chainId)}`}
               >
                 Remove
               </Button>

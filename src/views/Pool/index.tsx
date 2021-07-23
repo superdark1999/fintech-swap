@@ -1,51 +1,51 @@
-import React, { useContext, useMemo } from 'react'
-import styled,{ ThemeContext } from 'styled-components'
-import { Pair } from '@beswap/sdk'
 import { Button, CardBody, Text } from '@luckyswap/uikit'
-import { Link } from 'react-router-dom'
-import { useActiveWeb3React } from 'hooks'
+import { NATIVE, Pair } from '@luckyswap/v2-sdk'
 import { usePairs } from 'data/Reserves'
-import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
+import { useActiveWeb3React } from 'hooks'
+import React, { useContext, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
+import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
+import styled, { ThemeContext } from 'styled-components'
 import { TranslateString } from 'utils/translateTextHelpers'
-
-import CardNav from '../../components/Swap/CardNav'
-import Question from '../../components/Swap/QuestionHelper'
-import FullPositionCard from '../../components/Swap/PositionCard'
-import { StyledInternalLink } from '../../components/Swap/Shared'
 import { LightCard } from '../../components/Swap/Card'
-import { RowBetween } from '../../components/Swap/Row'
+import CardNav from '../../components/Swap/CardNav'
 import { AutoColumn } from '../../components/Swap/Column'
+import FullPositionCard from '../../components/Swap/PositionCard'
+import { RowBetween } from '../../components/Swap/Row'
+import { StyledInternalLink } from '../../components/Swap/Shared'
 import { Dots } from '../../components/Swap/swap/styleds'
 import TranslatedText from '../../components/Swap/TranslatedText'
-import PageHeader from '../../components/Swap/PageHeader'
 import AppBody from '../AppBody'
+
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
+
   const tokenPairsWithLiquidityTokens = useMemo(
     () => trackedTokenPairs.map((tokens) => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
-    [trackedTokenPairs]
+    [trackedTokenPairs],
   )
-  const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map((tpwlt) => tpwlt.liquidityToken), [
-    tokenPairsWithLiquidityTokens,
-  ])
+  const liquidityTokens = useMemo(
+    () => tokenPairsWithLiquidityTokens.map((tpwlt) => tpwlt.liquidityToken),
+    [tokenPairsWithLiquidityTokens],
+  )
   const [v2PairsBalances, fetchingV2PairBalances] = useTokenBalancesWithLoadingIndicator(
     account ?? undefined,
-    liquidityTokens
+    liquidityTokens,
   )
 
   // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
     () =>
       tokenPairsWithLiquidityTokens.filter(({ liquidityToken }) =>
-        v2PairsBalances[liquidityToken.address]?.greaterThan('0')
+        v2PairsBalances[liquidityToken.address]?.greaterThan('0'),
       ),
-    [tokenPairsWithLiquidityTokens, v2PairsBalances]
+    [tokenPairsWithLiquidityTokens, v2PairsBalances],
   )
 
   const v2Pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
@@ -59,11 +59,11 @@ export default function Pool() {
       <AppBody>
         <FlexBox>
           <CardNav activeIndex={1} />
-          <PageHeader title="" description="" />
+          {/* <PageHeader title="" description="" /> */}
         </FlexBox>
 
         <div className="custom-btn">
-          <Button id="join-pool-button" as={Link} to="/add/ETH">
+          <Button id="join-pool-button" as={Link} to={`/add/${NATIVE[chainId]?.symbol}`}>
             <TranslatedText translationId={100}>Add Liquidity</TranslatedText>
           </Button>
         </div>
@@ -71,7 +71,7 @@ export default function Pool() {
           <CardBody>
             <AutoColumn gap="12px" style={{ width: '100%' }}>
               <RowBetween padding="0 8px">
-                <Text  style={{ color:'#fff' }}>
+                <Text style={{ color: '#fff' }}>
                   <TranslatedText translationId={102}>Your Liquidity</TranslatedText>
                 </Text>
                 {/* <Question
@@ -84,13 +84,13 @@ export default function Pool() {
 
               {!account ? (
                 <LightCard padding="40px">
-                  <Text color="textDisabled" textAlign="center">
+                  <Text className="color-dark" textAlign="center">
                     Connect to a wallet to view your liquidity.
                   </Text>
                 </LightCard>
               ) : v2IsLoading ? (
                 <LightCard padding="40px">
-                  <Text color="textDisabled" textAlign="center">
+                  <Text className="color-dark" textAlign="center">
                     <Dots>Loading</Dots>
                   </Text>
                 </LightCard>

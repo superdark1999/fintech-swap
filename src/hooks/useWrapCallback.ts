@@ -1,4 +1,4 @@
-import { Currency, currencyEquals, ETHER, WETH } from '@beswap/sdk'
+import { Currency, currencyEquals, WNATIVE } from '@luckyswap/v2-sdk'
 import { useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { tryParseAmount } from '../state/swap/hooks'
@@ -10,7 +10,7 @@ import { useWETHContract } from './useContract'
 export enum WrapType {
   NOT_APPLICABLE,
   WRAP,
-  UNWRAP
+  UNWRAP,
 }
 
 const NOT_APPLICABLE = { wrapType: WrapType.NOT_APPLICABLE }
@@ -23,7 +23,7 @@ const NOT_APPLICABLE = { wrapType: WrapType.NOT_APPLICABLE }
 export default function useWrapCallback(
   inputCurrency: Currency | undefined,
   outputCurrency: Currency | undefined,
-  typedValue: string | undefined
+  typedValue: string | undefined,
 ): { wrapType: WrapType; execute?: undefined | (() => Promise<void>); inputError?: string } {
   const { chainId, account } = useWeb3React()
   const wethContract = useWETHContract()
@@ -37,7 +37,7 @@ export default function useWrapCallback(
 
     const sufficientBalance = inputAmount && balance && !balance.lessThan(inputAmount)
 
-    if (inputCurrency === ETHER && currencyEquals(WETH[chainId], outputCurrency)) {
+    if (inputCurrency?.isNative && currencyEquals(WNATIVE[chainId], outputCurrency)) {
       return {
         wrapType: WrapType.WRAP,
         execute:
@@ -45,15 +45,18 @@ export default function useWrapCallback(
             ? async () => {
                 try {
                   const txReceipt = await wethContract.deposit({ value: `0x${inputAmount.raw.toString(16)}` })
-                  addTransaction(txReceipt, { summary: `Wrap ${inputAmount.toSignificant(6)} BNB to WBNB` })
+                  addTransaction(txReceipt, {
+                    summary: `Wrap ${inputAmount.toSignificant(6)} ${inputCurrency.symbol} to W${inputCurrency.symbol}`,
+                  })
                 } catch (error) {
                   console.error('Could not deposit', error)
                 }
               }
             : undefined,
-        inputError: sufficientBalance ? undefined : 'Insufficient ETH balance'
+        inputError: sufficientBalance ? undefined : `Insufficient ${inputCurrency.symbol} balance`,
       }
-    } if (currencyEquals(WETH[chainId], inputCurrency) && outputCurrency === ETHER) {
+    }
+    if (currencyEquals(WNATIVE[chainId], inputCurrency) && outputCurrency?.isNative) {
       return {
         wrapType: WrapType.UNWRAP,
         execute:
@@ -61,16 +64,19 @@ export default function useWrapCallback(
             ? async () => {
                 try {
                   const txReceipt = await wethContract.withdraw(`0x${inputAmount.raw.toString(16)}`)
-                  addTransaction(txReceipt, { summary: `Unwrap ${inputAmount.toSignificant(6)} WBNB to BNB` })
+                  addTransaction(txReceipt, {
+                    summary: `Unwrap ${inputAmount.toSignificant(6)} W${inputCurrency.symbol} to ${
+                      inputCurrency.symbol
+                    }`,
+                  })
                 } catch (error) {
                   console.error('Could not withdraw', error)
                 }
               }
             : undefined,
-        inputError: sufficientBalance ? undefined : 'Insufficient WBNB balance'
+        inputError: sufficientBalance ? undefined : `Insufficient W${inputCurrency.symbol} balance`,
       }
-    } 
-      return NOT_APPLICABLE
-    
+    }
+    return NOT_APPLICABLE
   }, [wethContract, chainId, inputCurrency, outputCurrency, inputAmount, balance, addTransaction])
 }

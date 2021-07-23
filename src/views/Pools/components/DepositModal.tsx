@@ -1,72 +1,224 @@
+import React, {useState, useEffect}from 'react'
+import styled from 'styled-components'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal } from '@luckyswap/uikit'
-import ModalActions from 'components/ModalActions'
-import TokenInput from 'components/TokenInput'
-import useI18n from 'hooks/useI18n'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { Pool} from 'config/constants/types';
+import { Contract } from '@ethersproject/contracts'
 
-interface DepositModalProps {
-  max: BigNumber
-  onConfirm: (amount: string, decimals: number) => void
-  onDismiss?: () => void
-  tokenName?: string
-  stakingTokenDecimals?: number
+
+import useUtilityToken from 'hooks/useUtilityToken';
+
+interface DepositModalProp {
+  depositModal: boolean,
+  depositToggle: () => void,
+  depositSymbol: string,
+  stakingContract: Contract,
+  addTransaction: (response: any, message: any) => void,
+  account: string,
+  stakingData: Pool,
+  setIsDepositing: (value: boolean) => void
+
 }
+ const DepositModal: React.FC<DepositModalProp> = ({ 
+  depositModal, 
+  depositToggle, 
+  depositSymbol,  
+  stakingContract,
+  addTransaction,
+  account,
+  stakingData,
+  setIsDepositing
+}) =>{
+  const [balance, setBalance] = useState(0);
+  const [value, setValue] = useState('');
+  const {balanceOf, approve, allowance} =  useUtilityToken(stakingData.depositTokenAddress);
 
-const DepositModal: React.FC<DepositModalProps> = ({
-  max,
-  onConfirm,
-  onDismiss,
-  tokenName = '',
-  stakingTokenDecimals = 18,
-}) => {
-  const [val, setVal] = useState('')
-  const [pendingTx, setPendingTx] = useState(false)
-  const TranslateString = useI18n()
-  const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(max, stakingTokenDecimals)
-  }, [max, stakingTokenDecimals])
 
-  const handleChange = useCallback(
-    (e: React.FormEvent<HTMLInputElement>) => {
-      setVal(e.currentTarget.value)
-    },
-    [setVal],
-  )
+  useEffect(() => {
+    const fetchBalance = async () => {
+      const bal = await balanceOf(account);
+      setBalance(parseFloat((bal /1e18).toFixed(4)));
+    }
+    if (account)
+      fetchBalance()
+  },[account, balanceOf])
 
-  const handleSelectMax = useCallback(() => {
-    setVal(fullBalance)
-  }, [fullBalance, setVal])
+  const handleDeposit = async () => {
+    if (stakingContract) {
+      setIsDepositing(true);
+      depositToggle()
+      const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
+      const gasAm = await stakingContract.estimateGas.deposit(...args)
+      .catch(() => console.log("Fail estimate gas deposit"));
+       stakingContract
+        .deposit(...args, { gasLimit: gasAm })
+        .then((response: any) => {
+          addTransaction(response, {
+            summary: 'Deposit successfully!',
+          })
+        })
+        .catch((error: any) => {
+          console.log(error)
+        })
+    }
+  }
+
+  const handleMaxAmount = () => {
+    setValue(balance.toString())
+  }
 
   return (
-    <Modal title={`${TranslateString(316, 'Deposit')} ${tokenName} Tokens`} onDismiss={onDismiss}>
-      <TokenInput
-        value={val}
-        onSelectMax={handleSelectMax}
-        onChange={handleChange}
-        max={fullBalance}
-        symbol={tokenName}
-      />
-      <ModalActions>
-        <Button width="100%" variant="secondary" onClick={onDismiss}>
-          {TranslateString(462, 'Cancel')}
-        </Button>
-        <Button
-          width="100%"
-          disabled={pendingTx}
-          onClick={async () => {
-            setPendingTx(true)
-            await onConfirm(val, stakingTokenDecimals)
-            setPendingTx(false)
-            onDismiss()
-          }}
-        >
-          {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
-        </Button>
-      </ModalActions>
-    </Modal>
+    <div>
+      
+      <Modal isOpen={depositModal} toggle={depositToggle}>
+        <ModalHeader toggle={depositToggle}></ModalHeader>
+
+        <ModalBody>
+          <Title>Deposit <span>{depositSymbol}</span> Tokens</Title>
+          <Available><span>{balance}</span> {depositSymbol}</Available>
+
+          <BoxInput>
+            <input type="text" id="fname" name="fname" placeholder="0.000"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              />
+            <BoxLink>
+              <span className="text-lucky">{depositSymbol}</span>
+              <BoxButton>
+                <Button onClick={handleMaxAmount}>Max</Button>
+              </BoxButton>
+            </BoxLink>
+          </BoxInput>
+        </ModalBody>
+
+        <ModalFooter>
+          <CancelButton>
+            <Button color="primary" onClick={depositToggle}>Cancel</Button>
+          </CancelButton>
+          <DepositButton>
+            <Button  color="primary" onClick={handleDeposit} disabled={value==='' || value==='0'}>Deposit</Button>
+          </DepositButton>
+        </ModalFooter>
+      </Modal>
+      
+    </div>
   )
 }
 
-export default DepositModal
+
+const BoxInput = styled.div`
+  display: flex;
+  align-items: center;
+  background: #4d4d50;
+  border-radius: 10px;
+  height: 72px;
+  padding: 0px 16px;
+  margin: 16px 0px 48px;
+
+  input {
+    flex: 1 1 0%;
+    width: 0px;
+    background: none;
+    border: 0px;
+    color: #fff;
+    font-size: 18px;
+    height: 56px;
+    margin: 0px;
+    padding: 0px;
+    outline: none;
+  }
+`
+
+const Title = styled.h5`
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 25px;
+
+  span {
+    font-size: 24px;
+    color: #f5c606
+  }
+
+`
+const Available = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+
+  span {
+    font-size: 20px;
+    margin-right: 5px;
+    color: #f5c606;
+  }
+`
+
+const BoxLink = styled.div`
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+`
+
+const BoxButton = styled.div`
+  margin-left: 12px;
+
+  button {
+    width: 100%;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid transparent;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    background-color: #f5c606;
+    color: #2b2e2f;
+    font-family: "Baloo Da";
+    padding: 0px 10px;
+    height: 40px;
+  }
+`
+const DepositButton = styled.div`
+    button {
+      color: #2b2e2f;
+      background-color: #f5c606 !important;
+      border: none;
+      :hover {
+        opacity: .8 ; 
+        color: #2b2e2f;
+        background-color: #f5c606 !important;
+      }
+      :disabled {
+        opacity: .5 ; 
+        color: #2b2e2f;
+        background-color: #f5c606 !important;
+      }
+    }
+`
+
+const CancelButton = styled.div`
+  button {
+    background-color: #6c757d !important;
+    border: none;
+    :hover{
+      opacity: .8;
+    }
+  }
+
+`
+
+export default DepositModal;

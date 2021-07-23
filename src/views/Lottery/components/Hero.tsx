@@ -6,8 +6,8 @@ import Container from 'components/layout/Container'
 import LotteryProgress from './LotteryProgress'
 
 const Title = styled(Heading).attrs({ as: 'h1', size: 'xl' })`
-  color: ${({ theme }) => theme.colors.secondary};
-  margin-bottom: 24px;
+  color: rgb(243, 193, 17);
+  margin-bottom: 5px;
 `
 
 const Blurb = styled(Text)`
@@ -17,18 +17,20 @@ const Blurb = styled(Text)`
 `
 
 const StyledHero = styled.div`
-  background-image: linear-gradient(180deg,#f5bf7a 0%,#2b2c3a 100%);
-  padding-bottom: 40px;
-  padding-top: 40px;
+  // background: url('../images/large-pc.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 60px;
+  padding-top: 60px;
+  background-color: #0000001a;
 `
 
 const StyledContainer = styled(Container)`
-  display: flex;
-
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row;
+    grid-template-columns: 1fr 400px;
   }
 `
 
@@ -47,8 +49,8 @@ const LeftWrapper = styled.div`
 
 const RightWrapper = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
+  flex-direction: column;
   flex: 1;
   padding-left: 0;
   margin-top: 16px;
@@ -63,6 +65,10 @@ const RightWrapper = styled.div`
   }
 `
 
+const ContentDes = styled.div`
+  margin-bottom: 20px;
+`
+
 const Hero = () => {
   const TranslateString = useI18n()
 
@@ -70,11 +76,15 @@ const Hero = () => {
     <StyledHero>
       <StyledContainer>
         <LeftWrapper>
-          <Title>{TranslateString(708, 'The CAKE Lottery')}</Title>
-          <Blurb>{TranslateString(710, 'Buy tickets with CAKE')}</Blurb>
-          <Blurb>{TranslateString(712, 'Win if 2, 3, or 4 of your ticket numbers match!')}</Blurb>
+          <img src="images/banner-jackpot.png" alt="" />
         </LeftWrapper>
+
         <RightWrapper>
+          <ContentDes>
+            <Title>{TranslateString(708, 'The LUCKY Lottery')}</Title>
+            <Blurb>{TranslateString(710, 'Buy tickets with LUCKY for collect more NFTs')}</Blurb>
+            <Blurb>{TranslateString(712, 'Win if 2, 3, or 4 of your ticket numbers match!')}</Blurb>
+          </ContentDes>
           <LotteryProgress />
         </RightWrapper>
       </StyledContainer>

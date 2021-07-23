@@ -1,5 +1,5 @@
 import { Web3Provider } from '@ethersproject/providers'
-import { ChainId } from '@beswap/sdk'
+import { ChainId } from '@luckyswap/v2-sdk'
 import { useWeb3React as useWeb3ReactCore } from '@web3-react/core'
 // eslint-disable-next-line import/no-unresolved
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types'
@@ -11,6 +11,7 @@ import { NetworkContextName } from '../constants'
 export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & { chainId?: ChainId } {
   const context = useWeb3ReactCore<Web3Provider>()
   const contextNetwork = useWeb3ReactCore<Web3Provider>(NetworkContextName)
+  // console.log('context network : ', contextNetwork)
   return context.active ? context : contextNetwork
 }
 
@@ -20,12 +21,11 @@ export function useEagerConnect() {
 
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
-      const hasSignedIn = window.localStorage.getItem('accountStatus')
-      if (isAuthorized && hasSignedIn) {
+      if (isAuthorized) {
         activate(injected, undefined, true).catch(() => {
           setTried(true)
         })
-      } else if (isMobile && window.ethereum && hasSignedIn) {
+      } else if (isMobile && window.ethereum) {
         activate(injected, undefined, true).catch(() => {
           setTried(true)
         })
@@ -82,6 +82,7 @@ export function useInactiveListener(suppress = false) {
         }
       }
     }
+
     return undefined
   }, [active, error, suppress, activate])
 }

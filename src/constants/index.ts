@@ -1,6 +1,4 @@
-import { ChainId, JSBI, Percent, Token, WETH } from '@beswap/sdk'
-
-export const ROUTER_ADDRESS = '0x35e455f4C6d53461fb741982bFF37b17b22CF5e9'
+import { JSBI, Percent, Token, ChainId, WNATIVE } from '@luckyswap/v2-sdk'
 
 // a list of tokens by chain
 type ChainTokenList = {
@@ -15,12 +13,14 @@ export const UST = new Token(
   '0x23396cf899ca06c4472205fc903bdb4de249d6fc',
   18,
   'UST',
-  'Wrapped UST Token'
+  'Wrapped UST Token',
 )
 
 const WETH_ONLY: ChainTokenList = {
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
-  [ChainId.BSCTESTNET]: [WETH[ChainId.BSCTESTNET]],
+  [ChainId.MAINNET]: [WNATIVE[ChainId.MAINNET]],
+  [ChainId.BSCTESTNET]: [WNATIVE[ChainId.BSCTESTNET]],
+  [ChainId.MATIC]: [WNATIVE[ChainId.MATIC]],
+  [ChainId.MATIC_TESTNET]: [WNATIVE[ChainId.MATIC_TESTNET]],
 }
 
 // used to construct intermediary pairs for trading
@@ -57,7 +57,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
     ],
     [BUSD, USDT],
     [DAI, USDT],
-  ]
+  ],
 }
 
 export const NetworkContextName = 'NETWORK'
@@ -81,3 +81,94 @@ export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(
 
 // used to ensure the user doesn't send so much ETH so they end up with <.01
 export const MIN_ETH: JSBI = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16)) // .01 ETH
+
+export const RPC_URLS: {
+  [chainId in ChainId]?: string[]
+} = {
+  [ChainId.MAINNET]: [
+    'https://bsc-dataseed.binance.org/',
+    'https://bsc-dataseed1.defibit.io/',
+    'https://bsc-dataseed1.ninicoin.io/',
+  ],
+  [ChainId.BSCTESTNET]: [
+    'https://data-seed-prebsc-1-s1.binance.org:8545/',
+    'https://data-seed-prebsc-2-s1.binance.org:8545/',
+    'https://data-seed-prebsc-1-s2.binance.org:8545/',
+  ],
+  [ChainId.MATIC]: ['https://rpc-mainnet.matic.network'],
+  [ChainId.MATIC_TESTNET]: ['https://rpc-mumbai.matic.today', 'https://rpc-mumbai.maticvigil.com'],
+}
+
+export const BLOCK_EXPLORER_URLS: {
+  [chainId in ChainId]?: string[]
+} = {
+  [ChainId.MAINNET]: ['https://bscscan.com'],
+  [ChainId.BSCTESTNET]: ['https://testnet.bscscan.com/'],
+  [ChainId.MATIC]: ['https://polygonscan.com/'],
+  [ChainId.MATIC_TESTNET]: ['https://mumbai.polygonscan.com/'],
+}
+
+export const SCAN_SITES: {
+  [chainId in ChainId]?: string
+} = {
+  [ChainId.MAINNET]: 'bscscan',
+  [ChainId.BSCTESTNET]: 'bscscan',
+  [ChainId.MATIC]: 'polygonscan',
+  [ChainId.MATIC_TESTNET]: 'polygonscan',
+}
+
+export const NETWORKS: {
+  [chainId in ChainId]?: any
+} = {
+  [ChainId.MAINNET]: {
+    chainId: `0x${ChainId.MAINNET.toString(16)}`,
+    chainName: 'Binance Smart Chain Mainnet',
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'bnb',
+      decimals: 18,
+    },
+    rpcUrls: RPC_URLS[ChainId.MAINNET],
+    blockExplorerUrls: BLOCK_EXPLORER_URLS[ChainId.MAINNET],
+  },
+  [ChainId.BSCTESTNET]: {
+    chainId: `0x${ChainId.BSCTESTNET.toString(16)}`,
+    chainName: 'Binance Smart Chain Testnet',
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'bnb',
+      decimals: 18,
+    },
+    rpcUrls: RPC_URLS[ChainId.BSCTESTNET],
+    blockExplorerUrls: BLOCK_EXPLORER_URLS[ChainId.BSCTESTNET],
+  },
+  [ChainId.MATIC]: {
+    chainId: `0x${ChainId.MATIC.toString(16)}`,
+    chainName: 'Polygon Mainnet',
+    nativeCurrency: {
+      name: 'MATIC',
+      symbol: 'matic',
+      decimals: 18,
+    },
+    rpcUrls: RPC_URLS[ChainId.MATIC],
+    blockExplorerUrls: BLOCK_EXPLORER_URLS[ChainId.MATIC],
+  },
+  [ChainId.MATIC_TESTNET]: {
+    chainId: `0x${ChainId.MATIC_TESTNET.toString(16)}`,
+    chainName: 'Polygon Testnet',
+    nativeCurrency: {
+      name: 'MATIC',
+      symbol: 'matic',
+      decimals: 18,
+    },
+    rpcUrls: RPC_URLS[ChainId.MATIC_TESTNET],
+    blockExplorerUrls: BLOCK_EXPLORER_URLS[ChainId.MATIC_TESTNET],
+  },
+}
+
+export const ALL_SUPPORTED_CHAIN_IDS: ChainId[] = [
+  ChainId.MAINNET,
+  ChainId.MATIC,
+  ChainId.BSCTESTNET,
+  ChainId.MATIC_TESTNET,
+]

@@ -20,7 +20,7 @@ import tokens from 'config/constants/tokens'
 import { Pool } from 'state/types'
 import { useGetApiPrice } from 'state/hooks'
 import { useApproveCallbackCustom, ApprovalState } from 'hooks/useApproveCallback'
-import DepositModal from './DepositModal'
+import DepositModal from './DepositModal_bk'
 import WithdrawModal from './WithdrawModal'
 import CompoundModal from './CompoundModal'
 import CardTitle from './CardTitle'
@@ -117,7 +117,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   //   }
   // }, [onApprove, setRequestedApproval])
 
-  const [approval] = useApproveCallbackCustom(getAddress(stakingToken.address),getAddress(earningToken.address))
+  const [approval] = useApproveCallbackCustom(getAddress(stakingToken.address), getAddress(earningToken.address))
 
   async function onAttemptToApprove() {
     return approval()
@@ -132,7 +132,6 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [approval, setRequestedApproval])
 
-  
   return (
     <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="block-pool">
       {isFinished && sousId !== 0 && <PoolFinishedSash />}
@@ -187,10 +186,10 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
                   onClick={
                     isOldSyrup
                       ? async () => {
-                        setPendingTx(true)
-                        await onUnstake('0', stakingToken.decimals)
-                        setPendingTx(false)
-                      }
+                          setPendingTx(true)
+                          await onUnstake('0', stakingToken.decimals)
+                          setPendingTx(false)
+                        }
                       : onPresentWithdraw
                   }
                 >

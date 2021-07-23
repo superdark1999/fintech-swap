@@ -1,12 +1,13 @@
-import { Currency, ETHER, Token } from '@beswap/sdk'
-import React, { useMemo } from 'react'
-import styled from 'styled-components'
+import { Currency } from '@luckyswap/v2-sdk'
 import useHttpLocations from 'hooks/useHttpLocations'
+import React, { useMemo } from 'react'
 import { WrappedTokenInfo } from 'state/lists/hooks'
+import styled from 'styled-components'
+import { useActiveWeb3React } from '../../../hooks/index'
 import Logo from '../Logo'
 import CoinLogo from '../pancake/CoinLogo'
 
-const getTokenLogoURL = (address: string) =>
+export const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/assets/${address}/logo.png`
 
 const StyledBnbLogo = styled.img<{ size: string }>`
@@ -31,22 +32,40 @@ export default function CurrencyLogo({
   style?: React.CSSProperties
 }) {
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
+  const { chainId } = useActiveWeb3React()
+
+  const getNativeLogo = () => {
+    switch (chainId) {
+      case 56:
+      case 97:
+        return '/images/coinslist/BNB.png'
+      case 137:
+      case 80001:
+        return '/images/coinslist/POLYGON.svg'
+      default:
+        return '/images/coinslist/BNB.png'
+    }
+  }
 
   const srcs: string[] = useMemo(() => {
-    if (currency === ETHER) return []
+    if (currency?.isNative) return []
 
-    if (currency instanceof Token) {
+    if (currency?.isToken) {
       if (currency instanceof WrappedTokenInfo) {
-        return [...uriLocations, `/images/coins/${currency?.symbol ?? 'token'}.png`, getTokenLogoURL(currency.address)]
+        return [
+          ...uriLocations,
+          `/images/coinslist/${currency?.symbol ?? 'token'}.png`,
+          getTokenLogoURL(currency.address),
+        ]
       }
 
-      return [`/images/coins/${currency?.symbol ?? 'token'}.png`, getTokenLogoURL(currency.address)]
+      return [`/images/coinslist/${currency?.symbol ?? 'token'}.png`, getTokenLogoURL(currency.address)]
     }
     return []
   }, [currency, uriLocations])
 
-  if (currency === ETHER) {
-    return <StyledBnbLogo src="/images/coins/bnb.png" size={size} style={style} />
+  if (currency?.isNative) {
+    return <StyledBnbLogo src={getNativeLogo()} size={size} style={style} />
   }
 
   return (currency as any)?.symbol ? (

@@ -4,10 +4,17 @@ import { Text, Heading, Link, Image } from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
 
 const LayoutWrapper = styled.div`
-  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+  margin-bottom: 30px;
   margin: 0 auto 40px;
   display: flex;
   flex-direction: column;
+  border-radius: 14px;
+  padding: 20px;
+  background-color: #2b2a2a;
+  text-align: center;
 `
 
 const StyledHeading = styled(Heading)`
@@ -21,6 +28,15 @@ const StyledImage = styled(Image)`
 const StyledLink = styled(Link)`
   align-self: center;
   margin-top: 16px;
+  border: 1px solid #f3c111;
+  background-color: transparent;
+  color: #f3c111;
+  padding: 10px 20px;
+  border-radius: 14px;
+
+  &:hover {
+    color: #ecf023;
+  }
 `
 
 const HowItWorks = () => {
@@ -28,19 +44,15 @@ const HowItWorks = () => {
 
   return (
     <LayoutWrapper>
-      <StyledImage src="/images/pancake-lottery-bunny.png" alt="lottery bunny" width={163} height={140} />
-      <StyledHeading size="lg" as="h3" color="secondary">
+      <StyledHeading size="lg" as="h3" color="rgb(243, 193, 17)">
         {TranslateString(632, 'How it works')}
       </StyledHeading>
       <Text fontSize="16px">
-        {TranslateString(
-          426,
-          'Spend CAKE to buy tickets, contributing to the lottery pot. Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their exact order!',
-        )}
+        Spend LUCKY to buy tickets, contributing to the lottery pot.
+        <br /> Win prizes if 2, 3, or 4 of your ticket numbers match the winning numbers and their exact order!
       </Text>
-      <StyledLink href="https://docs.pancakeswap.finance/lottery-1">{TranslateString(610, 'Read more')}</StyledLink>
+      <StyledLink href="https://docs.luckyswap.io">{TranslateString(610, 'Read more')}</StyledLink>
     </LayoutWrapper>
   )
 }
-
 export default HowItWorks

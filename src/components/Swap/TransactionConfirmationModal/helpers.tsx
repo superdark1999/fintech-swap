@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Heading, IconButton, CloseIcon } from '@luckyswap/uikit'
 import { AutoColumn, ColumnCenter } from '../Column'
 
-
 export const Wrapper = styled.div`
   width: 100%;
   overflow-y: auto;
@@ -17,9 +16,9 @@ export const ConfirmedIcon = styled(ColumnCenter)`
 `
 
 export const BottomSection = styled(Section)`
-  background-color: #343646;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  background: rgb(60 60 60);
+  box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
+  border-radius: 20px;
 `
 
 /**

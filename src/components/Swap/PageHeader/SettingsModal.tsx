@@ -12,9 +12,9 @@ const defaultOnDismiss = () => null
 
 const SettingsModal = ({ onDismiss = defaultOnDismiss }: SettingsModalProps) => {
   return (
-    <Modal className="style-color" title="Settings" onDismiss={onDismiss}>
+    <Modal className="style-color modal-setting" title="" onDismiss={onDismiss}>
       <SlippageToleranceSetting />
-      <TransactionDeadlineSetting />
+      {/* <TransactionDeadlineSetting /> */}
     </Modal>
   )
 }

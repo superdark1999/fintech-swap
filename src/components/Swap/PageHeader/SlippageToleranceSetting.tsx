@@ -44,7 +44,7 @@ const Label = styled.div`
 const predefinedValues = [
   { label: '0.1%', value: 0.1 },
   { label: '0.5%', value: 0.5 },
-  { label: '1%', value: 1 }
+  { label: '1%', value: 1 },
 ]
 
 const SlippageToleranceSettings = () => {
@@ -96,14 +96,14 @@ const SlippageToleranceSettings = () => {
 
             return (
               <Option key={predefinedValue}>
-                <Button style={{ color: 'rgb(27, 28, 45)' }} variant={value === predefinedValue ? 'primary' : 'tertiary'} onClick={handleClick}>
+                <Button style={{ color: 'rgb(33 32 32)' }} variant={value === predefinedValue ? 'primary' : 'tertiary'} onClick={handleClick}>
                   {label}
                 </Button>
               </Option>
             )
           })}
         </Flex>
-        <Flex alignItems="center">
+        <Flex className="space-input" alignItems="center">
           <Option>
             <Input
               type="number"
@@ -122,7 +122,7 @@ const SlippageToleranceSettings = () => {
         </Flex>
       </Options>
       {error && (
-        <Text mt="8px" color="#ea9e2b">
+        <Text mt="8px" color="#f36262">
           {error}
         </Text>
       )}

@@ -1,4 +1,5 @@
 import { getWeb3NoAccount } from './web3'
+import { getChainId } from './web3React'
 
 /**
  * Accepts an array of contract method calls and batches them
@@ -10,9 +11,10 @@ import { getWeb3NoAccount } from './web3'
  *  contract.method.startBlockNumber().call
  * ]
  */
-const makeBatchRequest = (calls: any[]) => {
+const makeBatchRequest = async (calls: any[]) => {
   try {
-    const web3 = getWeb3NoAccount()
+    const chainId = await getChainId()
+    const web3 = getWeb3NoAccount(chainId)
     const batch = new web3.BatchRequest()
 
     const promises = calls.map((call) => {

@@ -1,46 +1,42 @@
 import { Web3Provider } from '@ethersproject/providers'
+import { ChainId } from '@luckyswap/v2-sdk'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-import { NetworkConnector } from './NetworkConnector'
+import getLibrary from 'utils/getLibrary'
 import { BscConnector } from './bsc/bscConnector'
-import getNodeUrl from '../utils/getRpcUrl'
+import { NetworkConnector } from './NetworkConnector'
+import { ALL_SUPPORTED_CHAIN_IDS } from '../constants/index'
 
-const NETWORK_URL =getNodeUrl()
-export const NETWORK_CHAIN_ID: number = parseInt('56' ?? '56')
-
-if (typeof NETWORK_URL === 'undefined') {
-  throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)
+const RPC = {
+  [ChainId.MATIC]: 'https://rpc-mainnet.maticvigil.com',
+  [ChainId.MATIC_TESTNET]: 'https://rpc-mumbai.matic.today',
+  [ChainId.MAINNET]: 'https://bsc-dataseed.binance.org/',
+  [ChainId.BSCTESTNET]: 'https://data-seed-prebsc-2-s3.binance.org:8545',
 }
 
+export const NETWORK_CHAIN_ID: number = parseInt('56' ?? '56')
+
 export const network = new NetworkConnector({
-  urls: { [NETWORK_CHAIN_ID]: NETWORK_URL },
+  urls: RPC,
+  defaultChainId: 56,
 })
 
 let networkLibrary: Web3Provider | undefined
 export function getNetworkLibrary(): Web3Provider {
   // eslint-disable-next-line no-return-assign
-  return (networkLibrary = networkLibrary ?? new Web3Provider(network.provider as any))
+  return (networkLibrary = networkLibrary ?? getLibrary(network.provider))
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [56, 97],
+  supportedChainIds: ALL_SUPPORTED_CHAIN_IDS,
 })
 
-export const bsc = new BscConnector({ supportedChainIds: [56] })
+export const bscConnector = new BscConnector({ supportedChainIds: [56] })
 
-// mainnet only
 export const walletconnect = new WalletConnectConnector({
-  rpc: { [NETWORK_CHAIN_ID]: NETWORK_URL },
+  supportedChainIds: ALL_SUPPORTED_CHAIN_IDS,
+  rpc: RPC,
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
   pollingInterval: 15000,
-})
-
-// mainnet only
-export const walletlink = new WalletLinkConnector({
-  url: NETWORK_URL,
-  appName: 'Uniswap',
-  appLogoUrl:
-    'https://mpng.pngfly.com/20181202/bex/kisspng-emoji-domain-unicorn-pin-badges-sticker-unicorn-tumblr-emoji-unicorn-iphoneemoji-5c046729264a77.5671679315437924251569.jpg',
 })

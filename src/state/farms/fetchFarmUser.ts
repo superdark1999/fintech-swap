@@ -4,9 +4,11 @@ import masterchefABI from 'config/abi/masterchef.json'
 import multicall from 'utils/multicall'
 import farmsConfig from 'config/constants/farms'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
+import { getChainId } from '../../utils/web3React'
 
 export const fetchFarmUserAllowances = async (account: string) => {
-  const masterChefAddress = getMasterChefAddress()
+  const chainId = getChainId()
+  const masterChefAddress = getMasterChefAddress(chainId)
 
   const calls = farmsConfig.map((farm) => {
     const lpContractAddress = getAddress(farm.lpAddresses)
@@ -38,7 +40,8 @@ export const fetchFarmUserTokenBalances = async (account: string) => {
 }
 
 export const fetchFarmUserStakedBalances = async (account: string) => {
-  const masterChefAddress = getMasterChefAddress()
+  const chainId = await getChainId()
+  const masterChefAddress = getMasterChefAddress(chainId)
 
   const calls = farmsConfig.map((farm) => {
     return {
@@ -56,12 +59,13 @@ export const fetchFarmUserStakedBalances = async (account: string) => {
 }
 
 export const fetchFarmUserEarnings = async (account: string) => {
-  const masterChefAddress = getMasterChefAddress()
+  const chainId = await getChainId()
+  const masterChefAddress = getMasterChefAddress(chainId)
 
   const calls = farmsConfig.map((farm) => {
     return {
       address: masterChefAddress,
-      name: 'pendingCake',
+      name: 'pendingLucky',
       params: [farm.pid, account],
     }
   })

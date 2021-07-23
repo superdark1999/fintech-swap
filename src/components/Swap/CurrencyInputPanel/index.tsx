@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { Currency, Pair } from '@beswap/sdk'
+import { Currency, Pair } from '@luckyswap/v2-sdk'
 import { Button, ChevronDownIcon, Text } from '@luckyswap/uikit'
 import styled from 'styled-components'
 import { darken } from 'polished'
@@ -10,7 +10,7 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { RowBetween } from '../Row'
 import { Input as NumericalInput } from '../NumericalInput'
 import { useActiveWeb3React } from '../../../hooks'
-import TranslatedText from "../TranslatedText"
+import TranslatedText from '../TranslatedText'
 import { TranslateString } from '../../../utils/translateTextHelpers'
 
 const InputRow = styled.div<{ selected: boolean }>`
@@ -34,10 +34,11 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   user-select: none;
   border: none;
   padding: 0 0.5rem;
-
+  font-weight: 700;
   :focus,
   :hover {
-    background-color: ${({ theme }) => darken(0.05, theme.colors.input)};
+    /* background-color: ${({ theme }) => darken(0.05, theme.colors.input)}; */
+    color: #f5c606;
   }
 `
 
@@ -71,9 +72,11 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
 `
 
 const Container = styled.div<{ hideInput: boolean }>`
-  border-radius: 4px;
-  background-color: #292A36;
-  box-shadow: ${({ theme }) => theme.shadows.inset};
+  border-radius: 16px;
+  background: rgb(41 41 41);
+  box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
+  /* box-shadow: ${({ theme }) => theme.shadows.inset}; */
+  /* border:none; */
 `
 
 interface CurrencyInputPanelProps {
@@ -107,25 +110,30 @@ export default function CurrencyInputPanel({
   hideInput = false,
   otherCurrency,
   id,
-  showCommonBases
+  showCommonBases,
 }: CurrencyInputPanelProps) {
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-  const translatedLabel = label || TranslateString(132, 'Input')
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
   }, [setModalOpen])
+  const translatedLabel = label || TranslateString(132, 'Input')
 
   return (
     <InputPanel id={id}>
       <Container hideInput={hideInput}>
-      {!hideInput && (
+        {!hideInput && (
           <LabelRow>
             <RowBetween>
               <Text fontSize="14px">{translatedLabel}</Text>
               {account && (
-                <Text onClick={onMax} fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
+                <Text
+                  onClick={onMax}
+                  fontSize="16px"
+                  fontWeight="700"
+                  style={{ display: 'inline', cursor: 'pointer', letterSpacing: '1px' }}
+                >
                   {!hideBalance && !!currency && selectedCurrencyBalance
                     ? `Balance: ${selectedCurrencyBalance?.toSignificant(6)}`
                     : ' -'}
@@ -135,7 +143,7 @@ export default function CurrencyInputPanel({
           </LabelRow>
         )}
         <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
-        {!hideInput && (
+          {!hideInput && (
             <>
               {account && currency && showMaxButton && label !== 'To' && (
                 <Button onClick={onMax} scale="sm" variant="text" className="btn-max">
@@ -144,7 +152,7 @@ export default function CurrencyInputPanel({
               )}
             </>
           )}
-        <CurrencySelect
+          <CurrencySelect
             selected={!!currency}
             className="open-currency-select-button"
             onClick={() => {
@@ -166,9 +174,10 @@ export default function CurrencyInputPanel({
               ) : (
                 <Text>
                   {(currency && currency.symbol && currency.symbol.length > 20
-                    ? `${currency.symbol.slice(0, 4) 
-                      }...${ 
-                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)}`
+                    ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
+                        currency.symbol.length - 5,
+                        currency.symbol.length,
+                      )}`
                     : currency?.symbol) || <TranslatedText translationId={82}>Select a currency</TranslatedText>}
                 </Text>
               )}
@@ -181,13 +190,12 @@ export default function CurrencyInputPanel({
               <NumericalInput
                 className="token-amount-input"
                 value={value}
-                onUserInput={val => {
+                onUserInput={(val) => {
                   onUserInput(val)
                 }}
               />
             </>
           )}
-
         </InputRow>
       </Container>
       {!disableCurrencySelect && onCurrencySelect && (

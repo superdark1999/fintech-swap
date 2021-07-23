@@ -1,11 +1,17 @@
+import { ChainId } from '@luckyswap/v2-sdk'
 import random from 'lodash/random'
+import { RPC_URLS } from '../constants'
 
 // Array of available nodes to connect to
-export const nodes = [process.env.REACT_APP_NODE_1, process.env.REACT_APP_NODE_2, process.env.REACT_APP_NODE_3]
 
-const getNodeUrl = () => {
-  const randomIndex = random(0, nodes.length - 1)
-  return nodes[randomIndex]
+const getNodeUrl = (chainId?: ChainId) => {
+  try {
+    const randomIndex = random(0, RPC_URLS[chainId].length - 1)
+    const nodeUrl = RPC_URLS[chainId][randomIndex]
+    return nodeUrl
+  } catch (error) {
+    return RPC_URLS[ChainId.MAINNET][0]
+  }
 }
 
 export default getNodeUrl

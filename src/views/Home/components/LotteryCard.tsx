@@ -70,6 +70,7 @@ const LotteryCard = () => {
     try {
       setRequestedClaim(true)
       const txHash = await onMultiClaim()
+
       // user rejected tx or didn't go thru
       if (txHash) {
         setRequestedClaim(false)
@@ -115,12 +116,12 @@ const LotteryCard = () => {
           <LotteryJackpot />
         </Block>
         {account ? (
-           <Actions className="custom">
+          <Actions className="custom">
             <Button
               id="dashboard-collect-winnings"
               disabled={getBalanceNumber(claimAmount) === 0 || requestClaim}
               onClick={handleClaim}
-              style={{ marginRight: '8px', color: '#2b2c3a'  }}
+              style={{ marginRight: '8px', color: '#2b2c3a' }}
             >
               {TranslateString(556, 'Collect Winnings')}
             </Button>

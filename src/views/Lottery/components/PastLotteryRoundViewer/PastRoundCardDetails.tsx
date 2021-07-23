@@ -23,6 +23,17 @@ const TopLotteryCardHeading = styled(LotteryCardHeading)`
   margin-bottom: ${(props) => props.theme.spacing[4]}px;
 `
 
+const BoxCard = styled.div`
+  padding: 10px;
+`
+
+const Dflex = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+`
+
 const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data }) => {
   const TranslateString = useI18n()
 
@@ -50,29 +61,31 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data }) => 
             </Heading>
             <TopLotteryCardHeading
               valueToDisplay={`${lotteryNumbers[0]}, ${lotteryNumbers[1]}, ${lotteryNumbers[2]}, ${lotteryNumbers[3]}`}
-              Icon={TicketRound}
+              // Icon={TicketRound}
             >
               {TranslateString(999, 'Winning numbers')}
             </TopLotteryCardHeading>
-            <LotteryCardHeading
-              valueToDisplay={TranslateString(999, `${poolSize.toLocaleString()} CAKE`)}
-              Icon={PancakeRoundIcon}
-            >
-              {TranslateString(999, 'Total prizes')}
-            </LotteryCardHeading>
+            <Dflex>
+              <img src="../images/icon-logo-y.png" alt="" />
+              <LotteryCardHeading valueToDisplay={TranslateString(999, `${poolSize.toLocaleString()}`)}>
+                {TranslateString(999, 'Total prizes')}
+              </LotteryCardHeading>
+            </Dflex>
           </CardHeading>
         </CardBody>
-        <CardFooter>
-          <PrizeGrid
-            lotteryPrizeAmount={poolSize}
-            jackpotMatches={jackpotTicket}
-            oneTicketMatches={match1Ticket}
-            twoTicketMatches={match2Ticket}
-            threeTicketMatches={match3Ticket}
-            pastDraw
-          />
-          <PastLotteryActions contractLink={contractLink} lotteryNumber={lotteryNumber} />
-        </CardFooter>
+        <BoxCard>
+          <CardFooter className="no-border">
+            <PrizeGrid
+              lotteryPrizeAmount={poolSize}
+              jackpotMatches={jackpotTicket}
+              oneTicketMatches={match1Ticket}
+              twoTicketMatches={match2Ticket}
+              threeTicketMatches={match3Ticket}
+              pastDraw
+            />
+            <PastLotteryActions contractLink={contractLink} lotteryNumber={lotteryNumber} />
+          </CardFooter>
+        </BoxCard>
       </>
     )
   )

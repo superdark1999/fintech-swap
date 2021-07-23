@@ -1,4 +1,4 @@
-import { Token } from '@beswap/sdk'
+import { Token } from '@luckyswap/v2-sdk'
 import { transparentize } from 'polished'
 import { Button, Text } from '@luckyswap/uikit'
 import React, { useCallback, useMemo, useState } from 'react'
@@ -12,6 +12,7 @@ import CurrencyLogo from '../CurrencyLogo'
 import Modal from '../Modal'
 import { AutoRow, RowBetween } from '../Row'
 import { AutoColumn } from '../Column'
+import { SCAN_SITES } from '../../../constants/index'
 
 const Wrapper = styled.div<{ error: boolean }>`
   background: ${({ theme }) => transparentize(0.6, theme.colors.tertiary)};
@@ -74,7 +75,9 @@ function TokenWarningCard({ token }: TokenWarningCardProps) {
           </Text>
           {chainId && (
             <ExternalLink style={{ fontWeight: 400 }} href={getBscScanLink(chainId, token.address, 'token')}>
-              <Text title={token.address}>{shortenAddress(token.address)} (View on BscScan)</Text>
+              <Text title={token.address}>
+                {shortenAddress(token.address)} (View on {SCAN_SITES[chainId]})
+              </Text>
             </ExternalLink>
           )}
         </AutoColumn>

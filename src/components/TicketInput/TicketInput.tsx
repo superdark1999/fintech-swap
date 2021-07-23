@@ -23,7 +23,7 @@ const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, 
           <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
           <StyledSpacer />
           <div>
-            <Button size="sm" onClick={onSelectMax}>
+            <Button size="sm" variant="secondary" onClick={onSelectMax}>
               {TranslateString(452, 'Max')}
             </Button>
           </div>

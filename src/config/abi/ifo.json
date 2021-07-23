@@ -5,8 +5,6 @@
       { "internalType": "contract IBEP20", "name": "_offeringToken", "type": "address" },
       { "internalType": "uint256", "name": "_startBlock", "type": "uint256" },
       { "internalType": "uint256", "name": "_endBlock", "type": "uint256" },
-      { "internalType": "uint256", "name": "_offeringAmount", "type": "uint256" },
-      { "internalType": "uint256", "name": "_raisingAmount", "type": "uint256" },
       { "internalType": "address", "name": "_adminAddress", "type": "address" }
     ],
     "stateMutability": "nonpayable",
@@ -32,6 +30,26 @@
     "type": "event"
   },
   {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint256", "name": "maxToken", "type": "uint256" }
+    ],
+    "name": "addUserToWhiteList",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address[]", "name": "users", "type": "address[]" },
+      { "internalType": "uint256[]", "name": "maxToken", "type": "uint256[]" }
+    ],
+    "name": "addUsersToWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "name": "addressList",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
@@ -53,6 +71,20 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }],
+    "name": "depositWithWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }],
+    "name": "depositWithoutWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "endBlock",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -67,6 +99,13 @@
     "name": "finalWithdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAddressListLength",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -107,6 +146,13 @@
   },
   {
     "inputs": [],
+    "name": "maxTokenForCommunityUser",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "offeringAmount",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
@@ -127,8 +173,29 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "_offerAmount", "type": "uint256" }],
+    "name": "setOfferingAmount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_raisingAmount", "type": "uint256" }],
+    "name": "setRaisingAmount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "startBlock",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "testBlockNumber",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
@@ -141,12 +208,29 @@
     "type": "function"
   },
   {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "uint256", "name": "maxToken", "type": "uint256" }
+    ],
+    "name": "updateUserInWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "name": "userInfo",
     "outputs": [
       { "internalType": "uint256", "name": "amount", "type": "uint256" },
       { "internalType": "bool", "name": "claimed", "type": "bool" }
     ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "whitelist",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   }

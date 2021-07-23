@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { Route, useRouteMatch, useLocation } from 'react-router-dom'
+import { Route, useRouteMatch, useLocation, Redirect } from 'react-router-dom'
 import { orderBy } from 'lodash'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
@@ -7,13 +7,14 @@ import { Image, Heading, RowType, Text } from '@luckyswap/uikit'
 import styled from 'styled-components'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import { useFarms, usePriceCakeBusd, useGetApiPrices } from '../../state/hooks'
+import { ChainId } from '@luckyswap/v2-sdk'
+import { useFarms, usePriceLuckyBusd, useGetApiPrices } from '../../state/hooks'
 import useRefresh from '../../hooks/useRefresh'
 import { fetchFarmUserDataAsync } from '../../state/actions'
 import { Farm } from '../../state/types'
 import useI18n from '../../hooks/useI18n'
 import { getBalanceNumber } from '../../utils/formatBalance'
-import { getFarmApy } from '../../utils/apy'
+import { getFarmApr } from '../../utils/apy'
 import { useAppDispatch } from '../../state'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
@@ -98,14 +99,23 @@ const StyledImage = styled(Image)`
 
 const Header = styled.div`
   padding: 32px 0px;
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
+  background: url('../images/bg-farm-mobile.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-left: 50px;
 
-  padding-left: 16px;
-  padding-right: 16px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding-left: 24px;
-    padding-right: 24px;
+  @media (min-width: 768px) {
+    background: url('../images/bg-farm.png');
+    background-repeat: no-repeat;
+    background-position: unset;
+    background-size: cover;
+    padding-left: 120px;
   }
 `
 
@@ -114,10 +124,10 @@ const Farms: React.FC = () => {
   const { pathname } = useLocation()
   const TranslateString = useI18n()
   const farmsLP = useFarms()
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceLuckyBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
   const [sortOption, setSortOption] = useState('hot')
   const prices = useGetApiPrices()
 
@@ -125,15 +135,16 @@ const Farms: React.FC = () => {
   const { fastRefresh } = useRefresh()
   useEffect(() => {
     if (account) {
-      dispatch(fetchFarmUserDataAsync(account)as any) 
+      dispatch(fetchFarmUserDataAsync(account) as any)
     }
   }, [account, dispatch, fastRefresh])
 
   const [stakedOnly, setStakedOnly] = useState(false)
+
   const isActive = !pathname.includes('history')
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const activeFarms = farmsLP.filter((farm) => farm.multiplier !== '0X')
+  const inactiveFarms = farmsLP.filter((farm) => farm.multiplier === '0X')
 
   const stakedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
@@ -169,9 +180,9 @@ const Farms: React.FC = () => {
           return farm
         }
 
-        const quoteTokenPriceUsd = prices[getAddress(farm.quoteToken.address).toLowerCase()]
+        const quoteTokenPriceUsd = 361 // TODO: This will handel API get price BUSD/BNB
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
-        const apy = isActive ? getFarmApy(farm.poolWeight, cakePrice, totalLiquidity) : 0
+        const apy = isActive ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity) : 0
 
         return { ...farm, apy, liquidity: totalLiquidity }
       })
@@ -186,6 +197,10 @@ const Farms: React.FC = () => {
     },
     [cakePrice, prices, query, isActive],
   )
+
+  if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
+    return <Redirect to="/" />
+  }
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
@@ -291,10 +306,10 @@ const Farms: React.FC = () => {
   return (
     <>
       <Header>
-        <Heading as="h1" size="xxl" color="#2b2c3a" mb="24px">
+        <Heading as="h1" size="xxl" color="#fff" mb="24px">
           {TranslateString(674, 'Farms')}
         </Heading>
-        <Heading size="lg" color="#2b2c3a">
+        <Heading size="lg" color="#fff">
           {TranslateString(999, 'Stake Liquidity Pool (LP) tokens to earn.')}
         </Heading>
       </Header>
@@ -310,7 +325,9 @@ const Farms: React.FC = () => {
           </ViewControls> */}
           <FilterContainer>
             <LabelWrapper>
-              <Text color="#fff">SORT BY</Text>
+              <Text color="#fff" fontWeight="600" fontSize="16px">
+                SORT BY
+              </Text>
               <Select
                 options={[
                   {
@@ -338,7 +355,9 @@ const Farms: React.FC = () => {
               />
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text color="#fff">SEARCH</Text>
+              <Text color="#fff" fontWeight="600" fontSize="16px">
+                SEARCH
+              </Text>
               <SearchInput onChange={handleChangeQuery} value={query} />
             </LabelWrapper>
           </FilterContainer>

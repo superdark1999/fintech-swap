@@ -3,6 +3,15 @@ const tokens = {
     symbol: 'BNB',
     projectLink: 'https://www.binance.com/',
   },
+  xlucky: {
+    symbol: 'XLUCKY',
+    address: {
+      56: '0xb45299B023a6F1E0Da134Aa4D886A548BE0B662f',
+      97: '0xb45299B023a6F1E0Da134Aa4D886A548BE0B662f',
+    },
+    decimals: 18,
+    projectLink: 'https://pancakeswap.finance/',
+  },
   bdextest: {
     symbol: 'BEDEX',
     address: {
@@ -628,7 +637,7 @@ const tokens = {
     symbol: 'BUSD',
     address: {
       56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-      97: '',
+      97: '0xcec0b363b3ac190c0e5cdfdb448521476f60b162',
     },
     decimals: 18,
     projectLink: 'https://www.paxos.com/busd/',

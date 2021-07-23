@@ -1,15 +1,111 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useMemo, useCallback} from 'react'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'
-import { Row, Col } from 'antd'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-// import { Row, Col } from 'antd'
+import { useWeb3React } from '@web3-react/core'
+import { useParams, Redirect } from 'react-router-dom'
+import { Pool} from 'config/constants/types';
+import useGetStateData from 'hooks/useGetStakeData';
+import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
+import { TransactionDetails } from 'state/transactions/reducer'
+import { useContract,  useStakingContract  } from 'hooks/useContract'
+import { useActiveWeb3React } from 'hooks'
+import SMART_CHEF_ABI from 'config/abi/smartChef.json'
+import { BASE_API_ADMIN} from 'config';
+import { useHookPools } from '../Store';
 
 
-function PoolCardsDetail(this: any) {
-  const [modal, setModal] = useState(false);
+import UnStakeModal from './UnStakeModal';
+import DepositModal from './DepositModal';
+import PoolCardDetails from './PoolCardDetails';
 
-  const toggle = () => setModal(!modal);
+
+
+
+function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
+  return b.addedTime - a.addedTime
+}
+
+interface HarvestProps {
+  stakingData: Pool
+}
+
+function FetchPoolData() {
+  const param: any = useParams()
+  const { chainId } = useActiveWeb3React()
+
+
+  const [state, actions] = useHookPools();
+  const [isLoading, setIsLoading] = useState(true);
+  const { poolDetail } = state;
+
+  useEffect(() => {
+    const fetchPool = () => {
+      actions.getPoolDetail(param.id).then(() => setIsLoading(false))
+    }
+
+    fetchPool();
+  }, [actions, param.id])
+
+  if (poolDetail && !isLoading)
+    {
+      if (chainId !== poolDetail.chainId)
+        return <Redirect to="/" />
+      return <PoolCardsDetail stakingData={poolDetail}/>
+    }
+  return <div>
+    {/* <img src="./images/loading.gif" alt=''/> */}
+  </div>
+}
+
+const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
+
+  const [depositModal, setDepositModal] = useState(false);
+  const [withdrawModal, setWithdrawModel] = useState(false);
+  const [isUnStaking, setIsUnStaking] = useState(false);
+  const [isDepositing, setIsDepositing] = useState(false);
+  const [isHarvesting, setIsHarvesting] = useState(false);
+  const { account } = useWeb3React()
+
+  const stakingContract = useStakingContract(stakingData?.stakingAddress);
+  const { userAmount, pendingReward} = useGetStateData(stakingData);
+
+
+  const addTransaction = useTransactionAdder()
+  const contract = useContract(stakingData?.stakingAddress,SMART_CHEF_ABI );
+  
+
+
+  useEffect(() => {
+    if (contract){
+      contract.on('Withdraw',  () => {
+        setIsUnStaking(false);
+
+      })
+      contract.on('Deposit',  () => {
+        if (isDepositing)
+          setIsDepositing(false);
+        else
+          setIsHarvesting(false);
+      })
+    }
+  }, [contract, isDepositing])
+
+  const depositToggle = () => setDepositModal(!depositModal);
+  const unStakeToggle = () => setWithdrawModel(!withdrawModal);
+
+  const allTransactions = useAllTransactions()
+
+  const sortedRecentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions)
+    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
+  }, [allTransactions])
+
+  const getStatus = useCallback(() =>{
+    const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+    return !!pending.length
+
+  }, [sortedRecentTransactions])
+
 
   return (
     <>
@@ -17,157 +113,62 @@ function PoolCardsDetail(this: any) {
         <BoxDetail>
           <BoxHead>
             <figure>
-              <img src="../images/icon-logo.png" alt=""/>
+              <img src={ BASE_API_ADMIN.concat('/') + stakingData.logo} alt=""/>
             </figure>
-            <h2>Lucky Swap</h2>
-            <span>Deposit LuckySwap Tokens and earn LUCKY</span>
+            <h2>{stakingData.name}</h2>
+            <span>
+              Deposit <span className="token">{stakingData.depositTokenSymbol}</span> Tokens 
+              and earn <span className="token">{stakingData.rewardTokenSymbol}</span> Tokens
+            </span>
           </BoxHead>
 
-          <Row gutter={[24, 16]}>
-            <Col span={24} sm={12} md={12}>
-              <div className="box__item">
-                <figure>
-                  <img src="../images/icon-love.png" alt=""/>
-                </figure>
+          <PoolCardDetails 
+            userRewardDebt={pendingReward} 
+            userAmount={userAmount} 
+            onUnStakeToggle={unStakeToggle}
+            onDepositToggle={depositToggle}
+            stakingContract={stakingContract}
+            addTransaction={addTransaction}
+            account={account}
+            stakingData={stakingData}
+            getStatus={getStatus}
+            isDepositing={isDepositing}
+            isUnStaking={isUnStaking}
+            isHarvesting={isHarvesting}
+            setIsHarvesting={setIsHarvesting}
+          />
 
-                <div className="content">
-                  <h3 className="content__title">0.000</h3>
-                  <span className="content__des">LUCKY earned</span>
-                </div>
-
-                <div className="box__footer">
-                  <Button color="danger" onClick={toggle}>Harvest</Button>
-                </div>
-              </div>
-            </Col>
-
-            <Col span={24} sm={12} md={12}>
-              <div className="box__item">
-                <figure className="background">
-                  <img src="../images/icon-logo.png" alt=""/>
-                </figure>
-
-                <div className="content">
-                  <h3 className="content__title">0.000</h3>
-                  <span className="content__des">LuckySwap</span>
-                </div>
-
-                <div className="box__footer">
-                  <Button color="danger" onClick={toggle}>Harvest</Button>
-                </div>
-              </div>
-            </Col>
-          </Row>
-
-          <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>Every time you stake and unstake EL tokens, the contract will automatically harvest HCATS rewards for you!</p>
+          <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>
+          Every time you stake and unStake {stakingData.depositTokenSymbol} tokens,
+           the contract will automatically harvest {stakingData.rewardTokenSymbol} rewards for you!
+          </p>
         </BoxDetail>
       </Page>
 
-      <div>
-      <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle}></ModalHeader>
+      <DepositModal 
+        depositModal={depositModal}
+        depositToggle={depositToggle}
+        depositSymbol={stakingData.depositTokenSymbol}
+        stakingContract={stakingContract}
+        addTransaction={addTransaction}
+        account={account}
+        stakingData={stakingData}
+        setIsDepositing={setIsDepositing}
+      />
 
-        <ModalBody>
-          <Title>Deposit LuckySwap Tokens</Title>
-          <Available>0 Lucky Available</Available>
-
-          <BoxInput>
-            <input type="text" id="fname" name="fname" placeholder="0.000"/>
-            <BoxLink>
-              <span className="text-lucky">lucky</span>
-              <BoxButton>
-                <Button>Max</Button>
-              </BoxButton>
-            </BoxLink>
-          </BoxInput>
-        </ModalBody>
-
-        <ModalFooter>
-          <Button color="primary" onClick={toggle}>Cancel</Button>
-          <Button color="secondary" onClick={toggle} disabled>Confirm</Button>
-        </ModalFooter>
-      </Modal>
-    </div>
+      <UnStakeModal 
+        withdrawModal={withdrawModal} 
+        unStakeToggle={unStakeToggle}
+        stakingContract={stakingContract}
+        addTransaction={addTransaction}
+        userAmount={userAmount}
+        setIsUnStaking={setIsUnStaking}
+        rewardTokenSymbol={stakingData.rewardTokenSymbol}
+      />
     </>
   )
 }
 
-
-const Title = styled.h5`
-  color: #01A8E1;
-  font-size: 24px;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 25px;
-`
-
-const BoxInput = styled.div`
-  display: flex;
-  align-items: center;
-  background: #22232E;
-  border-radius: 10px;
-  height: 72px;
-  padding: 0px 16px;
-  margin: 16px 0px 48px;
-
-  input {
-    flex: 1 1 0%;
-    width: 0px;
-    background: none;
-    border: 0px;
-    color: rgb(114, 47, 13);
-    font-size: 18px;
-    height: 56px;
-    margin: 0px;
-    padding: 0px;
-    outline: none;
-  }
-`
-
-const BoxLink = styled.div`
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  color: #fff;
-  font-weight: 600;
-  font-size: 14px;
-  text-transform: uppercase;
-`
-
-const BoxButton = styled.div`
-  margin-left: 12px;
-
-  button {
-    width: 100%;
-    font-weight: 500;
-    text-align: center;
-    border-radius: 10px;
-    outline: none;
-    border: 1px solid transparent;
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-    flex-wrap: nowrap;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-    z-index: 1;
-    background-color: #01A8E1;
-    color: rgb(255, 253, 250);
-    font-family: "Baloo Da";
-    padding: 0px 10px;
-    height: 40px;
-  }
-`
-
-const Available = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-`
 
 const BoxHead = styled.div`
   display: flex;
@@ -194,7 +195,7 @@ const BoxHead = styled.div`
   }
 
   h2 {
-    color: #01A8E1;
+    color: #f5c606;
     font-size: 36px;
     font-weight: 600;
     margin-bottom: 10px;
@@ -204,14 +205,20 @@ const BoxHead = styled.div`
     color: #fff;
     font-size: 18px;
     line-height: 18px;
+    
+    .token{
+      font-size: 22px;
+      color: #f5c606;
+    }
   }
 `
 
 const BoxDetail = styled.div`
   .box {
     &__item {
-      background-color: #333442;
-      border-radius: 6px;
+      background: rgb(41 41 41);
+      box-shadow: 0px 0px 11px 0px rgb(29 26 26 / 57%);
+      border-radius: 10px;
       padding: 46px 18px 18px;
       display: flex;
       flex-direction: column;
@@ -257,15 +264,24 @@ const BoxDetail = styled.div`
       text-align: center;
 
       button {
-        background: #01A8E1;
+        background: #f5c606;
+        margin-right: 20px;
         border-radius: 4px;
         font-weight: 600;
         width: 100%;
         max-width: 200px;
         min-height: 40px;
+        border-color: transparent;
+        color: #2b2e2f;
+
 
         &:hover {
           opacity: 0.7;
+        }
+
+        &:focus {
+          border-color: transparent;
+          box-shadow: none;
         }
       }
     }
@@ -284,4 +300,4 @@ const BoxDetail = styled.div`
 
 
 
-export default PoolCardsDetail
+export default FetchPoolData

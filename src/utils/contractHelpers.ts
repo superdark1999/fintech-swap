@@ -1,6 +1,9 @@
 import Web3 from 'web3'
+import { simpleRpcProvider } from 'utils/providers'
 import { AbiItem } from 'web3-utils'
-import web3NoAccount from 'utils/web3'
+import { ethers } from 'ethers'
+
+// import web3NoAccount from 'utils/web3'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 
@@ -12,6 +15,7 @@ import {
   getBunnyFactoryAddress,
   getBunnySpecialAddress,
   getCakeAddress,
+  getLotteryV2Address,
   getLotteryAddress,
   getLotteryTicketAddress,
   getMasterChefAddress,
@@ -33,16 +37,24 @@ import ifoAbi from 'config/abi/ifo.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import lotteryAbi from 'config/abi/lottery.json'
 import lotteryTicketAbi from 'config/abi/lotteryNft.json'
+import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
 import claimRefundAbi from 'config/abi/claimRefund.json'
 import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
 import easterNftAbi from 'config/abi/easterNft.json'
+import { ChainId } from '@luckyswap/v2-sdk'
+import { getWeb3NoAccount } from './web3'
 
 const getContract = (abi: any, address: string, web3?: Web3) => {
-  const _web3 = web3 ?? web3NoAccount
-  return new _web3.eth.Contract((abi as unknown) as AbiItem, address)
+  const _web3 = web3 ?? getWeb3NoAccount()
+  return new _web3.eth.Contract(abi as unknown as AbiItem, address)
+}
+
+const getContract2 = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+  const signerOrProvider = signer ?? simpleRpcProvider
+  return new ethers.Contract(address, abi, signerOrProvider)
 }
 
 export const getBep20Contract = (address: string, web3?: Web3) => {
@@ -59,39 +71,43 @@ export const getSouschefContract = (id: number, web3?: Web3) => {
   const abi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
   return getContract(abi, getAddress(config.contractAddress), web3)
 }
-export const getPointCenterIfoContract = (web3?: Web3) => {
-  return getContract(pointCenterIfo, getPointCenterIfoAddress(), web3)
+export const getPointCenterIfoContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(pointCenterIfo, getPointCenterIfoAddress(chainId), web3)
 }
-export const getCakeContract = (web3?: Web3) => {
-  return getContract(cakeAbi, getCakeAddress(), web3)
+export const getCakeContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(cakeAbi, getCakeAddress(chainId), web3)
 }
-export const getProfileContract = (web3?: Web3) => {
-  return getContract(profileABI, getPancakeProfileAddress(), web3)
+export const getProfileContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(profileABI, getPancakeProfileAddress(chainId), web3)
 }
-export const getPancakeRabbitContract = (web3?: Web3) => {
-  return getContract(pancakeRabbitsAbi, getPancakeRabbitsAddress(), web3)
+export const getPancakeRabbitContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(pancakeRabbitsAbi, getPancakeRabbitsAddress(chainId), web3)
 }
-export const getBunnyFactoryContract = (web3?: Web3) => {
-  return getContract(bunnyFactoryAbi, getBunnyFactoryAddress(), web3)
+export const getBunnyFactoryContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(bunnyFactoryAbi, getBunnyFactoryAddress(chainId), web3)
 }
-export const getBunnySpecialContract = (web3?: Web3) => {
-  return getContract(bunnySpecialAbi, getBunnySpecialAddress(), web3)
+export const getBunnySpecialContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(bunnySpecialAbi, getBunnySpecialAddress(chainId), web3)
 }
-export const getLotteryContract = (web3?: Web3) => {
-  return getContract(lotteryAbi, getLotteryAddress(), web3)
+
+export const getLotteryV2Contract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract2(lotteryV2Abi, getLotteryV2Address(), signer)
 }
-export const getLotteryTicketContract = (web3?: Web3) => {
-  return getContract(lotteryTicketAbi, getLotteryTicketAddress(), web3)
+export const getLotteryContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(lotteryAbi, getLotteryAddress(chainId), web3)
 }
-export const getMasterchefContract = (web3?: Web3) => {
-  return getContract(masterChef, getMasterChefAddress(), web3)
+export const getLotteryTicketContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(lotteryTicketAbi, getLotteryTicketAddress(chainId), web3)
 }
-export const getClaimRefundContract = (web3?: Web3) => {
-  return getContract(claimRefundAbi, getClaimRefundAddress(), web3)
+export const getMasterchefContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(masterChef, getMasterChefAddress(chainId), web3)
 }
-export const getTradingCompetitionContract = (web3?: Web3) => {
-  return getContract(tradingCompetitionAbi, getTradingCompetitionAddress(), web3)
+export const getClaimRefundContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(claimRefundAbi, getClaimRefundAddress(chainId), web3)
 }
-export const getEasterNftContract = (web3?: Web3) => {
-  return getContract(easterNftAbi, getEasterNftAddress(), web3)
+export const getTradingCompetitionContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(tradingCompetitionAbi, getTradingCompetitionAddress(chainId), web3)
+}
+export const getEasterNftContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(easterNftAbi, getEasterNftAddress(chainId), web3)
 }

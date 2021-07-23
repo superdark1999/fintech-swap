@@ -1,42 +1,42 @@
-import React, { useState, useEffect, lazy } from 'react'
-import { HashRouter, Redirect, BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Credentials, StringTranslations } from '@crowdin/crowdin-api-client'
 import { ResetCSS } from '@luckyswap/uikit'
+import 'antd/dist/antd.css'
 import BigNumber from 'bignumber.js'
-import useEagerConnect from 'hooks/useEagerConnect'
+import { useActiveWeb3React } from 'hooks'
+import useWeb3ReactManager from 'hooks/useWeb3ReactManager'
+import React, { lazy, useEffect, useState } from 'react'
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { useFetchPriceList, useFetchProfile, useFetchPublicData } from 'state/hooks'
-import GlobalStyle from './style/Global'
+import EasterEgg from './components/EasterEgg'
 import Menu from './components/Menu'
+import PageLoader from './components/PageLoader'
+import Popups from './components/Popups'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
 import ToastListener from './components/ToastListener'
-import PageLoader from './components/PageLoader'
-import EasterEgg from './components/EasterEgg'
-import Pools from './views/Pools'
-import GlobalCheckClaimStatus from './views/Collectibles/components/GlobalCheckClaimStatus'
-import history from './routerHistory'
-import Swap from './views/Swap'
-import { RedirectPathToSwapOnly } from './views/Swap/redirects'
-import AddLiquidity from './views/AddLiquidity'
-import Pool from './views/Pool'
-import RemoveLiquidity from './views/RemoveLiquidity'
-import { RedirectOldRemoveLiquidityPathStructure } from './views/RemoveLiquidity/redirects'
-import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './views/AddLiquidity/redirects'
-import './index.css'
-import 'antd/dist/antd.css'
-import Poolls from './views/Pools/components/PoolCardsDetail'
-// import IfoDetail from './views/Ifos/IfoDetail'
-
+import { allLanguages, EN } from './constants/localisation/languageCodes'
 import { LanguageContext } from './hooks/LanguageContext'
 import { TranslationsContext } from './hooks/TranslationsContext'
-import { EN, allLanguages } from './constants/localisation/languageCodes'
-import Popups from './components/Popups'
+import './index.css'
+import GlobalStyle from './style/Global'
+import AddLiquidity from './views/AddLiquidity'
+import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './views/AddLiquidity/redirects'
+import GlobalCheckClaimStatus from './views/Collectibles/components/GlobalCheckClaimStatus'
+import IfoDetail from './views/Launchpad/components/IfoCard/IfoDetail'
+import Pool from './views/Pool'
+import Pools from './views/Pools'
+import PoolDetail from './views/Pools/components/PoolCardsDetail'
+import RemoveLiquidity from './views/RemoveLiquidity'
+import { RedirectOldRemoveLiquidityPathStructure } from './views/RemoveLiquidity/redirects'
+import Swap from './views/Swap'
+import { RedirectPathToSwapOnly } from './views/Swap/redirects'
 
-// Route-based code splitting
+// Route-based code splitting2
 // Only pool is included in the main bundle because of it's the most visited page .
 const Home = lazy(() => import('./views/Home'))
 const Farms = lazy(() => import('./views/Farms'))
 const Lottery = lazy(() => import('./views/Lottery'))
-const Ifos = lazy(() => import('./views/Ifos'))
+const LotteryV2 = lazy(() => import('./views/Lottery-v2'))
+const Ifos = lazy(() => import('./views/Launchpad'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const Collectibles = lazy(() => import('./views/Collectibles'))
 const Teams = lazy(() => import('./views/Teams'))
@@ -52,16 +52,18 @@ BigNumber.config({
 
 const App: React.FC = () => {
   // Monkey patch warn() because of web3 flood
-  // To be removed when web3 1.3.5 is released
+  // To be removed when web3 1.3.5 is released 12
   useEffect(() => {
     console.warn = () => null
   }, [])
 
-  useEagerConnect()
-  // useFetchPublicData()
+  // useEagerConnect()
+  useWeb3ReactManager()
+  useFetchPublicData()
   useFetchProfile()
   useFetchPriceList()
 
+  const { chainId } = useActiveWeb3React()
   const [selectedLanguage, setSelectedLanguage] = useState<any>(undefined)
   const [translatedLanguage, setTranslatedLanguage] = useState<any>(undefined)
   const [translations, setTranslations] = useState<Array<any>>([])
@@ -80,6 +82,12 @@ const App: React.FC = () => {
       return language.code === storedLangCode
     })[0]
   }
+
+  useEffect(() => {
+    if (chainId) {
+      window.localStorage.setItem('chainId', chainId.toString())
+    }
+  }, [chainId])
 
   useEffect(() => {
     // const storedLangCode = localStorage.getItem('pancakeSwapLanguage')
@@ -149,7 +157,10 @@ const App: React.FC = () => {
                 <Route path="/lottery">
                   <Lottery />
                 </Route>
-                <Route path="/ifo">
+                <Route path="/lottery-dev">
+                  <LotteryV2 />
+                </Route>
+                <Route path="/launchpads">
                   <Ifos />
                 </Route>
                 <Route path="/collectibles">
@@ -177,12 +188,12 @@ const App: React.FC = () => {
                 <Route path="/nft">
                   <Redirect to="/collectibles" />
                 </Route>
-                <Route path="/PoolCardsDetail">
-                  <Poolls />
+                <Route path="/PoolCardsDetail/:id">
+                  <PoolDetail />
                 </Route>
-                {/* <Route path="/IfoDetail">
+                <Route path="/IfoDetail/:id">
                   <IfoDetail />
-                </Route> */}
+                </Route>
 
                 {/* 404 */}
                 <Route component={NotFound} />

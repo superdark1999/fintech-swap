@@ -20,7 +20,7 @@ import tokens from 'config/constants/tokens'
 import { Pool } from 'state/types'
 import { useGetApiPrice } from 'state/hooks'
 import { useApproveCallbackCustom, ApprovalState } from 'hooks/useApproveCallback'
-import DepositModal from './DepositModal'
+import DepositModal from './DepositModal_bk'
 import WithdrawModal from './WithdrawModal'
 import CompoundModal from './CompoundModal'
 import CardTitle from './CardTitle'
@@ -118,8 +118,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [approval, setRequestedApproval])
 
-
-  const stakingContract = useStakingContract(pool.contractAddress[97]);
+  const stakingContract = useStakingContract(pool.contractAddress[97])
 
   async function _onStake(amount, decimals) {
     if (stakingContract) {
@@ -153,9 +152,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
 
   async function _onReward() {
     if (stakingContract) {
-      const args = [
-        new BigNumber(0).times(new BigNumber(10).pow(18)).toString(),
-      ]
+      const args = [new BigNumber(0).times(new BigNumber(10).pow(18)).toString()]
       // const gasAm = await stakingContract.estimateGas['deposit'](...args)
       await stakingContract
         .deposit(...args, { gasLimit: 200000 })
@@ -222,10 +219,10 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
                   onClick={
                     isOldSyrup
                       ? async () => {
-                        setPendingTx(true)
-                        await onUnstake('0', stakingToken.decimals)
-                        setPendingTx(false)
-                      }
+                          setPendingTx(true)
+                          await onUnstake('0', stakingToken.decimals)
+                          setPendingTx(false)
+                        }
                       : onPresentWithdraw
                   }
                 >

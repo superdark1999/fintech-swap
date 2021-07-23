@@ -1,12 +1,9 @@
-import { Currency, CurrencyAmount, Pair, Token, Trade } from '@beswap/sdk'
+import { Currency, CurrencyAmount, Pair, Token, Trade } from '@luckyswap/v2-sdk'
+import { useActiveWeb3React } from 'hooks'
 import flatMap from 'lodash.flatmap'
 import { useMemo } from 'react'
-import { useActiveWeb3React } from 'hooks'
-
 import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../constants'
 import { PairState, usePairs } from '../data/Reserves'
-import { wrappedCurrency } from '../utils/wrappedCurrency'
-
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const { chainId } = useActiveWeb3React()
@@ -18,14 +15,12 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const basePairs: [Token, Token][] = useMemo(
     () =>
       flatMap(bases, (base): [Token, Token][] => bases.map((otherBase) => [base, otherBase])).filter(
-        ([t0, t1]) => t0.address !== t1.address
+        ([t0, t1]) => t0.address !== t1.address,
       ),
-    [bases]
+    [bases],
   )
 
-  const [tokenA, tokenB] = chainId
-    ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
-    : [undefined, undefined]
+  const [tokenA, tokenB] = chainId ? [currencyA?.wrapped, currencyB?.wrapped] : [undefined, undefined]
 
   const allPairCombinations: [Token, Token][] = useMemo(
     () =>
@@ -59,7 +54,7 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
               return true
             })
         : [],
-    [tokenA, tokenB, bases, basePairs, chainId]
+    [tokenA, tokenB, bases, basePairs, chainId],
   )
 
   const allPairs = usePairs(allPairCombinations)
@@ -75,9 +70,9 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
           .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
             memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr
             return memo
-          }, {})
+          }, {}),
       ),
-    [allPairs]
+    [allPairs],
   )
 }
 

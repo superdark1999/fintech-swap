@@ -1,5 +1,5 @@
 import { nanoid } from '@reduxjs/toolkit'
-import { ChainId } from '@beswap/sdk'
+import { ChainId } from '@luckyswap/v2-sdk'
 import { TokenList } from '@uniswap/token-lists'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
@@ -27,7 +27,7 @@ export function useFetchListCallback(): (listUrl: string) => Promise<TokenList> 
       }
       return resolveENSContentHash(ensName, library)
     },
-    [chainId, library]
+    [chainId, library],
   )
 
   return useCallback(
@@ -45,7 +45,7 @@ export function useFetchListCallback(): (listUrl: string) => Promise<TokenList> 
           throw error
         })
     },
-    [dispatch, ensResolver]
+    [dispatch, ensResolver],
   )
 }
 

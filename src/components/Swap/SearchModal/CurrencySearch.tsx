@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from '@beswap/sdk'
+import { Currency, NATIVE, Token } from '@luckyswap/v2-sdk'
 import React, { KeyboardEvent, RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Text, CloseIcon } from '@luckyswap/uikit'
 import { useSelector } from 'react-redux'
@@ -60,17 +60,22 @@ export function CurrencySearch({
 
   const showETH: boolean = useMemo(() => {
     const s = searchQuery.toLowerCase().trim()
-    return s === '' || s === 'e' || s === 'et' || s === 'eth'
-  }, [searchQuery])
+    const lowerCaseSymbol = NATIVE[chainId]?.symbol?.toLowerCase()
+    return lowerCaseSymbol.startsWith(s)
+  }, [searchQuery, chainId])
 
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
   const audioPlay = useSelector<AppState, AppState['user']['audioPlay']>((state) => state.user.audioPlay)
 
+  // const ether = useMemo(() => chainId && NATIVE[chainId], [chainId])
+
   const filteredTokens: Token[] = useMemo(() => {
     if (isAddressSearch) return searchToken ? [searchToken] : []
     return filterTokens(Object.values(allTokens), searchQuery)
   }, [isAddressSearch, searchToken, allTokens, searchQuery])
+
+  // console.log('filtered tokens : ', filteredTokens)
 
   const filteredSortedTokens: Token[] = useMemo(() => {
     if (searchToken) return [searchToken]
@@ -100,7 +105,7 @@ export function CurrencySearch({
         }
       }
     },
-    [onDismiss, onCurrencySelect, audioPlay]
+    [onDismiss, onCurrencySelect, audioPlay],
   )
 
   // clear the input on open
@@ -121,8 +126,8 @@ export function CurrencySearch({
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         const s = searchQuery.toLowerCase().trim()
-        if (s === 'eth') {
-          handleCurrencySelect(ETHER)
+        if (s === NATIVE[chainId]?.symbol) {
+          handleCurrencySelect(NATIVE[chainId])
         } else if (filteredSortedTokens.length > 0) {
           if (
             filteredSortedTokens[0].symbol?.toLowerCase() === searchQuery.trim().toLowerCase() ||
@@ -133,7 +138,7 @@ export function CurrencySearch({
         }
       }
     },
-    [filteredSortedTokens, handleCurrencySelect, searchQuery]
+    [filteredSortedTokens, handleCurrencySelect, searchQuery, chainId],
   )
 
   const selectedListInfo = useSelectedListInfo()
@@ -147,7 +152,7 @@ export function CurrencySearch({
             <QuestionHelper
               text={TranslateString(
                 130,
-                'Find a token by searching for its name or symbol or by pasting its address below.'
+                'Find a token by searching for its name or symbol or by pasting its address below.',
               )}
             />
           </Text>
@@ -166,7 +171,7 @@ export function CurrencySearch({
           <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
         )}
         <RowBetween>
-          <Text fontSize="14px">
+          <Text fontSize="16px" fontWeight="600">
             <TranslatedText translationId={126}>Token name</TranslatedText>
           </Text>
           <SortButton ascending={invertSearchOrder} toggleSortOrder={() => setInvertSearchOrder((iso) => !iso)} />
@@ -185,6 +190,7 @@ export function CurrencySearch({
               otherCurrency={otherSelectedCurrency}
               selectedCurrency={selectedCurrency}
               fixedListRef={fixedList}
+              chainId={chainId}
             />
           )}
         </AutoSizer>
@@ -204,7 +210,9 @@ export function CurrencySearch({
                       alt={`${selectedListInfo.current.name} list logo`}
                     />
                   ) : null}
-                  <Text id="currency-search-selected-list-name" color="red">{selectedListInfo.current.name}</Text>
+                  <Text id="currency-search-selected-list-name" color="red">
+                    {selectedListInfo.current.name}
+                  </Text>
                 </Row>
               ) : null}
               <LinkStyledButton

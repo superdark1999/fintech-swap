@@ -10,7 +10,7 @@ const UnlockButton = (props) => {
 
   return (
     <div className="custom-btn">
-      <Button onClick={onPresentConnectModal} {...props}>
+      <Button variant="secondary" onClick={onPresentConnectModal} {...props}>
         {TranslateString(292, 'Unlock Wallet')}
       </Button>
     </div>

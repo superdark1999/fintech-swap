@@ -8,10 +8,15 @@ export const BodyWrapper = styled(Card)`
   width: 100%;
   z-index: 5;
   margin: 0 auto;
-  background-color: #333442;
-  border-radius: 6px;
-  padding: 45px;
+  background: linear-gradient(45deg, rgb(35 35 35) 30%, rgb(45 45 45) 100%);
+  box-shadow: 0px 0px 11px 0px rgb(16 16 16 / 57%);
+  border-radius: 40px;
+  padding: 30px;
   margin-top: 20px;
+
+  @media (min-width: 768px) {
+    padding: 45px;
+  }
 `
 
 /**

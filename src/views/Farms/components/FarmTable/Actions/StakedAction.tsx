@@ -72,7 +72,6 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [approval, setRequestedApproval])
 
-  
   const masterchefContract: any = useFarmsContract()
 
   async function _onStake(amount) {
@@ -131,10 +130,10 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
               <Earned>{displayBalance}</Earned>
             </div>
             <IconButtonWrapper>
-              <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">
+              <IconButton variant="success" onClick={onPresentWithdraw} mr="6px">
                 <MinusIcon color="primary" width="14px" />
               </IconButton>
-              <IconButton variant="secondary" onClick={onPresentDeposit}>
+              <IconButton variant="success" onClick={onPresentDeposit}>
                 <AddIcon color="primary" width="14px" />
               </IconButton>
             </IconButtonWrapper>

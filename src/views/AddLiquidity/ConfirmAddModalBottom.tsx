@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Fraction, Percent } from '@beswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Percent } from '@luckyswap/v2-sdk'
 import React from 'react'
 import { Button, Text } from '@luckyswap/uikit'
 import { RowBetween, RowFixed } from '../../components/Swap/Row'

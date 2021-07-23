@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useLottery } from 'hooks/useContract'
 import { getLotteryStatus } from 'utils/lotteryUtils'
+import { useContract } from 'hooks/useContract'
+import { getLotteryAddress } from 'utils/addressHelpers'
+import lotteryAbi from 'config/abi/lottery.json'
 
 /**
  * Returns whether or not the current lottery has drawn numbers
@@ -9,7 +11,7 @@ import { getLotteryStatus } from 'utils/lotteryUtils'
  */
 const useGetLotteryHasDrawn = () => {
   const [lotteryHasDrawn, setLotteryHasDrawn] = useState(true)
-  const lotteryContract = useLottery()
+  const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
 
   useEffect(() => {
     if (lotteryContract) {

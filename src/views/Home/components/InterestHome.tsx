@@ -12,6 +12,10 @@ const InterestHomeContainer = styled.div`
     line-height: 24px;
     color: white;
     margin-bottom: 15px;
+
+    @media (max-width: 991px) {
+      font-size: 18px;
+    }
   }
 `
 const coinsInfo = [
@@ -99,12 +103,17 @@ const InterestItemStyled = styled.div`
   display: flex;
   justify-content: space-between;
 
-  background-color: #232627;
+  background-color: #444444;
   padding: 20px 35px;
   color: #acafc0;
   font-size: 14px;
   line-height: 20px;
-  border-radius: 6px;
+  border-radius: 20px;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
+  @media (max-width: 991px) {
+    flex-direction: column;
+    justify-content: center;
+  }
 
   .left {
     display: flex;
@@ -116,7 +125,7 @@ const InterestItemStyled = styled.div`
   }
 
   .label {
-    color: white;
+    color: #fff;
     align-items: center;
     font-weight: 700;
   }

@@ -1,4 +1,4 @@
-import { Percent } from '@beswap/sdk'
+import { Percent } from '@luckyswap/v2-sdk'
 import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from '../../../constants'
 
 /**
@@ -11,15 +11,16 @@ export default function confirmPriceImpactWithoutFee(priceImpactWithoutFee: Perc
     return (
       window.prompt(
         `This swap has a price impact of at least ${PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN.toFixed(
-          0
-        )}%. Please type the word "confirm" to continue with this swap.`
+          0,
+        )}%. Please type the word "confirm" to continue with this swap.`,
       ) === 'confirm'
     )
-  } if (!priceImpactWithoutFee.lessThan(ALLOWED_PRICE_IMPACT_HIGH)) {
+  }
+  if (!priceImpactWithoutFee.lessThan(ALLOWED_PRICE_IMPACT_HIGH)) {
     return window.confirm(
       `This swap has a price impact of at least ${ALLOWED_PRICE_IMPACT_HIGH.toFixed(
-        0
-      )}%. Please confirm that you would like to continue with this swap.`
+        0,
+      )}%. Please confirm that you would like to continue with this swap.`,
     )
   }
   return true

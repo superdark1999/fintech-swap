@@ -1,6 +1,6 @@
 export const EN = { code: 'en', language: 'English' }
 export const AR = { code: 'ar', language: 'العربية' }
-export const BN = { code: 'bn', language: 'বাংলা'}
+export const BN = { code: 'bn', language: 'বাংলা' }
 export const ZHCN = { code: 'zh-CN', language: '简体中文' }
 export const ZHTW = { code: 'zh-TW', language: '繁體中文' }
 export const NL = { code: 'nl', language: 'Nederlands' }
@@ -27,33 +27,4 @@ export const TR = { code: 'tr', language: 'Türkçe' }
 export const UK = { code: 'uk', language: 'Українська' }
 export const VI = { code: 'vi', language: 'Tiếng Việt' }
 
-export const allLanguages = [
-  EN,
-  AR,
-  BN,
-  ZHCN,
-  ZHTW,
-  NL,
-  FIL,
-  FI,
-  FR,
-  DE,
-  EL,
-  HI,
-  HU,
-  ID,
-  IT,
-  JA,
-  KO,
-  PL,
-  PTPT,
-  PTBR,
-  RO,
-  RU,
-  ESES,
-  SVSE,
-  TA,
-  TR,
-  UK,
-  VI
-]
+export const allLanguages = [EN]

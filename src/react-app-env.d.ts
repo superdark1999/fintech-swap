@@ -5,7 +5,7 @@ interface WindowChain {
     isMetaMask?: true
     request?: (...args: any[]) => void
   }
-    web3?: any
+  web3?: any
   BinanceChain?: BinanceChain
 }
 interface Window {
