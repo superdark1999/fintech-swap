@@ -9,17 +9,16 @@ const data = [
     imgMini1: '../images/astronaut-thumb.png',
     imgMini2: '../images/bg-island-left.png',
     imgMain: '../images/bg-island-main.png',
-    imgMain1: '../images/astronaut.png',
-    imgMain2: '../images/astronaut-atm.png',
+    imgMain1: '../images/earn/thumb-lottery.png',
     route:'/lottery'
   },
   {
     id: 2,
     title: 'Staking NFT',
-    imgMini1: '../images/cardNFT.png',
+    imgMini1: '../images/earn/astronaut-staking.png',
     imgMini2: '../images/bg-island-center.png',
-    imgMain1: '',
-    imgMain2: '',
+    imgMain: '../images/earn/bg-island-main-2.png',
+    imgMain1: '../images/earn/thumb-staking.png',
     route:'/staking'
   },
   {
@@ -73,6 +72,10 @@ const PlayToEarn = () => {
       max-width: 450px;
     }
 
+    .bg-main {
+      width: 100%;
+    }
+
     .full {
       position: absolute;
       top: 0;
@@ -89,19 +92,16 @@ const PlayToEarn = () => {
 
     .astronaut {
       position: absolute;
-      top: -7px;
-      left: 34%;
+      top: -22%;
+      left: 26%;
       width: 100%;
-      max-width: 120px;
+      max-width: 200px; 
       z-index: 1;
-    }
 
-    .astronaut-atm {
-      position: absolute;
-      top: -57px;
-      right: 92px;
-      width: 100%;
-      max-width: 100px;
+      @media (min-width: 768px) {
+        max-width: 240px; 
+        top: -24%;
+      }
     }
   `
 
@@ -192,16 +192,22 @@ const PlayToEarn = () => {
     }
 
     &.center {
-      top: -63%;
+      top: -10px;
       left: 30%;
 
       @media (min-width: 768px) {
-        top: -18px;
-        left: 42%;
+        top: 18px;
+        left: 38%;
       }
 
       img {
-        max-width: 50px;
+        position: relative;
+        z-index: 2;
+        max-width: 60px;
+
+        @media (min-width: 768px) {
+          max-width: 100px;
+        }
       }
     }
 
@@ -1394,9 +1400,8 @@ const PlayToEarn = () => {
         <MainIsland>
           <BoxAstronaut>
             <img className="astronaut" src={island.imgMain1} alt="" />
-            <img className="astronaut-atm" src={island.imgMain2} alt="" />
           </BoxAstronaut>
-          <img src={island.imgMain} alt="" />
+          <img src={island.imgMain} alt="" className="bg-main"/>
 
           <TitleGame>{island.title}</TitleGame>
           <Link to={island.route} className="full"></Link>
@@ -1424,7 +1429,7 @@ const PlayToEarn = () => {
             className={gameId === 2 ? 'active-island' : ''}
           >
             <BoxThumb className="center">
-              <img src={data[1].imgMini1} alt="" className="element" />
+              <img src={data[1].imgMini1} alt=""/>
             </BoxThumb>
             <img src={data[1].imgMini2} alt="" className="vert-move" />
           </Item>
