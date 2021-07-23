@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Won, useModal } from '@luckyswap/uikit'
+import { Button, Heading, Won, useModal, AutoRenewIcon } from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useMultiClaimLottery } from 'hooks/useBuyLottery'
@@ -42,6 +42,9 @@ const StyledButton = styled(Button)`
   margin-top: ${(props) => props.theme.spacing[1]}px;
 `
 
+const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
+
+
 const PrizesWonContent: React.FC = () => {
   const [requestedClaim, setRequestedClaim] = useState(false)
   const [isClaimLoading, setIsClaimLoading] = useState(false);
@@ -61,6 +64,7 @@ const PrizesWonContent: React.FC = () => {
       const txHash = await onMultiClaim();
       if (!txHash) 
         setIsClaimLoading(false);
+        setRequestedClaim(false)
       addTransaction(txHash, {
         summary: 'Claim successfully!',
       })
@@ -104,17 +108,17 @@ const PrizesWonContent: React.FC = () => {
           </WinningsWrapper>
         </>
       )}
-      <StyledCardActions>{ !isClaimLoading ? (
+      <StyledCardActions>
         <Button
           className="border-yellow"
           variant="secondary"
           width="100%"
-          disabled={requestedClaim}
+          disabled={requestedClaim || isClaimLoading}
           onClick={handleClaim}
         >
+          {isClaimLoading && spinnerIcon}
           {TranslateString(1056, 'Collect')}
         </Button>
-      ) : (<Loading></Loading>)}
       </StyledCardActions>
       <StyledButton variant="text" onClick={onPresentMyTickets}>
         {TranslateString(432, 'View your tickets')}
