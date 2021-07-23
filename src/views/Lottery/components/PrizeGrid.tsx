@@ -22,19 +22,39 @@ const Grid = styled.div<{ pastDraw?: boolean }>`
 `
 
 const RightAlignedText = styled(Text)`
-  text-align: right;
+  padding: 8px 0;
 `
 
 const RightAlignedHeading = styled(Heading)`
-  text-align: right;
+  
 `
 
 const GridItem = styled.div<{ marginBottom?: string }>`
   margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom : '10px')};
+  text-align: center;
+  &:nth-child(3), &:nth-child(4){
+    background: rgba(243, 193, 17, 0.15);
+  }
+  &:nth-child(5), &:nth-child(6){
+    background: rgba(255, 255, 255, 0.15);
+  }
+  &:nth-child(7), &:nth-child(8){
+    background: rgba(255, 255, 255, 0.05);
+  }
 `
 
 const PastDrawGridItem = styled(GridItem)`
   transform: translate(-40%, 0%);
+`
+const GridPrize = styled.div`
+  .text{
+    padding: 8px 0;
+  }
+`
+const CardBusd = styled.span`
+  font-size: 13px;
+  margin-right: 20px;
+  color: #F3C111;
 `
 
 const PrizeGrid: React.FC<PrizeGridProps> = ({
@@ -56,6 +76,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
   }
 
   return (
+    <GridPrize>
     <Grid pastDraw={pastDraw}>
       <GridItem>
         <Text fontSize="24px" color="#F3C111">
@@ -64,61 +85,67 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem>
-          <RightAlignedText fontSize="14px" color="textSubtle">
+          <RightAlignedText padding="0px" fontSize="14px" color="textSubtle">
             {TranslateString(754, 'Winners')}
           </RightAlignedText>
         </PastDrawGridItem>
       )}
       <GridItem>
-        <RightAlignedText fontSize="24px" color="#F3C111">
+        <RightAlignedText style={{padding: 0}}  fontSize="24px" color="#F3C111">
           {TranslateString(752, 'Prize Pot')}
         </RightAlignedText>
       </GridItem>
       {/* 4 matches row */}
       <GridItem>
-        <Heading style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }} size="md">
+        <Heading className="text" style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }} size="md">
           4
         </Heading>
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem>
-          <RightAlignedHeading size="md">{jackpotMatches}</RightAlignedHeading>
+          <RightAlignedHeading className="text" size="md">{jackpotMatches}</RightAlignedHeading>
         </PastDrawGridItem>
       )}
       <GridItem>
-        <RightAlignedHeading size="md">
+        <RightAlignedHeading className="text" size="md">
+          <CardBusd>
+            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(fourMatchesAmount)} />}  
+          </CardBusd>
           {fourMatchesAmount.toLocaleString()}
-          {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(fourMatchesAmount)} />}
         </RightAlignedHeading>
       </GridItem>
       {/* 3 matches row */}
       <GridItem style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }}>
-        <Text bold>3</Text>
+        <Text className="text" padding="8px 0" bold>3</Text>
       </GridItem>
       {pastDraw && (
-        <PastDrawGridItem>
-          <RightAlignedText bold>{threeTicketMatches}</RightAlignedText>
+        <PastDrawGridItem >
+          <RightAlignedText className="text" bold>{threeTicketMatches}</RightAlignedText>
         </PastDrawGridItem>
       )}
       <GridItem>
         <RightAlignedText>
+          <CardBusd>
+            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(threeMatchesAmount)} />}  
+          </CardBusd>
           {threeMatchesAmount.toLocaleString()}
-          {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(threeMatchesAmount)} />}
         </RightAlignedText>
       </GridItem>
       {/* 2 matches row */}
       <GridItem style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }}>
-        <Text>2</Text>
+        <Text className="text">2</Text>
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem>
-          <RightAlignedText>{twoTicketMatches}</RightAlignedText>
+          <RightAlignedText className="text">{twoTicketMatches}</RightAlignedText>
         </PastDrawGridItem>
       )}
       <GridItem>
         <RightAlignedText>
+          <CardBusd>
+            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(twoMatchesAmount)} />}
+          </CardBusd>
           {twoMatchesAmount.toLocaleString()}
-          {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(twoMatchesAmount)} />}
         </RightAlignedText>
       </GridItem>
       {/* Burn row */}
@@ -138,6 +165,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         </GridItem>
       )}
     </Grid>
+    </GridPrize>
   )
 }
 
