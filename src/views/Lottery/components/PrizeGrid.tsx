@@ -156,12 +156,22 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         <>
           <GridItem marginBottom="0" />
           <GridItem marginBottom="0">
-            <RightAlignedText>{burnAmount.toLocaleString()}</RightAlignedText>
+            <RightAlignedText>
+              <CardBusd>
+                {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(burnAmount)} />}
+              </CardBusd>
+              {burnAmount.toLocaleString()}
+            </RightAlignedText>
           </GridItem>
         </>
       ) : (
         <GridItem marginBottom="0">
-          <RightAlignedText>{burnAmount.toLocaleString()}</RightAlignedText>
+          <RightAlignedText>
+            <CardBusd>
+              {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(burnAmount)} />}
+            </CardBusd>
+            {burnAmount.toLocaleString()}
+            </RightAlignedText>
         </GridItem>
       )}
     </Grid>
