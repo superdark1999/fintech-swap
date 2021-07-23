@@ -178,15 +178,9 @@ const TotalPrizesCard = () => {
           <Flex mb="55px" alignItems="center" justifyContent="space-between">
             {currentLotteryNumber === 0 && <Skeleton height={20} width={56} />}
             <>
-<<<<<<< HEAD
               <RoundPrize>
-                {TranslateString(720, `Round #${currentLotteryNumber}`, { num: currentLotteryNumber })}
-              </RoundPrize>
-=======
-              <Text fontSize="12px" style={{ fontWeight: 600 }}>
                 {TranslateString(720, `Round #${indexRoute}`, { num: currentLotteryNumber })}
-              </Text>
->>>>>>> ebdfeb004537c4c0c657d3e35346272ae7202261
+              </RoundPrize>
             </>
             {/* {currentLotteryNumber > 0 && (
                 <>
