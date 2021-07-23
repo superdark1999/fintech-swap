@@ -12,6 +12,7 @@ import lotteryAbi from 'config/abi/lottery.json'
 import { useWeb3React } from '@web3-react/core'
 import { useTotalClaim } from 'hooks/useTickets'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { BASE_API_ADMIN } from 'config'
 import Hero from './components/Hero'
 import WinningNumbers from './components/WinningNumbers'
 import TotalPrizesCard from './components/TotalPrizesCard'
@@ -66,6 +67,7 @@ const BoxImg = styled.div`
   }
 `
 
+
 const Lottery: React.FC = () => {
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
 
@@ -82,9 +84,13 @@ const Lottery: React.FC = () => {
   const isAWin = winnings > 0
 
   useEffect(() => {
-    fetch(`https://api.pancakeswap.com/api/lotteryHistory`)
+    fetch(`${BASE_API_ADMIN}/lotteries/history`)
       .then((response) => response.json())
-      .then((data) => setHistoryData(data))
+      .then((data) => {
+        data.sort((a, b) => a.lotteryNumber > b.lotteryNumber ? -1 : 1)
+        setHistoryData(data)}
+        )
+      
       .catch(() => {
         setHistoryError(true)
       })
@@ -128,8 +134,12 @@ const Lottery: React.FC = () => {
         </SecondCardColumnWrapper>
         <WinningNumbers />
         <HowItWorks />
-        <PastLotteryRoundViewer />
-        <PastDrawsHistoryCard />
+        <PastLotteryDataContext.Provider
+          value={{ historyError, historyData, mostRecentLotteryNumber, currentLotteryNumber }}
+        >
+          <PastLotteryRoundViewer />
+          <PastDrawsHistoryCard />
+        </PastLotteryDataContext.Provider>
 
         {/* <Wrapper>
           <ButtonMenu activeIndex={activeIndex} onItemClick={handleClick} scale="sm" variant="subtle">

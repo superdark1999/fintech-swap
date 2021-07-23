@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Text, Progress } from '@luckyswap/uikit'
+import axios from 'axios'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useCurrentTime } from 'hooks/useTimer'
+import { BASE_API_ADMIN } from 'config'
+import useRefresh from 'hooks/useRefresh'
 import {
   getLotteryDrawTime,
   getLotteryDrawStep,
   getTicketSaleTime,
   getTicketSaleStep,
+  getTimeRemainDraw,
 } from '../helpers/CountdownHelpers'
 
 const ProgressWrapper = styled.div`
@@ -34,19 +38,56 @@ const BottomTextWrapper = styled.div`
 const StyledPrimaryText = styled(Text)`
   margin-right: 16px;
 `
+// const timeEndLottery = new Date;
+// timeEndLottery.setHours(23, 0, 0);
+
+// const timeStartLottery = new Date;
+// timeStartLottery.setHours(24, 0, 0);
+
+// const timeStartLottery = new Date(19, 0, 0);
+
 const LotteryProgress = () => {
+  const { fastRefresh } = useRefresh()
+  const [timeRemainDraw, setTimeRemainDraw] = useState("");
+  const [timeRemainSale, setTimeRemainSale] = useState("");
+  const [percentRemain, setPercentRemain] = useState(0)
+  
+
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
-  const currentMillis = useCurrentTime()
-  const timeUntilTicketSale = getTicketSaleTime(currentMillis)
-  const timeUntilLotteryDraw = getLotteryDrawTime(currentMillis)
+  const currentMillis = useCurrentTime()  
+
+
+  useEffect(() => {
+    const fetchTimeLottery = async () => {
+      const timeEndLottery = new Date();
+      const timeStartLottery = new Date();
+      const {data} = await axios.get(`${BASE_API_ADMIN}/lotteries`);
+
+      // set time remain to end lottery phase
+      timeEndLottery.setHours(data[0].timeDrawLottery.hh, data[0].timeDrawLottery.mm, 0);
+      setTimeRemainDraw(getTimeRemainDraw(timeEndLottery));
+
+      // set time remain to start new lottery phase
+      timeStartLottery.setHours(data[0].timeStartNewPhase.hh, data[0].timeStartNewPhase.mm, 0);
+      setTimeRemainSale(getTimeRemainDraw(timeStartLottery));
+
+      if (lotteryHasDrawn){
+        setPercentRemain( 100 - ((timeStartLottery.getTime() - currentMillis) * 100 / 86400000));
+      }
+      else 
+        setPercentRemain( 100 - ((timeEndLottery.getTime() - currentMillis) * 100 / 86400000));
+
+    }
+    fetchTimeLottery();
+  },[fastRefresh, lotteryHasDrawn, currentMillis])
 
   return (
     <ProgressWrapper>
-      <Progress primaryStep={getLotteryDrawStep(currentMillis)} secondaryStep={getTicketSaleStep()} showProgressBunny />
+      <Progress primaryStep={percentRemain} secondaryStep={ (1/24) / 100} />
       <TopTextWrapper>
         <StyledPrimaryText fontSize="20px" bold color="yellow">
-          {lotteryHasDrawn ? timeUntilTicketSale : timeUntilLotteryDraw}
+          {lotteryHasDrawn ? timeRemainSale : timeRemainDraw}
         </StyledPrimaryText>
         <Text fontSize="20px" bold color="invertedContrast">
           {lotteryHasDrawn ? TranslateString(434, 'Until ticket sale') : TranslateString(492, 'Until lottery draw')}
@@ -55,7 +96,7 @@ const LotteryProgress = () => {
       {lotteryHasDrawn && (
         <BottomTextWrapper>
           <Text color="invertedContrast">
-            {timeUntilLotteryDraw} {TranslateString(492, 'Until lottery draw')}
+            {/* {timeUntilLotteryDraw} {TranslateString(492, 'Until lottery draw')} */}
           </Text>
         </BottomTextWrapper>
       )}

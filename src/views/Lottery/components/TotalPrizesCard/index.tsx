@@ -1,16 +1,21 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { Heading, Card, CardBody, CardFooter, Text, PancakeRoundIcon, Flex, Skeleton } from '@luckyswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { useTotalRewards } from 'hooks/useTickets'
+import { getLotteryAddress, getLotteryTicketAddress } from 'utils/addressHelpers'
+import { useContract } from 'hooks/useContract'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
+import lotteryAbi from 'config/abi/lottery.json'
+import { getLotteryIssueIndex } from 'utils/lotteryUtils'
 import ExpandableSectionButton from 'components/ExpandableSectionButton/ExpandableSectionButton'
 import { BigNumber } from 'bignumber.js'
 import { usePriceLuckyBusd } from 'state/hooks'
 import PrizeGrid from '../PrizeGrid'
 import CardBusdValue from '../../../Home/components/CardBusdValue'
+import CardValue from '../../../Home/components/CardValue'
 
 // const Container = styled.div`
 //   margin-left: auto;
@@ -141,6 +146,7 @@ const RoundPrize = styled.div`
 `
 
 const TotalPrizesCard = () => {
+  const [indexRoute, setIndexRoute]  = useState(0)
   const TranslateString = useI18n()
   const { account } = useWeb3React()
   const [showFooter, setShowFooter] = useState(false)
@@ -149,6 +155,22 @@ const TotalPrizesCard = () => {
   const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
   const { currentLotteryNumber } = useContext(PastLotteryDataContext)
 
+
+  const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
+
+  useEffect(() => {
+    const fetchLotteryIndex = async () => {
+      if (lotteryContract) {
+        const index = await getLotteryIssueIndex(lotteryContract)
+
+        setIndexRoute(index)
+      }
+    }
+
+    fetchLotteryIndex()
+  }, [lotteryContract])
+
+
   return (
     <BoxTotal>
       <CardBody>
@@ -156,9 +178,15 @@ const TotalPrizesCard = () => {
           <Flex mb="55px" alignItems="center" justifyContent="space-between">
             {currentLotteryNumber === 0 && <Skeleton height={20} width={56} />}
             <>
+<<<<<<< HEAD
               <RoundPrize>
                 {TranslateString(720, `Round #${currentLotteryNumber}`, { num: currentLotteryNumber })}
               </RoundPrize>
+=======
+              <Text fontSize="12px" style={{ fontWeight: 600 }}>
+                {TranslateString(720, `Round #${indexRoute}`, { num: currentLotteryNumber })}
+              </Text>
+>>>>>>> ebdfeb004537c4c0c657d3e35346272ae7202261
             </>
             {/* {currentLotteryNumber > 0 && (
                 <>
@@ -184,6 +212,7 @@ const TotalPrizesCard = () => {
                 </Heading>
               </BoxLucky>
               <Dollar>{lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}</Dollar>
+
             </PrizeCountWrapper>
           </Left>
           <Right>
