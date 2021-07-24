@@ -60,7 +60,7 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
   return (
     <Wrapper>
       <div>
-        <StyledButton
+        {/* <StyledButton
           
           width="100%"
           variant="secondary"
@@ -68,7 +68,7 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
           onClick={onPresentMyTickets}
         >
           {TranslateString(432, 'View Your ticket')}
-        </StyledButton>
+        </StyledButton> */}
       </div>
       {/* <div>
         <ExternalLinkWrap href={contractLink}>

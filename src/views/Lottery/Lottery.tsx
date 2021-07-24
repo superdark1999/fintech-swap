@@ -76,7 +76,7 @@ const Lottery: React.FC = () => {
   const [historyData, setHistoryData] = useState([])
   const [historyError, setHistoryError] = useState(false)
   const [currentLotteryNumber, setCurrentLotteryNumber] = useState(0)
-  const [mostRecentLotteryNumber, setMostRecentLotteryNumber] = useState(1)
+  const [mostRecentLotteryNumber, setMostRecentLotteryNumber] = useState(null)
 
   const { account } = useWeb3React()
   const { claimAmount } = useTotalClaim()

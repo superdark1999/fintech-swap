@@ -74,9 +74,9 @@ const WinningNumbers: React.FC = () => {
             </RowNoPadding>
           </Column>
 
-          <Link href="/" target="_blank">
+          {/* <Link href="/" target="_blank">
             {TranslateString(448, 'Export recent winning numbers')}
-          </Link>
+          </Link> */}
         </StyledCardContentInner>
       </CardBodyNew>
     </CardWrapper>
