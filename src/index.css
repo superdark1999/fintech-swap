@@ -496,6 +496,9 @@ button.btn-secondary.dropdown-toggle:focus {
   opacity: 0.7;
 }
 
+.btn-center {
+  margin: 0 auto;
+}
 
 
 

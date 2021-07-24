@@ -90,6 +90,18 @@ const config: MenuEntry[] = [
     // ],
   },
   {
+    label: 'Chart',
+    icon: 'ChartIcon',
+    calloutClass: 'style-color',
+        items: [
+      {
+        label: 'PooCoin (LUCKY)',
+        href: 'https://poocoin.app/tokens/0x7011e05c238f315f0227ac914731b16f757f6689',
+        calloutClass: 'style-color',
+      },
+    ],
+  },
+  {
     label: 'Channel',
     icon: 'MoreIcon',
     calloutClass: 'style-color',
