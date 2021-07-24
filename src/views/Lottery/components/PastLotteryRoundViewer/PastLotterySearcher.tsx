@@ -16,6 +16,12 @@ const Wrapper = styled.div`
 
 const SearchWrapper = styled.div`
   position: relative;
+  border-radius: 20px;
+  background: #FFFFFF;
+  ::placeholder {
+    color: #828282 !important;
+    opacity: 1;
+  }
 `
 const InputWrapper = styled.div`
   input::-webkit-inner-spin-button {
@@ -31,9 +37,14 @@ const InputWrapper = styled.div`
 const StyledInput = styled(Input)`
   padding-right: 30px;
   border: 1px solid;
-  background:'#FFFFFF';
+  // background: #FFFFFF;
   color: #828282; 
   padding-left: 50px;
+  background: transparent;
+  ::placeholder {
+    color: #828282 !important;
+    opacity: 1;
+  }
 `
 const ButtonWrapper = styled.div`
   position: absolute;
@@ -42,6 +53,10 @@ const ButtonWrapper = styled.div`
   transform: translate(0%, -50%);
   width: auto;
   
+`
+const StyledBtn = styled(Button)`
+  border: unset;
+
 `
 
 const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotteryNumber, onSubmit }) => {
@@ -69,11 +84,11 @@ const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotter
       <form onSubmit={handleSubmit}>
         <SearchWrapper>
           <ButtonWrapper>
-            <Button variant="secondary" type="submit" scale="sm" disabled={isError}>
+            <StyledBtn variant="secondary" type="submit" scale="sm" disabled={isError}>
               {/* {TranslateString(744, 'Search')} */}
               <SearchIcon style={{fill:"#828282", width:"25px"}}/>
               {/* <img width="20px" src="../images/search.png" alt="" /> */}
-            </Button>
+            </StyledBtn>
           </ButtonWrapper>
           <InputWrapper>
             <StyledInput
@@ -83,7 +98,7 @@ const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotter
               max={initialLotteryNumber}
               onChange={handleChange}
               placeholder="Enter Round Number..."
-              style={{background:'#FFFFFF', color:"#828282", paddingLeft:"50px"}}
+              style={{ paddingLeft:"50px"}}
             />
           </InputWrapper>
           
