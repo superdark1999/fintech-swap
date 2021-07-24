@@ -5,6 +5,7 @@ import { Image, Card, CardBody } from '@luckyswap/uikit'
 import { useWinningNumbers, useMatchingRewardLength } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
+import CardValue from '../../Home/components/CardValue'
 
 const WinningNumbers: React.FC = () => {
   const { account } = useWeb3React()
@@ -40,7 +41,16 @@ const WinningNumbers: React.FC = () => {
             {winNumbers.map((number, index) => (
               // eslint-disable-next-line react/no-array-index-key
               <TicketNumberBox key={index}>
-                <CenteredText>{number}</CenteredText>
+                <CenteredText>
+                  <CardValue
+                bold
+                color=""
+                value={number}
+                decimals={0}
+                fontSize="60px"
+                fontWeight="600"
+              ></CardValue>
+                  </CenteredText>
               </TicketNumberBox>
             ))}
           </Row>

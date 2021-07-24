@@ -8,9 +8,10 @@ import { getChainId } from '../../utils/web3React'
 
 const fetchFarms = async () => {
   const chainId = getChainId()
+  console.log("chainId", chainId);
   const data = await Promise.all(
     farmsConfig.map(async (farmConfig) => {
-      const lpAddress = getAddress(farmConfig.lpAddresses)
+      const lpAddress = getAddress(farmConfig.lpAddresses, 97)
       const calls = [
         // Balance of token in the LP contract
         {
