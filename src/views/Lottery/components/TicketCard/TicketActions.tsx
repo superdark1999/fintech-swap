@@ -204,7 +204,7 @@ const TicketCard: React.FC = () => {
   return (
     <CardActions>
       {lotteryHasDrawn ? (
-        <Button disabled> {TranslateString(874, 'On sale soon')}</Button>
+        <Button className="btn-center" disabled> {TranslateString(874, 'On sale soon')}</Button>
       ) : (
         renderLotteryTicketButtons()
       )}
