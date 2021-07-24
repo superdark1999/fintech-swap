@@ -35,14 +35,14 @@ const Wrapper = styled.div`
   margin-bottom: 32px;
 `
 
-const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
+const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean, account?:any }>`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 40px;
   margin-bottom: 30px;
 
   @media (min-width: 991px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: ${(props) => props.account ? "1fr 1fr" : "unset"};
   }
 `
 
@@ -122,7 +122,7 @@ const Lottery: React.FC = () => {
         </BoxImg> */}
         <Hero />
         <TotalPrizesCard />
-        <SecondCardColumnWrapper isAWin={isAWin}>
+        <SecondCardColumnWrapper account={account} isAWin={isAWin}>
           {!account ? (
             <UnlockWalletCard />
           ) : (

@@ -26,6 +26,7 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
 }
 
+
 const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
 const CardActions = styled.div`

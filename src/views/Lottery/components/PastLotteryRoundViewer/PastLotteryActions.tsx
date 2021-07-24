@@ -13,7 +13,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 24px;
-
+  margin: 0 auto;
+  margin-bottom: 40px;
+  display: block;
+  width: max-content;
   & > div {
     flex: 1;
     width: 100%;
@@ -27,6 +30,16 @@ const ExternalLinkWrap = styled(LinkExternal)`
   justify-content: center;
   text-decoration: none;
   width: 100%;
+`
+const StyledButton = styled(Button)`
+  width: max-content;
+  color: #f3c111 !important;
+  padding: 0 70px;
+  border-radius: 100px;
+  border-color: #F3C111 !important;
+  margin: 0 auto;
+  display: block;
+  margin-right: auto !important;
 `
 
 const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = ({ contractLink, lotteryNumber }) => {
@@ -47,21 +60,21 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
   return (
     <Wrapper>
       <div>
-        <Button
-          style={{ marginRight: '8px' }}
+        <StyledButton
+          
           width="100%"
           variant="secondary"
           disabled={ticketsLength === 0}
           onClick={onPresentMyTickets}
         >
-          {TranslateString(432, 'View your tickets')}
-        </Button>
+          {TranslateString(432, 'View Your ticket')}
+        </StyledButton>
       </div>
-      <div>
+      {/* <div>
         <ExternalLinkWrap href={contractLink}>
           {TranslateString(356, `View on ${SCAN_SITES[chainId]}`)}
         </ExternalLinkWrap>
-      </div>
+      </div> */}
     </Wrapper>
   )
 }

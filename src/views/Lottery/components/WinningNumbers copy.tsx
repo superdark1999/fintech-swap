@@ -60,7 +60,13 @@ const CardBodyNew = styled.div`
 const Link = styled.a`
   margin-top: 1em;
   text-decoration: none;
-  color: #25beca;
+  border-radius: 100px;
+  border: 1px solid #F3C111;
+  color: #F3C111;
+  padding: 11px 60px;
+  font-size: 26px;
+  line-height: 30px;
+}
 `
 
 const Row = styled.div`
@@ -121,6 +127,7 @@ const Column = styled.div`
 const CenteredText = styled.div`
   text-align: center;
   align-items: center;
+  font-size: 26px;
 `
 
 const CenteredTextWithPadding = styled.div`

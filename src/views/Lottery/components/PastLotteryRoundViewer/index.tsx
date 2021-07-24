@@ -77,7 +77,7 @@ const PastLotteryRoundViewer = () => {
 
   return (
     <Wrapper>
-      <PastLotterySearcher initialLotteryNumber={mostRecentLotteryNumber} onSubmit={handleSubmit} />
+      {/* <PastLotterySearcher initialLotteryNumber={mostRecentLotteryNumber} onSubmit={handleSubmit} /> */}
       {!isInitialized || isLoading ? (
         <Card>
           <StyledCardBody>
@@ -85,7 +85,7 @@ const PastLotteryRoundViewer = () => {
           </StyledCardBody>
         </Card>
       ) : (
-        <PastRoundCard error={error} data={roundData} />
+        <PastRoundCard initialLotteryNumber={mostRecentLotteryNumber} onSubmit={handleSubmit} error={error} data={roundData} />
       )}
     </Wrapper>
   )

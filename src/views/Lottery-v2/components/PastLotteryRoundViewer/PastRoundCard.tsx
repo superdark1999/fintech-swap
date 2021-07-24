@@ -10,11 +10,19 @@ interface PastRoundCardProps {
     message: string
   }
   data: DataResponse
+  // initialLotteryNumber: number
+  // onSubmit: (num: number) => void
 }
 
-const PastRoundCard: React.FC<PastRoundCardProps> = ({ error, data }) => {
+const PastRoundCard: React.FC<PastRoundCardProps> = ({ error, data}) => {
   return (
-    <FullWidth>{error.message ? <PastRoundCardError error={error} /> : <PastRoundCardDetails data={data} />}</FullWidth>
+    <FullWidth>{error.message ? <PastRoundCardError error={error} /> 
+    : <PastRoundCardDetails 
+        data={data} 
+        // initialLotteryNumber={initialLotteryNumber} 
+        // onSubmit={onSubmit}
+         />}
+    </FullWidth>
   )
 }
 
