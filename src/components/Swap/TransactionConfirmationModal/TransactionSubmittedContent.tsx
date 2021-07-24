@@ -39,7 +39,7 @@ const TransactionSubmittedContent = ({ onDismiss, chainId, hash, currencyToAdd }
           )}
 
           {currencyToAdd && library?.provider?.isMetaMask && (
-            <button type="button" onClick={addToken}>
+            <button className="btn-add" type="button" onClick={addToken}>
               {!success ? <> Add {currencyToAdd.symbol} to Metamask </> : <> Added {currencyToAdd.symbol} </>}
             </button>
           )}
