@@ -7,9 +7,13 @@ import LotteryCardHeading from '../LotteryCardHeading'
 import PastLotteryActions from './PastLotteryActions'
 import PrizeGrid from '../PrizeGrid'
 import Timestamp from '../Timestamp'
+import PastLotterySearcher from './PastLotterySearcher'
+
 
 interface PastRoundCardDetailsProps {
   data: DataResponse
+  // initialLotteryNumber: number
+  // onSubmit: (num: number) => void
 }
 
 const CardHeading = styled.div`
@@ -34,7 +38,11 @@ const Dflex = styled.div`
   align-items: center;
 `
 
-const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data }) => {
+const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = (
+  { data, 
+    // initialLotteryNumber,
+    // onSubmit 
+  }) => {
   const TranslateString = useI18n()
 
   const {
@@ -55,6 +63,8 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data }) => 
       <>
         <CardBody>
           <CardHeading>
+            {/* <PastLotterySearcher initialLotteryNumber={initialLotteryNumber} onSubmit={onSubmit} /> */}
+
             <Timestamp timeValue={lotteryDate} />
             <Heading size="md" mb="24px">
               Round #{lotteryNumber}

@@ -2,6 +2,11 @@ import React from 'react'
 import { Button, useWalletModal } from '@luckyswap/uikit'
 import useAuth from 'hooks/useAuth'
 import useI18n from 'hooks/useI18n'
+import styled from 'styled-components'
+
+const CustomBtn = styled(Button)`
+  border-radius: 100px;
+`
 
 const UnlockButton = (props) => {
   const TranslateString = useI18n()
@@ -10,9 +15,9 @@ const UnlockButton = (props) => {
 
   return (
     <div className="custom-btn">
-      <Button variant="secondary" onClick={onPresentConnectModal} {...props}>
+      <CustomBtn variant="secondary" onClick={onPresentConnectModal} {...props}>
         {TranslateString(292, 'Unlock Wallet')}
-      </Button>
+      </CustomBtn>
     </div>
   )
 }

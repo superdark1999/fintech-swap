@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Text, Input, Button } from '@luckyswap/uikit'
+import { Text, Input, Button, SearchIcon } from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
+// import Search from '../../../../../public/images/search.svg'
+
 
 interface PastLotterySearcherProps {
   initialLotteryNumber: number
@@ -26,13 +28,20 @@ const InputWrapper = styled.div`
     -moz-appearance: textfield;
   }
 `
-
+const StyledInput = styled(Input)`
+  padding-right: 30px;
+  border: 1px solid;
+  background:'#FFFFFF';
+  color: #828282; 
+  padding-left: 50px;
+`
 const ButtonWrapper = styled.div`
   position: absolute;
-  right: 8px;
+  left: 0px;
   top: 50%;
   transform: translate(0%, -50%);
   width: auto;
+  
 `
 
 const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotteryNumber, onSubmit }) => {
@@ -56,23 +65,28 @@ const PastLotterySearcher: React.FC<PastLotterySearcherProps> = ({ initialLotter
 
   return (
     <Wrapper>
-      <Text>{TranslateString(742, 'Select lottery number:')}</Text>
+      {/* <Text>{TranslateString(742, 'Select lottery number:')}</Text> */}
       <form onSubmit={handleSubmit}>
         <SearchWrapper>
+          <ButtonWrapper>
+            <Button variant="secondary" type="submit" scale="sm" disabled={isError}>
+              {/* {TranslateString(744, 'Search')} */}
+              <SearchIcon style={{fill:"#828282", width:"25px"}}/>
+              {/* <img width="20px" src="../images/search.png" alt="" /> */}
+            </Button>
+          </ButtonWrapper>
           <InputWrapper>
-            <Input
+            <StyledInput
               value={lotteryNumber}
               type="number"
               isWarning={isError}
               max={initialLotteryNumber}
               onChange={handleChange}
+              placeholder="Enter Round Number..."
+              style={{background:'#FFFFFF', color:"#828282", paddingLeft:"50px"}}
             />
           </InputWrapper>
-          <ButtonWrapper>
-            <Button variant="secondary" type="submit" scale="sm" disabled={isError}>
-              {TranslateString(744, 'Search')}
-            </Button>
-          </ButtonWrapper>
+          
         </SearchWrapper>
       </form>
     </Wrapper>

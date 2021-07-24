@@ -23,6 +23,9 @@ import CardValue from '../../../Home/components/CardValue'
 //   max-width: 1200px;
 //   margin-bottom: 30px;
 // `
+interface Props {
+  account: any
+}
 
 const BoxTotal = styled.div`
   background: linear-gradient(45deg, rgb(35 35 35) 30%, rgb(45 45 45) 100%);
@@ -36,7 +39,7 @@ const BoxTotal = styled.div`
   grid-template-columns: 1fr;
 
   @media (min-width: 991px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr ;
     margin: 0 auto 60px;
   }
 `
@@ -155,9 +158,8 @@ const TotalPrizesCard = () => {
   const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
   const { currentLotteryNumber } = useContext(PastLotteryDataContext)
 
-
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
-
+  
   useEffect(() => {
     const fetchLotteryIndex = async () => {
       if (lotteryContract) {

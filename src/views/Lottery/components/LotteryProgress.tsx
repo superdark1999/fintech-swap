@@ -38,6 +38,11 @@ const BottomTextWrapper = styled.div`
 const StyledPrimaryText = styled(Text)`
   margin-right: 16px;
 `
+
+const StyledProgress = styled(Progress)`
+  color: red !important;
+  
+`
 // const timeEndLottery = new Date;
 // timeEndLottery.setHours(23, 0, 0);
 
@@ -83,8 +88,8 @@ const LotteryProgress = () => {
   },[fastRefresh, lotteryHasDrawn, currentMillis])
 
   return (
-    <ProgressWrapper>
-      <Progress primaryStep={percentRemain} secondaryStep={ (1/24) / 100} />
+    <ProgressWrapper className="err">
+      <StyledProgress primaryStep={percentRemain} secondaryStep={ (3/24) / 100} />
       <TopTextWrapper>
         <StyledPrimaryText fontSize="20px" bold color="yellow">
           {lotteryHasDrawn ? timeRemainSale : timeRemainDraw}
