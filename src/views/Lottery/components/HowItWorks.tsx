@@ -169,13 +169,13 @@ const HowItWorks = () => {
         <Item>
           <InerItem>
             <Step className="btn-step">  
-              step 1
+              STEP 1
             </Step>
 
-            <Title>LUCKY per ticket</Title>
+            <Title>Buy tickets</Title>
 
             <Desc>
-              Prices are set when the round starts, equat to 5 USD in LUCKY per ticket.
+              Prices are set when the round starts, equal to 1 LUCKY per ticket.
             </Desc>
           </InerItem>
         </Item>
@@ -183,7 +183,7 @@ const HowItWorks = () => {
         <Item>
           <InerItem>
             <Step className="btn-step">  
-              step 2
+              STEP 2
             </Step>
 
             <Title>Wait for the Draw</Title>
