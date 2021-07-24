@@ -24,7 +24,7 @@ const FullWidth = styled(Card)`
   background: linear-gradient(45deg, rgb(35 35 35) 30%, rgb(45 45 45) 100%);
   box-shadow: none;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   margin-bottom: 60px;
   border-radius: 14px;
 `
