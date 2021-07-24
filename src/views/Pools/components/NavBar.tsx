@@ -32,13 +32,13 @@ export default function NavBar({ activeTab, toggle }) {
           <NavLink
             className={classnames({ active: activeTab === '4' })}
             onClick={() => {
-              toggle('3')
+              window.open("#/staking")
             }}
           >
             NFT Staking
           </NavLink>
         </NavItem>
-        <NavItem>
+        {/* <NavItem>
           <NavLink
             className={classnames({ active: activeTab === '5' })}
             onClick={() => {
@@ -47,7 +47,7 @@ export default function NavBar({ activeTab, toggle }) {
           >
             Earn NFT
           </NavLink>
-        </NavItem>
+        </NavItem> */}
         <NavItem>
           <NavLink
             className={classnames({ active: activeTab === '6' })}
