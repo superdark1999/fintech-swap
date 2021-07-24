@@ -496,12 +496,6 @@ button.btn-secondary.dropdown-toggle:focus {
   opacity: 0.7;
 }
 
-.chartjs-render-monitor {
-  display: flex;
-  width: fit-content !important;
-  max-width: 1000px !important;
-  height: 400px !important;
-}
 
 
 
