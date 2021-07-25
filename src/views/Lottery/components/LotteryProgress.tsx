@@ -67,6 +67,7 @@ const LotteryProgress = () => {
       const timeEndLottery = new Date();
       const timeStartLottery = new Date();
       const {data} = await axios.get(`${URL}/lotteries`);
+      const now = new Date();
 
       // set time remain to end lottery phase
       timeEndLottery.setHours(data[0].timeDrawLottery.hh, data[0].timeDrawLottery.mm, 0);
@@ -76,15 +77,15 @@ const LotteryProgress = () => {
       timeStartLottery.setHours(data[0].timeStartNewPhase.hh, data[0].timeStartNewPhase.mm, 0);
       setTimeRemainSale(getTimeRemainDraw(timeStartLottery));
 
+      
       if (lotteryHasDrawn){
-        setPercentRemain( 100 - ((timeStartLottery.getTime() - currentMillis) * 100 / 86400000));
+        setPercentRemain( 100 - ((timeStartLottery.getTime() - now.getTime()) * 100 / 86400000));
       }
       else 
-        setPercentRemain( 100 - ((timeEndLottery.getTime() - currentMillis) * 100 / 86400000));
-
+        setPercentRemain( 100 - ((timeEndLottery.getTime() - now.getTime()) * 100 / 86400000));
     }
     fetchTimeLottery();
-  },[fastRefresh, lotteryHasDrawn, currentMillis, URL])
+  },[fastRefresh, lotteryHasDrawn, URL])
 
   return (
     <ProgressWrapper>
