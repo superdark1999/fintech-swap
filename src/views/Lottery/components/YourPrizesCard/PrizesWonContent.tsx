@@ -11,6 +11,7 @@ import { getLotteryAddress } from 'utils/addressHelpers'
 import lotteryAbi from 'config/abi/lottery.json'
 import Loading from '../Loading'
 import MyTicketsModal from '../TicketCard/UserTicketsModal'
+import CardValue from '../../../Home/components/CardValue'
 
 const WinningsWrapper = styled.div`
   display: flex;
