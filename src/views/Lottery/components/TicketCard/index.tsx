@@ -8,7 +8,8 @@ import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import useTickets from 'hooks/useTickets'
 import { useCurrentTime } from 'hooks/useTimer'
 import useRefresh from 'hooks/useRefresh'
-import { BASE_API_ADMIN } from 'config'
+import { useActiveWeb3React } from 'hooks';
+import { BASE_API_ADMIN, BASE_API_ADMIN_PRO } from 'config'
 import TicketActions from './TicketActions'
 import { getTicketSaleTime, getTimeRemainDraw } from '../../helpers/CountdownHelpers'
 
@@ -60,6 +61,7 @@ const TicketCountWrapper = styled.div`
 `
 
 const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
+  const { chainId }  = useActiveWeb3React();
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
 
@@ -73,11 +75,13 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
   const [timeRemainDraw, setTimeRemainDraw] = useState("");
   const [timeRemainSale, setTimeRemainSale] = useState("");
 
+  const URL = chainId === 56 ? BASE_API_ADMIN_PRO : BASE_API_ADMIN;
+
   useEffect(() => {
     const fetchTimeLottery = async () => {
       const timeEndLottery = new Date();
       const timeStartLottery = new Date();
-      const {data} = await axios.get(`${BASE_API_ADMIN}/lotteries`);
+      const {data} = await axios.get(`${URL}/lotteries`);
 
       // set time remain to end lottery phase
       timeEndLottery.setHours(data[0].timeDrawLottery.hh, data[0].timeDrawLottery.mm, 0);
@@ -88,7 +92,7 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
       setTimeRemainSale(getTimeRemainDraw(timeStartLottery));
     }
     fetchTimeLottery();
-  },[fastRefresh])
+  },[fastRefresh, URL])
   // 12
   return (
     <StyledCard isSecondCard={isSecondCard}>

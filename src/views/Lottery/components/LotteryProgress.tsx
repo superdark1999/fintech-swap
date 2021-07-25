@@ -5,8 +5,9 @@ import axios from 'axios'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useCurrentTime } from 'hooks/useTimer'
-import { BASE_API_ADMIN } from 'config'
+import { BASE_API_ADMIN, BASE_API_ADMIN_PRO } from 'config'
 import useRefresh from 'hooks/useRefresh'
+import { useActiveWeb3React } from 'hooks'
 import {
   getLotteryDrawTime,
   getLotteryDrawStep,
@@ -47,6 +48,7 @@ const StyledPrimaryText = styled(Text)`
 // const timeStartLottery = new Date(19, 0, 0);
 
 const LotteryProgress = () => {
+  const { chainId } = useActiveWeb3React();
   const { fastRefresh } = useRefresh()
   const [timeRemainDraw, setTimeRemainDraw] = useState("");
   const [timeRemainSale, setTimeRemainSale] = useState("");
@@ -57,12 +59,14 @@ const LotteryProgress = () => {
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const currentMillis = useCurrentTime()  
 
+  const URL = chainId === 56 ? BASE_API_ADMIN_PRO : BASE_API_ADMIN;
+
 
   useEffect(() => {
     const fetchTimeLottery = async () => {
       const timeEndLottery = new Date();
       const timeStartLottery = new Date();
-      const {data} = await axios.get(`${BASE_API_ADMIN}/lotteries`);
+      const {data} = await axios.get(`${URL}/lotteries`);
 
       // set time remain to end lottery phase
       timeEndLottery.setHours(data[0].timeDrawLottery.hh, data[0].timeDrawLottery.mm, 0);
@@ -80,7 +84,7 @@ const LotteryProgress = () => {
 
     }
     fetchTimeLottery();
-  },[fastRefresh, lotteryHasDrawn, currentMillis])
+  },[fastRefresh, lotteryHasDrawn, currentMillis, URL])
 
   return (
     <ProgressWrapper>
