@@ -49,6 +49,7 @@ const IfoTitle = ({ activeIfo }: any) => {
   const [originBalance, setOriginBalance] = useState(0)
   const [balance, setBalance] = useState(0)
   const [isApproved, setIsApproved] = useState(false)
+  const [isDepositing, setIsDepositing] = useState(false);
   const [isWaningAllowedDepositAmount, setIsWaningAllowedDepositAmount] = useState(false)
   const [value, setValue] = useState('')
 
@@ -176,11 +177,17 @@ const IfoTitle = ({ activeIfo }: any) => {
       }
     },
     onApprove: async () => {
-      LPContract.approve(contract.options.address, ethers.constants.MaxUint256).then(async (response) => {
+      const tx = await LPContract.approve(contract.options.address, ethers.constants.MaxUint256).then((response) => {
         addTransaction(response, {
           summary: 'Approve successfully!',
         })
+        return true;
       })
+      .catch((error) => {
+        return false;
+      })
+
+       return tx;
     },
 
     onConfirm: () => {
@@ -193,17 +200,25 @@ const IfoTitle = ({ activeIfo }: any) => {
   })
 
   const handleConfirm = async () => {
+    setIsDepositing(true);
     try {
       await raisingTokenContract.estimateGas.depositWithoutWhitelist(valueWithTokenDecimals.toString())
     } catch (error) {
       toastError(error.data.message)
     }
-    await raisingTokenContract.depositWithoutWhitelist(valueWithTokenDecimals.toString()).then((response) => {
+     await raisingTokenContract.depositWithoutWhitelist(valueWithTokenDecimals.toString()).then((response) => {
+      setIsDepositing(false);
+      setValue('0')
+
       addTransaction(response, {
         summary: 'Deposit successfully!',
       })
     })
-    setValue('0')
+    .catch(error => {
+      console.log('false');
+      setIsDepositing(false);
+
+    })
   }
 
   const handleWhitelistCheck = async () => {
@@ -457,7 +472,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                 <Button
                   className={`finished ${(isConfirmed || isConfirming || isApproved) && 'disabled'}`}
                   color="primary"
-                  disabled={getStatus() || isConfirmed || isConfirming || isApproved}
+                  disabled={getStatus() || isConfirmed || isConfirming || isApproved || isApproving}
                   onClick={() => handleApprove()}
                   endIcon={isApproving ? spinnerIcon : undefined}
                   isLoading={isApproving}
@@ -476,6 +491,7 @@ const IfoTitle = ({ activeIfo }: any) => {
                   onClick={handleConfirm}
                   disabled={
                     getStatus() ||
+                    isDepositing ||
                     !isApproved ||
                     isConfirmed ||
                     valueWithTokenDecimals.isNaN() ||
