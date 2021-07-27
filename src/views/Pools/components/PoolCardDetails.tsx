@@ -77,7 +77,7 @@ export default function PoolCardDetails({
         .catch(() => console.log('Fails harvest'))
         .catch(() => console.log('Fail estimate gas'))
 
-      stakingContract
+      const tx = await stakingContract
         .deposit(...args, { gasLimit: gasAm })
         .then((response: any) => {
           addTransaction(response, {
@@ -87,6 +87,8 @@ export default function PoolCardDetails({
         .catch((error: any) => {
           console.log(error)
         })
+        if (!tx)
+        setIsHarvesting(false)
     }
   }
 
@@ -130,7 +132,7 @@ export default function PoolCardDetails({
                   <Button color="danger" 
                   onClick={handleHarvest}
                   isLoading={isHarvesting}
-                  disabled={(getStatus())}
+                  disabled={getStatus() || isHarvesting}
                   >
                   { (getStatus() && isHarvesting) && spinnerIcon}
                     Harvest
