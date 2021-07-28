@@ -7,7 +7,7 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { useContract } from 'hooks/useContract'
 import { useApproveCallbackCustom } from 'hooks/useApproveCallback'
-import { XLUCKY_TESTNET_ADDRESSES } from 'config'
+import { XLUCKY_ADDRESSES } from 'config'
 import bep20Abi from 'config/abi/erc20.json'
 import lotteryAbi from 'config/abi/lottery.json'
 import useRefresh from 'hooks/useRefresh'
@@ -48,9 +48,9 @@ const TicketCard: React.FC = () => {
   const lotteryHasDrawn = useGetLotteryHasDrawn()
 
   const { account, chainId } = useWeb3React()
-  const contractBEP20 = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
+  const contractBEP20 = useContract(XLUCKY_ADDRESSES[chainId], bep20Abi)
 
-  const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
+  const useContractTemp = useContract(XLUCKY_ADDRESSES[chainId], bep20Abi)
 
   const ticketsContract = useContract(getLotteryTicketAddress(), lotteryTicketAbi)
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
@@ -61,7 +61,7 @@ const TicketCard: React.FC = () => {
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)
   const [onPresentBuy] = useModal(<BuyTicketModal max={new BigNumber(balanceToken)} tokenName="CAKE" />)
 
-  const { listenApproveEvent } = useUtilityToken(XLUCKY_TESTNET_ADDRESSES[chainId])
+  const { listenApproveEvent } = useUtilityToken(XLUCKY_ADDRESSES[chainId])
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -130,7 +130,7 @@ const TicketCard: React.FC = () => {
   }, [account, contractBEP20])
   const [requestedApproval, setRequestedApproval] = useState(false)
 
-  const [approval] = useApproveCallbackCustom(XLUCKY_TESTNET_ADDRESSES[chainId], getLotteryAddress())
+  const [approval] = useApproveCallbackCustom(XLUCKY_ADDRESSES[chainId], getLotteryAddress())
 
   async function onAttemptToApprove() {
     return approval()

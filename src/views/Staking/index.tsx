@@ -1,211 +1,67 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Row, Col,Card, CardTitle,CardText, TabContent, TabPane,  Nav, NavItem, NavLink } from 'reactstrap';
+import { useWeb3React } from '@web3-react/core'
 import Page from 'components/layout/Page'
+import { BigNumber, ethers } from 'ethers'
+import React, { useEffect, useState } from 'react'
+import { Row, TabContent, TabPane } from 'reactstrap'
+import { fetchImagePool, fetchUserPendingRewards } from 'state/poolsNft/fetchPoolUser'
 import styled from 'styled-components'
+import { useStakingNftContract } from '../../hooks/useContract'
+import CardStaking from './Components/CardStaking'
 import NavBar from './Components/NavBar'
-// import CardStaking from './Components/CardStaking'
-
-
 
 const Staking: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState('1')
+  const [pools, setPools] = useState([])
+  const { chainId } = useWeb3React()
 
-  const toggle = tab => {
-    if(activeTab !== tab) setActiveTab(tab);
+  const stakingNftContract = useStakingNftContract()
+
+  useEffect(() => {
+    const getPools = async () => {
+      if (stakingNftContract) {
+        const allPools = await stakingNftContract.getAllPools()
+
+        const images = await fetchImagePool(allPools, chainId)
+        const pendingRewards = await fetchUserPendingRewards(allPools, chainId)
+
+        setPools(
+          allPools.map((p, index) => ({
+            ...p,
+            image: images[index],
+            pendingReward: pendingRewards[index].toNumber(),
+          })),
+        )
+      }
+    }
+    getPools()
+  }, [stakingNftContract, chainId])
+
+  const stakeHandler = async (nftContract, tokenId) => {
+    await stakingNftContract.stake(ethers.utils.getAddress(nftContract), BigNumber.from(tokenId))
+  }
+
+  const toggle = (tab) => {
+    if (activeTab !== tab) setActiveTab(tab)
   }
 
   return (
     <Page>
       <StakingPage>
-        <NavBar  activeTab={activeTab} toggle={toggle} />
+        <NavBar activeTab={activeTab} toggle={toggle} />
 
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
             <Row>
-              <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-1.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn><span className="effect-light">Unstaked</span></Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-
-              <Col sm="12" md="3"  className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn><span className="effect-light">Unstaked</span></Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-
-              <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-3.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn><span className="effect-light">Unstaked</span></Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-
-              <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-4.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn className="green-color">
-                      <span className="effect-light">staked</span>
-                    </Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-            </Row>
-          </TabPane>
-
-          <TabPane tabId="2">
-            <Row>
-            <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-1.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn><span className="effect-light">Unstaked</span></Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-
-              <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn className="green-color"><span className="effect-light">staked</span></Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-            </Row>
-          </TabPane>
-
-          <TabPane tabId="3">
-            <Row>
-              <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn className="green-color"><span className="effect-light">staked</span></Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
+              {pools.map((p, index) => (
+                <CardStaking
+                  image={p.image}
+                  isStaking={p.owner !== ethers.constants.AddressZero}
+                  nftContract={p.nftContract}
+                  reward={p.reward}
+                  tokenId={p.tokenId}
+                  onStake={stakeHandler}
+                />
+              ))}
             </Row>
           </TabPane>
         </TabContent>
@@ -237,7 +93,7 @@ const StakingPage = styled.div`
         color: #fff;
         font-weight: 700;
         text-transform: uppercase;
-        animation: blur .75s ease-out infinite;
+        animation: blur 0.75s ease-out infinite;
         text-shadow: 0px 0px 5px #fff, 0px 0px 7px #fff;
       }
     }
@@ -325,7 +181,6 @@ const Btn = styled.button`
     color: #1cbb1c;
   }
 
-
   &:hover {
     .effect-light {
       text-align: center;
@@ -333,32 +188,17 @@ const Btn = styled.button`
       color: #fff;
       font-weight: 700;
       text-transform: uppercase;
-      animation: blur .75s ease-out infinite;
+      animation: blur 0.75s ease-out infinite;
       text-shadow: 0px 0px 5px #fff, 0px 0px 7px #fff;
     }
   }
-  
 
   @keyframes blur {
     from {
-      text-shadow:0px 0px 10px #fff,
-        0px 0px 10px #fff, 
-        0px 0px 25px #fff,
-        0px 0px 25px #fff,
-        0px 0px 25px #fff,
-        0px 0px 25px #fff,
-        0px 0px 25px #fff,
-        0px 0px 25px #fff,
-        0px 0px 50px #fff,
-        0px 0px 50px #fff,
-        0px 0px 50px #7B96B8,
-        0px 0px 150px #7B96B8,
-        0px 10px 100px #7B96B8,
-        0px 10px 100px #7B96B8,
-        0px 10px 100px #7B96B8,
-        0px 10px 100px #7B96B8,
-        0px -10px 100px #7B96B8,
-        0px -10px 100px #7B96B8;
+      text-shadow: 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 25px #fff, 0px 0px 25px #fff, 0px 0px 25px #fff,
+        0px 0px 25px #fff, 0px 0px 25px #fff, 0px 0px 25px #fff, 0px 0px 50px #fff, 0px 0px 50px #fff,
+        0px 0px 50px #7b96b8, 0px 0px 150px #7b96b8, 0px 10px 100px #7b96b8, 0px 10px 100px #7b96b8,
+        0px 10px 100px #7b96b8, 0px 10px 100px #7b96b8, 0px -10px 100px #7b96b8, 0px -10px 100px #7b96b8;
     }
   }
 `
@@ -387,7 +227,8 @@ const Number = styled.h3`
   font-weight: 600;
   position: relative;
   transform: scale(1);
-  text-shadow: -1px 0 1px #c5a354, 0 1px 1px #e0b649, 5px 5px 10px rgb(179 167 106 / 78%), -5px -5px 10px rgb(183 155 65 / 40%);
+  text-shadow: -1px 0 1px #c5a354, 0 1px 1px #e0b649, 5px 5px 10px rgb(179 167 106 / 78%),
+    -5px -5px 10px rgb(183 155 65 / 40%);
 
   &:before {
     content: attr(data-heading);
@@ -395,7 +236,15 @@ const Number = styled.h3`
     top: 0;
     position: absolute;
     z-index: 1;
-    background: linear-gradient(to bottom, #ffe047 22%, #fff144 24%, #cfc09f 26%, #ffe686 27%, #ffecb3 40%, #ffe14f 78%);
+    background: linear-gradient(
+      to bottom,
+      #ffe047 22%,
+      #fff144 24%,
+      #cfc09f 26%,
+      #ffe686 27%,
+      #ffecb3 40%,
+      #ffe14f 78%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: none;
@@ -413,4 +262,5 @@ const Ticket = styled.div`
   font-size: 14px;
   font-weight: 600;
 `
+
 export default Staking

@@ -1,7 +1,7 @@
 import { Menu as UikitMenu, MenuEntry } from '@luckyswap/uikit'
 import { ChainId } from '@luckyswap/v2-sdk'
 import { InjectedConnector } from '@web3-react/injected-connector'
-import { XLUCKY_TESTNET_ADDRESSES } from 'config'
+import { XLUCKY_ADDRESSES } from 'config'
 import bep20Abi from 'config/abi/erc20.json'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
@@ -28,7 +28,7 @@ const Menu = (props) => {
 
   const [balanceToken, setBalanceToken] = useState(0)
 
-  const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
+  const useContractTemp = useContract(XLUCKY_ADDRESSES[chainId], bep20Abi)
 
   useEffect(() => {
     if (connector instanceof InjectedConnector) {

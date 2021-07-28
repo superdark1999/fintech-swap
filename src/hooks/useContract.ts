@@ -1,13 +1,14 @@
 import { Contract } from '@ethersproject/contracts'
 import { ROUTER_ADDRESSES, WNATIVE } from '@luckyswap/v2-sdk'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
-import { useWeb3React } from '@web3-react/core'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
 import addresss from 'config/constants/contracts'
+import nftAbi from 'config/abi/nft.json'
 import { useActiveWeb3React } from 'hooks'
 import useWeb3 from 'hooks/useWeb3'
 import useWeb3Provider from 'hooks/useWeb3Provider'
 import { useMemo } from 'react'
+import stakingNftAbi from 'config/abi/StakingNft.json'
 import FARMS_ABI from '../config/abi/masterchef.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import ENS_ABI from '../constants/abis/ens-registrar.json'
@@ -17,11 +18,24 @@ import ROUTER_ABI from '../constants/abis/router.json'
 import WETH_ABI from '../constants/abis/weth.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { getContract } from '../utils'
+import { getNftAddress, getStakingNftAddress } from '../utils/addressHelpers'
 import {
-  getBep20Contract, getBunnyFactoryContract,
-  getBunnySpecialContract, getCakeContract, getClaimRefundContract, getEasterNftContract, getIfoContract,
+  getBep20Contract,
+  getBunnyFactoryContract,
+  getBunnySpecialContract,
+  getCakeContract,
+  getClaimRefundContract,
+  getEasterNftContract,
+  getIfoContract,
   getLotteryContract,
-  getLotteryTicketContract, getLotteryV2Contract, getMasterchefContract, getPancakeRabbitContract, getPointCenterIfoContract, getProfileContract, getSouschefContract, getTradingCompetitionContract
+  getLotteryTicketContract,
+  getLotteryV2Contract,
+  getMasterchefContract,
+  getPancakeRabbitContract,
+  getPointCenterIfoContract,
+  getProfileContract,
+  getSouschefContract,
+  getTradingCompetitionContract,
 } from '../utils/contractHelpers'
 
 /**
@@ -89,37 +103,37 @@ export const useERC20 = (address: string) => {
 }
 
 export const useMasterchef = () => {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const web3 = useWeb3()
   return useMemo(() => getMasterchefContract(web3, chainId), [web3, chainId])
 }
 
 export const useCake = () => {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const web3 = useWeb3()
   return useMemo(() => getCakeContract(web3, chainId), [web3, chainId])
 }
 
 export const useBunnyFactory = () => {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const web3 = useWeb3()
   return useMemo(() => getBunnyFactoryContract(web3, chainId), [web3, chainId])
 }
 
 export const usePancakeRabbits = () => {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const web3 = useWeb3()
   return useMemo(() => getPancakeRabbitContract(web3, chainId), [web3, chainId])
 }
 
 export const useProfile = () => {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const web3 = useWeb3()
   return useMemo(() => getProfileContract(web3, chainId), [web3, chainId])
 }
 
 export const useLottery = () => {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const web3 = useWeb3()
   return useMemo(() => getLotteryContract(web3, chainId), [web3, chainId])
 }
@@ -130,31 +144,31 @@ export const useSousChef = (id) => {
 }
 
 export const usePointCenterIfoContract = () => {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const web3 = useWeb3()
   return useMemo(() => getPointCenterIfoContract(web3, chainId), [web3, chainId])
 }
 
 export const useBunnySpecialContract = () => {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const web3 = useWeb3()
   return useMemo(() => getBunnySpecialContract(web3, chainId), [web3, chainId])
 }
 
 export const useClaimRefundContract = () => {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const web3 = useWeb3()
   return useMemo(() => getClaimRefundContract(web3, chainId), [web3, chainId])
 }
 
 export const useTradingCompetitionContract = () => {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const web3 = useWeb3()
   return useMemo(() => getTradingCompetitionContract(web3, chainId), [web3, chainId])
 }
 
 export const useEasterNftContract = () => {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const web3 = useWeb3()
   return useMemo(() => getEasterNftContract(web3, chainId), [web3, chainId])
 }
@@ -176,10 +190,20 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 }
 
 export function useFarmsContract(): Contract | null {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   return useContract(addresss.masterChef[chainId], FARMS_ABI, true)
 }
 
 export function useStakingContract(address: any | null): Contract | null {
   return useContract(address, SMART_CHEF_ABI, true)
+}
+
+export function useStakingNftContract(): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(getStakingNftAddress(chainId), stakingNftAbi)
+}
+
+export function useNftContract(): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(getNftAddress(chainId), nftAbi)
 }

@@ -23,6 +23,8 @@ import {
   getClaimRefundAddress,
   getTradingCompetitionAddress,
   getEasterNftAddress,
+  getNftAddress,
+  getStakingNftAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -44,9 +46,13 @@ import sousChefBnb from 'config/abi/sousChefBnb.json'
 import claimRefundAbi from 'config/abi/claimRefund.json'
 import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
 import easterNftAbi from 'config/abi/easterNft.json'
+import stakingNftAbi from 'config/abi/StakingNft.json'
+import nftAbi from 'config/abi/nft.json'
+
 import { ChainId } from '@luckyswap/v2-sdk'
 import { getWeb3NoAccount } from './web3'
 
+// TODO : use ethers instead of Web3
 const getContract = (abi: any, address: string, web3?: Web3) => {
   const _web3 = web3 ?? getWeb3NoAccount()
   return new _web3.eth.Contract(abi as unknown as AbiItem, address)
@@ -110,4 +116,12 @@ export const getTradingCompetitionContract = (web3?: Web3, chainId?: ChainId) =>
 }
 export const getEasterNftContract = (web3?: Web3, chainId?: ChainId) => {
   return getContract(easterNftAbi, getEasterNftAddress(chainId), web3)
+}
+
+export const getStakingNftContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(stakingNftAbi, getStakingNftAddress(chainId), web3)
+}
+
+export const getNftContract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(nftAbi, getNftAddress(chainId), web3)
 }
