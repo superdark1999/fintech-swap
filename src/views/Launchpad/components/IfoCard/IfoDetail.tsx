@@ -50,6 +50,7 @@ const IfoTitle = ({ activeIfo }: any) => {
   const [balance, setBalance] = useState(0)
   const [isApproved, setIsApproved] = useState(false)
   const [isDepositing, setIsDepositing] = useState(false);
+  const [isClaiming, setIsClaiming] = useState(false);
   const [isWaningAllowedDepositAmount, setIsWaningAllowedDepositAmount] = useState(false)
   const [value, setValue] = useState('')
 
@@ -235,13 +236,17 @@ const IfoTitle = ({ activeIfo }: any) => {
 
   const handleClaim = async () => {
     try {
-      await raisingTokenContract.harvest().then((response) => {
+      setIsClaiming(true);
+      const tx = await raisingTokenContract.harvest().then((response) => {
         addTransaction(response, {
           summary: 'Claim successfully!',
         })
       })
+
     } catch (err) {
       toastError('Not thing to claim')
+      setIsClaiming(false);
+      
     }
   }
 
@@ -507,7 +512,7 @@ const IfoTitle = ({ activeIfo }: any) => {
               <Button
                 className="finished"
                 color="primary"
-                disabled={getStatus() || hasHarvest || depositedAmount.toNumber() === 0}
+                disabled={getStatus() || hasHarvest || depositedAmount.toNumber() === 0 || isClaiming}
                 onClick={handleClaim}
               >
                 {getStatus() && spinnerIcon}
