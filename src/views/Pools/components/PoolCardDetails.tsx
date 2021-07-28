@@ -85,7 +85,8 @@ export default function PoolCardDetails({
           })
         })
         .catch((error: any) => {
-          console.log(error)
+        setIsHarvesting(false)
+        console.log(error)
         })
         if (!tx)
         setIsHarvesting(false)
