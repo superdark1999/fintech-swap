@@ -37,19 +37,19 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
   }, [max])
 
   // const ticketss = useTickets()
-  const ticketsLength =100
+  const ticketsLength = 100
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => setVal(e.currentTarget.value)
 
-  const maxNumber = useMaxNumber()
   const lotteryV2Contract = useLotteryV2contract()
   const addTransaction = useTransactionAdder()
 
   const {
     currentLotteryId
   } = useLotteryV2();
-
-  const userCurrentTickets = []
+  console.log("currentLotteryId", currentLotteryId)
+  const userCurrentTickets = useMemo(() => {return []}, [])
+  console.log("userCurrentTickets", userCurrentTickets);
 
   const [updateTicket, randomize, tickets, allComplete, getTicketsForPurchase] = useTicketsReducer(
     parseInt(val, 10), // number of tickets
@@ -61,12 +61,11 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
       setRequestedBuy(true)
       const ticketsForPurchase = getTicketsForPurchase();
       const tx =  lotteryV2Contract.buyTickets(currentLotteryId, ticketsForPurchase);
-      console.log("info", ticketsForPurchase, currentLotteryId);
     } catch (e) {
       console.error(e)
     }
   }, [lotteryV2Contract, currentLotteryId, getTicketsForPurchase])
-  
+
   const handleSelectMax = useCallback(() => {
     if (Number(maxTickets) > LOTTERY_MAX_NUMBER_OF_TICKETS) {
       if (LOTTERY_MAX_TICKET_IN_ROUND - ticketsLength > LOTTERY_MAX_NUMBER_OF_TICKETS)
