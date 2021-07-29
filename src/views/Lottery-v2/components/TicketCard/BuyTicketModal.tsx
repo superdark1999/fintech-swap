@@ -9,9 +9,8 @@ import { useMultiBuyLottery, useMaxNumber } from 'hooks/useBuyLottery'
 import useI18n from 'hooks/useI18n'
 import { LOTTERY_MAX_NUMBER_OF_TICKETS, LOTTERY_TICKET_PRICE, LOTTERY_MAX_TICKET_IN_ROUND } from 'config'
 import { useContract, useLotteryV2contract } from 'hooks/useContract'
-import useTickets from 'hooks/useTickets'
+import {useTicketLotteryV2} from 'hooks/useTicketLotteryV2'
 import { getLotteryAddress, getLotteryV2Address } from 'utils/addressHelpers'
-import lotteryAbi from 'config/abi/lottery.json'
 import lotteryV2 from 'config/abi/lotteryV2.json'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useLotteryV2 } from 'hooks/useLotteryV2';
@@ -39,8 +38,8 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     return parseInt(getFullDisplayBalance(max.div(LOTTERY_TICKET_PRICE)), 10)
   }, [max])
 
-  // const ticketss = useTickets()
-  const ticketsLength = 100
+  const userTickets = useTicketLotteryV2()
+  const ticketsLength = userTickets.length;
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => setVal(e.currentTarget.value)
 
@@ -49,6 +48,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
 
   const {
     currentLotteryId,
+    maxNumberTicketsPerBuyOrClaim,
     lotteryData 
   } = useLotteryV2();
 
@@ -76,15 +76,6 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     [discountDivisor, priceTicketInCake],
   )
 
-  const percentageDiscount = () => {
-    const percentageAsBn = new BigNumber(discountValue).div(new BigNumber(ticketCostBeforeDiscount)).times(100)
-    if (percentageAsBn.isNaN() || percentageAsBn.eq(0)) {
-      return 0
-    }
-    return percentageAsBn.toNumber().toFixed(2)
-  }
-
-
   useEffect(() => {
     const numberOfTicketsToBuy = new BigNumber(val)
     const costAfterDiscount = getTicketCostAfterDiscount(numberOfTicketsToBuy)
@@ -95,21 +86,28 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     setDiscountValue(discountBeingApplied.gt(0) ? getFullDisplayBalance(discountBeingApplied, 18) : '0')
   }, [val, priceTicketInCake, discountDivisor, getTicketCostAfterDiscount])
 
+  const percentageDiscount = () => {
+    const percentageAsBn = new BigNumber(discountValue).div(new BigNumber(ticketCostBeforeDiscount)).times(100)
+    if (percentageAsBn.isNaN() || percentageAsBn.eq(0)) {
+      return 0
+    }
+    return percentageAsBn.toNumber().toFixed(2)
+  }
 
   const handleBuy = useCallback(async () => {
     try {
       setRequestedBuy(true)
       const ticketsForPurchase = getTicketsForPurchase();
-      const tx =  lotteryV2Contract.buyTickets(currentLotteryId, ticketsForPurchase);
+      const tx =  await lotteryV2Contract.buyTickets(currentLotteryId, ticketsForPurchase);
     } catch (e) {
       console.error(e)
     }
   }, [lotteryV2Contract, currentLotteryId, getTicketsForPurchase])
 
   const handleSelectMax = useCallback(() => {
-    if (Number(maxTickets) > LOTTERY_MAX_NUMBER_OF_TICKETS) {
-      if (LOTTERY_MAX_TICKET_IN_ROUND - ticketsLength > LOTTERY_MAX_NUMBER_OF_TICKETS)
-        setVal(LOTTERY_MAX_NUMBER_OF_TICKETS.toString())
+    if (Number(maxTickets) > parseInt(maxNumberTicketsPerBuyOrClaim)) {
+      if (LOTTERY_MAX_TICKET_IN_ROUND - ticketsLength > parseInt(maxNumberTicketsPerBuyOrClaim))
+        setVal(maxNumberTicketsPerBuyOrClaim)
       else
         setVal((LOTTERY_MAX_TICKET_IN_ROUND - ticketsLength).toString())
     } else if((LOTTERY_MAX_TICKET_IN_ROUND - ticketsLength > Number(maxTickets))) {
@@ -117,7 +115,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     } else {
       setVal(LOTTERY_MAX_NUMBER_OF_TICKETS.toString())
     }
-  }, [maxTickets, ticketsLength])
+  }, [maxTickets, ticketsLength, maxNumberTicketsPerBuyOrClaim])
 
   const cakeCosts = (amount: string): number => {
     return +amount * LOTTERY_TICKET_PRICE
@@ -164,8 +162,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
           disabled={
             pendingTx ||
             parseInt(val) > Number(maxTickets) ||
-            parseInt(val) > 100 ||
-            // parseInt(val) > LOTTERY_MAX_NUMBER_OF_TICKETS ||
+            parseInt(val) > parseInt(maxNumberTicketsPerBuyOrClaim) ||
             // parseInt(val) + ticketsLength > LOTTERY_MAX_TICKET_IN_ROUND ||
             parseInt(val) < 1
           }
