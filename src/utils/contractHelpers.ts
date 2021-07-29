@@ -15,6 +15,7 @@ import {
   getBunnyFactoryAddress,
   getBunnySpecialAddress,
   getCakeAddress,
+  getMulticallV2Address,
   getLotteryV2Address,
   getLotteryAddress,
   getLotteryTicketAddress,
@@ -38,6 +39,7 @@ import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import lotteryAbi from 'config/abi/lottery.json'
 import lotteryTicketAbi from 'config/abi/lotteryNft.json'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
+import MultiCallAbi from 'config/abi/MulticallV2.json'
 import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
@@ -51,8 +53,7 @@ const getContract = (abi: any, address: string, web3?: Web3) => {
   const _web3 = web3 ?? getWeb3NoAccount()
   return new _web3.eth.Contract(abi as unknown as AbiItem, address)
 }
-
-const getContract2 = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+const getContractV2 = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider
   return new ethers.Contract(address, abi, signerOrProvider)
 }
@@ -89,9 +90,14 @@ export const getBunnyFactoryContract = (web3?: Web3, chainId?: ChainId) => {
 export const getBunnySpecialContract = (web3?: Web3, chainId?: ChainId) => {
   return getContract(bunnySpecialAbi, getBunnySpecialAddress(chainId), web3)
 }
-
-export const getLotteryV2Contract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract2(lotteryV2Abi, getLotteryV2Address(), signer)
+// export const getLotteryV2Contract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+//   return getContractV2(lotteryV2Abi, getLotteryV2Address(), signer)
+// }
+export const getLotteryV2Contract = (web3?: Web3, chainId?: ChainId) => {
+  return getContract(lotteryV2Abi, getLotteryV2Address(chainId), web3)
+}
+export const getMulticallContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContractV2(MultiCallAbi, getMulticallV2Address(), signer)
 }
 export const getLotteryContract = (web3?: Web3, chainId?: ChainId) => {
   return getContract(lotteryAbi, getLotteryAddress(chainId), web3)

@@ -24,6 +24,7 @@ import { fetchPrices } from './prices'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { AchievementState, Farm, Pool, PriceState, ProfileState, State, TeamsState } from './types'
+import { fetchCurrentLotteryIdAndMaxBuy } from './lotteryV2/helpers';
 
 export const useFetchPublicData = () => {
   const { chainId } = useActiveWeb3React()
@@ -220,4 +221,10 @@ export const useBlock = () => {
 
 export const useInitialBlock = () => {
   return useSelector((state: State) => state.block.initialBlock)
+}
+
+
+export const useLotteryV2 = async () => {
+  const {currentLotteryId, maxNumberTicketsPerBuyOrClaim} = await fetchCurrentLotteryIdAndMaxBuy();
+  return {currentLotteryId , maxNumberTicketsPerBuyOrClaim}
 }

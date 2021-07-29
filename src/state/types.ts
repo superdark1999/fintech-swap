@@ -26,6 +26,9 @@ export interface Farm extends FarmConfig {
   }
 }
 
+export type SerializedBigNumber = string
+
+
 export interface Pool extends PoolConfig {
   totalStaked?: BigNumber
   startBlock?: number

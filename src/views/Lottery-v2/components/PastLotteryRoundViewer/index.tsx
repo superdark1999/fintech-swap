@@ -77,16 +77,21 @@ const PastLotteryRoundViewer = () => {
 
   return (
     <Wrapper>
-      <PastLotterySearcher initialLotteryNumber={mostRecentLotteryNumber} onSubmit={handleSubmit} />
-      {!isInitialized || isLoading ? (
+      {mostRecentLotteryNumber !== -1 && (
+      <div>
+        {(!isInitialized || isLoading) ? ( 
         <Card>
           <StyledCardBody>
             <Loading />
           </StyledCardBody>
         </Card>
       ) : (
-        <PastRoundCard error={error} data={roundData} />
+        <PastRoundCard initialLotteryNumber={mostRecentLotteryNumber} onSubmit={handleSubmit} error={error} data={roundData} />
       )}
+      </div>
+    )}
+      {/* <PastLotterySearcher initialLotteryNumber={mostRecentLotteryNumber} onSubmit={handleSubmit} /> */}
+      
     </Wrapper>
   )
 }
