@@ -4,12 +4,11 @@ import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 're
 import classnames from 'classnames'
 
 export default function NavBar({ activeTab, toggle }) {
-
   return (
     <BoxNav>
       <Nav tabs>
-       <LeftItem>
-        <NavItem>
+        <LeftItem>
+          <NavItem>
             <NavLink
               className={classnames({ active: activeTab === '1' })}
               onClick={() => {
@@ -19,7 +18,7 @@ export default function NavBar({ activeTab, toggle }) {
               all cards
             </NavLink>
           </NavItem>
-       </LeftItem>
+        </LeftItem>
 
         <RightItem>
           <NavItem>
@@ -29,15 +28,26 @@ export default function NavBar({ activeTab, toggle }) {
                 toggle('2')
               }}
             >
-              unstaked
+              pending
             </NavLink>
           </NavItem>
-          
+
           <NavItem>
             <NavLink
               className={classnames({ active: activeTab === '3' })}
               onClick={() => {
                 toggle('3')
+              }}
+            >
+              unstaked
+            </NavLink>
+          </NavItem>
+
+          <NavItem>
+            <NavLink
+              className={classnames({ active: activeTab === '4' })}
+              onClick={() => {
+                toggle('4')
               }}
             >
               staked
@@ -48,7 +58,6 @@ export default function NavBar({ activeTab, toggle }) {
     </BoxNav>
   )
 }
-
 
 const BoxNav = styled.div`
   margin-top: 20px;
@@ -70,15 +79,13 @@ const BoxNav = styled.div`
     }
 
     &.active {
-      color:#f4c706 !important;
+      color: #f4c706 !important;
       border-bottom: none !important;
     }
   }
 `
 
-const LeftItem = styled.div`
-
-`
+const LeftItem = styled.div``
 
 const RightItem = styled.div`
   display: grid;

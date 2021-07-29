@@ -1,0 +1,149 @@
+{
+  "nft": {
+    "urlCompressed": "https://d1don5jg7yw08.cloudfront.net/filters:quality(70)/nft-images/triangon_holocards_1618133017409.png",
+    "baseID": "triangon_h_1618133017409",
+    "tokenID": "1",
+    "updatedAt": 1618133034058,
+    "url": "https://airnfts.s3.amazonaws.com/nft-images/triangon_holocards_1618133017409.png",
+    "gcpUrl": "https://firebasestorage.googleapis.com/v0/b/air-nfts-storage.appspot.com/o/nft-images%2Ftriangon_holocards_1618133017409?alt=media&token=49626169-5e06-44eb-b6b5-75b70124697d",
+    "image": "https://firebasestorage.googleapis.com/v0/b/air-nfts-storage.appspot.com/o/nft-images%2Ftriangon_holocards_1618133017409?alt=media&token=49626169-5e06-44eb-b6b5-75b70124697d",
+    "initialCreatorAddress": "0x8A7FFAa1d4b902663a4c0d388D16241B0F2EC793",
+    "ownerAddress": "0xdf5d9988f95cb2cca52440f8c8be48970477b5a9",
+    "createdAt": "Sun, 11 Apr 2021 09:23:41 GMT",
+    "urlThumbnail": "https://d1don5jg7yw08.cloudfront.net/828x650/nft-images/triangon_holocards_1618133017409.png",
+    "price": "0.3",
+    "mintTransactionHash": "0x7de1f2fa157c5d0cf940aeb8e07d6b31e04c3fb9fed02b03b99b16bda2e5549d",
+    "priority": 0,
+    "listed": false,
+    "name": "Triangon Holocards",
+    "attributes": [{ "value": "0.3", "trait_type": "General" }],
+    "description": "#00\nGenesis piece of holographic cards. 🏆\n\nLaunch a new project and, in addition to serving your audience, you will be breaking something.",
+    "ipfsUrl": "ipfs://__IPFS_HASH__triangon_h_1618133017409",
+    "category": []
+  },
+  "owner": {
+    "userBio": "the hardest part is to be simple",
+    "hasAcceptedTerms": true,
+    "username": "money_elephant",
+    "userAvatarUrlThumbnail": "https://airnfts.s3.amazonaws.com/profile-images/0xDF5D9988f95Cb2ccA52440F8c8Be48970477B5A9_1619700577679.jpg",
+    "buys": { "airDropValue": "20.1", "numberOfBuy": 3, "totalAmount": 0.402 },
+    "airDropEvents": [
+      {
+        "amount": 345.1,
+        "registeredOn": 1619362275946,
+        "receiver": "0xDF5D9988f95Cb2ccA52440F8c8Be48970477B5A9",
+        "transactionHash": "0x15f32b52011ba6f938c241e0145648d1e4bcd836336ecac4697ab66c0434aba4"
+      },
+      {
+        "amount": 2500,
+        "registeredOn": 1620552125827,
+        "receiver": "0xDF5D9988f95Cb2ccA52440F8c8Be48970477B5A9",
+        "transactionHash": "0xb53c73d2a7620cde3042b09988e6a26db12d9de0f1a4dc19bd4cc8d664b4c39b"
+      }
+    ],
+    "walletAddress": "0xDF5D9988f95Cb2ccA52440F8c8Be48970477B5A9",
+    "userAvatarUrl": "https://airnfts.s3.amazonaws.com/profile-images/0xDF5D9988f95Cb2ccA52440F8c8Be48970477B5A9_1619700577679.jpg",
+    "updatedAt": 1619700584387,
+    "userAvatarUrlCompressed": "https://airnfts.s3.amazonaws.com/profile-images/0xDF5D9988f95Cb2ccA52440F8c8Be48970477B5A9_1619700577679.jpg"
+  },
+  "creator": {
+    "userAvatarUrlThumbnail": "https://d1don5jg7yw08.cloudfront.net/200x200/profile-images/0x8a7ffaa1d4b902663a4c0d388d16241b0f2ec793_1618134052918.png",
+    "airDropEvents": [
+      {
+        "transactionHash": "0xe92ddc44db08f8fb503e4485889133ae835957bf71af90f1ce11f51cb8cf466e",
+        "amount": 20,
+        "registeredOn": 1619363672837,
+        "receiver": "0x8A7FFAa1d4b902663a4c0d388D16241B0F2EC793"
+      }
+    ],
+    "username": "Holocards",
+    "hasAcceptedTerms": true,
+    "userBio": "Creating set of holo cards for the collectors that see future in NFTs",
+    "walletAddress": "0x8A7FFAa1d4b902663a4c0d388D16241B0F2EC793",
+    "userAvatarUrlCompressed": "https://d1don5jg7yw08.cloudfront.net/filters:quality(70)/profile-images/0x8a7ffaa1d4b902663a4c0d388d16241b0f2ec793_1618134052918.png",
+    "userAvatarUrl": "https://airnfts.s3.amazonaws.com/profile-images/0x8a7ffaa1d4b902663a4c0d388d16241b0f2ec793_1618134052918.png",
+    "updatedAt": 1618134058923
+  },
+  "historyEvents": [
+    {
+      "doneOn": "Wed, 21 Apr 2021 18:35:52 GMT",
+      "eventType": "SALE",
+      "nftIDSold": "1",
+      "nftSoldAtPrice": "0.3",
+      "transactionHash": "0x6dd48c62363278ced471ecad7c1e0028c4ad45fe05d59180224d9c2785a95dad",
+      "buyer": {
+        "username": "money_elephant",
+        "userAvatarUrlCompressed": "https://airnfts.s3.amazonaws.com/profile-images/0xDF5D9988f95Cb2ccA52440F8c8Be48970477B5A9_1619700577679.jpg",
+        "userAvatarUrl": "https://airnfts.s3.amazonaws.com/profile-images/0xDF5D9988f95Cb2ccA52440F8c8Be48970477B5A9_1619700577679.jpg",
+        "updatedAt": 1619700584387,
+        "accountCreatedAt": 1618413768047,
+        "userAvatarUrlThumbnail": "https://airnfts.s3.amazonaws.com/profile-images/0xDF5D9988f95Cb2ccA52440F8c8Be48970477B5A9_1619700577679.jpg",
+        "hasAcceptedTerms": true,
+        "buys": { "airDropValue": "20.1", "totalAmount": 0.402, "numberOfBuy": 3 },
+        "airDropEvents": [
+          {
+            "transactionHash": "0x15f32b52011ba6f938c241e0145648d1e4bcd836336ecac4697ab66c0434aba4",
+            "amount": 345.1,
+            "registeredOn": 1619362275946,
+            "receiver": "0xDF5D9988f95Cb2ccA52440F8c8Be48970477B5A9"
+          },
+          {
+            "amount": 2500,
+            "registeredOn": 1620552125827,
+            "transactionHash": "0xb53c73d2a7620cde3042b09988e6a26db12d9de0f1a4dc19bd4cc8d664b4c39b",
+            "receiver": "0xDF5D9988f95Cb2ccA52440F8c8Be48970477B5A9"
+          }
+        ],
+        "sales": { "airDropValue": "2825", "numberOfSales": 3, "totalAmount": 56.5 },
+        "userBio": "the hardest part is to be simple",
+        "walletAddress": "0xDF5D9988f95Cb2ccA52440F8c8Be48970477B5A9"
+      },
+      "seller": {
+        "walletAddress": "0x8A7FFAa1d4b902663a4c0d388D16241B0F2EC793",
+        "userAvatarUrl": "https://airnfts.s3.amazonaws.com/profile-images/0x8a7ffaa1d4b902663a4c0d388d16241b0f2ec793_1618134052918.png",
+        "hasAcceptedTerms": true,
+        "accountCreatedAt": 1618132255472,
+        "username": "Holocards",
+        "updatedAt": 1618134058923,
+        "userAvatarUrlThumbnail": "https://d1don5jg7yw08.cloudfront.net/200x200/profile-images/0x8a7ffaa1d4b902663a4c0d388d16241b0f2ec793_1618134052918.png",
+        "airDropEvents": [
+          {
+            "transactionHash": "0xe92ddc44db08f8fb503e4485889133ae835957bf71af90f1ce11f51cb8cf466e",
+            "amount": 20,
+            "registeredOn": 1619363672837,
+            "receiver": "0x8A7FFAa1d4b902663a4c0d388D16241B0F2EC793"
+          }
+        ],
+        "userBio": "Creating set of holo cards for the collectors that see future in NFTs",
+        "userAvatarUrlCompressed": "https://d1don5jg7yw08.cloudfront.net/filters:quality(70)/profile-images/0x8a7ffaa1d4b902663a4c0d388d16241b0f2ec793_1618134052918.png",
+        "sales": { "totalAmount": 0.4, "numberOfSales": 2, "airDropValue": "20" }
+      }
+    },
+    {
+      "nftIDSold": "1",
+      "transactionHash": "0x7de1f2fa157c5d0cf940aeb8e07d6b31e04c3fb9fed02b03b99b16bda2e5549d",
+      "doneOn": "Sun, 11 Apr 2021 09:23:41 GMT",
+      "eventType": "MINT",
+      "minter": {
+        "userAvatarUrlThumbnail": "https://d1don5jg7yw08.cloudfront.net/200x200/profile-images/0x8a7ffaa1d4b902663a4c0d388d16241b0f2ec793_1618134052918.png",
+        "airDropEvents": [
+          {
+            "transactionHash": "0xe92ddc44db08f8fb503e4485889133ae835957bf71af90f1ce11f51cb8cf466e",
+            "amount": 20,
+            "registeredOn": 1619363672837,
+            "receiver": "0x8A7FFAa1d4b902663a4c0d388D16241B0F2EC793"
+          }
+        ],
+        "username": "Holocards",
+        "accountCreatedAt": 1618132255472,
+        "hasAcceptedTerms": true,
+        "userBio": "Creating set of holo cards for the collectors that see future in NFTs",
+        "sales": { "airDropValue": "20", "numberOfSales": 2, "totalAmount": 0.4 },
+        "walletAddress": "0x8A7FFAa1d4b902663a4c0d388D16241B0F2EC793",
+        "userAvatarUrlCompressed": "https://d1don5jg7yw08.cloudfront.net/filters:quality(70)/profile-images/0x8a7ffaa1d4b902663a4c0d388d16241b0f2ec793_1618134052918.png",
+        "userAvatarUrl": "https://airnfts.s3.amazonaws.com/profile-images/0x8a7ffaa1d4b902663a4c0d388d16241b0f2ec793_1618134052918.png",
+        "updatedAt": 1618134058923
+      }
+    }
+  ]
+}

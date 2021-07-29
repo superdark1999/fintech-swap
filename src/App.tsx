@@ -7,6 +7,7 @@ import useWeb3ReactManager from 'hooks/useWeb3ReactManager'
 import React, { lazy, useEffect, useState } from 'react'
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { useFetchPriceList, useFetchProfile, useFetchPublicData } from 'state/hooks'
+import Nft from 'views/Staking/nft'
 import EasterEgg from './components/EasterEgg'
 import Menu from './components/Menu'
 import PageLoader from './components/PageLoader'
@@ -161,6 +162,9 @@ const App: React.FC = () => {
                 </Route>
                 <Route path="/earn">
                   <PlayToEarn />
+                </Route>
+                <Route path="/nft">
+                  <Nft />
                 </Route>
                 <Route path="/staking">
                   <Staking />

@@ -1,118 +1,41 @@
-import Page from 'components/layout/Page'
-import { BigNumber, ethers } from 'ethers'
-import React, { useEffect, useState } from 'react'
-import { Row, TabContent, TabPane } from 'reactstrap'
-import { fetchImagePool, fetchUserPendingRewards } from 'state/poolsNft/fetchPoolInfo'
+import React from 'react'
+import { Col } from 'reactstrap'
 import styled from 'styled-components'
-import { useStakingNftContract } from '../../hooks/useContract'
-import CardStaking from './Components/CardStaking'
-import NavBar from './Components/NavBar'
-import { useActiveWeb3React } from '../../hooks/index'
 
-const Staking: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('1')
-  const [pools, setPools] = useState([])
-  const { chainId } = useActiveWeb3React()
-
-  const stakingNftContract = useStakingNftContract()
-
-  useEffect(() => {
-    const getPools = async () => {
-      if (stakingNftContract) {
-        const allPools = await stakingNftContract.getAllPools()
-
-        const images = await fetchImagePool(allPools, chainId)
-        const pendingRewards = await fetchUserPendingRewards(allPools, chainId)
-
-        setPools(
-          allPools.map((p, index) => ({
-            ...p,
-            image: images[index],
-            pendingReward: pendingRewards[index].toNumber(),
-          })),
-        )
-      }
-    }
-    getPools()
-  }, [stakingNftContract, chainId])
-
-  const stakeHandler = async (nftContract, tokenId) => {
-    await stakingNftContract.stake(ethers.utils.getAddress(nftContract), BigNumber.from(tokenId))
-  }
-
-  const toggle = (tab) => {
-    if (activeTab !== tab) setActiveTab(tab)
-  }
-
-  return (
-    <Page>
-      <StakingPage>
-        <NavBar activeTab={activeTab} toggle={toggle} />
-
-        <TabContent activeTab={activeTab}>
-          <TabPane tabId="1">
-            <Row>
-              {pools.map((p, index) => (
-                <CardStaking
-                  image={p.image}
-                  isStaking={p.owner !== ethers.constants.AddressZero}
-                  nftContract={p.nftContract}
-                  reward={p.reward}
-                  tokenId={p.tokenId}
-                  onStake={stakeHandler}
-                />
-              ))}
-            </Row>
-          </TabPane>
-        </TabContent>
-      </StakingPage>
-    </Page>
-  )
+interface CardNftTokenProps {
+  tokenId: number
+  nftContract: string
+  image: string
+  onRegisterStaking: any
 }
 
-const StakingPage = styled.div`
-  .align-center {
-    display: unset;
+const CardNftToken: React.FC<CardNftTokenProps> = ({
+  tokenId,
+  nftContract,
+  image,
+  onRegisterStaking,
+}: CardNftTokenProps) => {
+  return (
+    <Col sm="12" md="3" className="align-center space-mb">
+      <BoxCenter>
+        <Figure>
+          <img src={image} className="thumb" alt="" />
+          <img src="/images/staking/box-img.png" alt="" className="line-box" />
+        </Figure>
 
-    @media (min-width: 768px) {
-      display: flex;
-      justify-content: center;
-    }
+        <Launchers>
+          <img src="/images/staking/effect.png" alt="" />
+        </Launchers>
 
-    &:hover {
-      cursor: pointer;
-
-      .thumb {
-        transform: scale(0.9);
-        transition: all 0.9s;
-      }
-
-      .effect-light {
-        text-align: center;
-        font-size: 1.2em;
-        color: #fff;
-        font-weight: 700;
-        text-transform: uppercase;
-        animation: blur 0.75s ease-out infinite;
-        text-shadow: 0px 0px 5px #fff, 0px 0px 7px #fff;
-      }
-    }
-  }
-
-  .space-mb {
-    margin-bottom: 40px;
-
-    @media (max-width: 768px) {
-      margin-bottom: 40px;
-      padding-bottom: 40px;
-      border-bottom: 1px solid #ffffff57;
-
-      &:last-child {
-        border: none;
-      }
-    }
-  }
-`
+        <BoxFooter>
+          <Space>
+            <Ticket onClick={() => onRegisterStaking({ tokenId, nftContract, image, onRegisterStaking })}>claim</Ticket>
+          </Space>
+        </BoxFooter>
+      </BoxCenter>
+    </Col>
+  )
+}
 
 const BoxCenter = styled.div`
   display: flex;
@@ -263,4 +186,4 @@ const Ticket = styled.div`
   font-weight: 600;
 `
 
-export default Staking
+export default CardNftToken

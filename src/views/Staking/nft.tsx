@@ -1,47 +1,48 @@
 import Page from 'components/layout/Page'
-import { BigNumber, ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { Row, TabContent, TabPane } from 'reactstrap'
-import { fetchImagePool, fetchUserPendingRewards } from 'state/poolsNft/fetchPoolInfo'
 import styled from 'styled-components'
-import { useStakingNftContract } from '../../hooks/useContract'
-import CardStaking from './Components/CardStaking'
-import NavBar from './Components/NavBar'
+import Web3 from 'web3'
+import multicall from 'utils/multicall'
 import { useActiveWeb3React } from '../../hooks/index'
+import { useNftContract } from '../../hooks/useContract'
+import {
+  fetchNftUser as fetchNftTokenUser,
+  getTokensURI,
+  getImagesFromURI,
+  getImageFromTokens,
+} from '../../state/poolsNft/fetchPoolInfo'
+import NavBar from './Components/NavBar'
+import CardNftToken from './Components/CardToken'
 
-const Staking: React.FC = () => {
+const Nft: React.FC = () => {
   const [activeTab, setActiveTab] = useState('1')
-  const [pools, setPools] = useState([])
-  const { chainId } = useActiveWeb3React()
+  const [tokens, setTokens] = useState([])
+  const { account } = useActiveWeb3React()
 
-  const stakingNftContract = useStakingNftContract()
+  console.log('tokens : ', tokens)
 
   useEffect(() => {
-    const getPools = async () => {
-      if (stakingNftContract) {
-        const allPools = await stakingNftContract.getAllPools()
+    const getUserData = async () => {
+      const userTokens = await fetchNftTokenUser(account)
+      const images = await getImageFromTokens(userTokens)
 
-        const images = await fetchImagePool(allPools, chainId)
-        const pendingRewards = await fetchUserPendingRewards(allPools, chainId)
-
-        setPools(
-          allPools.map((p, index) => ({
-            ...p,
-            image: images[index],
-            pendingReward: pendingRewards[index].toNumber(),
-          })),
-        )
+      for (let i = 0; i < userTokens.length; i++) {
+        userTokens[i].image = images[i]
       }
-    }
-    getPools()
-  }, [stakingNftContract, chainId])
 
-  const stakeHandler = async (nftContract, tokenId) => {
-    await stakingNftContract.stake(ethers.utils.getAddress(nftContract), BigNumber.from(tokenId))
-  }
+      setTokens(userTokens.filter((token) => token.image))
+    }
+
+    getUserData()
+  }, [account])
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab)
+  }
+
+  const registerHandler = (info) => {
+    console.log('register info : ', info)
   }
 
   return (
@@ -52,14 +53,12 @@ const Staking: React.FC = () => {
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
             <Row>
-              {pools.map((p, index) => (
-                <CardStaking
-                  image={p.image}
-                  isStaking={p.owner !== ethers.constants.AddressZero}
-                  nftContract={p.nftContract}
-                  reward={p.reward}
-                  tokenId={p.tokenId}
-                  onStake={stakeHandler}
+              {tokens.map((token) => (
+                <CardNftToken
+                  image={token.image}
+                  nftContract={token.nftContract}
+                  tokenId={token.tokenId}
+                  onRegisterStaking={registerHandler}
                 />
               ))}
             </Row>
@@ -251,16 +250,4 @@ const Number = styled.h3`
   }
 `
 
-const Ticket = styled.div`
-  background: url('../images/staking/bg-button.png') no-repeat center center;
-  background-size: contain;
-  width: 100%;
-  height: 36px;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 36px;
-  font-size: 14px;
-  font-weight: 600;
-`
-
-export default Staking
+export default Nft
