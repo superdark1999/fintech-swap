@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useLotteryV2contract } from 'hooks/useContract'
+import { Ticket } from 'config/constants/types'
+
 
 export const useTicketLotteryV2 = () => {
-  const [tickets, setTickets] = useState([]);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
   const { account } = useWeb3React()
 
   const lotteryV2Contract = useLotteryV2contract()

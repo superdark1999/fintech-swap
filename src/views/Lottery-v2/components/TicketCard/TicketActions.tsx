@@ -17,6 +17,7 @@ import lotteryTicketAbi from 'config/abi/lotteryNft.json'
 import { isTransactionRecent, useAllTransactions } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { getTickets } from 'utils/lotteryUtils'
+import {useTicketLotteryV2} from 'hooks/useTicketLotteryV2'
 import BuyTicketModal from './BuyTicketModal'
 import MyTicketsModal from './UserTicketsModal'
 import PurchaseWarningModal from './PurchaseWarningModal'
@@ -42,7 +43,6 @@ const CardActions = styled.div`
 const TicketCard: React.FC = () => {
   const TranslateString = useI18n()
   const [balanceToken, setBalanceToken] = useState(0)
-  const [tickets, setTickets] = useState([])
   const [allowance, setAllowance] = useState(0)
   // const allowance = useLotteryAllowance()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
@@ -56,6 +56,7 @@ const TicketCard: React.FC = () => {
   const lotteryContract = useContract(getLotteryV2Address(), lotteryAbi)
   const { fastRefresh } = useRefresh()
 
+  const tickets = useTicketLotteryV2();
   const ticketsLength = tickets.length
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)

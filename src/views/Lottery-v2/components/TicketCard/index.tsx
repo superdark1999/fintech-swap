@@ -5,7 +5,8 @@ import axios from 'axios'
 
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
-import useTickets from 'hooks/useTickets'
+import {useTicketLotteryV2} from 'hooks/useTicketLotteryV2'
+
 import { useCurrentTime } from 'hooks/useTimer'
 import useRefresh from 'hooks/useRefresh'
 import { useActiveWeb3React } from 'hooks';
@@ -65,7 +66,7 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
 
-  const tickets = useTickets()
+  const tickets = useTicketLotteryV2()
   const ticketsLength = tickets.length
 
   const currentMillis = useCurrentTime()

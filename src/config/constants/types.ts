@@ -28,6 +28,11 @@ export interface Ifo {
   sympol?: string
 }
 
+export interface Ticket {
+  ticketId: number,
+  ticketNumber: number,
+status: boolean
+}
 export interface LotteryTicket {
   id: string
   number: string
