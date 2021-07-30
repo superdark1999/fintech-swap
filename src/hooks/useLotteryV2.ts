@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { getLotteryV2Contract } from 'utils/contractHelpers'
 // import { fetchCurrentLotteryIdAndMaxBuy } from '../state/lotteryV2/helpers';
 import { useLotteryV2contract } from 'hooks/useContract'
 import { ethersToSerializedBigNumber } from 'utils/bigNumber'
@@ -54,6 +53,9 @@ export const useLotteryV2 = () => {
           countWinnersPerBracket,
           rewardsBreakdown,
         } = lotteryData
+        console.log('status', status);
+
+        console.log("lotteryData", lotteryData)
 
         setState({ 
           currentLotteryId: currentLotteryId.toNumber(), 

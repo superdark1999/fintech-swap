@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import { TranslatableText, SerializedBigNumber } from 'state/types'
 
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
@@ -33,6 +34,14 @@ export interface Ticket {
   ticketNumber: number,
 status: boolean
 }
+
+export enum LotteryStatus {
+  PENDING = 'pending',
+  OPEN = 'open',
+  CLOSE = 'close',
+  CLAIMABLE = 'claimable',
+}
+
 export interface LotteryTicket {
   id: string
   number: string
@@ -41,6 +50,14 @@ export interface LotteryTicket {
   roundId?: string
   cakeReward?: SerializedBigNumber
 }
+
+export interface LotteryTicketClaimData {
+  ticketsWithUnclaimedRewards: LotteryTicket[]
+  allWinningTickets: LotteryTicket[]
+  cakeTotal: BigNumber
+  roundId: string
+}
+
 
 export enum PoolCategory {
   'COMMUNITY' = 'Community',

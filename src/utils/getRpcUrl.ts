@@ -1,4 +1,5 @@
 import { ChainId } from '@luckyswap/v2-sdk'
+import { useActiveWeb3React } from 'hooks'
 import random from 'lodash/random'
 import { RPC_URLS } from '../constants'
 

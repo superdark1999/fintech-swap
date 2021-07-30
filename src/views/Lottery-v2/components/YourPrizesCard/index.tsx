@@ -1,10 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, CardBody } from '@luckyswap/uikit'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { useTotalClaim } from 'hooks/useTickets'
-import PrizesWonContent from './PrizesWonContent'
-import NoPrizesContent from './NoPrizesContent'
+import { Button, Heading, Flex, useModal, AutoRenewIcon, Card } from '@luckyswap/uikit'
+import useI18n from 'hooks/useI18n'
+import useGetUnclaimedRewards from '../../hooks/useGetUnclaimedRewards'
 
 const StyledCard = styled(Card)`
   margin: 0 !important;
@@ -34,14 +32,42 @@ const StyledCard = styled(Card)`
 `
 
 const YourPrizesCard: React.FC = () => {
-  const { claimAmount } = useTotalClaim()
+  const TranslateString = useI18n()
+  const { fetchAllRewards, unclaimedRewards, fetchStatus } = useGetUnclaimedRewards()
 
-  const winnings = getBalanceNumber(claimAmount)
-  const isAWin = winnings > 0
+  const checkNowText = () => {
+    // if (lotteryIsNotClaimable) {
+    //   return `${t('Calculating rewards')}...`
+    // }
+    // if (isFetchingRewards) {
+    //   return t('Checking')
+    // }
+    return TranslateString(999, 'Check Now')
+  }
 
+  const a = true;
   return (
-    <StyledCard isDisabled={!isAWin} isActive={isAWin}>
-      <CardBody>{isAWin ? <PrizesWonContent /> : <NoPrizesContent />}</CardBody>
+    // <StyledCard isDisabled={!isAWin} isActive={isAWin}>
+    <StyledCard >
+      <Flex alignItems="center" justifyContent="center">
+        {/* <TicketImage src="/images/lottery/ticket-l.png" alt="lottery ticket" /> */}
+        <Flex mx={['4px', null, '16px']} flexDirection="column">
+          <Heading textAlign="center" color="#F4EEFF" mb="24px">
+            {TranslateString(999,'Are you a winner?')}
+          </Heading>
+          <Button
+            style={{backgroundColor: "#f4c708"}}
+            // disabled={isCheckNowDisabled}
+            onClick={fetchAllRewards}
+            // isLoading={a}
+            // endIcon={ <AutoRenewIcon color="currentColor" spin /> }
+          >
+            {checkNowText()}
+          </Button>
+        </Flex>
+        {/* <TicketImage src="/images/lottery/ticket-r.png" alt="lottery ticket" /> */}
+      </Flex>
+      {/* <CardBody>{isAWin ? <PrizesWonContent /> : <NoPrizesContent />}</CardBody> */}
     </StyledCard>
   )
 }

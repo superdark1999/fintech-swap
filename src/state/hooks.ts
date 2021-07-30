@@ -22,9 +22,11 @@ import {
 } from './actions'
 import { fetchPrices } from './prices'
 import { fetchProfile } from './profile'
+import { fetchCurrentLotteryId, fetchCurrentLottery, fetchPastLotteries } from './lottery2'
+
 import { fetchTeam, fetchTeams } from './teams'
 import { AchievementState, Farm, Pool, PriceState, ProfileState, State, TeamsState } from './types'
-import { fetchCurrentLotteryIdAndMaxBuy } from './lotteryV2/helpers';
+import { fetchCurrentLotteryIdAndMaxBuy } from './lottery2/helpers';
 
 export const useFetchPublicData = () => {
   const { chainId } = useActiveWeb3React()
@@ -74,6 +76,34 @@ export const useFarmUser = (pid) => {
     stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : new BigNumber(0),
     earnings: farm.userData ? new BigNumber(farm.userData.earnings) : new BigNumber(0),
   }
+}
+
+// lottery v2
+export const useFetchLottery = () => {
+  const { account } = useWeb3React()
+  const { fastRefresh } = useRefresh()
+  const dispatch = useAppDispatch()
+  const currentLotteryId = useGetCurrentLotteryId()
+
+  useEffect(() => {
+    // get current lottery ID, max tickets and historical lottery subgraph data
+    dispatch(fetchCurrentLotteryId())
+    dispatch(fetchPastLotteries())
+  }, [dispatch])
+
+  useEffect(() => {
+    // get public data for current lottery
+    if (currentLotteryId) {
+      dispatch(fetchCurrentLottery({ currentLotteryId })) 
+    }
+  }, [dispatch, currentLotteryId, fastRefresh])
+
+  useEffect(() => {
+    // get user tickets for current lottery, and user lottery subgraph data
+    if (account && currentLotteryId) {
+      // dispatch(fetchUserTicketsAndLotteries({ account, lotteryId: currentLotteryId }))
+    }
+  }, [dispatch, currentLotteryId, account])
 }
 
 // Pools
@@ -227,4 +257,14 @@ export const useInitialBlock = () => {
 export const useLotteryV2 = async () => {
   const {currentLotteryId, maxNumberTicketsPerBuyOrClaim} = await fetchCurrentLotteryIdAndMaxBuy();
   return {currentLotteryId , maxNumberTicketsPerBuyOrClaim}
+}
+
+export const useGetCurrentLotteryId = () => {
+  return useSelector((state: State) => state.lottery.currentLotteryId)
+}
+export const useGetLotteriesGraphData = () => {
+  return useSelector((state: State) => state.lottery.lotteriesData)
+}
+export const useGetUserLotteriesGraphData = () => {
+  return useSelector((state: State) => state.lottery.userLotteryData)
 }
