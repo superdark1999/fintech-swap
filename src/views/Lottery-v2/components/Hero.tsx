@@ -83,7 +83,7 @@ const Hero = () => {
           <ContentDes>
             <Title>{TranslateString(708, 'The LUCKY Lottery')}</Title>
             <Blurb>{TranslateString(710, 'Buy tickets with LUCKY for collect more NFTs')}</Blurb>
-            <Blurb>{TranslateString(712, 'Win if 1, 2, 3, 4, 5 or 6 of your ticket numbers match!')}</Blurb>
+            <Blurb>{TranslateString(712, 'Win if 2, 3, or 4 of your ticket numbers match!')}</Blurb>
           </ContentDes>
           <LotteryProgress />
         </RightWrapper>

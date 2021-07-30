@@ -1,4 +1,4 @@
-import { TranslatableText } from 'state/types'
+import { TranslatableText, SerializedBigNumber } from 'state/types'
 
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 
@@ -26,6 +26,20 @@ export interface Ifo {
   logo?: string
   typePool?: string
   sympol?: string
+}
+
+export interface Ticket {
+  ticketId: number,
+  ticketNumber: number,
+status: boolean
+}
+export interface LotteryTicket {
+  id: string
+  number: string
+  status: boolean
+  rewardBracket?: number
+  roundId?: string
+  cakeReward?: SerializedBigNumber
 }
 
 export enum PoolCategory {

@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, TicketRound, Text, Heading } from '@luckyswap/uikit'
+import axios from 'axios'
+
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
-import useTickets from 'hooks/useTickets'
+import {useTicketLotteryV2} from 'hooks/useTicketLotteryV2'
+
 import { useCurrentTime } from 'hooks/useTimer'
+import useRefresh from 'hooks/useRefresh'
+import { useActiveWeb3React } from 'hooks';
+import { BASE_API_ADMIN, BASE_API_ADMIN_PRO } from 'config'
 import TicketActions from './TicketActions'
-import { getTicketSaleTime } from '../../helpers/CountdownHelpers'
+import { getTicketSaleTime, getTimeRemainDraw } from '../../helpers/CountdownHelpers'
+
 
 interface CardProps {
   isSecondCard?: boolean
@@ -55,14 +62,38 @@ const TicketCountWrapper = styled.div`
 `
 
 const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
+  const { chainId }  = useActiveWeb3React();
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
 
-  const tickets = useTickets()
+  const tickets = useTicketLotteryV2()
   const ticketsLength = tickets.length
 
   const currentMillis = useCurrentTime()
   const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(currentMillis)
+
+  const { fastRefresh } = useRefresh()
+  const [timeRemainDraw, setTimeRemainDraw] = useState("");
+  const [timeRemainSale, setTimeRemainSale] = useState("");
+
+  const URL = chainId === 56 ? BASE_API_ADMIN_PRO : BASE_API_ADMIN;
+
+  useEffect(() => {
+    const fetchTimeLottery = async () => {
+      const timeEndLottery = new Date();
+      const timeStartLottery = new Date();
+      const {data} = await axios.get(`${URL}/lotteries`);
+
+      // set time remain to end lottery phase
+      timeEndLottery.setHours(data[0].timeDrawLottery.hh, data[0].timeDrawLottery.mm, 0);
+      setTimeRemainDraw(getTimeRemainDraw(timeEndLottery));
+
+      // set time remain to start new lottery phase
+      timeStartLottery.setHours(data[0].timeStartNewPhase.hh, data[0].timeStartNewPhase.mm, 0);
+      setTimeRemainSale(getTimeRemainDraw(timeStartLottery));
+    }
+    fetchTimeLottery();
+  },[fastRefresh, URL])
   // 12
   return (
     <StyledCard isSecondCard={isSecondCard}>
@@ -74,10 +105,10 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
           {lotteryHasDrawn ? (
             <TicketCountWrapper>
               <Text fontSize="20px" color="textSubtle">
-                {TranslateString(870, 'Your tickets for this round')}
+                {TranslateString(870, 'Your ticket for this round')}
               </Text>
               <Heading size="lg" style={{ color: '#F3C111', fontSize: '30px' }}>
-                {timeUntilTicketSale}
+                {timeRemainSale}
               </Heading>
             </TicketCountWrapper>
           ) : (

@@ -3,44 +3,46 @@ import { Button, Modal } from '@luckyswap/uikit'
 import styled from 'styled-components'
 import { useWinningNumbers } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
+import { Ticket } from 'config/constants/types'
+
 
 interface UserTicketsModalProps {
-  myTicketNumbers: Array<any>
+  myTicketNumbers: Array<Ticket>
   from?: string
   onDismiss?: () => void
 }
 
 const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, onDismiss, from }) => {
-  const winNumbers = useWinningNumbers()
+  const winNumbers = [] // todo: improve
   const TranslateString = useI18n()
-  const rewardMatch = useCallback(
-    (number) => {
-      let n = 0
-      for (let i = winNumbers.length - 1; i >= 0; i--) {
-        // eslint-disable-next-line eqeqeq
-        if (winNumbers[i] == number[i]) n++
-      }
-      return n
-    },
-    [winNumbers],
-  )
+  // const rewardMatch = useCallback(
+  //   (number) => {
+  //     let n = 0
+  //     for (let i = winNumbers.length - 1; i >= 0; i--) {
+  //       // eslint-disable-next-line eqeqeq
+  //       if (winNumbers[i] == number[i]) n++
+  //     }
+  //     return n
+  //   },
+  //   [winNumbers],
+  // )
 
   const listItems = myTicketNumbers.map((number, index) => {
-    if (rewardMatch(number[0]) > 1 && from !== 'buy') {
-      const emoji = new Array(rewardMatch(number[0]) + 1).join('🤑')
-      return (
-        // eslint-disable-next-line react/no-array-index-key
-        <RewardP key={index}>
-          {emoji}
-          {number.toString()}
-          {emoji}
-        </RewardP>
-      )
-    }
+    // if (rewardMatch(number[0]) > 1 && from !== 'buy') {
+    //   const emoji = new Array(rewardMatch(number[0]) + 1).join('🤑')
+    //   return (
+    //     // eslint-disable-next-line react/no-array-index-key
+    //     <RewardP key={index}>
+    //       {emoji}
+    //       {number.toString()}
+    //       {emoji}
+    //     </RewardP>
+    //   )
+    // }
     // eslint-disable-next-line react/no-array-index-key
     return (
       <p style={{ color: 'yellow' }} key={index}>
-        {number.toString()}
+        {(number.ticketNumber % 1000000).toString()}
       </p>
     )
   })

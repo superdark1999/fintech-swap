@@ -5,6 +5,7 @@ import { Image, Card, CardBody } from '@luckyswap/uikit'
 import { useWinningNumbers, useMatchingRewardLength } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
+import CardValue from '../../Home/components/CardValue'
 
 const WinningNumbers: React.FC = () => {
   const { account } = useWeb3React()
@@ -14,8 +15,6 @@ const WinningNumbers: React.FC = () => {
   const MatchedNumber3 = useMatchingRewardLength(3)
   const MatchedNumber2 = useMatchingRewardLength(2)
   const TranslateString = useI18n()
-
-  // long dep trai winning number
 
   return (
     <CardWrapper>
@@ -42,71 +41,52 @@ const WinningNumbers: React.FC = () => {
             {winNumbers.map((number, index) => (
               // eslint-disable-next-line react/no-array-index-key
               <TicketNumberBox key={index}>
-                <CenteredText>{number}</CenteredText>
+                <CenteredText>
+                  <CardValue
+                bold
+                color=""
+                value={number}
+                decimals={0}
+                fontSize="60px"
+                fontWeight="600"
+              ></CardValue>
+                  </CenteredText>
               </TicketNumberBox>
             ))}
-               <TicketNumberBox>
-                <CenteredText>5</CenteredText>
-              </TicketNumberBox>
-              <TicketNumberBox>
-                <CenteredText>8</CenteredText>
-              </TicketNumberBox>
-
           </Row>
           <Column>
-          <RowNoPadding>
+            <RowNoPadding>
               <CenteredTextWithPadding style={{ color: '#fff' }}>
-                {TranslateString(442, 'Tickets matching 6 numbers:')}
+                {/* {TranslateString(442, 'Tickets matching 4 numbers:')} */}
+                Tickets matching<strong style={{fontWeight: 900}}> 4 </strong>numbers:
               </CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{ color: '#F3C111' }}>{MatchedNumber4}</strong>
+                <strong style={{ color: '#F3C111', fontWeight: 900 }}>{MatchedNumber4}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
             <RowNoPadding>
               <CenteredTextWithPadding style={{ color: '#fff' }}>
-                {TranslateString(442, 'Tickets matching 5 numbers:')}
+                {/* {TranslateString(444, 'Tickets matching 3 numbers:')} */}
+                Tickets matching<strong style={{fontWeight: 900}}> 3 </strong>numbers:
               </CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{ color: '#F3C111' }}>{MatchedNumber4}</strong>
+                <strong style={{ color: '#F3C111', fontWeight: 900 }}>{MatchedNumber3}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
             <RowNoPadding>
               <CenteredTextWithPadding style={{ color: '#fff' }}>
-                {TranslateString(444, 'Tickets matching 4 numbers:')}
+                {/* {TranslateString(446, 'Tickets matching 2 numbers:')} */}
+                Tickets matching<strong style={{fontWeight: 900}}> 2 </strong>numbers:
               </CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{ color: '#F3C111' }}>{MatchedNumber3}</strong>
-              </CenteredTextWithPadding>
-            </RowNoPadding>
-            <RowNoPadding>
-              <CenteredTextWithPadding style={{ color: '#fff' }}>
-                {TranslateString(446, 'Tickets matching 3 numbers:')}
-              </CenteredTextWithPadding>
-              <CenteredTextWithPadding>
-                <strong style={{ color: '#F3C111' }}>{MatchedNumber2}</strong>
-              </CenteredTextWithPadding>
-            </RowNoPadding>
-            <RowNoPadding>
-              <CenteredTextWithPadding style={{ color: '#fff' }}>
-                {TranslateString(446, 'Tickets matching 2 numbers:')}
-              </CenteredTextWithPadding>
-              <CenteredTextWithPadding>
-                <strong style={{ color: '#F3C111' }}>{MatchedNumber2}</strong>
-              </CenteredTextWithPadding>
-            </RowNoPadding>
-            <RowNoPadding>
-              <CenteredTextWithPadding style={{ color: '#fff' }}>
-                {TranslateString(446, 'Tickets matching 1 numbers:')}
-              </CenteredTextWithPadding>
-              <CenteredTextWithPadding>
-                <strong style={{ color: '#F3C111' }}>{MatchedNumber2}</strong>
+                <strong style={{ color: '#F3C111', fontWeight: 900 }}>{MatchedNumber2}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
           </Column>
 
-          <Link href="/" target="_blank">
+          {/* <Link href="/" target="_blank">
             {TranslateString(448, 'Export recent winning numbers')}
-          </Link>
+          </Link> */}
         </StyledCardContentInner>
       </CardBodyNew>
     </CardWrapper>
@@ -126,11 +106,17 @@ const Link = styled.a`
   margin-top: 1em;
   text-decoration: none;
   color: #101010;
-  background-color: #f3c111;
+  background-color: transparent ;
   border-radius: 12px;
   padding: 17px 25px;
   font-weight: 500;
   white-space: nowrap;
+  border-radius: 100px;
+  border: 1px solid #F3C111;
+  color: #F3C111;
+  padding: 11px 60px;
+  font-size: 26px;
+  line-height: 30px;
 
   @media (min-width) {
     padding: 10px 25px;
@@ -211,31 +197,34 @@ const CenteredTextWithPadding = styled.div`
   align-items: center;
   padding-left: 2px;
   padding-right: 2px;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 26px;
 `
 
 const TicketNumberBox = styled.div`
   padding: 10px;
   border-radius: 12px;
-  text-shadow: rgb(255 214 0) 0px 0px 12px;
+  // text-shadow: rgb(255 214 0) 0px 0px 12px;
   // background: linear-gradient(180deg, #54dade 0%, #24c7d6 76.22%);
   color: white;
   font-size: 20px;
   font-weight: 900;
   margin: 10px;
   margin-bottom: 7px;
-  width: 20px;
+  width: 40px;
+  color: #F3C111;
 
   @media (min-width: 768px) {
-    font-size: 40px;
+    font-size: 64px;
     margin: 20px;
     background: url('../images/bg-number.svg');
     background-repeat: no-repeat;
-    width: 69px;
-    min-height: 100px;
+    width: 120px;
+    min-height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
+
   }
 `
 
@@ -266,7 +255,7 @@ const CardWrapper = styled.div`
 
 const Title = styled.div`
   color: ${(props) => props.theme.colors.secondary};
-  font-size: 24px;
+  font-size: 34px;
   width: 50vw;
   text-align: center;
   font-weight: 1000;

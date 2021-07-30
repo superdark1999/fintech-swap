@@ -5,17 +5,19 @@ import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { useContract, useLotteryV2Contract } from 'hooks/useContract'
+import { useContract } from 'hooks/useContract'
 import { useApproveCallbackCustom } from 'hooks/useApproveCallback'
 import { XLUCKY_TESTNET_ADDRESSES } from 'config'
 import bep20Abi from 'config/abi/erc20.json'
 import lotteryAbi from 'config/abi/lottery.json'
 import useRefresh from 'hooks/useRefresh'
-import { getLotteryAddress, getLotteryTicketAddress } from 'utils/addressHelpers'
+import useUtilityToken from 'hooks/useUtilityToken'
+import { getLotteryV2Address, getLotteryTicketAddress } from 'utils/addressHelpers'
 import lotteryTicketAbi from 'config/abi/lotteryNft.json'
 import { isTransactionRecent, useAllTransactions } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { getTickets } from 'utils/lotteryUtils'
+import {useTicketLotteryV2} from 'hooks/useTicketLotteryV2'
 import BuyTicketModal from './BuyTicketModal'
 import MyTicketsModal from './UserTicketsModal'
 import PurchaseWarningModal from './PurchaseWarningModal'
@@ -24,6 +26,7 @@ import PurchaseWarningModal from './PurchaseWarningModal'
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
 }
+
 
 const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
@@ -37,11 +40,9 @@ const CardActions = styled.div`
   }
 `
 
-// long dep trai view tickets
 const TicketCard: React.FC = () => {
   const TranslateString = useI18n()
   const [balanceToken, setBalanceToken] = useState(0)
-  const [tickets, setTickets] = useState([])
   const [allowance, setAllowance] = useState(0)
   // const allowance = useLotteryAllowance()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
@@ -51,27 +52,43 @@ const TicketCard: React.FC = () => {
 
   const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
 
-  const lotteryV2Contract = useLotteryV2Contract()
-
   const ticketsContract = useContract(getLotteryTicketAddress(), lotteryTicketAbi)
-  const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
+  const lotteryContract = useContract(getLotteryV2Address(), lotteryAbi)
   const { fastRefresh } = useRefresh()
 
+  const tickets = useTicketLotteryV2();
   const ticketsLength = tickets.length
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)
   const [onPresentBuy] = useModal(<BuyTicketModal max={new BigNumber(balanceToken)} tokenName="CAKE" />)
 
-  useEffect(() => {
-    const fetchBalance = async () => {
-      const res = await getTickets(lotteryContract, ticketsContract, account, null)
-      setTickets(res)
-    }
+  const { listenApproveEvent } = useUtilityToken(XLUCKY_TESTNET_ADDRESSES[chainId])
 
-    if (account && lotteryContract && ticketsContract) {
-      fetchBalance()
+  // useEffect(() => {
+  //   const fetchBalance = async () => {
+  //     const res = await getTickets(lotteryContract, ticketsContract, account, null)
+  //     setTickets(res)
+  //   }
+
+  //   if (account && lotteryContract && ticketsContract) {
+  //     fetchBalance()
+  //   }
+  // }, [account, lotteryContract, fastRefresh, ticketsContract])
+
+  useEffect(() => {
+    const fetchApprovalData = async () => {
+      if (account && contractBEP20) {
+        try {
+          // const response = await contractBEP20?.allowance?.(account, getLotteryAddress())
+          setAllowance(new BigNumber('10000000000000000000000000000000').toNumber())
+        } catch (error) {
+          console.log(' error fetch approval data')
+        }
+      }
     }
-  }, [account, lotteryContract, fastRefresh, ticketsContract])
+    listenApproveEvent(() => fetchApprovalData())
+  }, [listenApproveEvent, account, contractBEP20])
+
 
   useEffect(() => {
     if (useContractTemp) {
@@ -101,7 +118,7 @@ const TicketCard: React.FC = () => {
     const fetchApprovalData = async () => {
       if (account && contractBEP20) {
         try {
-          const response = await contractBEP20?.allowance?.(account, getLotteryAddress())
+          const response = await contractBEP20?.allowance?.(account, getLotteryV2Address())
           setAllowance(response.toString())
         } catch (error) {
           console.log(' error fetch approval data')
@@ -113,7 +130,7 @@ const TicketCard: React.FC = () => {
   }, [account, contractBEP20])
   const [requestedApproval, setRequestedApproval] = useState(false)
 
-  const [approval] = useApproveCallbackCustom(XLUCKY_TESTNET_ADDRESSES[chainId], getLotteryAddress())
+  const [approval] = useApproveCallbackCustom(XLUCKY_TESTNET_ADDRESSES[chainId], getLotteryV2Address())
 
   async function onAttemptToApprove() {
     return approval()
@@ -121,7 +138,7 @@ const TicketCard: React.FC = () => {
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      await onAttemptToApprove()
+      await onAttemptToApprove().then()
     } catch (e) {
       console.error(e)
     }
@@ -144,8 +161,14 @@ const TicketCard: React.FC = () => {
     if (allowance.toString() === '0') {
       return (
         <Dflex>
-          <Button className="bg-yellow" width="100%">
-            {TranslateString(432, 'Connect Wallet')}
+          <Button
+            style={{ marginRight: '8px' }}
+            width="100%"
+            disabled={ticketsLength === 0}
+            variant="secondary"
+            onClick={onPresentMyTickets}
+          >
+            {TranslateString(432, 'View your tickets')}
           </Button>
           <Button
             className="border-yellow"
@@ -154,7 +177,7 @@ const TicketCard: React.FC = () => {
             onClick={handleApprove}
           >
             {getStatus() ? spinnerIcon : ''}
-            {TranslateString(494, 'View your tickets')}
+            {TranslateString(494, 'Approve')}
           </Button>
         </Dflex>
       )
@@ -180,8 +203,8 @@ const TicketCard: React.FC = () => {
 
   return (
     <CardActions>
-      {!lotteryHasDrawn ? (
-        <Button disabled> {TranslateString(874, 'On sale soon')}</Button>
+      {lotteryHasDrawn ? (
+        <Button className="btn-center" disabled> {TranslateString(874, 'On sale soon')}</Button>
       ) : (
         renderLotteryTicketButtons()
       )}
