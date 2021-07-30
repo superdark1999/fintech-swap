@@ -1,20 +1,33 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Button, Row, Col,Card, CardTitle,CardText, TabContent, TabPane,  Nav, NavItem, NavLink } from 'reactstrap';
 import Page from 'components/layout/Page'
+import { Tooltip } from 'antd';
 import styled from 'styled-components'
 import NavBar from './Components/NavBar'
+import ModalSubmit from './Components/ModalSubmit';
+
+
 // import CardStaking from './Components/CardStaking'
 
 
 
 const Staking: React.FC = () => {
   const [activeTab, setActiveTab] = useState('1');
+  const formRef = useRef()
+  const [isShowModalSubmit,setShowModalSubmit] = useState(false)
+
 
   const toggle = tab => {
     if(activeTab !== tab) setActiveTab(tab);
   }
+  
+  const onSubmit = (value: any)=>{
+    
+      setShowModalSubmit(false)
+  }
 
   return (
+    
     <Page>
       <StakingPage>
         <NavBar  activeTab={activeTab} toggle={toggle} />
@@ -208,6 +221,71 @@ const Staking: React.FC = () => {
               </Col>
             </Row>
           </TabPane>
+          <TabPane tabId="4">
+            <Row>
+              <Col sm="12" md="3" className="align-center space-mb">
+                <BoxCenter>
+                  <Figure>
+                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
+                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
+                  </Figure>
+                  
+                  <Launchers>
+                    <img src="/images/staking/effect.png" alt=""/>
+                  </Launchers>
+
+                  <BoxFooter>
+                    <Btn onClick={()=>{setShowModalSubmit(true)}}><Ticket>Submit</Ticket></Btn>
+
+                    {/* <Space>
+                      <Title>Collected Reward:</Title>
+                      <Dflex>
+                        <Number data-heading="0.000">0.000</Number>
+                        <Ticket>claim</Ticket>
+                      </Dflex>
+                    </Space> */}
+                  </BoxFooter>
+                </BoxCenter>
+              </Col>
+            </Row>
+
+            <ModalSubmit
+              isShowModalSubmit={isShowModalSubmit}
+              setShowModalSubmit={setShowModalSubmit}
+              formRef={formRef}
+              onSubmit={onSubmit}
+              // data={data}
+            />
+          </TabPane>
+          <TabPane tabId="5">
+            <Row>
+              <Col sm="12" md="3" className="align-center space-mb">
+                <Tooltip 
+                placement="rightTop"
+                color='#f4c708'
+                title={
+                  <p>Data submited</p>}>
+                <BoxCenter>
+                  <Figure>
+                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
+                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
+                  </Figure>
+                  
+                  <Launchers>
+                    <img src="/images/staking/effect.png" alt=""/>
+                  </Launchers>
+
+                  {/* <BoxFooter>
+                    <Btn onClick={()=>{setShowModalSubmit(true)}}><Ticket>Submit</Ticket></Btn>
+
+                  </BoxFooter> */}
+                </BoxCenter>
+                </Tooltip>
+              </Col>
+            </Row>
+
+          </TabPane>
+          
         </TabContent>
       </StakingPage>
     </Page>
