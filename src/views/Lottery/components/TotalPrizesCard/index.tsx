@@ -1,16 +1,21 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { Heading, Card, CardBody, CardFooter, Text, PancakeRoundIcon, Flex, Skeleton } from '@luckyswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { useTotalRewards } from 'hooks/useTickets'
+import { getLotteryAddress, getLotteryTicketAddress } from 'utils/addressHelpers'
+import { useContract } from 'hooks/useContract'
 import PastLotteryDataContext from 'contexts/PastLotteryDataContext'
+import lotteryAbi from 'config/abi/lottery.json'
+import { getLotteryIssueIndex } from 'utils/lotteryUtils'
 import ExpandableSectionButton from 'components/ExpandableSectionButton/ExpandableSectionButton'
 import { BigNumber } from 'bignumber.js'
 import { usePriceLuckyBusd } from 'state/hooks'
 import PrizeGrid from '../PrizeGrid'
 import CardBusdValue from '../../../Home/components/CardBusdValue'
+import CardValue from '../../../Home/components/CardValue'
 
 // const Container = styled.div`
 //   margin-left: auto;
@@ -18,6 +23,9 @@ import CardBusdValue from '../../../Home/components/CardBusdValue'
 //   max-width: 1200px;
 //   margin-bottom: 30px;
 // `
+interface Props {
+  account: any
+}
 
 const BoxTotal = styled.div`
   background: linear-gradient(45deg, rgb(35 35 35) 30%, rgb(45 45 45) 100%);
@@ -31,7 +39,7 @@ const BoxTotal = styled.div`
   grid-template-columns: 1fr;
 
   @media (min-width: 991px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr ;
     margin: 0 auto 60px;
   }
 `
@@ -141,6 +149,7 @@ const RoundPrize = styled.div`
 `
 
 const TotalPrizesCard = () => {
+  const [indexRoute, setIndexRoute]  = useState(0)
   const TranslateString = useI18n()
   const { account } = useWeb3React()
   const [showFooter, setShowFooter] = useState(false)
@@ -148,6 +157,21 @@ const TotalPrizesCard = () => {
   const lotteryPrizeAmountBusd = new BigNumber(lotteryPrizeAmount).multipliedBy(usePriceLuckyBusd()).toNumber()
   const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
   const { currentLotteryNumber } = useContext(PastLotteryDataContext)
+
+  const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
+  
+  useEffect(() => {
+    const fetchLotteryIndex = async () => {
+      if (lotteryContract) {
+        const index = await getLotteryIssueIndex(lotteryContract)
+
+        setIndexRoute(index)
+      }
+    }
+
+    fetchLotteryIndex()
+  }, [lotteryContract])
+
 
   return (
     <BoxTotal>
@@ -157,7 +181,7 @@ const TotalPrizesCard = () => {
             {currentLotteryNumber === 0 && <Skeleton height={20} width={56} />}
             <>
               <RoundPrize>
-                {TranslateString(720, `Round #${currentLotteryNumber}`, { num: currentLotteryNumber })}
+                {TranslateString(720, `Round #${indexRoute}`, { num: currentLotteryNumber })}
               </RoundPrize>
             </>
             {/* {currentLotteryNumber > 0 && (
@@ -169,7 +193,6 @@ const TotalPrizesCard = () => {
               )} */}
           </Flex>
         )}
-
         <CardHeading>
           <Left>
             <PrizeCountWrapper>
@@ -181,10 +204,18 @@ const TotalPrizesCard = () => {
                   <img width="75px" alt="" src="/images/icon-logo-y.png" />
                 </IconWrapper>
                 <Heading style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px', fontSize: '44' }} size="lg">
-                  {lotteryPrizeWithCommaSeparators} <span>LUCKY</span>
+                <CardValue
+                bold
+                color=""
+                value={parseInt(lotteryPrizeWithCommaSeparators)}
+                decimals={0}
+                fontSize="60px"
+                fontWeight="600"
+              ></CardValue> <span>LUCKY</span>
                 </Heading>
               </BoxLucky>
               <Dollar>{lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}</Dollar>
+
             </PrizeCountWrapper>
           </Left>
           <Right>

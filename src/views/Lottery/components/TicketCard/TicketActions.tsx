@@ -26,6 +26,7 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
 }
 
+
 const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
 const CardActions = styled.div`
@@ -117,7 +118,6 @@ const TicketCard: React.FC = () => {
       if (account && contractBEP20) {
         try {
           const response = await contractBEP20?.allowance?.(account, getLotteryAddress())
-          console.log("response", response.toString())
           setAllowance(response.toString())
         } catch (error) {
           console.log(' error fetch approval data')
@@ -203,7 +203,7 @@ const TicketCard: React.FC = () => {
   return (
     <CardActions>
       {lotteryHasDrawn ? (
-        <Button disabled> {TranslateString(874, 'On sale soon')}</Button>
+        <Button className="btn-center" disabled> {TranslateString(874, 'On sale soon')}</Button>
       ) : (
         renderLotteryTicketButtons()
       )}

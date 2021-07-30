@@ -1,41 +1,28 @@
-import { useMemo } from 'react'
-import useWeb3 from 'hooks/useWeb3'
-import useWeb3Provider from 'hooks/useWeb3Provider'
 import { Contract } from '@ethersproject/contracts'
-import { ChainId, ROUTER_ADDRESSES, FACTORY_ADDRESSES, WNATIVE } from '@luckyswap/v2-sdk'
-import { useActiveWeb3React } from 'hooks'
-import addresss from 'config/constants/contracts'
-import SMART_CHEF_ABI from 'config/abi/smartChef.json'
+import { ROUTER_ADDRESSES, WNATIVE } from '@luckyswap/v2-sdk'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import { useWeb3React } from '@web3-react/core'
-import {
-  getBep20Contract,
-  getCakeContract,
-  getBunnyFactoryContract,
-  getBunnySpecialContract,
-  getPancakeRabbitContract,
-  getProfileContract,
-  getIfoContract,
-  getLotteryContract,
-  getLotteryTicketContract,
-  getMasterchefContract,
-  getPointCenterIfoContract,
-  getSouschefContract,
-  getClaimRefundContract,
-  getTradingCompetitionContract,
-  getEasterNftContract,
-  getLotteryV2Contract
-} from '../utils/contractHelpers'
-import { getContract } from '../utils'
-import FACTORY_ABI from '../constants/abis/factory.json'
-import ROUTER_ABI from '../constants/abis/router.json'
-import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
-import ERC20_ABI from '../constants/abis/erc20.json'
+import SMART_CHEF_ABI from 'config/abi/smartChef.json'
+import addresss from 'config/constants/contracts'
+import { useActiveWeb3React } from 'hooks'
+import useWeb3 from 'hooks/useWeb3'
+import useWeb3Provider from 'hooks/useWeb3Provider'
+import { useMemo } from 'react'
+import FARMS_ABI from '../config/abi/masterchef.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import ENS_ABI from '../constants/abis/ens-registrar.json'
+import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
+import ERC20_ABI from '../constants/abis/erc20.json'
+import ROUTER_ABI from '../constants/abis/router.json'
 import WETH_ABI from '../constants/abis/weth.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
-import FARMS_ABI from '../config/abi/masterchef.json'
+import { getContract } from '../utils'
+import {
+  getBep20Contract, getBunnyFactoryContract,
+  getBunnySpecialContract, getCakeContract, getClaimRefundContract, getEasterNftContract, getIfoContract,
+  getLotteryContract,
+  getLotteryTicketContract, getLotteryV2Contract, getMasterchefContract, getPancakeRabbitContract, getPointCenterIfoContract, getProfileContract, getSouschefContract, getTradingCompetitionContract
+} from '../utils/contractHelpers'
 
 /**
  * Helper hooks to get specific contracts (by ABI)
@@ -95,7 +82,6 @@ export const useLotteryV2Contract = () => {
   const provider = useWeb3Provider()
   return useMemo(() => getLotteryV2Contract(provider.getSigner()), [provider])
 }
-
 
 export const useERC20 = (address: string) => {
   const web3 = useWeb3()

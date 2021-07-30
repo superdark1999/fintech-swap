@@ -167,12 +167,20 @@ export const getMax = async (lotteryContract) => {
 }
 
 export const getLotteryIssueIndex = async (lotteryContract) => {
-  const issueIndex = await lotteryContract.issueIndex()
-  return issueIndex
+  try {
+    const issueIndex = await lotteryContract.issueIndex()
+    return issueIndex
+  } catch {
+    return 0;
+  }
 }
 
 export const getLotteryStatus = async (lotteryContract) => {
-  return lotteryContract.drawed()
+  try {
+    return lotteryContract.drawed()
+  } catch {
+    return true;
+  }
 }
 
 export const getMatchingRewardLength = async (lotteryContract, matchNumber) => {

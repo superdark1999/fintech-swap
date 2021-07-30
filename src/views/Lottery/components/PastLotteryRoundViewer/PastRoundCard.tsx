@@ -10,11 +10,16 @@ interface PastRoundCardProps {
     message: string
   }
   data: DataResponse
+  initialLotteryNumber: number
+  onSubmit: (num: number) => void
 }
 
-const PastRoundCard: React.FC<PastRoundCardProps> = ({ error, data }) => {
+const PastRoundCard: React.FC<PastRoundCardProps> = ({ error, data, initialLotteryNumber, onSubmit }) => {
   return (
-    <FullWidth>{error.message ? <PastRoundCardError error={error} /> : <PastRoundCardDetails data={data} />}</FullWidth>
+    <FullWidth>{error.message ? <PastRoundCardError error={error} /> 
+    : <PastRoundCardDetails data={data}
+    initialLotteryNumber={initialLotteryNumber} 
+    onSubmit={onSubmit} />}</FullWidth>
   )
 }
 
@@ -22,13 +27,11 @@ const FullWidth = styled.div`
   width: 100%;
   background: linear-gradient(45deg, rgb(35 35 35) 30%, rgb(45 45 45) 100%);
   box-shadow: none;
-  display: grid;
-  grid-template-columns: 1fr;
+  display: block;
   margin-bottom: 20px;
   border-radius: 14px;
 
   @media (min-width: 991px) {
-    grid-template-columns: 1fr 1fr;
     margin-bottom: 30px;
   }
 `

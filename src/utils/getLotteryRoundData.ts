@@ -1,3 +1,6 @@
+import {BASE_API_ADMIN, BASE_API_ADMIN_PRO } from 'config';
+import { getChainId } from './web3React'
+
 export type DataResponse = {
   lotteryNumber: number
   lotteryDate: string
@@ -23,8 +26,12 @@ export type DataResponse = {
  * Get data for a specific lottery
  */
 const getLotteryRoundData = async (lotteryNumber: number): Promise<DataResponse> => {
+  const chainId = getChainId();
+
+  const URL = chainId === 56 ? BASE_API_ADMIN_PRO : BASE_API_ADMIN
+
   try {
-    const response = await fetch(`https://api.pancakeswap.com/api/singleLottery?lotteryNumber=${lotteryNumber || 0}`)
+    const response = await fetch(`${URL}/lotteries/history/${lotteryNumber || 0}`)
     const data = await response.json()
 
     return data

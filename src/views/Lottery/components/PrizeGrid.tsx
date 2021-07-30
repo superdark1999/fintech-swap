@@ -5,6 +5,7 @@ import { Heading, Text } from '@luckyswap/uikit'
 import { BigNumber } from 'bignumber.js'
 import { usePriceLuckyBusd } from 'state/hooks'
 import CardBusdValue from '../../Home/components/CardBusdValue'
+import CardValue from '../../Home/components/CardValue';
 
 export interface PrizeGridProps {
   lotteryPrizeAmount?: number
@@ -111,7 +112,15 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
           <CardBusd>
             {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(fourMatchesAmount)} />}  
           </CardBusd>
-          {fourMatchesAmount.toLocaleString()}
+          <CardValue
+                bold
+                color=""
+                value={fourMatchesAmount}
+                decimals={0}
+                fontSize="60px"
+                fontWeight="600"
+              ></CardValue>
+          {/* {fourMatchesAmount.toLocaleString()} */}
         </RightAlignedHeading>
       </GridItem>
       {/* 3 matches row */}
@@ -128,7 +137,15 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
           <CardBusd>
             {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(threeMatchesAmount)} />}  
           </CardBusd>
-          {threeMatchesAmount.toLocaleString()}
+          <CardValue
+                bold
+                color=""
+                value={threeMatchesAmount}
+                decimals={0}
+                fontSize="60px"
+                fontWeight="600"
+              ></CardValue>
+          {/* {threeMatchesAmount.toLocaleString()} */}
         </RightAlignedText>
       </GridItem>
       {/* 2 matches row */}
@@ -145,7 +162,15 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
           <CardBusd>
             {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(twoMatchesAmount)} />}
           </CardBusd>
-          {twoMatchesAmount.toLocaleString()}
+          <CardValue
+                bold
+                color=""
+                value={twoMatchesAmount}
+                decimals={0}
+                fontSize="60px"
+                fontWeight="600"
+              ></CardValue>
+          {/* {twoMatchesAmount.toLocaleString()} */}
         </RightAlignedText>
       </GridItem>
       {/* Burn row */}
@@ -160,7 +185,15 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
               <CardBusd>
                 {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(burnAmount)} />}
               </CardBusd>
-              {burnAmount.toLocaleString()}
+              <CardValue
+                bold
+                color=""
+                value={burnAmount}
+                decimals={0}
+                fontSize="60px"
+                fontWeight="600"
+              ></CardValue>
+              {/* {burnAmount.toLocaleString()} */}
             </RightAlignedText>
           </GridItem>
         </>
@@ -170,7 +203,15 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
             <CardBusd>
               {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(burnAmount)} />}
             </CardBusd>
-            {burnAmount.toLocaleString()}
+            <CardValue
+                bold
+                color=""
+                value={burnAmount}
+                decimals={0}
+                fontSize="60px"
+                fontWeight="600"
+              ></CardValue>
+            {/* {burnAmount.toLocaleString()} */}
             </RightAlignedText>
         </GridItem>
       )}

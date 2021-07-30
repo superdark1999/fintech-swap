@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
+import styled from 'styled-components'
 import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import classnames from 'classnames'
 
 export default function NavBar({ activeTab, toggle }) {
   return (
-    <div>
+    <BoxNav>
       <Nav tabs>
         <NavItem>
           <NavLink
@@ -31,13 +32,13 @@ export default function NavBar({ activeTab, toggle }) {
           <NavLink
             className={classnames({ active: activeTab === '4' })}
             onClick={() => {
-              toggle('3')
+              window.open("#/staking")
             }}
           >
             NFT Staking
           </NavLink>
         </NavItem>
-        <NavItem>
+        {/* <NavItem>
           <NavLink
             className={classnames({ active: activeTab === '5' })}
             onClick={() => {
@@ -46,18 +47,22 @@ export default function NavBar({ activeTab, toggle }) {
           >
             Earn NFT
           </NavLink>
-        </NavItem>
+        </NavItem> */}
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === '5' })}
+            className={classnames({ active: activeTab === '6' })}
             onClick={() => {
-              toggle('5')
+              toggle('6')
             }}
           >
             Ended
           </NavLink>
         </NavItem>
       </Nav>
-    </div>
+    </BoxNav>
   )
 }
+
+const BoxNav = styled.div`
+  margin-top: 20px;
+`

@@ -25,6 +25,7 @@ import IfoDetail from './views/Launchpad/components/IfoCard/IfoDetail'
 import Pool from './views/Pool'
 import Pools from './views/Pools'
 import PoolDetail from './views/Pools/components/PoolCardsDetail'
+// import PlayToEarn from './views/PlayToEarn'
 import RemoveLiquidity from './views/RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './views/RemoveLiquidity/redirects'
 import Swap from './views/Swap'
@@ -37,6 +38,8 @@ const Farms = lazy(() => import('./views/Farms'))
 const Lottery = lazy(() => import('./views/Lottery'))
 const LotteryV2 = lazy(() => import('./views/Lottery-v2'))
 const Ifos = lazy(() => import('./views/Launchpad'))
+const PlayToEarn = lazy(() => import('./views/PlayToEarn'))
+const Staking = lazy(() => import('./views/Staking'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const Collectibles = lazy(() => import('./views/Collectibles'))
 const Teams = lazy(() => import('./views/Teams'))
@@ -57,7 +60,6 @@ const App: React.FC = () => {
     console.warn = () => null
   }, [])
 
-  // useEagerConnect()
   useWeb3ReactManager()
   useFetchPublicData()
   useFetchProfile()
@@ -156,6 +158,12 @@ const App: React.FC = () => {
                 </Route>
                 <Route path="/lottery">
                   <Lottery />
+                </Route>
+                <Route path="/earn">
+                  <PlayToEarn />
+                </Route>
+                <Route path="/staking">
+                  <Staking />
                 </Route>
                 <Route path="/lottery-dev">
                   <LotteryV2 />

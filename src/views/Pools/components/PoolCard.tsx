@@ -55,7 +55,7 @@ const PoolCard : React.FC<PoolCardProps> = ({ pool })  => {
 
   return (
     <div>
-    <Col>
+      <Col>
         <BoxPool>
         {  pool.isPremium && (<HeadLine>
             <span>Premium</span>
