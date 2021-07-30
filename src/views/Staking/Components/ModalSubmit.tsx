@@ -14,9 +14,9 @@ function ModalSubmit(props: any) {
             width={400}
         >
             <Form ref={formRef} onFinish={onSubmit} style={{ width: '100%' }}>
-                <div style={{ marginBottom: '6px' }}>Card Value<span style={{ color: 'red', marginRight: '4px' }}>*</span></div>
+                <div style={{ marginBottom: '6px' }}>Name<span style={{ color: 'red', marginRight: '4px' }}>*</span></div>
                 <Form.Item
-                    name="value"
+                    name="name"
                     validateTrigger="onChange"
                 >
                     <Input
@@ -25,12 +25,12 @@ function ModalSubmit(props: any) {
                             overflow: 'hidden',
                             width: '100%',
                         }}
-                        placeholder="Enter value card to..."
+                        placeholder="Enter name card to..."
                     />
                 </Form.Item>
-                <div style={{ marginBottom: '6px' }}>Interest rate (%)<span style={{ color: 'red', marginRight: '4px' }}>*</span></div>
+                <div style={{ marginBottom: '6px' }}>Description<span style={{ color: 'red', marginRight: '4px' }}>*</span></div>
                 <Form.Item
-                    name="interest rate"
+                    name="description"
                     validateTrigger="onChange"
                 >
                     <Input
@@ -39,12 +39,12 @@ function ModalSubmit(props: any) {
                             overflow: 'hidden',
                             width: '100%',
                         }}
-                        placeholder="Enter interest rate to..."
+                        placeholder="Enter description to..."
                     />
                 </Form.Item>
-                <div style={{ marginBottom: '6px' }}>Total Lucky<span style={{ color: 'red', marginRight: '4px' }}>*</span></div>
+                <div style={{ marginBottom: '6px' }}>URL Token<span style={{ color: 'red', marginRight: '4px' }}>*</span></div>
                 <Form.Item
-                    name="total lucky"
+                    name="url token"
                     validateTrigger="onChange"
                 >
                     <Input
@@ -53,26 +53,13 @@ function ModalSubmit(props: any) {
                             overflow: 'hidden',
                             width: '100%',
                         }}
-                        placeholder="Enter total lucky to..."
+                        placeholder="Enter url token to..."
                     />
                 </Form.Item>
-                <div style={{ marginBottom: '6px' }}>NFT Card<span style={{ color: 'red', marginRight: '4px' }}>*</span></div>
+                
+                <div style={{ marginBottom: '6px' }}>Token ID</div>
                 <Form.Item
-                    name="NFT card"
-                    validateTrigger="onChange"
-                >
-                    <Input
-                        style={{
-                            borderRadius: '16px',
-                            overflow: 'hidden',
-                            width: '100%',
-                        }}
-                        placeholder="Enter NFT card to..."
-                    />
-                </Form.Item>  
-                <div style={{ marginBottom: '6px' }}>Fee (%)</div>
-                <Form.Item
-                    name="fee"
+                    name="token id"
                     validateTrigger="onChange"
                 >
                     <Input
