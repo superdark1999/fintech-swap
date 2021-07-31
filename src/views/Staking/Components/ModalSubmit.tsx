@@ -44,7 +44,7 @@ function ModalSubmit(props: any) {
         <div style={{ marginBottom: '6px' }}>
           URL Token<span style={{ color: 'red', marginRight: '4px' }}>*</span>
         </div>
-        <Form.Item name="url token" validateTrigger="onChange">
+        <Form.Item name="urlToken" validateTrigger="onChange">
           <Input
             style={{
               borderRadius: '16px',

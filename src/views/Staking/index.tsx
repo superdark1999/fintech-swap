@@ -1,4 +1,5 @@
 import { Tooltip } from 'antd'
+import axios from 'axios'
 import Page from 'components/layout/Page'
 import { BigNumber, ethers } from 'ethers'
 import React, { useEffect, useRef, useState } from 'react'
@@ -96,8 +97,20 @@ const Staking: React.FC = () => {
     if (activeTab !== tab) setActiveTab(tab)
   }
 
-  const onSubmit = (value: any) => {
-    setShowModalSubmit(false)
+  const onSubmit = async (value: any) => {
+    if (tokenSelected) {
+      const { contractAddress, tokenID, image } = tokenSelected as any
+      await axios
+        .patch('http://localhost:3004/staking', {
+          ...value,
+          urlImg: image,
+          tokenID,
+          contractAddress,
+        })
+        .catch((error) => console.log('submit error : ', error))
+      setShowModalSubmit(false)
+      setTokenSelected(null)
+    }
   }
 
   const registerHandler = (info) => {
