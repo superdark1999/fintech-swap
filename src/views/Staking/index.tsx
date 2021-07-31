@@ -100,12 +100,6 @@ const Staking: React.FC = () => {
   const onSubmit = async (value: any) => {
     if (tokenSelected) {
       const { contractAddress, tokenID, image } = tokenSelected as any
-      console.log({
-        ...value,
-        urlImg: image,
-        tokenID,
-        contractAddress,
-      })
       await axios
         .patch('http://localhost:3004/staking', {
           ...value,
