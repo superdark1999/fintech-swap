@@ -1,4 +1,5 @@
 import { Tooltip } from 'antd'
+// import axios from 'axios'
 import axios from 'axios'
 import Page from 'components/layout/Page'
 import { BigNumber, ethers } from 'ethers'
@@ -17,8 +18,7 @@ import CardStaking from './Components/CardStaking'
 import CardNftToken from './Components/CardToken'
 import ModalSubmit from './Components/ModalSubmit'
 import NavBar from './Components/NavBar'
-
-// import CardStaking from './Components/CardStaking'
+import notification from './Components/Alert'
 
 const Staking: React.FC = () => {
   const [activeTab, setActiveTab] = useState('1')
@@ -100,16 +100,32 @@ const Staking: React.FC = () => {
   const onSubmit = async (value: any) => {
     if (tokenSelected) {
       const { contractAddress, tokenID, image } = tokenSelected as any
+      // const data = {
+      //   ...value,
+      //   urlImg: image,
+      //   tokenID,
+      //   contractAddress,
+      // }
+      // console.log("data:", data)
       await axios
-        .patch('http://localhost:3004/staking', {
+        .patch('http://localhost:3004/stakings', {
           ...value,
           urlImg: image,
           tokenID,
           contractAddress,
+        }).then((dt) =>{
+          notification(
+            'success',
+            {
+              message:
+                'Update info NFT success, you can check NFT on approved collection',
+              description: '',
+            },
+          )
         })
-        .catch((error) => console.log('submit error : ', error))
+        .catch((error) => notification('error', { message: 'Error', description: error?.message }))
       setShowModalSubmit(false)
-      setTokenSelected(null)
+      // setTokenSelected(null)
     }
   }
 
