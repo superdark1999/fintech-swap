@@ -5,6 +5,7 @@ import { Button, Heading, Flex, useModal, AutoRenewIcon, Card } from '@luckyswap
 import useI18n from 'hooks/useI18n'
 import { fetchUserLotteries } from 'state/lottery2'
 import { useAppDispatch } from 'state'
+import { useGetUserLotteriesGraphData, useLottery } from 'state/hooks'
 import useGetUnclaimedRewards, { FetchStatus }  from '../../hooks/useGetUnclaimedRewards'
 import ClaimPrizesModal from '../ClaimPrizesModal'
 
@@ -52,9 +53,11 @@ const YourPrizesCard: React.FC = () => {
   const { account } = useWeb3React()
   const TranslateString = useI18n()
   const { fetchAllRewards, unclaimedRewards, fetchStatus } = useGetUnclaimedRewards()
+  const userLotteryData = useGetUserLotteriesGraphData()
   const [hasCheckedForRewards, setHasCheckedForRewards] = useState(false)
   const [hasRewardsToClaim, setHasRewardsToClaim] = useState(false)
   const isFetchingRewards = fetchStatus === FetchStatus.IN_PROGRESS
+  const isCheckNowDisabled = !userLotteryData.account 
   const [onPresentClaimModal] = useModal(<ClaimPrizesModal roundsToClaim={unclaimedRewards} />, false)
 
   const dispatch = useAppDispatch();
@@ -155,7 +158,7 @@ const YourPrizesCard: React.FC = () => {
           </Heading>
           <Button
             style={{backgroundColor: "#f4c708"}}
-            // disabled={isCheckNowDisabled}
+            disabled={isCheckNowDisabled}
             onClick={fetchAllRewards}
             // isLoading={a}
             // endIcon={ <AutoRenewIcon color="currentColor" spin /> }

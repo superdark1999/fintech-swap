@@ -73,13 +73,13 @@ const ClaimPrizesModal: React.FC<ClaimPrizesModalModalProps> = ({ onDismiss, rou
         <ModalCloseButton onDismiss={onDismiss} />
       </StyledModalHeader>
       <ModalBody p="24px">
-        {/* <ClaimPrizesInner
+        <ClaimPrizesInner
           onSuccess={() => {
             dispatch(fetchUserLotteries({ account }))
             onDismiss()
           }}
           roundsToClaim={roundsToClaim}
-        /> */}
+        />
       </ModalBody>
     </StyledModal>
   )

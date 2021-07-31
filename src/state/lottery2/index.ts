@@ -52,7 +52,8 @@ export const fetchCurrentLottery = createAsyncThunk<LotteryResponse, { currentLo
 )
 
 export const fetchCurrentLotteryId = createAsyncThunk<PublicLotteryData>('lottery/fetchCurrentLotteryId', async () => {
-  const currentIdAndMaxBuy = await fetchCurrentLotteryIdAndMaxBuy()
+  const currentIdAndMaxBuy = await fetchCurrentLotteryIdAndMaxBuy();
+  console.log("currentIdAndMaxBuy", currentIdAndMaxBuy);
   return currentIdAndMaxBuy
 })
 

@@ -82,10 +82,10 @@ export const useIfoContract = (address: string) => {
   return useMemo(() => getIfoContract(address, web3), [address, web3])
 }
 
-// export const useLotteryV2Contract = () => {
-//   const provider = useWeb3Provider()
-//   return useMemo(() => getLotteryV2Contract(provider.getSigner()), [provider])
-// }
+export const useEtherLotteryV2Contract = () => {
+  const provider = useWeb3Provider()
+  return useMemo(() => getLotteryV2Contract(provider.getSigner()), [provider])
+}
 
 export const useERC20 = (address: string) => {
   const web3 = useWeb3()

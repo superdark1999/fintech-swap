@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { Flex, Button, Text, AutoRenewIcon } from '@luckyswap/uikit'
+import { Flex, Button, Text, AutoRenewIcon, } from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
 
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 // import { getBalanceAmount } from 'utils/formatBalance'
-// import { callWithEstimateGas } from 'utils/calls'
+import { callWithEstimateGas } from 'utils/calls'
 import { useLottery } from 'state/hooks'
 import { fetchUserLotteries } from 'state/lottery2'
 import { useAppDispatch } from 'state'
-// import Balance from 'components/Balance'
+import Balance, { Balance2 } from 'components/Balance'
 // import useToast from 'hooks/useToast'
-// import { useLotteryV2Contract } from 'hooks/useContract'
+import { useEtherLotteryV2Contract } from 'hooks/useContract'
 
 interface ClaimInnerProps {
   roundsToClaim: LotteryTicketClaimData[]
@@ -23,10 +23,10 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const { maxNumberTicketsPerBuyOrClaim } = useLottery()
-  // const { toastSuccess, toastError } = useToast()
+  console.log("maxNumberTicketsPerBuyOrClaim", maxNumberTicketsPerBuyOrClaim);
   const [activeClaimIndex, setActiveClaimIndex] = useState(0)
   const [pendingTx, setPendingTx] = useState(false)
-  // const lotteryContract = useLotteryV2Contract()
+  const lotteryContract = useEtherLotteryV2Contract()
   const activeClaimData = roundsToClaim[activeClaimIndex]
 
   // const cakePriceBusd = usePriceCakeBusd()
@@ -80,80 +80,83 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
     return requests
   }
 
-  // const handleClaim = async () => {
-  //   const { lotteryId, ticketIds, brackets } = claimTicketsCallData
-  //   console.log("claimTicketsCallData", claimTicketsCallData)
-  //   setPendingTx(true)
-  //   try {
-  //     const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets])
-  //     const receipt = await tx.wait()
-  //     if (receipt.status) {
-  //       toastSuccess(
-  //         t('Prizes Collected!'),
-  //         t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),
-  //       )
-  //       setPendingTx(false)
-  //       handleProgressToNextClaim()
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //     toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
-  //     setPendingTx(false)
-  //   }
-  // }
+  const handleClaim = async () => {
+    const { lotteryId, ticketIds, brackets } = claimTicketsCallData
+    setPendingTx(true)
+    try {
+      const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets])
+      const receipt = await tx.wait()
+      if (receipt.status) {
+        // toastSuccess(
+        //   t('Prizes Collected!'),
+        //   t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),
+        // )
+        console.log("Prizes Collected!")
+        setPendingTx(false)
+        handleProgressToNextClaim()
+      }
+    } catch (error) {
+      console.error(error)
+      // toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
+      
+      setPendingTx(false)
+    }
+  }
 
-  // const handleBatchClaim = async () => {
-  //   const { lotteryId, ticketIds, brackets } = claimTicketsCallData
-  //   const ticketBatches = getTicketBatches(ticketIds, brackets)
-  //   const transactionsToFire = ticketBatches.length
-  //   const receipts = []
-  //   setPendingTx(true)
-  //   // eslint-disable-next-line no-restricted-syntax
-  //   for (const ticketBatch of ticketBatches) {
-  //     try {
-  //       /* eslint-disable no-await-in-loop */
-  //       const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [
-  //         lotteryId,
-  //         ticketBatch.ticketIds,
-  //         ticketBatch.brackets,
-  //       ])
-  //       const receipt = await tx.wait()
-  //       /* eslint-enable no-await-in-loop */
-  //       if (receipt.status) {
-  //         // One transaction within batch has succeeded
-  //         receipts.push(receipt)
+  const handleBatchClaim = async () => {
+    const { lotteryId, ticketIds, brackets } = claimTicketsCallData
+    const ticketBatches = getTicketBatches(ticketIds, brackets)
+    const transactionsToFire = ticketBatches.length
+    const receipts = []
+    setPendingTx(true)
+    // eslint-disable-next-line no-restricted-syntax
+    for (const ticketBatch of ticketBatches) {
+      try {
+        /* eslint-disable no-await-in-loop */
+        const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [
+          lotteryId,
+          ticketBatch.ticketIds,
+          ticketBatch.brackets,
+        ])
+        const receipt = await tx.wait()
+        /* eslint-enable no-await-in-loop */
+        if (receipt.status) {
+          // One transaction within batch has succeeded
+          receipts.push(receipt)
 
-  //         // More transactions are to be done within the batch. Issue toast to give user feedback.
-  //         if (receipts.length !== transactionsToFire) {
-  //           toastSuccess(
-  //             t('Prizes Collected!'),
-  //             t(
-  //               'Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation',
-  //               {
-  //                 claimNum: receipts.length,
-  //                 claimTotal: transactionsToFire,
-  //                 lotteryId,
-  //               },
-  //             ),
-  //           )
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.error(error)
-  //       toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
-  //     }
-  //   }
+          // More transactions are to be done within the batch. Issue toast to give user feedback.
+          if (receipts.length !== transactionsToFire) {
+            // toastSuccess(
+            //   t('Prizes Collected!'),
+            //   t(
+            //     'Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transation',
+            //     {
+            //       claimNum: receipts.length,
+            //       claimTotal: transactionsToFire,
+            //       lotteryId,
+            //     },
+            //   ),
+            // )
+            console.log()
+          }
+        }
+      } catch (error) {
+        console.error(error)
+        // toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
+      }
+    }
 
-  //   // Batch is finished
-  //   if (receipts.length === transactionsToFire) {
-  //     setPendingTx(false)
-  //     toastSuccess(
-  //       t('Prizes Collected!'),
-  //       t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),
-  //     )
-  //     handleProgressToNextClaim()
-  //   }
-  // }
+    // Batch is finished
+    if (receipts.length === transactionsToFire) {
+      setPendingTx(false)
+      // toastSuccess(
+      //   t('Prizes Collected!'),
+      //   t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),
+      // )
+      console.log("Prizes Collected!");
+      handleProgressToNextClaim()
+    }
+  }
 
   return (
     <>
@@ -166,26 +169,24 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
           justifyContent={['flex-start', null, 'space-between']}
           flexDirection={['column', null, 'row']}
         >
-          {/* <Balance
-            textAlign={['center', null, 'left']}
-            lineHeight="1.1"
-            value={rewardAsBalance}
+          <Balance2
+            value={100}
             fontSize="44px"
-            bold
+            unit=" LUCKY!"
             color="secondary"
-            unit=" CAKE!"
-          /> */}
+            // textAlign={['center', null, 'left']}
+          />
           {/* <PresentWonIcon ml={['0', null, '12px']} width="64px" /> */}
         </Flex>
-        {/* <Balance
-          mt={['12px', null, '0']}
-          textAlign={['center', null, 'left']}
-          value={dollarRewardAsBalance}
+        <Balance2
+          // mt={['12px', null, '0']}
+          // textAlign={['center', null, 'left']}
+          value={1000}
           fontSize="12px"
           color="textSubtle"
           unit=" USD"
           prefix="~"
-        /> */}
+        />
       </Flex>
 
       <Flex alignItems="center" justifyContent="center">
@@ -199,7 +200,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
           endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
           mt="20px"
           width="100%"
-          // onClick={() => (shouldBatchRequest ? handleBatchClaim() : handleClaim())}
+          onClick={() => (shouldBatchRequest ? handleBatchClaim() : handleClaim())}
         >
           {pendingTx ? TranslateString(999, 'Claiming') : TranslateString(999, 'Claim')} {totalNumClaimsForRound() > 1 
           ? `(${totalNumClaimsForRound()})` : ''}
