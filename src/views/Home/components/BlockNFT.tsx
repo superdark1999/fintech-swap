@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { Col, Row } from 'antd'
-import { XLUCKY_TESTNET_ADDRESSES } from 'config'
+import { XLUCKY_ADDRESSES } from 'config'
 import bep20Abi from 'config/abi/erc20.json'
 import { useContract } from 'hooks/useContract'
 // import { NativeBalance } from 'hooks/useTokenBalance'
@@ -12,7 +12,7 @@ const BlockNFT = () => {
   const { account, chainId } = useWeb3React()
   const [balanceToken, setBalanceToken] = useState(0)
   // const balance = NativeBalance()
-  const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
+  const useContractTemp = useContract(XLUCKY_ADDRESSES[chainId], bep20Abi)
   useEffect(() => {
     if (useContractTemp) {
       useContractTemp

@@ -73,8 +73,8 @@ const config: MenuEntry[] = [
   {
     label: 'NFT',
     icon: 'NftIcon',
-    href: 'https://staging-marketplace.luckyswap.center/',
-    calloutClass: 'style-color icon-new',
+    href: '#',
+    calloutClass: 'style-color icon-new coming-soon',
   },
   {
     label: 'Play to Earn',
@@ -88,6 +88,18 @@ const config: MenuEntry[] = [
     //     calloutClass: 'style-color',
     //   },
     // ],
+  },
+  {
+    label: 'Chart',
+    icon: 'ChartIcon',
+    calloutClass: 'style-color',
+        items: [
+      {
+        label: 'PooCoin (LUCKY)',
+        href: 'https://poocoin.app/tokens/0x7011e05c238f315f0227ac914731b16f757f6689',
+        calloutClass: 'style-color',
+      },
+    ],
   },
   {
     label: 'Channel',

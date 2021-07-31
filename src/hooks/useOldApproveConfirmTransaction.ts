@@ -119,22 +119,20 @@ const useOldApproveConfirmTransaction = ({
     approvalError: state.approvalError,
     confirmReceipt: state.confirmReceipt,
     confirmError: state.confirmError,
-    handleApprove: () => {
-      return new Promise((resolve, reject) => {
+    handleApprove: async() => {
+      dispatch({ type: 'approve_sending' })
         onApprove()
           .then((res) => {
             console.log('res>>', res)
-            resolve(res)
-            dispatch({ type: 'approve_sending' })
+            if (!res)
+              dispatch({ type: 'requires_approval' })
           })
           .catch('error', (error: Web3Payload) => {
             console.log('error.>', error)
             dispatch({ type: 'approve_error', payload: error })
             console.error('An error occurred approving transaction:', error)
             toastError('An error occurred approving transaction')
-            reject(error)
           })
-      })
     },
     // handleApprove: () => {
     //   onApprove()

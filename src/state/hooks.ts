@@ -31,9 +31,11 @@ export const useFetchPublicData = () => {
   const { slowRefresh } = useRefresh()
   const web3NoAccount = useWeb3NoAccount()
   useEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync() as any)
-    dispatch(fetchPoolsPublicDataAsync() as any)
-  }, [dispatch, slowRefresh])
+    if (chainId && chainId !== 56) {
+      dispatch(fetchPoolsPublicDataAsync() as any)
+      dispatch(fetchFarmsPublicDataAsync() as any)
+    }
+  }, [dispatch, slowRefresh, chainId])
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -87,6 +89,7 @@ export const usePools = (account): Pool[] => {
   const pools = useSelector((state: State) => state.pools.data)
   return pools
 }
+
 
 export const usePoolFromPid = (sousId): Pool => {
   const pool = useSelector((state: State) => state.pools.data.find((p) => p.sousId === sousId))

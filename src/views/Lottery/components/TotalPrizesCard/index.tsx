@@ -204,7 +204,14 @@ const TotalPrizesCard = () => {
                   <img width="75px" alt="" src="/images/icon-logo-y.png" />
                 </IconWrapper>
                 <Heading style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px', fontSize: '44' }} size="lg">
-                  {lotteryPrizeWithCommaSeparators} <span>LUCKY</span>
+                <CardValue
+                bold
+                color=""
+                value={parseInt(lotteryPrizeWithCommaSeparators)}
+                decimals={0}
+                fontSize="60px"
+                fontWeight="600"
+              ></CardValue> <span>LUCKY</span>
                 </Heading>
               </BoxLucky>
               <Dollar>{lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}</Dollar>

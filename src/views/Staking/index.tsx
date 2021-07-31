@@ -1,253 +1,154 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { Button, Row, Col,Card, CardTitle,CardText, TabContent, TabPane,  Nav, NavItem, NavLink } from 'reactstrap';
+import { Tooltip } from 'antd'
+// import axios from 'axios'
+import axios from 'axios'
 import Page from 'components/layout/Page'
-import { Tooltip } from 'antd';
+import { BigNumber, ethers } from 'ethers'
+import React, { useEffect, useRef, useState } from 'react'
+import { Col, Row, TabContent, TabPane } from 'reactstrap'
+import {
+  fetchImagePool,
+  fetchUserPendingRewards,
+  fetchNftUser as fetchNftTokenUser,
+  getImageFromTokens,
+} from 'state/poolsNft/fetchPoolInfo'
 import styled from 'styled-components'
+import { useActiveWeb3React } from '../../hooks/index'
+import { useStakingNftContract } from '../../hooks/useContract'
+import CardStaking from './Components/CardStaking'
+import CardNftToken from './Components/CardToken'
+import ModalSubmit from './Components/ModalSubmit'
 import NavBar from './Components/NavBar'
-import ModalSubmit from './Components/ModalSubmit';
- import axios from 'axios';
-
-// import CardStaking from './Components/CardStaking'
-
-
+import notification from './Components/Alert'
 
 const Staking: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState('1')
   const formRef = useRef()
-  const [isShowModalSubmit,setShowModalSubmit] = useState(false)
+  const [isShowModalSubmit, setShowModalSubmit] = useState(false)
+  const [pools, setPools] = useState([])
+  const { chainId, account } = useActiveWeb3React()
+  const [tokens, setTokens] = useState([])
+  const [tokenSelected, setTokenSelected] = useState()
 
-  const toggle = tab => {
-    if(activeTab !== tab) setActiveTab(tab);
+  const stakingNftContract = useStakingNftContract()
+
+  useEffect(() => {
+    const getPools = async () => {
+      if (stakingNftContract) {
+        const allPools = await stakingNftContract.getAllPools()
+
+        const images = await fetchImagePool(allPools, chainId)
+        const pendingRewards = await fetchUserPendingRewards(allPools, chainId)
+
+        setPools(
+          allPools.map((p, index) => ({
+            ...p,
+            image: images[index],
+            pendingReward: pendingRewards[index].toNumber(),
+          })),
+        )
+      }
+    }
+    if (activeTab === '4') {
+      getPools()
+    }
+  }, [stakingNftContract, chainId, activeTab])
+
+  useEffect(() => {
+    const getUserTokens = async () => {
+      let userTokens = await fetchNftTokenUser(account)
+      const map = new Map()
+      for (let i = 0; i < userTokens.length; i++) {
+        const key = `${userTokens[i].tokenID}-${userTokens[i].contractAddress}`
+        const temp = map.get(key)
+        if (temp) {
+          map.set(key, temp + 1)
+        } else {
+          map.set(key, 1)
+        }
+      }
+
+      userTokens = userTokens.filter((token) => {
+        const key = `${token.tokenID}-${token.contractAddress}`
+        if (map.get(key) % 2 === 0) {
+          return false
+        }
+        return true
+      })
+
+      const images = await getImageFromTokens(userTokens)
+
+      for (let i = 0; i < userTokens.length; i++) {
+        userTokens[i].image = images[i]
+      }
+
+      setTokens(userTokens.filter((token) => token.image))
+    }
+
+    if (activeTab === '1') {
+      getUserTokens()
+    }
+  }, [account, activeTab])
+
+  const stakeHandler = async (nftContract, tokenId) => {
+    await stakingNftContract.stake(ethers.utils.getAddress(nftContract), BigNumber.from(tokenId))
   }
-  
-  const onSubmit = async (value: any)=>{
-    await axios.patch(`/staking/`, value).then((dt) =>{
-      console.log(dt)
-    }).catch((error) => console.log('Error: ', error));
-    setShowModalSubmit(false)
+
+  const toggle = (tab) => {
+    if (activeTab !== tab) setActiveTab(tab)
+  }
+
+  const onSubmit = async (value: any) => {
+    if (tokenSelected) {
+      const { contractAddress, tokenID, image } = tokenSelected as any
+      // const data = {
+      //   ...value,
+      //   urlImg: image,
+      //   tokenID,
+      //   contractAddress,
+      // }
+      // console.log("data:", data)
+      await axios
+        .patch('http://localhost:3004/stakings', {
+          ...value,
+          urlImg: image,
+          tokenID,
+          contractAddress,
+        }).then((dt) =>{
+          notification(
+            'success',
+            {
+              message:
+                'Update info NFT success, you can check NFT on approved collection',
+              description: '',
+            },
+          )
+        })
+        .catch((error) => notification('error', { message: 'Error', description: error?.message }))
+      setShowModalSubmit(false)
+      // setTokenSelected(null)
+    }
+  }
+
+  const registerHandler = (info) => {
+    setTokenSelected(info)
+    setShowModalSubmit(true)
   }
 
   return (
-    
     <Page>
       <StakingPage>
-        <NavBar  activeTab={activeTab} toggle={toggle} />
-
+        <NavBar activeTab={activeTab} toggle={toggle} />
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
             <Row>
-              <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-1.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn><span className="effect-light">Unstaked</span></Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-
-              <Col sm="12" md="3"  className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn><span className="effect-light">Unstaked</span></Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-
-              <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-3.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn><span className="effect-light">Unstaked</span></Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-
-              <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-4.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn className="green-color">
-                      <span className="effect-light">staked</span>
-                    </Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-            </Row>
-          </TabPane>
-
-          <TabPane tabId="2">
-            <Row>
-            <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-1.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn><span className="effect-light">Unstaked</span></Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-
-              <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn className="green-color"><span className="effect-light">staked</span></Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-            </Row>
-          </TabPane>
-
-          <TabPane tabId="3">
-            <Row>
-              <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn className="green-color"><span className="effect-light">staked</span></Btn>
-
-                    <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space>
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane tabId="4">
-            <Row>
-              <Col sm="12" md="3" className="align-center space-mb">
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
-
-                  <BoxFooter>
-                    <Btn onClick={()=>{setShowModalSubmit(true)}}><Ticket>Submit</Ticket></Btn>
-
-                    {/* <Space>
-                      <Title>Collected Reward:</Title>
-                      <Dflex>
-                        <Number data-heading="0.000">0.000</Number>
-                        <Ticket>claim</Ticket>
-                      </Dflex>
-                    </Space> */}
-                  </BoxFooter>
-                </BoxCenter>
-              </Col>
+              {tokens.map((token) => (
+                <CardNftToken
+                  image={token.image}
+                  contractAddress={token.contractAddress}
+                  tokenID={token.tokenID}
+                  onRegister={registerHandler}
+                />
+              ))}
             </Row>
 
             <ModalSubmit
@@ -255,38 +156,52 @@ const Staking: React.FC = () => {
               setShowModalSubmit={setShowModalSubmit}
               formRef={formRef}
               onSubmit={onSubmit}
+              token={tokenSelected}
               // data={data}
             />
           </TabPane>
-          <TabPane tabId="5">
+        </TabContent>
+        <TabContent activeTab={activeTab}>
+          <TabPane tabId="3">
             <Row>
               <Col sm="12" md="3" className="align-center space-mb">
-                <Tooltip 
-                placement="rightTop"
-                color='#f4c708'
-                title={
-                  <p>Data submited</p>}>
-                <BoxCenter>
-                  <Figure>
-                    <img src="/images/staking/staking-2.jpeg" className="thumb" alt=""/>
-                    <img src="/images/staking/box-img.png" alt="" className="line-box"/>
-                  </Figure>
-                  
-                  <Launchers>
-                    <img src="/images/staking/effect.png" alt=""/>
-                  </Launchers>
+                <Tooltip placement="rightTop" color="#f4c708" title={<p>Data submited</p>}>
+                  <BoxCenter>
+                    <Figure>
+                      <img src="/images/staking/staking-2.jpeg" className="thumb" alt="" />
+                      <img src="/images/staking/box-img.png" alt="" className="line-box" />
+                    </Figure>
 
-                  {/* <BoxFooter>
+                    <Launchers>
+                      <img src="/images/staking/effect.png" alt="" />
+                    </Launchers>
+
+                    {/* <BoxFooter>
                     <Btn onClick={()=>{setShowModalSubmit(true)}}><Ticket>Submit</Ticket></Btn>
 
                   </BoxFooter> */}
-                </BoxCenter>
+                  </BoxCenter>
                 </Tooltip>
               </Col>
             </Row>
-
           </TabPane>
-          
+        </TabContent>
+
+        <TabContent activeTab={activeTab}>
+          <TabPane tabId="4">
+            <Row>
+              {pools.map((p, index) => (
+                <CardStaking
+                  image={p.image}
+                  isStaking={p.owner !== ethers.constants.AddressZero}
+                  nftContract={p.nftContract}
+                  reward={p.reward}
+                  tokenId={p.tokenId}
+                  onStake={stakeHandler}
+                />
+              ))}
+            </Row>
+          </TabPane>
         </TabContent>
       </StakingPage>
     </Page>
@@ -316,7 +231,7 @@ const StakingPage = styled.div`
         color: #fff;
         font-weight: 700;
         text-transform: uppercase;
-        animation: blur .75s ease-out infinite;
+        animation: blur 0.75s ease-out infinite;
         text-shadow: 0px 0px 5px #fff, 0px 0px 7px #fff;
       }
     }
@@ -404,7 +319,6 @@ const Btn = styled.button`
     color: #1cbb1c;
   }
 
-
   &:hover {
     .effect-light {
       text-align: center;
@@ -412,32 +326,17 @@ const Btn = styled.button`
       color: #fff;
       font-weight: 700;
       text-transform: uppercase;
-      animation: blur .75s ease-out infinite;
+      animation: blur 0.75s ease-out infinite;
       text-shadow: 0px 0px 5px #fff, 0px 0px 7px #fff;
     }
   }
-  
 
   @keyframes blur {
     from {
-      text-shadow:0px 0px 10px #fff,
-        0px 0px 10px #fff, 
-        0px 0px 25px #fff,
-        0px 0px 25px #fff,
-        0px 0px 25px #fff,
-        0px 0px 25px #fff,
-        0px 0px 25px #fff,
-        0px 0px 25px #fff,
-        0px 0px 50px #fff,
-        0px 0px 50px #fff,
-        0px 0px 50px #7B96B8,
-        0px 0px 150px #7B96B8,
-        0px 10px 100px #7B96B8,
-        0px 10px 100px #7B96B8,
-        0px 10px 100px #7B96B8,
-        0px 10px 100px #7B96B8,
-        0px -10px 100px #7B96B8,
-        0px -10px 100px #7B96B8;
+      text-shadow: 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 25px #fff, 0px 0px 25px #fff, 0px 0px 25px #fff,
+        0px 0px 25px #fff, 0px 0px 25px #fff, 0px 0px 25px #fff, 0px 0px 50px #fff, 0px 0px 50px #fff,
+        0px 0px 50px #7b96b8, 0px 0px 150px #7b96b8, 0px 10px 100px #7b96b8, 0px 10px 100px #7b96b8,
+        0px 10px 100px #7b96b8, 0px 10px 100px #7b96b8, 0px -10px 100px #7b96b8, 0px -10px 100px #7b96b8;
     }
   }
 `
@@ -466,7 +365,8 @@ const Number = styled.h3`
   font-weight: 600;
   position: relative;
   transform: scale(1);
-  text-shadow: -1px 0 1px #c5a354, 0 1px 1px #e0b649, 5px 5px 10px rgb(179 167 106 / 78%), -5px -5px 10px rgb(183 155 65 / 40%);
+  text-shadow: -1px 0 1px #c5a354, 0 1px 1px #e0b649, 5px 5px 10px rgb(179 167 106 / 78%),
+    -5px -5px 10px rgb(183 155 65 / 40%);
 
   &:before {
     content: attr(data-heading);
@@ -474,7 +374,15 @@ const Number = styled.h3`
     top: 0;
     position: absolute;
     z-index: 1;
-    background: linear-gradient(to bottom, #ffe047 22%, #fff144 24%, #cfc09f 26%, #ffe686 27%, #ffecb3 40%, #ffe14f 78%);
+    background: linear-gradient(
+      to bottom,
+      #ffe047 22%,
+      #fff144 24%,
+      #cfc09f 26%,
+      #ffe686 27%,
+      #ffecb3 40%,
+      #ffe14f 78%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: none;
@@ -492,4 +400,5 @@ const Ticket = styled.div`
   font-size: 14px;
   font-weight: 600;
 `
+
 export default Staking
