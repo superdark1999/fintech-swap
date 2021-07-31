@@ -5,7 +5,7 @@ import { Tooltip } from 'antd';
 import styled from 'styled-components'
 import NavBar from './Components/NavBar'
 import ModalSubmit from './Components/ModalSubmit';
-
+ import axios from 'axios';
 
 // import CardStaking from './Components/CardStaking'
 
@@ -16,14 +16,15 @@ const Staking: React.FC = () => {
   const formRef = useRef()
   const [isShowModalSubmit,setShowModalSubmit] = useState(false)
 
-
   const toggle = tab => {
     if(activeTab !== tab) setActiveTab(tab);
   }
   
-  const onSubmit = (value: any)=>{
-    
-      setShowModalSubmit(false)
+  const onSubmit = async (value: any)=>{
+    await axios.patch(`/staking/`, value).then((dt) =>{
+      console.log(dt)
+    }).catch((error) => console.log('Error: ', error));
+    setShowModalSubmit(false)
   }
 
   return (
