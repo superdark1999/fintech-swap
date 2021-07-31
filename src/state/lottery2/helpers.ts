@@ -175,10 +175,10 @@ export const fetchTickets = async (
 export const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
   const currentLotteryId = await lotteryV2Contract.viewCurrentLotteryId();
 
+  const id = ethersToSerializedBigNumber(currentLotteryId)
   const lotteries = []
-  for(let i = 1; i <= currentLotteryId; i++){
+  for(let i = 1; i <= parseInt(id) ; i++){
     const lotteryData = await fetchLottery(i.toString());
-    console.log("lotteryData", i);
     const lottery: LotteryRoundGraphEntity = {
       id: i.toString(),
       totalUsers: '0',
@@ -198,34 +198,6 @@ export const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> =>
 
   return lotteries
 }
-
-
-
-// export const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
-//   const response = await request(
-//     GRAPH_API_LOTTERY,
-//     gql`
-//       query getLotteries {
-//         lotteries(first: 100, orderDirection: desc, orderBy: block) {
-//           id
-//           totalUsers
-//           totalTickets
-//           status
-//           finalNumber
-//           winningTickets
-//           startTime
-//           endTime
-//           ticketPrice
-//           firstTicket
-//           lastTicket
-//         }
-//       }
-//     `,
-//   )
-
-//   const { lotteries } = response
-//   return lotteries
-// }
 
 export const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEntity> => {
   // const response = await request(
@@ -253,34 +225,40 @@ export const getGraphLotteryUser = async (account: string): Promise<LotteryUserG
   // )
   // const { user } = response
 
-  // // If no subgraph response - return blank user
-  // if (!response || !user) {
-  //   const blankUser = {
-  //     account,
-  //     totalCake: '',
-  //     totalTickets: '',
-  //     rounds: [],
-  //   }
+  const currentLotteryId = await lotteryV2Contract.viewCurrentLotteryId();
 
-  //   return blankUser
-  // }
+  const id = ethersToSerializedBigNumber(currentLotteryId)
+  const userData  = {
+    account, 
+    totalCake: "0",
+    totalTickets: "0",
+    rounds: []
+  }
+  for(let i = 1; i <= parseInt(id) ; i++){
+    const lotteryData = await fetchLottery(i.toString());
+    const userInfoForLottery = await lotteryV2Contract.viewUserInfoForLotteryId(account, i, 0, 10000);
+    if (userInfoForLottery[0].length !== 0){ // number tickets = 0
+      const round: UserRound = {
+        lotteryId: i.toString(),
+        endTime: lotteryData.endTime,
+        claimed: false,
+        totalTickets: userInfoForLottery[0].length,
+        status: lotteryData.status,
+        // tickets: [],
+      }
+      // for (let j =0; i< userInfoForLottery[0].length; i++) { // parse to LotteryTicket
+      //   const ticket: LotteryTicket = {
+      //     id: userInfoForLottery[0][j]?.toNumber(),
+      //     number: userInfoForLottery[1][j],
+      //     status: userInfoForLottery[2][j]
+      //   }
+      //   round.tickets.push(ticket);
+      // }
+      userData.rounds.push(round);
+    } 
+  } 
 
-  // const formattedUser = user && {
-  //   account: user.id,
-  //   totalCake: user.totalCake,
-  //   totalTickets: user.totalTickets,
-  //   rounds: user.rounds.map((round) => {
-  //     return {
-  //       lotteryId: round?.lottery?.id,
-  //       endTime: round?.lottery?.endTime,
-  //       claimed: round?.claimed,
-  //       totalTickets: round?.totalTickets,
-  //       status: round?.lottery?.status,
-  //     }
-  //   }),
-  // }
-
-  return null
+  return userData
 }
 
 // export const useProcessLotteryResponse = (

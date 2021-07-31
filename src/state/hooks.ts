@@ -268,3 +268,30 @@ export const useGetLotteriesGraphData = () => {
 export const useGetUserLotteriesGraphData = () => {
   return useSelector((state: State) => state.lottery.userLotteryData)
 }
+
+export const useLottery = () => {
+  const currentRound = useSelector((state: State) => state.lottery.currentRound)
+  // const processedCurrentRound = useProcessLotteryResponse(currentRound)
+
+  const isTransitioning = useSelector((state: State) => state.lottery.isTransitioning)
+
+  const currentLotteryId = useGetCurrentLotteryId()
+  const userLotteryData = useGetUserLotteriesGraphData()
+  const lotteriesData = useGetLotteriesGraphData()
+
+  const maxNumberTicketsPerBuyOrClaimAsString = useSelector(
+    (state: State) => state.lottery.maxNumberTicketsPerBuyOrClaim,
+  )
+  const maxNumberTicketsPerBuyOrClaim = useMemo(() => {
+    return new BigNumber(maxNumberTicketsPerBuyOrClaimAsString)
+  }, [maxNumberTicketsPerBuyOrClaimAsString])
+
+  return {
+    currentLotteryId,
+    maxNumberTicketsPerBuyOrClaim,
+    isTransitioning,
+    userLotteryData,
+    lotteriesData,
+    // currentRound: processedCurrentRound,
+  }
+}
