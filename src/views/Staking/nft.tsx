@@ -1,19 +1,12 @@
 import Page from 'components/layout/Page'
+import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { Row, TabContent, TabPane } from 'reactstrap'
 import styled from 'styled-components'
-import Web3 from 'web3'
-import multicall from 'utils/multicall'
 import { useActiveWeb3React } from '../../hooks/index'
-import { useNftContract } from '../../hooks/useContract'
-import {
-  fetchNftUser as fetchNftTokenUser,
-  getTokensURI,
-  getImagesFromURI,
-  getImageFromTokens,
-} from '../../state/poolsNft/fetchPoolInfo'
-import NavBar from './Components/NavBar'
+import { fetchNftUser as fetchNftTokenUser, getImageFromTokens } from '../../state/poolsNft/fetchPoolInfo'
 import CardNftToken from './Components/CardToken'
+import NavBar from './Components/NavBar'
 
 const Nft: React.FC = () => {
   const [activeTab, setActiveTab] = useState('1')
@@ -23,8 +16,27 @@ const Nft: React.FC = () => {
   console.log('tokens : ', tokens)
 
   useEffect(() => {
-    const getUserData = async () => {
-      const userTokens = await fetchNftTokenUser(account)
+    const getUserTokens = async () => {
+      let userTokens = await fetchNftTokenUser(account)
+      const map = new Map()
+      for (let i = 0; i < userTokens.length; i++) {
+        const key = `${userTokens[i].tokenID}-${userTokens[i].contractAddress}`
+        const temp = map.get(key)
+        if (temp) {
+          map.set(key, temp + 1)
+        } else {
+          map.set(key, 1)
+        }
+      }
+
+      userTokens = userTokens.filter((token) => {
+        const key = `${token.tokenID}-${token.contractAddress}`
+        if (map.get(key) % 2 === 0) {
+          return false
+        }
+        return true
+      })
+
       const images = await getImageFromTokens(userTokens)
 
       for (let i = 0; i < userTokens.length; i++) {
@@ -34,7 +46,7 @@ const Nft: React.FC = () => {
       setTokens(userTokens.filter((token) => token.image))
     }
 
-    getUserData()
+    getUserTokens()
   }, [account])
 
   const toggle = (tab) => {
@@ -53,14 +65,14 @@ const Nft: React.FC = () => {
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
             <Row>
-              {tokens.map((token) => (
+              {/* {tokens.map((token) => (
                 <CardNftToken
                   image={token.image}
                   nftContract={token.nftContract}
                   tokenId={token.tokenId}
                   onRegisterStaking={registerHandler}
                 />
-              ))}
+              ))} */}
             </Row>
           </TabPane>
         </TabContent>

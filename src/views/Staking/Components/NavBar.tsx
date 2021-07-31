@@ -23,12 +23,22 @@ export default function NavBar({ activeTab, toggle }) {
         <RightItem>
           <NavItem>
             <NavLink
+              className={classnames({ active: activeTab === '1' })}
+              onClick={() => {
+                toggle('1')
+              }}
+            >
+              My Collection
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
               className={classnames({ active: activeTab === '2' })}
               onClick={() => {
                 toggle('2')
               }}
             >
-              pending
+              Pending
             </NavLink>
           </NavItem>
 
@@ -63,8 +73,9 @@ const BoxNav = styled.div`
   margin-top: 20px;
 
   .nav-tabs {
-    display: grid;
-    grid-template-columns: 1fr 239px;
+    // display: grid;
+    // grid-template-columns: 1fr 239px;
+    display: flex;
     justify-content: space-between;
     border-color: transparent;
     border-bottom: 1px solid #ffffff8b !important;

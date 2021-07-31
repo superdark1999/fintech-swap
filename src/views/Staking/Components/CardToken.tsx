@@ -3,17 +3,17 @@ import { Col } from 'reactstrap'
 import styled from 'styled-components'
 
 interface CardNftTokenProps {
-  tokenId: number
-  nftContract: string
+  tokenID: number
+  contractAddress: string
   image: string
-  onRegisterStaking: any
+  onRegister: any
 }
 
 const CardNftToken: React.FC<CardNftTokenProps> = ({
-  tokenId,
-  nftContract,
+  tokenID,
+  contractAddress,
   image,
-  onRegisterStaking,
+  onRegister,
 }: CardNftTokenProps) => {
   return (
     <Col sm="12" md="3" className="align-center space-mb">
@@ -29,7 +29,7 @@ const CardNftToken: React.FC<CardNftTokenProps> = ({
 
         <BoxFooter>
           <Space>
-            <Ticket onClick={() => onRegisterStaking({ tokenId, nftContract, image, onRegisterStaking })}>claim</Ticket>
+            <Ticket onClick={() => onRegister({ tokenID, contractAddress, image })}>Register</Ticket>
           </Space>
         </BoxFooter>
       </BoxCenter>
