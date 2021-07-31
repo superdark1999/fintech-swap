@@ -31,7 +31,7 @@ export const useFetchPublicData = () => {
   const { slowRefresh } = useRefresh()
   const web3NoAccount = useWeb3NoAccount()
   useEffect(() => {
-    if (chainId && chainId !== 56){
+    if (chainId && chainId !== 56) {
       dispatch(fetchPoolsPublicDataAsync() as any)
       dispatch(fetchFarmsPublicDataAsync() as any)
     }
@@ -89,6 +89,7 @@ export const usePools = (account): Pool[] => {
   const pools = useSelector((state: State) => state.pools.data)
   return pools
 }
+
 
 export const usePoolFromPid = (sousId): Pool => {
   const pool = useSelector((state: State) => state.pools.data.find((p) => p.sousId === sousId))

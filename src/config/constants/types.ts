@@ -68,8 +68,8 @@ export interface Pool {
   rewardTokenSymbol: string
   depositTokenAddress: string
   rewardTokenAddress: string
-  stakingAddress: string, 
-  isPremium: boolean,
+  stakingAddress: string
+  isPremium: boolean
   chainId: number
 }
 
@@ -84,6 +84,14 @@ export interface PoolConfig {
   sortOrder?: number
   harvest?: boolean
   isFinished?: boolean
+}
+
+export interface PoolConfigNft {
+  tokenId: number
+  nftContract: string
+  earningToken: Token
+  contractAddress: string
+  tokenPerBlock: string
 }
 
 export type Images = {

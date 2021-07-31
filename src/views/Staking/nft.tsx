@@ -1,56 +1,19 @@
-import { Tooltip } from 'antd'
 import Page from 'components/layout/Page'
-import { BigNumber, ethers } from 'ethers'
-import React, { useEffect, useRef, useState } from 'react'
-import { Col, Row, TabContent, TabPane } from 'reactstrap'
-import {
-  fetchImagePool,
-  fetchUserPendingRewards,
-  fetchNftUser as fetchNftTokenUser,
-  getImageFromTokens,
-} from 'state/poolsNft/fetchPoolInfo'
+import { ethers } from 'ethers'
+import React, { useEffect, useState } from 'react'
+import { Row, TabContent, TabPane } from 'reactstrap'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '../../hooks/index'
-import { useStakingNftContract } from '../../hooks/useContract'
-import CardStaking from './Components/CardStaking'
+import { fetchNftUser as fetchNftTokenUser, getImageFromTokens } from '../../state/poolsNft/fetchPoolInfo'
 import CardNftToken from './Components/CardToken'
-import ModalSubmit from './Components/ModalSubmit'
 import NavBar from './Components/NavBar'
 
-// import CardStaking from './Components/CardStaking'
-
-const Staking: React.FC = () => {
+const Nft: React.FC = () => {
   const [activeTab, setActiveTab] = useState('1')
-  const formRef = useRef()
-  const [isShowModalSubmit, setShowModalSubmit] = useState(false)
-  const [pools, setPools] = useState([])
-  const { chainId, account } = useActiveWeb3React()
   const [tokens, setTokens] = useState([])
-  const [tokenSelected, setTokenSelected] = useState()
+  const { account } = useActiveWeb3React()
 
-  const stakingNftContract = useStakingNftContract()
-
-  useEffect(() => {
-    const getPools = async () => {
-      if (stakingNftContract) {
-        const allPools = await stakingNftContract.getAllPools()
-
-        const images = await fetchImagePool(allPools, chainId)
-        const pendingRewards = await fetchUserPendingRewards(allPools, chainId)
-
-        setPools(
-          allPools.map((p, index) => ({
-            ...p,
-            image: images[index],
-            pendingReward: pendingRewards[index].toNumber(),
-          })),
-        )
-      }
-    }
-    if (activeTab === '4') {
-      getPools()
-    }
-  }, [stakingNftContract, chainId, activeTab])
+  console.log('tokens : ', tokens)
 
   useEffect(() => {
     const getUserTokens = async () => {
@@ -83,94 +46,33 @@ const Staking: React.FC = () => {
       setTokens(userTokens.filter((token) => token.image))
     }
 
-    if (activeTab === '1') {
-      getUserTokens()
-    }
-  }, [account, activeTab])
-
-  const stakeHandler = async (nftContract, tokenId) => {
-    await stakingNftContract.stake(ethers.utils.getAddress(nftContract), BigNumber.from(tokenId))
-  }
+    getUserTokens()
+  }, [account])
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab)
   }
 
-  const onSubmit = (value: any) => {
-    setShowModalSubmit(false)
-  }
-
   const registerHandler = (info) => {
-    setTokenSelected(info)
-    setShowModalSubmit(true)
+    console.log('register info : ', info)
   }
 
   return (
     <Page>
       <StakingPage>
         <NavBar activeTab={activeTab} toggle={toggle} />
+
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
             <Row>
-              {tokens.map((token) => (
+              {/* {tokens.map((token) => (
                 <CardNftToken
                   image={token.image}
-                  contractAddress={token.contractAddress}
-                  tokenID={token.tokenID}
-                  onRegister={registerHandler}
+                  nftContract={token.nftContract}
+                  tokenId={token.tokenId}
+                  onRegisterStaking={registerHandler}
                 />
-              ))}
-            </Row>
-
-            <ModalSubmit
-              isShowModalSubmit={isShowModalSubmit}
-              setShowModalSubmit={setShowModalSubmit}
-              formRef={formRef}
-              onSubmit={onSubmit}
-              token={tokenSelected}
-              // data={data}
-            />
-          </TabPane>
-        </TabContent>
-        <TabContent activeTab={activeTab}>
-          <TabPane tabId="3">
-            <Row>
-              <Col sm="12" md="3" className="align-center space-mb">
-                <Tooltip placement="rightTop" color="#f4c708" title={<p>Data submited</p>}>
-                  <BoxCenter>
-                    <Figure>
-                      <img src="/images/staking/staking-2.jpeg" className="thumb" alt="" />
-                      <img src="/images/staking/box-img.png" alt="" className="line-box" />
-                    </Figure>
-
-                    <Launchers>
-                      <img src="/images/staking/effect.png" alt="" />
-                    </Launchers>
-
-                    {/* <BoxFooter>
-                    <Btn onClick={()=>{setShowModalSubmit(true)}}><Ticket>Submit</Ticket></Btn>
-
-                  </BoxFooter> */}
-                  </BoxCenter>
-                </Tooltip>
-              </Col>
-            </Row>
-          </TabPane>
-        </TabContent>
-
-        <TabContent activeTab={activeTab}>
-          <TabPane tabId="4">
-            <Row>
-              {pools.map((p, index) => (
-                <CardStaking
-                  image={p.image}
-                  isStaking={p.owner !== ethers.constants.AddressZero}
-                  nftContract={p.nftContract}
-                  reward={p.reward}
-                  tokenId={p.tokenId}
-                  onStake={stakeHandler}
-                />
-              ))}
+              ))} */}
             </Row>
           </TabPane>
         </TabContent>
@@ -360,16 +262,4 @@ const Number = styled.h3`
   }
 `
 
-const Ticket = styled.div`
-  background: url('../images/staking/bg-button.png') no-repeat center center;
-  background-size: contain;
-  width: 100%;
-  height: 36px;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 36px;
-  font-size: 14px;
-  font-weight: 600;
-`
-
-export default Staking
+export default Nft

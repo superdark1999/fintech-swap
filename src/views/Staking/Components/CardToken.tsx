@@ -2,23 +2,19 @@ import React from 'react'
 import { Col } from 'reactstrap'
 import styled from 'styled-components'
 
-interface StakingCardProps {
-  tokenId: number
-  nftContract: string
+interface CardNftTokenProps {
+  tokenID: number
+  contractAddress: string
   image: string
-  isStaking: boolean
-  reward: number
-  onStake: any
+  onRegister: any
 }
 
-const CardStaking: React.FC<StakingCardProps> = ({
+const CardNftToken: React.FC<CardNftTokenProps> = ({
+  tokenID,
+  contractAddress,
   image,
-  nftContract,
-  isStaking,
-  reward,
-  onStake,
-  tokenId,
-}: StakingCardProps) => {
+  onRegister,
+}: CardNftTokenProps) => {
   return (
     <Col sm="12" md="3" className="align-center space-mb">
       <BoxCenter>
@@ -32,16 +28,8 @@ const CardStaking: React.FC<StakingCardProps> = ({
         </Launchers>
 
         <BoxFooter>
-          <Btn onClick={() => onStake(tokenId, nftContract)} className={isStaking && 'green-color'}>
-            <span className="effect-light">Unstaked</span>
-          </Btn>
-
           <Space>
-            <Title>Collected Reward:</Title>
-            <Dflex>
-              <Number data-heading="0.000">{reward}</Number>
-              <Ticket>claim</Ticket>
-            </Dflex>
+            <Ticket onClick={() => onRegister({ tokenID, contractAddress, image })}>Register</Ticket>
           </Space>
         </BoxFooter>
       </BoxCenter>
@@ -198,4 +186,4 @@ const Ticket = styled.div`
   font-weight: 600;
 `
 
-export default CardStaking
+export default CardNftToken

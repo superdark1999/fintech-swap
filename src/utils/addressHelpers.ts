@@ -2,11 +2,11 @@ import { ChainId } from '@luckyswap/v2-sdk'
 import addresses from 'config/constants/contracts'
 import tokens from 'config/constants/tokens'
 import { Address } from 'config/constants/types'
-import { getChainId } from './web3React';
+import { getChainId } from './web3React'
 
 // TODO : Improve
 export const getAddress = (address: Address, chainId?: ChainId): string => {
-  const tempChainId = getChainId();
+  const tempChainId = getChainId()
   // const mainNetChainId = 56
   const envChainId = process.env.REACT_APP_CHAIN_ID
   return address[tempChainId] ?? address[envChainId]
@@ -56,4 +56,12 @@ export const getTradingCompetitionAddress = (chainId?: ChainId) => {
 }
 export const getEasterNftAddress = (chainId?: ChainId) => {
   return getAddress(addresses.easterNft, chainId)
+}
+
+export const getStakingNftAddress = (chainId?: ChainId) => {
+  return getAddress(addresses.stakingNft, chainId)
+}
+
+export const getNftAddress = (chainId?: ChainId) => {
+  return getAddress(addresses.nft, chainId)
 }
