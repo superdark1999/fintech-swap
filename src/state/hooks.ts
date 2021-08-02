@@ -22,11 +22,11 @@ import {
 } from './actions'
 import { fetchPrices } from './prices'
 import { fetchProfile } from './profile'
-import { fetchCurrentLotteryId, fetchCurrentLottery, fetchPastLotteries } from './lottery2'
+import { fetchCurrentLotteryId, fetchCurrentLottery, fetchPastLotteries, fetchUserTicketsAndLotteries } from './lottery2'
 
 import { fetchTeam, fetchTeams } from './teams'
 import { AchievementState, Farm, Pool, PriceState, ProfileState, State, TeamsState } from './types'
-import { fetchCurrentLotteryIdAndMaxBuy } from './lottery2/helpers';
+import { fetchCurrentLotteryIdAndMaxBuy, useProcessLotteryResponse } from './lottery2/helpers';
 
 export const useFetchPublicData = () => {
   const { chainId } = useActiveWeb3React()
@@ -101,7 +101,7 @@ export const useFetchLottery = () => {
   useEffect(() => {
     // get user tickets for current lottery, and user lottery subgraph data
     if (account && currentLotteryId) {
-      // dispatch(fetchUserTicketsAndLotteries({ account, lotteryId: currentLotteryId }))
+      dispatch(fetchUserTicketsAndLotteries({ account, lotteryId: currentLotteryId }))
     }
   }, [dispatch, currentLotteryId, account])
 }
@@ -271,7 +271,8 @@ export const useGetUserLotteriesGraphData = () => {
 
 export const useLottery = () => {
   const currentRound = useSelector((state: State) => state.lottery.currentRound)
-  // const processedCurrentRound = useProcessLotteryResponse(currentRound)
+  console.log("currentRound", currentRound);
+  const processedCurrentRound = useProcessLotteryResponse(currentRound)
 
   const isTransitioning = useSelector((state: State) => state.lottery.isTransitioning)
 
@@ -292,6 +293,6 @@ export const useLottery = () => {
     isTransitioning,
     userLotteryData,
     lotteriesData,
-    // currentRound: processedCurrentRound,
+    currentRound: processedCurrentRound,
   }
 }

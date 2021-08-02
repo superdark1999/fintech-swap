@@ -56,22 +56,20 @@ export const fetchCurrentLotteryId = createAsyncThunk<PublicLotteryData>('lotter
   return currentIdAndMaxBuy
 })
 
-// export const fetchUserTicketsAndLotteries = createAsyncThunk<
-//   { userTickets: LotteryTicket[]; userLotteries: LotteryUserGraphEntity },
-//   { account: string; lotteryId: string }
-// >('lottery/fetchUserTicketsAndLotteries', async ({ account, lotteryId }) => {
-//   const userLotteriesRes = await getGraphLotteryUser(account)
-//   const userRoundData = userLotteriesRes.rounds?.find((round) => round.lotteryId === lotteryId)
-//   const userTickets = await fetchTickets(account, lotteryId, userRoundData)
-//   console.log("userTickets", userTickets, userLotteriesRes);
+export const fetchUserTicketsAndLotteries = createAsyncThunk<
+  { userTickets: LotteryTicket[]; userLotteries: LotteryUserGraphEntity },
+  { account: string; lotteryId: string }
+>('lottery/fetchUserTicketsAndLotteries', async ({ account, lotteryId }) => {
+  const userLotteriesRes = await getGraphLotteryUser(account)
+  const userRoundData = userLotteriesRes.rounds?.find((round) => round.lotteryId === lotteryId)
+  const userTickets = await fetchTickets(account, lotteryId, userRoundData)
+  // user has not bought tickets for the current lottery
+  if (userTickets.length === 0) {
+    return { userTickets: null, userLotteries: userLotteriesRes }
+  }
 
-//   // user has not bought tickets for the current lottery
-//   if (userTickets.length === 0) {
-//     return { userTickets: null, userLotteries: userLotteriesRes }
-//   }
-
-//   return { userTickets, userLotteries: userLotteriesRes }
-// })
+  return { userTickets, userLotteries: userLotteriesRes }
+})
 
 export const fetchPastLotteries = createAsyncThunk<LotteryRoundGraphEntity[]>(
   'lottery/fetchPastLotteries',
@@ -112,14 +110,14 @@ export const LotterySlice = createSlice({
       state.currentLotteryId = action.payload.currentLotteryId
       state.maxNumberTicketsPerBuyOrClaim = action.payload.maxNumberTicketsPerBuyOrClaim
     })
-    // builder.addCase(
-    //   fetchUserTicketsAndLotteries.fulfilled,
-    //   (state, action: PayloadAction<{ userTickets: LotteryTicket[]; userLotteries: LotteryUserGraphEntity }>) => {
-    //     state.currentRound.userTickets.isLoading = false
-    //     state.currentRound.userTickets.tickets = action.payload.userTickets
-    //     state.userLotteryData = action.payload.userLotteries
-    //   },
-    // )
+    builder.addCase(
+      fetchUserTicketsAndLotteries.fulfilled,
+      (state, action: PayloadAction<{ userTickets: LotteryTicket[]; userLotteries: LotteryUserGraphEntity }>) => {
+        state.currentRound.userTickets.isLoading = false
+        state.currentRound.userTickets.tickets = action.payload.userTickets
+        state.userLotteryData = action.payload.userLotteries
+      },
+    )
     builder.addCase(fetchPastLotteries.fulfilled, (state, action: PayloadAction<LotteryRoundGraphEntity[]>) => {
       state.lotteriesData = action.payload
     })

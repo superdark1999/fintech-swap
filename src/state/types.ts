@@ -60,6 +60,15 @@ export interface UserRound {
   endTime: string
   tickets?: LotteryTicket[]
 }
+export interface LotteryRound extends LotteryRoundGenerics {
+  userTickets?: LotteryRoundUserTickets
+  priceTicketInCake: BigNumber
+  discountDivisor: BigNumber
+  amountCollectedInCake: BigNumber
+  cakePerBracket: string[]
+  countWinnersPerBracket: string[]
+  rewardsBreakdown: string[]
+}
 
 export interface LotteryRoundGraphEntity {
   id: string

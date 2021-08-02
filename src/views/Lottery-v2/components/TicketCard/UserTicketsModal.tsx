@@ -3,7 +3,9 @@ import { Button, Modal } from '@luckyswap/uikit'
 import styled from 'styled-components'
 import { useWinningNumbers } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
+import { useLottery } from 'state/hooks'
 import { Ticket } from 'config/constants/types'
+import TicketNumber from './TicketNumber'
 
 
 interface UserTicketsModalProps {
@@ -15,6 +17,10 @@ interface UserTicketsModalProps {
 const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, onDismiss, from }) => {
   const winNumbers = [] // todo: improve
   const TranslateString = useI18n()
+  const {
+    isTransitioning,
+    currentRound: { status, userTickets },
+  } = useLottery()
   // const rewardMatch = useCallback(
   //   (number) => {
   //     let n = 0
@@ -27,7 +33,7 @@ const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, on
   //   [winNumbers],
   // )
 
-  const listItems = myTicketNumbers.map((number, index) => {
+  const listItems = userTickets.tickets.map((ticket, index) => {
     // if (rewardMatch(number[0]) > 1 && from !== 'buy') {
     //   const emoji = new Array(rewardMatch(number[0]) + 1).join('🤑')
     //   return (
@@ -41,8 +47,14 @@ const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, on
     // }
     // eslint-disable-next-line react/no-array-index-key
     return (
-      <p style={{ color: 'yellow' }} key={index}>
-        {(number.ticketNumber % 1000000).toString()}
+      <p style={{ color: 'yellow' }} key={ticket.id}>
+         <TicketNumber
+                key={ticket.id}
+                localId={index + 1}
+                id={ticket.id}
+                number={ticket.number}
+                status={ticket.status}
+              />
       </p>
     )
   })

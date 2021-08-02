@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { request, gql } from 'graphql-request'
 import { ethers } from 'ethers'
@@ -11,10 +12,10 @@ import { multicallv2 } from 'utils/multicall'
 import {
   LotteryUserGraphEntity,
   LotteryRoundGraphEntity,
-  // LotteryRound,
+  LotteryRound,
   UserTicketsResponse,
   UserRound,
-  // LotteryRoundUserTickets,
+  LotteryRoundUserTickets,
   LotteryResponse,
 } from 'state/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
@@ -260,42 +261,42 @@ export const getGraphLotteryUser = async (account: string): Promise<LotteryUserG
   return userData
 }
 
-// export const useProcessLotteryResponse = (
-//   lotteryData: LotteryResponse & { userTickets?: LotteryRoundUserTickets },
-// ): LotteryRound => {
-//   const {
-//     priceTicketInCake: priceTicketInCakeAsString,
-//     discountDivisor: discountDivisorAsString,
-//     amountCollectedInCake: amountCollectedInCakeAsString,
-//   } = lotteryData
+export const useProcessLotteryResponse = (
+  lotteryData: LotteryResponse & { userTickets?: LotteryRoundUserTickets },
+): LotteryRound => {
+  const {
+    priceTicketInCake: priceTicketInCakeAsString,
+    discountDivisor: discountDivisorAsString,
+    amountCollectedInCake: amountCollectedInCakeAsString,
+  } = lotteryData
 
-//   const discountDivisor = useMemo(() => {
-//     return new BigNumber(discountDivisorAsString)
-//   }, [discountDivisorAsString])
+  const discountDivisor = useMemo(() => {
+    return new BigNumber(discountDivisorAsString)
+  }, [discountDivisorAsString])
 
-//   const priceTicketInCake = useMemo(() => {
-//     return new BigNumber(priceTicketInCakeAsString)
-//   }, [priceTicketInCakeAsString])
+  const priceTicketInCake = useMemo(() => {
+    return new BigNumber(priceTicketInCakeAsString)
+  }, [priceTicketInCakeAsString])
 
-//   const amountCollectedInCake = useMemo(() => {
-//     return new BigNumber(amountCollectedInCakeAsString)
-//   }, [amountCollectedInCakeAsString])
+  const amountCollectedInCake = useMemo(() => {
+    return new BigNumber(amountCollectedInCakeAsString)
+  }, [amountCollectedInCakeAsString])
 
-//   return {
-//     isLoading: lotteryData.isLoading,
-//     userTickets: lotteryData.userTickets,
-//     status: lotteryData.status,
-//     startTime: lotteryData.startTime,
-//     endTime: lotteryData.endTime,
-//     priceTicketInCake,
-//     discountDivisor,
-//     treasuryFee: lotteryData.treasuryFee,
-//     firstTicketId: lotteryData.firstTicketId,
-//     lastTicketId: lotteryData.lastTicketId,
-//     amountCollectedInCake,
-//     finalNumber: lotteryData.finalNumber,
-//     cakePerBracket: lotteryData.cakePerBracket,
-//     countWinnersPerBracket: lotteryData.countWinnersPerBracket,
-//     rewardsBreakdown: lotteryData.rewardsBreakdown,
-//   }
-// }
+  return {
+    isLoading: lotteryData.isLoading,
+    userTickets: lotteryData.userTickets,
+    status: lotteryData.status,
+    startTime: lotteryData.startTime,
+    endTime: lotteryData.endTime,
+    priceTicketInCake,
+    discountDivisor,
+    treasuryFee: lotteryData.treasuryFee,
+    firstTicketId: lotteryData.firstTicketId,
+    lastTicketId: lotteryData.lastTicketId,
+    amountCollectedInCake,
+    finalNumber: lotteryData.finalNumber,
+    cakePerBracket: lotteryData.cakePerBracket,
+    countWinnersPerBracket: lotteryData.countWinnersPerBracket,
+    rewardsBreakdown: lotteryData.rewardsBreakdown,
+  }
+}
