@@ -18,7 +18,6 @@ import {  processLotteryResponse, parseRetreivedNumber } from '../helpers'
 const WinningNumbers: React.FC = () => {
   const { account } = useWeb3React()
   const currentLotteryId = useGetCurrentLotteryId()
-  console.log("currentLotteryId", currentLotteryId)
 
   const [lotteryInfo, setLotteryInfo] = useState<LotteryRound>(null)
   useEffect(() => {

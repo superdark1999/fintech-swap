@@ -193,13 +193,13 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data, initi
             </TopCard>
             
             <CardFooter className="no-border">
-              <PrizeGrid
+              {/* <PrizeGrid
                 lotteryPrizeAmount={poolSize}
                 jackpotMatches={jackpotTicket}
                 oneTicketMatches={match1Ticket}
                 twoTicketMatches={match2Ticket}
                 threeTicketMatches={match3Ticket}
-              />
+              /> */}
               {/* <PastLotteryActions contractLink={contractLink} lotteryNumber={lotteryNumber} /> */}
             </CardFooter>
           </BoxCard>
