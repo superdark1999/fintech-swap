@@ -1,21 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { Image, Card, CardBody } from '@luckyswap/uikit'
 import { useWinningNumbers, useMatchingRewardLength } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
+import { getWinningTickets } from 'state/lottery2/fetchUnclaimedUserRewards'
+
+import { fetchLottery } from 'state/lottery2/helpers'
+import { LotteryRound } from 'state/types'
+import { useGetCurrentLotteryId } from 'state/hooks'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import CardValue from '../../Home/components/CardValue'
+import {  processLotteryResponse, parseRetreivedNumber } from '../helpers'
+
+
 
 const WinningNumbers: React.FC = () => {
   const { account } = useWeb3React()
-  const winNumbers = useWinningNumbers()
+  const currentLotteryId = useGetCurrentLotteryId()
+  console.log("currentLotteryId", currentLotteryId)
+
+  const [lotteryInfo, setLotteryInfo] = useState<LotteryRound>(null)
+  useEffect(() => {
+
+    const fetchData = async () => {
+      const lotteryData = await fetchLottery(currentLotteryId)
+      const processedLotteryData = processLotteryResponse(lotteryData)
+
+      setLotteryInfo(processedLotteryData)
+    }
+    if (currentLotteryId)
+      fetchData()
+  }, [currentLotteryId])
+
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const MatchedNumber4 = useMatchingRewardLength(4)
   const MatchedNumber3 = useMatchingRewardLength(3)
   const MatchedNumber2 = useMatchingRewardLength(2)
   const TranslateString = useI18n()
 
+  const reversedNumber = lotteryInfo && parseRetreivedNumber(lotteryInfo.finalNumber.toString())
+  const numAsArray = reversedNumber?.split('')
+
+  
   return (
     <CardWrapper>
       <CardBodyNew>
@@ -38,14 +65,14 @@ const WinningNumbers: React.FC = () => {
               src="https://merlinlab.com/static/media/rightGoldenCoin.e795d41c.svg"
               className="sc-iCfLBT sc-ezbkgU KkWOV jElfkq"
             /> */}
-            {winNumbers.map((number, index) => (
+            { numAsArray && numAsArray.map((number, index) => (
               // eslint-disable-next-line react/no-array-index-key
               <TicketNumberBox key={index}>
                 <CenteredText>
                   <CardValue
                 bold
                 color=""
-                value={number}
+                value={parseInt(number)}
                 decimals={0}
                 fontSize="60px"
                 fontWeight="600"

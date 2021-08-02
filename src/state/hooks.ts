@@ -269,9 +269,12 @@ export const useGetUserLotteriesGraphData = () => {
   return useSelector((state: State) => state.lottery.userLotteryData)
 }
 
+export const useGetUserLotteryGraphRoundById = (lotteryId: string) => {
+  const userLotteriesData = useGetUserLotteriesGraphData()
+  return userLotteriesData.rounds.find((userRound) => userRound.lotteryId === lotteryId)
+}
 export const useLottery = () => {
   const currentRound = useSelector((state: State) => state.lottery.currentRound)
-  console.log("currentRound", currentRound);
   const processedCurrentRound = useProcessLotteryResponse(currentRound)
 
   const isTransitioning = useSelector((state: State) => state.lottery.isTransitioning)

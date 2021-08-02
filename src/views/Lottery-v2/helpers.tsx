@@ -1,5 +1,5 @@
-// import BigNumber from 'bignumber.js'
-// import { LotteryResponse, LotteryRound, LotteryRoundUserTickets } from 'state/types'
+import BigNumber from 'bignumber.js'
+import { LotteryResponse, LotteryRound, LotteryRoundUserTickets } from 'state/types'
 
 /**
  * Remove the '1' and reverse the digits in a lottery number retreived from the smart contract
@@ -27,34 +27,34 @@ export const parseRetreivedNumber = (number: string): string => {
 //   ...timeOptions,
 // }
 
-// export const processLotteryResponse = (
-//   lotteryData: LotteryResponse & { userTickets?: LotteryRoundUserTickets },
-// ): LotteryRound => {
-//   const {
-//     priceTicketInCake: priceTicketInCakeAsString,
-//     discountDivisor: discountDivisorAsString,
-//     amountCollectedInCake: amountCollectedInCakeAsString,
-//   } = lotteryData
+export const processLotteryResponse = (
+  lotteryData: LotteryResponse & { userTickets?: LotteryRoundUserTickets },
+): LotteryRound => {
+  const {
+    priceTicketInCake: priceTicketInCakeAsString,
+    discountDivisor: discountDivisorAsString,
+    amountCollectedInCake: amountCollectedInCakeAsString,
+  } = lotteryData
 
-//   const discountDivisor = new BigNumber(discountDivisorAsString)
-//   const priceTicketInCake = new BigNumber(priceTicketInCakeAsString)
-//   const amountCollectedInCake = new BigNumber(amountCollectedInCakeAsString)
+  const discountDivisor = new BigNumber(discountDivisorAsString)
+  const priceTicketInCake = new BigNumber(priceTicketInCakeAsString)
+  const amountCollectedInCake = new BigNumber(amountCollectedInCakeAsString)
 
-//   return {
-//     isLoading: lotteryData.isLoading,
-//     userTickets: lotteryData.userTickets,
-//     status: lotteryData.status,
-//     startTime: lotteryData.startTime,
-//     endTime: lotteryData.endTime,
-//     priceTicketInCake,
-//     discountDivisor,
-//     treasuryFee: lotteryData.treasuryFee,
-//     firstTicketId: lotteryData.firstTicketId,
-//     lastTicketId: lotteryData.lastTicketId,
-//     amountCollectedInCake,
-//     finalNumber: lotteryData.finalNumber,
-//     cakePerBracket: lotteryData.cakePerBracket,
-//     countWinnersPerBracket: lotteryData.countWinnersPerBracket,
-//     rewardsBreakdown: lotteryData.rewardsBreakdown,
-//   }
-// }
+  return {
+    isLoading: lotteryData.isLoading,
+    userTickets: lotteryData.userTickets,
+    status: lotteryData.status,
+    startTime: lotteryData.startTime,
+    endTime: lotteryData.endTime,
+    priceTicketInCake,
+    discountDivisor,
+    treasuryFee: lotteryData.treasuryFee,
+    firstTicketId: lotteryData.firstTicketId,
+    lastTicketId: lotteryData.lastTicketId,
+    amountCollectedInCake,
+    finalNumber: lotteryData.finalNumber,
+    cakePerBracket: lotteryData.cakePerBracket,
+    countWinnersPerBracket: lotteryData.countWinnersPerBracket,
+    rewardsBreakdown: lotteryData.rewardsBreakdown,
+  }
+}
