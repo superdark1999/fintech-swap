@@ -69,11 +69,9 @@ const YourPrizesCard: React.FC = () => {
   useEffect(() => {
     if (fetchStatus === FetchStatus.SUCCESS) {
       // Manage showing unclaimed rewards modal once per page load / once per lottery state change
-      console.log("condition", unclaimedRewards.length, hasCheckedForRewards)
       if (unclaimedRewards.length !== 0 && !hasCheckedForRewards) {
         setHasRewardsToClaim(true)
         setHasCheckedForRewards(true)
-        console.log("opennnnn")
         onPresentClaimModal()
       }
 

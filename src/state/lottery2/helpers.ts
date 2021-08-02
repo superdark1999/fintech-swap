@@ -95,8 +95,7 @@ export const fetchCurrentLotteryIdAndMaxBuy = async () => {
     const [[currentLotteryId], [maxNumberTicketsPerBuyOrClaim]] = (await multicallv2(
       lotteryV2Abi,
       calls,
-    )).catch(error => console.log("error multicall", error)) as ethers.BigNumber[][]
-
+    ))
     return {
       currentLotteryId: currentLotteryId ? currentLotteryId.toString() : null,
       maxNumberTicketsPerBuyOrClaim: maxNumberTicketsPerBuyOrClaim ? maxNumberTicketsPerBuyOrClaim.toString() : null,

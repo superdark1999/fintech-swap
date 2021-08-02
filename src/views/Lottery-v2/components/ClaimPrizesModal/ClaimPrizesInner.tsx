@@ -4,14 +4,15 @@ import { Flex, Button, Text, AutoRenewIcon, } from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
 
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
-// import { getBalanceAmount } from 'utils/formatBalance'
+import { getBalanceAmount } from 'utils/formatBalance'
 import { callWithEstimateGas } from 'utils/calls'
-import { useLottery } from 'state/hooks'
+import { useLottery, usePriceLuckyBusd } from 'state/hooks'
 import { fetchUserLotteries } from 'state/lottery2'
 import { useAppDispatch } from 'state'
 import Balance, { Balance2 } from 'components/Balance'
 // import useToast from 'hooks/useToast'
 import { useEtherLotteryV2Contract } from 'hooks/useContract'
+import { ConsoleSqlOutlined } from '@ant-design/icons'
 
 interface ClaimInnerProps {
   roundsToClaim: LotteryTicketClaimData[]
@@ -23,17 +24,16 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const { maxNumberTicketsPerBuyOrClaim } = useLottery()
-  console.log("maxNumberTicketsPerBuyOrClaim", maxNumberTicketsPerBuyOrClaim);
   const [activeClaimIndex, setActiveClaimIndex] = useState(0)
   const [pendingTx, setPendingTx] = useState(false)
   const lotteryContract = useEtherLotteryV2Contract()
   const activeClaimData = roundsToClaim[activeClaimIndex]
 
-  // const cakePriceBusd = usePriceCakeBusd()
-  // const cakeReward = activeClaimData.cakeTotal
-  // const dollarReward = cakeReward.times(cakePriceBusd)
-  // const rewardAsBalance = getBalanceAmount(cakeReward).toNumber()
-  // const dollarRewardAsBalance = getBalanceAmount(dollarReward).toNumber()
+  const cakePriceBusd = usePriceLuckyBusd()
+  const cakeReward = activeClaimData.cakeTotal
+  const dollarReward = cakeReward.times(cakePriceBusd)
+  const rewardAsBalance = getBalanceAmount(cakeReward).toNumber()
+  const dollarRewardAsBalance = getBalanceAmount(dollarReward).toNumber()
 
   const parseUnclaimedTicketDataForClaimCall = (ticketsWithUnclaimedRewards: LotteryTicket[], lotteryId: string) => {
     const ticketIds = ticketsWithUnclaimedRewards.map((ticket) => {
@@ -82,6 +82,8 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
 
   const handleClaim = async () => {
     const { lotteryId, ticketIds, brackets } = claimTicketsCallData
+    console.log("maxNumberTicketsPerBuyOrClaim", maxNumberTicketsPerBuyOrClaim)
+    console.log('claimData', claimTicketsCallData)
     setPendingTx(true)
     try {
       const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets])
@@ -170,7 +172,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
           flexDirection={['column', null, 'row']}
         >
           <Balance2
-            value={100}
+            value={rewardAsBalance}
             fontSize="44px"
             unit=" LUCKY!"
             color="secondary"
@@ -181,11 +183,12 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
         <Balance2
           // mt={['12px', null, '0']}
           // textAlign={['center', null, 'left']}
-          value={1000}
+          value={dollarRewardAsBalance}
           fontSize="12px"
           color="textSubtle"
           unit=" USD"
           prefix="~"
+          decimals={10}
         />
       </Flex>
 
