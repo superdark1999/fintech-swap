@@ -200,13 +200,13 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data, initi
                 twoTicketMatches={match2Ticket}
                 threeTicketMatches={match3Ticket}
               />
-              {/* <PastLotteryActions contractLink={contractLink} lotteryNumber={lotteryNumber} /> */}
+              <PastLotteryActions contractLink={contractLink} lotteryNumber={lotteryNumber} />
             </CardFooter>
           </BoxCard>
         
         </StyledBox>
 
-        <PastLotteryActions contractLink={contractLink} lotteryNumber={lotteryNumber} />
+        {/* <PastLotteryActions contractLink={contractLink} lotteryNumber={lotteryNumber} /> */}
       </>
     )
   )

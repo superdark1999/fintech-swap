@@ -18,7 +18,7 @@ export interface PrizeGridProps {
 
 const Grid = styled.div<{ pastDraw?: boolean }>`
   display: grid;
-  grid-template-columns: repeat(${(props) => (props.pastDraw ? 3 : 3)}, 1fr);
+  grid-template-columns: repeat(${(props) => (props.pastDraw ? 3 : 2)}, 1fr);
   grid-template-rows: repeat(4, auto);
 `
 
@@ -58,7 +58,7 @@ const CardBusd = styled.span`
   color: #F3C111;
 `
 
-const PrizeGrid: React.FC<PrizeGridProps> = ({
+const PrizeGridLK: React.FC<PrizeGridProps> = ({
   lotteryPrizeAmount = 0,
   pastDraw = false,
   jackpotMatches,
@@ -84,15 +84,15 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
           {TranslateString(756, 'No. Matched')}
         </Text>
       </GridItem>
-      
+      {pastDraw && (
         <PastDrawGridItem>
-          <RightAlignedText padding="0px" marginLeft = "50px" fontSize="14px" color="textSubtle">
+          <RightAlignedText padding="0px" fontSize="14px" color="textSubtle">
             {TranslateString(754, 'Winners')}
           </RightAlignedText>
         </PastDrawGridItem>
-
-      <GridItem style={{ background: "transparent" }}>
-        <RightAlignedText style={{ padding: 0 }} fontSize="24px" color="#F3C111">
+      )}
+      <GridItem>
+        <RightAlignedText style={{padding: 0}}  fontSize="24px" color="#F3C111">
           {TranslateString(752, 'Prize Pot')}
         </RightAlignedText>
       </GridItem>
@@ -102,15 +102,15 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
           4
         </Heading>
       </GridItem>
-      
+      {pastDraw && (
         <PastDrawGridItem>
           <RightAlignedHeading className="text" size="md">{jackpotMatches}</RightAlignedHeading>
         </PastDrawGridItem>
-    
+      )}
       <GridItem>
         <RightAlignedHeading className="text" size="md">
           <CardBusd>
-            <CardBusdValue value={getCakeBusdValue(fourMatchesAmount)} />
+            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(fourMatchesAmount)} />}  
           </CardBusd>
           <CardValue
                 bold
@@ -127,15 +127,15 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       <GridItem style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }}>
         <Text className="text" padding="8px 0" bold>3</Text>
       </GridItem>
-     
+      {pastDraw && (
         <PastDrawGridItem >
           <RightAlignedText className="text" bold>{threeTicketMatches}</RightAlignedText>
         </PastDrawGridItem>
-      
+      )}
       <GridItem>
         <RightAlignedText>
           <CardBusd>
-            <CardBusdValue value={getCakeBusdValue(threeMatchesAmount)} />
+            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(threeMatchesAmount)} />}  
           </CardBusd>
           <CardValue
                 bold
@@ -152,15 +152,15 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       <GridItem style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }}>
         <Text className="text">2</Text>
       </GridItem>
-     
+      {pastDraw && (
         <PastDrawGridItem>
           <RightAlignedText className="text">{twoTicketMatches}</RightAlignedText>
         </PastDrawGridItem>
-    
+      )}
       <GridItem>
         <RightAlignedText>
           <CardBusd>
-             <CardBusdValue value={getCakeBusdValue(twoMatchesAmount)} />
+            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(twoMatchesAmount)} />}
           </CardBusd>
           <CardValue
                 bold
@@ -177,7 +177,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       <GridItem marginBottom="0">
         <Text>{TranslateString(999, `${pastDraw ? 'Burned' : 'To burn'}`)}:</Text>
       </GridItem>
-     
+      {pastDraw ? (
         <>
           <GridItem marginBottom="0" />
           <GridItem marginBottom="0">
@@ -197,11 +197,11 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
             </RightAlignedText>
           </GridItem>
         </>
-  
+      ) : (
         <GridItem marginBottom="0">
           <RightAlignedText>
-            {/* <CardBusd>
-              <CardBusdValue value={getCakeBusdValue(burnAmount)} />
+            <CardBusd>
+              {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(burnAmount)} />}
             </CardBusd>
             <CardValue
                 bold
@@ -210,13 +210,14 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
                 decimals={0}
                 fontSize="60px"
                 fontWeight="600"
-              ></CardValue> */}
+              ></CardValue>
             {/* {burnAmount.toLocaleString()} */}
             </RightAlignedText>
         </GridItem>
+      )}
     </Grid>
     </GridPrize>
   )
 }
 
-export default PrizeGrid
+export default PrizeGridLK

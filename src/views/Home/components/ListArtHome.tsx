@@ -52,6 +52,7 @@ const artHomeData = [
     cost: '0,00',
   },
 ]
+
 function ListArtHome() {
   return (
     <ListArtHomeContainer>

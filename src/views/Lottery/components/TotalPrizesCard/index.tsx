@@ -13,7 +13,7 @@ import { getLotteryIssueIndex } from 'utils/lotteryUtils'
 import ExpandableSectionButton from 'components/ExpandableSectionButton/ExpandableSectionButton'
 import { BigNumber } from 'bignumber.js'
 import { usePriceLuckyBusd } from 'state/hooks'
-import PrizeGrid from '../PrizeGrid'
+import PrizeGrid from '../PrizeGridLK'
 import CardBusdValue from '../../../Home/components/CardBusdValue'
 import CardValue from '../../../Home/components/CardValue'
 
@@ -218,11 +218,13 @@ const TotalPrizesCard = () => {
 
             </PrizeCountWrapper>
           </Left>
+          
           <Right>
             <ExpandableSectionButton onClick={() => setShowFooter(!showFooter)} expanded={showFooter} />
           </Right>
         </CardHeading>
       </CardBody>
+      
       <ExpandingWrapper showFooter={showFooter}>
         <CardFooter className="no-border">
           <PrizeGrid lotteryPrizeAmount={lotteryPrizeAmount} />
