@@ -174,7 +174,7 @@ const PrizeGridLK: React.FC<PrizeGridProps> = ({
         </RightAlignedText>
       </GridItem>
       {/* Burn row */}
-      <GridItem marginBottom="0">
+      <GridItem marginBottom="0" style={{ alignItems:'center', display: 'flex'}}>
         <Text>{TranslateString(999, `${pastDraw ? 'Burned' : 'To burn'}`)}:</Text>
       </GridItem>
       {pastDraw ? (
