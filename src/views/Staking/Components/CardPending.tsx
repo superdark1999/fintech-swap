@@ -2,23 +2,11 @@ import React from 'react'
 import { Col } from 'reactstrap'
 import styled from 'styled-components'
 
-interface CardNftTokenProps {
-  name?: string
-  description?: string
-  tokenID: number
-  contractAddress: string
+interface PendingTokenProps {
   image: string
-  onRegister: any
 }
 
-const CardNftToken: React.FC<CardNftTokenProps> = ({
-  name,
-  description,
-  tokenID,
-  contractAddress,
-  image,
-  onRegister,
-}: CardNftTokenProps) => {
+const PendingToken: React.FC<PendingTokenProps> = ({ image }: PendingTokenProps) => {
   return (
     <Col sm="12" md="3" className="align-center space-mb">
       <BoxCenter>
@@ -30,12 +18,6 @@ const CardNftToken: React.FC<CardNftTokenProps> = ({
         <Launchers>
           <img src="/images/staking/effect.png" alt="" />
         </Launchers>
-
-        <BoxFooter>
-          <Space>
-            <Ticket onClick={() => onRegister({ name, description, tokenID, contractAddress, image })}>Register</Ticket>
-          </Space>
-        </BoxFooter>
       </BoxCenter>
     </Col>
   )
@@ -190,4 +172,4 @@ const Ticket = styled.div`
   font-weight: 600;
 `
 
-export default CardNftToken
+export default PendingToken

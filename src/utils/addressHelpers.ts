@@ -58,10 +58,10 @@ export const getEasterNftAddress = (chainId?: ChainId) => {
   return getAddress(addresses.easterNft, chainId)
 }
 
-export const getStakingNftAddress = (chainId?: ChainId) => {
-  return getAddress(addresses.stakingNft, chainId)
+export const getStakingNftAddress = () => {
+  return getAddress(addresses.stakingNft)
 }
 
-export const getNftAddress = (chainId?: ChainId) => {
-  return getAddress(addresses.nft, chainId)
+export const getNftAddress = () => {
+  return getAddress(addresses.nft)
 }

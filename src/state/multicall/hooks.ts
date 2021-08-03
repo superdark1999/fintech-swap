@@ -169,8 +169,9 @@ export function useSingleContractMultipleData(
 
   const calls = useMemo(
     () =>
-      contract && fragment && callInputs && callInputs.length > 0
+      contract && fragment && callInputs.length > 0 && callInputs.every((inputs) => isValidMethodArgs(inputs))
         ? callInputs.map<Call>((inputs) => {
+            console.log('inputs : ', inputs)
             return {
               address: contract.address,
               callData: contract.interface.encodeFunctionData(fragment, inputs),

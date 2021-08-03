@@ -3,22 +3,13 @@ import { Col } from 'reactstrap'
 import styled from 'styled-components'
 
 interface StakingCardProps {
-  tokenId: number
-  nftContract: string
+  tokenID: number
+  contractAddress: string
   image: string
-  isStaking: boolean
-  reward: number
-  onStake: any
+  reward?: number
 }
 
-const CardStaking: React.FC<StakingCardProps> = ({
-  image,
-  nftContract,
-  isStaking,
-  reward,
-  onStake,
-  tokenId,
-}: StakingCardProps) => {
+const CardStaking: React.FC<StakingCardProps> = ({ image, contractAddress, reward, tokenID }: StakingCardProps) => {
   return (
     <Col sm="12" md="3" className="align-center space-mb">
       <BoxCenter>
@@ -32,14 +23,14 @@ const CardStaking: React.FC<StakingCardProps> = ({
         </Launchers>
 
         <BoxFooter>
-          <Btn onClick={() => onStake(tokenId, nftContract)} className={isStaking && 'green-color'}>
-            <span className="effect-light">Unstaked</span>
+          <Btn>
+            <span className="effect-light">Unstake</span>
           </Btn>
 
           <Space>
             <Title>Collected Reward:</Title>
             <Dflex>
-              <Number data-heading="0.000">{reward}</Number>
+              <Number data-heading="0.000">0.000</Number>
               <Ticket>claim</Ticket>
             </Dflex>
           </Space>

@@ -87,25 +87,28 @@
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "FEE_WITHDRAW",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
-        "name": "_nftContract",
+        "name": "_contractAddress",
         "type": "address"
       },
       {
         "internalType": "uint256",
         "name": "_tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_startBlock",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_bonusEndBlock",
         "type": "uint256"
       },
       {
@@ -116,6 +119,11 @@
       {
         "internalType": "uint256",
         "name": "_tokenValue",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_depositAmount",
         "type": "uint256"
       }
     ],
@@ -141,7 +149,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_nftContract",
+        "name": "_contractAddress",
         "type": "address"
       },
       {
@@ -159,7 +167,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_nftContract",
+        "name": "_contractAddress",
         "type": "address"
       },
       {
@@ -179,7 +187,7 @@
           },
           {
             "internalType": "address",
-            "name": "nftContract",
+            "name": "contractAddress",
             "type": "address"
           },
           {
@@ -194,16 +202,6 @@
           },
           {
             "internalType": "uint256",
-            "name": "startBlock",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "bonusEndBlock",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
             "name": "lastRewardBlock",
             "type": "uint256"
           },
@@ -214,12 +212,12 @@
           },
           {
             "internalType": "uint256",
-            "name": "createdAt",
+            "name": "depositAmount",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "timesGetBonus",
+            "name": "createdAt",
             "type": "uint256"
           }
         ],
@@ -235,7 +233,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_nftContract",
+        "name": "_contractAddress",
         "type": "address"
       },
       {
@@ -268,7 +266,7 @@
           },
           {
             "internalType": "address",
-            "name": "nftContract",
+            "name": "contractAddress",
             "type": "address"
           },
           {
@@ -283,16 +281,6 @@
           },
           {
             "internalType": "uint256",
-            "name": "startBlock",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "bonusEndBlock",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
             "name": "lastRewardBlock",
             "type": "uint256"
           },
@@ -303,12 +291,12 @@
           },
           {
             "internalType": "uint256",
-            "name": "createdAt",
+            "name": "depositAmount",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "timesGetBonus",
+            "name": "createdAt",
             "type": "uint256"
           }
         ],
@@ -331,7 +319,7 @@
           },
           {
             "internalType": "address",
-            "name": "nftContract",
+            "name": "contractAddress",
             "type": "address"
           },
           {
@@ -346,16 +334,6 @@
           },
           {
             "internalType": "uint256",
-            "name": "startBlock",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "bonusEndBlock",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
             "name": "lastRewardBlock",
             "type": "uint256"
           },
@@ -366,12 +344,12 @@
           },
           {
             "internalType": "uint256",
-            "name": "createdAt",
+            "name": "depositAmount",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "timesGetBonus",
+            "name": "createdAt",
             "type": "uint256"
           }
         ],
@@ -395,7 +373,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_nftContract",
+        "name": "_contractAddress",
         "type": "address"
       },
       {
@@ -413,7 +391,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_nftContract",
+        "name": "_contractAddress",
         "type": "address"
       },
       {
@@ -484,7 +462,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_nftContract",
+        "name": "_contractAddress",
         "type": "address"
       },
       {
@@ -521,7 +499,7 @@
       },
       {
         "internalType": "address",
-        "name": "nftContract",
+        "name": "contractAddress",
         "type": "address"
       },
       {
@@ -536,16 +514,6 @@
       },
       {
         "internalType": "uint256",
-        "name": "startBlock",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "bonusEndBlock",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "lastRewardBlock",
         "type": "uint256"
       },
@@ -556,12 +524,12 @@
       },
       {
         "internalType": "uint256",
-        "name": "createdAt",
+        "name": "depositAmount",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "timesGetBonus",
+        "name": "createdAt",
         "type": "uint256"
       }
     ],
@@ -572,7 +540,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_nftContract",
+        "name": "_contractAddress",
         "type": "address"
       },
       {
@@ -582,7 +550,13 @@
       }
     ],
     "name": "removePool",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -610,7 +584,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_nftContract",
+        "name": "_contractAddress",
         "type": "address"
       },
       {
@@ -620,24 +594,6 @@
       }
     ],
     "name": "stake",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_nftContract",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "stopReward",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -672,25 +628,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_nftContract",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "transferToAdminIfExpireBlock",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_nftContract",
+        "name": "_contractAddress",
         "type": "address"
       },
       {

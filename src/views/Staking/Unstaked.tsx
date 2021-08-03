@@ -1,81 +1,93 @@
+// import axios from 'axios'
+import { CurrencyAmount, JSBI } from '@luckyswap/v2-sdk'
 import Page from 'components/layout/Page'
+import NftAbi from 'config/abi/nft.json'
+import addresses from 'config/constants/contracts'
 import { ethers } from 'ethers'
+import { useApproveCallback } from 'hooks/useApproveCallback'
+import useWeb3Provider from 'hooks/useWeb3Provider'
 import React, { useEffect, useState } from 'react'
-import { Row, TabContent, TabPane } from 'reactstrap'
+import { Row } from 'reactstrap'
 import styled from 'styled-components'
+import { XLUCKY_ADDRESSES } from '../../config/index'
 import { useActiveWeb3React } from '../../hooks/index'
-import { fetchNftUser as fetchNftTokenUser, getImageFromTokens } from '../../state/poolsNft/fetchPoolInfo'
-import CardNftToken from './Components/CardToken'
+// import { useApproveCallback } from 'hooks/useApproveCallback'
+import { useToken } from '../../hooks/Tokens'
+import { useStakingNftContract } from '../../hooks/useContract'
+// import addresses from 'config/constants/contracts';
+import { stakingNftService } from '../../services/index'
+import { getAddress } from '../../utils/addressHelpers'
+import { getContract2 } from '../../utils/contractHelpers'
+import notification from './Components/Alert'
+import CardApproved from './Components/CardApproved'
 import NavBar from './Components/NavBar'
 
-const Nft: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('1')
-  const [tokens, setTokens] = useState([])
-  const { account } = useActiveWeb3React()
+const Unstaked: React.FC = () => {
+  const [approvedTokens, setApprovedTokens] = useState([])
+  const stakingNftContract = useStakingNftContract()
+  const { chainId } = useActiveWeb3React()
+  const luckyToken = useToken(XLUCKY_ADDRESSES[chainId ?? 97])
+  const [approveAmount, setApproveAmount] = useState<JSBI>(JSBI.BigInt(0))
 
-  console.log('tokens : ', tokens)
+  const [approvalLucky, approveLuckyCallback] = useApproveCallback(
+    CurrencyAmount.fromRawAmount(luckyToken, approveAmount),
+    stakingNftContract?.address,
+  )
+  const provider = useWeb3Provider()
+
+  console.log('approved tokens : ', approvedTokens)
 
   useEffect(() => {
-    const getUserTokens = async () => {
-      let userTokens = await fetchNftTokenUser(account)
-      const map = new Map()
-      for (let i = 0; i < userTokens.length; i++) {
-        const key = `${userTokens[i].tokenID}-${userTokens[i].contractAddress}`
-        const temp = map.get(key)
-        if (temp) {
-          map.set(key, temp + 1)
-        } else {
-          map.set(key, 1)
-        }
-      }
-
-      userTokens = userTokens.filter((token) => {
-        const key = `${token.tokenID}-${token.contractAddress}`
-        if (map.get(key) % 2 === 0) {
-          return false
-        }
-        return true
-      })
-
-      const images = await getImageFromTokens(userTokens)
-
-      for (let i = 0; i < userTokens.length; i++) {
-        userTokens[i].image = images[i]
-      }
-
-      setTokens(userTokens.filter((token) => token.image))
+    const getApprovedTokens = async () => {
+      const data = await stakingNftService
+        .getApprovedTokens()
+        .catch((error) => notification('error', { message: 'Error', description: error?.message }))
+      setApprovedTokens(data)
     }
+    getApprovedTokens()
+  }, [])
 
-    getUserTokens()
-  }, [account])
+  const stakeHandler = async ({ tokenID, contractAddress, depositAmount }) => {
+    try {
+      const stakingNftAddress = getAddress(addresses.stakingNft)
+      setApproveAmount(JSBI.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)), JSBI.BigInt(depositAmount)))
 
-  const toggle = (tab) => {
-    if (activeTab !== tab) setActiveTab(tab)
+      // if (approvalLucky !== ApprovalState.APPROVED && approvalLucky !== ApprovalState.PENDING) {
+      //   await approveLuckyCallback()
+      // }
+
+      const erc721Contract = getContract2(NftAbi, contractAddress, provider.getSigner())
+      await erc721Contract.approve(stakingNftAddress, ethers.BigNumber.from(tokenID))
+      await stakingNftContract.stake(ethers.utils.getAddress(contractAddress), ethers.BigNumber.from(tokenID))
+    } catch (error) {
+      console.log('stake error : ', error)
+    }
   }
 
-  const registerHandler = (info) => {
-    console.log('register info : ', info)
+  const approveHandler = () => {
+    console.log('approve ne')
+    approveLuckyCallback().catch((error) => {
+      console.log('approve error : ', error)
+    })
   }
 
   return (
     <Page>
       <StakingPage>
-        <NavBar activeTab={activeTab} toggle={toggle} />
-
-        <TabContent activeTab={activeTab}>
-          <TabPane tabId="1">
-            <Row>
-              {/* {tokens.map((token) => (
-                <CardNftToken
-                  image={token.image}
-                  nftContract={token.nftContract}
-                  tokenId={token.tokenId}
-                  onRegisterStaking={registerHandler}
-                />
-              ))} */}
-            </Row>
-          </TabPane>
-        </TabContent>
+        <NavBar activeTab="3" />
+        <Row>
+          {approvedTokens.map((token) => (
+            <CardApproved
+              image={token.urlImg}
+              contractAddress={token.contractAddress}
+              tokenID={token.tokenID}
+              depositAmount={token.depositAmount}
+              onStake={stakeHandler}
+              approveState={approvalLucky}
+              onApprove={approveHandler}
+            />
+          ))}
+        </Row>
       </StakingPage>
     </Page>
   )
@@ -262,4 +274,16 @@ const Number = styled.h3`
   }
 `
 
-export default Nft
+const Ticket = styled.div`
+  background: url('../images/staking/bg-button.png') no-repeat center center;
+  background-size: contain;
+  width: 100%;
+  height: 36px;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 36px;
+  font-size: 14px;
+  font-weight: 600;
+`
+
+export default Unstaked

@@ -1,24 +1,27 @@
 import React from 'react'
 import { Col } from 'reactstrap'
 import styled from 'styled-components'
+import { ApprovalState } from '../../../hooks/useApproveCallback'
 
-interface CardNftTokenProps {
-  name?: string
-  description?: string
+interface StakingCardProps {
   tokenID: number
   contractAddress: string
   image: string
-  onRegister: any
+  onStake: any
+  depositAmount: any
+  approveState?: ApprovalState
+  onApprove: any
 }
 
-const CardNftToken: React.FC<CardNftTokenProps> = ({
-  name,
-  description,
-  tokenID,
-  contractAddress,
+const CardApproved: React.FC<StakingCardProps> = ({
   image,
-  onRegister,
-}: CardNftTokenProps) => {
+  contractAddress,
+  onStake,
+  tokenID,
+  depositAmount,
+  approveState,
+  onApprove,
+}: StakingCardProps) => {
   return (
     <Col sm="12" md="3" className="align-center space-mb">
       <BoxCenter>
@@ -32,9 +35,15 @@ const CardNftToken: React.FC<CardNftTokenProps> = ({
         </Launchers>
 
         <BoxFooter>
-          <Space>
-            <Ticket onClick={() => onRegister({ name, description, tokenID, contractAddress, image })}>Register</Ticket>
-          </Space>
+          {approveState === ApprovalState.APPROVED ? (
+            <Btn onClick={() => onStake({ tokenID, contractAddress, depositAmount })} className="green-color">
+              <span className="effect-light">Stake</span>
+            </Btn>
+          ) : (
+            <Btn className="green-color" onClick={onApprove}>
+              <span className="effect-light">Approve</span>
+            </Btn>
+          )}
         </BoxFooter>
       </BoxCenter>
     </Col>
@@ -190,4 +199,4 @@ const Ticket = styled.div`
   font-weight: 600;
 `
 
-export default CardNftToken
+export default CardApproved

@@ -58,7 +58,7 @@ const getContract = (abi: any, address: string, web3?: Web3) => {
   return new _web3.eth.Contract(abi as unknown as AbiItem, address)
 }
 
-const getContract2 = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getContract2 = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider
   return new ethers.Contract(address, abi, signerOrProvider)
 }
@@ -99,6 +99,7 @@ export const getBunnySpecialContract = (web3?: Web3, chainId?: ChainId) => {
 export const getLotteryV2Contract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract2(lotteryV2Abi, getLotteryV2Address(), signer)
 }
+
 export const getLotteryContract = (web3?: Web3, chainId?: ChainId) => {
   return getContract(lotteryAbi, getLotteryAddress(chainId), web3)
 }
@@ -118,10 +119,10 @@ export const getEasterNftContract = (web3?: Web3, chainId?: ChainId) => {
   return getContract(easterNftAbi, getEasterNftAddress(chainId), web3)
 }
 
-export const getStakingNftContract = (web3?: Web3, chainId?: ChainId) => {
-  return getContract(stakingNftAbi, getStakingNftAddress(chainId), web3)
+export const getNftContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract2(nftAbi, getNftAddress(), signer)
 }
 
-export const getNftContract = (web3?: Web3, chainId?: ChainId) => {
-  return getContract(nftAbi, getNftAddress(chainId), web3)
+export const getStakingNftContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract2(stakingNftAbi, getStakingNftAddress(), signer)
 }

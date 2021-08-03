@@ -5,6 +5,7 @@ import multicall from 'utils/multicall'
 import { ChainId } from '@luckyswap/v2-sdk'
 import Web3 from 'web3'
 import axios from 'axios'
+import { remove } from 'lodash'
 import { RPC_URLS } from '../../constants/index'
 import { multicallv2 } from '../../utils/multicall'
 
@@ -68,20 +69,6 @@ export const getImplementationFromProxy = async (contractAddress: string, chainI
   )
 }
 
-// const WHITELIST_URLS = {
-//   ''
-// }
-
-// export const getImageFromURI = async(contractAddress, uri) => {
-//   try {
-//     switch(contractAddress)
-//   }
-//   catch(error) {
-//     console.log('get image error : ', error);
-//     return null;
-//   }
-// }
-
 const NFT_SITES = {
   LUCKY_MARKETPLACE: 'LUCKY_MARKETPLACE',
   AIRNFTS: 'AIRNFTS',
@@ -94,54 +81,61 @@ const WHITELIST_URLS = {
   '0x1dDB2C0897daF18632662E71fdD2dbDC0eB3a9Ec': NFT_SITES.BRNFT,
 }
 
-const getImageFromLucky = async (uri) => {
-  return uri
+const getInfoFromLucky = async (uri) => {
+  return { image: uri }
 }
 
-const getImageFromAirNFT = async (uri) => {
+const getInfoFromAirNFT = async (uri) => {
   try {
     const { data } = await axios.get(uri)
-    return (data as any)?.nft?.urlThumbnail
+    const { urlCompressed, name, description } = (data as any)?.nft
+    return {
+      image: urlCompressed,
+      name,
+      description,
+    }
   } catch (error) {
-    console.log('get image airnft error : ', error)
+    console.log('get info airnft error : ', error)
     return null
   }
 }
 
-const getImageFromBRNFT = async (uri) => {
+const getInfoFromBRNFT = async (uri) => {
   try {
     const { data } = await axios.get(uri)
+    const { name, description, image } = data
 
-    return (data as any)?.image
+    return { name, description, image }
   } catch (error) {
     console.log('get image brnft error : ', error)
     return null
   }
 }
 
-const getImageFromBakery = async (uri) => {
+const getInfoFromBakery = async (uri) => {
   try {
     const { data } = await axios.get(uri)
+    const { name, description, image } = data
 
-    return (data as any)?.image
+    return { name, description, image }
   } catch (error) {
     console.log('get image bakery error : ', error)
     return null
   }
 }
 
-export const getImagesFromURI = async (tokensInfo) => {
+export const getInfoFromURI = async (tokensInfo) => {
   const result = await Promise.all(
     tokensInfo.map(async (token) => {
       switch (WHITELIST_URLS[token.contractAddress]) {
         case NFT_SITES.LUCKY_MARKETPLACE:
-          return getImageFromLucky(token.uri)
+          return getInfoFromLucky(token.uri)
         case NFT_SITES.AIRNFTS:
-          return getImageFromAirNFT(token.uri)
+          return getInfoFromAirNFT(token.uri)
         case NFT_SITES.BRNFT:
-          return getImageFromBRNFT(token.uri)
+          return getInfoFromBRNFT(token.uri)
         default:
-          return getImageFromBakery(token.uri)
+          return getInfoFromBakery(token.uri)
       }
     }),
   )
@@ -168,7 +162,7 @@ export const getTokensURI = async (tokens) => {
   }
 }
 
-export const getImageFromTokens = async (tokens) => {
+export const getAdditionalInfoTokens = async (tokens) => {
   const uris = await getTokensURI(tokens)
 
   const tokensInfo = uris.map((uri, index) => ({
@@ -176,7 +170,51 @@ export const getImageFromTokens = async (tokens) => {
     contractAddress: tokens[index].contractAddress,
   }))
 
-  const images = await getImagesFromURI(tokensInfo)
+  const images = await getInfoFromURI(tokensInfo)
 
   return images
+}
+
+export const excludeExistedTokens = (userTokens, existedTokens) => {
+  for (let i = 0; i < existedTokens.length; i++) {
+    remove(
+      userTokens,
+      (token) =>
+        (token as any).contractAddress === existedTokens[i].contractAddress &&
+        (token as any).tokenID === existedTokens[i].tokenID,
+    )
+  }
+}
+
+export const getKey = (token) => {
+  return `${token.tokenID}-${token.contractAddress}`
+}
+
+export const excludeSoldTokens = (userTokens) => {
+  const map = new Map()
+  for (let i = 0; i < (userTokens as any).length; i++) {
+    const key = getKey(userTokens[i])
+    const temp = map.get(key)
+    if (temp) {
+      map.set(key, temp + 1)
+    } else {
+      map.set(key, 1)
+    }
+  }
+
+  remove(userTokens, (token) => {
+    const key = getKey(token)
+    if (map.get(key) % 2 === 0) {
+      return true
+    }
+    return false
+  })
+}
+
+export const addAdditionalInfoTokens = async (userTokens) => {
+  const additionalInfoTokens = await getAdditionalInfoTokens(userTokens)
+
+  for (let i = 0; i < (userTokens as any).length; i++) {
+    Object.assign(userTokens[i], additionalInfoTokens[i])
+  }
 }

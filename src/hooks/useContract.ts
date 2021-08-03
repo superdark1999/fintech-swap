@@ -20,6 +20,8 @@ import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { getContract } from '../utils'
 import { getNftAddress, getStakingNftAddress } from '../utils/addressHelpers'
 import {
+  getStakingNftContract,
+  getNftContract,
   getBep20Contract,
   getBunnyFactoryContract,
   getBunnySpecialContract,
@@ -95,6 +97,16 @@ export const useIfoContract = (address: string) => {
 export const useLotteryV2Contract = () => {
   const provider = useWeb3Provider()
   return useMemo(() => getLotteryV2Contract(provider.getSigner()), [provider])
+}
+
+export const useNftContract = () => {
+  const provider = useWeb3Provider()
+  return useMemo(() => getNftContract(provider.getSigner()), [provider])
+}
+
+export function useStakingNftContract(): Contract | null {
+  const provider = useWeb3Provider()
+  return useMemo(() => getStakingNftContract(provider.getSigner()), [provider])
 }
 
 export const useERC20 = (address: string) => {
@@ -196,14 +208,4 @@ export function useFarmsContract(): Contract | null {
 
 export function useStakingContract(address: any | null): Contract | null {
   return useContract(address, SMART_CHEF_ABI, true)
-}
-
-export function useStakingNftContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(getStakingNftAddress(chainId), stakingNftAbi)
-}
-
-export function useNftContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(getNftAddress(chainId), nftAbi)
 }
