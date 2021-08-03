@@ -24,6 +24,7 @@ const WinningNumbers: React.FC = () => {
 
     const fetchData = async () => {
       const lotteryData = await fetchLottery(currentLotteryId)
+      // const lotteryData = await fetchLottery(currentLotteryId)
       const processedLotteryData = processLotteryResponse(lotteryData)
 
       setLotteryInfo(processedLotteryData)
@@ -33,13 +34,10 @@ const WinningNumbers: React.FC = () => {
   }, [currentLotteryId])
 
   const lotteryHasDrawn = useGetLotteryHasDrawn()
-  const MatchedNumber4 = useMatchingRewardLength(4)
-  const MatchedNumber3 = useMatchingRewardLength(3)
-  const MatchedNumber2 = useMatchingRewardLength(2)
   const TranslateString = useI18n()
 
   const reversedNumber = lotteryInfo && parseRetreivedNumber(lotteryInfo.finalNumber.toString())
-  const numAsArray = reversedNumber?.split('')
+  const numAsArray =  reversedNumber ? reversedNumber?.split('') : ["0","0","0","0","0","0"]
 
   
   return (
@@ -80,35 +78,62 @@ const WinningNumbers: React.FC = () => {
               </TicketNumberBox>
             ))}
           </Row>
-          <Column>
+          {lotteryInfo && (<Column>
+            <RowNoPadding>
+              <CenteredTextWithPadding style={{ color: '#fff' }}>
+                {/* {TranslateString(442, 'Tickets matching 6 numbers:')} */}
+                Tickets matching<strong style={{fontWeight: 900}}> 6 </strong>numbers:
+              </CenteredTextWithPadding>
+              <CenteredTextWithPadding>
+                <strong style={{ color: '#F3C111', fontWeight: 900 }}>{lotteryInfo.countWinnersPerBracket[5]}</strong>
+              </CenteredTextWithPadding>
+            </RowNoPadding>
+            <RowNoPadding>
+              <CenteredTextWithPadding style={{ color: '#fff' }}>
+                {/* {TranslateString(442, 'Tickets matching 6 numbers:')} */}
+                Tickets matching<strong style={{fontWeight: 900}}> 5 </strong>numbers:
+              </CenteredTextWithPadding>
+              <CenteredTextWithPadding>
+                <strong style={{ color: '#F3C111', fontWeight: 900 }}>{lotteryInfo.countWinnersPerBracket[4]}</strong>
+              </CenteredTextWithPadding>
+            </RowNoPadding>
             <RowNoPadding>
               <CenteredTextWithPadding style={{ color: '#fff' }}>
                 {/* {TranslateString(442, 'Tickets matching 4 numbers:')} */}
                 Tickets matching<strong style={{fontWeight: 900}}> 4 </strong>numbers:
               </CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{ color: '#F3C111', fontWeight: 900 }}>{MatchedNumber4}</strong>
+                <strong style={{ color: '#F3C111', fontWeight: 900 }}>{lotteryInfo.countWinnersPerBracket[3]}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
             <RowNoPadding>
               <CenteredTextWithPadding style={{ color: '#fff' }}>
-                {/* {TranslateString(444, 'Tickets matching 3 numbers:')} */}
+                {/* {TranslateString(442, 'Tickets matching 3 numbers:')} */}
                 Tickets matching<strong style={{fontWeight: 900}}> 3 </strong>numbers:
               </CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{ color: '#F3C111', fontWeight: 900 }}>{MatchedNumber3}</strong>
+                <strong style={{ color: '#F3C111', fontWeight: 900 }}>{lotteryInfo.countWinnersPerBracket[2]}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
             <RowNoPadding>
               <CenteredTextWithPadding style={{ color: '#fff' }}>
-                {/* {TranslateString(446, 'Tickets matching 2 numbers:')} */}
+                {/* {TranslateString(444, 'Tickets matching 2 numbers:')} */}
                 Tickets matching<strong style={{fontWeight: 900}}> 2 </strong>numbers:
               </CenteredTextWithPadding>
               <CenteredTextWithPadding>
-                <strong style={{ color: '#F3C111', fontWeight: 900 }}>{MatchedNumber2}</strong>
+                <strong style={{ color: '#F3C111', fontWeight: 900 }}>{lotteryInfo.countWinnersPerBracket[1]}</strong>
               </CenteredTextWithPadding>
             </RowNoPadding>
-          </Column>
+            <RowNoPadding>
+              <CenteredTextWithPadding style={{ color: '#fff' }}>
+                {/* {TranslateString(446, 'Tickets matching 1 numbers:')} */}
+                Tickets matching<strong style={{fontWeight: 900}}> 1 </strong>numbers:
+              </CenteredTextWithPadding>
+              <CenteredTextWithPadding>
+                <strong style={{ color: '#F3C111', fontWeight: 900 }}>{lotteryInfo.countWinnersPerBracket[0]}</strong>
+              </CenteredTextWithPadding>
+            </RowNoPadding>
+          </Column>)}
 
           {/* <Link href="/" target="_blank">
             {TranslateString(448, 'Export recent winning numbers')}

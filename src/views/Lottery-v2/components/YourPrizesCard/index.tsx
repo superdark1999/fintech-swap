@@ -109,7 +109,7 @@ const YourPrizesCard: React.FC = () => {
     if (hasCheckedForRewards && !hasRewardsToClaim) {
       return (
         <Flex alignItems="center" justifyContent="center">
-          <TornTicketImage src="/images/lottery/torn-ticket-l.png" alt="torn lottery ticket" />
+          <TornTicketImage src="/images/icon-lottery.svg" alt="torn lottery ticket" />
           <Flex mx={['4px', null, '16px']} flexDirection="column">
             <Heading textAlign="center" color="#F4EEFF">
               {TranslateString(999,'No prizes to collect')}...
@@ -118,7 +118,7 @@ const YourPrizesCard: React.FC = () => {
               {TranslateString(999,'Better luck next time!')}
             </Heading>
           </Flex>
-          <TornTicketImage src="/images/lottery/torn-ticket-r.png" alt="torn lottery ticket" />
+          <TornTicketImage src="/images/icon-lottery.svg" alt="torn lottery ticket" />
         </Flex>
       )
     }

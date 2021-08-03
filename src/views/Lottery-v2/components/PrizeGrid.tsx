@@ -62,14 +62,12 @@ const CardBusd = styled.span`
 `
 
 const PrizeGrid: React.FC<PrizeGridProps> = ({
-  lotteryPrizeAmount = 0,
   pastDraw = false,
   jackpotMatches,
   twoTicketMatches,
   threeTicketMatches,
   lotteryData
 }) => {
-  const burnAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
   const TranslateString = useI18n()
   const cakeBusdPrice = usePriceLuckyBusd()
 

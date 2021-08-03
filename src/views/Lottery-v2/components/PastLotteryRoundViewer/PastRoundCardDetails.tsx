@@ -139,7 +139,6 @@ const Dollar = styled.div`
 const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data, initialLotteryNumber,onSubmit }) => {
   const TranslateString = useI18n()
   const lotteryPrizeAmount = +getBalanceNumber(useTotalRewards()).toFixed(0)
-  const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
   const lotteryPrizeAmountBusd = new BigNumber(lotteryPrizeAmount).multipliedBy(usePriceLuckyBusd()).toNumber() 
 
   // export interface LotteryRoundGraphEntity {
@@ -248,7 +247,6 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data, initi
             <CardFooter className="no-border">
               { processedCurrentRound.isLoading === false && (
                 <PrizeGrid
-                lotteryPrizeAmount={0}
                 lotteryData={processedCurrentRound}
                 />
               )}

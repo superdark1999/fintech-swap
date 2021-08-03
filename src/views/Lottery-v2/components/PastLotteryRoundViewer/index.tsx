@@ -28,11 +28,9 @@ const PastLotteryRoundViewer = () => {
     isInitialized: false,
     isLoading: true,
   })
-  const { data: initialLotteryData, mostRecentLotteryNumber } = useGetRecentLotteryRoundData()
   const TranslateString = useI18n()
   const { roundData, error, isInitialized, isLoading } = state
 
-  // const lotteryData  = useGetUserLotteryGraphRoundById("1");
   const currentLotteryId = useGetCurrentLotteryId();
   const lotteries = useGetLotteriesGraphData();
 
@@ -42,7 +40,7 @@ const PastLotteryRoundViewer = () => {
          ...prevState, 
          isLoading: false, 
          isInitialized: true, 
-         roundData: lotteries[parseInt(currentLotteryId)-1] 
+         roundData: lotteries[parseInt(currentLotteryId)-2] 
         }))
     }
   }, [lotteries, currentLotteryId])
@@ -76,7 +74,7 @@ const PastLotteryRoundViewer = () => {
 
   return (
     <Wrapper>
-      {mostRecentLotteryNumber !== -1 && (
+      {parseInt(currentLotteryId)>=2 && ( // have past round
       <div>
         {(!isInitialized || isLoading) ? ( 
         <Card>
@@ -85,7 +83,7 @@ const PastLotteryRoundViewer = () => {
           </StyledCardBody>
         </Card>
       ) : (
-        <PastRoundCard initialLotteryNumber={parseInt(currentLotteryId)} onSubmit={handleSubmit} error={error} data={roundData} />
+        <PastRoundCard initialLotteryNumber={parseInt(currentLotteryId)-1} onSubmit={handleSubmit} error={error} data={roundData} />
       )}
       </div>
     )}

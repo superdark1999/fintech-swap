@@ -5,13 +5,10 @@ import { Button, Modal } from '@luckyswap/uikit'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import TicketInput from 'components/TicketInput'
 import ModalActions from 'components/ModalActions'
-import { useMultiBuyLottery, useMaxNumber } from 'hooks/useBuyLottery'
 import useI18n from 'hooks/useI18n'
-import { LOTTERY_MAX_NUMBER_OF_TICKETS, LOTTERY_TICKET_PRICE, LOTTERY_MAX_TICKET_IN_ROUND } from 'config'
-import { useContract, useLotteryV2contract } from 'hooks/useContract'
+import { LOTTERY_MAX_NUMBER_OF_TICKETS, LOTTERY_TICKET_PRICE, LOTTERY2_MAX_TICKET_IN_ROUND } from 'config'
+import { useLotteryV2contract } from 'hooks/useContract'
 import {useTicketLotteryV2} from 'hooks/useTicketLotteryV2'
-import { getLotteryAddress, getLotteryV2Address } from 'utils/addressHelpers'
-import lotteryV2 from 'config/abi/lotteryV2.json'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useLotteryV2 } from 'hooks/useLotteryV2';
 import { useTicketsReducer } from './useTicketsReducer'
@@ -106,11 +103,11 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
 
   const handleSelectMax = useCallback(() => {
     if (Number(maxTickets) > parseInt(maxNumberTicketsPerBuyOrClaim)) {
-      if (LOTTERY_MAX_TICKET_IN_ROUND - ticketsLength > parseInt(maxNumberTicketsPerBuyOrClaim))
+      if (LOTTERY2_MAX_TICKET_IN_ROUND - ticketsLength > parseInt(maxNumberTicketsPerBuyOrClaim))
         setVal(maxNumberTicketsPerBuyOrClaim)
       else
-        setVal((LOTTERY_MAX_TICKET_IN_ROUND - ticketsLength).toString())
-    } else if((LOTTERY_MAX_TICKET_IN_ROUND - ticketsLength > Number(maxTickets))) {
+        setVal((LOTTERY2_MAX_TICKET_IN_ROUND - ticketsLength).toString())
+    } else if((LOTTERY2_MAX_TICKET_IN_ROUND - ticketsLength > Number(maxTickets))) {
       setVal(maxTickets.toString())
     } else {
       setVal(LOTTERY_MAX_NUMBER_OF_TICKETS.toString())
@@ -163,7 +160,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
             pendingTx ||
             parseInt(val) > Number(maxTickets) ||
             parseInt(val) > parseInt(maxNumberTicketsPerBuyOrClaim) ||
-            // parseInt(val) + ticketsLength > LOTTERY_MAX_TICKET_IN_ROUND ||
+            // parseInt(val) + ticketsLength > LOTTERY2_MAX_TICKET_IN_ROUND ||
             parseInt(val) < 1
           }
           onClick={async () => {

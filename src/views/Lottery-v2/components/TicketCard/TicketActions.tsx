@@ -49,10 +49,11 @@ const TicketCard: React.FC = () => {
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const {
     isTransitioning,
-    currentRound: { status },
+    currentRound: { status, endTime },
   } = useLottery()
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
+  const isBuyTicketTime = new Date().getTime() < parseInt(endTime)* 1000;
 
   const { account, chainId } = useWeb3React()
   const contractBEP20 = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
@@ -200,7 +201,7 @@ const TicketCard: React.FC = () => {
         >
           {TranslateString(432, 'View your tickets')}
         </Button>
-        <Button variant="secondary" id="lottery-buy-start" width="100%" disabled={ticketBuyIsDisabled} onClick={onPresentBuy}>
+        <Button variant="secondary" id="lottery-buy-start" width="100%" disabled={!isBuyTicketTime || ticketBuyIsDisabled} onClick={onPresentBuy}>
         {getStatus() ? spinnerIcon : ''}
         {TranslateString(430, 'Buy ticket')}
         </Button>
@@ -210,7 +211,7 @@ const TicketCard: React.FC = () => {
 
   return (
     <CardActions>
-      {lotteryHasDrawn ? (
+      {ticketBuyIsDisabled ? (
         <Button className="btn-center" disabled> {TranslateString(874, 'On sale soon')}</Button>
       ) : (
         renderLotteryTicketButtons()
