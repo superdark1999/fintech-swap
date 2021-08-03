@@ -33,19 +33,21 @@ const RightAlignedHeading = styled(Heading)`
 const GridItem = styled.div<{ marginBottom?: string }>`
   margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom : '10px')};
   text-align: center;
-  &:nth-child(3), &:nth-child(4){
+  &:nth-child(3), &:nth-child(4), &:nth-child(5), &:nth-child(6) {
     background: rgba(243, 193, 17, 0.15);
   }
-  &:nth-child(5), &:nth-child(6){
-    background: rgba(255, 255, 255, 0.15);
+
+  &:nth-child(7), &:nth-child(8), &:nth-child(9) {
+    background: rgba(255,255,255,0.15);
   }
-  &:nth-child(7), &:nth-child(8){
-    background: rgba(255, 255, 255, 0.05);
+
+  &:nth-child(10), &:nth-child(11), &:nth-child(12) {
+    background: rgba(255,255,255,0.05);
   }
 `
 
 const PastDrawGridItem = styled(GridItem)`
-  transform: translate(-40%, 0%);
+  /* transform: translate(-40%, 0%); */
 `
 const GridPrize = styled.div`
   .text{
@@ -174,7 +176,7 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         </RightAlignedText>
       </GridItem>
       {/* Burn row */}
-      <GridItem marginBottom="0">
+      <GridItem marginBottom="0" style={{ alignItems:'center', display: 'flex'}}>
         <Text>{TranslateString(999, `${pastDraw ? 'Burned' : 'To burn'}`)}:</Text>
       </GridItem>
      
