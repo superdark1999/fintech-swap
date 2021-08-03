@@ -144,7 +144,7 @@ const Lottery: React.FC = () => {
           value={{ historyError, historyData, mostRecentLotteryNumber, currentLotteryNumber }}
         >
           <PastLotteryRoundViewer />
-          <PastDrawsHistoryCard />
+          {/* <PastDrawsHistoryCard /> */}
         </PastLotteryDataContext.Provider>
 
         {/* <Wrapper>

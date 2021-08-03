@@ -52,37 +52,26 @@ const PastLotteryRoundViewer = () => {
       ...prevState,
       isLoading: true,
     }))
-
-    getLotteryRoundData(lotteryNumber)
-      .then((data) => {
-        if (data.error) {
-          setState((prevState) => ({
-            ...prevState,
-            error: {
-              message: TranslateString(1076, 'The lottery number you provided does not exist'),
-              type: 'out of range',
-            },
-            isLoading: false,
-            isInitialized: true,
-          }))
-        } else {
-          setState((prevState) => ({
-            ...prevState,
-            error: { message: null, type: null },
-            roundData: data,
-            isLoading: false,
-            isInitialized: true,
-          }))
-        }
-      })
-      .catch(() => {
-        setState((prevState) => ({
-          ...prevState,
-          error: { message: TranslateString(1078, 'Error fetching data'), type: 'api' },
-          isLoading: false,
-          isInitialized: true,
-        }))
-      })
+    if (lotteryNumber > parseInt(currentLotteryId) || lotteryNumber <= 0){
+      setState((prevState) => ({
+        ...prevState,
+        error: {
+          message: TranslateString(1076, 'The lottery number you provided does not exist'),
+          type: 'out of range',
+        },
+        isLoading: false,
+        isInitialized: true,
+      }))
+    }
+    else {
+      setState((prevState) => ({
+        ...prevState,
+        error: { message: null, type: null },
+        roundData: lotteries[lotteryNumber-1],
+        isLoading: false,
+        isInitialized: true,
+      }))
+    }
   }
 
   return (

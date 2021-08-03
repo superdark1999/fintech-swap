@@ -188,8 +188,7 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data, initi
     finalNumber: 1123123
   });
   const processedCurrentRound = useProcessLotteryResponse(lotteryData)
-  console.log("processedCurrentRound", processedCurrentRound.isLoading,  !processedCurrentRound.isLoading)
-  console.log("condition", (processedCurrentRound.isLoading && !processedCurrentRound.isLoading) ? "true": "false") 
+
 
 
   useEffect(() => {
