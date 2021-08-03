@@ -35,14 +35,14 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> 
       discountDivisor,
       treasuryFee,
       firstTicketId,
-      lastTicketId,
+      firstTicketIdNextLottery,
       amountCollectedInCake,
       finalNumber,
       cakePerBracket,
       countWinnersPerBracket,
       rewardsBreakdown,
     } = lotteryData
-
+    const priceTicket = new BigNumber(ethersToSerializedBigNumber(priceTicketInCake));
 
     const statusKey = Object.keys(LotteryStatus)[status]
     const serializedCakePerBracket = cakePerBracket.map((cakeInBracket) => ethersToSerializedBigNumber(cakeInBracket))
@@ -56,11 +56,11 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> 
       status: LotteryStatus[statusKey],
       startTime: startTime?.toString(),
       endTime: endTime?.toString(),
-      priceTicketInCake: ethersToSerializedBigNumber(priceTicketInCake),
+      priceTicketInCake: priceTicket.div(1e18).toString(),
       discountDivisor: discountDivisor?.toString(),
       treasuryFee: treasuryFee?.toString(),
       firstTicketId: firstTicketId?.toString(),
-      lastTicketId: lastTicketId?.toString(),
+      lastTicketId: (firstTicketIdNextLottery-1)?.toString(),
       amountCollectedInCake: ethersToSerializedBigNumber(amountCollectedInCake),
       finalNumber,
       cakePerBracket: serializedCakePerBracket,
@@ -182,15 +182,16 @@ export const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> =>
     const lottery: LotteryRoundGraphEntity = {
       id: i.toString(),
       totalUsers: '0',
-      totalTickets: '0',
+      totalTickets: (parseInt(lotteryData.lastTicketId) - parseInt(lotteryData.firstTicketId + 1)).toString(),
       status: lotteryData.status,
       finalNumber: lotteryData.finalNumber.toString(),
-      winningTickets: '2342343',
+      winningTickets: '',
       startTime: lotteryData.startTime,
       endTime: lotteryData.endTime,
-      ticketPrice: '234',
+      ticketPrice: lotteryData.priceTicketInCake,
       firstTicket: lotteryData.firstTicketId,
-      lastTicket: lotteryData.lastTicketId
+      lastTicket: lotteryData.lastTicketId,
+      amountCollectedInCake: lotteryData.amountCollectedInCake
     }
 
     lotteries.push(lottery);

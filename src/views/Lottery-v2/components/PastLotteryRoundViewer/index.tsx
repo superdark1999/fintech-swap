@@ -4,6 +4,7 @@ import { Card, CardBody } from '@luckyswap/uikit'
 import getLotteryRoundData from 'utils/getLotteryRoundData'
 import useI18n from 'hooks/useI18n'
 import useGetRecentLotteryRoundData from 'hooks/useGetRecentLotteryRoundData'
+import { useGetCurrentLotteryId, useGetLotteriesGraphData } from 'state/hooks'
 import PastLotterySearcher from './PastLotterySearcher'
 import PastRoundCard from './PastRoundCard'
 import Loading from '../Loading'
@@ -31,11 +32,20 @@ const PastLotteryRoundViewer = () => {
   const TranslateString = useI18n()
   const { roundData, error, isInitialized, isLoading } = state
 
+  // const lotteryData  = useGetUserLotteryGraphRoundById("1");
+  const currentLotteryId = useGetCurrentLotteryId();
+  const lotteries = useGetLotteriesGraphData();
+
   useEffect(() => {
-    if (initialLotteryData) {
-      setState((prevState) => ({ ...prevState, isLoading: false, isInitialized: true, roundData: initialLotteryData }))
+    if (lotteries && currentLotteryId) {
+      setState((prevState) => ({
+         ...prevState, 
+         isLoading: false, 
+         isInitialized: true, 
+         roundData: lotteries[parseInt(currentLotteryId)-1] 
+        }))
     }
-  }, [initialLotteryData, setState])
+  }, [lotteries, currentLotteryId])
 
   const handleSubmit = async (lotteryNumber: number) => {
     setState((prevState) => ({
@@ -86,7 +96,7 @@ const PastLotteryRoundViewer = () => {
           </StyledCardBody>
         </Card>
       ) : (
-        <PastRoundCard initialLotteryNumber={mostRecentLotteryNumber} onSubmit={handleSubmit} error={error} data={roundData} />
+        <PastRoundCard initialLotteryNumber={parseInt(currentLotteryId)} onSubmit={handleSubmit} error={error} data={roundData} />
       )}
       </div>
     )}

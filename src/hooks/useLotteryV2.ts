@@ -53,9 +53,6 @@ export const useLotteryV2 = () => {
           countWinnersPerBracket,
           rewardsBreakdown,
         } = lotteryData
-        console.log('status', status);
-
-        console.log("lotteryData", lotteryData)
 
         setState({ 
           currentLotteryId: currentLotteryId.toNumber(), 

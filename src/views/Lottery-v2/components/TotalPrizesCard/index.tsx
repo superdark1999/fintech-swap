@@ -176,8 +176,6 @@ const TotalPrizesCard = () => {
     fetchLotteryIndex()
   }, [lotteryContract])
 
-  console.log(prizeInBusd)
-
   return (
     <BoxTotal>
       <CardBody>
@@ -215,7 +213,7 @@ const TotalPrizesCard = () => {
                       bold
                       color=""
                       value={getBalanceNumber(amountCollectedInCake)}
-                      decimals={0}
+                      decimals={3}
                       fontSize="60px"
                       fontWeight="600"
                     ></CardValue> <span>LUCKY</span>

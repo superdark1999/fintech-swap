@@ -1,16 +1,18 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { Heading, CardBody, CardFooter, PancakeRoundIcon, TicketRound, Text } from '@luckyswap/uikit'
+import { BigNumber } from 'bignumber.js'
 import styled from 'styled-components'
 
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalRewards } from 'hooks/useTickets'
-import { BigNumber } from 'bignumber.js'
 import { usePriceLuckyBusd } from 'state/hooks'
 import useGetRecentLotteryRoundData from 'hooks/useGetRecentLotteryRoundData'
 
-
-import { Heading, CardBody, CardFooter, PancakeRoundIcon, TicketRound, Text } from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
 import { DataResponse } from 'utils/getLotteryRoundData'
+import {  LotteryRoundGraphEntity, LotteryResponse  } from 'state/types'
+import { LotteryStatus } from 'config/constants/types'
+
 
 import CardBusdValue from '../../../Home/components/CardBusdValue'
 
@@ -19,10 +21,11 @@ import PastLotteryActions from './PastLotteryActions'
 import PrizeGrid from '../PrizeGrid'
 import Timest from '../Timestamp'
 import PastLotterySearcher from './PastLotterySearcher'
-
+import {  processLotteryResponse, parseRetreivedNumber } from '../../helpers'
+import { fetchLottery, useProcessLotteryResponse } from '../../../../state/lottery2/helpers'
 
 interface PastRoundCardDetailsProps {
-  data: DataResponse
+  data: LotteryRoundGraphEntity
   initialLotteryNumber: number
   onSubmit: (num: number) => void
 }
@@ -138,20 +141,67 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data, initi
   const lotteryPrizeAmount = +getBalanceNumber(useTotalRewards()).toFixed(0)
   const lotteryPrizeWithCommaSeparators = lotteryPrizeAmount.toLocaleString()
   const lotteryPrizeAmountBusd = new BigNumber(lotteryPrizeAmount).multipliedBy(usePriceLuckyBusd()).toNumber() 
-  const {
-    contractLink,
-    jackpotTicket,
-    lotteryDate,
-    lotteryNumber,
-    lotteryNumbers,
-    match1Ticket,
-    match2Ticket,
-    match3Ticket,
-    poolSize,
-  } = data
+
+  // export interface LotteryRoundGraphEntity {
+  //   id: string
+  //   totalUsers: string
+  //   totalTickets: string
+  //   status: LotteryStatus
+  //   finalNumber: string
+  //   winningTickets: string
+  //   startTime: string
+  //   endTime: string
+  //   ticketPrice: SerializedBigNumber
+  //   firstTicket: string
+  //   lastTicket: string
+  // }
+
+  // export interface LotteryRound extends LotteryRoundGenerics {
+  //   userTickets?: LotteryRoundUserTickets
+  //   priceTicketInCake: BigNumber
+  //   discountDivisor: BigNumber
+  //   amountCollectedInCake: BigNumber
+  //   cakePerBracket: string[]
+  //   countWinnersPerBracket: string[]
+  //   rewardsBreakdown: string[]
+  // }
+  
+
+  const { id, endTime, finalNumber, amountCollectedInCake }  = data;
+  const endDate = new Date(parseInt(endTime) * 1000);
+
+  const reversedNumber = parseRetreivedNumber(finalNumber)
+  const arrayFinalNumber = reversedNumber.split('');
+  const [lotteryData, setLotteryData] = useState<LotteryResponse>({
+    priceTicketInCake: '',
+    discountDivisor: '',
+    amountCollectedInCake: '',
+    cakePerBracket: [],
+    countWinnersPerBracket: [],
+    rewardsBreakdown: [],
+    status: LotteryStatus.CLAIMABLE,
+    startTime: "123123",
+    endTime: "1212312312",
+    treasuryFee: "0",
+    firstTicketId: "0",
+    lastTicketId: '0', 
+    finalNumber: 1123123
+  });
+  const processedCurrentRound = useProcessLotteryResponse(lotteryData)
+  console.log("processedCurrentRound", processedCurrentRound.isLoading,  !processedCurrentRound.isLoading)
+  console.log("condition", (processedCurrentRound.isLoading && !processedCurrentRound.isLoading) ? "true": "false") 
+
+
+  useEffect(() => {
+    const fetchLotteryInfo = async () => {
+      const lotteryInfo = await fetchLottery(id)
+      setLotteryData(lotteryInfo)
+    }
+
+    fetchLotteryInfo();
+  }, [id])
 
   return (
-    !data.error &&
     data && (
       <>
         <StyledBox>
@@ -161,7 +211,11 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data, initi
               <PastLotterySearcher initialLotteryNumber={initialLotteryNumber} onSubmit={onSubmit} />
 
               <TopLotteryCardHeading
-                valueToDisplay={[lotteryNumbers[0], lotteryNumbers[1], lotteryNumbers[2], lotteryNumbers[3] ]}
+                valueToDisplay={[
+                  arrayFinalNumber[0], arrayFinalNumber[1], 
+                  arrayFinalNumber[2], arrayFinalNumber[3], 
+                  arrayFinalNumber[4], arrayFinalNumber[5], 
+                 ]}
                 //  Icon={TicketRound}
                 Ic
               >
@@ -177,7 +231,7 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data, initi
                     <img width="75px" alt="" src="/images/icon-logo-y.png" />
                   </IconWrapper>
                   <Heading style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px', fontSize: '44' }} size="lg">
-                    {lotteryPrizeWithCommaSeparators} <span>LUCKY</span>
+                    {getBalanceNumber(new BigNumber(amountCollectedInCake))} <span>LUCKY</span>
                   </Heading>
                 </BoxLucky>
                 <Dollar>{lotteryPrizeAmountBusd !== 0 && <CardBusdValue value={lotteryPrizeAmountBusd} />}</Dollar>
@@ -187,26 +241,26 @@ const PastRoundCardDetails: React.FC<PastRoundCardDetailsProps> = ({ data, initi
           <BoxCard>
             <TopCard>
               <RoundPrize>
-                Round #{lotteryNumber}
+                Round #{id}
               </RoundPrize>
-              <Timest timeValue={lotteryDate} />
+              <Timest timeValue={endDate} />
             </TopCard>
             
             <CardFooter className="no-border">
-              {/* <PrizeGrid
-                lotteryPrizeAmount={poolSize}
-                jackpotMatches={jackpotTicket}
-                oneTicketMatches={match1Ticket}
-                twoTicketMatches={match2Ticket}
-                threeTicketMatches={match3Ticket}
-              /> */}
+              { processedCurrentRound.isLoading === false && (
+                <PrizeGrid
+                lotteryPrizeAmount={0}
+                lotteryData={processedCurrentRound}
+                />
+              )}
               {/* <PastLotteryActions contractLink={contractLink} lotteryNumber={lotteryNumber} /> */}
             </CardFooter>
           </BoxCard>
         
         </StyledBox>
 
-        <PastLotteryActions contractLink={contractLink} lotteryNumber={lotteryNumber} />
+        <PastLotteryActions contractLink='https://testnet.bscscan.com/address/0x3e743ABbc0B7d23Cd6b83af54b0DE87743c145E5#readContract'
+         lotteryNumber={parseInt(id)} />
       </>
     )
   )

@@ -88,7 +88,6 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
     return amount.times(cakeBusdPrice)
   }
 
-
   return (
     <GridPrize>
     <Grid pastDraw={pastDraw}>

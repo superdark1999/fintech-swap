@@ -82,6 +82,7 @@ export interface LotteryRoundGraphEntity {
   ticketPrice: SerializedBigNumber
   firstTicket: string
   lastTicket: string
+  amountCollectedInCake: string
 }
 
 export type SerializedBigNumber = string
