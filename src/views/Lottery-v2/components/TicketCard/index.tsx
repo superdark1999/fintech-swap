@@ -127,7 +127,7 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
             </TicketCountWrapper>
           )}
         </CardHeader>
-        <TicketActions />
+        <TicketActions myTicketsLength={ticketsLength} />
       </CardBody>
     </StyledCard>
   )

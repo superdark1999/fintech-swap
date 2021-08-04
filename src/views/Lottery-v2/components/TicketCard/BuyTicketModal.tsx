@@ -178,7 +178,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
         </Button>
 
         <Button width="100%" variant="secondary" onClick={() => setBuyingStage(BuyingStage.EDIT)}>
-          {TranslateString(462, 'Edit')}
+          {TranslateString(462, 'View/Edit')}
         </Button>
 
 

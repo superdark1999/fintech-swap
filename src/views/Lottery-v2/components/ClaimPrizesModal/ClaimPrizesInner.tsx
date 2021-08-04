@@ -82,8 +82,6 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
 
   const handleClaim = async () => {
     const { lotteryId, ticketIds, brackets } = claimTicketsCallData
-    console.log("maxNumberTicketsPerBuyOrClaim", maxNumberTicketsPerBuyOrClaim)
-    console.log('claimData', claimTicketsCallData)
     setPendingTx(true)
     try {
       const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets])
@@ -147,6 +145,8 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
         // toastError(t('Error'), t('%error% - Please try again.', { error: error.message }))
       }
     }
+    setPendingTx(false)
+
 
     // Batch is finished
     if (receipts.length === transactionsToFire) {

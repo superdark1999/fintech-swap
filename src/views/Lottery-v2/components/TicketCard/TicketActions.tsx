@@ -40,8 +40,11 @@ const CardActions = styled.div`
     justify-content: space-between;
   }
 `
+interface TicketCardProp {
+  myTicketsLength: number;
+}
 
-const TicketCard: React.FC = () => {
+const TicketCard: React.FC<TicketCardProp> = ({ myTicketsLength }) => {
   const TranslateString = useI18n()
   const [balanceToken, setBalanceToken] = useState(0)
   const [allowance, setAllowance] = useState(0)
@@ -49,8 +52,9 @@ const TicketCard: React.FC = () => {
   const lotteryHasDrawn = useGetLotteryHasDrawn()
   const {
     isTransitioning,
-    currentRound: { status, endTime },
+    currentRound: { status, endTime, userTickets },
   } = useLottery()
+  
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
   const isBuyTicketTime = new Date().getTime() < parseInt(endTime)* 1000;
@@ -64,9 +68,8 @@ const TicketCard: React.FC = () => {
   const lotteryContract = useContract(getLotteryV2Address(), lotteryAbi)
   const { fastRefresh } = useRefresh()
 
-  const tickets = useTicketLotteryV2();
-  const ticketsLength = tickets.length
-  const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={tickets} from="buy" />)
+  const ticketsLength = userTickets.tickets.length
+  const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={userTickets.tickets} from="buy" />)
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)
   const [onPresentBuy] = useModal(<BuyTicketModal max={new BigNumber(balanceToken)} tokenName="CAKE" />)
 
@@ -199,6 +202,8 @@ const TicketCard: React.FC = () => {
           variant="secondary"
           onClick={onPresentMyTickets}
         >
+        {myTicketsLength !== ticketsLength ? spinnerIcon : ''}
+
           {TranslateString(432, 'View your tickets')}
         </Button>
         <Button variant="secondary" id="lottery-buy-start" width="100%" disabled={!isBuyTicketTime || ticketBuyIsDisabled} onClick={onPresentBuy}>

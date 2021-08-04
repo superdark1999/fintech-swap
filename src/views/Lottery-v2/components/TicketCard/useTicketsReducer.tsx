@@ -89,7 +89,6 @@ const reducer = (state: TicketsState, action: any) => {
       }
     }
     case 'reset':{
-      console.log('reset')
       return getInitialState({ amount: action.payload.amount, userCurrentTickets: action.payload.userCurrentTickets })
     }
     default:
@@ -114,7 +113,6 @@ export const useTicketsReducer = (
   }
 
   const randomize = () => {
-    console.log("randomize");
     dispatch({ type: 'reset', payload: { amount, userCurrentTickets } })
   }
 
