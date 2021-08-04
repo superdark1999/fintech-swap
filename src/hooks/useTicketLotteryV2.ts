@@ -2,17 +2,27 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useLotteryV2contract } from 'hooks/useContract'
 import { Ticket } from 'config/constants/types'
+import { useAppDispatch } from 'state'
+import { useGetCurrentLotteryId } from 'state/hooks'
+import { fetchUserTicketsAndLotteries } from 'state/lottery2'
 
 
 export const useTicketLotteryV2 = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
 
   const lotteryV2Contract = useLotteryV2contract()
+  const currentLotteryId = useGetCurrentLotteryId()
+ 
 
   useEffect(() => {
+    lotteryV2Contract.on('TicketsPurchase', () => {
+      if (account && currentLotteryId) {
+        dispatch(fetchUserTicketsAndLotteries({ account, lotteryId: currentLotteryId }))
+      }
+    })
     const fetchTickets = async () => {
-      const currentLotteryId = await lotteryV2Contract.currentLotteryId();
       const userInfoForLottery = await lotteryV2Contract.viewUserInfoForLotteryId(account, currentLotteryId, 0,10000);
       const tempTickets = []
       for (let i =0; i< userInfoForLottery[0].length; i++) {
@@ -27,9 +37,9 @@ export const useTicketLotteryV2 = () => {
 
       setTickets(tempTickets);
     } 
-    if (account && lotteryV2Contract)
+    if (account && currentLotteryId && lotteryV2Contract)
       fetchTickets();
-  }, [account, lotteryV2Contract])
+  }, [account,currentLotteryId, dispatch,  lotteryV2Contract])
 
   return tickets;
 }

@@ -40,16 +40,11 @@ const CardActions = styled.div`
     justify-content: space-between;
   }
 `
-interface TicketCardProp {
-  myTicketsLength: number;
-}
 
-const TicketCard: React.FC<TicketCardProp> = ({ myTicketsLength }) => {
+const TicketCard: React.FC = () => {
   const TranslateString = useI18n()
   const [balanceToken, setBalanceToken] = useState(0)
   const [allowance, setAllowance] = useState(0)
-  // const allowance = useLotteryAllowance()
-  const lotteryHasDrawn = useGetLotteryHasDrawn()
   const {
     isTransitioning,
     currentRound: { status, endTime, userTickets },
@@ -64,8 +59,8 @@ const TicketCard: React.FC<TicketCardProp> = ({ myTicketsLength }) => {
 
   const useContractTemp = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
 
-  const ticketsContract = useContract(getLotteryTicketAddress(), lotteryTicketAbi)
-  const lotteryContract = useContract(getLotteryV2Address(), lotteryAbi)
+  // const ticketsContract = useContract(getLotteryTicketAddress(), lotteryTicketAbi)
+  // const lotteryContract = useContract(getLotteryV2Address(), lotteryAbi)
   const { fastRefresh } = useRefresh()
 
   const ticketsLength = userTickets.tickets.length
@@ -202,7 +197,7 @@ const TicketCard: React.FC<TicketCardProp> = ({ myTicketsLength }) => {
           variant="secondary"
           onClick={onPresentMyTickets}
         >
-        {myTicketsLength !== ticketsLength ? spinnerIcon : ''}
+        {userTickets.isLoading ? spinnerIcon : ''}
 
           {TranslateString(432, 'View your tickets')}
         </Button>

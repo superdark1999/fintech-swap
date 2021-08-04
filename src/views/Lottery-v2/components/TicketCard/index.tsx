@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, TicketRound, Text, Heading } from '@luckyswap/uikit'
+import { Card, CardBody, AutoRenewIcon, Text, Heading } from '@luckyswap/uikit'
 import axios from 'axios'
 
 import useI18n from 'hooks/useI18n'
@@ -62,6 +62,9 @@ const TicketCountWrapper = styled.div`
   margin-bottom: 10px;
 `
 
+
+const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
+
 const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
   const { chainId }  = useActiveWeb3React();
   const TranslateString = useI18n()
@@ -69,7 +72,7 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
 
   const {
     isTransitioning,
-    currentRound: { status },
+    currentRound: { status, userTickets },
   } = useLottery()
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
@@ -123,11 +126,11 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
               <Text fontSize="14px" color="textSubtle">
                 {TranslateString(724, 'Your tickets for this round')}
               </Text>
-              <Heading size="lg">{ticketsLength}</Heading>
+              <Heading size="lg">{ userTickets.isLoading ? spinnerIcon:  userTickets.tickets.length}</Heading>
             </TicketCountWrapper>
           )}
         </CardHeader>
-        <TicketActions myTicketsLength={ticketsLength} />
+        <TicketActions />
       </CardBody>
     </StyledCard>
   )
