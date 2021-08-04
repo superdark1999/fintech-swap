@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Button, Modal } from '@luckyswap/uikit'
+import { Button, Modal, useModal } from '@luckyswap/uikit'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import TicketInput from 'components/TicketInput'
 import ModalActions from 'components/ModalActions'
@@ -12,6 +12,7 @@ import {useTicketLotteryV2} from 'hooks/useTicketLotteryV2'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useLotteryV2 } from 'hooks/useLotteryV2';
 import { useTicketsReducer } from './useTicketsReducer'
+import EditNumbersModal from './EditNumbersModal';
 
 interface BuyTicketModalProps {
   max: BigNumber
@@ -20,14 +21,23 @@ interface BuyTicketModalProps {
   tokenName?: string
 }
 
+enum BuyingStage {
+  BUY = 'Buy',
+  EDIT = 'Edit',
+}
+
 const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
   const [val, setVal] = useState('1')
   const [discountValue, setDiscountValue] = useState('')
   const [ticketCostBeforeDiscount, setTicketCostBeforeDiscount] = useState('');
   const [totalCost, setTotalCost] = useState('')
+  const [buyingStage, setBuyingStage] = useState<BuyingStage>(BuyingStage.BUY)
   const [pendingTx, setPendingTx] = useState(false)
   const [, setRequestedBuy] = useState(false)
   const TranslateString = useI18n()
+
+ 
+
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max, 18)
   }, [max])
@@ -114,8 +124,24 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     }
   }, [maxTickets, ticketsLength, maxNumberTicketsPerBuyOrClaim])
 
-  const cakeCosts = (amount: string): number => {
-    return +amount * LOTTERY_TICKET_PRICE
+  if (buyingStage === BuyingStage.EDIT) {
+    return(
+      <EditNumbersModal
+        totalCost={totalCost}
+        updateTicket={updateTicket}
+        randomize={randomize}
+        tickets={tickets}
+        allComplete={allComplete}
+        onConfirm={async () => {
+          setPendingTx(true)
+          await handleBuy()
+          setPendingTx(false)
+          onDismiss()
+        }}
+        isConfirming={pendingTx}
+        onDismiss={() => setBuyingStage(BuyingStage.BUY)}
+    />
+    )
   }
   
   return (
@@ -150,6 +176,11 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
         <Button width="100%" variant="secondary" onClick={onDismiss}>
           {TranslateString(462, 'Cancel')}
         </Button>
+
+        <Button width="100%" variant="secondary" onClick={() => setBuyingStage(BuyingStage.EDIT)}>
+          {TranslateString(462, 'Edit')}
+        </Button>
+
 
         
         <Button

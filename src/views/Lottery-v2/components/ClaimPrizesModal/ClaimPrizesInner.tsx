@@ -203,6 +203,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
           endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
           mt="20px"
           width="100%"
+          variant="secondary" 
           onClick={() => (shouldBatchRequest ? handleBatchClaim() : handleClaim())}
         >
           {pendingTx ? TranslateString(999, 'Claiming') : TranslateString(999, 'Claim')} {totalNumClaimsForRound() > 1 
