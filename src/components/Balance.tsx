@@ -36,4 +36,38 @@ Balance.defaultProps = {
   decimals: 3,
 }
 
+interface Balance2Props extends TextProps {
+  value: number
+  decimals?: number
+  unit?: string
+  isDisabled?: boolean
+  prefix?: string
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void
+}
+
+export const Balance2: React.FC<Balance2Props> = ({
+  value,
+  color = 'text',
+  decimals = 3,
+  isDisabled = false,
+  unit,
+  prefix,
+  onClick,
+  ...props
+}) => {
+  const previousValue = useRef(0)
+
+  useEffect(() => {
+    previousValue.current = value
+  }, [value])
+
+  return (
+    <Text color={isDisabled ? 'textDisabled' : color} onClick={onClick} {...props}>
+      {prefix && <span>{prefix}</span>}
+      <CountUp start={previousValue.current} end={value} decimals={decimals} duration={1} separator="," />
+      {unit && <span>{unit}</span>}
+    </Text>
+  )
+}
+
 export default Balance

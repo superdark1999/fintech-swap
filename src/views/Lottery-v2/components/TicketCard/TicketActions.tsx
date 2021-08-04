@@ -12,11 +12,12 @@ import bep20Abi from 'config/abi/erc20.json'
 import lotteryAbi from 'config/abi/lottery.json'
 import useRefresh from 'hooks/useRefresh'
 import useUtilityToken from 'hooks/useUtilityToken'
+import { useLottery } from 'state/hooks'
 import { getLotteryV2Address, getLotteryTicketAddress } from 'utils/addressHelpers'
 import lotteryTicketAbi from 'config/abi/lotteryNft.json'
 import { isTransactionRecent, useAllTransactions } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
-import { getTickets } from 'utils/lotteryUtils'
+import { LotteryStatus } from 'config/constants/types'
 import {useTicketLotteryV2} from 'hooks/useTicketLotteryV2'
 import BuyTicketModal from './BuyTicketModal'
 import MyTicketsModal from './UserTicketsModal'
@@ -46,6 +47,13 @@ const TicketCard: React.FC = () => {
   const [allowance, setAllowance] = useState(0)
   // const allowance = useLotteryAllowance()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
+  const {
+    isTransitioning,
+    currentRound: { status, endTime },
+  } = useLottery()
+  const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
+
+  const isBuyTicketTime = new Date().getTime() < parseInt(endTime)* 1000;
 
   const { account, chainId } = useWeb3React()
   const contractBEP20 = useContract(XLUCKY_TESTNET_ADDRESSES[chainId], bep20Abi)
@@ -193,9 +201,9 @@ const TicketCard: React.FC = () => {
         >
           {TranslateString(432, 'View your tickets')}
         </Button>
-        <Button variant="secondary" id="lottery-buy-start" width="100%" onClick={onPresentBuy}>
-          {getStatus() ? spinnerIcon : ''}
-          {TranslateString(430, 'Buy ticket')}
+        <Button variant="secondary" id="lottery-buy-start" width="100%" disabled={!isBuyTicketTime || ticketBuyIsDisabled} onClick={onPresentBuy}>
+        {getStatus() ? spinnerIcon : ''}
+        {TranslateString(430, 'Buy ticket')}
         </Button>
       </>
     )
@@ -203,7 +211,7 @@ const TicketCard: React.FC = () => {
 
   return (
     <CardActions>
-      {lotteryHasDrawn ? (
+      {ticketBuyIsDisabled ? (
         <Button className="btn-center" disabled> {TranslateString(874, 'On sale soon')}</Button>
       ) : (
         renderLotteryTicketButtons()

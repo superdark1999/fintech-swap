@@ -4,6 +4,8 @@ import useI18n from 'hooks/useI18n'
 import { Heading, Text } from '@luckyswap/uikit'
 import { BigNumber } from 'bignumber.js'
 import { usePriceLuckyBusd } from 'state/hooks'
+import { LotteryRound } from 'state/types'
+import { getBalanceNumber } from 'utils/formatBalance'
 import CardBusdValue from '../../Home/components/CardBusdValue'
 import CardValue from '../../Home/components/CardValue';
 
@@ -14,6 +16,7 @@ export interface PrizeGridProps {
   oneTicketMatches?: number
   twoTicketMatches?: number
   threeTicketMatches?: number
+  lotteryData: LotteryRound
 }
 
 const Grid = styled.div<{ pastDraw?: boolean }>`
@@ -59,21 +62,28 @@ const CardBusd = styled.span`
 `
 
 const PrizeGrid: React.FC<PrizeGridProps> = ({
-  lotteryPrizeAmount = 0,
   pastDraw = false,
   jackpotMatches,
   twoTicketMatches,
   threeTicketMatches,
+  lotteryData
 }) => {
-  const fourMatchesAmount = +((lotteryPrizeAmount / 100) * 50).toFixed(0)
-  const threeMatchesAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
-  const twoMatchesAmount = +((lotteryPrizeAmount / 100) * 10).toFixed(0)
-  const burnAmount = +((lotteryPrizeAmount / 100) * 20).toFixed(0)
   const TranslateString = useI18n()
   const cakeBusdPrice = usePriceLuckyBusd()
 
-  const getCakeBusdValue = (amount: number) => {
-    return new BigNumber(amount).multipliedBy(cakeBusdPrice).toNumber()
+  const { treasuryFee, amountCollectedInCake, rewardsBreakdown, countWinnersPerBracket } = lotteryData
+
+  const feeAsPercentage = new BigNumber(treasuryFee).div(100)
+  const cakeToBurn = feeAsPercentage.div(100).times(new BigNumber(amountCollectedInCake))
+  const amountLessTreasuryFee = new BigNumber(amountCollectedInCake).minus(cakeToBurn)
+
+  const getCakeRewards = (bracket: number) => {
+    const shareAsPercentage = new BigNumber(rewardsBreakdown[bracket]).div(100)
+    return amountLessTreasuryFee.div(100).times(shareAsPercentage)
+  }
+
+  const getCakeBusdValue = (amount: BigNumber) => {
+    return amount.times(cakeBusdPrice)
   }
 
   return (
@@ -96,10 +106,10 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
           {TranslateString(752, 'Prize Pot')}
         </RightAlignedText>
       </GridItem>
-      {/* 4 matches row */}
+      {/* 6 matches row */}
       <GridItem>
         <Heading className="text" style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }} size="md">
-          4
+          6
         </Heading>
       </GridItem>
       {pastDraw && (
@@ -109,13 +119,13 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       )}
       <GridItem>
         <RightAlignedHeading className="text" size="md">
-          <CardBusd>
-            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(fourMatchesAmount)} />}  
+            <CardBusd>
+            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getBalanceNumber(getCakeBusdValue(getCakeRewards(5)))} />}  
           </CardBusd>
-          <CardValue
+            <CardValue
                 bold
                 color=""
-                value={fourMatchesAmount}
+                value={getBalanceNumber(getCakeRewards(5))}
                 decimals={0}
                 fontSize="60px"
                 fontWeight="600"
@@ -123,9 +133,11 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
           {/* {fourMatchesAmount.toLocaleString()} */}
         </RightAlignedHeading>
       </GridItem>
-      {/* 3 matches row */}
+      {/* 5 matches row */}
       <GridItem style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }}>
-        <Text className="text" padding="8px 0" bold>3</Text>
+        <Text className="text" padding="8px 0" bold>
+          5
+        </Text>
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem >
@@ -134,13 +146,13 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       )}
       <GridItem>
         <RightAlignedText>
-          <CardBusd>
-            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(threeMatchesAmount)} />}  
+            <CardBusd>
+            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getBalanceNumber(getCakeBusdValue(getCakeRewards(4)))} />}  
           </CardBusd>
-          <CardValue
+            <CardValue
                 bold
                 color=""
-                value={threeMatchesAmount}
+                value={getBalanceNumber(getCakeRewards(4))}
                 decimals={0}
                 fontSize="60px"
                 fontWeight="600"
@@ -148,9 +160,90 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
           {/* {threeMatchesAmount.toLocaleString()} */}
         </RightAlignedText>
       </GridItem>
-      {/* 2 matches row */}
+       {/* 4 matches row */}
+       <GridItem style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }}>
+        <Text className="text" padding="8px 0" bold>
+          4
+        </Text>
+      </GridItem>
+      {pastDraw && (
+        <PastDrawGridItem >
+          <RightAlignedText className="text" bold>{threeTicketMatches}</RightAlignedText>
+        </PastDrawGridItem>
+      )}
+      <GridItem>
+        <RightAlignedText>
+            <CardBusd>
+            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getBalanceNumber(getCakeBusdValue(getCakeRewards(3)))} />}  
+          </CardBusd>
+            <CardValue
+                bold
+                color=""
+                value={getBalanceNumber(getCakeRewards(3))}
+                decimals={0}
+                fontSize="60px"
+                fontWeight="600"
+              ></CardValue>
+          {/* {threeMatchesAmount.toLocaleString()} */}
+        </RightAlignedText>
+      </GridItem>
+       {/* 3 matches row */}
+       <GridItem style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }}>
+        <Text className="text" padding="8px 0" bold>
+          3
+          </Text>
+      </GridItem>
+      {pastDraw && (
+        <PastDrawGridItem >
+          <RightAlignedText className="text" bold>{threeTicketMatches}</RightAlignedText>
+        </PastDrawGridItem>
+      )}
+      <GridItem>
+        <RightAlignedText>
+            <CardBusd>
+            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getBalanceNumber(getCakeBusdValue(getCakeRewards(2)))} />}  
+          </CardBusd>
+            <CardValue
+                bold
+                color=""
+                value={getBalanceNumber(getCakeRewards(2))}
+                decimals={0}
+                fontSize="60px"
+                fontWeight="600"
+              ></CardValue>
+          {/* {threeMatchesAmount.toLocaleString()} */}
+        </RightAlignedText>
+      </GridItem>
+       {/* 2 matches row */}
+       <GridItem style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }}>
+        <Text className="text" padding="8px 0" bold>
+          2
+        </Text>
+      </GridItem>
+      {pastDraw && (
+        <PastDrawGridItem >
+          <RightAlignedText className="text" bold>{threeTicketMatches}</RightAlignedText>
+        </PastDrawGridItem>
+      )}
+      <GridItem>
+        <RightAlignedText>
+            <CardBusd>
+            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getBalanceNumber(getCakeBusdValue(getCakeRewards(1)))} />}  
+          </CardBusd>
+            <CardValue
+                bold
+                color=""
+                value={getBalanceNumber(getCakeRewards(1))}
+                decimals={0}
+                fontSize="60px"
+                fontWeight="600"
+              ></CardValue>
+          {/* {threeMatchesAmount.toLocaleString()} */}
+        </RightAlignedText>
+      </GridItem>
+      {/* 1 matches row */}
       <GridItem style={{ textShadow: 'rgb(255 214 0) 0px 0px 25px' }}>
-        <Text className="text">2</Text>
+        <Text className="text">1</Text>
       </GridItem>
       {pastDraw && (
         <PastDrawGridItem>
@@ -159,13 +252,13 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
       )}
       <GridItem>
         <RightAlignedText>
-          <CardBusd>
-            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(twoMatchesAmount)} />}
+            <CardBusd>
+            {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getBalanceNumber(getCakeBusdValue(getCakeRewards(0)))} />}  
           </CardBusd>
-          <CardValue
+            <CardValue
                 bold
                 color=""
-                value={twoMatchesAmount}
+                value={getBalanceNumber(getCakeRewards(0))}
                 decimals={0}
                 fontSize="60px"
                 fontWeight="600"
@@ -183,12 +276,12 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
           <GridItem marginBottom="0">
             <RightAlignedText>
               <CardBusd>
-                {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(burnAmount)} />}
+                {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getBalanceNumber(getCakeBusdValue(cakeToBurn))} />}
               </CardBusd>
               <CardValue
                 bold
                 color=""
-                value={burnAmount}
+                value={getBalanceNumber(cakeToBurn)}
                 decimals={0}
                 fontSize="60px"
                 fontWeight="600"
@@ -201,12 +294,12 @@ const PrizeGrid: React.FC<PrizeGridProps> = ({
         <GridItem marginBottom="0">
           <RightAlignedText>
             <CardBusd>
-              {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getCakeBusdValue(burnAmount)} />}
+              {!pastDraw && !cakeBusdPrice.eq(0) && <CardBusdValue value={getBalanceNumber(getCakeBusdValue(cakeToBurn))} />}
             </CardBusd>
             <CardValue
                 bold
                 color=""
-                value={burnAmount}
+                value={getBalanceNumber(cakeToBurn)}
                 decimals={0}
                 fontSize="60px"
                 fontWeight="600"

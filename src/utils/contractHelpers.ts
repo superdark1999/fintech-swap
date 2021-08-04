@@ -90,12 +90,17 @@ export const getBunnyFactoryContract = (web3?: Web3, chainId?: ChainId) => {
 export const getBunnySpecialContract = (web3?: Web3, chainId?: ChainId) => {
   return getContract(bunnySpecialAbi, getBunnySpecialAddress(chainId), web3)
 }
-// export const getLotteryV2Contract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-//   return getContractV2(lotteryV2Abi, getLotteryV2Address(), signer)
-// }
-export const getLotteryV2Contract = (web3?: Web3, chainId?: ChainId) => {
-  return getContract(lotteryV2Abi, getLotteryV2Address(chainId), web3)
+export const getLotteryV2Contract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContractV2(lotteryV2Abi, getLotteryV2Address(), signer)
 }
+
+// export const getLotteryV2Contract = (web3?: Web3, chainId?: ChainId) => {
+//   return getContract(lotteryV2Abi, getLotteryV2Address(chainId), web3)
+// }
+// export const getLotteryV2Contract = (web3?: Web3, chainId?: ChainId) => {
+//   return getContract(lotteryV2Abi, getBunnySpecialAddress(chainId), web3)
+
+// }
 export const getMulticallContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContractV2(MultiCallAbi, getMulticallV2Address(), signer)
 }

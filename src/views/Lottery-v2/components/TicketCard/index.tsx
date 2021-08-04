@@ -6,9 +6,10 @@ import axios from 'axios'
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import {useTicketLotteryV2} from 'hooks/useTicketLotteryV2'
-
+import { useLottery } from 'state/hooks'
 import { useCurrentTime } from 'hooks/useTimer'
 import useRefresh from 'hooks/useRefresh'
+import { LotteryStatus } from 'config/constants/types'
 import { useActiveWeb3React } from 'hooks';
 import { BASE_API_ADMIN, BASE_API_ADMIN_PRO } from 'config'
 import TicketActions from './TicketActions'
@@ -66,6 +67,12 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
 
+  const {
+    isTransitioning,
+    currentRound: { status },
+  } = useLottery()
+  const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
+
   const tickets = useTicketLotteryV2()
   const ticketsLength = tickets.length
 
@@ -102,7 +109,7 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
           <IconWrapper>
             <img alt="" src="../images/icon-lottery.svg" />
           </IconWrapper>
-          {lotteryHasDrawn ? (
+          {ticketBuyIsDisabled ? (
             <TicketCountWrapper>
               <Text fontSize="20px" color="textSubtle">
                 {TranslateString(870, 'Your ticket for this round')}

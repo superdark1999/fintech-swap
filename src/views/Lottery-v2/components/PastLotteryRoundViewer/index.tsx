@@ -4,6 +4,7 @@ import { Card, CardBody } from '@luckyswap/uikit'
 import getLotteryRoundData from 'utils/getLotteryRoundData'
 import useI18n from 'hooks/useI18n'
 import useGetRecentLotteryRoundData from 'hooks/useGetRecentLotteryRoundData'
+import { useGetCurrentLotteryId, useGetLotteriesGraphData } from 'state/hooks'
 import PastLotterySearcher from './PastLotterySearcher'
 import PastRoundCard from './PastRoundCard'
 import Loading from '../Loading'
@@ -27,57 +28,53 @@ const PastLotteryRoundViewer = () => {
     isInitialized: false,
     isLoading: true,
   })
-  const { data: initialLotteryData, mostRecentLotteryNumber } = useGetRecentLotteryRoundData()
   const TranslateString = useI18n()
   const { roundData, error, isInitialized, isLoading } = state
 
+  const currentLotteryId = useGetCurrentLotteryId();
+  const lotteries = useGetLotteriesGraphData();
+
   useEffect(() => {
-    if (initialLotteryData) {
-      setState((prevState) => ({ ...prevState, isLoading: false, isInitialized: true, roundData: initialLotteryData }))
+    if (lotteries && currentLotteryId) {
+      setState((prevState) => ({
+         ...prevState, 
+         isLoading: false, 
+         isInitialized: true, 
+         roundData: lotteries[parseInt(currentLotteryId)-2] 
+        }))
     }
-  }, [initialLotteryData, setState])
+  }, [lotteries, currentLotteryId])
 
   const handleSubmit = async (lotteryNumber: number) => {
     setState((prevState) => ({
       ...prevState,
       isLoading: true,
     }))
-
-    getLotteryRoundData(lotteryNumber)
-      .then((data) => {
-        if (data.error) {
-          setState((prevState) => ({
-            ...prevState,
-            error: {
-              message: TranslateString(1076, 'The lottery number you provided does not exist'),
-              type: 'out of range',
-            },
-            isLoading: false,
-            isInitialized: true,
-          }))
-        } else {
-          setState((prevState) => ({
-            ...prevState,
-            error: { message: null, type: null },
-            roundData: data,
-            isLoading: false,
-            isInitialized: true,
-          }))
-        }
-      })
-      .catch(() => {
-        setState((prevState) => ({
-          ...prevState,
-          error: { message: TranslateString(1078, 'Error fetching data'), type: 'api' },
-          isLoading: false,
-          isInitialized: true,
-        }))
-      })
+    if (lotteryNumber > parseInt(currentLotteryId) || lotteryNumber <= 0){
+      setState((prevState) => ({
+        ...prevState,
+        error: {
+          message: TranslateString(1076, 'The lottery number you provided does not exist'),
+          type: 'out of range',
+        },
+        isLoading: false,
+        isInitialized: true,
+      }))
+    }
+    else {
+      setState((prevState) => ({
+        ...prevState,
+        error: { message: null, type: null },
+        roundData: lotteries[lotteryNumber-1],
+        isLoading: false,
+        isInitialized: true,
+      }))
+    }
   }
 
   return (
     <Wrapper>
-      {mostRecentLotteryNumber !== -1 && (
+      {parseInt(currentLotteryId)>=2 && ( // have past round
       <div>
         {(!isInitialized || isLoading) ? ( 
         <Card>
@@ -86,7 +83,7 @@ const PastLotteryRoundViewer = () => {
           </StyledCardBody>
         </Card>
       ) : (
-        <PastRoundCard initialLotteryNumber={mostRecentLotteryNumber} onSubmit={handleSubmit} error={error} data={roundData} />
+        <PastRoundCard initialLotteryNumber={parseInt(currentLotteryId)-1} onSubmit={handleSubmit} error={error} data={roundData} />
       )}
       </div>
     )}

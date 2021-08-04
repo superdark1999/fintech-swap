@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 // import { Card } from '@luckyswap/uikit'
-import { DataResponse } from 'utils/getLotteryRoundData'
+import { LotteryRoundGraphEntity} from 'state/types'
 import PastRoundCardError from './PastRoundCardError'
 import PastRoundCardDetails from './PastRoundCardDetails'
 
@@ -9,7 +9,7 @@ interface PastRoundCardProps {
   error: {
     message: string
   }
-  data: DataResponse
+  data: LotteryRoundGraphEntity
   initialLotteryNumber: number
   onSubmit: (num: number) => void
 }

@@ -14,6 +14,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useTotalClaim } from 'hooks/useTickets'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BASE_API_ADMIN, BASE_API_ADMIN_PRO } from 'config'
+import { useFetchLottery } from 'state/hooks'
 import Hero from './components/Hero'
 import WinningNumbers from './components/WinningNumbers'
 import TotalPrizesCard from './components/TotalPrizesCard'
@@ -70,6 +71,7 @@ const BoxImg = styled.div`
 
 
 const Lottery: React.FC = () => {
+  useFetchLottery()
   const { chainId } = useActiveWeb3React();
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
 
@@ -142,7 +144,7 @@ const Lottery: React.FC = () => {
           value={{ historyError, historyData, mostRecentLotteryNumber, currentLotteryNumber }}
         >
           <PastLotteryRoundViewer />
-          <PastDrawsHistoryCard />
+          {/* <PastDrawsHistoryCard /> */}
         </PastLotteryDataContext.Provider>
 
         {/* <Wrapper>
