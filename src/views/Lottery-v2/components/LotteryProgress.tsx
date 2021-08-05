@@ -7,6 +7,7 @@ import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
 import { useCurrentTime } from 'hooks/useTimer'
 import { BASE_API_ADMIN, BASE_API_ADMIN_PRO } from 'config'
 import useRefresh from 'hooks/useRefresh'
+import { useLottery } from 'state/hooks'
 import { useActiveWeb3React } from 'hooks'
 import {
   getLotteryDrawTime,
@@ -53,6 +54,10 @@ const LotteryProgress = () => {
   const [timeRemainDraw, setTimeRemainDraw] = useState("");
   const [timeRemainSale, setTimeRemainSale] = useState("");
   const [percentRemain, setPercentRemain] = useState(0)
+
+  const {
+    currentRound: { endTime },
+  } = useLottery()
   
 
   const TranslateString = useI18n()
@@ -64,38 +69,28 @@ const LotteryProgress = () => {
 
   useEffect(() => {
     const fetchTimeLottery = async () => {
-      const timeEndLottery = new Date();
-      const timeStartLottery = new Date();
-      const {data} = await axios.get(`${URL}/lotteries`);
+      const timeEndLottery = new Date((endTime ? parseInt(endTime): 0)* 1000);
+      // const {data} = await axios.get(`${URL}/lotteries`);
       const now = new Date();
 
       // set time remain to end lottery phase
-      timeEndLottery.setHours(data[0].timeDrawLottery.hh, data[0].timeDrawLottery.mm, 0);
       setTimeRemainDraw(getTimeRemainDraw(timeEndLottery));
 
       // set time remain to start new lottery phase
-      timeStartLottery.setHours(data[0].timeStartNewPhase.hh, data[0].timeStartNewPhase.mm, 0);
-      setTimeRemainSale(getTimeRemainDraw(timeStartLottery));
-
-      
-      if (lotteryHasDrawn){
-        setPercentRemain( 100 - ((timeStartLottery.getTime() - now.getTime()) * 100 / 86400000));
-      }
-      else 
-        setPercentRemain( 100 - ((timeEndLottery.getTime() - now.getTime()) * 100 / 86400000));
+      setPercentRemain( 100 - ((timeEndLottery.getTime() - now.getTime()) * 100 / 86400000));
     }
     fetchTimeLottery();
-  },[fastRefresh, lotteryHasDrawn, URL])
+  },[fastRefresh, lotteryHasDrawn, endTime])
 
   return (
     <ProgressWrapper>
-      <Progress primaryStep={percentRemain} secondaryStep={ (1/24) / 100} />
+      {/* <Progress primaryStep={percentRemain} secondaryStep={ (1/24) / 100} /> */}
       <TopTextWrapper>
         <StyledPrimaryText fontSize="20px" bold color="yellow">
-          {lotteryHasDrawn ? timeRemainSale : timeRemainDraw}
+          {timeRemainDraw}
         </StyledPrimaryText>
         <Text fontSize="20px" bold color="invertedContrast">
-          {lotteryHasDrawn ? TranslateString(434, 'Until ticket sale') : TranslateString(492, 'Until lottery draw')}
+          { TranslateString(492, 'Until next lottery')}
         </Text>
       </TopTextWrapper>
       {lotteryHasDrawn && (
