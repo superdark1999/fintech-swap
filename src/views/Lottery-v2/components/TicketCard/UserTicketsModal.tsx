@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect } from 'react'
 import { Button, Modal } from '@luckyswap/uikit'
 import styled from 'styled-components'
-import { Ticket  } from 'config/constants/types'
+import { LotteryTicket  } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import { useLottery,  } from 'state/hooks'
 import TicketNumber from './TicketNumber'
 
 
 interface UserTicketsModalProps {
-  myTicketNumbers: Array<Ticket>
+  myTicketNumbers: Array<LotteryTicket>
   from?: string
   onDismiss?: () => void
 }
@@ -16,13 +16,12 @@ interface UserTicketsModalProps {
 const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, onDismiss }) => {
   const winNumbers = [] // todo: improve
   const TranslateString = useI18n()
-  const {
-    isTransitioning,
-    currentRound: { status, userTickets },
-  } = useLottery()
+  // const {
+  //   isTransitioning,
+  //   currentRound: { status, userTickets },
+  // } = useLottery()
 
-
-  const listItems = userTickets.tickets.map((ticket, index) => {
+  const listItems = myTicketNumbers.map((ticket, index) => {
     return (
       <p style={{ color: 'yellow' }} key={ticket.id}>
          <TicketNumber
