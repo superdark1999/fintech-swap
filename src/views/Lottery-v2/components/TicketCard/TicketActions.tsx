@@ -63,7 +63,7 @@ const TicketCard: React.FC = () => {
   // const lotteryContract = useContract(getLotteryV2Address(), lotteryAbi)
   const { fastRefresh } = useRefresh()
 
-  const ticketsLength = userTickets.tickets.length
+  const ticketsLength = userTickets.tickets !== null ?userTickets.tickets.length : 0
   const [onPresentMyTickets] = useModal(<MyTicketsModal myTicketNumbers={userTickets.tickets} from="buy" />)
   const [onPresentApprove] = useModal(<PurchaseWarningModal />)
   const [onPresentBuy] = useModal(<BuyTicketModal max={new BigNumber(balanceToken)} tokenName="CAKE" />)

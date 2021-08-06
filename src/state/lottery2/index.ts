@@ -83,6 +83,7 @@ export const fetchUserLotteries = createAsyncThunk<LotteryUserGraphEntity, { acc
   'lottery/fetchUserLotteries',
   async ({ account }) => {
     const userLotteries = await getGraphLotteryUser(account)
+
     return userLotteries
   },
 )

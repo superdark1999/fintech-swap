@@ -104,7 +104,7 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
     }
     fetchTimeLottery();
   },[fastRefresh, URL])
-  // 12
+
   return (
     <StyledCard isSecondCard={isSecondCard}>
       <CardBody>
@@ -126,7 +126,7 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
               <Text fontSize="14px" color="textSubtle">
                 {TranslateString(724, 'Your tickets for this round')}
               </Text>
-              <Heading size="lg">{ userTickets.isLoading ? spinnerIcon:  userTickets.tickets.length}</Heading>
+              <Heading size="lg">{ userTickets.isLoading ? spinnerIcon : (userTickets.tickets !== null ? userTickets.tickets.length: 0)}</Heading>
             </TicketCountWrapper>
           )}
         </CardHeader>
