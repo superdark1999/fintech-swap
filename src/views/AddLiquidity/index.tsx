@@ -383,6 +383,7 @@ export default function AddLiquidity({
                         {approvalA !== ApprovalState.APPROVED && (
                           <Button
                             onClick={approveACallback}
+                            className="bg-yellow"
                             disabled={approvalA === ApprovalState.PENDING}
                             style={{ width: approvalB !== ApprovalState.APPROVED ? '48%' : '100%' }}
                           >
