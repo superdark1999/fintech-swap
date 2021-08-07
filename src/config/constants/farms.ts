@@ -22,6 +22,17 @@ const farms: FarmConfig[] = [
     token: tokens.xlucky,
     quoteToken: tokens.busd,
   },
+
+  // {
+  //   pid: 1,
+  //   lpSymbol: 'LUCKY-BUSD LP',
+  //   lpAddresses: {
+  //     97: '0x311b79db6a2b5783103f5e4e2db5501f8b69d5b7',
+  //     56: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
+  //   },
+  //   token: tokens.xlucky,
+  //   quoteToken: tokens.busd,
+  // },
 ]
 
 export default farms

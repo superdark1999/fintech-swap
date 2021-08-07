@@ -123,6 +123,7 @@ const Farms: React.FC = () => {
   const { pathname } = useLocation()
   const TranslateString = useI18n()
   const farmsLP = useFarms()
+  console.log("farmsLP", farmsLP)
   const cakePrice = usePriceLuckyBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
