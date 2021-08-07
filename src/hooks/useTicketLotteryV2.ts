@@ -19,7 +19,7 @@ export const useTicketLotteryV2 = () => {
   useEffect(() => {
     lotteryV2Contract.on('TicketsPurchase', () => {
       if (account && currentLotteryId) {
-        dispatch(fetchUserTicketsAndLotteries({ account, lotteryId: currentLotteryId }))
+        dispatch(fetchUserTicketsAndLotteries({ account, lotteryId: currentLotteryId })as any)
       }
     })
     const fetchTickets = async () => {

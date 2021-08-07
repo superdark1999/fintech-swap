@@ -460,6 +460,7 @@ button.btn-secondary.dropdown-toggle:focus {
 .bg-yellow {
   background-color: #f3c111 !important;
   color: #333333 !important;
+  border-radius: 6px !important;
 }
 
 .border-yellow {
