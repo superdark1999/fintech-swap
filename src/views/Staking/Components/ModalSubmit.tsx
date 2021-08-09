@@ -2,12 +2,12 @@ import React from 'react'
 import { Modal, Form, Input, Button } from 'antd'
 import { TokenKind } from 'graphql/language/tokenKind'
 
-const getCompactString=(str:string, sepLen:number)=>{
-    if(!str||typeof str !== 'string'){
-      return ''
-    }
-    const strLen = str.length || 0
-    return `${str.slice(0,sepLen)}...${str.slice(strLen-sepLen,strLen)}`
+const getCompactString = (str: string, sepLen: number) => {
+  if (!str || typeof str !== 'string') {
+    return ''
+  }
+  const strLen = str.length || 0
+  return `${str.slice(0, sepLen)}...${str.slice(strLen - sepLen, strLen)}`
 }
 
 function ModalSubmit(props: any) {
@@ -21,17 +21,28 @@ function ModalSubmit(props: any) {
       footer={null}
       width={400}
     >
-      <Form ref={formRef} onFinish={onSubmit} style={{ width: '100%' }}
-      fields={[
-        {
-          name: ["tokenID"],
-          value: token?.tokenID,
-        },
-        {
-            name: ["contractAddress"],
+      <Form
+        ref={formRef}
+        onFinish={onSubmit}
+        style={{ width: '100%' }}
+        fields={[
+          {
+            name: ['tokenID'],
+            value: token?.tokenID,
+          },
+          {
+            name: ['contractAddress'],
             value: getCompactString(token?.contractAddress, 10),
           },
-      ]}
+          token?.name != null && {
+            name: ['name'],
+            value: token?.name,
+          },
+          token?.description != null && {
+            name: 'description',
+            value: token?.description,
+          },
+        ]}
       >
         <div style={{ marginBottom: '6px' }}>
           Name<span style={{ color: 'red', marginRight: '4px' }}>*</span>
@@ -43,6 +54,7 @@ function ModalSubmit(props: any) {
               overflow: 'hidden',
               width: '100%',
             }}
+            disabled={token?.name}
             placeholder="Enter name card to..."
           />
         </Form.Item>
@@ -56,6 +68,7 @@ function ModalSubmit(props: any) {
               overflow: 'hidden',
               width: '100%',
             }}
+            disabled={token?.description}
             placeholder="Enter description to..."
           />
         </Form.Item>

@@ -28,7 +28,7 @@ const Menu = (props) => {
 
   const [balanceToken, setBalanceToken] = useState(0)
 
-  const useContractTemp = useContract(XLUCKY_ADDRESSES[chainId], bep20Abi)
+  const XLuckyContract = useContract(XLUCKY_ADDRESSES[chainId], bep20Abi)
 
   useEffect(() => {
     if (connector instanceof InjectedConnector) {
@@ -51,9 +51,8 @@ const Menu = (props) => {
   }, [chainId, logout])
 
   useEffect(() => {
-    if (useContractTemp) {
-      useContractTemp
-        .balanceOf(account)
+    if (XLuckyContract) {
+      XLuckyContract.balanceOf(account)
         .then((data) => {
           setBalanceToken(data / 1e18)
         })

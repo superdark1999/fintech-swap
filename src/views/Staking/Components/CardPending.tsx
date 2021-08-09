@@ -1,26 +1,12 @@
 import React from 'react'
 import { Col } from 'reactstrap'
 import styled from 'styled-components'
-import { isAbleToHarvest } from '../../../utils/date'
-import { StakingNFT } from '../../../config/constants/types'
 
-interface StakingCardProps extends StakingNFT {
-  onHarvest: any
-  onWithdraw: any
-  createdAt: Date
+interface PendingTokenProps {
+  image: string
 }
 
-const CardStaking: React.FC<StakingCardProps> = ({
-  image,
-  contractAddress,
-  pendingReward,
-  tokenID,
-  onHarvest,
-  onWithdraw,
-  createdAt,
-}: StakingCardProps) => {
-  console.log('is able to harvest : ', isAbleToHarvest(createdAt))
-
+const PendingToken: React.FC<PendingTokenProps> = ({ image }: PendingTokenProps) => {
   return (
     <Col sm="12" md="3" className="align-center space-mb">
       <BoxCenter>
@@ -32,25 +18,6 @@ const CardStaking: React.FC<StakingCardProps> = ({
         <Launchers>
           <img src="/images/staking/effect.png" alt="" />
         </Launchers>
-
-        <BoxFooter>
-          <Btn className="green-color">
-            <span className="effect-light">Staking</span>
-          </Btn>
-
-          <Space>
-            <Title>Collected Reward:</Title>
-            <Dflex>
-              <Number data-heading="">{pendingReward}</Number>
-              {isAbleToHarvest(createdAt) && (
-                <Ticket onClick={() => onHarvest({ tokenID, contractAddress })}>claim</Ticket>
-              )}
-              {isAbleToHarvest(createdAt) && (
-                <Ticket onClick={() => onWithdraw({ tokenID, contractAddress })}>withdraw</Ticket>
-              )}
-            </Dflex>
-          </Space>
-        </BoxFooter>
       </BoxCenter>
     </Col>
   )
@@ -205,4 +172,4 @@ const Ticket = styled.div`
   font-weight: 600;
 `
 
-export default CardStaking
+export default PendingToken

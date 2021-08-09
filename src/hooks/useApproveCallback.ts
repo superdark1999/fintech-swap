@@ -1,6 +1,7 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
 import { CurrencyAmount, ROUTER_ADDRESSES, TokenAmount, Trade } from '@luckyswap/v2-sdk'
+import { ApprovalState } from 'config'
 import { useActiveWeb3React } from 'hooks'
 import { useCallback, useMemo } from 'react'
 import { useTokenAllowance } from '../data/Allowances'
@@ -9,13 +10,6 @@ import { useHasPendingApproval, useTransactionAdder } from '../state/transaction
 import { calculateGasMargin } from '../utils'
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { useTokenContract } from './useContract'
-
-export enum ApprovalState {
-  UNKNOWN,
-  NOT_APPROVED,
-  PENDING,
-  APPROVED,
-}
 
 // returns a variable indicating the state of the approval and a function which approves if necessary or early returns
 export function useApproveCallbackCustom(token?: any, addressNeedApprove?: string): [() => Promise<void>] {

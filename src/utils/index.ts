@@ -4,6 +4,7 @@ import { AddressZero } from '@ethersproject/constants'
 import { Contract } from '@ethersproject/contracts'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { ChainId, Currency, CurrencyAmount, JSBI, Percent, Token } from '@luckyswap/v2-sdk'
+import { ethers } from 'ethers'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { BLOCK_EXPLORER_URLS } from '../constants'
 

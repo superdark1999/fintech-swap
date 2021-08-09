@@ -1,55 +1,50 @@
-import Web3 from 'web3'
-import { simpleRpcProvider } from 'utils/providers'
-import { AbiItem } from 'web3-utils'
-import { ethers } from 'ethers'
-
-// import web3NoAccount from 'utils/web3'
-import { poolsConfig } from 'config/constants'
-import { PoolCategory } from 'config/constants/types'
-
-// Addresses
-import {
-  getAddress,
-  getPancakeProfileAddress,
-  getPancakeRabbitsAddress,
-  getBunnyFactoryAddress,
-  getBunnySpecialAddress,
-  getCakeAddress,
-  getLotteryV2Address,
-  getLotteryAddress,
-  getLotteryTicketAddress,
-  getMasterChefAddress,
-  getPointCenterIfoAddress,
-  getClaimRefundAddress,
-  getTradingCompetitionAddress,
-  getEasterNftAddress,
-  getNftAddress,
-  getStakingNftAddress,
-} from 'utils/addressHelpers'
-
-// ABI
-import profileABI from 'config/abi/pancakeProfile.json'
-import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
+import { ChainId } from '@luckyswap/v2-sdk'
 import bunnyFactoryAbi from 'config/abi/bunnyFactory.json'
 import bunnySpecialAbi from 'config/abi/bunnySpecial.json'
-import bep20Abi from 'config/abi/erc20.json'
-import lpTokenAbi from 'config/abi/lpToken.json'
 import cakeAbi from 'config/abi/cake.json'
+import claimRefundAbi from 'config/abi/claimRefund.json'
+import easterNftAbi from 'config/abi/easterNft.json'
+import bep20Abi from 'config/abi/erc20.json'
 import ifoAbi from 'config/abi/ifo.json'
-import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import lotteryAbi from 'config/abi/lottery.json'
 import lotteryTicketAbi from 'config/abi/lotteryNft.json'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
+import lpTokenAbi from 'config/abi/lpToken.json'
 import masterChef from 'config/abi/masterchef.json'
+import nftAbi from 'config/abi/nft.json'
+// ABI
+import profileABI from 'config/abi/pancakeProfile.json'
+import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
+import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
-import claimRefundAbi from 'config/abi/claimRefund.json'
-import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
-import easterNftAbi from 'config/abi/easterNft.json'
 import stakingNftAbi from 'config/abi/StakingNft.json'
-import nftAbi from 'config/abi/nft.json'
-
-import { ChainId } from '@luckyswap/v2-sdk'
+import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
+// import web3NoAccount from 'utils/web3'
+import { poolsConfig } from 'config/constants'
+import { PoolCategory } from 'config/constants/types'
+import { ethers } from 'ethers'
+// Addresses
+import {
+  getAddress,
+  getBunnyFactoryAddress,
+  getBunnySpecialAddress,
+  getCakeAddress,
+  getClaimRefundAddress,
+  getEasterNftAddress,
+  getLotteryAddress,
+  getLotteryTicketAddress,
+  getLotteryV2Address,
+  getMasterChefAddress,
+  getPancakeProfileAddress,
+  getPancakeRabbitsAddress,
+  getPointCenterIfoAddress,
+  getStakingNFTAddress,
+  getTradingCompetitionAddress,
+} from 'utils/addressHelpers'
+import { simpleRpcProvider } from 'utils/providers'
+import Web3 from 'web3'
+import { AbiItem } from 'web3-utils'
 import { getWeb3NoAccount } from './web3'
 
 // TODO : use ethers instead of Web3
@@ -58,7 +53,7 @@ const getContract = (abi: any, address: string, web3?: Web3) => {
   return new _web3.eth.Contract(abi as unknown as AbiItem, address)
 }
 
-const getContract2 = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getContract2 = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider
   return new ethers.Contract(address, abi, signerOrProvider)
 }
@@ -99,6 +94,7 @@ export const getBunnySpecialContract = (web3?: Web3, chainId?: ChainId) => {
 export const getLotteryV2Contract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract2(lotteryV2Abi, getLotteryV2Address(), signer)
 }
+
 export const getLotteryContract = (web3?: Web3, chainId?: ChainId) => {
   return getContract(lotteryAbi, getLotteryAddress(chainId), web3)
 }
@@ -118,10 +114,10 @@ export const getEasterNftContract = (web3?: Web3, chainId?: ChainId) => {
   return getContract(easterNftAbi, getEasterNftAddress(chainId), web3)
 }
 
-export const getStakingNftContract = (web3?: Web3, chainId?: ChainId) => {
-  return getContract(stakingNftAbi, getStakingNftAddress(chainId), web3)
+export const getNFTContract = (address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract2(nftAbi, address, signer)
 }
 
-export const getNftContract = (web3?: Web3, chainId?: ChainId) => {
-  return getContract(nftAbi, getNftAddress(chainId), web3)
+export const getStakingNFTContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract2(stakingNftAbi, getStakingNFTAddress(), signer)
 }

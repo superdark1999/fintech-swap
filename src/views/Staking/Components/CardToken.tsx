@@ -1,20 +1,21 @@
+import { BaseNFT } from 'config/constants/types'
 import React from 'react'
 import { Col } from 'reactstrap'
 import styled from 'styled-components'
+import { NFT } from '../../../config/constants/types'
 
-interface CardNftTokenProps {
-  tokenID: number
-  contractAddress: string
-  image: string
+interface CardNFTProps extends NFT {
   onRegister: any
 }
 
-const CardNftToken: React.FC<CardNftTokenProps> = ({
+const CardNFT: React.FC<CardNFTProps> = ({
+  name,
+  description,
   tokenID,
   contractAddress,
   image,
   onRegister,
-}: CardNftTokenProps) => {
+}: CardNFTProps) => {
   return (
     <Col sm="12" md="3" className="align-center space-mb">
       <BoxCenter>
@@ -29,7 +30,7 @@ const CardNftToken: React.FC<CardNftTokenProps> = ({
 
         <BoxFooter>
           <Space>
-            <Ticket onClick={() => onRegister({ tokenID, contractAddress, image })}>Register</Ticket>
+            <Ticket onClick={() => onRegister({ name, description, tokenID, contractAddress, image })}>Register</Ticket>
           </Space>
         </BoxFooter>
       </BoxCenter>
@@ -186,4 +187,4 @@ const Ticket = styled.div`
   font-weight: 600;
 `
 
-export default CardNftToken
+export default CardNFT
