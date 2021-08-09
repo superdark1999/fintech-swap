@@ -7,9 +7,6 @@ import useWeb3ReactManager from 'hooks/useWeb3ReactManager'
 import React, { lazy, useEffect, useState } from 'react'
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { useFetchPriceList, useFetchProfile, useFetchPublicData } from 'state/hooks'
-import Pending from 'views/Staking/Pending'
-import Unstaked from 'views/Staking/Unstaked'
-import Staked from 'views/Staking/Staked'
 import EasterEgg from './components/EasterEgg'
 import Menu from './components/Menu'
 import PageLoader from './components/PageLoader'
@@ -33,7 +30,6 @@ import RemoveLiquidity from './views/RemoveLiquidity'
 import { RedirectOldRemoveLiquidityPathStructure } from './views/RemoveLiquidity/redirects'
 import Swap from './views/Swap'
 import { RedirectPathToSwapOnly } from './views/Swap/redirects'
-import MyCollection from './views/Staking'
 
 // Route-based code splitting2
 // Only pool is included in the main bundle because of it's the most visited page .
@@ -166,18 +162,8 @@ const App: React.FC = () => {
                 <Route path="/earn">
                   <PlayToEarn />
                 </Route>
-
                 <Route path="/staking">
-                  <MyCollection />
-                </Route>
-                <Route path="/pending">
-                  <Pending />
-                </Route>
-                <Route path="/unstaked">
-                  <Unstaked />
-                </Route>
-                <Route path="/staked">
-                  <Staked />
+                  <Staking />
                 </Route>
 
                 <Route path="/lottery-dev">
@@ -202,9 +188,6 @@ const App: React.FC = () => {
                   <TradingCompetition />
                 </Route>
                 {/* Redirect */}
-                <Route path="/staking">
-                  <Redirect to="/pools" />
-                </Route>
                 <Route path="/syrup">
                   <Redirect to="/pools" />
                 </Route>

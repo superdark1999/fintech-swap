@@ -1,14 +1,14 @@
-import React from 'react'
+import { ApprovalState } from 'config'
+import React, { useEffect, useState } from 'react'
 import { Col } from 'reactstrap'
 import styled from 'styled-components'
-import { ApprovalState } from '../../../hooks/useApproveCallback'
+import { StakingNFT } from '../../../config/constants/types'
+import { useActiveWeb3React } from '../../../hooks/index'
+import { useNFTContract, useStakingNFTContract } from '../../../hooks/useContract'
+import notification from './Alert'
 
-interface StakingCardProps {
-  tokenID: number
-  contractAddress: string
-  image: string
+interface StakingCardProps extends StakingNFT {
   onStake: any
-  depositAmount: any
   approveState?: ApprovalState
   onApprove: any
 }
@@ -18,10 +18,50 @@ const CardApproved: React.FC<StakingCardProps> = ({
   contractAddress,
   onStake,
   tokenID,
-  depositAmount,
   approveState,
   onApprove,
 }: StakingCardProps) => {
+  const [approveNFTState, setApproveNFTState] = useState<ApprovalState>(ApprovalState.UNKNOWN)
+  const stakingNFTContract = useStakingNFTContract()
+  const NFTContract = useNFTContract(contractAddress)
+  const { account } = useActiveWeb3React()
+
+  useEffect(() => {
+    if (stakingNFTContract && tokenID && NFTContract) {
+      setApproveNFTState(ApprovalState.PENDING)
+      NFTContract.getApproved(tokenID)
+        .then((response) => {
+          if (response !== stakingNFTContract.address) {
+            setApproveNFTState(ApprovalState.NOT_APPROVED)
+          } else {
+            setApproveNFTState(ApprovalState.APPROVED)
+          }
+        })
+        .catch((error) => {
+          notification('error', { message: 'Get Approve state NFT Error', description: error?.message })
+          setApproveNFTState(ApprovalState.UNKNOWN)
+        })
+
+      NFTContract.on('Approval', (owner, approved, tokenId) => {
+        if (owner === account && approved === stakingNFTContract.address && tokenId.toNumber() === tokenID) {
+          // notification('success', { message: 'Get Approve state NFT Error', description: error?.message })
+
+          setApproveNFTState(ApprovalState.APPROVED)
+        }
+      })
+    }
+  }, [stakingNFTContract, tokenID, account, NFTContract])
+
+  const onApproveNFT = async () => {
+    try {
+      setApproveNFTState(ApprovalState.PENDING)
+      NFTContract.approve(stakingNFTContract.address, tokenID)
+    } catch (error) {
+      notification('error', { message: 'Approve NFT error', description: error?.message })
+      setApproveNFTState(ApprovalState.NOT_APPROVED)
+    }
+  }
+
   return (
     <Col sm="12" md="3" className="align-center space-mb">
       <BoxCenter>
@@ -35,13 +75,41 @@ const CardApproved: React.FC<StakingCardProps> = ({
         </Launchers>
 
         <BoxFooter>
-          {approveState === ApprovalState.APPROVED ? (
-            <Btn onClick={() => onStake({ tokenID, contractAddress, depositAmount })} className="green-color">
-              <span className="effect-light">Stake</span>
+          {approveState === ApprovalState.NOT_APPROVED ? (
+            <Btn className="green-color" onClick={onApprove}>
+              <span className="effect-light">Approve XLUCKY</span>
+            </Btn>
+          ) : approveState === ApprovalState.PENDING ? (
+            <Btn className="green-color">
+              <span className="effect-light">Approving XLUCKY...</span>
+            </Btn>
+          ) : approveState === ApprovalState.UNKNOWN ? (
+            <Btn className="green-color">
+              <span className="effect-light">Checking...</span>
             </Btn>
           ) : (
-            <Btn className="green-color" onClick={onApprove}>
-              <span className="effect-light">Approve</span>
+            <> </>
+          )}
+
+          {approveNFTState === ApprovalState.NOT_APPROVED ? (
+            <Btn className="green-color" onClick={onApproveNFT}>
+              <span className="effect-light">Approve NFT</span>
+            </Btn>
+          ) : approveNFTState === ApprovalState.PENDING ? (
+            <Btn className="green-color">
+              <span className="effect-light">Approving NFT...</span>
+            </Btn>
+          ) : approveNFTState === ApprovalState.UNKNOWN ? (
+            <Btn className="green-color">
+              <span className="effect-light">Checking...</span>
+            </Btn>
+          ) : (
+            <> </>
+          )}
+
+          {approveState === ApprovalState.APPROVED && approveNFTState === ApprovalState.APPROVED && (
+            <Btn onClick={() => onStake({ tokenID, contractAddress })} className="green-color">
+              <span className="effect-light">Stake</span>
             </Btn>
           )}
         </BoxFooter>
@@ -137,66 +205,6 @@ const Btn = styled.button`
         0px 10px 100px #7b96b8, 0px 10px 100px #7b96b8, 0px -10px 100px #7b96b8, 0px -10px 100px #7b96b8;
     }
   }
-`
-
-const Space = styled.div`
-  padding: 15px;
-`
-
-const Title = styled.h2`
-  font-size: 16px;
-  text-transform: capitalize;
-  color: #ffffff;
-  margin-bottom: 10px;
-`
-
-const Dflex = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  align-items: center;
-`
-
-const Number = styled.h3`
-  color: #f4c708;
-  font-size: 24px;
-  font-family: 'Roboto Mono', monospace !important;
-  font-weight: 600;
-  position: relative;
-  transform: scale(1);
-  text-shadow: -1px 0 1px #c5a354, 0 1px 1px #e0b649, 5px 5px 10px rgb(179 167 106 / 78%),
-    -5px -5px 10px rgb(183 155 65 / 40%);
-
-  &:before {
-    content: attr(data-heading);
-    left: 0;
-    top: 0;
-    position: absolute;
-    z-index: 1;
-    background: linear-gradient(
-      to bottom,
-      #ffe047 22%,
-      #fff144 24%,
-      #cfc09f 26%,
-      #ffe686 27%,
-      #ffecb3 40%,
-      #ffe14f 78%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: none;
-  }
-`
-
-const Ticket = styled.div`
-  background: url('../images/staking/bg-button.png') no-repeat center center;
-  background-size: contain;
-  width: 100%;
-  height: 36px;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 36px;
-  font-size: 14px;
-  font-weight: 600;
 `
 
 export default CardApproved

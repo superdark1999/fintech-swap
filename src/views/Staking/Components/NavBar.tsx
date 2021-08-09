@@ -1,26 +1,20 @@
 import classnames from 'classnames'
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import { Nav, NavItem, NavLink } from 'reactstrap'
 import styled from 'styled-components'
 
 interface NavbarProps {
   activeTab?: any
+  toggle?: any
 }
 
-export default function NavBar({ activeTab }: NavbarProps) {
-  const history = useHistory()
+export default function NavBar({ activeTab, toggle }: NavbarProps) {
   return (
     <BoxNav>
       <Nav tabs>
         <LeftItem>
           <NavItem>
-            <NavLink
-              className={classnames({ active: activeTab === '1' })}
-              onClick={() => {
-                history.push('/staking')
-              }}
-            >
+            <NavLink className={classnames({ active: activeTab === '1' })} onClick={() => toggle('1')}>
               all cards
             </NavLink>
           </NavItem>
@@ -28,46 +22,24 @@ export default function NavBar({ activeTab }: NavbarProps) {
 
         <RightItem>
           <NavItem>
-            <NavLink
-              className={classnames({ active: activeTab === '1' })}
-              onClick={() => {
-                history.push('/staking')
-              }}
-            >
+            <NavLink className={classnames({ active: activeTab === '1' })} onClick={() => toggle('1')}>
               My Collection
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink
-              to="/staking/pending"
-              className={classnames({ active: activeTab === '2' })}
-              onClick={() => {
-                history.push('/staking/pending')
-              }}
-            >
+            <NavLink className={classnames({ active: activeTab === '2' })} onClick={() => toggle('2')}>
               Pending
             </NavLink>
           </NavItem>
 
           <NavItem>
-            <NavLink
-              className={classnames({ active: activeTab === '3' })}
-              onClick={() => {
-                history.push('/staking/unstaked')
-              }}
-            >
+            <NavLink className={classnames({ active: activeTab === '3' })} onClick={() => toggle('3')}>
               unstaked
             </NavLink>
           </NavItem>
 
           <NavItem>
-            <NavLink
-              to="/staking/staked"
-              className={classnames({ active: activeTab === '4' })}
-              onClick={() => {
-                history.push('/staking/staked')
-              }}
-            >
+            <NavLink className={classnames({ active: activeTab === '4' })} onClick={() => toggle('4')}>
               staked
             </NavLink>
           </NavItem>

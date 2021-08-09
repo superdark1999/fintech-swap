@@ -1,4 +1,6 @@
 import { TranslatableText } from 'state/types'
+import { JSBI } from '@luckyswap/v2-sdk'
+import { BigNumber } from 'ethers'
 
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 
@@ -86,12 +88,28 @@ export interface PoolConfig {
   isFinished?: boolean
 }
 
-export interface PoolConfigNft {
-  tokenId: number
-  nftContract: string
-  earningToken: Token
+export interface BaseNFT {
+  tokenID: number | JSBI | BigNumber
   contractAddress: string
-  tokenPerBlock: string
+  urlToken?: string
+  to?: string
+  uri?: string
+}
+
+export interface AdditionalInfoNFT {
+  image?: string
+  name?: string
+  description?: string
+}
+
+export interface NFT extends BaseNFT, AdditionalInfoNFT {}
+
+export interface StakingNFT extends NFT {
+  rewardPerBlock?: number | JSBI
+  owner?: string
+  depositAmount?: number | JSBI
+  createdAt?: number | JSBI | Date
+  pendingReward?: string | number | JSBI | BigNumber
 }
 
 export type Images = {

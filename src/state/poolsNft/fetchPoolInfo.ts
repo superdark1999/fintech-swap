@@ -1,13 +1,16 @@
+import { ChainId } from '@luckyswap/v2-sdk'
+import axios from 'axios'
 import nftAbi from 'config/abi/nft.json'
 import stakingNftAbi from 'config/abi/StakingNft.json'
 import addresses from 'config/constants/contracts'
-import multicall from 'utils/multicall'
-import { ChainId } from '@luckyswap/v2-sdk'
-import Web3 from 'web3'
-import axios from 'axios'
+import { ethers } from 'ethers'
+import { getAddress } from 'ethers/lib/utils'
 import { remove } from 'lodash'
+import multicall from 'utils/multicall'
+import Web3 from 'web3'
 import { RPC_URLS } from '../../constants/index'
 import { multicallv2 } from '../../utils/multicall'
+import { BaseNFT, NFT, AdditionalInfoNFT } from '../../config/constants/types'
 
 const abi = [
   {
@@ -33,7 +36,7 @@ export const fetchUserPendingRewards = async (pools, chainId) => {
   return pendingRewards
 }
 
-export const fetchImagePool = async (pools, chainId) => {
+export const fetchURIPool = async (pools, chainId) => {
   const calls = pools.map((p) => ({
     address: addresses.nft[chainId],
     name: 'tokenURI',
@@ -47,13 +50,19 @@ export const fetchImagePool = async (pools, chainId) => {
   return images
 }
 
-export const fetchNftUser = async (account) => {
+export const fetchNftUser = async (account): Promise<BaseNFT[]> => {
   if (account) {
     return fetch(
       `https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&address=${account}&startblock=0&endblock=999999999999&sort=asc`,
     )
       .then((response) => response.json())
-      .then((data) => data.result)
+      .then((data) =>
+        data.result.map((item) => ({
+          ...item,
+          tokenID: parseInt(item.tokenID),
+          contractAddress: getAddress(item.contractAddress),
+        })),
+      )
       .catch((error) => {
         return new Promise((resolve) => resolve([]))
       })
@@ -76,16 +85,16 @@ const NFT_SITES = {
 }
 
 const WHITELIST_URLS = {
-  '0x969a82989d9e410ed0ae36c12479552421c93eb2': NFT_SITES.LUCKY_MARKETPLACE,
-  '0xF5db804101d8600c26598A1Ba465166c33CdAA4b': NFT_SITES.AIRNFTS,
-  '0x1dDB2C0897daF18632662E71fdD2dbDC0eB3a9Ec': NFT_SITES.BRNFT,
+  [getAddress('0x969a82989d9e410ed0ae36c12479552421c93eb2')]: NFT_SITES.LUCKY_MARKETPLACE,
+  [getAddress('0xF5db804101d8600c26598A1Ba465166c33CdAA4b')]: NFT_SITES.AIRNFTS,
+  [getAddress('0x1dDB2C0897daF18632662E71fdD2dbDC0eB3a9Ec')]: NFT_SITES.BRNFT,
 }
 
-const getInfoFromLucky = async (uri) => {
+const getInfoFromLucky = async (uri): Promise<AdditionalInfoNFT> => {
   return { image: uri }
 }
 
-const getInfoFromAirNFT = async (uri) => {
+const getInfoFromAirNFT = async (uri): Promise<AdditionalInfoNFT> => {
   try {
     const { data } = await axios.get(uri)
     const { urlCompressed, name, description } = (data as any)?.nft
@@ -100,7 +109,7 @@ const getInfoFromAirNFT = async (uri) => {
   }
 }
 
-const getInfoFromBRNFT = async (uri) => {
+const getInfoFromBRNFT = async (uri): Promise<AdditionalInfoNFT> => {
   try {
     const { data } = await axios.get(uri)
     const { name, description, image } = data
@@ -112,7 +121,7 @@ const getInfoFromBRNFT = async (uri) => {
   }
 }
 
-const getInfoFromBakery = async (uri) => {
+const getInfoFromBakery = async (uri): Promise<AdditionalInfoNFT> => {
   try {
     const { data } = await axios.get(uri)
     const { name, description, image } = data
@@ -124,7 +133,7 @@ const getInfoFromBakery = async (uri) => {
   }
 }
 
-export const getInfoFromURI = async (tokensInfo) => {
+export const getInfoFromURI = async (tokensInfo: BaseNFT[]): Promise<AdditionalInfoNFT[]> => {
   const result = await Promise.all(
     tokensInfo.map(async (token) => {
       switch (WHITELIST_URLS[token.contractAddress]) {
@@ -143,7 +152,7 @@ export const getInfoFromURI = async (tokensInfo) => {
   return result
 }
 
-export const getTokensURI = async (tokens) => {
+export const getTokensURI = async (tokens: BaseNFT[]) => {
   try {
     const calls = tokens.map((t) => ({
       address: t.contractAddress,
@@ -162,7 +171,7 @@ export const getTokensURI = async (tokens) => {
   }
 }
 
-export const getAdditionalInfoTokens = async (tokens) => {
+export const getAdditionalInfoNFTs = async (tokens: BaseNFT[]): Promise<AdditionalInfoNFT[]> => {
   const uris = await getTokensURI(tokens)
 
   const tokensInfo = uris.map((uri, index) => ({
@@ -170,51 +179,60 @@ export const getAdditionalInfoTokens = async (tokens) => {
     contractAddress: tokens[index].contractAddress,
   }))
 
-  const images = await getInfoFromURI(tokensInfo)
+  const info = await getInfoFromURI(tokensInfo)
 
-  return images
+  return info
 }
 
-export const excludeExistedTokens = (userTokens, existedTokens) => {
-  for (let i = 0; i < existedTokens.length; i++) {
-    remove(
-      userTokens,
-      (token) =>
-        (token as any).contractAddress === existedTokens[i].contractAddress &&
-        (token as any).tokenID === existedTokens[i].tokenID,
-    )
+export const excludeExistedTokens = (userTokens: BaseNFT[], existedTokens: BaseNFT[]): Array<any> => {
+  const result: BaseNFT[] = []
+  for (let i = 0; i < userTokens.length; i++) {
+    const token = userTokens[i]
+    let existed = false
+    for (let j = 0; j < existedTokens.length; j++) {
+      if (
+        getAddress(existedTokens[j].contractAddress) === token.contractAddress &&
+        (existedTokens[j].tokenID as any) === token.tokenID
+      ) {
+        existed = true
+        break
+      }
+    }
+
+    if (!existed) {
+      result.push(token)
+    }
   }
+
+  return result
 }
 
 export const getKey = (token) => {
   return `${token.tokenID}-${token.contractAddress}`
 }
 
-export const excludeSoldTokens = (userTokens) => {
+export const excludeSoldTokens = (userTokens: BaseNFT[], account: string): Array<any> => {
   const map = new Map()
-  for (let i = 0; i < (userTokens as any).length; i++) {
+  const result: BaseNFT[] = []
+
+  for (let i = (userTokens as any).length - 1; i >= 0; i--) {
     const key = getKey(userTokens[i])
-    const temp = map.get(key)
-    if (temp) {
-      map.set(key, temp + 1)
-    } else {
-      map.set(key, 1)
+
+    if (!map.get(key) && getAddress(userTokens[i].to) === account) {
+      result.push(userTokens[i])
     }
+    map.set(key, 1)
   }
 
-  remove(userTokens, (token) => {
-    const key = getKey(token)
-    if (map.get(key) % 2 === 0) {
-      return true
-    }
-    return false
-  })
+  return result
 }
 
-export const addAdditionalInfoTokens = async (userTokens) => {
-  const additionalInfoTokens = await getAdditionalInfoTokens(userTokens)
+export const addAdditionalInfoNFTs = async (userTokens: BaseNFT[]): Promise<NFT[]> => {
+  const AdditionalInfoNFTs = await getAdditionalInfoNFTs(userTokens)
 
   for (let i = 0; i < (userTokens as any).length; i++) {
-    Object.assign(userTokens[i], additionalInfoTokens[i])
+    Object.assign(userTokens[i], AdditionalInfoNFTs[i])
   }
+
+  return userTokens
 }

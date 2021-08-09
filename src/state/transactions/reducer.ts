@@ -1,3 +1,4 @@
+import { JSBI } from '@luckyswap/v2-sdk'
 import { createReducer } from '@reduxjs/toolkit'
 import {
   addTransaction,
@@ -12,6 +13,11 @@ const now = () => new Date().getTime()
 export interface TransactionDetails {
   hash: string
   approval?: { tokenAddress: string; spender: string }
+  approvalNFT?: {
+    tokenID: JSBI | number
+    contractAddress: string
+    spender: string
+  }
   summary?: string
   receipt?: SerializableTransactionReceipt
   lastCheckedBlockNumber?: number

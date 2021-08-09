@@ -1,15 +1,26 @@
 import React from 'react'
 import { Col } from 'reactstrap'
 import styled from 'styled-components'
+import { isAbleToHarvest } from '../../../utils/date'
+import { StakingNFT } from '../../../config/constants/types'
 
-interface StakingCardProps {
-  tokenID: number
-  contractAddress: string
-  image: string
-  reward?: number
+interface StakingCardProps extends StakingNFT {
+  onHarvest: any
+  onWithdraw: any
+  createdAt: Date
 }
 
-const CardStaking: React.FC<StakingCardProps> = ({ image, contractAddress, reward, tokenID }: StakingCardProps) => {
+const CardStaking: React.FC<StakingCardProps> = ({
+  image,
+  contractAddress,
+  pendingReward,
+  tokenID,
+  onHarvest,
+  onWithdraw,
+  createdAt,
+}: StakingCardProps) => {
+  console.log('is able to harvest : ', isAbleToHarvest(createdAt))
+
   return (
     <Col sm="12" md="3" className="align-center space-mb">
       <BoxCenter>
@@ -23,15 +34,20 @@ const CardStaking: React.FC<StakingCardProps> = ({ image, contractAddress, rewar
         </Launchers>
 
         <BoxFooter>
-          <Btn>
-            <span className="effect-light">Unstake</span>
+          <Btn className="green-color">
+            <span className="effect-light">Staking</span>
           </Btn>
 
           <Space>
             <Title>Collected Reward:</Title>
             <Dflex>
-              <Number data-heading="0.000">0.000</Number>
-              <Ticket>claim</Ticket>
+              <Number data-heading="">{pendingReward}</Number>
+              {isAbleToHarvest(createdAt) && (
+                <Ticket onClick={() => onHarvest({ tokenID, contractAddress })}>claim</Ticket>
+              )}
+              {isAbleToHarvest(createdAt) && (
+                <Ticket onClick={() => onWithdraw({ tokenID, contractAddress })}>withdraw</Ticket>
+              )}
             </Dflex>
           </Space>
         </BoxFooter>

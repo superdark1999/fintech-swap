@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios'
+import { BaseNFT, NFT } from '../config/constants/types'
 
 export class StakingNftService {
   private restConnector: AxiosInstance
@@ -9,6 +10,11 @@ export class StakingNftService {
 
   public async getAllTokens() {
     const { data } = await this.restConnector.get('/stakingNft')
+    return data
+  }
+
+  public async getAllTokensId(): Promise<BaseNFT[]> {
+    const { data } = await this.restConnector.get('/stakingNft/poolsId')
     return data
   }
 
@@ -27,19 +33,22 @@ export class StakingNftService {
     return data
   }
 
-  public async registerStakingToken({ name, description, urlToken, urlImg, tokenID, contractAddress }) {
-    return this.restConnector.post('/stakingNft', {
-      name,
-      description,
-      urlToken,
-      urlImg,
-      tokenID,
-      contractAddress,
-    })
+  public async registerStakingToken({ name, description, urlToken, image, tokenID, contractAddress }: NFT) {
+    if (name && description && urlToken && image && tokenID && contractAddress) {
+      return this.restConnector.post('/stakingNft', {
+        name,
+        description,
+        urlToken,
+        image,
+        tokenID,
+        contractAddress,
+      })
+    }
+    throw new Error('Not have enough info token')
   }
 
   public async stakeToken({ tokenID, contractAddress }) {
-    return this.restConnector.patch('/stakingNft', {
+    return this.restConnector.patch(`/stakingNft/`, {
       tokenID,
       contractAddress,
       status: 'staking',

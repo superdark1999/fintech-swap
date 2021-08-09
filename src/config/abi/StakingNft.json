@@ -15,18 +15,30 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenID",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "contractAddress",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "rewardPerBlock",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "image",
+        "type": "string"
       }
     ],
-    "name": "Deposit",
+    "name": "CreatePool",
     "type": "event"
   },
   {
@@ -35,7 +47,44 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenID",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "contractAddress",
+        "type": "address"
+      }
+    ],
+    "name": "EmergencyWithdraw",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenID",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "contractAddress",
         "type": "address"
       },
       {
@@ -45,7 +94,7 @@
         "type": "uint256"
       }
     ],
-    "name": "EmergencyWithdraw",
+    "name": "Harvest",
     "type": "event"
   },
   {
@@ -73,14 +122,77 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "contractAddress",
         "type": "address"
       },
       {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenID",
+        "type": "uint256"
+      }
+    ],
+    "name": "RemovePool",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "newFee",
         "type": "uint256"
+      }
+    ],
+    "name": "SetFeeWithdraw",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenID",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "contractAddress",
+        "type": "address"
+      }
+    ],
+    "name": "Stake",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenID",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "contractAddress",
+        "type": "address"
       }
     ],
     "name": "Withdraw",
@@ -108,17 +220,17 @@
       },
       {
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "_tokenID",
         "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_image",
+        "type": "string"
       },
       {
         "internalType": "uint256",
         "name": "_rewardPerBlock",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_tokenValue",
         "type": "uint256"
       },
       {
@@ -154,7 +266,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "_tokenID",
         "type": "uint256"
       }
     ],
@@ -172,7 +284,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "_tokenID",
         "type": "uint256"
       }
     ],
@@ -182,7 +294,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "tokenId",
+            "name": "tokenID",
             "type": "uint256"
           },
           {
@@ -194,11 +306,6 @@
             "internalType": "address",
             "name": "owner",
             "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "tokenValue",
-            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -214,6 +321,11 @@
             "internalType": "uint256",
             "name": "depositAmount",
             "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "image",
+            "type": "string"
           },
           {
             "internalType": "uint256",
@@ -238,7 +350,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "_tokenID",
         "type": "uint256"
       }
     ],
@@ -261,7 +373,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "tokenId",
+            "name": "tokenID",
             "type": "uint256"
           },
           {
@@ -273,11 +385,6 @@
             "internalType": "address",
             "name": "owner",
             "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "tokenValue",
-            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -293,6 +400,11 @@
             "internalType": "uint256",
             "name": "depositAmount",
             "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "image",
+            "type": "string"
           },
           {
             "internalType": "uint256",
@@ -314,7 +426,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "tokenId",
+            "name": "tokenID",
             "type": "uint256"
           },
           {
@@ -326,11 +438,6 @@
             "internalType": "address",
             "name": "owner",
             "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "tokenValue",
-            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -348,6 +455,11 @@
             "type": "uint256"
           },
           {
+            "internalType": "string",
+            "name": "image",
+            "type": "string"
+          },
+          {
             "internalType": "uint256",
             "name": "createdAt",
             "type": "uint256"
@@ -358,7 +470,7 @@
         "type": "tuple"
       }
     ],
-    "name": "getBlockReward",
+    "name": "getNumOfBlockReward",
     "outputs": [
       {
         "internalType": "uint256",
@@ -378,7 +490,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "_tokenID",
         "type": "uint256"
       }
     ],
@@ -396,7 +508,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "_tokenID",
         "type": "uint256"
       }
     ],
@@ -467,7 +579,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "_tokenID",
         "type": "uint256"
       }
     ],
@@ -494,7 +606,7 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "tokenID",
         "type": "uint256"
       },
       {
@@ -506,11 +618,6 @@
         "internalType": "address",
         "name": "owner",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokenValue",
-        "type": "uint256"
       },
       {
         "internalType": "uint256",
@@ -526,6 +633,11 @@
         "internalType": "uint256",
         "name": "depositAmount",
         "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "image",
+        "type": "string"
       },
       {
         "internalType": "uint256",
@@ -545,7 +657,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "_tokenID",
         "type": "uint256"
       }
     ],
@@ -583,13 +695,26 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_newFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "setFeeWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_contractAddress",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "_tokenID",
         "type": "uint256"
       }
     ],
@@ -633,11 +758,11 @@
       },
       {
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "_tokenID",
         "type": "uint256"
       }
     ],
-    "name": "unstake",
+    "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

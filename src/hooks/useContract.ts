@@ -3,12 +3,10 @@ import { ROUTER_ADDRESSES, WNATIVE } from '@luckyswap/v2-sdk'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
 import addresss from 'config/constants/contracts'
-import nftAbi from 'config/abi/nft.json'
 import { useActiveWeb3React } from 'hooks'
 import useWeb3 from 'hooks/useWeb3'
 import useWeb3Provider from 'hooks/useWeb3Provider'
 import { useMemo } from 'react'
-import stakingNftAbi from 'config/abi/StakingNft.json'
 import FARMS_ABI from '../config/abi/masterchef.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import ENS_ABI from '../constants/abis/ens-registrar.json'
@@ -18,10 +16,7 @@ import ROUTER_ABI from '../constants/abis/router.json'
 import WETH_ABI from '../constants/abis/weth.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { getContract } from '../utils'
-import { getNftAddress, getStakingNftAddress } from '../utils/addressHelpers'
 import {
-  getStakingNftContract,
-  getNftContract,
   getBep20Contract,
   getBunnyFactoryContract,
   getBunnySpecialContract,
@@ -33,10 +28,12 @@ import {
   getLotteryTicketContract,
   getLotteryV2Contract,
   getMasterchefContract,
+  getNFTContract,
   getPancakeRabbitContract,
   getPointCenterIfoContract,
   getProfileContract,
   getSouschefContract,
+  getStakingNFTContract,
   getTradingCompetitionContract,
 } from '../utils/contractHelpers'
 
@@ -99,14 +96,14 @@ export const useLotteryV2Contract = () => {
   return useMemo(() => getLotteryV2Contract(provider.getSigner()), [provider])
 }
 
-export const useNftContract = () => {
+export const useNFTContract = (address: string) => {
   const provider = useWeb3Provider()
-  return useMemo(() => getNftContract(provider.getSigner()), [provider])
+  return useMemo(() => getNFTContract(address, provider.getSigner()), [address, provider])
 }
 
-export function useStakingNftContract(): Contract | null {
+export function useStakingNFTContract(): Contract | null {
   const provider = useWeb3Provider()
-  return useMemo(() => getStakingNftContract(provider.getSigner()), [provider])
+  return useMemo(() => getStakingNFTContract(provider.getSigner()), [provider])
 }
 
 export const useERC20 = (address: string) => {

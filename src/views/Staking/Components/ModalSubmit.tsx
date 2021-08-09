@@ -34,11 +34,11 @@ function ModalSubmit(props: any) {
             name: ['contractAddress'],
             value: getCompactString(token?.contractAddress, 10),
           },
-          {
+          token?.name != null && {
             name: ['name'],
             value: token?.name,
           },
-          {
+          token?.description != null && {
             name: 'description',
             value: token?.description,
           },

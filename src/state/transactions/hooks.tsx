@@ -79,3 +79,31 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
     [allTransactions, spender, tokenAddress],
   )
 }
+
+// returns whether a token has a pending approval transaction
+export function useHasPendingNFTApproval(tokenID: number, contractAddress: string, spender: string): boolean {
+  const allTransactions = useAllTransactions()
+
+  return useMemo(
+    () =>
+      typeof tokenID === 'number' &&
+      typeof contractAddress === 'string' &&
+      typeof spender === 'string' &&
+      Object.keys(allTransactions).some((hash) => {
+        const tx = allTransactions[hash]
+        if (!tx) return false
+        if (tx.receipt) {
+          return false
+        }
+        const { approvalNFT } = tx
+        if (!approvalNFT) return false
+        return (
+          approvalNFT.tokenID === tokenID &&
+          approvalNFT.contractAddress === contractAddress &&
+          approvalNFT.spender === spender &&
+          isTransactionRecent(tx)
+        )
+      }),
+    [allTransactions, tokenID, contractAddress, spender],
+  )
+}
