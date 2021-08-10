@@ -19,7 +19,11 @@ export const useTicketLotteryV2 = () => {
   useEffect(() => {
     lotteryV2Contract.on('TicketsPurchase', () => {
       if (account && currentLotteryId) {
+<<<<<<< HEAD
         dispatch(fetchUserTicketsAndLotteries({ account, lotteryId: currentLotteryId })as any)
+=======
+        dispatch(fetchUserTicketsAndLotteries({ account, lotteryId: currentLotteryId })  as any)
+>>>>>>> Farm api
       }
     })
     const fetchTickets = async () => {
