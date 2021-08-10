@@ -5,6 +5,7 @@ import { useApproveCallback } from 'hooks/useApproveCallback'
 import useWeb3Provider from 'hooks/useWeb3Provider'
 import React from 'react'
 import { Row } from 'reactstrap'
+import { useTransactionAdder } from 'state/transactions/hooks'
 import { XLUCKY_ADDRESSES } from '../../config/index'
 import { useActiveWeb3React } from '../../hooks/index'
 // import { useApproveCallback } from 'hooks/useApproveCallback'
@@ -29,10 +30,17 @@ export const Unstaked: React.FC<UnstakedPageProps> = ({ approvedTokens, maxDepos
     CurrencyAmount.fromRawAmount(luckyToken, maxDepositAmount),
     stakingNftContract?.address,
   )
+  const addTransaction = useTransactionAdder()
 
   const stakeHandler = async ({ tokenID, contractAddress }) => {
     try {
-      await stakingNftContract.stake(ethers.utils.getAddress(contractAddress), ethers.BigNumber.from(tokenID))
+      const response = await stakingNftContract.stake(
+        ethers.utils.getAddress(contractAddress),
+        ethers.BigNumber.from(tokenID),
+      )
+      // addTransaction(response, {
+      //   summary: `Stake NFT ${tokenID} from ${contractAddress}`,
+      // })
       await stakingNftService.stakeToken({ tokenID, contractAddress })
     } catch (error) {
       notification('error', { message: 'Error', description: error?.message })
@@ -52,7 +60,7 @@ export const Unstaked: React.FC<UnstakedPageProps> = ({ approvedTokens, maxDepos
           image={token.image}
           contractAddress={token.contractAddress}
           tokenID={token.tokenID}
-          onStake={stakeHandler}
+          // onStake={stakeHandler}
           approveState={approvalLucky}
           onApprove={approveHandler}
         />

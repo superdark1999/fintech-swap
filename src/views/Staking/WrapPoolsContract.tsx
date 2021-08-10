@@ -32,9 +32,12 @@ const WrapPoolsContract: React.FC<WrapPoolsContractProps> = ({ myTokens }) => {
           .then((response: StakingNFT[]) => {
             const formatted = response.map((item) => ({
               ...item,
-              tokenID: (item.tokenID as BigNumber).toNumber(),
+              tokenID: (item.tokenID as any).toNumber(),
               createdAt: (item.createdAt as any).toNumber(),
             }))
+
+            console.log('foramtted : ', formatted)
+
             setApprovedTokens(
               formatted.filter(
                 (token) =>

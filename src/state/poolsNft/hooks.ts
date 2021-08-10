@@ -32,8 +32,6 @@ export function usePendingRewards(tokensInfo) {
     formattedTokensInfo.map((token) => [token.contractAddress, token.tokenID]),
   )
 
-  console.log('results : ', results)
-
   const response: CurrencyAmount[] = []
   for (let i = 0; i < results.length; i++) {
     const value = results?.[i]?.result?.[0]

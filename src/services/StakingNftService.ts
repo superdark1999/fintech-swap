@@ -14,8 +14,12 @@ export class StakingNftService {
   }
 
   public async getAllTokensId(): Promise<BaseNFT[]> {
-    const { data } = await this.restConnector.get('/stakingNft/poolsId')
-    return data
+    try {
+      const { data } = await this.restConnector.get('/stakingNft/poolsId')
+      return data
+    } catch (error) {
+      return []
+    }
   }
 
   public async getPendingTokens() {
