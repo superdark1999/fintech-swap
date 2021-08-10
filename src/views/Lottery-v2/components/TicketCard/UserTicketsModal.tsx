@@ -1,46 +1,37 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { Button, Modal } from '@luckyswap/uikit'
 import styled from 'styled-components'
-import { useWinningNumbers } from 'hooks/useTickets'
+import { LotteryTicket  } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
+import { useLottery,  } from 'state/hooks'
+import TicketNumber from './TicketNumber'
+
 
 interface UserTicketsModalProps {
-  myTicketNumbers: Array<any>
+  myTicketNumbers: Array<LotteryTicket>
   from?: string
   onDismiss?: () => void
 }
 
-const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, onDismiss, from }) => {
-  const winNumbers = useWinningNumbers()
+const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, onDismiss }) => {
+  const winNumbers = [] // todo: improve
   const TranslateString = useI18n()
-  const rewardMatch = useCallback(
-    (number) => {
-      let n = 0
-      for (let i = winNumbers.length - 1; i >= 0; i--) {
-        // eslint-disable-next-line eqeqeq
-        if (winNumbers[i] == number[i]) n++
-      }
-      return n
-    },
-    [winNumbers],
-  )
+  // const {
+  //   isTransitioning,
+  //   currentRound: { status, userTickets },
+  // } = useLottery()
 
-  const listItems = myTicketNumbers.map((number, index) => {
-    if (rewardMatch(number[0]) > 1 && from !== 'buy') {
-      const emoji = new Array(rewardMatch(number[0]) + 1).join('🤑')
-      return (
-        // eslint-disable-next-line react/no-array-index-key
-        <RewardP key={index}>
-          {emoji}
-          {number.toString()}
-          {emoji}
-        </RewardP>
-      )
-    }
-    // eslint-disable-next-line react/no-array-index-key
+  const listItems = myTicketNumbers.map((ticket, index) => {
     return (
-      <p style={{ color: 'yellow' }} key={index}>
-        {number.toString()}
+      <p style={{ color: 'yellow' }} key={ticket.id}>
+         <TicketNumber
+                key={ticket.id}
+                localId={index + 1}
+                id={ticket.id}
+                number={ticket.number}
+                rewardBracket={ticket.rewardBracket}
+                status={ticket.status}
+              />
       </p>
     )
   })

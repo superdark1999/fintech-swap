@@ -7,7 +7,10 @@ import { useActiveWeb3React } from 'hooks'
 import useWeb3 from 'hooks/useWeb3'
 import useWeb3Provider from 'hooks/useWeb3Provider'
 import { useMemo } from 'react'
+import {getLotteryV2Address}
+ from 'utils/addressHelpers'
 import FARMS_ABI from '../config/abi/masterchef.json'
+import lotteryV2 from '../config/abi/lotteryV2.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
 import ENS_ABI from '../constants/abis/ens-registrar.json'
 import { ERC20_BYTES32_ABI } from '../constants/abis/erc20'
@@ -36,6 +39,7 @@ import {
   getStakingNFTContract,
   getTradingCompetitionContract,
 } from '../utils/contractHelpers'
+
 
 /**
  * Helper hooks to get specific contracts (by ABI)
@@ -91,7 +95,7 @@ export const useIfoContract = (address: string) => {
   return useMemo(() => getIfoContract(address, web3), [address, web3])
 }
 
-export const useLotteryV2Contract = () => {
+export const useEtherLotteryV2Contract = () => {
   const provider = useWeb3Provider()
   return useMemo(() => getLotteryV2Contract(provider.getSigner()), [provider])
 }
@@ -204,5 +208,10 @@ export function useFarmsContract(): Contract | null {
 }
 
 export function useStakingContract(address: any | null): Contract | null {
+
   return useContract(address, SMART_CHEF_ABI, true)
+}
+
+export function useLotteryV2contract(): Contract | null {
+  return useContract(getLotteryV2Address(), lotteryV2, true)
 }

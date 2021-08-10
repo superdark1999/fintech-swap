@@ -38,7 +38,7 @@ const SubTitle = styled.p`
   margin: 0 auto;
 `
 
-const BoxItem = styled.h2`
+const BoxItem = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 20px;
@@ -101,6 +101,7 @@ const InerItem = styled.div`
   z-index: 99;
   padding: 30px 22px;
   transition: 0.3s ease-in;
+  background: linear-gradient(to right,#ffd009,#f97503);
 `
 
 const Title = styled.h3`
@@ -112,47 +113,90 @@ const Title = styled.h3`
 
 const Desc = styled.p`
   font-size: 16px;
-  color: #464646;
+  color: #3e3a3a;
 `
 
-const Step = styled.span`
-	display: flex;
-  justify-content: center;
-  margin-left: auto;
-  width: 80px;
-	padding: 10px 0;
-	border-radius: 10rem;
-	color: #fff;
-	text-transform: uppercase;
-	font-size: 1rem;
-	transition: all .3s;
+const StepItem = styled.div`
+  position: relative;
+  font-size: 14px;
+	text-align: center;
+	color: #666;
+	cursor: default;
+	margin: 0 3px;
+	padding: 10px 10px 10px 30px;
+	min-width: 180px;
+	float: left;
 	position: relative;
-	overflow: hidden;
-	z-index: 1;
+	background-color: #f4c706;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none; 
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  transition: .5s ease-in-out;
 
-	&:after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: #c5892e;
-		border-radius: 10rem;
-		z-index: -2;
-	}
+  .content {
+    display: none;
+    transition: .5s ease-in-out;
+  }
 
-	&:before {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		transition: all .3s;
-		border-radius: 10rem;
-		z-index: -1;
-	}
+  &:hover {
+    background: linear-gradient(to right,#ffd009,#f97503);
+
+    &:after {
+      border-left: 17px solid #f97503;	
+    }
+
+    .content {
+      display: block;
+      position: absolute;
+      top: 40px;
+      left: 0;
+      transition: .5s ease-in-out;
+    }
+  }
+
+  &:after,
+  &:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: -17px;
+    width: 0;
+    height: 0;
+    border-top: 24px solid transparent;
+    border-bottom: 17px solid transparent;
+    border-left: 17px solid #f4c706;	
+    z-index: 2;
+    transition: border-color 0.2s ease;
+  }
+
+  &:before {
+    right: auto;
+    left: 0;
+    border-left: 17px solid #2b2a2a;	
+    z-index: 0;
+  }
+
+  &:first-child:before {
+    border: none;
+  }
+
+  span {
+    position: relative;
+    font-size: 20px;
+    font-weight: 600;
+    color: #212020;
+
+    &:before {
+      opacity: 0;
+      content: "✔";
+      position: absolute;
+      top: -2px;
+      left: -20px;
+    }
+  }
 `
 
 const HowItWorks = () => {
@@ -166,47 +210,47 @@ const HowItWorks = () => {
       </SectionTitle>
 
       <BoxItem>
-        <Item>
-          <InerItem>
-            <Step className="btn-step">  
-              STEP 1
-            </Step>
+        <StepItem>
+          <span> Step 1</span>
 
-            <Title>Buy tickets</Title>
+          <div className="content">
+            <InerItem>
+              <Title>Buy tickets</Title>
 
-            <Desc>
-              Prices are set when the round starts, equal to 1 LUCKY per ticket.
-            </Desc>
-          </InerItem>
-        </Item>
+              <Desc>
+                Prices are set when the round starts, equal to 1 LUCKY per ticket.
+              </Desc>
+            </InerItem>
+          </div>
+        </StepItem>
 
-        <Item>
-          <InerItem>
-            <Step className="btn-step">  
-              STEP 2
-            </Step>
+        <StepItem>
+          <span> Step 2</span>
 
-            <Title>Wait for the Draw</Title>
+          <div className="content">
+            <InerItem>
+              <Title>Wait for the Draw</Title>
 
-            <Desc>
-              There are two draws every day: once every 24h.
-            </Desc>
-          </InerItem>
-        </Item>
+              <Desc>
+                There are two draws every day: once every 24h.
+              </Desc>
+            </InerItem>
+          </div>
+        </StepItem>
 
-        <Item>
-          <InerItem>
-            <Step className="btn-step">  
-              step 3
-            </Step>
+        <StepItem>
+          <span> Step 3</span>
 
-            <Title>Check for Prizes</Title>
+          <div className="content">
+            <InerItem>
+              <Title>Check for Prizes</Title>
 
-            <Desc>
-              Once the round&apos;s over, come back to the page and check to see if you&apos;ve won!
-            </Desc>
-          </InerItem>
-        </Item>
+              <Desc>
+                Once the round&apos;s over, come back to the page and check to see if you&apos;ve won!
+              </Desc>
+            </InerItem>
+          </div>
+        </StepItem>
       </BoxItem>
     </LayoutWrapper>
   )

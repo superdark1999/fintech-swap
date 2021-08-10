@@ -1,12 +1,20 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, TicketRound, Text, Heading } from '@luckyswap/uikit'
+import { Card, CardBody, AutoRenewIcon, Text, Heading } from '@luckyswap/uikit'
+import axios from 'axios'
+
 import useI18n from 'hooks/useI18n'
 import useGetLotteryHasDrawn from 'hooks/useGetLotteryHasDrawn'
-import useTickets from 'hooks/useTickets'
+import {useTicketLotteryV2} from 'hooks/useTicketLotteryV2'
+import { useLottery } from 'state/hooks'
 import { useCurrentTime } from 'hooks/useTimer'
+import useRefresh from 'hooks/useRefresh'
+import { LotteryStatus } from 'config/constants/types'
+import { useActiveWeb3React } from 'hooks';
+import { BASE_API_ADMIN, BASE_API_ADMIN_PRO } from 'config'
 import TicketActions from './TicketActions'
-import { getTicketSaleTime } from '../../helpers/CountdownHelpers'
+import { getTicketSaleTime, getTimeRemainDraw } from '../../helpers/CountdownHelpers'
+
 
 interface CardProps {
   isSecondCard?: boolean
@@ -54,16 +62,49 @@ const TicketCountWrapper = styled.div`
   margin-bottom: 10px;
 `
 
+
+const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
+
 const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
+  const { chainId }  = useActiveWeb3React();
   const TranslateString = useI18n()
   const lotteryHasDrawn = useGetLotteryHasDrawn()
 
-  const tickets = useTickets()
+  const {
+    isTransitioning,
+    currentRound: { status, userTickets },
+  } = useLottery()
+  const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
+
+  const tickets = useTicketLotteryV2()
   const ticketsLength = tickets.length
 
   const currentMillis = useCurrentTime()
   const timeUntilTicketSale = lotteryHasDrawn && getTicketSaleTime(currentMillis)
-  // 12
+
+  const { fastRefresh } = useRefresh()
+  const [timeRemainDraw, setTimeRemainDraw] = useState("");
+  const [timeRemainSale, setTimeRemainSale] = useState("");
+
+  const URL = chainId === 56 ? BASE_API_ADMIN_PRO : BASE_API_ADMIN;
+
+  useEffect(() => {
+    const fetchTimeLottery = async () => {
+      const timeEndLottery = new Date();
+      const timeStartLottery = new Date();
+      const {data} = await axios.get(`${URL}/lotteries`);
+
+      // set time remain to end lottery phase
+      timeEndLottery.setHours(data[0].timeDrawLottery.hh, data[0].timeDrawLottery.mm, 0);
+      setTimeRemainDraw(getTimeRemainDraw(timeEndLottery));
+
+      // set time remain to start new lottery phase
+      timeStartLottery.setHours(data[0].timeStartNewPhase.hh, data[0].timeStartNewPhase.mm, 0);
+      setTimeRemainSale(getTimeRemainDraw(timeStartLottery));
+    }
+    fetchTimeLottery();
+  },[fastRefresh, URL])
+
   return (
     <StyledCard isSecondCard={isSecondCard}>
       <CardBody>
@@ -71,13 +112,13 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
           <IconWrapper>
             <img alt="" src="../images/icon-lottery.svg" />
           </IconWrapper>
-          {lotteryHasDrawn ? (
+          {ticketBuyIsDisabled ? (
             <TicketCountWrapper>
               <Text fontSize="20px" color="textSubtle">
-                {TranslateString(870, 'Your tickets for this round')}
+                {TranslateString(870, 'Your ticket for this round')}
               </Text>
               <Heading size="lg" style={{ color: '#F3C111', fontSize: '30px' }}>
-                {timeUntilTicketSale}
+                {timeRemainSale}
               </Heading>
             </TicketCountWrapper>
           ) : (
@@ -85,7 +126,7 @@ const TicketCard: React.FC<CardProps> = ({ isSecondCard = false }) => {
               <Text fontSize="14px" color="textSubtle">
                 {TranslateString(724, 'Your tickets for this round')}
               </Text>
-              <Heading size="lg">{ticketsLength}</Heading>
+              <Heading size="lg">{ userTickets.isLoading ? spinnerIcon : (userTickets.tickets !== null ? userTickets.tickets.length: 0)}</Heading>
             </TicketCountWrapper>
           )}
         </CardHeader>

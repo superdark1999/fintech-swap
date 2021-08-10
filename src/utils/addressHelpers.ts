@@ -21,11 +21,15 @@ export const getMasterChefAddress = (chainId: ChainId) => {
 export const getMulticallAddress = (chainId?: ChainId) => {
   return getAddress(addresses.mulltiCall, chainId)
 }
+
+export const getMulticallV2Address = (chainId?: ChainId) => {
+  return getAddress(addresses.mulltiCallV2, chainId)
+}
 export const getWbnbAddress = (chainId?: ChainId) => {
   return getAddress(tokens.wbnb.address, chainId)
 }
-export const getLotteryV2Address = () => {
-  return getAddress(addresses.lotteryV2)
+export const getLotteryV2Address = (chainId?: ChainId) => {
+  return getAddress(addresses.lotteryV2, chainId)
 }
 export const getLotteryAddress = (chainId?: ChainId) => {
   return getAddress(addresses.lottery, chainId)

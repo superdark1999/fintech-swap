@@ -8,10 +8,13 @@ import Page from 'components/layout/Page'
 import { useLottery, useContract } from 'hooks/useContract'
 import { getLotteryAddress } from 'utils/addressHelpers'
 import lotteryAbi from 'config/abi/lottery.json'
+import { useActiveWeb3React } from 'hooks'
 
 import { useWeb3React } from '@web3-react/core'
 import { useTotalClaim } from 'hooks/useTickets'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { BASE_API_ADMIN, BASE_API_ADMIN_PRO } from 'config'
+import { useFetchLottery } from 'state/hooks'
 import Hero from './components/Hero'
 import WinningNumbers from './components/WinningNumbers'
 import TotalPrizesCard from './components/TotalPrizesCard'
@@ -34,14 +37,14 @@ const Wrapper = styled.div`
   margin-bottom: 32px;
 `
 
-const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean }>`
+const SecondCardColumnWrapper = styled.div<{ isAWin?: boolean, account?:any }>`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 40px;
   margin-bottom: 30px;
 
   @media (min-width: 991px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: ${(props) => props.account ? "1fr 1fr" : "unset"};
   }
 `
 
@@ -66,7 +69,10 @@ const BoxImg = styled.div`
   }
 `
 
+
 const Lottery: React.FC = () => {
+  useFetchLottery()
+  const { chainId } = useActiveWeb3React();
   const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
 
   const TranslateString = useI18n()
@@ -74,21 +80,27 @@ const Lottery: React.FC = () => {
   const [historyData, setHistoryData] = useState([])
   const [historyError, setHistoryError] = useState(false)
   const [currentLotteryNumber, setCurrentLotteryNumber] = useState(0)
-  const [mostRecentLotteryNumber, setMostRecentLotteryNumber] = useState(1)
+  const [mostRecentLotteryNumber, setMostRecentLotteryNumber] = useState(null)
 
   const { account } = useWeb3React()
   const { claimAmount } = useTotalClaim()
   const winnings = getBalanceNumber(claimAmount)
   const isAWin = winnings > 0
 
+  const url = chainId === 56 ? BASE_API_ADMIN_PRO : BASE_API_ADMIN
+
   useEffect(() => {
-    fetch(`https://api.pancakeswap.com/api/lotteryHistory`)
+    fetch(`${url}/lotteries/history`)
       .then((response) => response.json())
-      .then((data) => setHistoryData(data))
+      .then((data) => {
+        data.sort((a, b) => a.lotteryNumber > b.lotteryNumber ? -1 : 1)
+        setHistoryData(data)}
+        )
+      
       .catch(() => {
         setHistoryError(true)
       })
-  }, [])
+  }, [url])
 
   useEffect(() => {
     const getInitialLotteryIndex = async () => {
@@ -114,9 +126,9 @@ const Lottery: React.FC = () => {
         {/* <BoxImg>
           <img src="../images/coming-soon-lot.png" alt=""/>
         </BoxImg> */}
-         <Hero />
+        <Hero />
         <TotalPrizesCard />
-        <SecondCardColumnWrapper isAWin={isAWin}>
+        <SecondCardColumnWrapper account={account} isAWin={isAWin}>
           {!account ? (
             <UnlockWalletCard />
           ) : (
@@ -128,8 +140,12 @@ const Lottery: React.FC = () => {
         </SecondCardColumnWrapper>
         <WinningNumbers />
         <HowItWorks />
-        <PastLotteryRoundViewer />
-        <PastDrawsHistoryCard /> 
+        <PastLotteryDataContext.Provider
+          value={{ historyError, historyData, mostRecentLotteryNumber, currentLotteryNumber }}
+        >
+          <PastLotteryRoundViewer />
+          {/* <PastDrawsHistoryCard /> */}
+        </PastLotteryDataContext.Provider>
 
         {/* <Wrapper>
           <ButtonMenu activeIndex={activeIndex} onItemClick={handleClick} scale="sm" variant="subtle">

@@ -11,14 +11,15 @@ import lotteryTicketAbi from 'config/abi/lotteryNft.json'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
 import lpTokenAbi from 'config/abi/lpToken.json'
 import masterChef from 'config/abi/masterchef.json'
+import MultiCallAbi from 'config/abi/MulticallV2.json'
 import nftAbi from 'config/abi/nft.json'
+import stakingNftAbi from 'config/abi/StakingNft.json'
 // ABI
 import profileABI from 'config/abi/pancakeProfile.json'
 import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
-import stakingNftAbi from 'config/abi/StakingNft.json'
 import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
 // import web3NoAccount from 'utils/web3'
 import { poolsConfig } from 'config/constants'
@@ -29,31 +30,28 @@ import {
   getAddress,
   getBunnyFactoryAddress,
   getBunnySpecialAddress,
-  getCakeAddress,
-  getClaimRefundAddress,
-  getEasterNftAddress,
-  getLotteryAddress,
+  getCakeAddress, getClaimRefundAddress, getEasterNftAddress, getLotteryAddress,
   getLotteryTicketAddress,
   getLotteryV2Address,
-  getMasterChefAddress,
-  getPancakeProfileAddress,
+  getMasterChefAddress, getMulticallV2Address, getPancakeProfileAddress,
   getPancakeRabbitsAddress,
   getPointCenterIfoAddress,
   getStakingNFTAddress,
-  getTradingCompetitionAddress,
+  getTradingCompetitionAddress
 } from 'utils/addressHelpers'
 import { simpleRpcProvider } from 'utils/providers'
 import Web3 from 'web3'
 import { AbiItem } from 'web3-utils'
 import { getWeb3NoAccount } from './web3'
 
+
+
 // TODO : use ethers instead of Web3
 const getContract = (abi: any, address: string, web3?: Web3) => {
   const _web3 = web3 ?? getWeb3NoAccount()
   return new _web3.eth.Contract(abi as unknown as AbiItem, address)
 }
-
-export const getContract2 = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+const getContractV2 = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider
   return new ethers.Contract(address, abi, signerOrProvider)
 }
@@ -90,9 +88,19 @@ export const getBunnyFactoryContract = (web3?: Web3, chainId?: ChainId) => {
 export const getBunnySpecialContract = (web3?: Web3, chainId?: ChainId) => {
   return getContract(bunnySpecialAbi, getBunnySpecialAddress(chainId), web3)
 }
-
 export const getLotteryV2Contract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract2(lotteryV2Abi, getLotteryV2Address(), signer)
+  return getContractV2(lotteryV2Abi, getLotteryV2Address(), signer)
+}
+
+// export const getLotteryV2Contract = (web3?: Web3, chainId?: ChainId) => {
+//   return getContract(lotteryV2Abi, getLotteryV2Address(chainId), web3)
+// }
+// export const getLotteryV2Contract = (web3?: Web3, chainId?: ChainId) => {
+//   return getContract(lotteryV2Abi, getBunnySpecialAddress(chainId), web3)
+
+// }
+export const getMulticallContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContractV2(MultiCallAbi, getMulticallV2Address(), signer)
 }
 
 export const getLotteryContract = (web3?: Web3, chainId?: ChainId) => {
@@ -115,9 +123,9 @@ export const getEasterNftContract = (web3?: Web3, chainId?: ChainId) => {
 }
 
 export const getNFTContract = (address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract2(nftAbi, address, signer)
+  return getContractV2(nftAbi, address, signer)
 }
 
 export const getStakingNFTContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract2(stakingNftAbi, getStakingNFTAddress(), signer)
+  return getContractV2(stakingNftAbi, getStakingNFTAddress(), signer)
 }

@@ -125,6 +125,7 @@ const Lottery: React.FC = () => {
           <img src="../images/coming-soon-lot.png" alt=""/>
         </BoxImg> */}
         <Hero />
+        <HowItWorks />
         <TotalPrizesCard />
         <SecondCardColumnWrapper account={account} isAWin={isAWin}>
           {!account ? (
@@ -137,7 +138,7 @@ const Lottery: React.FC = () => {
           )}
         </SecondCardColumnWrapper>
         <WinningNumbers />
-        <HowItWorks />
+      
         <PastLotteryDataContext.Provider
           value={{ historyError, historyData, mostRecentLotteryNumber, currentLotteryNumber }}
         >

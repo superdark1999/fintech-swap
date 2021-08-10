@@ -162,6 +162,8 @@ export const getTokensURI = async (tokens: BaseNFT[]) => {
 
     let uris = await multicallv2(abi, calls, { requireSuccess: false })
 
+    console.log('uris from multicall v2')
+
     uris = uris.flat()
 
     return uris

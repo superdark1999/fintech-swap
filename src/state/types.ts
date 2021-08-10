@@ -1,6 +1,7 @@
+import { ethers } from 'ethers'
 import { Toast } from '@luckyswap/uikit'
 import BigNumber from 'bignumber.js'
-import { CampaignType, FarmConfig, Nft, PoolConfig, Team } from 'config/constants/types'
+import { CampaignType, FarmConfig, Nft, LotteryStatus,  LotteryTicket, PoolConfig, Team } from 'config/constants/types'
 
 export type TranslatableText =
   | string
@@ -25,6 +26,69 @@ export interface Farm extends FarmConfig {
     earnings: BigNumber
   }
 }
+
+interface LotteryRoundGenerics {
+  isLoading?: boolean
+  status: LotteryStatus
+  startTime: string
+  endTime: string
+  treasuryFee: string
+  firstTicketId: string
+  lastTicketId: string
+  finalNumber: number
+}
+export interface LotteryResponse extends LotteryRoundGenerics {
+  priceTicketInCake: SerializedBigNumber
+  discountDivisor: SerializedBigNumber
+  amountCollectedInCake: SerializedBigNumber
+  cakePerBracket: SerializedBigNumber[]
+  countWinnersPerBracket: SerializedBigNumber[]
+  rewardsBreakdown: SerializedBigNumber[]
+}
+
+export interface LotteryUserGraphEntity {
+  account: string
+  totalCake: string
+  totalTickets: string
+  rounds: UserRound[]
+}
+export interface UserRound {
+  claimed: boolean
+  lotteryId: string
+  totalTickets: string
+  status: LotteryStatus
+  endTime: string
+  tickets?: LotteryTicket[]
+}
+export interface LotteryRound extends LotteryRoundGenerics {
+  userTickets?: LotteryRoundUserTickets
+  priceTicketInCake: BigNumber
+  discountDivisor: BigNumber
+  amountCollectedInCake: BigNumber
+  cakePerBracket: string[]
+  countWinnersPerBracket: string[]
+  rewardsBreakdown: string[]
+}
+
+export interface LotteryRoundGraphEntity {
+  id: string
+  totalUsers: string
+  totalTickets: string
+  status: LotteryStatus
+  finalNumber: string
+  winningTickets: string
+  startTime: string
+  endTime: string
+  ticketPrice: SerializedBigNumber
+  firstTicket: string
+  lastTicket: string
+  amountCollectedInCake: string
+}
+
+export type SerializedBigNumber = string
+
+export type UserTicketsResponse = [ethers.BigNumber[], number[], boolean[]]
+
 
 export interface Pool extends PoolConfig {
   totalStaked?: BigNumber
@@ -145,6 +209,19 @@ export interface BlockState {
   initialBlock: number
 }
 
+
+export interface LotteryRoundUserTickets {
+  isLoading?: boolean
+  tickets?: LotteryTicket[]
+}
+export interface LotteryState {
+  currentLotteryId: string
+  maxNumberTicketsPerBuyOrClaim: string
+  isTransitioning: boolean
+  currentRound: LotteryResponse & { userTickets?: LotteryRoundUserTickets }
+  lotteriesData?: LotteryRoundGraphEntity[]
+  userLotteryData?: LotteryUserGraphEntity
+}
 // Global state
 
 export interface State {
@@ -156,4 +233,6 @@ export interface State {
   teams: TeamsState
   achievements: AchievementState
   block: BlockState
+  lottery: LotteryState
+
 }

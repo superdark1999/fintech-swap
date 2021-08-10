@@ -1,6 +1,6 @@
-import { TranslatableText } from 'state/types'
 import { JSBI } from '@luckyswap/v2-sdk'
-import { BigNumber } from 'ethers'
+import BigNumber from 'bignumber.js'
+import { TranslatableText, SerializedBigNumber } from 'state/types'
 
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 
@@ -29,6 +29,36 @@ export interface Ifo {
   typePool?: string
   sympol?: string
 }
+
+export interface Ticket {
+  ticketId: number,
+  ticketNumber: number,
+status: boolean
+}
+
+export enum LotteryStatus {
+  PENDING = 'pending',
+  OPEN = 'open',
+  CLOSE = 'close',
+  CLAIMABLE = 'claimable',
+}
+
+export interface LotteryTicket {
+  id: string
+  number: string
+  status: boolean
+  rewardBracket?: number
+  roundId?: string
+  cakeReward?: SerializedBigNumber
+}
+
+export interface LotteryTicketClaimData {
+  ticketsWithUnclaimedRewards: LotteryTicket[]
+  allWinningTickets: LotteryTicket[]
+  cakeTotal: BigNumber
+  roundId: string
+}
+
 
 export enum PoolCategory {
   'COMMUNITY' = 'Community',

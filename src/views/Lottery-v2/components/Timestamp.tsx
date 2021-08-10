@@ -4,9 +4,7 @@ import { Text } from '@luckyswap/uikit'
 import formatLotteryDate from '../helpers/formatLotteryDate'
 
 const Wrapper = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
+  padding-top: 20px;
 `
 
 const Timestamp = ({ timeValue }) => {

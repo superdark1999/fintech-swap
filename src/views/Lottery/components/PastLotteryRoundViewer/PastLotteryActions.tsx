@@ -14,9 +14,9 @@ const Wrapper = styled.div`
   flex-direction: column;
   padding-top: 24px;
   margin: 0 auto;
-  margin-bottom: 40px;
   display: block;
   width: max-content;
+  
   & > div {
     flex: 1;
     width: 100%;
@@ -60,7 +60,7 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
   return (
     <Wrapper>
       <div>
-        {/* <StyledButton
+        <StyledButton
           
           width="100%"
           variant="secondary"
@@ -68,13 +68,13 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
           onClick={onPresentMyTickets}
         >
           {TranslateString(432, 'View Your ticket')}
-        </StyledButton> */}
+        </StyledButton>
       </div>
-      {/* <div>
+      <div>
         <ExternalLinkWrap href={contractLink}>
           {TranslateString(356, `View on ${SCAN_SITES[chainId]}`)}
         </ExternalLinkWrap>
-      </div> */}
+      </div>
     </Wrapper>
   )
 }

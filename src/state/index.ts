@@ -9,6 +9,9 @@ import profileReducer from './profile'
 import teamsReducer from './teams'
 import achievementsReducer from './achievements'
 import blockReducer from './block'
+import lotteryReducer from './lottery2'
+
+
 import user from './user/reducer'
 import swap from './swap/reducer'
 import burn from './burn/reducer'
@@ -18,6 +21,8 @@ import application from './application/reducer'
 import multicall from './multicall/reducer'
 import transactions from './transactions/reducer'
 import mint from './mint/reducer'
+
+
 
 type MergedState = {
   user: {
@@ -51,6 +56,8 @@ const store = configureStore({
     teams: teamsReducer,
     achievements: achievementsReducer,
     block: blockReducer,
+    lottery: lotteryReducer
+
   },
   // middleware: [...(getDefaultMiddleware({ thunk: false }) as any), save({ states: PERSISTED_KEYS })],
   // preloadedState: loadedState,

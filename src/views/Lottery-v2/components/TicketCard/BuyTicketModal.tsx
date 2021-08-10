@@ -1,18 +1,18 @@
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Button, Modal } from '@luckyswap/uikit'
+import { Button, Modal, useModal } from '@luckyswap/uikit'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import TicketInput from 'components/TicketInput'
 import ModalActions from 'components/ModalActions'
-import { useMultiBuyLottery, useMaxNumber } from 'hooks/useBuyLottery'
 import useI18n from 'hooks/useI18n'
-import { LOTTERY_MAX_NUMBER_OF_TICKETS, LOTTERY_TICKET_PRICE } from 'config'
-import { useWeb3React } from '@web3-react/core'
-import { useContract, useLotteryV2Contract } from 'hooks/useContract'
-import { getLotteryAddress } from 'utils/addressHelpers'
-import lotteryAbi from 'config/abi/lottery.json'
+import { LOTTERY_MAX_NUMBER_OF_TICKETS, LOTTERY_TICKET_PRICE, LOTTERY2_MAX_TICKET_IN_ROUND } from 'config'
+import { useLotteryV2contract } from 'hooks/useContract'
+import {useTicketLotteryV2} from 'hooks/useTicketLotteryV2'
 import { useTransactionAdder } from 'state/transactions/hooks'
+import { useLotteryV2 } from 'hooks/useLotteryV2';
+import { useTicketsReducer } from './useTicketsReducer'
+import EditNumbersModal from './EditNumbersModal';
 
 interface BuyTicketModalProps {
   max: BigNumber
@@ -21,11 +21,23 @@ interface BuyTicketModalProps {
   tokenName?: string
 }
 
+enum BuyingStage {
+  BUY = 'Buy',
+  EDIT = 'Edit',
+}
+
 const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
   const [val, setVal] = useState('1')
+  const [discountValue, setDiscountValue] = useState('')
+  const [ticketCostBeforeDiscount, setTicketCostBeforeDiscount] = useState('');
+  const [totalCost, setTotalCost] = useState('')
+  const [buyingStage, setBuyingStage] = useState<BuyingStage>(BuyingStage.BUY)
   const [pendingTx, setPendingTx] = useState(false)
   const [, setRequestedBuy] = useState(false)
   const TranslateString = useI18n()
+
+ 
+
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max, 18)
   }, [max])
@@ -33,71 +45,105 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     return parseInt(getFullDisplayBalance(max.div(LOTTERY_TICKET_PRICE)), 10)
   }, [max])
 
-  // const {
-  //   maxNumberTicketsPerBuyOrClaim,
-  //   currentLotteryId,
-  //   currentRound: {
-  //     priceTicketInCake,
-  //     discountDivisor,
-  //     userTickets: { tickets: userCurrentTickets },
-  //   },
-  // } = useLottery()
+  const userTickets = useTicketLotteryV2()
+  const ticketsLength = userTickets.length;
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => setVal(e.currentTarget.value)
 
-  const { onMultiBuy } = useMultiBuyLottery()
-  const maxNumber = useMaxNumber()
-  const lotteryContract = useContract(getLotteryAddress(), lotteryAbi)
-  const lotteryV2Contract = useLotteryV2Contract()
-
+  const lotteryV2Contract = useLotteryV2contract()
   const addTransaction = useTransactionAdder()
+
+  const {
+    currentLotteryId,
+    maxNumberTicketsPerBuyOrClaim,
+    lotteryData 
+  } = useLotteryV2();
+
+  const {
+    priceTicketInCake,
+    discountDivisor
+  } = lotteryData as any;
+
+
+  const userCurrentTickets = useMemo(() => {return []}, [])
+
+  const [updateTicket, randomize, tickets, allComplete, getTicketsForPurchase] = useTicketsReducer(
+    parseInt(val, 10), // number of tickets
+    userCurrentTickets,
+  )
+
+  const getTicketCostAfterDiscount = useCallback(
+    (numberTickets: BigNumber) => {
+      const totalAfterDiscount = priceTicketInCake
+        .times(numberTickets)
+        .times(discountDivisor.plus(1).minus(numberTickets))
+        .div(discountDivisor)
+      return totalAfterDiscount
+    },
+    [discountDivisor, priceTicketInCake],
+  )
+
+  useEffect(() => {
+    const numberOfTicketsToBuy = new BigNumber(val)
+    const costAfterDiscount = getTicketCostAfterDiscount(numberOfTicketsToBuy)
+    const costBeforeDiscount = priceTicketInCake.times(numberOfTicketsToBuy)
+    const discountBeingApplied = costBeforeDiscount.minus(costAfterDiscount)
+    setTicketCostBeforeDiscount(costBeforeDiscount.gt(0) ? getFullDisplayBalance(costBeforeDiscount) : '0')
+    setTotalCost(costAfterDiscount.gt(0) ? getFullDisplayBalance(costAfterDiscount) : '0')
+    setDiscountValue(discountBeingApplied.gt(0) ? getFullDisplayBalance(discountBeingApplied, 18) : '0')
+  }, [val, priceTicketInCake, discountDivisor, getTicketCostAfterDiscount])
+
+  const percentageDiscount = () => {
+    const percentageAsBn = new BigNumber(discountValue).div(new BigNumber(ticketCostBeforeDiscount)).times(100)
+    if (percentageAsBn.isNaN() || percentageAsBn.eq(0)) {
+      return 0
+    }
+    return percentageAsBn.toNumber().toFixed(2)
+  }
 
   const handleBuy = useCallback(async () => {
     try {
       setRequestedBuy(true)
-      const length = parseInt(val)
-      // @ts-ignore
-      // eslint-disable-next-line prefer-spread
-      const numbers = Array.apply(null, { length }).map(() => [
-        Math.floor(Math.random() * maxNumber) + 1,
-        Math.floor(Math.random() * maxNumber) + 1,
-        Math.floor(Math.random() * maxNumber) + 1,
-        Math.floor(Math.random() * maxNumber) + 1,
-      ])
-      // await onMultiBuy(LOTTERY_TICKET_PRICE.toString(), numbers)
-      const txHash = await lotteryContract
-        .multiBuy(new BigNumber(LOTTERY_TICKET_PRICE.toString()).times(new BigNumber(10).pow(18)).toString(), numbers)
-        .then((response) => {
-          addTransaction(response, {
-            summary: 'Buy ticket successfully!',
-          })
-        })
-      // user rejected tx or didn't go thru
-      if (txHash) {
-        setRequestedBuy(false)
-      }
+      const ticketsForPurchase = getTicketsForPurchase();
+      const tx =  await lotteryV2Contract.buyTickets(currentLotteryId, ticketsForPurchase);
     } catch (e) {
       console.error(e)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onMultiBuy, setRequestedBuy, maxNumber, val])
-
-  // const handleBuy = useCallback(async () => {
-  //   const ticketsForPurchase = getTicketsForPurchase()
-  //   return lotteryContract.buyTickets(currentLotteryId, ticketsForPurchase)
-  // }, [lotteryContract])
+  }, [lotteryV2Contract, currentLotteryId, getTicketsForPurchase])
 
   const handleSelectMax = useCallback(() => {
-    if (Number(maxTickets) > LOTTERY_MAX_NUMBER_OF_TICKETS) {
-      setVal(LOTTERY_MAX_NUMBER_OF_TICKETS.toString())
-    } else {
+    if (Number(maxTickets) > parseInt(maxNumberTicketsPerBuyOrClaim)) {
+      if (LOTTERY2_MAX_TICKET_IN_ROUND - ticketsLength > parseInt(maxNumberTicketsPerBuyOrClaim))
+        setVal(maxNumberTicketsPerBuyOrClaim)
+      else
+        setVal((LOTTERY2_MAX_TICKET_IN_ROUND - ticketsLength).toString())
+    } else if((LOTTERY2_MAX_TICKET_IN_ROUND - ticketsLength > Number(maxTickets))) {
       setVal(maxTickets.toString())
+    } else {
+      setVal(LOTTERY_MAX_NUMBER_OF_TICKETS.toString())
     }
-  }, [maxTickets])
+  }, [maxTickets, ticketsLength, maxNumberTicketsPerBuyOrClaim])
 
-  const cakeCosts = (amount: string): number => {
-    return +amount * LOTTERY_TICKET_PRICE
+  if (buyingStage === BuyingStage.EDIT) {
+    return(
+      <EditNumbersModal
+        totalCost={totalCost}
+        updateTicket={updateTicket}
+        randomize={randomize}
+        tickets={tickets}
+        allComplete={allComplete}
+        onConfirm={async () => {
+          setPendingTx(true)
+          await handleBuy()
+          setPendingTx(false)
+          onDismiss()
+        }}
+        isConfirming={pendingTx}
+        onDismiss={() => setBuyingStage(BuyingStage.BUY)}
+    />
+    )
   }
+  
   return (
     <Modal title={TranslateString(450, 'Enter amount of tickets to buy')} onDismiss={onDismiss}>
       <TicketInput
@@ -110,6 +156,10 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
       />
       <div>
         <Tips>{TranslateString(999, `1 Ticket = ${LOTTERY_TICKET_PRICE} LUCKY`, { num: LOTTERY_TICKET_PRICE })}</Tips>
+        <Tips>{TranslateString(999, `Cost: ${priceTicketInCake && getFullDisplayBalance(priceTicketInCake.times(val || 0))} lucky`)}</Tips>
+        <Tips>{TranslateString(999, `Discount: ${discountValue && totalCost ? percentageDiscount() : 0} %`)}</Tips>
+        <Tips>{TranslateString(999, `~ ${discountValue} Lucky`)}</Tips>
+        {/* {priceTicketInCake && getFullDisplayBalance(priceTicketInCake.times(ticketsToBuy || 0))} */}
       </div>
       <div>
         <Announce>
@@ -117,13 +167,22 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
             478,
             'Ticket purchases are final. Your LUCKY cannot be returned to you after buying tickets.',
           )}
-        </Announce>
-        <Final>{TranslateString(460, `You will spend: ${cakeCosts(val)} LUCKY`)}</Final>
+        </Announce>s
+        <Final>{TranslateString(460, `You will spend: ${totalCost} LUCKY`)}</Final>
+        <Final>{TranslateString(999, `Your ticket: ${ticketsLength}`)}</Final>
+
       </div>
       <ModalActions>
         <Button width="100%" variant="secondary" onClick={onDismiss}>
           {TranslateString(462, 'Cancel')}
         </Button>
+
+        <Button width="100%" variant="secondary" onClick={() => setBuyingStage(BuyingStage.EDIT)}>
+          {TranslateString(462, 'View/Edit')}
+        </Button>
+
+
+        
         <Button
           id="lottery-buy-complete"
           width="100%"
@@ -131,7 +190,8 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
           disabled={
             pendingTx ||
             parseInt(val) > Number(maxTickets) ||
-            parseInt(val) > LOTTERY_MAX_NUMBER_OF_TICKETS ||
+            parseInt(val) > parseInt(maxNumberTicketsPerBuyOrClaim) ||
+            // parseInt(val) + ticketsLength > LOTTERY2_MAX_TICKET_IN_ROUND ||
             parseInt(val) < 1
           }
           onClick={async () => {
