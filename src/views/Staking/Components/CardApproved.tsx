@@ -1,14 +1,18 @@
+import { TransactionResponse } from '@ethersproject/providers'
 import { ApprovalState } from 'config'
-import React, { useEffect, useState } from 'react'
+import { ethers } from 'ethers'
+import React, { useEffect } from 'react'
 import { Col } from 'reactstrap'
+import { stakingNftService } from 'services'
 import styled from 'styled-components'
 import { StakingNFT } from '../../../config/constants/types'
 import { useActiveWeb3React } from '../../../hooks/index'
-import { useNFTContract, useStakingNFTContract } from '../../../hooks/useContract'
+import { useApproveNFTCallback } from '../../../hooks/useApproveNFTCallback'
+import { useStakingNFTContract } from '../../../hooks/useContract'
+import { useHasPendingNFTApproval } from '../../../state/transactions/hooks'
 import notification from './Alert'
 
 interface StakingCardProps extends StakingNFT {
-  onStake: any
   approveState?: ApprovalState
   onApprove: any
 }
@@ -16,49 +20,46 @@ interface StakingCardProps extends StakingNFT {
 const CardApproved: React.FC<StakingCardProps> = ({
   image,
   contractAddress,
-  onStake,
   tokenID,
   approveState,
   onApprove,
 }: StakingCardProps) => {
-  const [approveNFTState, setApproveNFTState] = useState<ApprovalState>(ApprovalState.UNKNOWN)
   const stakingNFTContract = useStakingNFTContract()
-  const NFTContract = useNFTContract(contractAddress)
   const { account } = useActiveWeb3React()
+  const [approvalNFT, approveNFTCallback] = useApproveNFTCallback(tokenID, contractAddress, stakingNFTContract.address)
 
   useEffect(() => {
-    if (stakingNFTContract && tokenID && NFTContract) {
-      setApproveNFTState(ApprovalState.PENDING)
-      NFTContract.getApproved(tokenID)
-        .then((response) => {
-          if (response !== stakingNFTContract.address) {
-            setApproveNFTState(ApprovalState.NOT_APPROVED)
-          } else {
-            setApproveNFTState(ApprovalState.APPROVED)
-          }
-        })
-        .catch((error) => {
-          notification('error', { message: 'Get Approve state NFT Error', description: error?.message })
-          setApproveNFTState(ApprovalState.UNKNOWN)
-        })
-
-      NFTContract.on('Approval', (owner, approved, tokenId) => {
-        if (owner === account && approved === stakingNFTContract.address && tokenId.toNumber() === tokenID) {
-          // notification('success', { message: 'Get Approve state NFT Error', description: error?.message })
-
-          setApproveNFTState(ApprovalState.APPROVED)
+    if (tokenID && account && contractAddress) {
+      stakingNFTContract.on('Stake', (_owner, _tokenID, _contractAddress) => {
+        if (_owner === account && tokenID === _tokenID && contractAddress === _contractAddress) {
+          stakingNftService
+            .stakeToken({ tokenID, contractAddress })
+            .then(() => {
+              notification('success', { message: 'Stake', description: `Stake ${tokenID} successfully` })
+            })
+            .catch((error) => {
+              notification('error', { message: 'Error update to db', description: error?.message })
+            })
         }
       })
     }
-  }, [stakingNFTContract, tokenID, account, NFTContract])
 
-  const onApproveNFT = async () => {
+    return () => {
+      stakingNFTContract.removeAllListeners('Stake')
+    }
+  }, [stakingNFTContract, tokenID, contractAddress, account])
+
+  const onStake = async () => {
     try {
-      setApproveNFTState(ApprovalState.PENDING)
-      NFTContract.approve(stakingNFTContract.address, tokenID)
+      const response: TransactionResponse = await stakingNFTContract.stake(
+        ethers.utils.getAddress(contractAddress),
+        ethers.BigNumber.from(tokenID),
+      )
+      // addTransaction(response, {
+      //   summary: `Stake NFT ${tokenID} from ${contractAddress}`,
+      // })
     } catch (error) {
-      notification('error', { message: 'Approve NFT error', description: error?.message })
-      setApproveNFTState(ApprovalState.NOT_APPROVED)
+      notification('error', { message: 'Error', description: error?.message })
     }
   }
 
@@ -91,15 +92,15 @@ const CardApproved: React.FC<StakingCardProps> = ({
             <> </>
           )}
 
-          {approveNFTState === ApprovalState.NOT_APPROVED ? (
-            <Btn className="green-color" onClick={onApproveNFT}>
+          {approvalNFT === ApprovalState.NOT_APPROVED ? (
+            <Btn className="green-color" onClick={() => approveNFTCallback()}>
               <span className="effect-light">Approve NFT</span>
             </Btn>
-          ) : approveNFTState === ApprovalState.PENDING ? (
+          ) : approvalNFT === ApprovalState.PENDING ? (
             <Btn className="green-color">
               <span className="effect-light">Approving NFT...</span>
             </Btn>
-          ) : approveNFTState === ApprovalState.UNKNOWN ? (
+          ) : approvalNFT === ApprovalState.UNKNOWN ? (
             <Btn className="green-color">
               <span className="effect-light">Checking...</span>
             </Btn>
@@ -107,8 +108,8 @@ const CardApproved: React.FC<StakingCardProps> = ({
             <> </>
           )}
 
-          {approveState === ApprovalState.APPROVED && approveNFTState === ApprovalState.APPROVED && (
-            <Btn onClick={() => onStake({ tokenID, contractAddress })} className="green-color">
+          {approveState === ApprovalState.APPROVED && approvalNFT === ApprovalState.APPROVED && (
+            <Btn onClick={onStake} className="green-color">
               <span className="effect-light">Stake</span>
             </Btn>
           )}

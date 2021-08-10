@@ -10,23 +10,19 @@ const Pending: React.FC = () => {
 
   useEffect(() => {
     const fetchPendingTokens = async () => {
-      const data = await stakingNftService
-        .getPendingTokens()
-        .catch((error) => notification('error', { message: 'Error', description: error?.message }))
+      try {
+        const data = await stakingNftService.getPendingTokens()
 
-      setPendingTokens(data)
+        setPendingTokens(data)
+      } catch (error) {
+        notification('error', { message: 'Error', description: error?.message })
+      }
     }
 
     fetchPendingTokens()
   }, [])
 
-  return (
-    <Row>
-      {pendingTokens.map((token) => (
-        <PendingToken image={token.image} />
-      ))}
-    </Row>
-  )
+  return <Row>{pendingTokens.length > 0 && pendingTokens.map((token) => <PendingToken image={token.image} />)}</Row>
 }
 
 export default Pending

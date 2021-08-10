@@ -19,7 +19,6 @@ const CardStaking: React.FC<StakingCardProps> = ({
   onWithdraw,
   createdAt,
 }: StakingCardProps) => {
-  console.log('is able to harvest : ', isAbleToHarvest(createdAt))
 
   return (
     <Col sm="12" md="3" className="align-center space-mb">

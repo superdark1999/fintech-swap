@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
-import { ChainId } from '@luckyswap/v2-sdk'
+import { ChainId, JSBI } from '@luckyswap/v2-sdk'
+import { BigNumber } from 'ethers'
 
 export interface SerializableTransactionReceipt {
   to: string
@@ -18,6 +19,7 @@ export const addTransaction =
     hash: string
     from: string
     approval?: { tokenAddress: string; spender: string }
+    approvalNFT?: { tokenID: number | JSBI | BigNumber; contractAddress: string; spender: string }
     summary?: string
   }>('transactions/addTransaction')
 export const clearAllTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllTransactions')

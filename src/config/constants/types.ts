@@ -89,7 +89,7 @@ export interface PoolConfig {
 }
 
 export interface BaseNFT {
-  tokenID: number | JSBI | BigNumber
+  tokenID: number
   contractAddress: string
   urlToken?: string
   to?: string
