@@ -123,7 +123,6 @@ const Farms: React.FC = () => {
   const { pathname } = useLocation()
   const TranslateString = useI18n()
   const farmsLP = useFarms()
-  console.log("farmsLP", farmsLP)
   const cakePrice = usePriceLuckyBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
@@ -214,6 +213,7 @@ const Farms: React.FC = () => {
   }
 
   farmsStaked = sortFarms(farmsStaked)
+  console.log('farmStaked', farmsStaked)
   const rowData = farmsStaked.map((farm) => {
     const { token, quoteToken } = farm
     const tokenAddress = token.address
