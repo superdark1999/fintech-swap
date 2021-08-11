@@ -11,14 +11,6 @@ import {
 } from './fetchFarmUser'
 import { FarmsState, Farm } from '../types'
 
-// const parseToFarmState = () => {
-//   let state = []
-//   const fetchFarmConfig = async () => {
-//     state = await getFarmConfig()
-//   }
-//   fetchFarmConfig()
-//   return [...state]
-// }
 const initialState: FarmsState = { data: [] }
 
 export const farmsSlice = createSlice({
@@ -26,8 +18,8 @@ export const farmsSlice = createSlice({
   initialState,
   reducers: {
     setFarmConfig: (state, action) => {
-      const farms = action.payload
-      state.data = [...farms]
+      const farmsData = action.payload
+      state.data = [...farmsData]
     },
     setFarmsPublicData: (state, action) => {
       const liveFarmsData: Farm[] = action.payload
@@ -72,6 +64,7 @@ export const fetchFarmUserDataAsync = (account) => async (dispatch) => {
       earnings: userFarmEarnings[index],
     }
   })
+  console.log('arrayOfUserDataObjects', arrayOfUserDataObjects)
 
   dispatch(setFarmUserData({ arrayOfUserDataObjects }))
 }

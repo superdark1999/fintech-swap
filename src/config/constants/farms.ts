@@ -28,6 +28,7 @@ const farms: FarmConfig[] = [
 
 export const getFarmConfig = async () => {
   const result = await axios(`${BASE_API_ADMIN}/farms`)
+  if (result.data.length === farms.length) return farms
   result.data.forEach((farmConfig) => {
     const token: Token = {
       symbol: farmConfig.token.symbol,
@@ -50,6 +51,7 @@ export const getFarmConfig = async () => {
 
   return farms
 }
+// getFarmConfig()
 // [
 //   {
 //     pid: 0,

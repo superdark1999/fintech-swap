@@ -213,7 +213,7 @@ const Farms: React.FC = () => {
   }
 
   farmsStaked = sortFarms(farmsStaked)
-  console.log('farmStaked', farmsStaked)
+  // console.log('farmStaked', farmsStaked)
   const rowData = farmsStaked.map((farm) => {
     const { token, quoteToken } = farm
     const tokenAddress = token.address
