@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
-import farmsConfig from 'config/constants/farms'
+import { getFarmConfig } from 'config/constants/farms'
+
 import fetchFarms from './fetchFarms'
 import {
   fetchFarmUserEarnings,
@@ -10,12 +11,16 @@ import {
 } from './fetchFarmUser'
 import { FarmsState, Farm } from '../types'
 
-const initialState: FarmsState = { data: [...farmsConfig] }
+const initialState: FarmsState = { data: [] }
 
 export const farmsSlice = createSlice({
   name: 'Farms',
   initialState,
   reducers: {
+    setFarmConfig: (state, action) => {
+      const farmsData = action.payload
+      state.data = [...farmsData]
+    },
     setFarmsPublicData: (state, action) => {
       const liveFarmsData: Farm[] = action.payload
       state.data = state.data.map((farm) => {
@@ -34,11 +39,14 @@ export const farmsSlice = createSlice({
 })
 
 // Actions
-export const { setFarmsPublicData, setFarmUserData } = farmsSlice.actions
+export const { setFarmConfig, setFarmsPublicData, setFarmUserData } = farmsSlice.actions
 
 // Thunks
 export const fetchFarmsPublicDataAsync = () => async (dispatch) => {
+  const farmConfig = await getFarmConfig()
+  // console.log('farm', farmConfig)
   const farms = await fetchFarms()
+  dispatch(setFarmConfig(farmConfig))
   dispatch(setFarmsPublicData(farms))
 }
 export const fetchFarmUserDataAsync = (account) => async (dispatch) => {
@@ -56,6 +64,7 @@ export const fetchFarmUserDataAsync = (account) => async (dispatch) => {
       earnings: userFarmEarnings[index],
     }
   })
+  console.log('arrayOfUserDataObjects', arrayOfUserDataObjects)
 
   dispatch(setFarmUserData({ arrayOfUserDataObjects }))
 }

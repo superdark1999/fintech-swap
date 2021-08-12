@@ -13,7 +13,7 @@ const useGetUnclaimedRewards = () => {
   const { account } = useWeb3React()
   // const { isTransitioning } = useLottery()
   const userLotteryData = useGetUserLotteriesGraphData()
-  const lotteriesData = useGetLotteriesGraphData();
+  const lotteriesData = useGetLotteriesGraphData()
   const [unclaimedRewards, setUnclaimedRewards] = useState([])
   const [fetchStatus, setFetchStatus] = useState(FetchStatus.NOT_FETCHED)
 
