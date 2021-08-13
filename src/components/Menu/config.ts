@@ -158,8 +158,8 @@ const configRestricted: MenuEntry[] = [
   {
     label: 'Pools',
     icon: 'PoolIcon',
-    href: '#',
-    calloutClass: 'style-color not-allow',
+    href: '/pools',
+    calloutClass: 'style-color ',
   },
 
   {
