@@ -23,3 +23,21 @@ export const foundNFT = (arr: Array<NFT>, contractAddress: string, tokenID: numb
 
   return false
 }
+
+export const findNFT = (arr: Array<NFT>, contractAddress: string, tokenID: number): NFT | null => {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].contractAddress === getAddress(contractAddress) && arr[i].tokenID === tokenID) {
+      return arr[i]
+    }
+  }
+  return null
+}
+
+export const findNFTIndex = (arr: Array<NFT>, contractAddress: string, tokenID: number): number => {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].contractAddress === getAddress(contractAddress) && arr[i].tokenID === tokenID) {
+      return i
+    }
+  }
+  return -1
+}

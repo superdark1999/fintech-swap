@@ -22,14 +22,14 @@ const StakingNft: React.FC = () => {
         <NavBar activeTab={activeTab} toggle={toggle} />
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
-            <MyCollection setMyTokens={setMyTokens} />
+            <MyCollection activeTab={activeTab} setMyTokens={setMyTokens} />
           </TabPane>
 
           <TabPane tabId="2">
-            <Pending />
+            <Pending activeTab={activeTab} />
           </TabPane>
 
-          <WrapPoolsContract myTokens={myTokens} />
+          <WrapPoolsContract activeTab={activeTab} myTokens={myTokens} />
         </TabContent>
       </StakingPage>
     </Page>

@@ -1,6 +1,6 @@
 import { JSBI } from '@luckyswap/v2-sdk'
 import { ethers, BigNumber } from 'ethers'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { TabPane } from 'reactstrap'
 import { getMaxBy } from 'utils/array'
 import { getBigNumber } from 'utils/bigNumber'
@@ -10,16 +10,18 @@ import { Staked } from './Staked'
 import { Unstaked } from './Unstaked'
 import { StakingNFT, NFT } from '../../config/constants/types'
 import { useActiveWeb3React } from '../../hooks/index'
-import { foundNFT } from '../../utils/array'
+import { foundNFT, findNFT } from '../../utils/array'
 
 interface WrapPoolsContractProps {
   myTokens: NFT[]
+  activeTab: string
 }
 
-const WrapPoolsContract: React.FC<WrapPoolsContractProps> = ({ myTokens }) => {
+const WrapPoolsContract: React.FC<WrapPoolsContractProps> = ({ myTokens, activeTab }) => {
   const [stakingTokens, setStakingTokens] = useState<StakingNFT[]>([])
   const [approvedTokens, setApprovedTokens] = useState<StakingNFT[]>([])
   const [maxDepositAmount, setMaxDepositAmount] = useState<JSBI>(JSBI.BigInt(0))
+  const isInitial = useRef<boolean>(false)
   const { account } = useActiveWeb3React()
 
   const stakingNFTContract = useStakingNFTContract()
@@ -33,10 +35,8 @@ const WrapPoolsContract: React.FC<WrapPoolsContractProps> = ({ myTokens }) => {
             const formatted = response.map((item) => ({
               ...item,
               tokenID: (item.tokenID as any).toNumber(),
-              createdAt: (item.createdAt as any).toNumber(),
+              createdAt: new Date((item.createdAt as unknown as number) * 1000),
             }))
-
-            console.log('foramtted : ', formatted)
 
             setApprovedTokens(
               formatted.filter(
@@ -51,23 +51,63 @@ const WrapPoolsContract: React.FC<WrapPoolsContractProps> = ({ myTokens }) => {
       }
     }
 
-    if (account && myTokens.length > 0 && stakingNFTContract) {
+    if (
+      account &&
+      myTokens.length > 0 &&
+      stakingNFTContract &&
+      (activeTab === '3' || activeTab === '4') &&
+      !isInitial.current
+    ) {
       getTokens()
+      isInitial.current = true
     }
-  }, [stakingNFTContract, account, myTokens])
+  }, [stakingNFTContract, account, myTokens, isInitial, activeTab])
 
   useEffect(() => {
     const max = getMaxBy(approvedTokens, 'depositAmount')
     setMaxDepositAmount(getBigNumber(max))
   }, [approvedTokens])
 
+  const changeViewWhenStake = ({ tokenID, contractAddress }) => {
+    setApprovedTokens((prevState) =>
+      prevState.filter((token) => token.tokenID !== tokenID && token.contractAddress !== contractAddress),
+    )
+    setStakingTokens((prevState) => [
+      ...prevState,
+      { ...findNFT(approvedTokens, contractAddress, tokenID), owner: account, createdAt: new Date(Date.now()) },
+    ])
+  }
+
+  const changeViewWhenWidthdraw = ({ tokenID, contractAddress }) => {
+    setStakingTokens((prevState) =>
+      prevState.filter((token) => token.tokenID !== tokenID && token.contractAddress !== contractAddress),
+    )
+    setApprovedTokens((prevState) => [
+      ...prevState,
+      {
+        ...findNFT(stakingTokens, contractAddress, tokenID),
+        owner: ethers.constants.AddressZero,
+      },
+    ])
+  }
+
   return (
     <>
       <TabPane tabId="3">
-        {approvedTokens.length > 0 && <Unstaked approvedTokens={approvedTokens} maxDepositAmount={maxDepositAmount} />}
+        {approvedTokens.length > 0 && (
+          <Unstaked
+            changeViewWhenStake={changeViewWhenStake}
+            approvedTokens={approvedTokens}
+            maxDepositAmount={maxDepositAmount}
+          />
+        )}
       </TabPane>
 
-      <TabPane tabId="4">{stakingTokens.length > 0 && <Staked stakingTokens={stakingTokens} />}</TabPane>
+      <TabPane tabId="4">
+        {stakingTokens.length > 0 && (
+          <Staked changeViewWhenWithdraw={changeViewWhenWidthdraw} stakingTokens={stakingTokens} />
+        )}
+      </TabPane>
     </>
   )
 }

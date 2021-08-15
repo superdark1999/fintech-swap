@@ -3,7 +3,8 @@ import { ChainId } from '@luckyswap/v2-sdk'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import getLibrary from 'utils/getLibrary'
-import { BscConnector } from './bsc/bscConnector'
+// import { BscConnector } from './bsc/bscConnector'
+import { BscConnector } from '@binance-chain/bsc-connector'
 import { NetworkConnector } from './NetworkConnector'
 import { ALL_SUPPORTED_CHAIN_IDS } from '../constants/index'
 
@@ -15,6 +16,7 @@ const RPC = {
 }
 
 export const NETWORK_CHAIN_ID: number = parseInt('56' ?? '56')
+const POLLING_INTERVAL = 15_000
 
 export const network = new NetworkConnector({
   urls: RPC,
@@ -31,12 +33,12 @@ export const injected = new InjectedConnector({
   supportedChainIds: ALL_SUPPORTED_CHAIN_IDS,
 })
 
-export const bscConnector = new BscConnector({ supportedChainIds: [56] })
+export const bscConnector = new BscConnector({ supportedChainIds: [56, 97] })
 
 export const walletconnect = new WalletConnectConnector({
   supportedChainIds: ALL_SUPPORTED_CHAIN_IDS,
   rpc: RPC,
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
-  pollingInterval: 15000,
+  pollingInterval: POLLING_INTERVAL,
 })

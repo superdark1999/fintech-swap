@@ -50,8 +50,6 @@ export function useTransactionAdder(): (
         throw Error('No transaction hash found.')
       }
 
-      console.log('approvalNFT : ', approvalNFT);
-
       dispatch(addTransaction({ hash, from: account, chainId, approval, summary, approvalNFT }))
     },
     [dispatch, chainId, account],
@@ -83,7 +81,6 @@ export function useIsTransactionConfirmed(transactionHash?: string): boolean {
 
   return Boolean(transactions[transactionHash].receipt)
 }
-
 
 export function useIsTransactionPending(transactionHash?: string): boolean {
   const transactions = useAllTransactions()

@@ -12,10 +12,12 @@ import ModalSubmit from './Components/ModalSubmit'
 
 interface MyCollectionProps {
   setMyTokens?: any
+  activeTab: string
 }
 
-const MyCollection: React.FC<MyCollectionProps> = ({ setMyTokens }: MyCollectionProps) => {
+const MyCollection: React.FC<MyCollectionProps> = ({ setMyTokens, activeTab }: MyCollectionProps) => {
   const formRef = useRef()
+  const isInitial = useRef<boolean>(false)
   const [isShowModalSubmit, setShowModalSubmit] = useState<boolean>(false)
   const { account } = useActiveWeb3React()
   const [tokens, setTokens] = useState<NFT[]>([])
@@ -40,12 +42,12 @@ const MyCollection: React.FC<MyCollectionProps> = ({ setMyTokens }: MyCollection
       }
     }
 
-    if (account) {
+    if (account && activeTab === '1' && !isInitial.current) {
       getUserTokens()
+      isInitial.current = true
     }
-  }, [account, setMyTokens])
+  }, [account, setMyTokens, activeTab])
 
-  // console.log('tokens : ', tokens)
 
   const onSubmit = async (value: any) => {
     if (tokenSelected) {

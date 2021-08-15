@@ -3,14 +3,12 @@ import axios from 'axios'
 import nftAbi from 'config/abi/nft.json'
 import stakingNftAbi from 'config/abi/StakingNft.json'
 import addresses from 'config/constants/contracts'
-import { ethers } from 'ethers'
 import { getAddress } from 'ethers/lib/utils'
-import { remove } from 'lodash'
 import multicall from 'utils/multicall'
 import Web3 from 'web3'
+import { AdditionalInfoNFT, BaseNFT, NFT } from '../../config/constants/types'
 import { RPC_URLS } from '../../constants/index'
 import { multicallv2 } from '../../utils/multicall'
-import { BaseNFT, NFT, AdditionalInfoNFT } from '../../config/constants/types'
 
 const abi = [
   {
@@ -162,13 +160,10 @@ export const getTokensURI = async (tokens: BaseNFT[]) => {
 
     let uris = await multicallv2(abi, calls, { requireSuccess: false })
 
-    console.log('uris from multicall v2')
-
     uris = uris.flat()
 
     return uris
   } catch (error) {
-    console.log('error : ', error)
     return []
   }
 }

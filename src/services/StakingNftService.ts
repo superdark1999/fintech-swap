@@ -58,4 +58,9 @@ export class StakingNftService {
       status: 'staking',
     })
   }
+
+  public async getTokenByID({ tokenID, contractAddress }): Promise<any> {
+    const { data } = await this.restConnector.get(`/stakingNft?tokenID=${tokenID}&contractAddress=${contractAddress}`)
+    return data[0]
+  }
 }

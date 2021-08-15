@@ -20,3 +20,15 @@ export function getDecimals(): JSBI {
 export function getBigNumber(number: any): JSBI {
   return JSBI.multiply(JSBI.BigInt(number), getDecimals())
 }
+
+export function jsbiToBigNumber(number: JSBI): ethers.BigNumber {
+  return ethers.BigNumber.from(String(number))
+}
+
+export function bigNumberToJSBI(number: ethers.BigNumber): JSBI {
+  return JSBI.BigInt(number.toString())
+}
+
+export function calculatePercentToJSBI(amount: JSBI, percent: number): JSBI {
+  return JSBI.divide(JSBI.multiply(amount, JSBI.BigInt(percent)), JSBI.BigInt(100))
+}

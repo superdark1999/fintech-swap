@@ -1,13 +1,16 @@
 import React from 'react'
 import { Col } from 'reactstrap'
 import styled from 'styled-components'
+import { Text as UIKitText } from '@luckyswap/uikit'
 import { isAbleToHarvest } from '../../../utils/date'
 import { StakingNFT } from '../../../config/constants/types'
 
 interface StakingCardProps extends StakingNFT {
   onHarvest: any
-  onWithdraw: any
+  onConfirmWithdraw: any
   createdAt: Date
+  changeViewWhenWithdraw?: any
+  isTxPending: boolean
 }
 
 const CardStaking: React.FC<StakingCardProps> = ({
@@ -16,9 +19,13 @@ const CardStaking: React.FC<StakingCardProps> = ({
   pendingReward,
   tokenID,
   onHarvest,
-  onWithdraw,
+  onConfirmWithdraw,
   createdAt,
+  isTxPending,
+  changeViewWhenWithdraw,
 }: StakingCardProps) => {
+  
+
 
   return (
     <Col sm="12" md="3" className="align-center space-mb">
@@ -39,15 +46,15 @@ const CardStaking: React.FC<StakingCardProps> = ({
 
           <Space>
             <Title>Collected Reward:</Title>
-            <Dflex>
-              <Number data-heading="">{pendingReward}</Number>
-              {isAbleToHarvest(createdAt) && (
-                <Ticket onClick={() => onHarvest({ tokenID, contractAddress })}>claim</Ticket>
-              )}
-              {isAbleToHarvest(createdAt) && (
-                <Ticket onClick={() => onWithdraw({ tokenID, contractAddress })}>withdraw</Ticket>
-              )}
-            </Dflex>
+            {!isTxPending && (
+              <Dflex>
+                <Number data-heading="">{pendingReward}</Number>
+                {isAbleToHarvest(createdAt) && (
+                  <Ticket onClick={() => onHarvest({ tokenID, contractAddress })}>claim</Ticket>
+                )}
+                {isAbleToHarvest(createdAt) && <Ticket onClick={onConfirmWithdraw}>withdraw</Ticket>}
+              </Dflex>
+            )}
           </Space>
         </BoxFooter>
       </BoxCenter>
