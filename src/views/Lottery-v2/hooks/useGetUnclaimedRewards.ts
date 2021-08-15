@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
+import { useEffect, useState } from 'react'
 import { useGetLotteriesGraphData, useGetUserLotteriesGraphData } from 'state/hooks'
 import fetchUnclaimedUserRewards from 'state/lottery2/fetchUnclaimedUserRewards'
 
@@ -13,7 +13,7 @@ const useGetUnclaimedRewards = () => {
   const { account } = useWeb3React()
   // const { isTransitioning } = useLottery()
   const userLotteryData = useGetUserLotteriesGraphData()
-  const lotteriesData = useGetLotteriesGraphData();
+  const lotteriesData = useGetLotteriesGraphData()
   const [unclaimedRewards, setUnclaimedRewards] = useState([])
   const [fetchStatus, setFetchStatus] = useState(FetchStatus.NOT_FETCHED)
 

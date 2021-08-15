@@ -1,13 +1,14 @@
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
+import axios from 'axios'
 import { request, gql } from 'graphql-request'
 import { ethers } from 'ethers'
 // import { GRAPH_API_LOTTERY } from 'config/constants/endpoints'
 import { LotteryStatus, LotteryTicket } from 'config/constants/types'
 import lotteryV2Abi from 'config/abi/lotteryV2.json'
+import { BASE_API_ADMIN } from 'config'
 import { getLotteryV2Address } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
-
 
 import {
   LotteryUserGraphEntity,
@@ -22,7 +23,7 @@ import { getLotteryV2Contract } from 'utils/contractHelpers'
 import { ethersToSerializedBigNumber } from 'utils/bigNumber'
 import formatLotteryDate from 'views/Lottery/helpers/formatLotteryDate'
 
-const lotteryV2Contract = getLotteryV2Contract();
+const lotteryV2Contract = getLotteryV2Contract()
 
 export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> => {
   try {
@@ -42,7 +43,7 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> 
       countWinnersPerBracket,
       rewardsBreakdown,
     } = lotteryData
-    const priceTicket = new BigNumber(ethersToSerializedBigNumber(priceTicketInCake));
+    const priceTicket = new BigNumber(ethersToSerializedBigNumber(priceTicketInCake))
 
     const statusKey = Object.keys(LotteryStatus)[status]
     const serializedCakePerBracket = cakePerBracket.map((cakeInBracket) => ethersToSerializedBigNumber(cakeInBracket))
@@ -60,7 +61,7 @@ export const fetchLottery = async (lotteryId: string): Promise<LotteryResponse> 
       discountDivisor: discountDivisor?.toString(),
       treasuryFee: treasuryFee?.toString(),
       firstTicketId: firstTicketId?.toString(),
-      lastTicketId: (firstTicketIdNextLottery-1)?.toString(),
+      lastTicketId: (firstTicketIdNextLottery - 1)?.toString(),
       amountCollectedInCake: ethersToSerializedBigNumber(amountCollectedInCake),
       finalNumber,
       cakePerBracket: serializedCakePerBracket,
@@ -93,10 +94,7 @@ export const fetchCurrentLotteryIdAndMaxBuy = async () => {
       address: getLotteryV2Address(),
       name: method,
     }))
-    const [[currentLotteryId], [maxNumberTicketsPerBuyOrClaim]] = (await multicallv2(
-      lotteryV2Abi,
-      calls,
-    ))
+    const [[currentLotteryId], [maxNumberTicketsPerBuyOrClaim]] = await multicallv2(lotteryV2Abi, calls)
     return {
       currentLotteryId: currentLotteryId ? currentLotteryId.toString() : null,
       maxNumberTicketsPerBuyOrClaim: maxNumberTicketsPerBuyOrClaim ? maxNumberTicketsPerBuyOrClaim.toString() : null,
@@ -173,93 +171,73 @@ export const fetchTickets = async (
   }
 }
 export const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
-  const currentLotteryId = await lotteryV2Contract.viewCurrentLotteryId();
-
-  const id = ethersToSerializedBigNumber(currentLotteryId)
-  const lotteries = []
-  for(let i = 1; i <= parseInt(id) ; i++){
-    const lotteryData = await fetchLottery(i.toString());
-    const lottery: LotteryRoundGraphEntity = {
-      id: i.toString(),
-      totalUsers: '0',
-      totalTickets: (parseInt(lotteryData.lastTicketId) - parseInt(lotteryData.firstTicketId + 1)).toString(),
-      status: lotteryData.status,
-      finalNumber: lotteryData.finalNumber.toString(),
-      winningTickets: '',
-      startTime: lotteryData.startTime,
-      endTime: lotteryData.endTime,
-      ticketPrice: lotteryData.priceTicketInCake,
-      firstTicket: lotteryData.firstTicketId,
-      lastTicket: lotteryData.lastTicketId,
-      amountCollectedInCake: lotteryData.amountCollectedInCake
-    }
-
-    lotteries.push(lottery);
+  // -------------------------
+  // const currentLotteryId = await lotteryV2Contract.viewCurrentLotteryId()
+  // const id = ethersToSerializedBigNumber(currentLotteryId)
+  // const lotteries = []
+  // for (let i = 1; i <= parseInt(id); i++) {
+  //   const lotteryData = await fetchLottery(i.toString())
+  //   const lottery: LotteryRoundGraphEntity = {
+  //     id: i.toString(),
+  //     totalUsers: '0',
+  //     totalTickets: (parseInt(lotteryData.lastTicketId) - parseInt(lotteryData.firstTicketId + 1)).toString(),
+  //     status: lotteryData.status,
+  //     finalNumber: lotteryData.finalNumber.toString(),
+  //     winningTickets: '',
+  //     startTime: lotteryData.startTime,
+  //     endTime: lotteryData.endTime,
+  //     ticketPrice: lotteryData.priceTicketInCake,
+  //     firstTicket: lotteryData.firstTicketId,
+  //     lastTicket: lotteryData.lastTicketId,
+  //     amountCollectedInCake: lotteryData.amountCollectedInCake,
+  //   }
+  //   lotteries.push(lottery)
+  // }
+  // return lotteries
+  // -------------------------
+  try {
+    const { data } = await axios.get(`${BASE_API_ADMIN}/lotteriesv2/all-lottery-data`)
+    return data
+  } catch (error) {
+    console.log('error graph lottery', error)
+    return []
   }
-
-  return lotteries
 }
 
 export const getGraphLotteryUser = async (account: string): Promise<LotteryUserGraphEntity> => {
-  // const response = await request(
-  //   GRAPH_API_LOTTERY,
-  //   gql`
-  //     query getUserLotteryData($account: ID!) {
-  //       user(id: $account) {
-  //         id
-  //         totalTickets
-  //         totalCake
-  //         rounds(first: 100, orderDirection: desc, orderBy: block) {
-  //           id
-  //           lottery {
-  //             id
-  //             endTime
-  //             status
-  //           }
-  //           claimed
-  //           totalTickets
-  //         }
-  //       }
+  // -------------------------
+  // const currentLotteryId = await lotteryV2Contract.viewCurrentLotteryId()
+  // const id = ethersToSerializedBigNumber(currentLotteryId)
+  // const userData = {
+  //   account,
+  //   totalCake: '0',
+  //   totalTickets: '0',
+  //   rounds: [],
+  // }
+  // for (let i = 1; i <= parseInt(id); i++) {
+  //   const lotteryData = await fetchLottery(i.toString())
+  //   const userInfoForLottery = await lotteryV2Contract.viewUserInfoForLotteryId(account, i, 0, 10000)
+  //   if (userInfoForLottery[0].length !== 0) {
+  //     // number tickets = 0
+  //     const round: UserRound = {
+  //       lotteryId: i.toString(),
+  //       endTime: lotteryData.endTime,
+  //       claimed: false,
+  //       totalTickets: userInfoForLottery[0].length,
+  //       status: lotteryData.status,
   //     }
-  //   `,
-  //   { account: account.toLowerCase() },
-  // )
-  // const { user } = response
-
-  const currentLotteryId = await lotteryV2Contract.viewCurrentLotteryId();
-
-  const id = ethersToSerializedBigNumber(currentLotteryId)
-  const userData  = {
-    account, 
-    totalCake: "0",
-    totalTickets: "0",
-    rounds: []
+  //     userData.rounds.push(round)
+  //   }
+  // }
+  // return userData
+  // -------------------------
+  try {
+    const { data } = await axios.get(`${BASE_API_ADMIN}/lotteriesv2/lottery-user/${account}`)
+    return data
+  } catch (error) {
+    console.log('error graph user', error)
+    return null
   }
-  for(let i = 1; i <= parseInt(id) ; i++){
-    const lotteryData = await fetchLottery(i.toString());
-    const userInfoForLottery = await lotteryV2Contract.viewUserInfoForLotteryId(account, i, 0, 10000);
-    if (userInfoForLottery[0].length !== 0){ // number tickets = 0
-      const round: UserRound = {
-        lotteryId: i.toString(),
-        endTime: lotteryData.endTime,
-        claimed: false,
-        totalTickets: userInfoForLottery[0].length,
-        status: lotteryData.status,
-        // tickets: [],
-      }
-      // for (let j =0; i< userInfoForLottery[0].length; i++) { // parse to LotteryTicket
-      //   const ticket: LotteryTicket = {
-      //     id: userInfoForLottery[0][j]?.toNumber(),
-      //     number: userInfoForLottery[1][j],
-      //     status: userInfoForLottery[2][j]
-      //   }
-      //   round.tickets.push(ticket);
-      // }
-      userData.rounds.push(round);
-    } 
-  } 
-
-  return userData
 }
 
 export const useProcessLotteryResponse = (

@@ -34,7 +34,7 @@ export const useFetchPublicData = () => {
   const { slowRefresh } = useRefresh()
   const web3NoAccount = useWeb3NoAccount()
   useEffect(() => {
-    if (chainId && chainId !== 56) {
+    if (chainId && chainId !== 56 && chainId !== 80001){
       dispatch(fetchPoolsPublicDataAsync() as any)
       dispatch(fetchFarmsPublicDataAsync() as any)
     }

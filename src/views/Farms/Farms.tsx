@@ -1,30 +1,27 @@
-import React, { useEffect, useCallback, useState } from 'react'
-import { Route, useRouteMatch, useLocation, Redirect } from 'react-router-dom'
-import { orderBy } from 'lodash'
-import BigNumber from 'bignumber.js'
+import { Heading, Image, RowType, Text } from '@luckyswap/uikit'
+import { ChainId } from '@luckyswap/v2-sdk'
 import { useWeb3React } from '@web3-react/core'
-import { Image, Heading, RowType, Text } from '@luckyswap/uikit'
-import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import { ChainId } from '@luckyswap/v2-sdk'
-import { useFarms, usePriceLuckyBusd, useGetApiPrices } from '../../state/hooks'
-import useRefresh from '../../hooks/useRefresh'
-import { fetchFarmUserDataAsync } from '../../state/actions'
-import { Farm } from '../../state/types'
+import { orderBy } from 'lodash'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Redirect, Route, useLocation, useRouteMatch } from 'react-router-dom'
+import styled from 'styled-components'
 import useI18n from '../../hooks/useI18n'
-import { getBalanceNumber } from '../../utils/formatBalance'
-import { getFarmApr } from '../../utils/apy'
+import useRefresh from '../../hooks/useRefresh'
 import { useAppDispatch } from '../../state'
+import { fetchFarmUserDataAsync } from '../../state/actions'
+import { useFarms, useGetApiPrices, usePriceLuckyBusd } from '../../state/hooks'
+import { Farm } from '../../state/types'
+import { getFarmApr } from '../../utils/apy'
+import { getBalanceNumber } from '../../utils/formatBalance'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
-import FarmTabButtons from './components/FarmTabButtons'
-import SearchInput from './components/SearchInput'
 import { RowProps } from './components/FarmTable/Row'
-import ToggleView from './components/ToggleView/ToggleView'
-import { DesktopColumnSchema, ViewMode } from './components/types'
+import SearchInput from './components/SearchInput'
 import Select, { OptionProps } from './components/Select/Select'
-import { getAddress } from '../../utils/addressHelpers'
+import { DesktopColumnSchema, ViewMode } from './components/types'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -213,6 +210,7 @@ const Farms: React.FC = () => {
   }
 
   farmsStaked = sortFarms(farmsStaked)
+  // console.log('farmStaked', farmsStaked)
   const rowData = farmsStaked.map((farm) => {
     const { token, quoteToken } = farm
     const tokenAddress = token.address

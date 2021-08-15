@@ -12,6 +12,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  hunter: {
+    symbol: 'HUT',
+    address: {
+      56: '0x5C2966101B257999e08f00DD43Bec915Ae21167B',
+      97: '0x5C2966101B257999e08f00DD43Bec915Ae21167B',
+    },
+    decimals: 18,
+    projectLink: 'https://pancakeswap.finance/',
+  },
   bdextest: {
     symbol: 'BEDEX',
     address: {

@@ -7,8 +7,7 @@ import { useActiveWeb3React } from 'hooks'
 import useWeb3 from 'hooks/useWeb3'
 import useWeb3Provider from 'hooks/useWeb3Provider'
 import { useMemo } from 'react'
-import {getLotteryV2Address}
- from 'utils/addressHelpers'
+import { getLotteryV2Address } from 'utils/addressHelpers'
 import FARMS_ABI from '../config/abi/masterchef.json'
 import lotteryV2 from '../config/abi/lotteryV2.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../constants/abis/ens-public-resolver.json'
@@ -39,7 +38,6 @@ import {
   getStakingNFTContract,
   getTradingCompetitionContract,
 } from '../utils/contractHelpers'
-
 
 /**
  * Helper hooks to get specific contracts (by ABI)
@@ -208,7 +206,6 @@ export function useFarmsContract(): Contract | null {
 }
 
 export function useStakingContract(address: any | null): Contract | null {
-
   return useContract(address, SMART_CHEF_ABI, true)
 }
 

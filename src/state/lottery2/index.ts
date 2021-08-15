@@ -52,7 +52,7 @@ export const fetchCurrentLottery = createAsyncThunk<LotteryResponse, { currentLo
 )
 
 export const fetchCurrentLotteryId = createAsyncThunk<PublicLotteryData>('lottery/fetchCurrentLotteryId', async () => {
-  const currentIdAndMaxBuy = await fetchCurrentLotteryIdAndMaxBuy();
+  const currentIdAndMaxBuy = await fetchCurrentLotteryIdAndMaxBuy()
   return currentIdAndMaxBuy
 })
 
@@ -74,7 +74,7 @@ export const fetchUserTicketsAndLotteries = createAsyncThunk<
 export const fetchPastLotteries = createAsyncThunk<LotteryRoundGraphEntity[]>(
   'lottery/fetchPastLotteries',
   async () => {
-    const lotteries = await getGraphLotteries();
+    const lotteries = await getGraphLotteries()
     return lotteries
   },
 )
