@@ -1,7 +1,6 @@
 import { Token, TokenAmount } from '@luckyswap/v2-sdk'
 import { useMemo } from 'react'
-
-import { useTokenContract } from '../hooks/useContract'
+import { useNFTContract, useTokenContract } from '../hooks/useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
 
 export function useTokenAllowance(token?: Token, owner?: string, spender?: string): TokenAmount | undefined {
@@ -13,6 +12,18 @@ export function useTokenAllowance(token?: Token, owner?: string, spender?: strin
   return useMemo(
     () => (token && allowance ? new TokenAmount(token, allowance.toString()) : undefined),
     [token, allowance],
+  )
+}
+
+export function useNFTApproval(tokenID: number, contractAddress: string) {
+  const NFTContract = useNFTContract(contractAddress)
+
+  const inputs = useMemo(() => [tokenID], [tokenID])
+  const { result } = useSingleCallResult(NFTContract, 'getApproved', inputs)
+
+  return useMemo(
+    () => (tokenID && contractAddress && result ? result[0] : undefined),
+    [tokenID, result, contractAddress],
   )
 }
 

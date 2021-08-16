@@ -1,45 +1,45 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import classnames from 'classnames'
+import React from 'react'
+import { Nav, NavItem, NavLink } from 'reactstrap'
+import styled from 'styled-components'
 
-export default function NavBar({ activeTab, toggle }) {
+interface NavbarProps {
+  activeTab?: any
+  toggle?: any
+}
 
+export default function NavBar({ activeTab, toggle }: NavbarProps) {
   return (
     <BoxNav>
       <Nav tabs>
-       <LeftItem>
-        <NavItem>
-            <NavLink
-              className={classnames({ active: activeTab === '1' })}
-              onClick={() => {
-                toggle('1')
-              }}
-            >
+        <LeftItem>
+          <NavItem>
+            <NavLink className={classnames({ active: activeTab === '1' })} onClick={() => toggle('1')}>
               all cards
             </NavLink>
           </NavItem>
-       </LeftItem>
+        </LeftItem>
 
         <RightItem>
           <NavItem>
-            <NavLink
-              className={classnames({ active: activeTab === '2' })}
-              onClick={() => {
-                toggle('2')
-              }}
-            >
+            <NavLink className={classnames({ active: activeTab === '1' })} onClick={() => toggle('1')}>
+              My Collection
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink className={classnames({ active: activeTab === '2' })} onClick={() => toggle('2')}>
+              Pending
+            </NavLink>
+          </NavItem>
+
+          <NavItem>
+            <NavLink className={classnames({ active: activeTab === '3' })} onClick={() => toggle('3')}>
               unstaked
             </NavLink>
           </NavItem>
-          
+
           <NavItem>
-            <NavLink
-              className={classnames({ active: activeTab === '3' })}
-              onClick={() => {
-                toggle('3')
-              }}
-            >
+            <NavLink className={classnames({ active: activeTab === '4' })} onClick={() => toggle('4')}>
               staked
             </NavLink>
           </NavItem>
@@ -49,13 +49,13 @@ export default function NavBar({ activeTab, toggle }) {
   )
 }
 
-
 const BoxNav = styled.div`
   margin-top: 20px;
 
   .nav-tabs {
-    display: grid;
-    grid-template-columns: 1fr 239px;
+    // display: grid;
+    // grid-template-columns: 1fr 239px;
+    display: flex;
     justify-content: space-between;
     border-color: transparent;
     border-bottom: 1px solid #ffffff8b !important;
@@ -70,15 +70,13 @@ const BoxNav = styled.div`
     }
 
     &.active {
-      color:#f4c706 !important;
+      color: #f4c706 !important;
       border-bottom: none !important;
     }
   }
 `
 
-const LeftItem = styled.div`
-
-`
+const LeftItem = styled.div``
 
 const RightItem = styled.div`
   display: grid;

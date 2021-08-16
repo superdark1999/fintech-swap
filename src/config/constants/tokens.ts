@@ -7,7 +7,7 @@ const tokens = {
     symbol: 'XLUCKY',
     address: {
       56: '0xb45299B023a6F1E0Da134Aa4D886A548BE0B662f',
-      97: '0xb45299B023a6F1E0Da134Aa4D886A548BE0B662f',
+      97: '0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a',
     },
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',

@@ -1,10 +1,11 @@
+import { JSBI } from '@luckyswap/v2-sdk'
 import { createReducer } from '@reduxjs/toolkit'
 import {
   addTransaction,
   checkedTransaction,
   clearAllTransactions,
   finalizeTransaction,
-  SerializableTransactionReceipt,
+  SerializableTransactionReceipt
 } from './actions'
 
 const now = () => new Date().getTime()
@@ -12,6 +13,11 @@ const now = () => new Date().getTime()
 export interface TransactionDetails {
   hash: string
   approval?: { tokenAddress: string; spender: string }
+  approvalNFT?: {
+    tokenID: JSBI | number
+    contractAddress: string
+    spender: string
+  }
   summary?: string
   receipt?: SerializableTransactionReceipt
   lastCheckedBlockNumber?: number
@@ -30,12 +36,12 @@ export const initialState: TransactionState = {}
 
 export default createReducer(initialState, (builder) =>
   builder
-    .addCase(addTransaction, (transactions, { payload: { chainId, from, hash, approval, summary } }) => {
+    .addCase(addTransaction, (transactions, { payload: { chainId, from, hash, approval, summary, approvalNFT } }) => {
       if (transactions[chainId]?.[hash]) {
         throw Error('Attempted to add existing transaction.')
       }
       const txs = transactions[chainId] ?? {}
-      txs[hash] = { hash, approval, summary, from, addedTime: now() }
+      txs[hash] = { hash, approval, summary, from, addedTime: now(), approvalNFT }
       transactions[chainId] = txs
     })
     .addCase(clearAllTransactions, (transactions, { payload: { chainId } }) => {

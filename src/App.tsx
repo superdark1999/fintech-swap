@@ -165,6 +165,7 @@ const App: React.FC = () => {
                 <Route path="/staking">
                   <Staking />
                 </Route>
+
                 <Route path="/lottery-dev">
                   <LotteryV2 />
                 </Route>
@@ -187,9 +188,6 @@ const App: React.FC = () => {
                   <TradingCompetition />
                 </Route>
                 {/* Redirect */}
-                <Route path="/staking">
-                  <Redirect to="/pools" />
-                </Route>
                 <Route path="/syrup">
                   <Redirect to="/pools" />
                 </Route>

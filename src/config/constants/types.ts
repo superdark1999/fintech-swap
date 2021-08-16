@@ -1,4 +1,6 @@
+import { CurrencyAmount, JSBI } from '@luckyswap/v2-sdk'
 import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 import { TranslatableText, SerializedBigNumber } from 'state/types'
 
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
@@ -30,9 +32,9 @@ export interface Ifo {
 }
 
 export interface Ticket {
-  ticketId: number,
-  ticketNumber: number,
-status: boolean
+  ticketId: number
+  ticketNumber: number
+  status: boolean
 }
 
 export enum LotteryStatus {
@@ -57,7 +59,6 @@ export interface LotteryTicketClaimData {
   cakeTotal: BigNumber
   roundId: string
 }
-
 
 export enum PoolCategory {
   'COMMUNITY' = 'Community',
@@ -99,8 +100,8 @@ export interface Pool {
   rewardTokenSymbol: string
   depositTokenAddress: string
   rewardTokenAddress: string
-  stakingAddress: string, 
-  isPremium: boolean,
+  stakingAddress: string
+  isPremium: boolean
   chainId: number
 }
 
@@ -115,6 +116,30 @@ export interface PoolConfig {
   sortOrder?: number
   harvest?: boolean
   isFinished?: boolean
+}
+
+export interface BaseNFT {
+  tokenID: number
+  contractAddress: string
+  urlToken?: string
+  to?: string
+  uri?: string
+}
+
+export interface AdditionalInfoNFT {
+  image?: string
+  name?: string
+  description?: string
+}
+
+export interface NFT extends BaseNFT, AdditionalInfoNFT {}
+
+export interface StakingNFT extends NFT {
+  rewardPerBlock?: ethers.BigNumber | JSBI
+  owner?: string
+  depositAmount?: ethers.BigNumber | JSBI | CurrencyAmount
+  createdAt?: Date
+  pendingReward?: string | JSBI | CurrencyAmount
 }
 
 export type Images = {

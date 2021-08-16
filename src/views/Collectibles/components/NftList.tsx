@@ -21,12 +21,12 @@ const nftComponents = {
 }
 
 const NftList = () => {
-  const { nfts: nftTokenIds, refresh, lastUpdated } = useGetWalletNfts()
+  const { nfts: NFTIds, refresh, lastUpdated } = useGetWalletNfts()
 
   return (
     <NftGrid>
       {orderBy(nfts, 'sortOrder').map((nft) => {
-        const tokenIds = nftTokenIds[nft.bunnyId] ? nftTokenIds[nft.bunnyId].tokenIds : []
+        const tokenIds = NFTIds[nft.bunnyId] ? NFTIds[nft.bunnyId].tokenIds : []
         const Card = nftComponents[nft.bunnyId] || NftCard
 
         return (
