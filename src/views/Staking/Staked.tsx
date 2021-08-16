@@ -40,9 +40,6 @@ export const Staked: React.FC<StakingPageProps> = ({ stakingTokens, changeViewWh
   const [withdrawToken, setWithdrawToken] = useState<StakingNFT>(null) // console.log('staking tokens : ', stakingTokens)
   const [harvestFee, setHarvestFee] = useState<number>(null)
 
-  console.log('txHashWithdraw : ', txHashWithdraw)
-  console.log('is pending withdraw : ', isPendingWithdraw)
-
   useEffect(() => {
     stakingNftContract
       .FEE_WITHDRAW()
@@ -65,7 +62,11 @@ export const Staked: React.FC<StakingPageProps> = ({ stakingTokens, changeViewWh
     stakingNftContract
       .harvest(contractAddress, tokenID)
       .then((response: TransactionResponse) => {
-        setTxHashWithdraw(response.hash)
+        addTransaction(response, {
+          summary: `
+            Claim reward from staking token ${tokenID}
+          `,
+        })
       })
       .catch((error) => {
         notification('error', { message: 'Error', description: error?.message })
@@ -94,7 +95,6 @@ export const Staked: React.FC<StakingPageProps> = ({ stakingTokens, changeViewWh
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
-    setTxHashWithdraw('')
   }, [])
 
   const modalHeader = () => {
@@ -176,7 +176,6 @@ export const Staked: React.FC<StakingPageProps> = ({ stakingTokens, changeViewWh
             })
           }}
           createdAt={token.createdAt}
-          changeViewWhenWithdraw={changeViewWhenWithdraw}
           isTxPending={isPendingWithdraw}
         />
       ))}

@@ -9,7 +9,6 @@ interface StakingCardProps extends StakingNFT {
   onHarvest: any
   onConfirmWithdraw: any
   createdAt: Date
-  changeViewWhenWithdraw?: any
   isTxPending: boolean
 }
 
@@ -22,11 +21,7 @@ const CardStaking: React.FC<StakingCardProps> = ({
   onConfirmWithdraw,
   createdAt,
   isTxPending,
-  changeViewWhenWithdraw,
 }: StakingCardProps) => {
-  
-
-
   return (
     <Col sm="12" md="3" className="align-center space-mb">
       <BoxCenter>
@@ -44,9 +39,9 @@ const CardStaking: React.FC<StakingCardProps> = ({
             <span className="effect-light">Staking</span>
           </Btn>
 
-          <Space>
-            <Title>Collected Reward:</Title>
-            {!isTxPending && (
+          {!isTxPending && (
+            <Space>
+              <Title>Collected Reward:</Title>
               <Dflex>
                 <Number data-heading="">{pendingReward}</Number>
                 {isAbleToHarvest(createdAt) && (
@@ -54,8 +49,8 @@ const CardStaking: React.FC<StakingCardProps> = ({
                 )}
                 {isAbleToHarvest(createdAt) && <Ticket onClick={onConfirmWithdraw}>withdraw</Ticket>}
               </Dflex>
-            )}
-          </Space>
+            </Space>
+          )}
         </BoxFooter>
       </BoxCenter>
     </Col>
