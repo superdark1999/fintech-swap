@@ -35,9 +35,15 @@ const CardStaking: React.FC<StakingCardProps> = ({
         </Launchers>
 
         <BoxFooter>
-          <Btn className="green-color">
-            <span className="effect-light">Staking</span>
-          </Btn>
+          {!isTxPending ? (
+            <Btn className="green-color">
+              <span className="effect-light">Staking</span>
+            </Btn>
+          ) : (
+            <Btn className="green-color">
+              <span className="effect-light">Withdrawing...</span>
+            </Btn>
+          )}
 
           {!isTxPending && (
             <Space>

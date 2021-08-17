@@ -55,8 +55,6 @@ const CardApproved: React.FC<StakingCardProps> = ({
 
   useEffect(() => {
     if (isTxStakeConfirmed) {
-      notification('success', { message: 'Stake', description: `Stake token ${tokenID} successfully` })
-
       stakingNftService
         .stakeToken({ tokenID, contractAddress })
         .then(() => {
