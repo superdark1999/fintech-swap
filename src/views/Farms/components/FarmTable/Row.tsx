@@ -10,6 +10,7 @@ import Earned, { EarnedProps } from './Earned'
 import Details from './Details'
 import Multiplier, { MultiplierProps } from './Multiplier'
 import Liquidity, { LiquidityProps } from './Liquidity'
+import Platform, { PlatformProps } from './Platform'
 import ActionPanel from './Actions/ActionPanel'
 import CellLayout from './CellLayout'
 import { DesktopColumnSchema, MobileColumnSchema } from '../types'
@@ -20,6 +21,7 @@ export interface RowProps {
   earned: EarnedProps
   multiplier: MultiplierProps
   liquidity: LiquidityProps
+  platform: PlatformProps
   details: FarmWithStakedValue
 }
 
@@ -30,6 +32,7 @@ const cells = {
   details: Details,
   multiplier: Multiplier,
   liquidity: Liquidity,
+  platform: Platform,
 }
 
 const CellInner = styled.div`
@@ -80,6 +83,7 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
   const handleRenderRow = () => {
     if (!isXs) {
       return (
+        <>
         <StyledTr onClick={toggleActionPanel} className="table-color">
           {Object.keys(props).map((key) => {
             const columnIndex = columnNames.indexOf(key)
@@ -100,13 +104,17 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
                 )
               case 'apr':
                 return (
+                  <>
                   <td key={key}>
                     <CellInner>
-                      <CellLayout label={TranslateString(736, 'APR')}>
+                      {/* <CellLayout label={TranslateString(736, 'APR')}>
+                       */}
+                       <CellLayout>
                         <Apr {...props.apr} hideButton={isMobile} />
                       </CellLayout>
                     </CellInner>
                   </td>
+                  </>
                 )
               default:
                 return (
@@ -120,9 +128,10 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
                     </CellInner>
                   </td>
                 )
-            }
-          })}
+              }
+            })}
         </StyledTr>
+        </>
       )
     }
 

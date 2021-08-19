@@ -11,8 +11,12 @@ export interface MultiplierProps {
 
 const MultiplierWrapper = styled.div`
   color: ${({ theme }) => theme.colors.text};
-  width: 36px;
+  width: auto;
   text-align: right;
+  background-color: #BF4855;
+  border-radius: 10px;
+  padding: 10px;
+  font-weight: 600;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     text-align: left;
@@ -41,7 +45,7 @@ const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) =>
   return (
     <Container>
       <MultiplierWrapper>{displayMultiplier}</MultiplierWrapper>
-      <Tooltip
+      {/* <Tooltip
         content={
           <div>
             {TranslateString(999, 'The multiplier represents the amount of LUCKY rewards each farm gets.')}
@@ -55,7 +59,7 @@ const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) =>
         }
       >
         <HelpIcon color="textSubtle" />
-      </Tooltip>
+      </Tooltip> */}
     </Container>
   )
 }

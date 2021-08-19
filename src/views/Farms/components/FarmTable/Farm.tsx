@@ -5,6 +5,8 @@ import useI18n from 'hooks/useI18n'
 import { Text, Image } from '@luckyswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 
+
+
 export interface FarmProps {
   label: string
   pid: number
@@ -36,6 +38,7 @@ const Farm: React.FunctionComponent<FarmProps> = ({ image, label, pid }) => {
   const TranslateString = useI18n()
   const rawStakedBalance = getBalanceNumber(stakedBalance)
 
+
   const handleRenderFarming = (): JSX.Element => {
     if (rawStakedBalance) {
       return (
@@ -50,7 +53,9 @@ const Farm: React.FunctionComponent<FarmProps> = ({ image, label, pid }) => {
 
   return (
     <Container>
-      <IconImage src={`/images/farms/${image}.svg`} alt="icon" width={40} height={40} mr="8px" />
+      {/* <IconImage src={`/images/farms/${image}.svg`} alt="icon" width={40} height={40} mr="8px" /> */}
+      <IconImage src="/images/logo-icon.png" alt="icon" width={40} height={40} mr="8px" />
+      <IconImage src="/images/logo-icon.png" alt="icon" width={40} height={40} mr="8px" ml="-16px"/>
       <div>
         {handleRenderFarming()}
         <Text bold>{label}</Text>
@@ -60,3 +65,5 @@ const Farm: React.FunctionComponent<FarmProps> = ({ image, label, pid }) => {
 }
 
 export default Farm
+
+

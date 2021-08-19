@@ -58,6 +58,61 @@ const ScrollButtonContainer = styled.div`
   padding-bottom: 5px;
 `
 
+const Tab = styled.div`
+  display: grid;
+  grid-template-columns: 350.73px 165px 1fr 1fr 1fr 1fr;
+  width: 100%;
+  height: 30px;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  padding: 30px 32px;
+  color: #fff;
+`
+
+const Item = styled.div`
+  padding-right: 32px;
+
+  &:last-child {
+    padding-right: 0;
+  }
+`
+
+const Text = styled.div`
+  position: relative;
+  width: fit-content;
+  font-weight: 600;
+  font-size: 20px;
+`
+
+const Arrow = styled.div`
+  position: absolute;
+  top: 50%;
+  right: -20px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
+
+const ArrowUp = styled.div`
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 4px 6px 4px;
+  border-color: transparent transparent #8C8C8C transparent;
+  margin-bottom: 3px;
+  
+`  
+
+const ArrowDown = styled.div`
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 4px 0 4px;
+  border-color: #8C8C8C transparent transparent transparent;
+`  
+
 const FarmTable: React.FC<ITableProps> = (props) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const TranslateString = useI18n()
@@ -73,7 +128,56 @@ const FarmTable: React.FC<ITableProps> = (props) => {
 
   return (
     <Container>
+
+
       <TableContainer>
+        <Tab>
+          <Item>
+            <Text>LP Tokens Name
+
+              <Arrow>
+                <ArrowUp></ArrowUp>
+                <ArrowDown></ArrowDown>
+              </Arrow>
+            </Text>
+          </Item>
+
+          <Item>
+            <Text>LP Platform
+              <Arrow>
+                <ArrowUp></ArrowUp>
+                <ArrowDown></ArrowDown>
+              </Arrow>
+            </Text>
+          </Item>
+
+          <Item>
+            <Text>Earned
+              <Arrow>
+                <ArrowUp></ArrowUp>
+                <ArrowDown></ArrowDown>
+              </Arrow>
+            </Text>
+          </Item>
+
+          <Item>
+            <Text>APR
+              <Arrow>
+                <ArrowUp></ArrowUp>
+                <ArrowDown></ArrowDown>
+              </Arrow>
+            </Text>
+          </Item>
+
+          <Item>
+            <Text>TLV
+              <Arrow>
+                <ArrowUp></ArrowUp>
+                <ArrowDown></ArrowDown>
+              </Arrow>
+            </Text>
+          </Item>
+        </Tab>
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
             <TableBody>

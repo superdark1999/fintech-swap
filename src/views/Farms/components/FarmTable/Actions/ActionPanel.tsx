@@ -85,10 +85,12 @@ const ActionContainer = styled.div`
 
 const InfoContainer = styled.div`
   min-width: 200px;
+  border-right: 1px solid #8c8c8c;
 `
 
 const ValueContainer = styled.div`
   display: block;
+  
 
   ${({ theme }) => theme.mediaQueries.lg} {
     display: none;
@@ -100,6 +102,22 @@ const ValueWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 4px 0px;
+`
+
+const BoxHead = styled.div`
+  background-color: #444444;
+  color: #8c8c8c;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-self: center;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+`
+
+const Item = styled.div`
+
 `
 
 const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, multiplier, liquidity }) => {
@@ -119,6 +137,13 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
   const isCommunityFarm = communityFarms.includes(token.symbol)
 
   return (
+    <>
+    <BoxHead>
+      <Item>Infomation</Item>
+      <Item>WAD Earned</Item>
+      <Item>Farming</Item>
+    </BoxHead>
+
     <Container>
       <InfoContainer>
         {isActive && (
@@ -137,6 +162,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
           {dual ? <DualTag /> : null}
         </TagsContainer>
       </InfoContainer>
+
       <ValueContainer>
         <ValueWrapper>
           <Text>{TranslateString(736, 'APR')}</Text>
@@ -151,11 +177,13 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
           <Liquidity {...liquidity} />
         </ValueWrapper>
       </ValueContainer>
+      
       <ActionContainer>
         <HarvestAction {...farm} />
         <StakedAction {...farm} />
       </ActionContainer>
     </Container>
+    </>
   )
 }
 
