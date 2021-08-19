@@ -57,10 +57,10 @@ const Apr: React.FC<AprProps> = ({
     <Container>
       {originalValue ? (
         <>
-          <AprWrapper>{value}%</AprWrapper>
           {!hideButton && (
             <ApyButton lpLabel={lpLabel} cakePrice={cakePrice} apy={originalValue} addLiquidityUrl={addLiquidityUrl} />
           )}
+          <AprWrapper>{value}%</AprWrapper>
         </>
       ) : (
         <AprWrapper>{TranslateString(656, 'Loading...')}</AprWrapper>
