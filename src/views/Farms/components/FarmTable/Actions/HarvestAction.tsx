@@ -60,11 +60,12 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
   }, [earningsBusd, updateValue])
 
   return (
-    <ActionContainer>
-      <ActionTitles>
+    <ActionContainer className="border-r">
+      {/* <ActionTitles>
         <Title>BEST</Title>
         <Subtle>{TranslateString(999, 'EARNED')}</Subtle>
-      </ActionTitles>
+      </ActionTitles> */}
+
       <ActionContent>
         <div>
           <Earned>{displayBalance}</Earned>
