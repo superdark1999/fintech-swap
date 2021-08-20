@@ -6,6 +6,7 @@ import { RowFlat } from 'components/Row'
 import CurrencyLogo from 'components/Swap/CurrencyLogo'
 import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/Swap/TransactionConfirmationModal'
 import { BigNumber } from 'ethers'
+import useRewardFee from 'hooks/useRewardFee'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Row } from 'reactstrap'
 import { StakingNFT } from '../../config/constants/types'
@@ -20,6 +21,7 @@ import { bigNumberToJSBI, calculatePercentToJSBI } from '../../utils/bigNumber'
 import notification from './Components/Alert'
 import CardStaking from './Components/CardStaking'
 import { ConfirmWithdrawModalBottom } from './Components/ConfirmWithdrawModalBottom'
+import { useHarvestNFTCallback } from '../../hooks/useHarvestCallback'
 
 interface StakingPageProps {
   stakingTokens: StakingNFT[]
@@ -38,21 +40,8 @@ export const Staked: React.FC<StakingPageProps> = ({ stakingTokens, changeViewWh
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const XLUCKY_TOKEN = useToken(XLUCKY_ADDRESSES[chainId])
   const [withdrawToken, setWithdrawToken] = useState<StakingNFT>(null) // console.log('staking tokens : ', stakingTokens)
-  const [harvestFee, setHarvestFee] = useState<number>(null)
-
-  console.log('txHashWithdraw : ', txHashWithdraw)
-  console.log('is pending withdraw : ', isPendingWithdraw)
-
-  useEffect(() => {
-    stakingNftContract
-      .FEE_WITHDRAW()
-      .then((response) => {
-        setHarvestFee((response as BigNumber).toNumber())
-      })
-      .catch((error) => {
-        notification('error', { message: 'Error when get fee withdraw', description: error?.message })
-      })
-  }, [stakingNftContract])
+  const rewardFee = useRewardFee()
+  const [isPendingHarvest, isConfirmedHarvest, harvestCallback] = useHarvestNFTCallback()
 
   useEffect(() => {
     if (isConfirmedWithdraw) {
@@ -61,16 +50,20 @@ export const Staked: React.FC<StakingPageProps> = ({ stakingTokens, changeViewWh
     }
   }, [isConfirmedWithdraw, changeViewWhenWithdraw, withdrawToken])
 
-  const onHarvest = async ({ tokenID, contractAddress }) => {
-    stakingNftContract
-      .harvest(contractAddress, tokenID)
-      .then((response: TransactionResponse) => {
-        setTxHashWithdraw(response.hash)
-      })
-      .catch((error) => {
-        notification('error', { message: 'Error', description: error?.message })
-      })
-  }
+  // const onHarvest = async ({ tokenID, contractAddress }) => {
+  //   stakingNftContract
+  //     .harvest(contractAddress, tokenID)
+  //     .then((response: TransactionResponse) => {
+  //       addTransaction(response, {
+  //         summary: `
+  //           Claim reward from staking token ${tokenID}
+  //         `,
+  //       })
+  //     })
+  //     .catch((error) => {
+  //       notification('error', { message: 'Error', description: error?.message })
+  //     })
+  // }
 
   const onWithdraw = async () => {
     setAttemptingTxn(true)
@@ -94,7 +87,6 @@ export const Staked: React.FC<StakingPageProps> = ({ stakingTokens, changeViewWh
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
-    setTxHashWithdraw('')
   }, [])
 
   const modalHeader = () => {
@@ -107,7 +99,7 @@ export const Staked: React.FC<StakingPageProps> = ({ stakingTokens, changeViewWh
               .subtract(
                 CurrencyAmount.fromRawAmount(
                   XLUCKY_TOKEN,
-                  calculatePercentToJSBI((withdrawToken?.pendingReward as CurrencyAmount).raw, harvestFee),
+                  calculatePercentToJSBI((withdrawToken?.pendingReward as CurrencyAmount).raw, rewardFee),
                 ),
               )
               .toFixed(4)}
@@ -128,7 +120,7 @@ export const Staked: React.FC<StakingPageProps> = ({ stakingTokens, changeViewWh
         currency={XLUCKY_TOKEN}
         depositAmount={withdrawToken?.depositAmount as CurrencyAmount}
         rewardAmount={withdrawToken?.pendingReward as CurrencyAmount}
-        harvestFee={harvestFee}
+        harvestFee={rewardFee}
         onWithdraw={onWithdraw}
       />
     )
@@ -163,7 +155,8 @@ export const Staked: React.FC<StakingPageProps> = ({ stakingTokens, changeViewWh
           contractAddress={token.contractAddress}
           tokenID={token.tokenID}
           pendingReward={rewardCurrenciesAmount[i] ? rewardCurrenciesAmount[i].toFixed(4) : '0.0000'}
-          onHarvest={onHarvest}
+          // onHarvest={onHarvest}
+          onHarvest={harvestCallback}
           onConfirmWithdraw={() => {
             setShowConfirm(true)
             setWithdrawToken({
@@ -176,7 +169,6 @@ export const Staked: React.FC<StakingPageProps> = ({ stakingTokens, changeViewWh
             })
           }}
           createdAt={token.createdAt}
-          changeViewWhenWithdraw={changeViewWhenWithdraw}
           isTxPending={isPendingWithdraw}
         />
       ))}

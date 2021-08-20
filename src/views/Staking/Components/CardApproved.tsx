@@ -55,13 +55,10 @@ const CardApproved: React.FC<StakingCardProps> = ({
 
   useEffect(() => {
     if (isTxStakeConfirmed) {
-      notification('success', { message: 'Stake', description: `Stake token ${tokenID} successfully` })
-
       stakingNftService
         .stakeToken({ tokenID, contractAddress })
         .then(() => {
           changeViewWhenStake({ tokenID, contractAddress })
-          notification('success', { message: 'Stake', description: `Stake token ${tokenID} successfully` })
         })
         .catch((error) => notification('error', { message: 'Error', description: error?.message }))
     }
@@ -105,7 +102,6 @@ const CardApproved: React.FC<StakingCardProps> = ({
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
-    setTxHashStake('')
   }, [])
 
   const modalHeader = () => {
@@ -201,7 +197,7 @@ const CardApproved: React.FC<StakingCardProps> = ({
 
             {approveState === ApprovalState.APPROVED &&
               approvalNFT === ApprovalState.APPROVED &&
-              (!isTxStakePending ? (
+              (!isTxStakePending && !isTxStakeConfirmed ? (
                 <Btn
                   onClick={() => {
                     setShowConfirm(true)
