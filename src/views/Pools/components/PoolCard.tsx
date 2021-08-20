@@ -402,6 +402,7 @@ const NoFee = styled.div`
   line-height: 1.5;
   padding: 0px 8px;
   white-space: nowrap;
+  margin-right: 10px;
   svg{
     margin-right: 2px;
     fill: #6ad2a8;
