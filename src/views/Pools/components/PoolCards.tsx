@@ -21,7 +21,7 @@ const PoolCards: React.FC<PoolCardsProps> = ({ pools, activeTab }) =>{
       <div>
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">    
-            <Row xs="1" sm="2" md="4">
+            <Row xs="1" sm="2" md="3">
               {pools.map(pool => (
                 <PoolCard key={pool._id} pool={pool}/>
               ))}
