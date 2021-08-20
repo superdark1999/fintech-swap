@@ -12,9 +12,8 @@ const useGetStateData = (staking: Pool) => {
     pendingReward: new BigNumber(0),
   })
   const { account } = useWeb3React()
-  const slowRefresh = useRefresh()
+  // const slowRefresh = useRefresh()
   const contract = useStakingContract(staking.stakingAddress)
-
 
   useEffect(() => {
     const fetchStakingData = async () => {
@@ -42,7 +41,11 @@ const useGetStateData = (staking: Pool) => {
       }
     }
     fetchStakingData()
-  }, [account, contract, slowRefresh])
+  }, [
+    account,
+    contract,
+    //  , slowRefresh
+  ])
 
   return state
 }
