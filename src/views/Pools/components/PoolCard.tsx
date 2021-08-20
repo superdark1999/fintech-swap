@@ -132,19 +132,27 @@ const BlockAction:React.FC<PoolCardProps> = ({ stakingData, pool }) => {
   }
 
   const BlockSpace = styled.div`
-    display: block;
+    display: flex;
+    flex-direction: column;
     font-size: 24px;
     color: white;
-    text-algin: center;
+    text-align: center;
+
     button{
       background: #f5c606;
       border-color: transparent;
       color: #2b2e2f;
-      :hover {
+      margin-top: 10px;
+
+      &:hover {
         background: #f5c606;
         border-color: transparent;
         opacity: 0.7;
       }
+    }
+
+    .content__title {
+      color: #fff;
     }
   `
 
@@ -178,7 +186,7 @@ const BlockAction:React.FC<PoolCardProps> = ({ stakingData, pool }) => {
               <h3 className="content__title">
               <CardValue
                 bold
-                color=""
+                color="#fff"
                 value={userAmount.div(1e18).toNumber()}
                 decimals={2}
                 fontSize="10px"
@@ -191,7 +199,7 @@ const BlockAction:React.FC<PoolCardProps> = ({ stakingData, pool }) => {
                   Approve
                 </Button>
               ) : (
-                <div>
+                <Dflex>
                   <Button color="danger" onClick={unStakeToggle} disabled={getStatus()}>
                     {getStatus() && isUnStaking && spinnerIcon}
                     UnStake
@@ -200,7 +208,7 @@ const BlockAction:React.FC<PoolCardProps> = ({ stakingData, pool }) => {
                     {getStatus() && isDepositing && spinnerIcon}
                     Deposit
                   </Button>
-                </div>
+                </Dflex>
               )}
             </BlockSpace>
 
@@ -467,16 +475,19 @@ const ContentRight = styled.div`
   font-size: 14px;
   font-weight: 700;
   text-align: right;
+
   .name_pool {
     margin-bottom: 20px;
     font-size: 20px;
     color: #da982d;
     text-transform: uppercase;
   }
+
   button{
     height: 16px;
     margin-top: -1px;
   }
+
   &.block{
     display: block;
   }
@@ -530,6 +541,16 @@ const BoxLink = styled.div`
       background: #f5c606;
       opacity: 0.8;
     }
+  }
+`
+
+const Dflex = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
   }
 `
 
