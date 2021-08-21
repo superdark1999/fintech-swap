@@ -24,6 +24,7 @@ export interface TransactionDetails {
   addedTime: number
   confirmedTime?: number
   from: string
+  attr1?: string
 }
 
 export interface TransactionState {
@@ -36,19 +37,19 @@ export const initialState: TransactionState = {}
 
 export default createReducer(initialState, (builder) =>
   builder
-    .addCase(addTransaction, (transactions, { payload: { chainId, from, hash, approval, summary, approvalNFT } }) => {
+    .addCase(addTransaction, (transactions, { payload: { chainId, from, hash, approval, summary, approvalNFT,attr1 } }) => {
       if (transactions[chainId]?.[hash]) {
         throw Error('Attempted to add existing transaction.')
       }
       const txs = transactions[chainId] ?? {}
-      txs[hash] = { hash, approval, summary, from, addedTime: now(), approvalNFT }
+      txs[hash] = { hash, approval, summary, from, addedTime: now(), approvalNFT,attr1 }
       transactions[chainId] = txs
     })
     .addCase(clearAllTransactions, (transactions, { payload: { chainId } }) => {
       if (!transactions[chainId]) return
       transactions[chainId] = {}
     })
-    .addCase(checkedTransaction, (transactions, { payload: { chainId, hash, blockNumber } }) => {
+    .addCase(checkedTransaction, (transactions, { payload: { chainId, hash, blockNumber,attr1 } }) => {
       const tx = transactions[chainId]?.[hash]
       if (!tx) {
         return
@@ -59,7 +60,7 @@ export default createReducer(initialState, (builder) =>
         tx.lastCheckedBlockNumber = Math.max(blockNumber, tx.lastCheckedBlockNumber)
       }
     })
-    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt } }) => {
+    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt,attr1 } }) => {
       const tx = transactions[chainId]?.[hash]
       if (!tx) {
         return

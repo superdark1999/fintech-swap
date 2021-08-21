@@ -11,6 +11,7 @@ export interface SerializableTransactionReceipt {
   transactionHash: string
   blockNumber: number
   status?: number
+  attr1?: string
 }
 
 export const addTransaction =
@@ -21,15 +22,18 @@ export const addTransaction =
     approval?: { tokenAddress: string; spender: string }
     approvalNFT?: { tokenID: number | JSBI | BigNumber; contractAddress: string; spender: string }
     summary?: string
+    attr1?: string
   }>('transactions/addTransaction')
 export const clearAllTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllTransactions')
 export const finalizeTransaction = createAction<{
   chainId: ChainId
   hash: string
   receipt: SerializableTransactionReceipt
+  attr1?: string
 }>('transactions/finalizeTransaction')
 export const checkedTransaction = createAction<{
   chainId: ChainId
   hash: string
   blockNumber: number
+  attr1?: string
 }>('transactions/checkedTransaction')
