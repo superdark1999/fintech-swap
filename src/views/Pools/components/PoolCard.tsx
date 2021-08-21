@@ -240,7 +240,6 @@ const BlockAction:React.FC<PoolCardProps> = ({ stakingData, pool }) => {
 const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   const { chainId } = useActiveWeb3React()
 
-
   const [apy, setApy] = useState('0')
   const [totalStaked, setTotalStaked] = useState(0)
   // const { userRewardDebt } = useGetStateData(pool)
@@ -357,7 +356,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
             </FlexSpace>
           </CardContent>
           {/* {poolDetail &&<BlockAction stakingData={poolDetail} pool={pool}/>}   */}
-          {poolDetail && !isLoading ?
+          {poolDetail && !isLoading && !pool.inactive ?
           (chainId !== poolDetail.chainId ? <Redirect to="/" />
           : 
            (<BlockAction stakingData={poolDetail} pool={pool}/>)
