@@ -12,12 +12,12 @@ import { StakingNFT, NFT } from '../../config/constants/types'
 import { useActiveWeb3React } from '../../hooks/index'
 import { foundNFT, findNFT } from '../../utils/array'
 
-interface WrapPoolsContractProps {
+interface PoolsProps {
   myTokens: NFT[]
   activeTab: string
 }
 
-const WrapPoolsContract: React.FC<WrapPoolsContractProps> = ({ myTokens, activeTab }) => {
+const Pools: React.FC<PoolsProps> = ({ myTokens, activeTab }) => {
   const [stakingTokens, setStakingTokens] = useState<StakingNFT[]>([])
   const [approvedTokens, setApprovedTokens] = useState<StakingNFT[]>([])
   const [maxDepositAmount, setMaxDepositAmount] = useState<JSBI>(JSBI.BigInt(0))
@@ -27,7 +27,7 @@ const WrapPoolsContract: React.FC<WrapPoolsContractProps> = ({ myTokens, activeT
   const stakingNFTContract = useStakingNFTContract()
 
   useEffect(() => {
-    const getTokens = async () => {
+    const getTokens = () => {
       if (stakingNFTContract) {
         stakingNFTContract
           .getAllPools()
@@ -70,7 +70,7 @@ const WrapPoolsContract: React.FC<WrapPoolsContractProps> = ({ myTokens, activeT
 
   const changeViewWhenStake = ({ tokenID, contractAddress }) => {
     setApprovedTokens((prevState) =>
-      prevState.filter((token) => token.tokenID !== tokenID && token.contractAddress !== contractAddress),
+      prevState.filter((token) => token.tokenID !== tokenID || token.contractAddress !== contractAddress),
     )
     setStakingTokens((prevState) => [
       ...prevState,
@@ -78,9 +78,9 @@ const WrapPoolsContract: React.FC<WrapPoolsContractProps> = ({ myTokens, activeT
     ])
   }
 
-  const changeViewWhenWidthdraw = ({ tokenID, contractAddress }) => {
+  const changeViewWhenWithdraw = ({ tokenID, contractAddress }) => {
     setStakingTokens((prevState) =>
-      prevState.filter((token) => token.tokenID !== tokenID && token.contractAddress !== contractAddress),
+      prevState.filter((token) => token.tokenID !== tokenID || token.contractAddress !== contractAddress),
     )
     setApprovedTokens((prevState) => [
       ...prevState,
@@ -105,11 +105,11 @@ const WrapPoolsContract: React.FC<WrapPoolsContractProps> = ({ myTokens, activeT
 
       <TabPane tabId="4">
         {stakingTokens.length > 0 && (
-          <Staked changeViewWhenWithdraw={changeViewWhenWidthdraw} stakingTokens={stakingTokens} />
+          <Staked changeViewWhenWithdraw={changeViewWhenWithdraw} stakingTokens={stakingTokens} />
         )}
       </TabPane>
     </>
   )
 }
 
-export default WrapPoolsContract
+export default Pools

@@ -101,7 +101,7 @@ export function useCurrencyBalances(
   currencies?: (Currency | undefined)[],
 ): (CurrencyAmount | undefined)[] {
   const tokens = useMemo(
-    // Nếu currency is Token, Typescript sẽ coi currency dưới dạng Token
+    // Nếu currency.isToken, Typescript sẽ coi currency dưới dạng Token
     () => currencies?.filter((currency): currency is Token => currency?.isToken ?? false) ?? [],
     [currencies],
   )
