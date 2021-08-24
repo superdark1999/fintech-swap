@@ -31,7 +31,7 @@ const Details: React.FC<DetailsProps> = ({ actionPanelToggled }) => {
 
   return (
     <Container>
-      {!isMobile && TranslateString(658, 'Details')}
+      {!isMobile && TranslateString(658, 'Info')}
       <ArrowIcon color="primary" toggled={actionPanelToggled} />
     </Container>
   )

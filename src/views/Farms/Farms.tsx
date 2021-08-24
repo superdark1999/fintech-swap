@@ -8,6 +8,8 @@ import { orderBy } from 'lodash'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Redirect, Route, useLocation, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
+import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import classnames from 'classnames';
 import useI18n from '../../hooks/useI18n'
 import useRefresh from '../../hooks/useRefresh'
 import { useAppDispatch } from '../../state'
@@ -22,6 +24,7 @@ import { RowProps } from './components/FarmTable/Row'
 import SearchInput from './components/SearchInput'
 import Select, { OptionProps } from './components/Select/Select'
 import { DesktopColumnSchema, ViewMode } from './components/types'
+
 
 const ControlContainer = styled.div`
   display: flex;
@@ -139,6 +142,13 @@ const Farms: React.FC = () => {
 
   const isActive = !pathname.includes('history')
 
+
+  const [activeTab, setActiveTab] = useState('1');
+
+  const toggle = tab => {
+    if(activeTab !== tab) setActiveTab(tab);
+  }
+
   const activeFarms = farmsLP.filter((farm) => farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.multiplier === '0X')
 
@@ -239,6 +249,9 @@ const Farms: React.FC = () => {
       liquidity: {
         liquidity: farm.liquidity,
       },
+      platform: {
+        platform: farm.platform,
+      },
       multiplier: {
         multiplier: farm.multiplier,
       },
@@ -300,6 +313,7 @@ const Farms: React.FC = () => {
     setSortOption(option.value)
   }
 
+
   return (
     <>
       <Header>
@@ -307,59 +321,97 @@ const Farms: React.FC = () => {
           {TranslateString(674, 'Farms')}
         </Heading>
         <Heading size="lg" color="#fff">
-          {TranslateString(999, 'Stake Liquidity Pool (LP) tokens to earn.')}
+          Provide a farming platform for any projects.<br/> Farms Stake Liquidity Pool (LP) tokens to earn.
         </Heading>
       </Header>
+      
       <Page>
         <ControlContainer>
-          {/* <ViewControls>
-              <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
-              <ToggleWrapper>
-                <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
-                <Text color="#2b2c3a"> {TranslateString(1116, 'Staked only')}</Text>
-              </ToggleWrapper>
-            <FarmTabButtons />
-          </ViewControls> */}
-          <FilterContainer>
-            <LabelWrapper>
-              <Text color="#fff" fontWeight="600" fontSize="16px">
-                SORT BY
-              </Text>
-              <Select
-                options={[
-                  {
-                    label: 'Hot',
-                    value: 'hot',
-                  },
-                  {
-                    label: 'APR',
-                    value: 'apr',
-                  },
-                  {
-                    label: 'Multiplier',
-                    value: 'multiplier',
-                  },
-                  {
-                    label: 'Earned',
-                    value: 'earned',
-                  },
-                  {
-                    label: 'Liquidity',
-                    value: 'liquidity',
-                  },
-                ]}
-                onChange={handleSortOptionChange}
-              />
-            </LabelWrapper>
-            <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text color="#fff" fontWeight="600" fontSize="16px">
-                SEARCH
-              </Text>
-              <SearchInput onChange={handleChangeQuery} value={query} />
-            </LabelWrapper>
-          </FilterContainer>
+          <Nav tabs>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '1' })}
+                onClick={() => { toggle('1'); }}
+              >
+                Space Hunter
+              </NavLink>
+            </NavItem>
+
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '2' })}
+                onClick={() => { toggle('2'); }}
+              >
+                Luckyswap
+              </NavLink>
+            </NavItem>
+
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '3' })}
+                onClick={() => { toggle('3'); }}
+              >
+                Other
+              </NavLink>
+            </NavItem>
+          </Nav>
+
+
+          <TabContent activeTab={activeTab}>
+            <FilterContainer>
+              <LabelWrapper>
+                <Text color="#fff" fontWeight="600" fontSize="16px">
+                  SORT BY
+                </Text>
+              
+                <Select
+                  options={[
+                    {
+                      label: 'Hot',
+                      value: 'hot',
+                    },
+                    {
+                      label: 'APR',
+                      value: 'apr',
+                    },
+                    {
+                      label: 'Multiplier',
+                      value: 'multiplier',
+                    },
+                    {
+                      label: 'Earned',
+                      value: 'earned',
+                    },
+                    {
+                      label: 'Liquidity',
+                      value: 'liquidity',
+                    },
+                  ]}
+                  onChange={handleSortOptionChange}
+                />
+              </LabelWrapper>
+
+              <LabelWrapper style={{ marginLeft: 16 }}>
+                <Text color="#fff" fontWeight="600" fontSize="16px">
+                  SEARCH
+                </Text>
+                <SearchInput onChange={handleChangeQuery} value={query} />
+              </LabelWrapper>
+            </FilterContainer>
+
+            <TabPane tabId="1">
+              {renderContent()}
+            </TabPane>
+
+            <TabPane tabId="2">
+
+            </TabPane>
+
+            <TabPane tabId="3">
+
+            </TabPane>
+          </TabContent>
         </ControlContainer>
-        {renderContent()}
       </Page>
     </>
   )

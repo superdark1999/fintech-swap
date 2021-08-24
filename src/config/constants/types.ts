@@ -103,6 +103,7 @@ export interface Pool {
   stakingAddress: string
   isPremium: boolean
   chainId: number
+  inactive: boolean
 }
 
 export interface PoolConfig {

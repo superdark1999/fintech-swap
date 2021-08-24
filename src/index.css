@@ -45,7 +45,7 @@ div.line {
   border-color: #fff;
 }
 
-.table-color + tr span,
+.table-color td span,
 .table-color + tr div .line {
   color: #fff !important;
 }
@@ -534,3 +534,6 @@ button.btn-secondary.dropdown-toggle:focus {
 }
 
 
+.tab-content {
+  width: 100%;
+}

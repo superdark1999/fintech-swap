@@ -2,6 +2,7 @@ import { ChainId } from '@luckyswap/v2-sdk'
 import { useWeb3React } from '@web3-react/core'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
+import { Pool } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
 import React, { useEffect, useState } from 'react'
 import { Redirect, useRouteMatch } from 'react-router-dom'
@@ -10,33 +11,39 @@ import styled from 'styled-components'
 import { useActiveWeb3React } from '../../hooks/index'
 import NavBar from './components/NavBar'
 import PoolCards from './components/PoolCards'
+import PoolCardsInactive from './components/PoolCardsInactive'
+
 import { useHookPools } from './Store'
 
 const Farm: React.FC = () => {
   const [activeTab, setActiveTab] = useState('1')
   let { chainId } = useActiveWeb3React()
-
+  let activePools = []
+  let inactivePools = []
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const { account } = useWeb3React()
   // const pools = usePools(account)
   const { currentBlock } = useBlock()
   const [state, actions] = useHookPools()
-  let { pools } = state
+  const { pools } = state
+  
 
   chainId = chainId || 56
 
-  pools = pools.filter(p => p.chainId === chainId);
+  activePools = pools.filter(p => p.chainId === chainId && !p.inactive);
+  inactivePools = pools.filter(p =>p.chainId === chainId && p.inactive)
 
   pools.sort((a, b) => (!a.isPremium && b.isPremium)? 1 : -1)
-
+  // console.log("-----pools", pools)
   useEffect(() => {
     const fetchPools = () => {
       actions.getPools()
+      
     }
 
     fetchPools()
-  }, [chainId, actions])
+  }, [chainId, actions, activeTab])
 
   if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET && chainId !== ChainId.MATIC && chainId !== ChainId.MATIC_TESTNET ) {
     return <Redirect to="/" />
@@ -75,7 +82,8 @@ const Farm: React.FC = () => {
       {/* <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} /> */}
       {/* <Divider /> */}
       <NavBar activeTab={activeTab} toggle={toggle} />
-      <PoolCards pools={pools} activeTab={activeTab} />
+      <PoolCards pools={activePools} activeTab={activeTab} />
+      <PoolCardsInactive pools={inactivePools} activeTab={activeTab}/>
       <FlexLayout>
         {/* <Route exact path={`${path}`}>
           <>
