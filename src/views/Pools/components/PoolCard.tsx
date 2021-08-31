@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import styled from 'styled-components'
@@ -28,12 +29,18 @@ import DepositModal from './DepositModal'
 interface PoolCardProps {
   stakingData?: Pool
   pool?: Pool
+  userRewardDebt?: any
+  userAmount?: any
 }
-const BlockAction: React.FC<PoolCardProps> = ({ stakingData, pool }) => {
-  //-------
-  function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
-    return b.addedTime - a.addedTime
-  }
+
+const areEqual = (prevProps, nextProps): any => {
+  console.log(prevProps.sortedRecentTransactions.length, nextProps.sortedRecentTransactions.length)
+  // return JSON.stringify(prevProps.sortedRecentTransactions.length === nextProps.sortedRecentTransactions.length)
+}
+
+const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, userAmount, stakingData, pool }: any) => {
+  // console.log('sortedRecentTransactions', sortedRecentTransactions)
+
   const [depositModal, setDepositModal] = useState(false)
   const [withdrawModal, setWithdrawModel] = useState(false)
   const [isUnStaking, setIsUnStaking] = useState(false)
@@ -42,7 +49,6 @@ const BlockAction: React.FC<PoolCardProps> = ({ stakingData, pool }) => {
   const { account } = useWeb3React()
 
   const stakingContract = useStakingContract(stakingData?.stakingAddress)
-  const { userAmount, userRewardDebt } = useGetStateData(stakingData)
 
   const addTransaction = useTransactionAdder()
   const contract = useContract(stakingData?.stakingAddress, SMART_CHEF_ABI)
@@ -61,24 +67,14 @@ const BlockAction: React.FC<PoolCardProps> = ({ stakingData, pool }) => {
 
   const depositToggle = () => setDepositModal(!depositModal)
   const unStakeToggle = () => setWithdrawModel(!withdrawModal)
-
-  const allTransactions = useAllTransactions()
-
-  const sortedRecentTransactions = useMemo(() => {
-    const txs = Object.values(allTransactions)
-    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
-  }, [allTransactions])
-
   console.log('sortedRecentTransactions>>', sortedRecentTransactions)
-
-  const getStatus = useCallback(() => {
+  const getStatus = (type) => {
     const pending = sortedRecentTransactions
       .filter((tx) => !tx.receipt)
-      .map((tx) => tx.hash && tx.attr1 === stakingData.stakingAddress)
+      .map((tx) => tx.hash && tx.attr1 === `${stakingData.stakingAddress}${type}`)
     return !!pending.length
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortedRecentTransactions])
-
+  }
   // Pool Detail(s)
   const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
@@ -108,7 +104,7 @@ const BlockAction: React.FC<PoolCardProps> = ({ stakingData, pool }) => {
     await approve(stakingData.stakingAddress)
   }
 
-  const handleHarvest = async () => {
+  const handleHarvest = async (type) => {
     if (stakingContract) {
       setIsHarvesting(true)
       const args = [new BigNumber(0).times(new BigNumber(10).pow(18)).toString()]
@@ -121,6 +117,7 @@ const BlockAction: React.FC<PoolCardProps> = ({ stakingData, pool }) => {
         .then((response: any) => {
           addTransaction(response, {
             summary: 'Harvest successfully!',
+            attr1: `${stakingData.stakingAddress}${type}`,
           })
         })
         .catch((error: any) => {
@@ -155,7 +152,6 @@ const BlockAction: React.FC<PoolCardProps> = ({ stakingData, pool }) => {
       color: #fff;
     }
   `
-  console.log('pool.>', pool.name, amountAllowance.toString())
 
   return (
     <>
@@ -171,12 +167,11 @@ const BlockAction: React.FC<PoolCardProps> = ({ stakingData, pool }) => {
             fontWeight="1000"
           ></CardValue>
           <Button
-            color="danger"
-            onClick={handleHarvest}
-            isLoading={isHarvesting}
-            disabled={getStatus() || isHarvesting}
+            onClick={() => handleHarvest('harvest')}
+            isLoading={() => getStatus('harvest')}
+            disabled={getStatus('harvest')}
           >
-            {getStatus() && isHarvesting && spinnerIcon}
+            {getStatus('harvest') && isHarvesting && spinnerIcon}
             Harvest
           </Button>
         </BlockSpace>
@@ -201,12 +196,12 @@ const BlockAction: React.FC<PoolCardProps> = ({ stakingData, pool }) => {
             </Button>
           ) : (
             <Dflex>
-              <Button color="danger" onClick={unStakeToggle} disabled={getStatus()}>
-                {getStatus() && isUnStaking && spinnerIcon}
+              <Button color="danger" onClick={unStakeToggle} disabled={getStatus('unstake')}>
+                {getStatus('unstake') && isUnStaking && spinnerIcon}
                 UnStake
               </Button>
-              <Button color="danger" onClick={depositToggle} disabled={getStatus()}>
-                {getStatus() && isDepositing && spinnerIcon}
+              <Button color="danger" onClick={depositToggle} disabled={getStatus('deposit')}>
+                {getStatus('deposit') && isDepositing && spinnerIcon}
                 Deposit
               </Button>
             </Dflex>
@@ -236,17 +231,47 @@ const BlockAction: React.FC<PoolCardProps> = ({ stakingData, pool }) => {
       </BoxAction>
     </>
   )
-}
+}, areEqual)
 
 const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
-  const { chainId } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
+  const [userAmount, setAmount] = useState(new BigNumber(0))
+  const [userRewardDebt, setUserRewardDebt] = useState(new BigNumber(0))
 
   const [apy, setApy] = useState('0')
   const [totalStaked, setTotalStaked] = useState(0)
-  // const { userRewardDebt } = useGetStateData(pool)
   const { balanceOf } = useUtilityToken(pool.depositTokenAddress)
   const rewardTokenPrice = usePriceLuckyBusd()
   const stakingTokenPrice = useLucky2Price()
+  const contract = useStakingContract(pool.stakingAddress)
+
+  const allTransactions = useAllTransactions()
+  function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
+    return b.addedTime - a.addedTime
+  }
+  const sortedRecentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions)
+    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
+  }, [allTransactions])
+  console.log('sortedRecentTransaction2s>>>',sortedRecentTransactions)
+  const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+  useEffect(() => {
+    const fetchStakingData = async () => {
+      if (contract && account) {
+        try {
+          const amount: any = await contract.userInfo(account).catch((error) => {
+            console.log('error userAmount')
+          })
+          setAmount(new BigNumber(amount.amount._hex))
+          setUserRewardDebt(new BigNumber(amount.rewardDebt._hex))
+        } catch (error) {
+          setAmount(new BigNumber(0))
+          setUserRewardDebt(new BigNumber(0))
+        }
+      }
+    }
+    fetchStakingData()
+  }, [account, contract, !!pending.length])
 
   useEffect(() => {
     const fetchTotalStaked = async () => {
@@ -288,11 +313,11 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
     <div>
       <Col>
         <BoxPool>
-          {pool.isPremium && (
+          {/* {pool.isPremium && (
             <HeadLine>
               <span>Premium</span>
             </HeadLine>
-          )}
+          )} */}
           <CardContent>
             <FlexSpace>
               <ContentLeft>
@@ -315,18 +340,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
             </FlexSpace>
             <FlexSpace>
               <ContentLeft>Deposit:</ContentLeft>
-              <ContentRight>
-                {/* <CardValue
-                bold
-                color=""
-                value={totalStaked}
-                decimals={0}
-                fontSize="60px"
-                text={pool.depositTokenSymbol}
-                fontWeight="600"
-              ></CardValue> */}
-                {pool.depositTokenSymbol}
-              </ContentRight>
+              <ContentRight>{pool.depositTokenSymbol}</ContentRight>
             </FlexSpace>
             <FlexSpace>
               <ContentLeft>APR:</ContentLeft>
@@ -353,18 +367,21 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
             </FlexSpace>
           </CardContent>
           {/* {poolDetail &&<BlockAction stakingData={poolDetail} pool={pool}/>}   */}
-          {poolDetail && !isLoading ? (
+          {poolDetail && !isLoading && !pool.inactive ? (
             chainId !== poolDetail.chainId ? (
               <Redirect to="/" />
             ) : (
-              <BlockAction stakingData={pool} pool={pool} />
+              <BlockAction
+                sortedRecentTransactions={sortedRecentTransactions}
+                userAmount={userAmount}
+                userRewardDebt={userRewardDebt}
+                stakingData={pool}
+                pool={pool}
+              />
             )
           ) : (
             <div></div>
           )}
-          {/* <BoxLink>
-            <Link to={`/PoolCardsDetail/${pool._id}`}>Join</Link>
-          </BoxLink> */}
         </BoxPool>
       </Col>
     </div>
@@ -445,7 +462,7 @@ const BoxPool = styled.div`
 `
 
 const CardContent = styled.div`
-  margin-top: 40px;
+  // margin-top: 40px;
   margin-bottom: 20px;
 `
 
