@@ -321,7 +321,7 @@ const Farms: React.FC = () => {
           {TranslateString(674, 'Farms')}
         </Heading>
         <Heading size="lg" color="#fff">
-          {TranslateString(999, 'Stake Liquidity Pool (LP) tokens to earn.')}
+          Provide a farming platform for any projects.<br/> Farms Stake Liquidity Pool (LP) tokens to earn.
         </Heading>
       </Header>
       
