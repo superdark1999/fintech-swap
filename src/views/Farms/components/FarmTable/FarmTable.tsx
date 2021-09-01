@@ -69,7 +69,7 @@ const Tab = styled.div`
   color: #fff;
 `
 
-const Item = styled.div`
+const Item = styled.td`
   padding-right: 32px;
 
   &:last-child {
@@ -112,7 +112,9 @@ const ArrowDown = styled.div`
   border-width: 6px 4px 0 4px;
   border-color: #8C8C8C transparent transparent transparent;
 `  
-
+const TableHeader = styled.tr`
+  color: white;
+`
 const FarmTable: React.FC<ITableProps> = (props) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const TranslateString = useI18n()
@@ -132,54 +134,59 @@ const FarmTable: React.FC<ITableProps> = (props) => {
 
       <TableContainer>
         <Tab>
-          <Item>
-            <Text>LP Tokens Name
-
-              <Arrow>
-                <ArrowUp></ArrowUp>
-                <ArrowDown></ArrowDown>
-              </Arrow>
-            </Text>
-          </Item>
-
-          <Item>
-            <Text>LP Platform
-              <Arrow>
-                <ArrowUp></ArrowUp>
-                <ArrowDown></ArrowDown>
-              </Arrow>
-            </Text>
-          </Item>
-
-          <Item>
-            <Text>Earned
-              <Arrow>
-                <ArrowUp></ArrowUp>
-                <ArrowDown></ArrowDown>
-              </Arrow>
-            </Text>
-          </Item>
-
-          <Item>
-            <Text>APR
-              <Arrow>
-                <ArrowUp></ArrowUp>
-                <ArrowDown></ArrowDown>
-              </Arrow>
-            </Text>
-          </Item>
-
-          <Item>
-            <Text>TLV
-              <Arrow>
-                <ArrowUp></ArrowUp>
-                <ArrowDown></ArrowDown>
-              </Arrow>
-            </Text>
-          </Item>
+          
         </Tab>
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
+            <thead>
+              <TableHeader>
+                <Item>
+                  <Text>LP Tokens Name
+
+                    <Arrow>
+                      <ArrowUp></ArrowUp>
+                      <ArrowDown></ArrowDown>
+                    </Arrow>
+                  </Text>
+                </Item>
+
+                <Item>
+                  <Text>LP Platform
+                    <Arrow>
+                      <ArrowUp></ArrowUp>
+                      <ArrowDown></ArrowDown>
+                    </Arrow>
+                  </Text>
+                </Item>
+
+                <Item>
+                  <Text>Earned
+                    <Arrow>
+                      <ArrowUp></ArrowUp>
+                      <ArrowDown></ArrowDown>
+                    </Arrow>
+                  </Text>
+                </Item>
+
+                <Item>
+                  <Text>APR
+                    <Arrow>
+                      <ArrowUp></ArrowUp>
+                      <ArrowDown></ArrowDown>
+                    </Arrow>
+                  </Text>
+                </Item>
+
+                <Item>
+                  <Text>TLV
+                    <Arrow>
+                      <ArrowUp></ArrowUp>
+                      <ArrowDown></ArrowDown>
+                    </Arrow>
+                  </Text>
+                </Item>
+              </TableHeader>
+            </thead>
             <TableBody>
               {rows.map((row) => {
                 return <Row {...row.original} key={`table-row-${row.id}`} />
