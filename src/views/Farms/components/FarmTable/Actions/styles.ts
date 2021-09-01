@@ -7,24 +7,20 @@ export const ActionContainer = styled.div`
   flex-grow: 1;
   flex-basis: 0;
   margin-bottom: 16px;
-
-  &.border-r {
-    border-right: 1px solid #8c8c8c;
-  }
   
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 12px;
+    // margin-left: 12px;
     margin-right: 12px;
     margin-bottom: 0;
-    max-height: 100px;
+    // max-height: 100px;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    margin-left: 48px;
+    // margin-left: 48px;
     margin-right: 0;
     margin-bottom: 0;
-    max-height: 100px;
+    // max-height: 100px;
   }
 `
 
@@ -46,6 +42,7 @@ export const ActionContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 20px;
 `
 export const Earned = styled.div`
   font-weight: 600;

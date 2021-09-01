@@ -65,6 +65,10 @@ const FarmMobileCell = styled.td`
   padding-top: 24px;
 `
 
+const BlockActionPanel = styled.tr`
+  border-bottom: 1px solid #444444;
+`
+
 const Row: React.FunctionComponent<RowProps> = (props) => {
   const { details } = props
   const [actionPanelToggled, setActionPanelToggled] = useState(false)
@@ -173,11 +177,11 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
     <>
       {handleRenderRow()}
       {actionPanelToggled && details && (
-        <tr>
-          <td colSpan={6}>
+        <BlockActionPanel>
+          <td colSpan={12}>
             <ActionPanel {...props} />
           </td>
-        </tr>
+        </BlockActionPanel>
       )}
     </>
   )
