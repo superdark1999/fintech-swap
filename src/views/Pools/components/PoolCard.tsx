@@ -34,7 +34,6 @@ interface PoolCardProps {
 }
 
 const areEqual = (prevProps, nextProps): any => {
-  console.log(prevProps.sortedRecentTransactions.length, nextProps.sortedRecentTransactions.length)
   // return JSON.stringify(prevProps.sortedRecentTransactions.length === nextProps.sortedRecentTransactions.length)
 }
 
@@ -67,15 +66,13 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
 
   const depositToggle = () => setDepositModal(!depositModal)
   const unStakeToggle = () => setWithdrawModel(!withdrawModal)
-  console.log('sortedRecentTransactions>>', sortedRecentTransactions)
-  const getStatus = (type) => {
-    const pending = sortedRecentTransactions
-      .filter((tx) => !tx.receipt)
-      .map((tx) => tx.hash && tx.attr1 === `${stakingData.stakingAddress}${type}`)
-    return !!pending.length
+  const getStatus = (str) => {
+    const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash && tx.attr1 === str)
+
+    return pending.find((x) => x)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }
-  // Pool Detail(s)
+
   const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
   const { listenApproveEvent, approve, allowance } = useUtilityToken(stakingData.depositTokenAddress)
@@ -152,7 +149,6 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
       color: #fff;
     }
   `
-
   return (
     <>
       <BoxAction>
@@ -168,10 +164,10 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
           ></CardValue>
           <Button
             onClick={() => handleHarvest('harvest')}
-            isLoading={() => getStatus('harvest')}
-            disabled={getStatus('harvest')}
+            isLoading={() => getStatus(`${stakingData?.stakingAddress}harvest`)}
+            disabled={getStatus(`${stakingData?.stakingAddress}harvest`)}
           >
-            {getStatus('harvest') && isHarvesting && spinnerIcon}
+            {getStatus(`${stakingData?.stakingAddress}harvest`) && spinnerIcon}
             Harvest
           </Button>
         </BlockSpace>
@@ -196,12 +192,12 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
             </Button>
           ) : (
             <Dflex>
-              <Button color="danger" onClick={unStakeToggle} disabled={getStatus('unstake')}>
-                {getStatus('unstake') && isUnStaking && spinnerIcon}
+              <Button color="danger" onClick={unStakeToggle} disabled={getStatus(`${stakingData?.stakingAddress}unstake`)}>
+                {getStatus(`${stakingData?.stakingAddress}unstake`) && isUnStaking && spinnerIcon}
                 UnStake
               </Button>
-              <Button color="danger" onClick={depositToggle} disabled={getStatus('deposit')}>
-                {getStatus('deposit') && isDepositing && spinnerIcon}
+              <Button color="danger" onClick={depositToggle} disabled={getStatus(`${stakingData?.stakingAddress}deposit`)}>
+                {getStatus(`${stakingData?.stakingAddress}deposit`) && isDepositing && spinnerIcon}
                 Deposit
               </Button>
             </Dflex>
@@ -226,6 +222,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
           addTransaction={addTransaction}
           userAmount={userAmount}
           setIsUnStaking={setIsUnStaking}
+          stakingData={stakingData}
           rewardTokenSymbol={stakingData.rewardTokenSymbol}
         />
       </BoxAction>
@@ -253,7 +250,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
     const txs = Object.values(allTransactions)
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
-  console.log('sortedRecentTransaction2s>>>',sortedRecentTransactions)
   const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
   useEffect(() => {
     const fetchStakingData = async () => {

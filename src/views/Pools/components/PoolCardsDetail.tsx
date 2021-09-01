@@ -1,25 +1,21 @@
-import React, {useState, useEffect, useMemo, useCallback} from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'
 import { useWeb3React } from '@web3-react/core'
 import { useParams, Redirect } from 'react-router-dom'
-import { Pool} from 'config/constants/types';
-import useGetStateData from 'hooks/useGetStakeData';
+import { Pool } from 'config/constants/types'
+import useGetStateData from 'hooks/useGetStakeData'
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
-import { useContract,  useStakingContract  } from 'hooks/useContract'
+import { useContract, useStakingContract } from 'hooks/useContract'
 import { useActiveWeb3React } from 'hooks'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
-import { BASE_API_ADMIN} from 'config';
-import { useHookPools } from '../Store';
+import { BASE_API_ADMIN } from 'config'
+import { useHookPools } from '../Store'
 
-
-import UnStakeModal from './UnStakeModal';
-import DepositModal from './DepositModal';
-import PoolCardDetails from './PoolCardDetails';
-
-
-
+import UnStakeModal from './UnStakeModal'
+import DepositModal from './DepositModal'
+import PoolCardDetails from './PoolCardDetails'
 
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
@@ -33,65 +29,53 @@ function FetchPoolData() {
   const param: any = useParams()
   const { chainId } = useActiveWeb3React()
 
-
-  const [state, actions] = useHookPools();
-  const [isLoading, setIsLoading] = useState(true);
-  const { poolDetail } = state;
+  const [state, actions] = useHookPools()
+  const [isLoading, setIsLoading] = useState(true)
+  const { poolDetail } = state
 
   useEffect(() => {
     const fetchPool = () => {
       actions.getPoolDetail(param.id).then(() => setIsLoading(false))
     }
 
-    fetchPool();
+    fetchPool()
   }, [actions, param.id])
 
-  if (poolDetail && !isLoading)
-    {
-      if (chainId !== poolDetail.chainId)
-        return <Redirect to="/" />
-      return <PoolCardsDetail stakingData={poolDetail}/>
-    }
-  return <div>
-    {/* <img src="./images/loading.gif" alt=''/> */}
-  </div>
+  if (poolDetail && !isLoading) {
+    if (chainId !== poolDetail.chainId) return <Redirect to="/" />
+    return <PoolCardsDetail stakingData={poolDetail} />
+  }
+  return <div>{/* <img src="./images/loading.gif" alt=''/> */}</div>
 }
 
 const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
-
-  const [depositModal, setDepositModal] = useState(false);
-  const [withdrawModal, setWithdrawModel] = useState(false);
-  const [isUnStaking, setIsUnStaking] = useState(false);
-  const [isDepositing, setIsDepositing] = useState(false);
-  const [isHarvesting, setIsHarvesting] = useState(false);
+  const [depositModal, setDepositModal] = useState(false)
+  const [withdrawModal, setWithdrawModel] = useState(false)
+  const [isUnStaking, setIsUnStaking] = useState(false)
+  const [isDepositing, setIsDepositing] = useState(false)
+  const [isHarvesting, setIsHarvesting] = useState(false)
   const { account } = useWeb3React()
 
-  const stakingContract = useStakingContract(stakingData?.stakingAddress);
-  const { userAmount, pendingReward} = useGetStateData(stakingData);
-
+  const stakingContract = useStakingContract(stakingData?.stakingAddress)
+  const { userAmount, pendingReward } = useGetStateData(stakingData)
 
   const addTransaction = useTransactionAdder()
-  const contract = useContract(stakingData?.stakingAddress,SMART_CHEF_ABI );
-  
-
+  const contract = useContract(stakingData?.stakingAddress, SMART_CHEF_ABI)
 
   useEffect(() => {
-    if (contract){
-      contract.on('Withdraw',  () => {
-        setIsUnStaking(false);
-
+    if (contract) {
+      contract.on('Withdraw', () => {
+        setIsUnStaking(false)
       })
-      contract.on('Deposit',  () => {
-        if (isDepositing)
-          setIsDepositing(false);
-        else
-          setIsHarvesting(false);
+      contract.on('Deposit', () => {
+        if (isDepositing) setIsDepositing(false)
+        else setIsHarvesting(false)
       })
     }
   }, [contract, isDepositing])
 
-  const depositToggle = () => setDepositModal(!depositModal);
-  const unStakeToggle = () => setWithdrawModel(!withdrawModal);
+  const depositToggle = () => setDepositModal(!depositModal)
+  const unStakeToggle = () => setWithdrawModel(!withdrawModal)
 
   const allTransactions = useAllTransactions()
 
@@ -100,12 +84,10 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
 
-  const getStatus = useCallback(() =>{
+  const getStatus = useCallback(() => {
     const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
     return !!pending.length
-
   }, [sortedRecentTransactions])
-
 
   return (
     <>
@@ -113,18 +95,18 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
         <BoxDetail>
           <BoxHead>
             <figure>
-              <img src={ BASE_API_ADMIN.concat('/') + stakingData.logo} alt=""/>
+              <img src={BASE_API_ADMIN.concat('/') + stakingData.logo} alt="" />
             </figure>
             <h2>{stakingData.name}</h2>
             <span>
-              Deposit <span className="token">{stakingData.depositTokenSymbol}</span> Tokens 
-              and earn <span className="token">{stakingData.rewardTokenSymbol}</span> Tokens
+              Deposit <span className="token">{stakingData.depositTokenSymbol}</span> Tokens and earn{' '}
+              <span className="token">{stakingData.rewardTokenSymbol}</span> Tokens
             </span>
           </BoxHead>
 
-          <PoolCardDetails 
-            userRewardDebt={pendingReward} 
-            userAmount={userAmount} 
+          <PoolCardDetails
+            userRewardDebt={pendingReward}
+            userAmount={userAmount}
             onUnStakeToggle={unStakeToggle}
             onDepositToggle={depositToggle}
             stakingContract={stakingContract}
@@ -138,14 +120,15 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
             setIsHarvesting={setIsHarvesting}
           />
 
-          <p className="line__bot"><img src="../images/icon-starts.png" alt=""/>
-          Every time you stake and unStake {stakingData.depositTokenSymbol} tokens,
-           the contract will automatically harvest {stakingData.rewardTokenSymbol} rewards for you!
+          <p className="line__bot">
+            <img src="../images/icon-starts.png" alt="" />
+            Every time you stake and unStake {stakingData.depositTokenSymbol} tokens, the contract will automatically
+            harvest {stakingData.rewardTokenSymbol} rewards for you!
           </p>
         </BoxDetail>
       </Page>
 
-      <DepositModal 
+      <DepositModal
         depositModal={depositModal}
         depositToggle={depositToggle}
         depositSymbol={stakingData.depositTokenSymbol}
@@ -156,8 +139,9 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
         setIsDepositing={setIsDepositing}
       />
 
-      <UnStakeModal 
-        withdrawModal={withdrawModal} 
+      <UnStakeModal
+        stakingData={stakingData}
+        withdrawModal={withdrawModal}
         unStakeToggle={unStakeToggle}
         stakingContract={stakingContract}
         addTransaction={addTransaction}
@@ -168,7 +152,6 @@ const PoolCardsDetail: React.FC<HarvestProps> = ({ stakingData }) => {
     </>
   )
 }
-
 
 const BoxHead = styled.div`
   display: flex;
@@ -205,8 +188,8 @@ const BoxHead = styled.div`
     color: #fff;
     font-size: 18px;
     line-height: 18px;
-    
-    .token{
+
+    .token {
       font-size: 22px;
       color: #f5c606;
     }
@@ -258,7 +241,7 @@ const BoxDetail = styled.div`
     }
 
     &__footer {
-      border-top: 1px solid #D8D8D8;
+      border-top: 1px solid #d8d8d8;
       padding-top: 20px;
       width: 100%;
       text-align: center;
@@ -273,7 +256,6 @@ const BoxDetail = styled.div`
         min-height: 40px;
         border-color: transparent;
         color: #2b2e2f;
-
 
         &:hover {
           opacity: 0.7;
@@ -297,7 +279,5 @@ const BoxDetail = styled.div`
     }
   }
 `
-
-
 
 export default FetchPoolData
