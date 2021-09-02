@@ -86,8 +86,6 @@ const Item = styled.td`
     }
   }
 
-
-
   &:last-child {
     padding-right: 0;
   }
@@ -175,6 +173,15 @@ const FarmTable: React.FC<ITableProps> = (props) => {
 
                 <Item>
                   <Text>LP Platform
+                    <Arrow>
+                      <ArrowUp></ArrowUp>
+                      <ArrowDown></ArrowDown>
+                    </Arrow>
+                  </Text>
+                </Item>
+
+                <Item>
+                  <Text>Bonus
                     <Arrow>
                       <ArrowUp></ArrowUp>
                       <ArrowDown></ArrowDown>
