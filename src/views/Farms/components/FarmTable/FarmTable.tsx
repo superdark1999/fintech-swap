@@ -75,7 +75,7 @@ const Tab = styled.div`
 `
 
 const Item = styled.td`
-  padding-right: 30px;
+  padding-right: 40px;
 
   &:first-of-type {
     padding-left: 18px;
@@ -84,6 +84,10 @@ const Item = styled.td`
     @media (min-width: 768px) {
       padding-left: 32px;
     }
+  }
+
+  &:nth-child(5) {
+    padding-left: 18px;
   }
 
   &:last-child {
@@ -182,10 +186,6 @@ const FarmTable: React.FC<ITableProps> = (props) => {
 
                 <Item>
                   <Text>Token
-                    <Arrow>
-                      <ArrowUp></ArrowUp>
-                      <ArrowDown></ArrowDown>
-                    </Arrow>
                   </Text>
                 </Item>
 
