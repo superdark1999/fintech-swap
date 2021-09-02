@@ -64,7 +64,7 @@ export const fetchFarmUserDataAsync = (account) => async (dispatch) => {
       earnings: userFarmEarnings[index],
     }
   })
-  console.log('arrayOfUserDataObjects', arrayOfUserDataObjects)
+  // console.log('arrayOfUserDataObjects', arrayOfUserDataObjects)
 
   dispatch(setFarmUserData({ arrayOfUserDataObjects }))
 }

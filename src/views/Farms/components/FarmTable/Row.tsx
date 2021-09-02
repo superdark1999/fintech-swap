@@ -23,6 +23,7 @@ export interface RowProps {
   liquidity: LiquidityProps
   platform: PlatformProps
   details: FarmWithStakedValue
+  type?: []
 }
 
 const cells = {

@@ -91,6 +91,7 @@ export interface FarmConfig {
     earnLabel: string
     endBlock: number
   }
+  type: string
 }
 export interface Pool {
   _id: string
