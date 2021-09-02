@@ -211,7 +211,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
       </ValueContainer>
       <ColContent span={24} md={6}>
         <BoxHead>
-          <Item>WAD Earned</Item>
+          <Item> Earned</Item>
         </BoxHead>
         <ActionContainer>
         <HarvestAction {...farm} />

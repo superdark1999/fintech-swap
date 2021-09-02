@@ -43,7 +43,8 @@ const ImgNFT = styled.img`
   height: 100px;
   padding: 10px;
   border-radius: 30px;
-  border: 2px solid #ffffff;
+  border: 2px solid #ffffff63;
+  opacity: 0.8;
 `
 const TitleNFT = styled(Title)`
  color: white;

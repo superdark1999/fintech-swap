@@ -20,7 +20,7 @@ import SMART_CHEF_ABI from 'config/abi/smartChef.json'
 
 import { AutoRenewIcon } from '@luckyswap/uikit'
 import { Pool } from 'config/constants/types'
-import ApyButton from 'views/Farms/components/FarmCard/ApyButton'
+import ApyButtonPool from 'views/Farms/components/FarmCard/ApyButtonPool'
 import { useHookPools } from '../Store'
 import CardValue from '../../Home/components/CardValue'
 import UnStakeModal from './UnStakeModal'
@@ -322,7 +322,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
 
     fetchPool()
   }, [actions, pool._id])
-
   // APR
   // const farmsLP = useFarms()
   return (
@@ -361,7 +360,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
             <FlexSpace>
               <ContentLeft>APR:</ContentLeft>
               <ContentRight>
-                <ApyButton />
+                <ApyButtonPool cakePrice={rewardTokenPrice} apy={parseFloat(apy)} />
                 <CardValue
                   bold
                   color=""

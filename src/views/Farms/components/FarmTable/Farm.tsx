@@ -24,7 +24,7 @@ const IconImage = styled(Image)`
 `
 
 const Container = styled.div`
-  padding-left: 16px;
+  padding-left: 12px;
   display: flex;
   align-items: center;
 

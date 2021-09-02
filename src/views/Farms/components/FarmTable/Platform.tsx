@@ -36,7 +36,7 @@ const Platform: React.FunctionComponent<PlatformProps> = () => {
   return (
     <Container>
       <LiquidityWrapper>
-        <Text>platform</Text>
+        <Text>HUT</Text>
       </LiquidityWrapper>
     </Container>
   )
