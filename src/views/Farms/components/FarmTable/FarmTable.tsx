@@ -172,7 +172,7 @@ const FarmTable: React.FC<ITableProps> = (props) => {
                 </Item>
 
                 <Item>
-                  <Text>LP Platform
+                  <Text>Bonus
                     <Arrow>
                       <ArrowUp></ArrowUp>
                       <ArrowDown></ArrowDown>
@@ -181,7 +181,7 @@ const FarmTable: React.FC<ITableProps> = (props) => {
                 </Item>
 
                 <Item>
-                  <Text>Bonus
+                  <Text>Token
                     <Arrow>
                       <ArrowUp></ArrowUp>
                       <ArrowDown></ArrowDown>
