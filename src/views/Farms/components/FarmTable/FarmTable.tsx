@@ -19,10 +19,15 @@ const Container = styled.div`
   box-shadow: 0px 0px 11px 0px rgb(16 16 16 / 57%);
   border-radius: 16px;
   margin: 16px 0px;
+  margin-bottom: 60px;
 `
 
 const TableWrapper = styled.div`
-  overflow: visible;
+  overflow: scroll;
+
+  @media (min-width: 768px) {
+    overflow: visible;
+  }
 
   &::-webkit-scrollbar {
     display: none;
@@ -70,7 +75,18 @@ const Tab = styled.div`
 `
 
 const Item = styled.td`
-  padding-right: 32px;
+  padding-right: 30px;
+
+  &:first-of-type {
+    padding-left: 18px;
+    padding-right: 0;
+
+    @media (min-width: 768px) {
+      padding-left: 32px;
+    }
+  }
+
+
 
   &:last-child {
     padding-right: 0;
@@ -81,7 +97,11 @@ const Text = styled.div`
   position: relative;
   width: fit-content;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 14px;
+
+  @media (min-width: 768px) {
+    font-size: 20px;
+  }
 `
 
 const Arrow = styled.div`
@@ -93,6 +113,10 @@ const Arrow = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `
 
 const ArrowUp = styled.div`
@@ -102,7 +126,6 @@ const ArrowUp = styled.div`
   border-width: 0 4px 6px 4px;
   border-color: transparent transparent #8C8C8C transparent;
   margin-bottom: 3px;
-  
 `  
 
 const ArrowDown = styled.div`
