@@ -126,11 +126,19 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
   }
 
   const BlockSpace = styled.div`
-    display: flex;
+    display: grid;
     flex-direction: column;
     font-size: 24px;
     color: white;
     text-align: center;
+    &.content-action{
+      flex-direction: unset !important;
+      grid-template-columns: repeat(2,1fr);
+      gap: 20px;
+      button{
+        margin: 0;
+      }
+    }
 
     button {
       background: #f5c606;
@@ -139,7 +147,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
       margin-top: 10px;
 
       &:hover {
-        background: #f5c606;
+        background: #f5c606 !important;
         border-color: transparent;
         opacity: 0.7;
       }
@@ -149,19 +157,31 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
       color: #fff;
     }
   `
+  const BoxValue = styled.div`
+    display: block;
+    margin: auto;
+  `
+  const Bold = styled.span`
+    font-weight: 800;
+    color: #dd5555;
+  `
+
   return (
     <>
       <BoxAction>
-        <Title>{pool.rewardTokenSymbol} EARNED</Title>
+        <Title>{pool.rewardTokenSymbol} <Bold> EARNED</Bold> </Title>
         <BlockSpace className="content-action">
-          <CardValue
-            bold
-            color=""
-            value={userRewardDebt.div(1e18).toNumber()}
-            decimals={2}
-            fontSize="10px"
-            fontWeight="1000"
-          ></CardValue>
+          <BoxValue>
+            <CardValue
+              bold
+              color=""
+              value={userRewardDebt.div(1e18).toNumber()}
+              decimals={2}
+              fontSize="10px"
+              fontWeight="1000"
+            ></CardValue>
+          </BoxValue>
+          
           <Button
             onClick={() => handleHarvest('harvest')}
             isLoading={() => getStatus(`${stakingData?.stakingAddress}harvest`)}
@@ -173,7 +193,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
         </BlockSpace>
       </BoxAction>
       <BoxAction>
-        <Title>{pool.depositTokenSymbol} STAKED</Title>
+        <Title>{pool.depositTokenSymbol}<Bold> STAKED</Bold></Title>
         <BlockSpace>
           <h3 className="content__title">
             <CardValue
@@ -464,11 +484,11 @@ const CardContent = styled.div`
 
 const Title = styled.div`
   color: #fff;
-  font-size: 16px;
+  font-size: 19px;
   line-height: 12px;
   font-weight: 600;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 `
 
 const FlexSpace = styled.div`

@@ -44,6 +44,7 @@ export const getFarmConfig = async () => {
       lpSymbol: farmConfig.lpSymbol,
       lpAddresses: farmConfig.lpAddresses,
       token,
+      type: farmConfig.type,
       quoteToken: farmConfig.quoteToken as Token,
     }
     farms.push(parsedFarmConfig)
