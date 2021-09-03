@@ -124,54 +124,13 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
       if (!tx) setIsHarvesting(false)
     }
   }
-
-  const BlockSpace = styled.div`
-    display: grid;
-    flex-direction: column;
-    font-size: 24px;
-    color: white;
-    text-align: center;
-    &.content-action{
-      flex-direction: unset !important;
-      grid-template-columns: repeat(2,1fr);
-      gap: 20px;
-      button{
-        margin: 0;
-      }
-    }
-
-    button {
-      background: #f5c606;
-      border-color: transparent;
-      color: #2b2e2f;
-      margin-top: 10px;
-
-      &:hover {
-        background: #f5c606 !important;
-        border-color: transparent;
-        opacity: 0.7;
-      }
-    }
-
-    .content__title {
-      color: #fff;
-    }
-  `
-  const BoxValue = styled.div`
-    display: block;
-    margin: auto;
-  `
-  const Bold = styled.span`
-    font-weight: 800;
-    color: #dd5555;
-  `
-
+  
   return (
     <>
       <BoxAction>
         <Title>{pool.rewardTokenSymbol} <Bold> EARNED</Bold> </Title>
-        <BlockSpace className="content-action">
-          <BoxValue>
+        {/* <BlockSpace className="content-action"> */}
+          <h3 className="content__title">
             <CardValue
               bold
               color=""
@@ -180,7 +139,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
               fontSize="10px"
               fontWeight="1000"
             ></CardValue>
-          </BoxValue>
+          </h3>
           
           <Button
             onClick={() => handleHarvest('harvest')}
@@ -190,11 +149,11 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
             {getStatus(`${stakingData?.stakingAddress}harvest`) && spinnerIcon}
             Harvest
           </Button>
-        </BlockSpace>
+        {/* </BlockSpace> */}
       </BoxAction>
       <BoxAction>
         <Title>{pool.depositTokenSymbol}<Bold> STAKED</Bold></Title>
-        <BlockSpace>
+        {/* <BlockSpace> */}
           <h3 className="content__title">
             <CardValue
               bold
@@ -222,7 +181,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
               </Button>
             </Dflex>
           )}
-        </BlockSpace>
+        {/* </BlockSpace> */}
 
         <DepositModal
           depositModal={depositModal}
@@ -440,8 +399,71 @@ const NoFee = styled.div`
   }
 `
 const BoxAction = styled.div`
-  margin-bottom: 15px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  display: grid;
+  grid-gap: 7px 20px;
+  text-align: center;
+  grid-template-columns: repeat(6,1fr);
+  .content__title {
+    font-size: 19px;
+    font-weight: 600;
+    color: #fff;
+    grid-column: 5/ 7;
+  }
+  button {
+    grid-column: 1 / 7;
+    background: #f5c606;
+      border-color: transparent;
+      color: #2b2e2f;
+      margin-top: 10px;
+
+      &:hover {
+        background: #f5c606 !important;
+        border-color: transparent;
+        opacity: 0.7;
+      }
+  }
+
 `
+const BlockSpace = styled.div`
+    display: grid;
+    flex-direction: column;
+    font-size: 24px;
+    color: white;
+    text-align: center;
+    &.content-action{
+      flex-direction: unset !important;
+      grid-template-columns: repeat(2,1fr);
+      gap: 20px;
+      button{
+        margin: 0;
+      }
+    }
+
+    button {
+      background: #f5c606;
+      border-color: transparent;
+      color: #2b2e2f;
+      margin-top: 10px;
+
+      &:hover {
+        background: #f5c606 !important;
+        border-color: transparent;
+        opacity: 0.7;
+      }
+    }
+
+    
+  `
+  const BoxValue = styled.div`
+    display: block;
+    margin: auto;
+  `
+  const Bold = styled.span`
+    font-weight: 800;
+    color: #dd5555;
+  `
 const HeadLine = styled.div`
   background: linear-gradient(90deg, rgba(239, 186, 12, 1) 0%, rgba(251, 219, 59, 1) 100%);
   width: 100%;
@@ -478,16 +500,16 @@ const BoxPool = styled.div`
 
 const CardContent = styled.div`
   // margin-top: 40px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `
 
 const Title = styled.div`
   color: #fff;
   font-size: 19px;
-  line-height: 12px;
   font-weight: 600;
   text-align: center;
-  margin-bottom: 16px;
+  grid-column: 1 / 5;
+  text-align: left;
 `
 
 const FlexSpace = styled.div`
@@ -577,10 +599,13 @@ const BoxLink = styled.div`
 `
 
 const Dflex = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
   grid-gap: 20px;
-
+  grid-column: 1 / 7;
+  display: flex;
+  justify-content: space-between;
+  button{
+    width: 100%;
+  }
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }
