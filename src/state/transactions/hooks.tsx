@@ -13,6 +13,7 @@ import { TransactionDetails } from './reducer'
 export function useTransactionAdder(): (
   response: TransactionResponse,
   customData?: {
+    attr1?: string
     summary?: string
     approval?: { tokenAddress: string; spender: string }
     approvalNFT?: {
@@ -32,7 +33,9 @@ export function useTransactionAdder(): (
         summary,
         approval,
         approvalNFT,
+        attr1,
       }: {
+        attr1?: string
         summary?: string
         approval?: { tokenAddress: string; spender: string }
         approvalNFT?: {
@@ -49,8 +52,8 @@ export function useTransactionAdder(): (
       if (!hash) {
         throw Error('No transaction hash found.')
       }
-
-      dispatch(addTransaction({ hash, from: account, chainId, approval, summary, approvalNFT }))
+      console.log('>>>>>',{ hash, attr1, from: account, chainId, approval, summary, approvalNFT })
+      dispatch(addTransaction({ hash, attr1, from: account, chainId, approval, summary, approvalNFT }))
     },
     [dispatch, chainId, account],
   )

@@ -23,6 +23,7 @@ export interface RowProps {
   liquidity: LiquidityProps
   platform: PlatformProps
   details: FarmWithStakedValue
+  type?: []
 }
 
 const cells = {
@@ -36,7 +37,7 @@ const cells = {
 }
 
 const CellInner = styled.div`
-  padding: 24px 0px;
+  padding: 24px 0px 24px 10px;
   display: flex;
   width: 100%;
   align-items: center;
@@ -63,6 +64,10 @@ const AprMobileCell = styled.td`
 
 const FarmMobileCell = styled.td`
   padding-top: 24px;
+`
+
+const BlockActionPanel = styled.tr`
+  border-bottom: 1px solid #444444;
 `
 
 const Row: React.FunctionComponent<RowProps> = (props) => {
@@ -173,11 +178,11 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
     <>
       {handleRenderRow()}
       {actionPanelToggled && details && (
-        <tr>
-          <td colSpan={6}>
+        <BlockActionPanel>
+          <td colSpan={12}>
             <ActionPanel {...props} />
           </td>
-        </tr>
+        </BlockActionPanel>
       )}
     </>
   )

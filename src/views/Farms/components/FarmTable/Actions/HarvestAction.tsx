@@ -79,7 +79,7 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
             await _onReward()
             setPendingTx(false)
           }}
-          ml="4px"
+          mb="10px"
         >
           {TranslateString(562, 'Harvest')}
         </Button>

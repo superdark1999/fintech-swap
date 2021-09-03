@@ -142,6 +142,8 @@ const Farms: React.FC = () => {
 
   const isActive = !pathname.includes('history')
 
+  // farmsLP = farmsLP.filter((farm) => farm.type === type)
+
 
   const [activeTab, setActiveTab] = useState('1');
 
@@ -150,6 +152,8 @@ const Farms: React.FC = () => {
   }
 
   const activeFarms = farmsLP.filter((farm) => farm.multiplier !== '0X')
+
+  // console.log("---data table:", farmsLP)
   const inactiveFarms = farmsLP.filter((farm) => farm.multiplier === '0X')
 
   const stakedOnlyFarms = activeFarms.filter(
@@ -226,7 +230,7 @@ const Farms: React.FC = () => {
     const tokenAddress = token.address
     const quoteTokenAddress = quoteToken.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
-
+    // console.log("------farm", farm.type)
     const row: RowProps = {
       apr: {
         value: farm.apy && farm.apy.toLocaleString('en-US', { maximumFractionDigits: 2 }),
@@ -256,15 +260,18 @@ const Farms: React.FC = () => {
         multiplier: farm.multiplier,
       },
       details: farm,
+      type: farm.type
     }
 
     return row
   })
 
-  const renderContent = (): JSX.Element => {
+  const renderContent = (type:any): JSX.Element => {
+    // console.log("-------", rowData[0].type)
+    // rowData = 
     if (viewMode === ViewMode.TABLE && rowData.length) {
       const columnSchema = DesktopColumnSchema
-
+      const data = rowData.filter((farm) => farm.type === type)
       const columns = columnSchema.map((column) => ({
         id: column.id,
         name: column.name,
@@ -288,7 +295,7 @@ const Farms: React.FC = () => {
         sortable: column.sortable,
       }))
 
-      return <Table data={rowData} columns={columns} />
+      return <Table data={data} columns={columns} />
     }
 
     return (
@@ -400,15 +407,16 @@ const Farms: React.FC = () => {
             </FilterContainer>
 
             <TabPane tabId="1">
-              {renderContent()}
+              
+            {renderContent("space-hunter")}
             </TabPane>
 
             <TabPane tabId="2">
-
+            {renderContent("luckyswap")}
             </TabPane>
 
             <TabPane tabId="3">
-
+              {renderContent("other")}
             </TabPane>
           </TabContent>
         </ControlContainer>

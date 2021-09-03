@@ -6,12 +6,14 @@ import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { communityFarms } from 'config/constants'
 import { CommunityTag, CoreTag, DualTag } from 'components/Tags'
-
+import {Row, Col} from 'antd'
 import HarvestAction from './HarvestAction'
 import StakedAction from './StakedAction'
+import StakedNFTAction from './StakedNFTAction'
 import Apr, { AprProps } from '../Apr'
 import Multiplier, { MultiplierProps } from '../Multiplier'
 import Liquidity, { LiquidityProps } from '../Liquidity'
+
 
 export interface ActionPanelProps {
   apr: AprProps
@@ -20,16 +22,21 @@ export interface ActionPanelProps {
   details: FarmWithStakedValue
 }
 
-const Container = styled.div`
+const Container = styled(Row)`
   background-color: transparent !important;
   display: flex;
   width: 100%;
   flex-direction: column-reverse;
   padding: 24px;
 
+  // display: grid;
+  // grid-template-columns: repeat(4,1fr);
+  justify-self: center;
+  text-align: center;
+
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: 16px 32px;
+    padding: 16px 20px;
     background-color: transparent !important;
   }
 `
@@ -74,6 +81,15 @@ const TagsContainer = styled.div`
 const ActionContainer = styled.div`
   display: flex;
   flex-direction: column;
+  border-left: 1px solid #8c8c8c;
+  min-height: 140px;
+  justify-content: center;
+  @media (max-width: 576px) {
+    border-left: unset;
+  }
+  // &:not(:last-child) {
+  //   border-left: 1px solid #8c8c8c;
+  // }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
@@ -85,7 +101,6 @@ const ActionContainer = styled.div`
 
 const InfoContainer = styled.div`
   min-width: 200px;
-  border-right: 1px solid #8c8c8c;
 `
 
 const ValueContainer = styled.div`
@@ -108,16 +123,26 @@ const BoxHead = styled.div`
   background-color: #444444;
   color: #8c8c8c;
   padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: block;
+  // grid-template-columns: repeat(4, 1fr);
   justify-self: center;
   text-align: center;
   font-size: 20px;
   font-weight: 500;
+  margin-bottom: 15px;
 `
 
 const Item = styled.div`
-
+`
+const ColContent = styled(Col)`
+  // & > div:nth-child(2){
+  //   border-right: 1px solid #8c8c8c;
+  // }
+  // @media (max-width: 576px) {
+  //   border-right: unset;
+  // }
+`
+const StakedYourNFT = styled.div`
 `
 
 const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, multiplier, liquidity }) => {
@@ -138,14 +163,19 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
 
   return (
     <>
-    <BoxHead>
+    {/* <BoxHead>
       <Item>Infomation</Item>
       <Item>WAD Earned</Item>
       <Item>Farming</Item>
-    </BoxHead>
+      <Item>Your NFT</Item>
+    </BoxHead> */}
 
     <Container>
-      <InfoContainer>
+      <ColContent span={24} md={6}>
+        <BoxHead>
+          <Item>Infomation</Item>
+        </BoxHead>
+        <InfoContainer>
         {isActive && (
           <StakeContainer>
             <StyledLinkExternal href={`https://luckyswap.finance/#/add/${liquidityUrlPathParts}`}>
@@ -163,6 +193,8 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
         </TagsContainer>
       </InfoContainer>
 
+      </ColContent>
+      
       <ValueContainer>
         <ValueWrapper>
           <Text>{TranslateString(736, 'APR')}</Text>
@@ -177,11 +209,35 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
           <Liquidity {...liquidity} />
         </ValueWrapper>
       </ValueContainer>
-      
-      <ActionContainer>
+      <ColContent span={24} md={6}>
+        <BoxHead>
+          <Item> Earned</Item>
+        </BoxHead>
+        <ActionContainer>
         <HarvestAction {...farm} />
-        <StakedAction {...farm} />
       </ActionContainer>
+      </ColContent>
+      
+      <ColContent span={24} md={5}>
+        <BoxHead>
+          <Item>Farming</Item>
+        </BoxHead>
+        <ActionContainer>
+          <StakedAction {...farm} />
+      </ActionContainer>
+      </ColContent>
+      
+      <ColContent span={24} md={7}>
+        <BoxHead>
+          <Item>Your NFT</Item>
+        </BoxHead>
+        <ActionContainer>
+          <StakedNFTAction {...farm} />
+        {/* <StakedYourNFT>
+          
+        </StakedYourNFT> */}
+        </ActionContainer>
+      </ColContent>
     </Container>
     </>
   )

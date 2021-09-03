@@ -21,6 +21,7 @@ const useUtilityToken = (tokenAddress) => {
     await contract.approve(address, ethers.constants.MaxUint256).then(async (response) => {
       addTransaction(response, {
         summary: 'Approve successfully!',
+        attr1: address,
       })
     })
   }

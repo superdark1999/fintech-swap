@@ -28,7 +28,6 @@
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
     "@binance-chain/bsc-connector": "^1.0.0",
-    "@bscsswap/uikit": "0.14.4",
     "@crowdin/crowdin-api-client": "^1.10.4",
     "@ethersproject/abi": "^5.0.7",
     "@luckyswap/uikit": "^0.14.12",

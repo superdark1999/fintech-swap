@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
 import styled from 'styled-components'
@@ -13,30 +14,31 @@ import useUtilityToken from 'hooks/useUtilityToken'
 import { LUCKY_PER_BLOCK, BASE_API_ADMIN } from 'config'
 import { useActiveWeb3React } from 'hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
-import { useContract,  useStakingContract  } from 'hooks/useContract'
+import { useContract, useStakingContract } from 'hooks/useContract'
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
 
 import { AutoRenewIcon } from '@luckyswap/uikit'
 import { Pool } from 'config/constants/types'
-import ApyButton from 'views/Farms/components/FarmCard/ApyButton'
-import { useHookPools } from '../Store';
+import ApyButtonPool from 'views/Farms/components/FarmCard/ApyButtonPool'
+import { useHookPools } from '../Store'
 import CardValue from '../../Home/components/CardValue'
-import UnStakeModal from './UnStakeModal';
-import DepositModal from './DepositModal';
-
-
+import UnStakeModal from './UnStakeModal'
+import DepositModal from './DepositModal'
 
 interface PoolCardProps {
   stakingData?: Pool
   pool?: Pool
+  userRewardDebt?: any
+  userAmount?: any
 }
-const BlockAction:React.FC<PoolCardProps> = ({ stakingData, pool }) => {
-  
-  //-------
-  function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
-    return b.addedTime - a.addedTime
-  }
+
+const areEqual = (prevProps, nextProps): any => {
+  // return JSON.stringify(prevProps.sortedRecentTransactions.length === nextProps.sortedRecentTransactions.length)
+}
+
+const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, userAmount, stakingData, pool }: any) => {
+  // console.log('sortedRecentTransactions', sortedRecentTransactions)
 
   const [depositModal, setDepositModal] = useState(false)
   const [withdrawModal, setWithdrawModel] = useState(false)
@@ -46,7 +48,6 @@ const BlockAction:React.FC<PoolCardProps> = ({ stakingData, pool }) => {
   const { account } = useWeb3React()
 
   const stakingContract = useStakingContract(stakingData?.stakingAddress)
-  const { userAmount, userRewardDebt } = useGetStateData(stakingData)
 
   const addTransaction = useTransactionAdder()
   const contract = useContract(stakingData?.stakingAddress, SMART_CHEF_ABI)
@@ -65,25 +66,17 @@ const BlockAction:React.FC<PoolCardProps> = ({ stakingData, pool }) => {
 
   const depositToggle = () => setDepositModal(!depositModal)
   const unStakeToggle = () => setWithdrawModel(!withdrawModal)
+  const getStatus = (str) => {
+    const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash && tx.attr1 === str)
 
-  const allTransactions = useAllTransactions()
+    return pending.find((x) => x)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }
 
-  const sortedRecentTransactions = useMemo(() => {
-    const txs = Object.values(allTransactions)
-    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
-  }, [allTransactions])
-
-  const getStatus = useCallback(() => {
-    const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
-    return !!pending.length
-  }, [sortedRecentTransactions])
-  
-
-  // Pool Detail(s)
   const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
   const { listenApproveEvent, approve, allowance } = useUtilityToken(stakingData.depositTokenAddress)
-  const [isApproved, setIsApproved] = useState(false)
+  const [amountAllowance, setAmountAllowance] = useState('0')
   const [isApproving, setIsApproving] = useState(false)
 
   useEffect(() => {
@@ -91,23 +84,24 @@ const BlockAction:React.FC<PoolCardProps> = ({ stakingData, pool }) => {
       const data = await allowance(account, stakingData.stakingAddress).catch((error) =>
         console.log('allowance error: ', error),
       )
-      if (data) setIsApproved(data.toString() !== '0')
+      setAmountAllowance(data)
     }
-    if (account) {
+    if (account && stakingData.stakingAddress) {
       fetchApproval()
     }
-  }, [account, allowance, stakingData.stakingAddress])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, stakingData.stakingAddress])
 
-  useEffect(() => {
-    listenApproveEvent(() => setIsApproved(true))
-  }, [listenApproveEvent])
+  // useEffect(() => {
+  //   listenApproveEvent(() => setAmountAllowance('0'))
+  // }, [listenApproveEvent])
 
   const handleApprove = async () => {
     setIsApproving(true)
     await approve(stakingData.stakingAddress)
   }
 
-  const handleHarvest = async () => {
+  const handleHarvest = async (type) => {
     if (stakingContract) {
       setIsHarvesting(true)
       const args = [new BigNumber(0).times(new BigNumber(10).pow(18)).toString()]
@@ -115,12 +109,12 @@ const BlockAction:React.FC<PoolCardProps> = ({ stakingData, pool }) => {
         .deposit(...args)
         .catch(() => console.log('Fails harvest'))
         .catch(() => console.log('Fail estimate gas'))
-
       const tx = await stakingContract
         .deposit(...args, { gasLimit: gasAm })
         .then((response: any) => {
           addTransaction(response, {
             summary: 'Harvest successfully!',
+            attr1: `${stakingData.stakingAddress}${type}`,
           })
         })
         .catch((error: any) => {
@@ -130,124 +124,130 @@ const BlockAction:React.FC<PoolCardProps> = ({ stakingData, pool }) => {
       if (!tx) setIsHarvesting(false)
     }
   }
-
-  const BlockSpace = styled.div`
-    display: flex;
-    flex-direction: column;
-    font-size: 24px;
-    color: white;
-    text-align: center;
-
-    button{
-      background: #f5c606;
-      border-color: transparent;
-      color: #2b2e2f;
-      margin-top: 10px;
-
-      &:hover {
-        background: #f5c606;
-        border-color: transparent;
-        opacity: 0.7;
-      }
-    }
-
-    .content__title {
-      color: #fff;
-    }
-  `
-
+  
   return (
     <>
       <BoxAction>
-            <Title>{pool.rewardTokenSymbol} EARNED</Title>
-            <BlockSpace className="content-action">
-              <CardValue
-                bold
-                color=""
-                value={userRewardDebt.div(1e18).toNumber()}
-                decimals={2}
-                fontSize="10px"
-                fontWeight="1000"
-              ></CardValue>
-              <Button
-                color="danger"
-                onClick={handleHarvest}
-                isLoading={isHarvesting}
-                disabled={getStatus() || isHarvesting}
-              >
-                {getStatus() && isHarvesting && spinnerIcon}
-                Harvest
+        <Title>{pool.rewardTokenSymbol} <Bold> EARNED</Bold> </Title>
+        {/* <BlockSpace className="content-action"> */}
+          <h3 className="content__title">
+            <CardValue
+              bold
+              color=""
+              value={userRewardDebt.div(1e18).toNumber()}
+              decimals={2}
+              fontSize="10px"
+              fontWeight="1000"
+            ></CardValue>
+          </h3>
+          
+          <Button
+            onClick={() => handleHarvest('harvest')}
+            isLoading={() => getStatus(`${stakingData?.stakingAddress}harvest`)}
+            disabled={getStatus(`${stakingData?.stakingAddress}harvest`)}
+          >
+            {getStatus(`${stakingData?.stakingAddress}harvest`) && spinnerIcon}
+            Harvest
+          </Button>
+        {/* </BlockSpace> */}
+      </BoxAction>
+      <BoxAction>
+        <Title>{pool.depositTokenSymbol}<Bold> STAKED</Bold></Title>
+        {/* <BlockSpace> */}
+          <h3 className="content__title">
+            <CardValue
+              bold
+              color="#fff"
+              value={userAmount.div(1e18).toNumber()}
+              decimals={2}
+              fontSize="10px"
+              fontWeight="1000"
+            ></CardValue>
+          </h3>
+          {amountAllowance.toString() === '0' ? (
+            <Button color="danger" onClick={handleApprove} isLoading={isApproving} disabled={isApproving}>
+              {isApproving && spinnerIcon}
+              Approve
+            </Button>
+          ) : (
+            <Dflex>
+              <Button color="danger" onClick={unStakeToggle} disabled={getStatus(`${stakingData?.stakingAddress}unstake`)}>
+                {getStatus(`${stakingData?.stakingAddress}unstake`) && isUnStaking && spinnerIcon}
+                UnStake
               </Button>
-            </BlockSpace>
-          </BoxAction>
-          <BoxAction>
-            <Title>{pool.depositTokenSymbol} STAKED</Title>
-            <BlockSpace>
-              <h3 className="content__title">
-              <CardValue
-                bold
-                color="#fff"
-                value={userAmount.div(1e18).toNumber()}
-                decimals={2}
-                fontSize="10px"
-                fontWeight="1000"
-              ></CardValue>
-              </h3>
-              {!isApproved ? (
-                <Button color="danger" onClick={handleApprove} isLoading={isApproving} disabled={isApproving}>
-                  {isApproving && spinnerIcon}
-                  Approve
-                </Button>
-              ) : (
-                <Dflex>
-                  <Button color="danger" onClick={unStakeToggle} disabled={getStatus()}>
-                    {getStatus() && isUnStaking && spinnerIcon}
-                    UnStake
-                  </Button>
-                  <Button color="danger" onClick={depositToggle} disabled={getStatus()}>
-                    {getStatus() && isDepositing && spinnerIcon}
-                    Deposit
-                  </Button>
-                </Dflex>
-              )}
-            </BlockSpace>
+              <Button color="danger" onClick={depositToggle} disabled={getStatus(`${stakingData?.stakingAddress}deposit`)}>
+                {getStatus(`${stakingData?.stakingAddress}deposit`) && isDepositing && spinnerIcon}
+                Deposit
+              </Button>
+            </Dflex>
+          )}
+        {/* </BlockSpace> */}
 
-      <DepositModal 
-        depositModal={depositModal}
-        depositToggle={depositToggle}
-        depositSymbol={stakingData.depositTokenSymbol}
-        stakingContract={stakingContract}
-        addTransaction={addTransaction}
-        account={account}
-        stakingData={stakingData}
-        setIsDepositing={setIsDepositing}
-      />
+        <DepositModal
+          depositModal={depositModal}
+          depositToggle={depositToggle}
+          depositSymbol={stakingData.depositTokenSymbol}
+          stakingContract={stakingContract}
+          addTransaction={addTransaction}
+          account={account}
+          stakingData={stakingData}
+          setIsDepositing={setIsDepositing}
+        />
 
-      <UnStakeModal 
-        withdrawModal={withdrawModal} 
-        unStakeToggle={unStakeToggle}
-        stakingContract={stakingContract}
-        addTransaction={addTransaction}
-        userAmount={userAmount}
-        setIsUnStaking={setIsUnStaking}
-        rewardTokenSymbol={stakingData.rewardTokenSymbol}
-      />
-          </BoxAction>
+        <UnStakeModal
+          withdrawModal={withdrawModal}
+          unStakeToggle={unStakeToggle}
+          stakingContract={stakingContract}
+          addTransaction={addTransaction}
+          userAmount={userAmount}
+          setIsUnStaking={setIsUnStaking}
+          stakingData={stakingData}
+          rewardTokenSymbol={stakingData.rewardTokenSymbol}
+        />
+      </BoxAction>
     </>
   )
-}
+}, areEqual)
 
 const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
-  const { chainId } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
+  const [userAmount, setAmount] = useState(new BigNumber(0))
+  const [userRewardDebt, setUserRewardDebt] = useState(new BigNumber(0))
 
   const [apy, setApy] = useState('0')
   const [totalStaked, setTotalStaked] = useState(0)
-  // const { userRewardDebt } = useGetStateData(pool)
   const { balanceOf } = useUtilityToken(pool.depositTokenAddress)
   const rewardTokenPrice = usePriceLuckyBusd()
   const stakingTokenPrice = useLucky2Price()
+  const contract = useStakingContract(pool.stakingAddress)
 
-  
+  const allTransactions = useAllTransactions()
+  function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
+    return b.addedTime - a.addedTime
+  }
+  const sortedRecentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions)
+    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
+  }, [allTransactions])
+  const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+  useEffect(() => {
+    const fetchStakingData = async () => {
+      if (contract && account) {
+        try {
+          const amount: any = await contract.userInfo(account).catch((error) => {
+            console.log('error userAmount')
+          })
+          setAmount(new BigNumber(amount.amount._hex))
+          setUserRewardDebt(new BigNumber(amount.rewardDebt._hex))
+        } catch (error) {
+          setAmount(new BigNumber(0))
+          setUserRewardDebt(new BigNumber(0))
+        }
+      }
+    }
+    fetchStakingData()
+  }, [account, contract, !!pending.length])
+
   useEffect(() => {
     const fetchTotalStaked = async () => {
       if (balanceOf) {
@@ -271,30 +271,27 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
 
   // Pool Detail
   const [state, actions] = useHookPools()
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true)
   const { poolDetail } = state
   useEffect(() => {
-    console.log("-----fetchPol")
+    console.log('-----fetchPol')
     const fetchPool = () => {
       actions.getPoolDetail(pool._id).then(() => setIsLoading(false))
     }
 
     fetchPool()
   }, [actions, pool._id])
-
   // APR
-  const farmsLP = useFarms()
-  
-  
+  // const farmsLP = useFarms()
   return (
     <div>
       <Col>
         <BoxPool>
-          {pool.isPremium && (
+          {/* {pool.isPremium && (
             <HeadLine>
               <span>Premium</span>
             </HeadLine>
-          )}
+          )} */}
           <CardContent>
             <FlexSpace>
               <ContentLeft>
@@ -306,34 +303,23 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
                 <h2 className="name_pool">{pool.name}</h2>
                 <BotRight>
                   <NoFee>
-                  <svg viewBox="0 0 24 24" color="text" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M23 12L20.56 9.21L20.9 5.52L17.29 4.7L15.4 1.5L12 2.96L8.6 1.5L6.71 4.69L3.1 5.5L3.44 9.2L1 12L3.44 14.79L3.1 18.49L6.71 19.31L8.6 22.5L12 21.03L15.4 22.49L17.29 19.3L20.9 18.48L20.56 14.79L23 12ZM9.38 16.01L7 13.61C6.61 13.22 6.61 12.59 7 12.2L7.07 12.13C7.46 11.74 8.1 11.74 8.49 12.13L10.1 13.75L15.25 8.59C15.64 8.2 16.28 8.2 16.67 8.59L16.74 8.66C17.13 9.05 17.13 9.68 16.74 10.07L10.82 16.01C10.41 16.4 9.78 16.4 9.38 16.01Z"></path></svg>
-                  No Fees
+                    <svg viewBox="0 0 24 24" color="text" width="20px" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M23 12L20.56 9.21L20.9 5.52L17.29 4.7L15.4 1.5L12 2.96L8.6 1.5L6.71 4.69L3.1 5.5L3.44 9.2L1 12L3.44 14.79L3.1 18.49L6.71 19.31L8.6 22.5L12 21.03L15.4 22.49L17.29 19.3L20.9 18.48L20.56 14.79L23 12ZM9.38 16.01L7 13.61C6.61 13.22 6.61 12.59 7 12.2L7.07 12.13C7.46 11.74 8.1 11.74 8.49 12.13L10.1 13.75L15.25 8.59C15.64 8.2 16.28 8.2 16.67 8.59L16.74 8.66C17.13 9.05 17.13 9.68 16.74 10.07L10.82 16.01C10.41 16.4 9.78 16.4 9.38 16.01Z"></path>
+                    </svg>
+                    No Fees
                   </NoFee>
-                  <Factor>
-                    2X
-                  </Factor>
+                  <Factor>2X</Factor>
                 </BotRight>
               </ContentRight>
             </FlexSpace>
             <FlexSpace>
               <ContentLeft>Deposit:</ContentLeft>
-              <ContentRight>
-                {/* <CardValue
-                bold
-                color=""
-                value={totalStaked}
-                decimals={0}
-                fontSize="60px"
-                text={pool.depositTokenSymbol}
-                fontWeight="600"
-              ></CardValue> */}
-                {pool.depositTokenSymbol}
-              </ContentRight>
+              <ContentRight>{pool.depositTokenSymbol}</ContentRight>
             </FlexSpace>
             <FlexSpace>
               <ContentLeft>APR:</ContentLeft>
               <ContentRight>
-                <ApyButton/>
+                <ApyButtonPool cakePrice={rewardTokenPrice} apy={parseFloat(apy)} />
                 <CardValue
                   bold
                   color=""
@@ -343,7 +329,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
                   text="%"
                   fontWeight="600"
                 ></CardValue>
-                
               </ContentRight>
             </FlexSpace>
             <FlexSpace>
@@ -356,15 +341,21 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
             </FlexSpace>
           </CardContent>
           {/* {poolDetail &&<BlockAction stakingData={poolDetail} pool={pool}/>}   */}
-          {poolDetail && !isLoading && !pool.inactive ?
-          (chainId !== poolDetail.chainId ? <Redirect to="/" />
-          : 
-           (<BlockAction stakingData={poolDetail} pool={pool}/>)
-          )
-          :<div></div>}
-          {/* <BoxLink>
-            <Link to={`/PoolCardsDetail/${pool._id}`}>Join</Link>
-          </BoxLink> */}
+          {poolDetail && !isLoading && !pool.inactive ? (
+            chainId !== poolDetail.chainId ? (
+              <Redirect to="/" />
+            ) : (
+              <BlockAction
+                sortedRecentTransactions={sortedRecentTransactions}
+                userAmount={userAmount}
+                userRewardDebt={userRewardDebt}
+                stakingData={pool}
+                pool={pool}
+              />
+            )
+          ) : (
+            <div></div>
+          )}
         </BoxPool>
       </Col>
     </div>
@@ -402,14 +393,77 @@ const NoFee = styled.div`
   padding: 0px 8px;
   white-space: nowrap;
   margin-right: 10px;
-  svg{
+  svg {
     margin-right: 2px;
     fill: #6ad2a8;
   }
 `
 const BoxAction = styled.div`
-  margin-bottom: 15px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  display: grid;
+  grid-gap: 7px 20px;
+  text-align: center;
+  grid-template-columns: repeat(6,1fr);
+  .content__title {
+    font-size: 19px;
+    font-weight: 600;
+    color: #fff;
+    grid-column: 5/ 7;
+  }
+  button {
+    grid-column: 1 / 7;
+    background: #f5c606;
+      border-color: transparent;
+      color: #2b2e2f;
+      margin-top: 10px;
+
+      &:hover {
+        background: #f5c606 !important;
+        border-color: transparent;
+        opacity: 0.7;
+      }
+  }
+
 `
+const BlockSpace = styled.div`
+    display: grid;
+    flex-direction: column;
+    font-size: 24px;
+    color: white;
+    text-align: center;
+    &.content-action{
+      flex-direction: unset !important;
+      grid-template-columns: repeat(2,1fr);
+      gap: 20px;
+      button{
+        margin: 0;
+      }
+    }
+
+    button {
+      background: #f5c606;
+      border-color: transparent;
+      color: #2b2e2f;
+      margin-top: 10px;
+
+      &:hover {
+        background: #f5c606 !important;
+        border-color: transparent;
+        opacity: 0.7;
+      }
+    }
+
+    
+  `
+  const BoxValue = styled.div`
+    display: block;
+    margin: auto;
+  `
+  const Bold = styled.span`
+    font-weight: 800;
+    color: #dd5555;
+  `
 const HeadLine = styled.div`
   background: linear-gradient(90deg, rgba(239, 186, 12, 1) 0%, rgba(251, 219, 59, 1) 100%);
   width: 100%;
@@ -445,17 +499,17 @@ const BoxPool = styled.div`
 `
 
 const CardContent = styled.div`
-  margin-top: 40px;
-  margin-bottom: 20px;
+  // margin-top: 40px;
+  margin-bottom: 30px;
 `
 
 const Title = styled.div`
   color: #fff;
-  font-size: 16px;
-  line-height: 12px;
+  font-size: 19px;
   font-weight: 600;
   text-align: center;
-  margin-bottom: 10px;
+  grid-column: 1 / 5;
+  text-align: left;
 `
 
 const FlexSpace = styled.div`
@@ -483,12 +537,12 @@ const ContentRight = styled.div`
     text-transform: uppercase;
   }
 
-  button{
+  button {
     height: 16px;
     margin-top: -1px;
   }
 
-  &.block{
+  &.block {
     display: block;
   }
 `
@@ -545,10 +599,13 @@ const BoxLink = styled.div`
 `
 
 const Dflex = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
   grid-gap: 20px;
-
+  grid-column: 1 / 7;
+  display: flex;
+  justify-content: space-between;
+  button{
+    width: 100%;
+  }
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }
