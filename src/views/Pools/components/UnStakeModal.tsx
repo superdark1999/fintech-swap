@@ -20,7 +20,7 @@ export default function UnStakeModal({
       unStakeToggle()
       const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
       const gasAm = await stakingContract.estimateGas.deposit(...args).catch(() => console.log('Fail estimate gas'))
-
+      console.log('args', args)
       stakingContract
         .withdraw(...args, { gasLimit: gasAm })
         .then((response: any) => {

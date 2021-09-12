@@ -11,7 +11,7 @@ interface PoolCardsProps {
 }
 
 const PoolCards: React.FC<PoolCardsProps> = memo(({ pools, activeTab }) => {
-  console.log('pools>>>', pools)
+  // console.log('pools>>>', pools)
   return (
     <>
       <div>
@@ -119,7 +119,7 @@ const Boxbtn = styled.div`
   }
 `
 function areEqual(prevProps, nextProps): any {
-  return  JSON.stringify(prevProps.pools) === JSON.stringify(nextProps.pools)
+  return JSON.stringify(prevProps.pools) === JSON.stringify(nextProps.pools)
 }
 
 export default React.memo(PoolCards, areEqual)
