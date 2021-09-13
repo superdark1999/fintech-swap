@@ -21,19 +21,22 @@ export const useTicketLotteryV2 = () => {
       }
     })
     const fetchTickets = async () => {
-      const userInfoForLottery = await lotteryV2Contract.viewUserInfoForLotteryId(account, currentLotteryId, 0, 10000)
-      const tempTickets = []
-      for (let i = 0; i < userInfoForLottery[0].length; i++) {
-        const ticket = {
-          ticketId: userInfoForLottery[0][i]?.toNumber(),
-          ticketNumber: userInfoForLottery[1][i],
-          status: userInfoForLottery[2][i],
+      try {
+        const userInfoForLottery = await lotteryV2Contract.viewUserInfoForLotteryId(account, currentLotteryId, 0, 10000)
+        const tempTickets = []
+        for (let i = 0; i < userInfoForLottery[0].length; i++) {
+          const ticket = {
+            ticketId: userInfoForLottery[0][i]?.toNumber(),
+            ticketNumber: userInfoForLottery[1][i],
+            status: userInfoForLottery[2][i],
+          }
+
+          tempTickets.push(ticket)
         }
-
-        tempTickets.push(ticket)
+        setTickets(tempTickets)
+      } catch (error) {
+        console.log('error fetchTicket', error)
       }
-
-      setTickets(tempTickets)
     }
     if (account && currentLotteryId && lotteryV2Contract) fetchTickets()
   }, [account, currentLotteryId, dispatch, lotteryV2Contract])
