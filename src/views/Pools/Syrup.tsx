@@ -27,25 +27,28 @@ const Farm: React.FC = () => {
   const { currentBlock } = useBlock()
   const [state, actions] = useHookPools()
   const { pools } = state
-  
 
   chainId = chainId || 56
 
-  activePools = pools.filter(p => p.chainId === chainId && !p.inactive);
-  inactivePools = pools.filter(p =>p.chainId === chainId && p.inactive)
+  activePools = pools.filter((p) => p.chainId === chainId && !p.inactive)
+  inactivePools = pools.filter((p) => p.chainId === chainId && p.inactive)
 
-  pools.sort((a, b) => (!a.isPremium && b.isPremium)? 1 : -1)
-  // console.log("-----pools", pools)
+  // activePools.sort((a, b) => (!a.isPremium && b.isPremium ? 1 : -1))
   useEffect(() => {
     const fetchPools = () => {
       actions.getPools()
-      
     }
 
     fetchPools()
   }, [chainId, actions, activeTab])
 
-  if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET && chainId !== ChainId.MATIC && chainId !== ChainId.MATIC_TESTNET ) {
+  if (
+    chainId &&
+    chainId !== ChainId.BSCTESTNET &&
+    chainId !== ChainId.MAINNET &&
+    chainId !== ChainId.MATIC &&
+    chainId !== ChainId.MATIC_TESTNET
+  ) {
     return <Redirect to="/" />
   }
 
@@ -83,7 +86,7 @@ const Farm: React.FC = () => {
       {/* <Divider /> */}
       <NavBar activeTab={activeTab} toggle={toggle} />
       <PoolCards pools={activePools} activeTab={activeTab} />
-      <PoolCardsInactive pools={inactivePools} activeTab={activeTab}/>
+      <PoolCardsInactive pools={inactivePools} activeTab={activeTab} />
       <FlexLayout>
         {/* <Route exact path={`${path}`}>
           <>
