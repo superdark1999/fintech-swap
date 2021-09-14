@@ -7,11 +7,11 @@ import { Link, useParams, Redirect } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useGetStateData from 'hooks/useGetStakeData'
 
-import { useFarms, usePriceLuckyBusd, useLucky2Price } from 'state/hooks'
+import { useBlock, usePriceLuckyBusd, useLucky2Price } from 'state/hooks'
 import { getPoolApy } from 'utils/apy'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useUtilityToken from 'hooks/useUtilityToken'
-import { LUCKY_PER_BLOCK, BASE_API_ADMIN } from 'config'
+import { LUCKY_PER_BLOCK, BASE_API_ADMIN, BSC_BLOCK_TIME } from 'config'
 import { useActiveWeb3React } from 'hooks'
 import { useCurrentTime } from 'hooks/useTimer'
 import { TransactionDetails } from 'state/transactions/reducer'
@@ -30,22 +30,26 @@ interface PoolCardProps {
   userRewardDebt?: any
   userAmount?: any
 }
+
 const getTimeRemain = (endTime: Date) => {
   const now = new Date()
   if (now.getTime() > endTime.getTime()) {
     endTime.setDate(endTime.getDate() + 1)
   }
   const remain = (endTime.getTime() - now.getTime()) / 1000
-  const hh = pad(Math.floor((remain / 60 / 60) % 60))
+  const dd = pad(Math.floor(remain / 86400))
+  const hh = pad(Math.floor((remain / 60 / 60) % 24))
   const mm = pad(Math.floor((remain / 60) % 60))
   const ss = pad(Math.floor(remain % 60))
 
-  return `${hh}h: ${mm}m: ${ss}s`
+  return [dd, hh, mm, ss]
 }
 
 function pad(num) {
   return '0'.concat(num.toString()).substr(-2)
 }
+
+const finishMessage = 'Finished'
 
 const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   const { account, chainId } = useActiveWeb3React()
@@ -53,6 +57,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   const [userRewardDebt, setUserRewardDebt] = useState(new BigNumber(0))
   const [unStakingFee, setUnStakingFee] = useState('0')
   const [remainBlockTime, setRemainBlockTime] = useState('')
+  const [rewardEndTime, setRewardEndTime] = useState('')
 
   const [apy, setApy] = useState('0')
   const [totalStaked, setTotalStaked] = useState(0)
@@ -60,6 +65,8 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   const rewardTokenPrice = usePriceLuckyBusd()
   const stakingTokenPrice = useLucky2Price()
   const contract = useStakingContract(pool.stakingAddress)
+
+  const { currentBlock } = useBlock()
 
   const allTransactions = useAllTransactions()
   function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
@@ -70,8 +77,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
   const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
-
-  const currentMillis = useCurrentTime()
 
   useEffect(() => {
     const fetchStakingData = async () => {
@@ -96,12 +101,12 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   }, [account, contract, !!pending.length])
 
   useEffect(() => {
-    let idInterval
-    const timeRemain = (endTime) => {
+    let idIntervalEndBlockTime
+    const timeRemainBlockToken = (endTime) => {
       const endDate = new Date(endTime)
-      setRemainBlockTime(getTimeRemain(endDate))
+      const [dd, hh, mm, ss] = getTimeRemain(endDate)
+      setRemainBlockTime(`${pad(hh)}h: ${pad(mm)}m: ${pad(ss)}s`)
     }
-
     const fetchStakingData = async () => {
       if (contract && account) {
         try {
@@ -111,8 +116,9 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
 
           const endTime = userInfo.withdrawTime.toNumber() * 1000
           const now = new Date()
+
           if (now.getTime() > endTime) setRemainBlockTime('0s')
-          else idInterval = setInterval(() => timeRemain(endTime), 1000)
+          else idIntervalEndBlockTime = setInterval(() => timeRemainBlockToken(endTime), 1000)
         } catch (error) {
           console.log('error fetchStakingData', error)
         }
@@ -120,7 +126,40 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
     }
     fetchStakingData()
 
-    return () => clearInterval(idInterval)
+    return () => {
+      clearInterval(idIntervalEndBlockTime)
+    }
+  }, [account, contract, !!pending.length])
+
+  useEffect(() => {
+    let idIntervalPoolEndTime
+
+    const timeRemainEarn = (endTime) => {
+      const endDate = new Date(endTime)
+      const [dd, hh, mm] = getTimeRemain(endDate)
+      setRewardEndTime(`${pad(dd)}d: ${pad(hh)}h: ${pad(mm)}m`)
+    }
+
+    const fetchStakingData = async () => {
+      if (contract && account && currentBlock !== 0) {
+        try {
+          const bonusEndBlock: any = await contract.bonusEndBlock().catch((error) => {
+            console.log('error bonusEndBlock')
+          })
+          const timeRemain = (bonusEndBlock.toNumber() - currentBlock) * BSC_BLOCK_TIME
+          const now = new Date()
+          if (timeRemain < 0) setRewardEndTime(finishMessage)
+          else idIntervalPoolEndTime = setInterval(() => timeRemainEarn(now.getTime() + timeRemain * 1000), 1000)
+        } catch (error) {
+          console.log('error fetchStakingData', error)
+        }
+      }
+    }
+    fetchStakingData()
+
+    return () => {
+      clearInterval(idIntervalPoolEndTime)
+    }
   }, [account, contract, !!pending.length])
 
   useEffect(() => {
@@ -211,8 +250,12 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
               <ContentRight>{unStakingFee}%</ContentRight>
             </FlexSpace>
             <FlexSpace>
-              <ContentLeft>Rewards end in:</ContentLeft>
+              <ContentLeft>Block time:</ContentLeft>
               <ContentRight>{remainBlockTime}</ContentRight>
+            </FlexSpace>
+            <FlexSpace>
+              <ContentLeft>Rewards end in:</ContentLeft>
+              <ContentRight>{rewardEndTime}</ContentRight>
             </FlexSpace>
           </CardContent>
           {/* {poolDetail &&<BlockAction stakingData={poolDetail} pool={pool}/>}   */}
