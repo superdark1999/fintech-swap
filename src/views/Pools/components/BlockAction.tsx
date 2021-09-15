@@ -158,7 +158,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
         ) : (
           <Dflex>
             <Button
-              color="danger"
+              // color="danger"
               onClick={unStakeToggle}
               disabled={!account || isUnStaking || getStatus(`${stakingData?.stakingAddress}unstake`)}
             >
@@ -166,7 +166,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
               UnStake
             </Button>
             <Button
-              color="danger"
+              // color="danger"
               onClick={depositToggle}
               disabled={!account || isDepositing || getStatus(`${stakingData?.stakingAddress}deposit`)}
             >
@@ -227,6 +227,14 @@ const BoxAction = styled.div`
       background: #f5c606 !important;
       border-color: transparent;
       opacity: 0.7;
+    }
+    &:focus {
+      grid-column: 1 / 7;
+      background: #f5c606;
+      border-color: transparent !important;
+      color: #2b2e2f;
+      margin-top: 10px;
+      box-shadow: 0 0 0 0.25rem #2a2a2a !important;
     }
   }
 `
