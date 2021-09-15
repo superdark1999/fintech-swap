@@ -18,7 +18,7 @@ const areEqual = (prevProps, nextProps): any => {
   // return JSON.stringify(prevProps.sortedRecentTransactions.length === nextProps.sortedRecentTransactions.length)
 }
 
-const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, userAmount, stakingData, pool }: any) => {
+const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userAmount, stakingData, pool }: any) => {
   // console.log('sortedRecentTransactions', sortedRecentTransactions)
 
   const [depositModal, setDepositModal] = useState(false)
@@ -117,7 +117,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
           <CardValue
             bold
             color=""
-            value={userRewardDebt.div(1e18).toNumber()}
+            value={pendingReward.div(1e18).toNumber()}
             decimals={2}
             fontSize="10px"
             fontWeight="1000"

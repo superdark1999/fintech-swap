@@ -53,7 +53,7 @@ const finishMessage = 'Finished'
 
 const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   const { account, chainId } = useActiveWeb3React()
-  const [userAmount, setAmount] = useState(new BigNumber(0))
+  // const [userAmount, setAmount] = useState(new BigNumber(0))
   const [userRewardDebt, setUserRewardDebt] = useState(new BigNumber(0))
   const [unStakingFee, setUnStakingFee] = useState('0')
   const [remainBlockTime, setRemainBlockTime] = useState('')
@@ -65,6 +65,8 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   const rewardTokenPrice = usePriceLuckyBusd()
   const stakingTokenPrice = useLucky2Price()
   const contract = useStakingContract(pool.stakingAddress)
+
+  const { userAmount, pendingReward } = useGetStateData(pool)
 
   const { currentBlock } = useBlock()
 
@@ -89,10 +91,10 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
           const percentFee = fee.toNumber() / 100
 
           setUnStakingFee(percentFee.toString())
-          setAmount(new BigNumber(userInfo.amount._hex))
+          // setAmount(new BigNumber(userInfo.amount._hex))
           setUserRewardDebt(new BigNumber(userInfo.rewardDebt._hex))
         } catch (error) {
-          setAmount(new BigNumber(0))
+          // setAmount(new BigNumber(0))
           setUserRewardDebt(new BigNumber(0))
         }
       }
@@ -266,7 +268,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
               <BlockAction
                 sortedRecentTransactions={sortedRecentTransactions}
                 userAmount={userAmount}
-                userRewardDebt={userRewardDebt}
+                pendingReward={pendingReward}
                 stakingData={pool}
                 pool={pool}
               />
