@@ -31,11 +31,11 @@ const Farm: React.FC = () => {
 
   chainId = chainId || 56
 
-  activePools = pools.filter(p => p.chainId === chainId && !p.inactive);
+  activePools = pools.filter(p => p.chainId === chainId);
   inactivePools = pools.filter(p =>p.chainId === chainId && p.inactive)
 
   pools.sort((a, b) => (!a.isPremium && b.isPremium)? 1 : -1)
-  // console.log("-----pools", pools)
+  
   useEffect(() => {
     const fetchPools = () => {
       actions.getPools()
@@ -52,7 +52,7 @@ const Farm: React.FC = () => {
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab)
   }
-
+  // console.log("activeTab", activeTab)
   // const [stakedOnly, setStakedOnly] = useState(false)
 
   // const [finishedPools, openPools] = useMemo(
@@ -81,9 +81,7 @@ const Farm: React.FC = () => {
       </Hero> */}
       {/* <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} /> */}
       {/* <Divider /> */}
-      <NavBar activeTab={activeTab} toggle={toggle} />
-      <PoolCards pools={activePools} activeTab={activeTab} />
-      <PoolCardsInactive pools={inactivePools} activeTab={activeTab}/>
+      <NavBar activeTab={activeTab} toggle={toggle} pools={activePools}/>
       <FlexLayout>
         {/* <Route exact path={`${path}`}>
           <>

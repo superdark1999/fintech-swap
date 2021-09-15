@@ -171,7 +171,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
     </BoxHead> */}
 
     <Container>
-      <ColContent span={24} md={6}>
+      <ColContent span={24} md={farm.type == "space-hunter" ? 6 : 8}>
         <BoxHead>
           <Item>Infomation</Item>
         </BoxHead>
@@ -209,7 +209,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
           <Liquidity {...liquidity} />
         </ValueWrapper>
       </ValueContainer>
-      <ColContent span={24} md={6}>
+      <ColContent span={24} md={farm.type == "space-hunter" ? 6 : 8}>
         <BoxHead>
           <Item> Earned</Item>
         </BoxHead>
@@ -218,7 +218,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
       </ActionContainer>
       </ColContent>
       
-      <ColContent span={24} md={5}>
+      <ColContent span={24} md={farm.type == "space-hunter" ? 5 : 8}>
         <BoxHead>
           <Item>Farming</Item>
         </BoxHead>
@@ -227,7 +227,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
       </ActionContainer>
       </ColContent>
       
-      <ColContent span={24} md={7}>
+      <ColContent span={farm.type == "space-hunter" ? 24 : 0} md={farm.type == "space-hunter" ? 7 : 0}>
         <BoxHead>
           <Item>Your NFT</Item>
         </BoxHead>

@@ -150,7 +150,7 @@ const Farms: React.FC = () => {
   const toggle = tab => {
     if(activeTab !== tab) setActiveTab(tab);
   }
-
+  // console.log("activeTab", activeTab)
   const activeFarms = farmsLP.filter((farm) => farm.multiplier !== '0X')
 
   // console.log("---data table:", farmsLP)
@@ -272,6 +272,7 @@ const Farms: React.FC = () => {
     if (viewMode === ViewMode.TABLE && rowData.length) {
       const columnSchema = DesktopColumnSchema
       const data = rowData.filter((farm) => farm.type === type)
+      // console.log("-----dataFarm", data)
       const columns = columnSchema.map((column) => ({
         id: column.id,
         name: column.name,
