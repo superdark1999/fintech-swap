@@ -127,7 +127,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
         <Button
           onClick={() => handleHarvest('harvest')}
           isLoading={() => getStatus(`${stakingData?.stakingAddress}harvest`)}
-          disabled={getStatus(`${stakingData?.stakingAddress}harvest`)}
+          disabled={!account || getStatus(`${stakingData?.stakingAddress}harvest`)}
         >
           {getStatus(`${stakingData?.stakingAddress}harvest`) && spinnerIcon}
           Harvest
@@ -151,7 +151,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
           ></CardValue>
         </h3>
         {amountAllowance.toString() === '0' ? (
-          <Button color="danger" onClick={handleApprove} isLoading={isApproving} disabled={isApproving}>
+          <Button color="danger" onClick={handleApprove} isLoading={isApproving} disabled={!account || isApproving}>
             {isApproving && spinnerIcon}
             Approve
           </Button>
@@ -160,7 +160,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
             <Button
               color="danger"
               onClick={unStakeToggle}
-              disabled={getStatus(`${stakingData?.stakingAddress}unstake`)}
+              disabled={!account || getStatus(`${stakingData?.stakingAddress}unstake`)}
             >
               {getStatus(`${stakingData?.stakingAddress}unstake`) && isUnStaking && spinnerIcon}
               UnStake
@@ -168,7 +168,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
             <Button
               color="danger"
               onClick={depositToggle}
-              disabled={getStatus(`${stakingData?.stakingAddress}deposit`)}
+              disabled={!account || getStatus(`${stakingData?.stakingAddress}deposit`)}
             >
               {getStatus(`${stakingData?.stakingAddress}deposit`) && isDepositing && spinnerIcon}
               Deposit
