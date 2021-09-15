@@ -38,6 +38,7 @@ export default function UnStakeModal({
         })
         .catch((error: any) => {
           console.log(error)
+          setIsUnStaking(false)
         })
     }
   }

@@ -79,7 +79,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
 
   const handleApprove = async () => {
     setIsApproving(true)
-    await approve(stakingData.stakingAddress)
+    await approve(stakingData.stakingAddress).catch((error) => setIsApproving(false))
   }
 
   const handleHarvest = async (type) => {
@@ -127,7 +127,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
         <Button
           onClick={() => handleHarvest('harvest')}
           isLoading={() => getStatus(`${stakingData?.stakingAddress}harvest`)}
-          disabled={!account || getStatus(`${stakingData?.stakingAddress}harvest`)}
+          disabled={!account || isHarvesting || getStatus(`${stakingData?.stakingAddress}harvest`)}
         >
           {getStatus(`${stakingData?.stakingAddress}harvest`) && spinnerIcon}
           Harvest
@@ -160,7 +160,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
             <Button
               color="danger"
               onClick={unStakeToggle}
-              disabled={!account || getStatus(`${stakingData?.stakingAddress}unstake`)}
+              disabled={!account || isUnStaking || getStatus(`${stakingData?.stakingAddress}unstake`)}
             >
               {getStatus(`${stakingData?.stakingAddress}unstake`) && isUnStaking && spinnerIcon}
               UnStake
@@ -168,7 +168,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
             <Button
               color="danger"
               onClick={depositToggle}
-              disabled={!account || getStatus(`${stakingData?.stakingAddress}deposit`)}
+              disabled={!account || isDepositing || getStatus(`${stakingData?.stakingAddress}deposit`)}
             >
               {getStatus(`${stakingData?.stakingAddress}deposit`) && isDepositing && spinnerIcon}
               Deposit

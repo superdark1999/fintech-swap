@@ -63,6 +63,7 @@ const DepositModal: React.FC<DepositModalProp> = ({
         })
         .catch((error: any) => {
           console.log(error)
+          setIsDepositing(false)
         })
     }
   }
