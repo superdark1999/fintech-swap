@@ -29,6 +29,7 @@ const DepositModal: React.FC<DepositModalProp> = ({
 }) => {
   const [balance, setBalance] = useState(0)
   const [value, setValue] = useState('')
+  const [balanceError, setBalanceError] = useState('')
   const { balanceOf, approve, allowance } = useUtilityToken(stakingData.depositTokenAddress)
 
   useEffect(() => {
@@ -38,6 +39,11 @@ const DepositModal: React.FC<DepositModalProp> = ({
     }
     if (account) fetchBalance()
   }, [account, balanceOf])
+
+  useEffect(() => {
+    if (parseInt(value) > balance) setBalanceError('Exceed amount of balance')
+    else setBalanceError('')
+  }, [value, balance])
 
   const handleDeposit = async () => {
     if (stakingContract) {
@@ -94,6 +100,7 @@ const DepositModal: React.FC<DepositModalProp> = ({
               </BoxButton>
             </BoxLink>
           </BoxInput>
+          <Error>{balanceError}</Error>
         </ModalBody>
 
         <ModalFooter>
@@ -103,7 +110,11 @@ const DepositModal: React.FC<DepositModalProp> = ({
             </Button>
           </CancelButton>
           <DepositButton>
-            <Button color="primary" onClick={handleDeposit} disabled={value === '' || value === '0'}>
+            <Button
+              color="primary"
+              onClick={handleDeposit}
+              disabled={value === '' || value === '0' || balanceError !== ''}
+            >
               Deposit
             </Button>
           </DepositButton>
@@ -197,6 +208,10 @@ const BoxButton = styled.div`
     padding: 0px 10px;
     height: 40px;
   }
+`
+
+const Error = styled.div`
+  color: red;
 `
 const DepositButton = styled.div`
   button {
