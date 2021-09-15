@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
+import { AutoRenewIcon } from '@luckyswap/uikit'
 import styled from 'styled-components'
-import classnames from 'classnames'
 import { Link, useParams, Redirect } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
-import useGetStateData from 'hooks/useGetStakeData'
 
+import { useWeb3NoAccount } from 'utils/web3'
+import useGetStateData from 'hooks/useGetStakeData'
 import { useBlock, usePriceLuckyBusd, useLucky2Price } from 'state/hooks'
 import { getPoolApy } from 'utils/apy'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -30,6 +31,8 @@ interface PoolCardProps {
   userRewardDebt?: any
   userAmount?: any
 }
+
+const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
 const getTimeRemain = (endTime: Date) => {
   const now = new Date()
@@ -69,6 +72,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   const { userAmount, pendingReward } = useGetStateData(pool)
 
   const { currentBlock } = useBlock()
+  const web3NoAccount = useWeb3NoAccount()
 
   const allTransactions = useAllTransactions()
   function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
@@ -148,6 +152,8 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
           const bonusEndBlock: any = await contract.bonusEndBlock().catch((error) => {
             console.log('error bonusEndBlock')
           })
+
+          const blockNumber = web3NoAccount && (await web3NoAccount.eth.getBlockNumber())
           const timeRemain = (bonusEndBlock.toNumber() - currentBlock) * BSC_BLOCK_TIME
           const now = new Date()
           if (timeRemain < 0) setRewardEndTime(finishMessage)
@@ -162,7 +168,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
     return () => {
       clearInterval(idIntervalPoolEndTime)
     }
-  }, [account, contract, !!pending.length])
+  }, [account, contract, !!pending.length, currentBlock])
 
   useEffect(() => {
     const fetchTotalStaked = async () => {
@@ -257,7 +263,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
             </FlexSpace>
             <FlexSpace>
               <ContentLeft>Rewards end in:</ContentLeft>
-              <ContentRight>{rewardEndTime}</ContentRight>
+              <ContentRight>{currentBlock !== 0 ? rewardEndTime : spinnerIcon}</ContentRight>
             </FlexSpace>
           </CardContent>
           {/* {poolDetail &&<BlockAction stakingData={poolDetail} pool={pool}/>}   */}
