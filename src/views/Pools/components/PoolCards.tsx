@@ -11,9 +11,7 @@ interface PoolCardsProps {
 }
 
 const PoolCards: React.FC<PoolCardsProps> = ({ pools, activeTab }) => {
-  console.log('pools>>>', pools)
   const inactivePools = pools.filter(p =>  p.inactive)
-  console.log("-----pools", inactivePools, activeTab)
   return (
     <>
       <TabContent activeTab={activeTab}>
@@ -37,7 +35,7 @@ const PoolCards: React.FC<PoolCardsProps> = ({ pools, activeTab }) => {
 }
 
 function areEqual(prevProps, nextProps): any {
-  return  JSON.stringify(prevProps.pools) === JSON.stringify(nextProps.pools)
+  return JSON.stringify(prevProps.pools) === JSON.stringify(nextProps.pools)
 }
 
 export default React.memo(PoolCards, areEqual)

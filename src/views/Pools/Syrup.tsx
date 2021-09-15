@@ -10,16 +10,12 @@ import { useBlock } from 'state/hooks'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '../../hooks/index'
 import NavBar from './components/NavBar'
-import PoolCards from './components/PoolCards'
-import PoolCardsInactive from './components/PoolCardsInactive'
 
 import { useHookPools } from './Store'
 
 const Farm: React.FC = () => {
   const [activeTab, setActiveTab] = useState('1')
   let { chainId } = useActiveWeb3React()
-  let activePools = []
-  let inactivePools = []
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const { account } = useWeb3React()
@@ -27,25 +23,28 @@ const Farm: React.FC = () => {
   const { currentBlock } = useBlock()
   const [state, actions] = useHookPools()
   const { pools } = state
-  
 
   chainId = chainId || 56
 
-  activePools = pools.filter(p => p.chainId === chainId);
-  inactivePools = pools.filter(p =>p.chainId === chainId && p.inactive)
+  const dataPools = pools.filter(p => p.chainId === chainId);
 
   pools.sort((a, b) => (!a.isPremium && b.isPremium)? 1 : -1)
   
   useEffect(() => {
     const fetchPools = () => {
       actions.getPools()
-      
     }
 
     fetchPools()
   }, [chainId, actions, activeTab])
 
-  if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET && chainId !== ChainId.MATIC && chainId !== ChainId.MATIC_TESTNET ) {
+  if (
+    chainId &&
+    chainId !== ChainId.BSCTESTNET &&
+    chainId !== ChainId.MAINNET &&
+    chainId !== ChainId.MATIC &&
+    chainId !== ChainId.MATIC_TESTNET
+  ) {
     return <Redirect to="/" />
   }
 
@@ -81,7 +80,7 @@ const Farm: React.FC = () => {
       </Hero> */}
       {/* <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} /> */}
       {/* <Divider /> */}
-      <NavBar activeTab={activeTab} toggle={toggle} pools={activePools}/>
+      <NavBar activeTab={activeTab} toggle={toggle} pools={dataPools}/>
       <FlexLayout>
         {/* <Route exact path={`${path}`}>
           <>
