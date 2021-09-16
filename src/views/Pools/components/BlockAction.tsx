@@ -18,7 +18,7 @@ const areEqual = (prevProps, nextProps): any => {
   // return JSON.stringify(prevProps.sortedRecentTransactions.length === nextProps.sortedRecentTransactions.length)
 }
 
-const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, userAmount, stakingData, pool }: any) => {
+const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userAmount, stakingData, pool }: any) => {
   // console.log('sortedRecentTransactions', sortedRecentTransactions)
 
   const [depositModal, setDepositModal] = useState(false)
@@ -79,7 +79,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
 
   const handleApprove = async () => {
     setIsApproving(true)
-    await approve(stakingData.stakingAddress)
+    await approve(stakingData.stakingAddress).catch((error) => setIsApproving(false))
   }
 
   const handleHarvest = async (type) => {
@@ -117,7 +117,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
           <CardValue
             bold
             color=""
-            value={userRewardDebt.div(1e18).toNumber()}
+            value={pendingReward.div(1e18).toNumber()}
             decimals={2}
             fontSize="10px"
             fontWeight="1000"
@@ -127,7 +127,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
         <Button
           onClick={() => handleHarvest('harvest')}
           isLoading={() => getStatus(`${stakingData?.stakingAddress}harvest`)}
-          disabled={getStatus(`${stakingData?.stakingAddress}harvest`)}
+          disabled={!account || isHarvesting || getStatus(`${stakingData?.stakingAddress}harvest`)}
         >
           {getStatus(`${stakingData?.stakingAddress}harvest`) && spinnerIcon}
           Harvest
@@ -151,24 +151,24 @@ const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, user
           ></CardValue>
         </h3>
         {amountAllowance.toString() === '0' ? (
-          <Button color="danger" onClick={handleApprove} isLoading={isApproving} disabled={isApproving}>
+          <Button color="danger" onClick={handleApprove} isLoading={isApproving} disabled={!account || isApproving}>
             {isApproving && spinnerIcon}
             Approve
           </Button>
         ) : (
           <Dflex>
             <Button
-              color="danger"
+              // color="danger"
               onClick={unStakeToggle}
-              disabled={getStatus(`${stakingData?.stakingAddress}unstake`)}
+              disabled={!account || isUnStaking || getStatus(`${stakingData?.stakingAddress}unstake`)}
             >
               {getStatus(`${stakingData?.stakingAddress}unstake`) && isUnStaking && spinnerIcon}
               UnStake
             </Button>
             <Button
-              color="danger"
+              // color="danger"
               onClick={depositToggle}
-              disabled={getStatus(`${stakingData?.stakingAddress}deposit`)}
+              disabled={!account || isDepositing || getStatus(`${stakingData?.stakingAddress}deposit`)}
             >
               {getStatus(`${stakingData?.stakingAddress}deposit`) && isDepositing && spinnerIcon}
               Deposit
@@ -227,6 +227,14 @@ const BoxAction = styled.div`
       background: #f5c606 !important;
       border-color: transparent;
       opacity: 0.7;
+    }
+    &:focus {
+      grid-column: 1 / 7;
+      background: #f5c606;
+      border-color: transparent !important;
+      color: #2b2e2f;
+      margin-top: 10px;
+      box-shadow: 0 0 0 0.25rem #2a2a2a !important;
     }
   }
 `

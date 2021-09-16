@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import BigNumber from 'bignumber.js'
@@ -14,6 +14,13 @@ export default function UnStakeModal({
   stakingData,
 }) {
   const [value, setValue] = useState('')
+  const [balanceError, setBalanceError] = useState('')
+
+  useEffect(() => {
+    if (parseInt(value) > userAmount.div(1e18)) setBalanceError('Exceed amount of deposit balance')
+    else setBalanceError('')
+  }, [value, userAmount])
+
   const handleUnStake = async () => {
     if (stakingContract) {
       setIsUnStaking(true)
@@ -31,6 +38,7 @@ export default function UnStakeModal({
         })
         .catch((error: any) => {
           console.log(error)
+          setIsUnStaking(false)
         })
     }
   }
@@ -67,6 +75,7 @@ export default function UnStakeModal({
               </BoxButton>
             </BoxLink>
           </BoxInput>
+          <Error>{balanceError}</Error>
         </ModalBody>
 
         <ModalFooter>
@@ -76,7 +85,11 @@ export default function UnStakeModal({
             </Button>
           </CancelButton>
           <UnStakeButton>
-            <Button color="primary" onClick={handleUnStake} disabled={value === '' || value === '0'}>
+            <Button
+              color="primary"
+              onClick={handleUnStake}
+              disabled={value === '' || value === '0' || balanceError !== ''}
+            >
               UnStake
             </Button>
           </UnStakeButton>
@@ -107,6 +120,10 @@ const BoxInput = styled.div`
     padding: 0px;
     outline: none;
   }
+`
+
+const Error = styled.div`
+  color: red;
 `
 
 const Title = styled.h5`
