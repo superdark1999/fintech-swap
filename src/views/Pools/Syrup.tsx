@@ -10,16 +10,12 @@ import { useBlock } from 'state/hooks'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '../../hooks/index'
 import NavBar from './components/NavBar'
-import PoolCards from './components/PoolCards'
-import PoolCardsInactive from './components/PoolCardsInactive'
 
 import { useHookPools } from './Store'
 
 const Farm: React.FC = () => {
   const [activeTab, setActiveTab] = useState('1')
   let { chainId } = useActiveWeb3React()
-  let activePools = []
-  let inactivePools = []
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
   const { account } = useWeb3React()
@@ -30,10 +26,10 @@ const Farm: React.FC = () => {
 
   chainId = chainId || 56
 
-  activePools = pools.filter((p) => p.chainId === chainId && !p.inactive)
-  inactivePools = pools.filter((p) => p.chainId === chainId && p.inactive)
+  const dataPools = pools.filter(p => p.chainId === chainId);
 
-  // activePools.sort((a, b) => (!a.isPremium && b.isPremium ? 1 : -1))
+  pools.sort((a, b) => (!a.isPremium && b.isPremium)? 1 : -1)
+  
   useEffect(() => {
     const fetchPools = () => {
       actions.getPools()
@@ -55,7 +51,7 @@ const Farm: React.FC = () => {
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab)
   }
-
+  // console.log("activeTab", activeTab)
   // const [stakedOnly, setStakedOnly] = useState(false)
 
   // const [finishedPools, openPools] = useMemo(
@@ -84,9 +80,7 @@ const Farm: React.FC = () => {
       </Hero> */}
       {/* <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} /> */}
       {/* <Divider /> */}
-      <NavBar activeTab={activeTab} toggle={toggle} />
-      <PoolCards pools={activePools} activeTab={activeTab} />
-      <PoolCardsInactive pools={inactivePools} activeTab={activeTab} />
+      <NavBar activeTab={activeTab} toggle={toggle} pools={dataPools}/>
       <FlexLayout>
         {/* <Route exact path={`${path}`}>
           <>
