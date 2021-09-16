@@ -26,10 +26,10 @@ const Farm: React.FC = () => {
 
   chainId = chainId || 56
 
-  const dataPools = pools.filter(p => p.chainId === chainId);
+  const dataPools = pools.filter((p) => p.chainId === chainId)
 
-  pools.sort((a, b) => (!a.isPremium && b.isPremium)? 1 : -1)
-  
+  // pools.sort((a, b) => (!a.isPremium && b.isPremium)? 1 : -1)
+
   useEffect(() => {
     const fetchPools = () => {
       actions.getPools()
@@ -80,7 +80,7 @@ const Farm: React.FC = () => {
       </Hero> */}
       {/* <PoolTabButtons stakedOnly={stakedOnly} setStakedOnly={setStakedOnly} /> */}
       {/* <Divider /> */}
-      <NavBar activeTab={activeTab} toggle={toggle} pools={dataPools}/>
+      <NavBar activeTab={activeTab} toggle={toggle} pools={dataPools} />
       <FlexLayout>
         {/* <Route exact path={`${path}`}>
           <>
