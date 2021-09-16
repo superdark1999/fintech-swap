@@ -26,6 +26,7 @@ const IconButtonWrapper = styled.div`
   display: flex;
 `
 
+// test
 const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, lpAddresses, quoteToken, token }) => {
   const TranslateString = useI18n()
   const { account } = useWeb3React()
