@@ -6,14 +6,13 @@ import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { communityFarms } from 'config/constants'
 import { CommunityTag, CoreTag, DualTag } from 'components/Tags'
-import {Row, Col} from 'antd'
+import { Row, Col } from 'antd'
 import HarvestAction from './HarvestAction'
 import StakedAction from './StakedAction'
 import StakedNFTAction from './StakedNFTAction'
 import Apr, { AprProps } from '../Apr'
 import Multiplier, { MultiplierProps } from '../Multiplier'
 import Liquidity, { LiquidityProps } from '../Liquidity'
-
 
 export interface ActionPanelProps {
   apr: AprProps
@@ -105,7 +104,6 @@ const InfoContainer = styled.div`
 
 const ValueContainer = styled.div`
   display: block;
-  
 
   ${({ theme }) => theme.mediaQueries.lg} {
     display: none;
@@ -132,8 +130,7 @@ const BoxHead = styled.div`
   margin-bottom: 15px;
 `
 
-const Item = styled.div`
-`
+const Item = styled.div``
 const ColContent = styled(Col)`
   // & > div:nth-child(2){
   //   border-right: 1px solid #8c8c8c;
@@ -142,8 +139,7 @@ const ColContent = styled(Col)`
   //   border-right: unset;
   // }
 `
-const StakedYourNFT = styled.div`
-`
+const StakedYourNFT = styled.div``
 
 const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, multiplier, liquidity }) => {
   const farm = details
@@ -163,82 +159,81 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
 
   return (
     <>
-    {/* <BoxHead>
+      {/* <BoxHead>
       <Item>Infomation</Item>
       <Item>WAD Earned</Item>
       <Item>Farming</Item>
       <Item>Your NFT</Item>
     </BoxHead> */}
 
-    <Container>
-      <ColContent span={24} md={farm.type == "space-hunter" ? 6 : 8}>
-        <BoxHead>
-          <Item>Infomation</Item>
-        </BoxHead>
-        <InfoContainer>
-        {isActive && (
-          <StakeContainer>
-            <StyledLinkExternal href={`https://luckyswap.finance/#/add/${liquidityUrlPathParts}`}>
-              {TranslateString(999, `Get ${lpLabel}`, { name: lpLabel })}
+      <Container>
+        <ColContent span={24} md={farm.type === 'space-hunter' ? 6 : 8}>
+          <BoxHead>
+            <Item>Infomation</Item>
+          </BoxHead>
+          <InfoContainer>
+            {isActive && (
+              <StakeContainer>
+                <StyledLinkExternal href={`https://luckyswap.finance/#/add/${liquidityUrlPathParts}`}>
+                  {TranslateString(999, `Get ${lpLabel}`, { name: lpLabel })}
+                </StyledLinkExternal>
+              </StakeContainer>
+            )}
+            <StyledLinkExternal href={bsc} color="#2b2c3a">
+              {TranslateString(999, 'View Contract')}
             </StyledLinkExternal>
-          </StakeContainer>
-        )}
-        <StyledLinkExternal href={bsc} color="#2b2c3a">
-          {TranslateString(999, 'View Contract')}
-        </StyledLinkExternal>
-        <StyledLinkExternal href="#">{TranslateString(999, 'See Pair Info')}</StyledLinkExternal>
-        <TagsContainer>
-          {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-          {dual ? <DualTag /> : null}
-        </TagsContainer>
-      </InfoContainer>
+            <StyledLinkExternal href="#">{TranslateString(999, 'See Pair Info')}</StyledLinkExternal>
+            <TagsContainer>
+              {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
+              {dual ? <DualTag /> : null}
+            </TagsContainer>
+          </InfoContainer>
+        </ColContent>
 
-      </ColContent>
-      
-      <ValueContainer>
-        <ValueWrapper>
-          <Text>{TranslateString(736, 'APR')}</Text>
-          <Apr {...apr} />
-        </ValueWrapper>
-        <ValueWrapper>
-          <Text>{TranslateString(999, 'Multiplier')}</Text>
-          <Multiplier {...multiplier} />
-        </ValueWrapper>
-        <ValueWrapper>
-          <Text>{TranslateString(999, 'Liquidity')}</Text>
-          <Liquidity {...liquidity} />
-        </ValueWrapper>
-      </ValueContainer>
-      <ColContent span={24} md={farm.type == "space-hunter" ? 6 : 8}>
-        <BoxHead>
-          <Item> Earned</Item>
-        </BoxHead>
-        <ActionContainer>
-        <HarvestAction {...farm} />
-      </ActionContainer>
-      </ColContent>
-      
-      <ColContent span={24} md={farm.type == "space-hunter" ? 5 : 8}>
-        <BoxHead>
-          <Item>Farming</Item>
-        </BoxHead>
-        <ActionContainer>
-          <StakedAction {...farm} />
-      </ActionContainer>
-      </ColContent>
-      
-      <ColContent span={farm.type == "space-hunter" ? 24 : 0} md={farm.type == "space-hunter" ? 7 : 0}>
-        <BoxHead>
-          <Item>Your NFT</Item>
-        </BoxHead>
-        <ActionContainer>
-          <StakedNFTAction {...farm} />
-        {/* <StakedYourNFT>
+        <ValueContainer>
+          <ValueWrapper>
+            <Text>{TranslateString(736, 'APR')}</Text>
+            <Apr {...apr} />
+          </ValueWrapper>
+          <ValueWrapper>
+            <Text>{TranslateString(999, 'Multiplier')}</Text>
+            <Multiplier {...multiplier} />
+          </ValueWrapper>
+          <ValueWrapper>
+            <Text>{TranslateString(999, 'Liquidity')}</Text>
+            <Liquidity {...liquidity} />
+          </ValueWrapper>
+        </ValueContainer>
+        <ColContent span={24} md={farm.type === 'space-hunter' ? 6 : 8}>
+          <BoxHead>
+            <Item> Earned</Item>
+          </BoxHead>
+          <ActionContainer>
+            <HarvestAction {...farm} />
+          </ActionContainer>
+        </ColContent>
+
+        <ColContent span={24} md={farm.type === 'space-hunter' ? 5 : 8}>
+          <BoxHead>
+            <Item>Farming</Item>
+          </BoxHead>
+          <ActionContainer>
+            <StakedAction {...farm} />
+          </ActionContainer>
+        </ColContent>
+
+        <ColContent span={farm.type === 'space-hunter' ? 24 : 0} md={farm.type === 'space-hunter' ? 7 : 0}>
+          <BoxHead>
+            <Item>Your NFT</Item>
+          </BoxHead>
+          <ActionContainer>
+            <StakedNFTAction {...farm} />
+            {/* <StakedYourNFT>
           
         </StakedYourNFT> */}
-        </ActionContainer>
-      </ColContent>
-    </Container>
+          </ActionContainer>
+        </ColContent>
+      </Container>
     </>
   )
 }
