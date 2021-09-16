@@ -1,30 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { Button, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
+import { AutoRenewIcon } from '@luckyswap/uikit'
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
-import classnames from 'classnames'
 import { Link, useParams, Redirect } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
+
+import { useWeb3NoAccount } from 'utils/web3'
 import useGetStateData from 'hooks/useGetStakeData'
-import { useFarms, usePriceLuckyBusd, useLucky2Price } from 'state/hooks'
+import { useBlock, usePriceLuckyBusd, useLucky2Price } from 'state/hooks'
 import { getPoolApy } from 'utils/apy'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useUtilityToken from 'hooks/useUtilityToken'
-import { LUCKY_PER_BLOCK, BASE_API_ADMIN } from 'config'
+import { LUCKY_PER_BLOCK, BASE_API_ADMIN, BSC_BLOCK_TIME } from 'config'
 import { useActiveWeb3React } from 'hooks'
+import { useCurrentTime } from 'hooks/useTimer'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { useContract, useStakingContract } from 'hooks/useContract'
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
-import SMART_CHEF_ABI from 'config/abi/smartChef.json'
 
-import { AutoRenewIcon } from '@luckyswap/uikit'
 import { Pool } from 'config/constants/types'
 import ApyButtonPool from 'views/Farms/components/FarmCard/ApyButtonPool'
 import { useHookPools } from '../Store'
 import CardValue from '../../Home/components/CardValue'
-import UnStakeModal from './UnStakeModal'
-import DepositModal from './DepositModal'
+import BlockAction from './BlockAction'
 
 interface PoolCardProps {
   stakingData?: Pool
@@ -33,186 +32,35 @@ interface PoolCardProps {
   userAmount?: any
 }
 
-const areEqual = (prevProps, nextProps): any => {
-  // return JSON.stringify(prevProps.sortedRecentTransactions.length === nextProps.sortedRecentTransactions.length)
+const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
+
+const getTimeRemain = (endTime: Date) => {
+  const now = new Date()
+  if (now.getTime() > endTime.getTime()) {
+    endTime.setDate(endTime.getDate() + 1)
+  }
+  const remain = (endTime.getTime() - now.getTime()) / 1000
+  const dd = pad(Math.floor(remain / 86400))
+  const hh = pad(Math.floor((remain / 60 / 60) % 24))
+  const mm = pad(Math.floor((remain / 60) % 60))
+  const ss = pad(Math.floor(remain % 60))
+
+  return [dd, hh, mm, ss]
 }
 
-const BlockAction = React.memo(({ sortedRecentTransactions, userRewardDebt, userAmount, stakingData, pool }: any) => {
-  // console.log('sortedRecentTransactions', sortedRecentTransactions)
+function pad(num) {
+  return '0'.concat(num.toString()).substr(-2)
+}
 
-  const [depositModal, setDepositModal] = useState(false)
-  const [withdrawModal, setWithdrawModel] = useState(false)
-  const [isUnStaking, setIsUnStaking] = useState(false)
-  const [isDepositing, setIsDepositing] = useState(false)
-  const [isHarvesting, setIsHarvesting] = useState(false)
-  const { account } = useWeb3React()
-
-  const stakingContract = useStakingContract(stakingData?.stakingAddress)
-
-  const addTransaction = useTransactionAdder()
-  const contract = useContract(stakingData?.stakingAddress, SMART_CHEF_ABI)
-
-  useEffect(() => {
-    if (contract) {
-      contract.on('Withdraw', () => {
-        setIsUnStaking(false)
-      })
-      contract.on('Deposit', () => {
-        if (isDepositing) setIsDepositing(false)
-        else setIsHarvesting(false)
-      })
-    }
-  }, [contract, isDepositing])
-
-  const depositToggle = () => setDepositModal(!depositModal)
-  const unStakeToggle = () => setWithdrawModel(!withdrawModal)
-  const getStatus = (str) => {
-    const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash && tx.attr1 === str)
-
-    return pending.find((x) => x)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }
-
-  const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
-
-  const { listenApproveEvent, approve, allowance } = useUtilityToken(stakingData.depositTokenAddress)
-  const [amountAllowance, setAmountAllowance] = useState('0')
-  const [isApproving, setIsApproving] = useState(false)
-
-  useEffect(() => {
-    const fetchApproval = async () => {
-      const data = await allowance(account, stakingData.stakingAddress).catch((error) =>
-        console.log('allowance error: ', error),
-      )
-      setAmountAllowance(data)
-    }
-    if (account && stakingData.stakingAddress) {
-      fetchApproval()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, stakingData.stakingAddress])
-
-  // useEffect(() => {
-  //   listenApproveEvent(() => setAmountAllowance('0'))
-  // }, [listenApproveEvent])
-
-  const handleApprove = async () => {
-    setIsApproving(true)
-    await approve(stakingData.stakingAddress)
-  }
-
-  const handleHarvest = async (type) => {
-    if (stakingContract) {
-      setIsHarvesting(true)
-      const args = [new BigNumber(0).times(new BigNumber(10).pow(18)).toString()]
-      const gasAm = await stakingContract.estimateGas
-        .deposit(...args)
-        .catch(() => console.log('Fails harvest'))
-        .catch(() => console.log('Fail estimate gas'))
-      const tx = await stakingContract
-        .deposit(...args, { gasLimit: gasAm })
-        .then((response: any) => {
-          addTransaction(response, {
-            summary: 'Harvest successfully!',
-            attr1: `${stakingData.stakingAddress}${type}`,
-          })
-        })
-        .catch((error: any) => {
-          setIsHarvesting(false)
-          console.log(error)
-        })
-      if (!tx) setIsHarvesting(false)
-    }
-  }
-  
-  return (
-    <>
-      <BoxAction>
-        <Title>{pool.rewardTokenSymbol} <Bold> EARNED</Bold> </Title>
-        {/* <BlockSpace className="content-action"> */}
-          <h3 className="content__title">
-            <CardValue
-              bold
-              color=""
-              value={userRewardDebt.div(1e18).toNumber()}
-              decimals={2}
-              fontSize="10px"
-              fontWeight="1000"
-            ></CardValue>
-          </h3>
-          
-          <Button
-            onClick={() => handleHarvest('harvest')}
-            isLoading={() => getStatus(`${stakingData?.stakingAddress}harvest`)}
-            disabled={getStatus(`${stakingData?.stakingAddress}harvest`)}
-          >
-            {getStatus(`${stakingData?.stakingAddress}harvest`) && spinnerIcon}
-            Harvest
-          </Button>
-        {/* </BlockSpace> */}
-      </BoxAction>
-      <BoxAction>
-        <Title>{pool.depositTokenSymbol}<Bold> STAKED</Bold></Title>
-        {/* <BlockSpace> */}
-          <h3 className="content__title">
-            <CardValue
-              bold
-              color="#fff"
-              value={userAmount.div(1e18).toNumber()}
-              decimals={2}
-              fontSize="10px"
-              fontWeight="1000"
-            ></CardValue>
-          </h3>
-          {amountAllowance.toString() === '0' ? (
-            <Button color="danger" onClick={handleApprove} isLoading={isApproving} disabled={isApproving}>
-              {isApproving && spinnerIcon}
-              Approve
-            </Button>
-          ) : (
-            <Dflex>
-              <Button color="danger" onClick={unStakeToggle} disabled={getStatus(`${stakingData?.stakingAddress}unstake`)}>
-                {getStatus(`${stakingData?.stakingAddress}unstake`) && isUnStaking && spinnerIcon}
-                UnStake
-              </Button>
-              <Button color="danger" onClick={depositToggle} disabled={getStatus(`${stakingData?.stakingAddress}deposit`)}>
-                {getStatus(`${stakingData?.stakingAddress}deposit`) && isDepositing && spinnerIcon}
-                Deposit
-              </Button>
-            </Dflex>
-          )}
-        {/* </BlockSpace> */}
-
-        <DepositModal
-          depositModal={depositModal}
-          depositToggle={depositToggle}
-          depositSymbol={stakingData.depositTokenSymbol}
-          stakingContract={stakingContract}
-          addTransaction={addTransaction}
-          account={account}
-          stakingData={stakingData}
-          setIsDepositing={setIsDepositing}
-        />
-
-        <UnStakeModal
-          withdrawModal={withdrawModal}
-          unStakeToggle={unStakeToggle}
-          stakingContract={stakingContract}
-          addTransaction={addTransaction}
-          userAmount={userAmount}
-          setIsUnStaking={setIsUnStaking}
-          stakingData={stakingData}
-          rewardTokenSymbol={stakingData.rewardTokenSymbol}
-        />
-      </BoxAction>
-    </>
-  )
-}, areEqual)
+const finishMessage = 'Finished'
 
 const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   const { account, chainId } = useActiveWeb3React()
-  const [userAmount, setAmount] = useState(new BigNumber(0))
+  // const [userAmount, setAmount] = useState(new BigNumber(0))
   const [userRewardDebt, setUserRewardDebt] = useState(new BigNumber(0))
+  const [unStakingFee, setUnStakingFee] = useState('0')
+  const [remainBlockTime, setRemainBlockTime] = useState('')
+  const [rewardEndTime, setRewardEndTime] = useState('')
 
   const [apy, setApy] = useState('0')
   const [totalStaked, setTotalStaked] = useState(0)
@@ -220,6 +68,11 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   const rewardTokenPrice = usePriceLuckyBusd()
   const stakingTokenPrice = useLucky2Price()
   const contract = useStakingContract(pool.stakingAddress)
+
+  const { userAmount, pendingReward } = useGetStateData(pool)
+
+  const { currentBlock } = useBlock()
+  const web3NoAccount = useWeb3NoAccount()
 
   const allTransactions = useAllTransactions()
   function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
@@ -230,23 +83,92 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
   const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+
   useEffect(() => {
     const fetchStakingData = async () => {
       if (contract && account) {
         try {
-          const amount: any = await contract.userInfo(account).catch((error) => {
+          const userInfo: any = await contract.userInfo(account).catch((error) => {
             console.log('error userAmount')
           })
-          setAmount(new BigNumber(amount.amount._hex))
-          setUserRewardDebt(new BigNumber(amount.rewardDebt._hex))
+          const fee = await contract.feeWithdrawInBlockTokenTime().catch((error) => console.log('error get fee', error))
+          const percentFee = fee.toNumber() / 100
+
+          setUnStakingFee(percentFee.toString())
+          // setAmount(new BigNumber(userInfo.amount._hex))
+          setUserRewardDebt(new BigNumber(userInfo.rewardDebt._hex))
         } catch (error) {
-          setAmount(new BigNumber(0))
+          // setAmount(new BigNumber(0))
           setUserRewardDebt(new BigNumber(0))
         }
       }
     }
     fetchStakingData()
   }, [account, contract, !!pending.length])
+
+  useEffect(() => {
+    let idIntervalEndBlockTime
+    const timeRemainBlockToken = (endTime) => {
+      const endDate = new Date(endTime)
+      const [dd, hh, mm, ss] = getTimeRemain(endDate)
+      setRemainBlockTime(`${pad(hh)}h: ${pad(mm)}m: ${pad(ss)}s`)
+    }
+    const fetchStakingData = async () => {
+      if (contract && account) {
+        try {
+          const userInfo: any = await contract.userInfo(account).catch((error) => {
+            console.log('error userAmount')
+          })
+
+          const endTime = userInfo.withdrawTime.toNumber() * 1000
+          const now = new Date()
+
+          if (now.getTime() > endTime) setRemainBlockTime('0s')
+          else idIntervalEndBlockTime = setInterval(() => timeRemainBlockToken(endTime), 1000)
+        } catch (error) {
+          console.log('error fetchStakingData', error)
+        }
+      }
+    }
+    fetchStakingData()
+
+    return () => {
+      clearInterval(idIntervalEndBlockTime)
+    }
+  }, [account, contract, !!pending.length])
+
+  useEffect(() => {
+    let idIntervalPoolEndTime
+
+    const timeRemainEarn = (endTime) => {
+      const endDate = new Date(endTime)
+      const [dd, hh, mm] = getTimeRemain(endDate)
+      setRewardEndTime(`${pad(dd)}d: ${pad(hh)}h: ${pad(mm)}m`)
+    }
+
+    const fetchStakingData = async () => {
+      if (contract && account && currentBlock !== 0) {
+        try {
+          const bonusEndBlock: any = await contract.bonusEndBlock().catch((error) => {
+            console.log('error bonusEndBlock')
+          })
+
+          const blockNumber = web3NoAccount && (await web3NoAccount.eth.getBlockNumber())
+          const timeRemain = (bonusEndBlock.toNumber() - currentBlock) * BSC_BLOCK_TIME
+          const now = new Date()
+          if (timeRemain < 0) setRewardEndTime(finishMessage)
+          else idIntervalPoolEndTime = setInterval(() => timeRemainEarn(now.getTime() + timeRemain * 1000), 1000)
+        } catch (error) {
+          console.log('error fetchStakingData', error)
+        }
+      }
+    }
+    fetchStakingData()
+
+    return () => {
+      clearInterval(idIntervalPoolEndTime)
+    }
+  }, [account, contract, !!pending.length, currentBlock])
 
   useEffect(() => {
     const fetchTotalStaked = async () => {
@@ -274,7 +196,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   const [isLoading, setIsLoading] = useState(true)
   const { poolDetail } = state
   useEffect(() => {
-    console.log('-----fetchPol')
+    // console.log('-----fetchPol')
     const fetchPool = () => {
       actions.getPoolDetail(pool._id).then(() => setIsLoading(false))
     }
@@ -332,12 +254,16 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
               </ContentRight>
             </FlexSpace>
             <FlexSpace>
-              <ContentLeft>Deposit Fee:</ContentLeft>
-              <ContentRight>3%</ContentRight>
+              <ContentLeft> UnStaking Fee:</ContentLeft>
+              <ContentRight>{unStakingFee}%</ContentRight>
             </FlexSpace>
             <FlexSpace>
-              <ContentLeft>Harvest lock:</ContentLeft>
-              <ContentRight>8 hours</ContentRight>
+              <ContentLeft>Block time:</ContentLeft>
+              <ContentRight>{remainBlockTime}</ContentRight>
+            </FlexSpace>
+            <FlexSpace>
+              <ContentLeft>Rewards end in:</ContentLeft>
+              <ContentRight>{currentBlock !== 0 ? rewardEndTime : spinnerIcon}</ContentRight>
             </FlexSpace>
           </CardContent>
           {/* {poolDetail &&<BlockAction stakingData={poolDetail} pool={pool}/>}   */}
@@ -348,7 +274,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
               <BlockAction
                 sortedRecentTransactions={sortedRecentTransactions}
                 userAmount={userAmount}
-                userRewardDebt={userRewardDebt}
+                pendingReward={pendingReward}
                 stakingData={pool}
                 pool={pool}
               />
@@ -398,85 +324,6 @@ const NoFee = styled.div`
     fill: #6ad2a8;
   }
 `
-const BoxAction = styled.div`
-  margin-top: 20px;
-  margin-bottom: 5px;
-  display: grid;
-  grid-gap: 7px 20px;
-  text-align: center;
-  grid-template-columns: repeat(6,1fr);
-  .content__title {
-    font-size: 19px;
-    font-weight: 600;
-    color: #fff;
-    grid-column: 5/ 7;
-  }
-  button {
-    grid-column: 1 / 7;
-    background: #f5c606;
-      border-color: transparent;
-      color: #2b2e2f;
-      margin-top: 10px;
-
-      &:hover {
-        background: #f5c606 !important;
-        border-color: transparent;
-        opacity: 0.7;
-      }
-  }
-
-`
-const BlockSpace = styled.div`
-    display: grid;
-    flex-direction: column;
-    font-size: 24px;
-    color: white;
-    text-align: center;
-    &.content-action{
-      flex-direction: unset !important;
-      grid-template-columns: repeat(2,1fr);
-      gap: 20px;
-      button{
-        margin: 0;
-      }
-    }
-
-    button {
-      background: #f5c606;
-      border-color: transparent;
-      color: #2b2e2f;
-      margin-top: 10px;
-
-      &:hover {
-        background: #f5c606 !important;
-        border-color: transparent;
-        opacity: 0.7;
-      }
-    }
-
-    
-  `
-  const BoxValue = styled.div`
-    display: block;
-    margin: auto;
-  `
-  const Bold = styled.span`
-    font-weight: 800;
-    color: #dd5555;
-  `
-const HeadLine = styled.div`
-  background: linear-gradient(90deg, rgba(239, 186, 12, 1) 0%, rgba(251, 219, 59, 1) 100%);
-  width: 100%;
-  padding: 10px 0;
-  position: absolute;
-  left: 0;
-  top: 0;
-  text-align: center;
-  color: #212529;
-  font-size: 16px;
-  font-weight: 700;
-  text-transform: uppercase;
-`
 
 const BoxPool = styled.div`
   background: rgb(41 41 41);
@@ -501,15 +348,6 @@ const BoxPool = styled.div`
 const CardContent = styled.div`
   // margin-top: 40px;
   margin-bottom: 30px;
-`
-
-const Title = styled.div`
-  color: #fff;
-  font-size: 19px;
-  font-weight: 600;
-  text-align: center;
-  grid-column: 1 / 5;
-  text-align: left;
 `
 
 const FlexSpace = styled.div`
@@ -595,19 +433,6 @@ const BoxLink = styled.div`
       background: #f5c606;
       opacity: 0.8;
     }
-  }
-`
-
-const Dflex = styled.div`
-  grid-gap: 20px;
-  grid-column: 1 / 7;
-  display: flex;
-  justify-content: space-between;
-  button{
-    width: 100%;
-  }
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
   }
 `
 

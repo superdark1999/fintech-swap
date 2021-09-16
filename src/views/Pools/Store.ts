@@ -28,7 +28,7 @@ const Store = createStore({
     getPools:
       () =>
       ({ setState, getState }) => {
-        if (getState().pools.length === 0)
+        if (getState().pools.length === 0) {
           axios
             .get(`${BASE_API_ADMIN}/pools`)
             .then((response) => {
@@ -38,10 +38,11 @@ const Store = createStore({
               })
               setState({
                 ...getState(),
-                pools: data,
+                pools: data.sort((a, b) => (!a.isPremium && b.isPremium ? 1 : -1)),
               })
             })
             .catch((error) => console.log('error fetching launchpads data'))
+        }
       },
     //   changeKeySearch:
     //     (value) =>
@@ -58,9 +59,9 @@ const Store = createStore({
     getPoolDetail:
       (id) =>
       async ({ setState, getState }) => {
-          const url = `${BASE_API_ADMIN}/pools/${id}`
-          const result: any = await axios.get(url).catch(() => console.log('axios error'))
-          setState({ ...getState(), poolDetail: result.data });
+        const url = `${BASE_API_ADMIN}/pools/${id}`
+        const result: any = await axios.get(url).catch(() => console.log('axios error'))
+        setState({ ...getState(), poolDetail: result.data })
       },
 
     //   setStatus:

@@ -148,6 +148,7 @@ const FarmTable: React.FC<ITableProps> = (props) => {
   const TranslateString = useI18n()
   const { data, columns } = props
 
+  console.log("-----dataTableFarm", data)
   const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' })
 
   const scrollToTop = (): void => {

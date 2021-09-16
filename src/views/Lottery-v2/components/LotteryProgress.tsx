@@ -49,38 +49,39 @@ const StyledPrimaryText = styled(Text)`
 // const timeStartLottery = new Date(19, 0, 0);
 
 const LotteryProgress = () => {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useActiveWeb3React()
   const { fastRefresh } = useRefresh()
-  const [timeRemainDraw, setTimeRemainDraw] = useState("");
-  const [timeRemainSale, setTimeRemainSale] = useState("");
+  const [timeRemainDraw, setTimeRemainDraw] = useState('')
+  const [timeRemainSale, setTimeRemainSale] = useState('')
   const [percentRemain, setPercentRemain] = useState(0)
 
   const {
     currentRound: { endTime },
   } = useLottery()
-  
+
+  console.log('endTime', endTime)
 
   const TranslateString = useI18n()
-  const lotteryHasDrawn = useGetLotteryHasDrawn()
-  const currentMillis = useCurrentTime()  
+  const currentMillis = useCurrentTime()
 
-  const URL = chainId === 56 ? BASE_API_ADMIN_PRO : BASE_API_ADMIN;
-
+  const URL = chainId === 56 ? BASE_API_ADMIN_PRO : BASE_API_ADMIN
 
   useEffect(() => {
     const fetchTimeLottery = async () => {
-      const timeEndLottery = new Date((endTime ? parseInt(endTime): 0)* 1000);
-      // const {data} = await axios.get(`${URL}/lotteries`);
-      const now = new Date();
+      if (endTime) {
+        const timeEndLottery = new Date(parseInt(endTime) * 1000)
+        const now = new Date()
 
-      // set time remain to end lottery phase
-      setTimeRemainDraw(getTimeRemainDraw(timeEndLottery));
+        // set time remain to end lottery phase
+        if (timeEndLottery.getTime() < now.getTime()) setTimeRemainDraw('0h: 0m')
+        else setTimeRemainDraw(getTimeRemainDraw(timeEndLottery))
+      }
 
       // set time remain to start new lottery phase
-      setPercentRemain( 100 - ((timeEndLottery.getTime() - now.getTime()) * 100 / 86400000));
+      // setPercentRemain(100 - ((timeEndLottery.getTime() - now.getTime()) * 100) / 86400000)
     }
-    fetchTimeLottery();
-  },[fastRefresh, lotteryHasDrawn, endTime])
+    fetchTimeLottery()
+  }, [fastRefresh, endTime])
 
   return (
     <ProgressWrapper>
@@ -90,16 +91,9 @@ const LotteryProgress = () => {
           {timeRemainDraw}
         </StyledPrimaryText>
         <Text fontSize="20px" bold color="invertedContrast">
-          { TranslateString(492, 'Until next lottery')}
+          {TranslateString(492, 'Until next lottery')}
         </Text>
       </TopTextWrapper>
-      {lotteryHasDrawn && (
-        <BottomTextWrapper>
-          <Text color="invertedContrast">
-            {/* {timeUntilLotteryDraw} {TranslateString(492, 'Until lottery draw')} */}
-          </Text>
-        </BottomTextWrapper>
-      )}
     </ProgressWrapper>
   )
 }
