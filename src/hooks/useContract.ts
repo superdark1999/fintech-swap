@@ -2,6 +2,7 @@ import { Contract } from '@ethersproject/contracts'
 import { ROUTER_ADDRESSES, WNATIVE } from '@luckyswap/v2-sdk'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
+import NEW_FARMS_ABI from 'config/abi/newFarm.json'
 import addresss from 'config/constants/contracts'
 import { useActiveWeb3React } from 'hooks'
 import useWeb3 from 'hooks/useWeb3'
@@ -18,6 +19,7 @@ import ROUTER_ABI from '../constants/abis/router.json'
 import WETH_ABI from '../constants/abis/weth.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { getContract } from '../utils'
+import farms from '../config/constants/farms'
 import {
   getBep20Contract,
   getBunnyFactoryContract,
@@ -205,10 +207,19 @@ export function useFarmsContract(): Contract | null {
   return useContract(addresss.masterChef[chainId], FARMS_ABI, true)
 }
 
+export function useFarmNFTContract(): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(addresss.farms[chainId], NEW_FARMS_ABI, true)
+}
+
 export function useStakingContract(address: any | null): Contract | null {
   return useContract(address, SMART_CHEF_ABI, true)
 }
 
 export function useLotteryV2contract(): Contract | null {
   return useContract(getLotteryV2Address(), lotteryV2, true)
+}
+
+export function useERC20Contract(address: any | null): Contract | null {
+  return useContract(address, ERC20_ABI, true)
 }

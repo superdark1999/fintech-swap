@@ -5,10 +5,15 @@ type ConfirmationModalContentProps = {
   title: string
   onDismiss: () => void
   topContent: () => React.ReactNode
-  bottomContent: () => React.ReactNode
+  bottomContent?: () => React.ReactNode
 }
 
-const ConfirmationModalContent = ({ title, bottomContent, onDismiss, topContent }: ConfirmationModalContentProps) => {
+const ConfirmationModalContent = ({
+  title,
+  bottomContent = null,
+  onDismiss,
+  topContent,
+}: ConfirmationModalContentProps) => {
   return (
     <Wrapper>
       <Section>

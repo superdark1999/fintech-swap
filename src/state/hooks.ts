@@ -22,11 +22,17 @@ import {
 } from './actions'
 import { fetchPrices } from './prices'
 import { fetchProfile } from './profile'
-import { fetchCurrentLotteryId, fetchCurrentLottery, fetchPastLotteries, fetchUserTicketsAndLotteries } from './lottery2'
+import {
+  fetchCurrentLotteryId,
+  fetchCurrentLottery,
+  fetchPastLotteries,
+  fetchUserTicketsAndLotteries,
+} from './lottery2'
 
 import { fetchTeam, fetchTeams } from './teams'
 import { AchievementState, Farm, Pool, PriceState, ProfileState, State, TeamsState } from './types'
-import { fetchCurrentLotteryIdAndMaxBuy, useProcessLotteryResponse } from './lottery2/helpers';
+import { fetchCurrentLotteryIdAndMaxBuy, useProcessLotteryResponse } from './lottery2/helpers'
+import { BoostedNFT } from '../config/constants/types'
 
 export const useFetchPublicData = () => {
   const { chainId } = useActiveWeb3React()
@@ -34,7 +40,7 @@ export const useFetchPublicData = () => {
   const { slowRefresh } = useRefresh()
   const web3NoAccount = useWeb3NoAccount()
   useEffect(() => {
-    if (chainId && chainId !== 56 && chainId !== 80001){
+    if (chainId && chainId !== 56 && chainId !== 80001) {
       dispatch(fetchPoolsPublicDataAsync() as any)
       dispatch(fetchFarmsPublicDataAsync() as any)
     }
@@ -78,6 +84,13 @@ export const useFarmUser = (pid) => {
   }
 }
 
+//
+
+export const useMySpaceHunterCollection = (): BoostedNFT[] => {
+  const spaceHunterCollection = useSelector((state: State) => state.spaceHunterCollection.data)
+  return spaceHunterCollection
+}
+
 // lottery v2
 export const useFetchLottery = () => {
   const { account } = useWeb3React()
@@ -94,7 +107,7 @@ export const useFetchLottery = () => {
   useEffect(() => {
     // get public data for current lottery
     if (currentLotteryId) {
-      dispatch(fetchCurrentLottery({ currentLotteryId })) 
+      dispatch(fetchCurrentLottery({ currentLotteryId }))
     }
   }, [dispatch, currentLotteryId, fastRefresh])
 
@@ -253,10 +266,9 @@ export const useInitialBlock = () => {
   return useSelector((state: State) => state.block.initialBlock)
 }
 
-
 export const useLotteryV2 = async () => {
-  const {currentLotteryId, maxNumberTicketsPerBuyOrClaim} = await fetchCurrentLotteryIdAndMaxBuy();
-  return {currentLotteryId , maxNumberTicketsPerBuyOrClaim}
+  const { currentLotteryId, maxNumberTicketsPerBuyOrClaim } = await fetchCurrentLotteryIdAndMaxBuy()
+  return { currentLotteryId, maxNumberTicketsPerBuyOrClaim }
 }
 
 export const useGetCurrentLotteryId = () => {

@@ -27,7 +27,7 @@ export function useApproveCallbackCustom(token?: any, addressNeedApprove?: strin
       })
       .then((response: TransactionResponse) => {
         addTransaction(response, {
-          summary: `Aprrove  successfully!`,
+          summary: `Approve successfully!`,
         })
         return response
       })

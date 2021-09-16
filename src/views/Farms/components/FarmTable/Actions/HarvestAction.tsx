@@ -8,11 +8,32 @@ import { useHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import { usePriceLuckyBusd } from 'state/hooks'
 import { useCountUp } from 'react-countup'
-import { useFarmsContract } from 'hooks/useContract'
+import { useFarmNFTContract, useFarmsContract } from 'hooks/useContract'
 
 import { ActionContainer, ActionTitles, Title, Subtle, ActionContent, Earned, Staked } from './styles'
+import { FarmType } from '../../../../../constants/index'
 
-const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, userData }) => {
+const WrapAction: React.FC<FarmWithStakedValue> = (props) => {
+  const { type } = props
+  const newFarmContract = useFarmNFTContract()
+  const farmContract = useFarmsContract()
+
+  console.log('type : ', type)
+
+  const render = () => {
+    switch (type) {
+      case FarmType.LUCKYSWAP:
+        return <HarvestAction {...props} farmContract={farmContract} />
+      case FarmType.SPACEHUNTER:
+        return <HarvestAction {...props} farmContract={newFarmContract} />
+      default:
+        return <HarvestAction {...props} farmContract={farmContract} />
+    }
+  }
+  return <> {render()} </>
+}
+
+const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, userData, farmContract }) => {
   const { account } = useWeb3React()
   const earningsBigNumber = userData && account ? new BigNumber(userData.earnings) : null
   const cakePrice = usePriceLuckyBusd()
@@ -38,12 +59,12 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
     decimals: 3,
   })
   const updateValue = useRef(update)
-  const masterchefContract: any = useFarmsContract()
 
   async function _onReward() {
-    if (masterchefContract) {
+    console.log('claim : ', farmContract.address)
+    if (farmContract) {
       const args = [pid, new BigNumber(0).times(new BigNumber(10).pow(18)).toString()]
-      await masterchefContract
+      await farmContract
         .deposit(...args, { gasLimit: 200000 })
         .then((response: any) => {
           console.log('response>>', response)
@@ -88,4 +109,4 @@ const HarvestAction: React.FunctionComponent<FarmWithStakedValue> = ({ pid, user
   )
 }
 
-export default HarvestAction
+export default WrapAction

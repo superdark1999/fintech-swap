@@ -1,43 +1,65 @@
-import React, { useState, useCallback } from 'react'
+import { AddIcon, Button, IconButton, MinusIcon, useModal } from '@luckyswap/uikit'
 import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
-import { Button, useModal, IconButton, AddIcon, MinusIcon } from '@luckyswap/uikit'
 import UnlockButton from 'components/UnlockButtonFarm'
-import { useWeb3React } from '@web3-react/core'
-import { useFarmUser } from 'state/hooks'
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
-import useI18n from 'hooks/useI18n'
-import { useFarmsContract } from 'hooks/useContract'
-import { useApprove } from 'hooks/useApprove'
-import { getBep20Contract } from 'utils/contractHelpers'
-import { ApprovalState, BASE_ADD_LIQUIDITY_URL } from 'config'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { getBalanceNumber } from 'utils/formatBalance'
-import useStake from 'hooks/useStake'
-import useUnstake from 'hooks/useUnstake'
-import useWeb3 from 'hooks/useWeb3'
+import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import { ethers } from 'ethers'
 import { useApproveCallbackCustom } from 'hooks/useApproveCallback'
-import address from 'config/constants/contracts'
+import { useFarmsContract } from 'hooks/useContract'
+import useI18n from 'hooks/useI18n'
+import React, { useCallback, useState } from 'react'
+import { useFarmUser } from 'state/hooks'
+import styled from 'styled-components'
+import { getBalanceNumber } from 'utils/formatBalance'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
+import { FarmType } from '../../../../../constants/index'
+import { useActiveWeb3React } from '../../../../../hooks/index'
+import { useFarmNFTContract } from '../../../../../hooks/useContract'
+import { useAppDispatch } from '../../../../../state/index'
 import DepositModal from '../../DepositModal'
 import WithdrawModal from '../../WithdrawModal'
-import { ActionContainer, ActionTitles, ActionContent, Earned, Title, Subtle } from './styles'
+import { ActionContainer, ActionContent, ActionTitles, Earned, Subtle, Title } from './styles'
+import { useApproveForAllNFTCallback } from '../../../../../hooks/useApproveNFTCallback';
 
 const IconButtonWrapper = styled.div`
   display: flex;
 `
 
-const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, lpAddresses, quoteToken, token }) => {
+const WrapAction: React.FC<FarmWithStakedValue> = (props) => {
+  const { type } = props
+  const newFarmContract = useFarmNFTContract()
+  const farmContract = useFarmsContract()
+
+  const render = () => {
+    switch (type) {
+      case FarmType.LUCKYSWAP:
+        return <Staked {...props} farmContract={farmContract} />
+      case FarmType.SPACEHUNTER:
+        return <Staked {...props} farmContract={newFarmContract} />
+      default:
+        return <Staked {...props} farmContract={farmContract} />
+    }
+  }
+  return <> {render()} </>
+}
+
+const Staked: React.FunctionComponent<any> = ({
+  pid,
+  lpSymbol,
+  lpAddresses,
+  quoteToken,
+  token,
+  type,
+  farmContract,
+}) => {
   const TranslateString = useI18n()
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
-  // const { onStake } = useStake(pid)
-  const { onUnstake } = useUnstake(pid)
-  const web3 = useWeb3()
-
+  const dispatch = useAppDispatch()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
-  const lpAddress = lpAddresses[process.env.REACT_APP_CHAIN_ID]
+  const lpAddress = lpAddresses[chainId]
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
@@ -57,7 +79,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
   const [onPresentWithdraw] = useModal(
     <WithdrawModal max={stakedBalance} onConfirm={(amount) => _onUnstake(amount)} tokenName={lpSymbol} />,
   )
-  const [approval] = useApproveCallbackCustom(lpAddress, address.masterChef[97])
+  const [approval] = useApproveCallbackCustom(lpAddress, farmContract?.address)
 
   async function onAttemptToApprove() {
     return approval()
@@ -72,12 +94,25 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [approval, setRequestedApproval])
 
-  const masterchefContract: any = useFarmsContract()
+  const renderStakingButtons = () => {
+    return rawStakedBalance === 0 ? (
+      <Button onClick={onPresentDeposit}>{TranslateString(999, 'Stake LP')}</Button>
+    ) : (
+      <IconButtonWrapper>
+        <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">
+          <MinusIcon color="primary" width="14px" />
+        </IconButton>
+        <IconButton variant="tertiary" onClick={onPresentDeposit}>
+          <AddIcon color="primary" width="14px" />
+        </IconButton>
+      </IconButtonWrapper>
+    )
+  }
 
   async function _onStake(amount) {
-    if (masterchefContract) {
-      const args = [pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]
-      await masterchefContract
+    if (farmContract) {
+      const args = [pid, ethers.utils.parseUnits(amount, 'ether')]
+      await farmContract
         .deposit(...args, { gasLimit: 200000 })
         .then((response: any) => {
           console.log('response>>', response)
@@ -90,9 +125,9 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
   }
 
   async function _onUnstake(amount) {
-    if (masterchefContract) {
+    if (farmContract) {
       const args = [pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]
-      await masterchefContract
+      await farmContract
         .withdraw(...args, { gasLimit: 200000 })
         .then((response: any) => {
           console.log('response>>', response)
@@ -149,9 +184,10 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
           <Title>{lpSymbol}</Title>
         </ActionTitles>
         <ActionContent>
-          <Button width="100%" onClick={onPresentDeposit} variant="secondary">
+          {/* <Button width="100%" onClick={onPresentDeposit} variant="secondary">
             {TranslateString(999, 'Stake LP')}
-          </Button>
+          </Button> */}
+          {renderStakingButtons()}
         </ActionContent>
       </ActionContainer>
     )
@@ -171,4 +207,4 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
   )
 }
 
-export default Staked
+export default WrapAction

@@ -4,11 +4,14 @@ import { useTable, Button, ChevronUpIcon, ColumnType } from '@luckyswap/uikit'
 import useI18n from 'hooks/useI18n'
 
 import Row, { RowProps } from './Row'
+import { FarmType } from '../../../../constants/index'
+import { useSpaceHunterCollection } from '../../../../hooks/useCollection'
 
 export interface ITableProps {
   data: RowProps[]
   columns: ColumnType<RowProps>[]
   sortColumn?: string
+  type: FarmType
 }
 
 const Container = styled.div`
@@ -126,17 +129,17 @@ const ArrowUp = styled.div`
   height: 0;
   border-style: solid;
   border-width: 0 4px 6px 4px;
-  border-color: transparent transparent #8C8C8C transparent;
+  border-color: transparent transparent #8c8c8c transparent;
   margin-bottom: 3px;
-`  
+`
 
 const ArrowDown = styled.div`
   width: 0;
   height: 0;
   border-style: solid;
   border-width: 6px 4px 0 4px;
-  border-color: #8C8C8C transparent transparent transparent;
-`  
+  border-color: #8c8c8c transparent transparent transparent;
+`
 const TableHeader = styled.tr`
   color: white;
 `
@@ -155,19 +158,15 @@ const FarmTable: React.FC<ITableProps> = (props) => {
 
   return (
     <Container>
-
-
       <TableContainer>
-        <Tab>
-          
-        </Tab>
+        <Tab></Tab>
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
             <thead>
               <TableHeader>
                 <Item>
-                  <Text>LP Tokens Name
-
+                  <Text>
+                    LP Tokens Name
                     <Arrow>
                       <ArrowUp></ArrowUp>
                       <ArrowDown></ArrowDown>
@@ -176,7 +175,8 @@ const FarmTable: React.FC<ITableProps> = (props) => {
                 </Item>
 
                 <Item>
-                  <Text>Bonus
+                  <Text>
+                    Bonus
                     <Arrow>
                       <ArrowUp></ArrowUp>
                       <ArrowDown></ArrowDown>
@@ -185,12 +185,12 @@ const FarmTable: React.FC<ITableProps> = (props) => {
                 </Item>
 
                 <Item>
-                  <Text>Token
-                  </Text>
+                  <Text>Token</Text>
                 </Item>
 
                 <Item>
-                  <Text>Earned
+                  <Text>
+                    Earned
                     <Arrow>
                       <ArrowUp></ArrowUp>
                       <ArrowDown></ArrowDown>
@@ -199,7 +199,8 @@ const FarmTable: React.FC<ITableProps> = (props) => {
                 </Item>
 
                 <Item>
-                  <Text>APR
+                  <Text>
+                    APR
                     <Arrow>
                       <ArrowUp></ArrowUp>
                       <ArrowDown></ArrowDown>
@@ -208,7 +209,8 @@ const FarmTable: React.FC<ITableProps> = (props) => {
                 </Item>
 
                 <Item>
-                  <Text>TLV
+                  <Text>
+                    TLV
                     <Arrow>
                       <ArrowUp></ArrowUp>
                       <ArrowDown></ArrowDown>
@@ -219,7 +221,7 @@ const FarmTable: React.FC<ITableProps> = (props) => {
             </thead>
             <TableBody>
               {rows.map((row) => {
-                return <Row {...row.original} key={`table-row-${row.id}`} />
+                return <Row {...row.original} key={`table-row-${row.id}`} type={props?.type} />
               })}
             </TableBody>
           </StyledTable>

@@ -1,7 +1,18 @@
 import { CurrencyAmount, JSBI } from '@luckyswap/v2-sdk'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { TranslatableText, SerializedBigNumber } from 'state/types'
+
+type TranslatableText =
+  | string
+  | {
+      id: number
+      fallback: string
+      data?: {
+        [key: string]: string | number
+      }
+    }
+
+type SerializedBigNumber = string
 
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 
@@ -86,6 +97,7 @@ export interface FarmConfig {
   quoteToken: Token
   multiplier?: string
   isCommunity?: boolean
+  contractAddress?: string
   dual?: {
     rewardPerBlock: number
     earnLabel: string
@@ -126,6 +138,8 @@ export interface BaseNFT {
   urlToken?: string
   to?: string
   uri?: string
+  tokenName?: string
+  tokenSymbol?: string
 }
 
 export interface AdditionalInfoNFT {
@@ -135,6 +149,11 @@ export interface AdditionalInfoNFT {
 }
 
 export interface NFT extends BaseNFT, AdditionalInfoNFT {}
+
+export interface BoostedNFT extends NFT {
+  boostedPercent: string
+  isUsingToBoost?: boolean
+}
 
 export interface StakingNFT extends NFT {
   rewardPerBlock?: ethers.BigNumber | JSBI

@@ -1,7 +1,8 @@
 import { ethers } from 'ethers'
 import { Toast } from '@luckyswap/uikit'
 import BigNumber from 'bignumber.js'
-import { CampaignType, FarmConfig, Nft, LotteryStatus,  LotteryTicket, PoolConfig, Team } from 'config/constants/types'
+import { CampaignType, FarmConfig, Nft, LotteryStatus, LotteryTicket, PoolConfig, Team } from 'config/constants/types'
+import { BoostedNFT } from '../config/constants/types'
 
 export type TranslatableText =
   | string
@@ -88,7 +89,6 @@ export interface LotteryRoundGraphEntity {
 export type SerializedBigNumber = string
 
 export type UserTicketsResponse = [ethers.BigNumber[], number[], boolean[]]
-
 
 export interface Pool extends PoolConfig {
   totalStaked?: BigNumber
@@ -209,6 +209,9 @@ export interface BlockState {
   initialBlock: number
 }
 
+export interface SpaceHunterCollectionState {
+  data: BoostedNFT[]
+}
 
 export interface LotteryRoundUserTickets {
   isLoading?: boolean
@@ -234,5 +237,5 @@ export interface State {
   achievements: AchievementState
   block: BlockState
   lottery: LotteryState
-
+  spaceHunterCollection: SpaceHunterCollectionState
 }

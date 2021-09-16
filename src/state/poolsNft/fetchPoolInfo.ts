@@ -2,8 +2,10 @@ import { ChainId } from '@luckyswap/v2-sdk'
 import axios from 'axios'
 import nftAbi from 'config/abi/nft.json'
 import stakingNftAbi from 'config/abi/StakingNft.json'
+import spaceHunterAbi from 'config/abi/SpaceHunterNFT.json'
 import addresses from 'config/constants/contracts'
 import { getAddress } from 'ethers/lib/utils'
+import { ethers } from 'ethers'
 import multicall from 'utils/multicall'
 import Web3 from 'web3'
 import { AdditionalInfoNFT, BaseNFT, NFT } from '../../config/constants/types'
@@ -77,15 +79,13 @@ export const getImplementationFromProxy = async (contractAddress: string, chainI
 }
 
 const NFT_SITES = {
-  LUCKY_MARKETPLACE: 'LUCKY_MARKETPLACE',
-  AIRNFTS: 'AIRNFTS',
-  BRNFT: 'BRNFT',
-}
-
-const WHITELIST_URLS = {
-  [getAddress('0x969a82989d9e410ed0ae36c12479552421c93eb2')]: NFT_SITES.LUCKY_MARKETPLACE,
-  [getAddress('0xF5db804101d8600c26598A1Ba465166c33CdAA4b')]: NFT_SITES.AIRNFTS,
-  [getAddress('0x1dDB2C0897daF18632662E71fdD2dbDC0eB3a9Ec')]: NFT_SITES.BRNFT,
+  LUCKY_MARKETPLACE: [
+    getAddress('0x969a82989d9e410ed0ae36c12479552421c93eb2'),
+    getAddress('0xb3597830f51a9d57623318D389B38C70c94ADfa8'),
+    getAddress('0x5b89960e8cb3e42e7b96efbcb1f82029f08f910c'),
+  ],
+  AIRNFTS: [getAddress('0xF5db804101d8600c26598A1Ba465166c33CdAA4b')],
+  BRNFT: [getAddress('0x1dDB2C0897daF18632662E71fdD2dbDC0eB3a9Ec')],
 }
 
 const getInfoFromLucky = async (uri): Promise<AdditionalInfoNFT> => {
@@ -134,16 +134,18 @@ const getInfoFromBakery = async (uri): Promise<AdditionalInfoNFT> => {
 export const getInfoFromURI = async (tokensInfo: BaseNFT[]): Promise<AdditionalInfoNFT[]> => {
   const result = await Promise.all(
     tokensInfo.map(async (token) => {
-      switch (WHITELIST_URLS[token.contractAddress]) {
-        case NFT_SITES.LUCKY_MARKETPLACE:
-          return getInfoFromLucky(token.uri)
-        case NFT_SITES.AIRNFTS:
-          return getInfoFromAirNFT(token.uri)
-        case NFT_SITES.BRNFT:
-          return getInfoFromBRNFT(token.uri)
-        default:
-          return getInfoFromBakery(token.uri)
+      token.contractAddress = getAddress(token.contractAddress)
+      if (NFT_SITES.LUCKY_MARKETPLACE.includes(token.contractAddress)) {
+        return getInfoFromLucky(token.uri)
       }
+      if (NFT_SITES.AIRNFTS.includes(token.contractAddress)) {
+        return getInfoFromAirNFT(token.uri)
+      }
+      if (NFT_SITES.BRNFT.includes(token.contractAddress)) {
+        return getInfoFromBRNFT(token.uri)
+      }
+
+      return getInfoFromBakery(token.uri)
     }),
   )
 
@@ -168,7 +170,29 @@ export const getTokensURI = async (tokens: BaseNFT[]) => {
   }
 }
 
-export const getAdditionalInfoNFTs = async (tokens: BaseNFT[]): Promise<AdditionalInfoNFT[]> => {
+export const getBoostedPercent = async (tokens: BaseNFT[]) => {
+  try {
+    const calls = tokens.map((t) => ({
+      address: t.contractAddress,
+      name: 'boostedPercent',
+      params: [t.tokenID],
+    }))
+
+    let boostedPercents = await multicallv2(spaceHunterAbi, calls, { requireSuccess: false })
+
+    boostedPercents = boostedPercents.flat()
+
+    return tokens.map((token, index) => ({
+      ...token,
+      boostedPercent: boostedPercents[index].toString(),
+    }))
+  } catch (error) {
+    console.log('error : ', error)
+    return []
+  }
+}
+
+export const getAdditionalInfoNFTs = async <T extends BaseNFT>(tokens: T[]): Promise<AdditionalInfoNFT[]> => {
   const uris = await getTokensURI(tokens)
 
   const tokensInfo = uris.map((uri, index) => ({
@@ -205,12 +229,12 @@ export const excludeExistedTokens = (userTokens: BaseNFT[], existedTokens: BaseN
 }
 
 export const getKey = (token) => {
-  return `${token.tokenID}-${token.contractAddress}`
+  return `${token.tokenID}-${ethers.utils.getAddress(token.contractAddress)}`
 }
 
-export const excludeSoldTokens = (userTokens: BaseNFT[], account: string): Array<any> => {
+export const excludeSoldTokens = <T extends BaseNFT>(userTokens: T[], account: string): Array<T> => {
   const map = new Map()
-  const result: BaseNFT[] = []
+  const result: T[] = []
 
   for (let i = (userTokens as any).length - 1; i >= 0; i--) {
     const key = getKey(userTokens[i])
@@ -224,11 +248,31 @@ export const excludeSoldTokens = (userTokens: BaseNFT[], account: string): Array
   return result
 }
 
-export const addAdditionalInfoNFTs = async (userTokens: BaseNFT[]): Promise<NFT[]> => {
-  const AdditionalInfoNFTs = await getAdditionalInfoNFTs(userTokens)
+export const excludeTokensNotTransferToFarm = <T extends BaseNFT>({ tokens, account, chainId }): Array<T> => {
+  const map = new Map()
+  const result: T[] = []
+
+  for (let i = (tokens as any).length - 1; i >= 0; i--) {
+    const key = getKey(tokens[i])
+
+    if (
+      !map.get(key) &&
+      (getAddress(tokens[i].to) === account || getAddress(tokens[i].to) === getAddress(addresses.farms[chainId]))
+    ) {
+      console.log('key : ', key)
+      result.push(tokens[i])
+    }
+    map.set(key, 1)
+  }
+
+  return result
+}
+
+export const addAdditionalInfoNFTs = async <T extends BaseNFT>(userTokens: T[]): Promise<T[]> => {
+  const additionalInfoNFTs = await getAdditionalInfoNFTs(userTokens)
 
   for (let i = 0; i < (userTokens as any).length; i++) {
-    Object.assign(userTokens[i], AdditionalInfoNFTs[i])
+    Object.assign(userTokens[i], additionalInfoNFTs[i])
   }
 
   return userTokens

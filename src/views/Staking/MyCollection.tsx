@@ -48,7 +48,6 @@ const MyCollection: React.FC<MyCollectionProps> = ({ setMyTokens, activeTab }: M
     }
   }, [account, setMyTokens, activeTab])
 
-
   const onSubmit = async (value: any) => {
     if (tokenSelected) {
       const { contractAddress, tokenID, image, name, description } = tokenSelected as any

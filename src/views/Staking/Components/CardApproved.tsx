@@ -25,6 +25,7 @@ import notification from './Alert'
 import { ConfirmWithdrawModalBottom } from './ConfirmWithdrawModalBottom'
 import { useActiveWeb3React } from '../../../hooks/index'
 import { ConfirmStakeModalBottom } from './ConfirmStakeModalBottom'
+import { ConfirmApproveModalBottom } from './ConfirmApproveModalBottom'
 
 interface StakingCardProps extends StakingNFT {
   approveState?: ApprovalState
@@ -45,11 +46,16 @@ const CardApproved: React.FC<StakingCardProps> = ({
   const stakingNFTContract = useStakingNFTContract()
   const [txHashStake, setTxHashStake] = useState<string>('')
   const addTransaction = useTransactionAdder()
-  const [approvalNFT, approveNFTCallback] = useApproveNFTCallback(tokenID, contractAddress, stakingNFTContract.address)
+  const [approvalNFT, approveNFTCallback, attemptingApproveTxn, txHashApprove] = useApproveNFTCallback(
+    tokenID,
+    contractAddress,
+    stakingNFTContract.address,
+  )
   const isTxStakeConfirmed = useIsTransactionConfirmed(txHashStake)
   const isTxStakePending = useIsTransactionPending(txHashStake)
-  const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false)
-  const [showConfirm, setShowConfirm] = useState<boolean>(false)
+  const [attemptingStakeTxn, setAttemptingStakeTxn] = useState<boolean>(false)
+  const [showStakeConfirm, setShowStakeConfirm] = useState<boolean>(false)
+  const [showApproveConfirm, setShowApproveConfirm] = useState<boolean>(false)
   const XLUCKY_TOKEN = useToken(XLUCKY_ADDRESSES[chainId])
   const [rateReward, setRateReward] = useState<number>(0)
 
@@ -81,12 +87,12 @@ const CardApproved: React.FC<StakingCardProps> = ({
 
   const onStake = async () => {
     try {
-      setAttemptingTxn(true)
+      setAttemptingStakeTxn(true)
       const response: TransactionResponse = await stakingNFTContract.stake(
         ethers.utils.getAddress(contractAddress),
         ethers.BigNumber.from(tokenID),
       )
-      setAttemptingTxn(false)
+      setAttemptingStakeTxn(false)
 
       addTransaction(response, {
         summary: `Stake NFT ${tokenID} from ${contractAddress}`,
@@ -94,17 +100,20 @@ const CardApproved: React.FC<StakingCardProps> = ({
 
       setTxHashStake(response.hash)
     } catch (error) {
-      setAttemptingTxn(false)
+      setAttemptingStakeTxn(false)
 
       notification('error', { message: 'Error', description: error?.message })
     }
   }
 
-  const handleDismissConfirmation = useCallback(() => {
-    setShowConfirm(false)
+  const handleDismissConfirmationStake = useCallback(() => {
+    setShowStakeConfirm(false)
+  }, [])
+  const handleDismissConfirmationApprove = useCallback(() => {
+    setShowApproveConfirm(false)
   }, [])
 
-  const modalHeader = () => {
+  const modalStakeHeader = () => {
     return (
       <AutoColumn gap="20px">
         <RowFlat style={{ marginTop: '20px' }}>
@@ -121,7 +130,7 @@ const CardApproved: React.FC<StakingCardProps> = ({
     )
   }
 
-  const modalBottom = () => {
+  const modalStakeBottom = () => {
     return (
       <ConfirmStakeModalBottom
         currency={XLUCKY_TOKEN}
@@ -132,24 +141,56 @@ const CardApproved: React.FC<StakingCardProps> = ({
     )
   }
 
-  const pendingText = `You are transferring ownership of this token to staking contract and number of XLUCKY to deposit`
+  const modalApproveHeader = () => {
+    return (
+      <AutoColumn gap="20px">
+        <RowFlat style={{ marginTop: '20px' }}>
+          <UIKitText fontSize="48px" mr="8px"></UIKitText>
+        </RowFlat>
+        <UIKitText small textAlign="left" padding="8px 0 0 0 " style={{ fontStyle: 'italic' }}></UIKitText>
+      </AutoColumn>
+    )
+  }
+
+  const modalApproveBottom = () => {
+    return <ConfirmApproveModalBottom onApprove={approveNFTCallback} />
+  }
+
+  const pendingStakeText = `You are transferring ownership of this token to staking contract and number of XLUCKY to deposit`
+  const pendingApproveText = `You are accepting to staking contract to spend your token`
 
   return (
     <>
       <TransactionConfirmationModal
-        isOpen={showConfirm}
-        onDismiss={handleDismissConfirmation}
-        attemptingTxn={attemptingTxn}
+        isOpen={showStakeConfirm}
+        onDismiss={handleDismissConfirmationStake}
+        attemptingTxn={attemptingStakeTxn}
         hash={txHashStake}
         content={() => (
           <ConfirmationModalContent
             title="You will stake this token and transfer to staking contract as deposit"
-            onDismiss={handleDismissConfirmation}
-            topContent={modalHeader}
-            bottomContent={modalBottom}
+            onDismiss={handleDismissConfirmationStake}
+            topContent={modalStakeHeader}
+            bottomContent={modalStakeBottom}
           />
         )}
-        pendingText={pendingText}
+        pendingText={pendingStakeText}
+      />
+
+      <TransactionConfirmationModal
+        isOpen={showApproveConfirm}
+        onDismiss={handleDismissConfirmationApprove}
+        attemptingTxn={attemptingApproveTxn}
+        hash={txHashApprove}
+        content={() => (
+          <ConfirmationModalContent
+            title="You accept staking contract to spend this token"
+            onDismiss={handleDismissConfirmationApprove}
+            topContent={modalApproveHeader}
+            bottomContent={modalApproveBottom}
+          />
+        )}
+        pendingText={pendingApproveText}
       />
       <Col sm="12" md="3" className="align-center space-mb">
         <BoxCenter>
@@ -180,7 +221,7 @@ const CardApproved: React.FC<StakingCardProps> = ({
             )}
 
             {approvalNFT === ApprovalState.NOT_APPROVED ? (
-              <Btn className="green-color" onClick={() => approveNFTCallback()}>
+              <Btn className="green-color" onClick={() => setShowApproveConfirm(true)}>
                 <span className="effect-light">Approve NFT</span>
               </Btn>
             ) : approvalNFT === ApprovalState.PENDING ? (
@@ -200,7 +241,7 @@ const CardApproved: React.FC<StakingCardProps> = ({
               (!isTxStakePending && !isTxStakeConfirmed ? (
                 <Btn
                   onClick={() => {
-                    setShowConfirm(true)
+                    setShowStakeConfirm(true)
                   }}
                   className="green-color"
                 >

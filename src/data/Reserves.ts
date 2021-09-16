@@ -6,7 +6,7 @@ import { useActiveWeb3React } from '../hooks'
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 
 const PAIR_INTERFACE = new Interface(IUniswapV2PairABI)
-
+ 
 export enum PairState {
   LOADING,
   NOT_EXISTS,
