@@ -186,6 +186,16 @@ const BoxButton = styled.div`
     font-family: 'Baloo Da';
     padding: 0px 10px;
     height: 40px;
+    &:hover {
+      background: #f5c606 !important;
+      border-color: transparent;
+      opacity: 0.7;
+    }
+
+    &:focus {
+      background-color: #f5c606;
+      box-shadow: 0 0 0 0.25rem rgb(77 77 80);
+    }
   }
 `
 
