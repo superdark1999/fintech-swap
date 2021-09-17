@@ -87,7 +87,7 @@ const DepositModal: React.FC<DepositModalProp> = ({
 
           <BoxInput>
             <input
-              type="text"
+              type="number"
               id="fname"
               name="fname"
               placeholder="0.000"
@@ -218,6 +218,9 @@ const BoxButton = styled.div`
     &:focus {
       background-color: #f5c606;
       box-shadow: 0 0 0 0.25rem rgb(77 77 80);
+    }
+    &:disabled {
+      cursor: not-allowed;
     }
   }
 `

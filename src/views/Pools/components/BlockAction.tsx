@@ -127,7 +127,12 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
         <Button
           onClick={() => handleHarvest('harvest')}
           isLoading={() => getStatus(`${stakingData?.stakingAddress}harvest`)}
-          disabled={!account || isHarvesting || getStatus(`${stakingData?.stakingAddress}harvest`)}
+          disabled={
+            !account ||
+            isHarvesting ||
+            pendingReward.toNumber() === 0 ||
+            getStatus(`${stakingData?.stakingAddress}harvest`)
+          }
         >
           {getStatus(`${stakingData?.stakingAddress}harvest`) && spinnerIcon}
           Harvest
@@ -235,6 +240,12 @@ const BoxAction = styled.div`
       color: #2b2e2f;
       margin-top: 10px;
       box-shadow: 0 0 0 0.25rem #2a2a2a !important;
+    }
+    &:disabled {
+      cursor: not-allowed !important;
+    }
+    [disabled] {
+      cursor: not-allowed !important;
     }
   }
 `

@@ -61,7 +61,7 @@ export default function UnStakeModal({
 
           <BoxInput>
             <input
-              type="text"
+              type="number"
               id="fname"
               name="fname"
               placeholder="0.000"
