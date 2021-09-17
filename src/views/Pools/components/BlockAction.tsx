@@ -196,7 +196,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
           userAmount={userAmount}
           setIsUnStaking={setIsUnStaking}
           stakingData={stakingData}
-          rewardTokenSymbol={stakingData.rewardTokenSymbol}
+          rewardTokenSymbol={stakingData.depositTokenSymbol}
         />
       </BoxAction>
     </>
