@@ -47,6 +47,6 @@ export const spaceHunterCollectionSlice = createSlice({
 })
 
 // Actions
-export const { setSpaceHunterCollection } = spaceHunterCollectionSlice.actions
+export const { setSpaceHunterCollection, stakeNFTsFarm, unstakeNFTsFarm } = spaceHunterCollectionSlice.actions
 
 export default spaceHunterCollectionSlice.reducer

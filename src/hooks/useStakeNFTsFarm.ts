@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react'
 import { useIsTransactionConfirmed, useIsTransactionPending, useTransactionAdder } from 'state/transactions/hooks'
 import notification from 'views/Staking/Components/Alert'
 import { ethers } from 'ethers'
+import { stakeNFTsFarm, unstakeNFTsFarm } from 'state/collection'
 import { useStakingNFTContract, useFarmNFTContract } from './useContract'
 import { StakingNFT } from '../config/constants/types'
 import { useAppDispatch } from '../state/index'
@@ -31,7 +32,7 @@ export function useStakeNFTsFarm(): [boolean, boolean, (pid: any, nftsBoosted: a
             contractAddress: item.contractAddress,
           })),
         )
-        console.log('tx : ', tx)
+
         addTransaction(tx, {
           summary: `
             Stake NFTs to boost pool ${pid}
@@ -40,6 +41,8 @@ export function useStakeNFTsFarm(): [boolean, boolean, (pid: any, nftsBoosted: a
         const receipt = await tx.wait()
         if (receipt.status) {
           setIsConfirmed(true)
+
+          dispatch(stakeNFTsFarm(nftsBoosted))
         }
       } catch (error) {
         notification('error', { message: 'Error', description: (error as any)?.message })
@@ -47,7 +50,7 @@ export function useStakeNFTsFarm(): [boolean, boolean, (pid: any, nftsBoosted: a
         setIsPending(false)
       }
     },
-    [farmNFTContract, addTransaction],
+    [farmNFTContract, addTransaction, dispatch],
   )
 
   return [isPending, isConfirmed, addNftsBoostedCallback]
@@ -59,6 +62,7 @@ export function useUnstakeNFTsFarm(): [boolean, boolean, (pid: any, nftsBoosted:
   const addTransaction = useTransactionAdder()
   const [isPending, setIsPending] = useState<boolean>(false)
   const [isConfirmed, setIsConfirmed] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
 
   const unstakeNftsBoostedCallback = useCallback(
     async (pid, nftsBoosted) => {
@@ -82,6 +86,8 @@ export function useUnstakeNFTsFarm(): [boolean, boolean, (pid: any, nftsBoosted:
         const receipt = await tx.wait()
         if (receipt.status) {
           setIsConfirmed(true)
+
+          dispatch(unstakeNFTsFarm(nftsBoosted))
         }
       } catch (error) {
         notification('error', { message: 'Error', description: (error as any)?.message })
@@ -89,7 +95,7 @@ export function useUnstakeNFTsFarm(): [boolean, boolean, (pid: any, nftsBoosted:
         setIsPending(false)
       }
     },
-    [farmNFTContract, addTransaction],
+    [farmNFTContract, addTransaction, dispatch],
   )
 
   return [isPending, isConfirmed, unstakeNftsBoostedCallback]

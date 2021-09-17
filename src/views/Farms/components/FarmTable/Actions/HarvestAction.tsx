@@ -18,8 +18,6 @@ const WrapAction: React.FC<FarmWithStakedValue> = (props) => {
   const newFarmContract = useFarmNFTContract()
   const farmContract = useFarmsContract()
 
-  console.log('type : ', type)
-
   const render = () => {
     switch (type) {
       case FarmType.LUCKYSWAP:

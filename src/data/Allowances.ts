@@ -67,10 +67,7 @@ export function approveForAllNFTs(contractAddresses: string[], operator: string,
     params: [account, operator],
   }))
 
-  console.log('calls : ', calls)
-
   const results = multicallv2(spaceHunterNFTAbi, calls, { requireSuccess: false })
-  console.log('results : ', results)
 
   return results
 }
@@ -84,9 +81,6 @@ export function useApproveForAllNFTs(contractAddresses: string[], operator: stri
     account,
     operator,
   ])
-
-  console.log(contractAddresses)
-  console.log('results : ', results)
 
   return useMemo(() => {
     return results.map((result, i) => {
