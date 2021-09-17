@@ -8,6 +8,7 @@ import BigNumber from 'bignumber.js'
 import { useContract, useStakingContract } from 'hooks/useContract'
 import useUtilityToken from 'hooks/useUtilityToken'
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
+import bep20Abi from 'config/abi/erc20.json'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
 
 import CardValue from '../../Home/components/CardValue'
@@ -32,6 +33,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
 
   const addTransaction = useTransactionAdder()
   const contract = useContract(stakingData?.stakingAddress, SMART_CHEF_ABI)
+  const tokenContract = useContract(stakingData.depositTokenAddress, bep20Abi)
 
   useEffect(() => {
     if (contract) {
@@ -42,6 +44,13 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
         if (isDepositing) setIsDepositing(false)
         else setIsHarvesting(false)
       })
+    }
+
+    return () => {
+      if (contract) {
+        contract.removeAllListeners('Withdraw')
+        contract.removeAllListeners('Deposit')
+      }
     }
   }, [contract, isDepositing])
 
@@ -56,7 +65,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
 
   const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
-  const { listenApproveEvent, approve, allowance } = useUtilityToken(stakingData.depositTokenAddress)
+  const { approve, allowance } = useUtilityToken(stakingData.depositTokenAddress)
   const [amountAllowance, setAmountAllowance] = useState('0')
   const [isApproving, setIsApproving] = useState(false)
 
@@ -74,8 +83,21 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
   }, [account, stakingData.stakingAddress])
 
   useEffect(() => {
-    listenApproveEvent(() => setAmountAllowance('1'))
-  }, [listenApproveEvent])
+    if (tokenContract) {
+      tokenContract.on('Approval', async (a, b, c, d) => {
+        // console.log('info', a, b, c, d)
+        if (b === stakingData.stakingAddress) {
+          setAmountAllowance('1')
+        }
+      })
+    }
+
+    return () => {
+      if (tokenContract) {
+        tokenContract.removeAllListeners('Approval')
+      }
+    }
+  }, [tokenContract, stakingData.stakingAddress])
 
   const handleApprove = async () => {
     setIsApproving(true)
