@@ -241,7 +241,8 @@ const DepositButton = styled.div`
     :disabled {
       opacity: 0.5;
       color: #2b2e2f;
-      background-color: #f5c606 !important;
+      pointer-events: all;
+      cursor: not-allowed !important;
     }
   }
 `
