@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import BigNumber from 'bignumber.js'
 
+import { calculateGasMargin } from 'utils'
+
 export default function UnStakeModal({
   withdrawModal,
   unStakeToggle,
@@ -27,9 +29,10 @@ export default function UnStakeModal({
       unStakeToggle()
       const args = [new BigNumber(value).times(new BigNumber(10).pow(18)).toString()]
       const gasAm = await stakingContract.estimateGas.deposit(...args).catch(() => console.log('Fail estimate gas'))
-      console.log('args', args)
+      // console.log('gasAm', gasAm)
+      // console.log('0x01b7f3', calculateGasMargin(gasAm))
       stakingContract
-        .withdraw(...args, { gasLimit: gasAm })
+        .withdraw(...args, { gasLimit: calculateGasMargin(gasAm) })
         .then((response: any) => {
           addTransaction(response, {
             summary: 'Unstake successfully!',
