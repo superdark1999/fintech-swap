@@ -8,6 +8,7 @@ import BigNumber from 'bignumber.js'
 import { useContract, useStakingContract } from 'hooks/useContract'
 import useUtilityToken from 'hooks/useUtilityToken'
 import { isTransactionRecent, useAllTransactions, useTransactionAdder } from 'state/transactions/hooks'
+import bep20Abi from 'config/abi/erc20.json'
 import SMART_CHEF_ABI from 'config/abi/smartChef.json'
 
 import CardValue from '../../Home/components/CardValue'
@@ -32,6 +33,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
 
   const addTransaction = useTransactionAdder()
   const contract = useContract(stakingData?.stakingAddress, SMART_CHEF_ABI)
+  const tokenContract = useContract(stakingData.depositTokenAddress, bep20Abi)
 
   useEffect(() => {
     if (contract) {
@@ -42,6 +44,13 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
         if (isDepositing) setIsDepositing(false)
         else setIsHarvesting(false)
       })
+    }
+
+    return () => {
+      if (contract) {
+        contract.removeAllListeners('Withdraw')
+        contract.removeAllListeners('Deposit')
+      }
     }
   }, [contract, isDepositing])
 
@@ -56,7 +65,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
 
   const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
-  const { listenApproveEvent, approve, allowance } = useUtilityToken(stakingData.depositTokenAddress)
+  const { approve, allowance } = useUtilityToken(stakingData.depositTokenAddress)
   const [amountAllowance, setAmountAllowance] = useState('0')
   const [isApproving, setIsApproving] = useState(false)
 
@@ -74,8 +83,21 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
   }, [account, stakingData.stakingAddress])
 
   useEffect(() => {
-    listenApproveEvent(() => setAmountAllowance('1'))
-  }, [listenApproveEvent])
+    if (tokenContract) {
+      tokenContract.on('Approval', async (a, b, c, d) => {
+        // console.log('info', a, b, c, d)
+        if (b === stakingData.stakingAddress) {
+          setAmountAllowance('1')
+        }
+      })
+    }
+
+    return () => {
+      if (tokenContract) {
+        tokenContract.removeAllListeners('Approval')
+      }
+    }
+  }, [tokenContract, stakingData.stakingAddress])
 
   const handleApprove = async () => {
     setIsApproving(true)
@@ -127,7 +149,12 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
         <Button
           onClick={() => handleHarvest('harvest')}
           isLoading={() => getStatus(`${stakingData?.stakingAddress}harvest`)}
-          disabled={!account || isHarvesting || getStatus(`${stakingData?.stakingAddress}harvest`)}
+          disabled={
+            !account ||
+            isHarvesting ||
+            pendingReward.toNumber() === 0 ||
+            getStatus(`${stakingData?.stakingAddress}harvest`)
+          }
         >
           {getStatus(`${stakingData?.stakingAddress}harvest`) && spinnerIcon}
           Harvest
@@ -151,14 +178,13 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
           ></CardValue>
         </h3>
         {amountAllowance.toString() === '0' ? (
-          <Button color="danger" onClick={handleApprove} isLoading={isApproving} disabled={!account || isApproving}>
+          <Button onClick={handleApprove} isLoading={isApproving} disabled={!account || isApproving}>
             {isApproving && spinnerIcon}
             Approve
           </Button>
         ) : (
           <Dflex>
             <Button
-              // color="danger"
               onClick={unStakeToggle}
               disabled={!account || isUnStaking || getStatus(`${stakingData?.stakingAddress}unstake`)}
             >
@@ -166,7 +192,6 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
               UnStake
             </Button>
             <Button
-              // color="danger"
               onClick={depositToggle}
               disabled={!account || isDepositing || getStatus(`${stakingData?.stakingAddress}deposit`)}
             >
@@ -196,7 +221,7 @@ const BlockAction = React.memo(({ sortedRecentTransactions, pendingReward, userA
           userAmount={userAmount}
           setIsUnStaking={setIsUnStaking}
           stakingData={stakingData}
-          rewardTokenSymbol={stakingData.rewardTokenSymbol}
+          rewardTokenSymbol={stakingData.depositTokenSymbol}
         />
       </BoxAction>
     </>
@@ -227,6 +252,11 @@ const BoxAction = styled.div`
       background: #f5c606 !important;
       border-color: transparent;
       opacity: 0.7;
+      &:disabled {
+        background: #6c757d !important;
+        opacity: 0.65 !important;
+        /* background: transparent !important; */
+      }
     }
     &:focus {
       grid-column: 1 / 7;
@@ -235,6 +265,11 @@ const BoxAction = styled.div`
       color: #2b2e2f;
       margin-top: 10px;
       box-shadow: 0 0 0 0.25rem #2a2a2a !important;
+    }
+    &:disabled {
+      pointer-events: all;
+      /* background-color: red !important; */
+      cursor: not-allowed !important;
     }
   }
 `
