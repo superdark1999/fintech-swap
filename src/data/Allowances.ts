@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import spaceHunterNFTAbi from 'config/abi/SpaceHunterNFT.json'
 import farmNftAbi from 'config/abi/newFarm.json'
 import { Interface } from '@ethersproject/abi'
+import { Contract } from 'web3-eth-contract'
 import { useNFTContract, useTokenContract } from '../hooks/useContract'
 import { useSingleCallResult, useMultipleContractSingleData } from '../state/multicall/hooks'
 import { useActiveWeb3React } from '../hooks/index'
@@ -52,24 +53,26 @@ export async function isApproveForAllNFTs(contractAddresses: string[], operator:
     name: 'isApprovedForAll',
     params: [account, operator],
   }))
-  console.log('calls : ', calls)
 
   const results = await multicallv2(spaceHunterNFTAbi, calls, { requireSuccess: false })
-  console.log('results : ', results)
 
-  return results.every((result) => result)
+  for (let i = 0; i < results.length; i++) {
+    if (JSON.parse(results[i]) === false) {
+      return false
+    }
+  }
+
+  return true
 }
 
-export function approveForAllNFTs(contractAddresses: string[], operator: string, account: string) {
-  const calls = contractAddresses.map((contractAddress) => ({
-    address: contractAddress,
-    name: 'setApprovalForAll',
-    params: [account, operator],
-  }))
+export async function approveForAllNFTs(contracts: Contract[], operator: string) {
+  const promises = []
+  for (let i = 0; i < contracts.length; i++) {
+    promises.push(contracts[i].setApprovalForAll(operator, true))
+  }
+  const results = await Promise.allSettled(promises)
 
-  const results = multicallv2(spaceHunterNFTAbi, calls, { requireSuccess: false })
-
-  return results
+  return results.every((item) => item.status === 'fulfilled')
 }
 
 const SPACEHUNTER_INTERFACE = new Interface(spaceHunterNFTAbi)

@@ -61,6 +61,8 @@ export default function ModalSelectSwap({
   unstakeNFTsBoosting,
   isPendingStake,
   isPendingUnstake,
+  isApprovalForAllNfts,
+  isPendingApprove,
   pid,
 }) {
   const [selectedItems, setSelectedMyItem] = useState<BoostedNFT[]>([])

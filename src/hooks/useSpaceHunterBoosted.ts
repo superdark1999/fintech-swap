@@ -46,10 +46,11 @@ const useNFTsBoosted = (pid: number) => {
   }, [farmContract, account, pid, mySpaceHunterCollection, dispatch])
 
   useEffect(() => {
-    farmContract.totalBoostedPercent(pid).then((response) => {
+    farmContract.totalBoostedPercent(pid, account).then((response) => {
+      console.log('total bonus : ', response.toString())
       setTotalBonus(response.toString())
     })
-  }, [farmContract, pid])
+  }, [farmContract, pid, account])
   return [totalBonus]
 }
 
