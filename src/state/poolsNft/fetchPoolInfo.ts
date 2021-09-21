@@ -259,7 +259,6 @@ export const excludeTokensNotTransferToFarm = <T extends BaseNFT>({ tokens, acco
       !map.get(key) &&
       (getAddress(tokens[i].to) === account || getAddress(tokens[i].to) === getAddress(addresses.farms[chainId]))
     ) {
-      console.log('key : ', key)
       result.push(tokens[i])
     }
     map.set(key, 1)

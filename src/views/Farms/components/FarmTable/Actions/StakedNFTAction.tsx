@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import notification from 'views/Staking/Components/Alert'
+import useWeb3Provider from 'hooks/useWeb3Provider'
+
 import { useFarmNFTContract } from '../../../../../hooks/useContract'
 import { useStakeNFTsFarm, useUnstakeNFTsFarm } from '../../../../../hooks/useStakeNFTsFarm'
 import { useMySpaceHunterCollection } from '../../../../../state/hooks'
@@ -12,6 +14,7 @@ import StakeNFTModal from '../../StakeNFTModal'
 import { Title } from './styles'
 import { useActiveWeb3React } from '../../../../../hooks/index'
 import { approveForAllNFTs } from '../../../../../data/Allowances'
+import { getNFTContract } from '../../../../../utils/contractHelpers'
 
 const StakeNFT = styled.div``
 const BoxAction = styled.div`
@@ -64,6 +67,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
   const [addressesNeedApprove, setAddressesNeedApprove] = useState<string[]>([])
   const { account } = useActiveWeb3React()
   const [isPendingApprove, setIsPendingApprove] = useState<boolean>(false)
+  const provider = useWeb3Provider()
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -99,29 +103,41 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
         </NFTChosen>
         <BonusAndAction>
           <Bonus>Bonused: {totalBonus ?? '0'}%</Bonus>
-          <StakeAction
-            onClick={() => {
-              setIsVisibleCanStakeModal(false)
-              setIsVisibleStakingModal(true)
-            }}
-          >
-            Staking
-          </StakeAction>
-          <StakeAction
-            onClick={() => {
-              setIsVisibleCanStakeModal(true)
-              setIsVisibleStakingModal(false)
-            }}
-          >
-            Can stake
-          </StakeAction>
+          {isApprovalForAllNfts && (
+            <>
+              <StakeAction
+                onClick={() => {
+                  setIsVisibleCanStakeModal(false)
+                  setIsVisibleStakingModal(true)
+                }}
+              >
+                Staking
+              </StakeAction>
+              <StakeAction
+                onClick={() => {
+                  setIsVisibleCanStakeModal(true)
+                  setIsVisibleStakingModal(false)
+                }}
+              >
+                Can stake
+              </StakeAction>
+            </>
+          )}
 
           {!isApprovalForAllNfts && (
             <StakeAction
               onClick={() => {
+                if (addressesNeedApprove.length === 0) {
+                  notification('error', { message: 'Approve error', description: 'Wait for 5 seconds to click again' })
+                  return
+                }
                 setIsPendingApprove(true)
-                approveForAllNFTs(addressesNeedApprove, farmContract.address, account)
+                const contractsNeedApprove = addressesNeedApprove.map((item) =>
+                  getNFTContract(item, provider.getSigner()),
+                )
+                approveForAllNFTs(contractsNeedApprove, farmContract.address)
                   .then(() => {
+                    console.log('set approval for all xong roi ne')
                     setIsPendingApprove(false)
                   })
                   .catch((err) => {
@@ -145,6 +161,8 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
         unstakeNFTsBoosting={unstakeNFTsFarmCallback}
         isPendingStake={isPendingStake}
         isPendingUnstake={isPendingUnstake}
+        isApprovalForAllNfts={isApprovalForAllNfts}
+        isPendingApprove={isPendingApprove}
       />
       <StakeNFTModal
         pid={pid}
@@ -156,6 +174,8 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
         unstakeNFTsBoosting={unstakeNFTsFarmCallback}
         isPendingStake={isPendingStake}
         isPendingUnstake={isPendingUnstake}
+        isApprovalForAllNfts={isApprovalForAllNfts}
+        isPendingApprove={isPendingApprove}
       />
     </StakeNFT>
   )

@@ -12,6 +12,8 @@ export const fetchFarmUserAllowances = async (account: string, farms: FarmConfig
     return { address: lpContractAddress, name: 'allowance', params: [account, farm.contractAddress] }
   })
 
+  console.log('allowance farms : ', calls)
+
   const rawLpAllowances = await multicallv2(erc20ABI, calls, { requireSuccess: false })
   const parsedLpAllowances = rawLpAllowances.map((lpBalance) => {
     return new BigNumber(lpBalance).toJSON()
