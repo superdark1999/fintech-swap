@@ -8,8 +8,9 @@ import { orderBy } from 'lodash'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Redirect, Route, useLocation, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
-import classnames from 'classnames';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap'
+import classnames from 'classnames'
+import { setSpaceHunterCollection } from 'state/collection'
 import useI18n from '../../hooks/useI18n'
 import useRefresh from '../../hooks/useRefresh'
 import { useAppDispatch } from '../../state'
@@ -24,7 +25,8 @@ import { RowProps } from './components/FarmTable/Row'
 import SearchInput from './components/SearchInput'
 import Select, { OptionProps } from './components/Select/Select'
 import { DesktopColumnSchema, ViewMode } from './components/types'
-
+import { FarmType } from '../../constants/index'
+import { useSpaceHunterCollection } from '../../hooks/useCollection'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -123,7 +125,7 @@ const Farms: React.FC = () => {
   const { pathname } = useLocation()
   const TranslateString = useI18n()
   const farmsLP = useFarms()
-  const cakePrice = usePriceLuckyBusd()
+  const luckyPrice = usePriceLuckyBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(ViewMode.TABLE)
   const { account, chainId } = useWeb3React()
@@ -140,15 +142,22 @@ const Farms: React.FC = () => {
 
   const [stakedOnly, setStakedOnly] = useState(false)
 
+  const mySpaceHunterCollection = useSpaceHunterCollection()
+
+  useEffect(() => {
+    if (mySpaceHunterCollection.length > 0) {
+      dispatch(setSpaceHunterCollection(mySpaceHunterCollection))
+    }
+  }, [mySpaceHunterCollection, dispatch])
+
   const isActive = !pathname.includes('history')
 
   // farmsLP = farmsLP.filter((farm) => farm.type === type)
 
+  const [activeTab, setActiveTab] = useState('1')
 
-  const [activeTab, setActiveTab] = useState('1');
-
-  const toggle = tab => {
-    if(activeTab !== tab) setActiveTab(tab);
+  const toggle = (tab) => {
+    if (activeTab !== tab) setActiveTab(tab)
   }
   // console.log("activeTab", activeTab)
   const activeFarms = farmsLP.filter((farm) => farm.multiplier !== '0X')
@@ -192,7 +201,7 @@ const Farms: React.FC = () => {
 
         const quoteTokenPriceUsd = 361 // TODO: This will handel API get price BUSD/BNB
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(quoteTokenPriceUsd)
-        const apy = isActive ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity) : 0
+        const apy = isActive ? getFarmApr(new BigNumber(farm.poolWeight), luckyPrice, totalLiquidity) : 0
 
         return { ...farm, apy, liquidity: totalLiquidity }
       })
@@ -205,7 +214,7 @@ const Farms: React.FC = () => {
       }
       return farmsToDisplayWithAPY
     },
-    [cakePrice, prices, query, isActive],
+    [luckyPrice, prices, query, isActive],
   )
 
   if (chainId && chainId !== ChainId.BSCTESTNET && chainId !== ChainId.MAINNET) {
@@ -217,6 +226,7 @@ const Farms: React.FC = () => {
   }
 
   let farmsStaked = []
+
   if (isActive) {
     farmsStaked = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
   } else {
@@ -224,11 +234,10 @@ const Farms: React.FC = () => {
   }
 
   farmsStaked = sortFarms(farmsStaked)
-  // console.log('farmStaked', farmsStaked)
   const rowData = farmsStaked.map((farm) => {
     const { token, quoteToken } = farm
-    const tokenAddress = token.address
-    const quoteTokenAddress = quoteToken.address
+    const tokenAddress = token?.address
+    const quoteTokenAddress = quoteToken?.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
     // console.log("------farm", farm.type)
     const row: RowProps = {
@@ -238,7 +247,7 @@ const Farms: React.FC = () => {
         lpLabel,
         tokenAddress,
         quoteTokenAddress,
-        cakePrice,
+        cakePrice: luckyPrice,
         originalValue: farm.apy,
       },
       farm: {
@@ -260,15 +269,15 @@ const Farms: React.FC = () => {
         multiplier: farm.multiplier,
       },
       details: farm,
-      type: farm.type
+      type: farm.type,
     }
 
     return row
   })
 
-  const renderContent = (type:any): JSX.Element => {
+  const renderContent = (type: FarmType): JSX.Element => {
     // console.log("-------", rowData[0].type)
-    // rowData = 
+    // rowData =
     if (viewMode === ViewMode.TABLE && rowData.length) {
       const columnSchema = DesktopColumnSchema
       const data = rowData.filter((farm) => farm.type === type)
@@ -296,7 +305,7 @@ const Farms: React.FC = () => {
         sortable: column.sortable,
       }))
 
-      return <Table data={data} columns={columns} />
+      return <Table data={data} columns={columns} type={type} />
     }
 
     return (
@@ -304,12 +313,12 @@ const Farms: React.FC = () => {
         <FlexLayout>
           <Route exact path={`${path}`}>
             {farmsStaked.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed={false} />
+              <FarmCard key={farm.pid} farm={farm} cakePrice={luckyPrice} account={account} removed={false} />
             ))}
           </Route>
           <Route exact path={`${path}/history`}>
             {farmsStaked.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed />
+              <FarmCard key={farm.pid} farm={farm} cakePrice={luckyPrice} account={account} removed />
             ))}
           </Route>
         </FlexLayout>
@@ -321,7 +330,6 @@ const Farms: React.FC = () => {
     setSortOption(option.value)
   }
 
-
   return (
     <>
       <Header>
@@ -329,17 +337,20 @@ const Farms: React.FC = () => {
           {TranslateString(674, 'Farms')}
         </Heading>
         <Heading size="lg" color="#fff">
-          Provide a farming platform for any projects.<br/> Farms Stake Liquidity Pool (LP) tokens to earn.
+          Provide a farming platform for any projects.
+          <br /> Farms Stake Liquidity Pool (LP) tokens to earn.
         </Heading>
       </Header>
-      
+
       <Page>
         <ControlContainer>
           <Nav tabs>
             <NavItem>
               <NavLink
                 className={classnames({ active: activeTab === '1' })}
-                onClick={() => { toggle('1'); }}
+                onClick={() => {
+                  toggle('1')
+                }}
               >
                 Space Hunter
               </NavLink>
@@ -348,7 +359,9 @@ const Farms: React.FC = () => {
             <NavItem>
               <NavLink
                 className={classnames({ active: activeTab === '2' })}
-                onClick={() => { toggle('2'); }}
+                onClick={() => {
+                  toggle('2')
+                }}
               >
                 Luckyswap
               </NavLink>
@@ -357,13 +370,14 @@ const Farms: React.FC = () => {
             <NavItem>
               <NavLink
                 className={classnames({ active: activeTab === '3' })}
-                onClick={() => { toggle('3'); }}
+                onClick={() => {
+                  toggle('3')
+                }}
               >
                 Other
               </NavLink>
             </NavItem>
           </Nav>
-
 
           <TabContent activeTab={activeTab}>
             <FilterContainer>
@@ -371,7 +385,7 @@ const Farms: React.FC = () => {
                 <Text color="#fff" fontWeight="600" fontSize="16px">
                   SORT BY
                 </Text>
-              
+
                 <Select
                   options={[
                     {
@@ -407,18 +421,11 @@ const Farms: React.FC = () => {
               </LabelWrapper>
             </FilterContainer>
 
-            <TabPane tabId="1">
-              
-            {renderContent("space-hunter")}
-            </TabPane>
+            <TabPane tabId="1">{renderContent(FarmType.SPACEHUNTER)}</TabPane>
 
-            <TabPane tabId="2">
-            {renderContent("luckyswap")}
-            </TabPane>
+            <TabPane tabId="2">{renderContent(FarmType.LUCKYSWAP)}</TabPane>
 
-            <TabPane tabId="3">
-              {renderContent("other")}
-            </TabPane>
+            {/* <TabPane tabId="3">{renderContent('other')}</TabPane> */}
           </TabContent>
         </ControlContainer>
       </Page>

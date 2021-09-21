@@ -12,6 +12,7 @@ const useStake = (pid: number) => {
 
   const handleStake = useCallback(
     async (amount: string) => {
+      console.log('handle stake ne')
       const txHash = await stake(masterChefContract, pid, amount, account)
       dispatch(fetchFarmUserDataAsync(account) as any)
       console.info(txHash)

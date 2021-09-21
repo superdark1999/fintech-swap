@@ -1,19 +1,17 @@
 import { Menu as UikitMenu, MenuEntry } from '@luckyswap/uikit'
-import { ChainId } from '@luckyswap/v2-sdk'
+import { Binance, ChainId } from '@luckyswap/v2-sdk'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { XLUCKY_ADDRESSES } from 'config'
-import bep20Abi from 'config/abi/erc20.json'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
 import { useActiveWeb3React } from 'hooks'
 import useAuth from 'hooks/useAuth'
-import { useContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
-import { useNativeBalance } from 'hooks/useTokenBalance'
 import React, { useContext, useEffect, useState } from 'react'
 import { useProfile } from 'state/hooks'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { NETWORKS } from '../../constants'
+import { useToken } from '../../hooks/Tokens'
+import { useCurrencyBalances } from '../../state/wallet/hooks'
 import { config, configRestricted } from './config'
 
 const Menu = (props) => {
@@ -23,12 +21,11 @@ const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
   const { profile } = useProfile()
   const [links, setLinks] = useState<MenuEntry[]>(config)
-  const nativeBalance = useNativeBalance()
   const [showDropdown, setShowDropdown] = useState<boolean>(false)
 
-  const [balanceToken, setBalanceToken] = useState(0)
+  const XLUCKY_TOKEN = useToken(XLUCKY_ADDRESSES[chainId])
 
-  const XLuckyContract = useContract(XLUCKY_ADDRESSES[chainId], bep20Abi)
+  const [nativeBalance, xluckyBalance] = useCurrencyBalances(account, [Binance.onChain(chainId ?? 56), XLUCKY_TOKEN])
 
   useEffect(() => {
     if (connector instanceof InjectedConnector) {
@@ -49,22 +46,6 @@ const Menu = (props) => {
       setLinks(config)
     }
   }, [chainId, logout])
-
-  useEffect(() => {
-    if (XLuckyContract) {
-      XLuckyContract.balanceOf(account)
-        .then((data) => {
-          setBalanceToken(data / 1e18)
-        })
-        .catch((error) => {
-          console.log('get xlucky balance error : ', error)
-          setBalanceToken(0)
-        })
-    } else {
-      setBalanceToken(0)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, chainId])
 
   const chainChangeHandler = async (chainIdToChange: ChainId) => {
     const provider = (window as WindowChain).ethereum
@@ -103,8 +84,8 @@ const Menu = (props) => {
         noProfileLink: '/profile',
         showPip: !profile?.username,
       }}
-      balanceBNB={getBalanceNumber(nativeBalance).toFixed(3)}
-      balanceLUCKY={balanceToken.toFixed(3)}
+      balanceBNB={nativeBalance?.toSignificant(4)}
+      balanceLUCKY={xluckyBalance?.toFixed(3)}
       onChainChange={chainChangeHandler}
       showDropdown={showDropdown}
       {...props}

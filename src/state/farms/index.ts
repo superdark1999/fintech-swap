@@ -10,6 +10,7 @@ import {
   fetchFarmUserStakedBalances,
 } from './fetchFarmUser'
 import { FarmsState, Farm } from '../types'
+import { FarmConfig } from '../../config/constants/types'
 
 const initialState: FarmsState = { data: [] }
 
@@ -50,10 +51,11 @@ export const fetchFarmsPublicDataAsync = () => async (dispatch) => {
   dispatch(setFarmsPublicData(farms))
 }
 export const fetchFarmUserDataAsync = (account) => async (dispatch) => {
-  const userFarmAllowances = await fetchFarmUserAllowances(account)
-  const userFarmTokenBalances = await fetchFarmUserTokenBalances(account)
-  const userStakedBalances = await fetchFarmUserStakedBalances(account)
-  const userFarmEarnings = await fetchFarmUserEarnings(account)
+  const farms: FarmConfig[] = await getFarmConfig()
+  const userFarmAllowances = await fetchFarmUserAllowances(account, farms)
+  const userFarmTokenBalances = await fetchFarmUserTokenBalances(account, farms)
+  const userStakedBalances = await fetchFarmUserStakedBalances(account, farms)
+  const userFarmEarnings = await fetchFarmUserEarnings(account, farms)
 
   const arrayOfUserDataObjects = userFarmAllowances.map((farmAllowance, index) => {
     return {
@@ -64,7 +66,6 @@ export const fetchFarmUserDataAsync = (account) => async (dispatch) => {
       earnings: userFarmEarnings[index],
     }
   })
-  // console.log('arrayOfUserDataObjects', arrayOfUserDataObjects)
 
   dispatch(setFarmUserData({ arrayOfUserDataObjects }))
 }

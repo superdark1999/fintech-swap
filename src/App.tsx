@@ -35,6 +35,7 @@ import { RedirectPathToSwapOnly } from './views/Swap/redirects'
 // Only pool is included in the main bundle because of it's the most visited page .
 const Home = lazy(() => import('./views/Home'))
 const Farms = lazy(() => import('./views/Farms'))
+const Bridge = lazy(() => import('./views/Bridge'))
 const Lottery = lazy(() => import('./views/Lottery'))
 const LotteryV2 = lazy(() => import('./views/Lottery-v2'))
 const Ifos = lazy(() => import('./views/Launchpad'))
@@ -164,6 +165,10 @@ const App: React.FC = () => {
                 </Route>
                 <Route path="/staking">
                   <Staking />
+                </Route>
+
+                <Route path="/bridge">
+                  <Bridge />
                 </Route>
 
                 <Route path="/lottery-dev">

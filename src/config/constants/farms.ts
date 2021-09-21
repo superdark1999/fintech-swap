@@ -14,16 +14,6 @@ const farms: FarmConfig[] = [
   //   token: tokens.xlucky,
   //   quoteToken: tokens.wbnb,
   // },
-  // {
-  //   pid: 1,
-  //   lpSymbol: 'LUCKY-BUSD LP',
-  //   lpAddresses: {
-  //     56: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
-  //     97: '0x12b8b1efcc0dd00481475a9dc455efe258981cac',
-  //   },
-  //   token: tokens.xlucky,
-  //   quoteToken: tokens.busd,
-  // },
 ]
 
 export const getFarmConfig = async () => {
@@ -46,6 +36,7 @@ export const getFarmConfig = async () => {
       token,
       type: farmConfig.type,
       quoteToken: farmConfig.quoteToken as Token,
+      contractAddress: farmConfig.contractAddress,
     }
     farms.push(parsedFarmConfig)
   })

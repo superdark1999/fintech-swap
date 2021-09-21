@@ -14,6 +14,7 @@ import Platform, { PlatformProps } from './Platform'
 import ActionPanel from './Actions/ActionPanel'
 import CellLayout from './CellLayout'
 import { DesktopColumnSchema, MobileColumnSchema } from '../types'
+import { FarmType } from '../../../../constants/index'
 
 export interface RowProps {
   apr: AprProps
@@ -23,7 +24,7 @@ export interface RowProps {
   liquidity: LiquidityProps
   platform: PlatformProps
   details: FarmWithStakedValue
-  type?: []
+  type?: FarmType
 }
 
 const cells = {
@@ -71,7 +72,7 @@ const BlockActionPanel = styled.tr`
 `
 
 const Row: React.FunctionComponent<RowProps> = (props) => {
-  const { details } = props
+  const { details, type } = props
   const [actionPanelToggled, setActionPanelToggled] = useState(false)
   const TranslateString = useI18n()
 
@@ -89,53 +90,56 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
     if (!isXs) {
       return (
         <>
-        <StyledTr onClick={toggleActionPanel} className="table-color">
-          {Object.keys(props).map((key) => {
-            const columnIndex = columnNames.indexOf(key)
-            if (columnIndex === -1) {
-              return null
-            }
+          <StyledTr onClick={toggleActionPanel} className="table-color">
+            {Object.keys(props).map((key) => {
+              const columnIndex = columnNames.indexOf(key)
+              if (columnIndex === -1) {
+                return null
+              }
 
-            switch (key) {
-              case 'details':
-                return (
-                  <td key={key}>
-                    <CellInner>
-                      <CellLayout>
-                        <Details actionPanelToggled={actionPanelToggled} />
-                      </CellLayout>
-                    </CellInner>
-                  </td>
-                )
-              case 'apr':
-                return (
-                  <>
-                  <td key={key}>
-                    <CellInner>
-                      {/* <CellLayout label={TranslateString(736, 'APR')}>
-                       */}
-                       <CellLayout>
-                        <Apr {...props.apr} hideButton={isMobile} />
-                      </CellLayout>
-                    </CellInner>
-                  </td>
-                  </>
-                )
-              default:
-                return (
-                  <td key={key}>
-                    <CellInner>
-                      <CellLayout
-                        label={TranslateString(tableSchema[columnIndex].translationId, tableSchema[columnIndex].label)}
-                      >
-                        {React.createElement(cells[key], props[key])}
-                      </CellLayout>
-                    </CellInner>
-                  </td>
-                )
+              switch (key) {
+                case 'details':
+                  return (
+                    <td key={key}>
+                      <CellInner>
+                        <CellLayout>
+                          <Details actionPanelToggled={actionPanelToggled} />
+                        </CellLayout>
+                      </CellInner>
+                    </td>
+                  )
+                case 'apr':
+                  return (
+                    <>
+                      <td key={key}>
+                        <CellInner>
+                          {/* <CellLayout label={TranslateString(736, 'APR')}>
+                           */}
+                          <CellLayout>
+                            <Apr {...props.apr} hideButton={isMobile} />
+                          </CellLayout>
+                        </CellInner>
+                      </td>
+                    </>
+                  )
+                default:
+                  return (
+                    <td key={key}>
+                      <CellInner>
+                        <CellLayout
+                          label={TranslateString(
+                            tableSchema[columnIndex].translationId,
+                            tableSchema[columnIndex].label,
+                          )}
+                        >
+                          {React.createElement(cells[key], props[key])}
+                        </CellLayout>
+                      </CellInner>
+                    </td>
+                  )
               }
             })}
-        </StyledTr>
+          </StyledTr>
         </>
       )
     }
@@ -180,7 +184,7 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
       {actionPanelToggled && details && (
         <BlockActionPanel>
           <td colSpan={12}>
-            <ActionPanel {...props} />
+            <ActionPanel {...props} type={type} />
           </td>
         </BlockActionPanel>
       )}

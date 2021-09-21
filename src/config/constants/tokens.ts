@@ -6,7 +6,7 @@ const tokens = {
   xlucky: {
     symbol: 'XLUCKY',
     address: {
-      56: '0xb45299B023a6F1E0Da134Aa4D886A548BE0B662f',
+      56: '0x438b38A747242e09240537Ef5be76Ee89b64C06c',
       97: '0x5c2aaadd1fce223baaefb1cf41ce872e9d8b986a',
     },
     decimals: 18,
@@ -15,8 +15,8 @@ const tokens = {
   hunter: {
     symbol: 'HUT',
     address: {
-      56: '0x5C2966101B257999e08f00DD43Bec915Ae21167B',
-      97: '0x5C2966101B257999e08f00DD43Bec915Ae21167B',
+      56: '0xb3597830f51a9d57623318D389B38C70c94ADfa8',
+      97: '0xb3597830f51a9d57623318D389B38C70c94ADfa8',
     },
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',

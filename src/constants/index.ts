@@ -1,4 +1,5 @@
 import { JSBI, Percent, Token, ChainId, WNATIVE } from '@luckyswap/v2-sdk'
+import { parseUnits } from 'ethers/lib/utils'
 
 // a list of tokens by chain
 type ChainTokenList = {
@@ -172,3 +173,24 @@ export const ALL_SUPPORTED_CHAIN_IDS: ChainId[] = [
   ChainId.BSCTESTNET,
   ChainId.MATIC_TESTNET,
 ]
+
+export enum GAS_PRICE {
+  default = '5',
+  fast = '6',
+  instant = '7',
+  testnet = '10',
+}
+
+export const GAS_PRICE_GWEI = {
+  default: parseUnits(GAS_PRICE.default, 'gwei').toString(),
+  fast: parseUnits(GAS_PRICE.fast, 'gwei').toString(),
+  instant: parseUnits(GAS_PRICE.instant, 'gwei').toString(),
+  testnet: parseUnits(GAS_PRICE.testnet, 'gwei').toString(),
+}
+
+export const DEFAULT_GAS_LIMIT = 200000
+
+export enum FarmType {
+  SPACEHUNTER = 'space-hunter',
+  LUCKYSWAP = 'luckyswap',
+}

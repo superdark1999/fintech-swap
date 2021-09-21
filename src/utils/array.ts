@@ -35,6 +35,8 @@ export const findNFT = (arr: Array<NFT>, contractAddress: string, tokenID: numbe
 
 export const findNFTIndex = (arr: Array<NFT>, contractAddress: string, tokenID: number): number => {
   for (let i = 0; i < arr.length; i++) {
+    console.log(arr[i].contractAddress === getAddress(contractAddress))
+    console.log(arr[i].tokenID === tokenID)
     if (arr[i].contractAddress === getAddress(contractAddress) && arr[i].tokenID === tokenID) {
       return i
     }

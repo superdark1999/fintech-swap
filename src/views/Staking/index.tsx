@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import NavBar from './Components/NavBar'
 import MyCollection from './MyCollection'
 import Pending from './Pending'
-import WrapPoolsContract from './WrapPoolsContract'
+import Pools from './Pools'
 import { NFT } from '../../config/constants/types'
 
 const StakingNft: React.FC = () => {
@@ -29,7 +29,7 @@ const StakingNft: React.FC = () => {
             <Pending activeTab={activeTab} />
           </TabPane>
 
-          <WrapPoolsContract activeTab={activeTab} myTokens={myTokens} />
+          <Pools activeTab={activeTab} myTokens={myTokens} />
         </TabContent>
       </StakingPage>
     </Page>

@@ -7,6 +7,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { communityFarms } from 'config/constants'
 import { CommunityTag, CoreTag, DualTag } from 'components/Tags'
 import { Row, Col } from 'antd'
+import { FarmType } from '../../../../../constants'
 import HarvestAction from './HarvestAction'
 import StakedAction from './StakedAction'
 import StakedNFTAction from './StakedNFTAction'
@@ -19,6 +20,7 @@ export interface ActionPanelProps {
   multiplier: MultiplierProps
   liquidity: LiquidityProps
   details: FarmWithStakedValue
+  type: FarmType
 }
 
 const Container = styled(Row)`
@@ -141,7 +143,7 @@ const ColContent = styled(Col)`
 `
 const StakedYourNFT = styled.div``
 
-const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, multiplier, liquidity }) => {
+const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, multiplier, liquidity, type }) => {
   const farm = details
 
   const TranslateString = useI18n()
@@ -209,7 +211,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
             <Item> Earned</Item>
           </BoxHead>
           <ActionContainer>
-            <HarvestAction {...farm} />
+            <HarvestAction {...farm} type={type} />
           </ActionContainer>
         </ColContent>
 
@@ -218,7 +220,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({ details, apr, 
             <Item>Farming</Item>
           </BoxHead>
           <ActionContainer>
-            <StakedAction {...farm} />
+            <StakedAction {...farm} type={type} />
           </ActionContainer>
         </ColContent>
 

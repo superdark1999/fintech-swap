@@ -3,15 +3,14 @@ import { Modal, Row } from 'antd'
 import styled from 'styled-components'
 import { SwapOutlined } from '@ant-design/icons'
 import { isMobile } from 'react-device-detect'
-
+import { BoostedNFT } from '../../../config/constants/types'
+import { findNFT, findNFTIndex } from '../../../utils/array'
 
 interface Props {
   visible: any
   setVisible: (visible: boolean) => void
-  data: any,
+  data: any
   // multiSelect?: boolean,
-  getItemSelected?: (data: any) => void
-  selectedItem?: any,
   title: string
 }
 
@@ -21,10 +20,8 @@ const BoxAction = styled.div`
   margin-top: 10px;
   justify-content: space-between;
 `
-const NFTChosen = styled.div`
-`
-const Name = styled.div`
-`
+const NFTChosen = styled.div``
+const Name = styled.div``
 const BonusAndAction = styled.div`
   margin: auto 0;
 `
@@ -40,90 +37,104 @@ const ImgNFT = styled.img`
   border-radius: 30px;
 `
 
-const CardItem = (props:any) => {
-   const { data = {}} = props
-
+const CardItem = ({ image, tokenID, contractAddress, boostedPercent }: BoostedNFT) => {
   return (
     <>
-       <BoxAction>
+      <BoxAction>
         <NFTChosen>
-          <ImgNFT src={data?.img}/>
+          <ImgNFT src={image} />
         </NFTChosen>
         <BonusAndAction>
-          <Name>
-            {data?.name}
-          </Name>
-          <Bonus>
-            {data?.bonus}%
-          </Bonus>
+          <Name>Chua co ten</Name>
+          <Bonus>{boostedPercent}%</Bonus>
         </BonusAndAction>
-        </BoxAction>
+      </BoxAction>
     </>
   )
-
 }
-export default function ModalSelectSwap(props: Props) {
+export default function ModalSelectSwap({
+  visible,
+  data,
+  setVisible,
+  title,
+  stakeNFTsToBoost,
+  unstakeNFTsBoosting,
+  isPendingStake,
+  isPendingUnstake,
+  pid,
+}) {
+  const [selectedItems, setSelectedMyItem] = useState<BoostedNFT[]>([])
 
-  const { getItemSelected, visible, data, setVisible, selectedItem, title } = props
-  const [selectedMyItem, setSelectedMyItem] = useState<any>([])
-
-  const checkItem = (item: any) => {
-    const Item = selectedMyItem.find((x: any) => x._id === item._id)
-    return !!Item
+  const isSelected = (item: BoostedNFT) => {
+    return findNFTIndex(selectedItems, item.contractAddress, item.tokenID) !== -1
   }
 
-  const handleCheck = (item: any) => {
-    // if (multiSelect) {
-    //   if (checkItem(item)) {
-    //     const arrSelected = selectedMyItem.filter((x: any) => x._id !== item._id)
-    //     setSelectedMyItem(arrSelected)
-    //   }
-    //   else setSelectedMyItem(selectedMyItem.concat(item))
-    // } else {
-      setSelectedMyItem([item])
-    // }
+  const handleCheck = (item: BoostedNFT) => {
+    const index = findNFTIndex(selectedItems, item.contractAddress, item.tokenID)
+    if (index !== -1) {
+      setSelectedMyItem((prevState) =>
+        prevState.filter((token) => token.tokenID !== item.tokenID || token.contractAddress !== item.contractAddress),
+      )
+    } else {
+      setSelectedMyItem((prevState) => [...prevState, item])
+    }
   }
 
   const handleSubmit = () => {
-    getItemSelected(selectedMyItem)
-    setVisible(false)
+    if (selectedItems.length === 0) {
+      setVisible(false)
+      return
+    }
+
+    if (selectedItems[0].isUsingToBoost) {
+      unstakeNFTsBoosting(pid, selectedItems)
+    } else {
+      stakeNFTsToBoost(pid, selectedItems)
+    }
   }
 
-  const oncloseModal = () => {
-    setSelectedMyItem(selectedItem)
+  const onCloseModal = () => {
     setVisible(false)
   }
 
   return (
-    
     <ModalStyled
       title={title}
       centered
       visible={visible}
-      onCancel={oncloseModal}
+      onCancel={onCloseModal}
       width={500}
       footer={
         <Row justify="center">
-          <ButtonTrade> Unstake</ButtonTrade>
-          <ButtonTrade onClick={handleSubmit} >Select</ButtonTrade>
+          {selectedItems.length > 0 && (
+            <ButtonTrade disabled={isPendingStake || isPendingUnstake} onClick={handleSubmit}>
+              {selectedItems[0]?.isUsingToBoost ? 'Unstake' : 'Stake'}
+            </ButtonTrade>
+          )}
         </Row>
       }
     >
       <WrapperModalBody>
-        {
-          data.map((item: any) => {
-            return (
-              <button type="button" onClick={() => setSelectedMyItem([item])}  key={item._id} className={checkItem(item) ? "card-item active" : "card-item"} 
-              >
-                <div className="card">
-                  <CardItem data={item} />
-                </div>
-              </button>
-            )
-          })
-        }
+        {data.map((item: BoostedNFT) => {
+          return (
+            <button
+              type="button"
+              onClick={() => handleCheck(item)}
+              key={`${item.tokenID}-${item.contractAddress}`}
+              className={isSelected(item) ? 'card-item active' : 'card-item'}
+            >
+              <div className="card">
+                <CardItem
+                  tokenID={item.tokenID}
+                  image={item.image}
+                  contractAddress={item.contractAddress}
+                  boostedPercent={item.boostedPercent}
+                />
+              </div>
+            </button>
+          )
+        })}
       </WrapperModalBody>
-
     </ModalStyled>
   )
 }
@@ -147,7 +158,7 @@ const ButtonTrade = styled.button`
   border-color: #203c46;
   border: 0;
   box-shadow: none;
-  :hover{
+  :hover {
     opacity: 0.7;
   }
   &.disabled {
@@ -161,45 +172,45 @@ const ButtonTrade = styled.button`
   }
 `
 const ModalStyled = styled(Modal)`
-  background: linear-gradient(45deg,rgb(35 35 35) 30%,rgb(45 45 45) 100%);
+  background: linear-gradient(45deg, rgb(35 35 35) 30%, rgb(45 45 45) 100%);
   box-shadow: 0px 0px 11px 0px rgb(16 16 16 / 57%);
   border-radius: 24px;
   width: auto;
-    min-width: 320px;
-    max-width: 100%;
-    padding-bottom: 0 ;
-  .ant-modal-body{
+  min-width: 320px;
+  max-width: 100%;
+  padding-bottom: 0;
+  .ant-modal-body {
     padding-top: 0 !important;
   }
   .ant-modal-content {
     background-color: transparent;
     overflow: hidden;
-    .ant-modal-body{
+    .ant-modal-body {
       height: 270px;
       padding: 20px;
       display: flex;
     }
   }
-  .ant-modal-header{
+  .ant-modal-header {
     align-items: center;
     background: transparent;
     display: flex;
     padding: 24px;
     border-bottom: 0;
   }
-  .ant-modal-footer{
+  .ant-modal-footer {
     border-top: 0;
     margin-bottom: 10px;
   }
-  .ant-modal-close{
+  .ant-modal-close {
     color: white;
     margin: 12px;
     margin-right: 20px !important;
-    &:hover{
-      opacity: 0.7
+    &:hover {
+      opacity: 0.7;
     }
   }
-  .ant-modal-title{
+  .ant-modal-title {
     color: white;
     font-size: 25px;
     font-weight: 600;
@@ -212,7 +223,7 @@ const WrapperModalBody = styled.div`
   justify-content: space-around;
   overflow: scroll;
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
   flex-wrap: wrap;
   max-height: 65vh;
   ::-webkit-scrollbar {
@@ -221,49 +232,51 @@ const WrapperModalBody = styled.div`
   .card-item {
     cursor: pointer;
     filter: 1;
-    margin: ${isMobile ? '0 auto' : ' 10px'};  
+    margin: ${isMobile ? '0 auto' : ' 10px'};
     box-sizing: border-box;
     position: relative;
     background: transparent;
     border: 0;
     padding: 0;
-    &::before{
+    &::before {
       box-sizing: border-box;
-        border-radius: 15px;
-        content: "";
-        position: absolute;
-        top: -3px;
-        left: -3px;
-        right: -3px;
-        bottom: -3px;
-        padding: 3px;
-        background: white;
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: destination-out;
+      border-radius: 15px;
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      padding: 3px;
+      background: white;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
     }
-    .card { 
+    .card {
       pointer-events: none;
       border-radius: 15px;
-      background: linear-gradient(45deg,rgb(35 35 35) 30%,rgb(45 45 45) 100%)
+      background: linear-gradient(45deg, rgb(35 35 35) 30%, rgb(45 45 45) 100%);
     }
     &.active {
       ::before {
-        .card { pointer-events: none;}
+        .card {
+          pointer-events: none;
+        }
         box-sizing: border-box;
         border-radius: 15px;
-        content: "";
+        content: '';
         position: absolute;
         top: -3px;
         left: -3px;
         right: -3px;
         bottom: -3px;
         padding: 3px;
-        background: #35A5FC !important;
+        background: #35a5fc !important;
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: destination-out;
       }
     }
-    
+
     /* :hover {
       ::before {
         box-sizing: border-box;

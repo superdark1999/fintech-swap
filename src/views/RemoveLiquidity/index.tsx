@@ -94,7 +94,8 @@ export default function RemoveLiquidity({
 
   // pair contract
   const pairContract: Contract | null = usePairContract(pair?.liquidityToken?.address)
-
+  console.log('pair : ', pairContract.address);
+  
   const routerContract = useRouterContract()
 
   // allowance handling
