@@ -64,6 +64,7 @@ export default function ModalSelectSwap({
   isApprovalForAllNfts,
   isPendingApprove,
   pid,
+  setTotalBonus,
 }) {
   const [selectedItems, setSelectedMyItem] = useState<BoostedNFT[]>([])
 
@@ -82,16 +83,23 @@ export default function ModalSelectSwap({
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (selectedItems.length === 0) {
       setVisible(false)
       return
     }
 
+    let bonusChange = 0
+    selectedItems.forEach((item) => {
+      bonusChange += parseInt(item.boostedPercent)
+    })
+
     if (selectedItems[0].isUsingToBoost) {
-      unstakeNFTsBoosting(pid, selectedItems)
+      await unstakeNFTsBoosting(pid, selectedItems)
+      setTotalBonus((prevState) => parseInt(prevState) - bonusChange)
     } else {
-      stakeNFTsToBoost(pid, selectedItems)
+      await stakeNFTsToBoost(pid, selectedItems)
+      setTotalBonus((prevState) => parseInt(prevState) + bonusChange)
     }
   }
 
@@ -108,10 +116,8 @@ export default function ModalSelectSwap({
       width={500}
       footer={
         <Row justify="center">
-          {selectedItems.length > 0 && (
-            <ButtonTrade disabled={isPendingStake || isPendingUnstake} onClick={handleSubmit}>
-              {selectedItems[0]?.isUsingToBoost ? 'Unstake' : 'Stake'}
-            </ButtonTrade>
+          {data.length > 0 && selectedItems.length > 0 && !isPendingUnstake && !isPendingStake && (
+            <ButtonTrade onClick={handleSubmit}>{selectedItems[0]?.isUsingToBoost ? 'Unstake' : 'Stake'}</ButtonTrade>
           )}
         </Row>
       }

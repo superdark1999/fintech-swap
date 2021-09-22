@@ -1,5 +1,4 @@
 import { isApproveForAllNFTs } from 'data/Allowances'
-import useNFTsBoosted from 'hooks/useSpaceHunterBoosted'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
@@ -15,6 +14,7 @@ import { Title } from './styles'
 import { useActiveWeb3React } from '../../../../../hooks/index'
 import { approveForAllNFTs } from '../../../../../data/Allowances'
 import { getNFTContract } from '../../../../../utils/contractHelpers'
+import { useTotalBonus, useNFTsBoosted } from '../../../../../hooks/useSpaceHunterBoosted'
 
 const StakeNFT = styled.div``
 const BoxAction = styled.div`
@@ -57,7 +57,8 @@ const TitleNFT = styled(Title)`
 const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, lpAddresses, quoteToken, token }) => {
   const [isVisibleStakingModal, setIsVisibleStakingModal] = useState(false)
   const [isVisibleCanStakeModal, setIsVisibleCanStakeModal] = useState(false)
-  const [totalBonus] = useNFTsBoosted(pid)
+  useNFTsBoosted(pid)
+  const [totalBonus, setTotalBonus] = useTotalBonus(pid)
   const mySpaceHunterCollection = useMySpaceHunterCollection()
   const farmContract = useFarmNFTContract()
   const addTransaction = useTransactionAdder()
@@ -124,20 +125,19 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
             </>
           )}
 
-          {!isApprovalForAllNfts && (
+          {addressesNeedApprove.length > 0 && !isApprovalForAllNfts && (
             <StakeAction
               onClick={() => {
-                if (addressesNeedApprove.length === 0) {
-                  notification('error', { message: 'Approve error', description: 'Wait for 5 seconds to click again' })
-                  return
-                }
+                // if (addressesNeedApprove.length === 0) {
+                //   notification('error', { message: 'Approve error', description: 'Wait for 5 seconds to click again' })
+                //   return
+                // }
                 setIsPendingApprove(true)
                 const contractsNeedApprove = addressesNeedApprove.map((item) =>
                   getNFTContract(item, provider.getSigner()),
                 )
                 approveForAllNFTs(contractsNeedApprove, farmContract.address)
                   .then(() => {
-                    console.log('set approval for all xong roi ne')
                     setIsPendingApprove(false)
                   })
                   .catch((err) => {
@@ -163,6 +163,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
         isPendingUnstake={isPendingUnstake}
         isApprovalForAllNfts={isApprovalForAllNfts}
         isPendingApprove={isPendingApprove}
+        setTotalBonus={setTotalBonus}
       />
       <StakeNFTModal
         pid={pid}
@@ -176,6 +177,7 @@ const Staked: React.FunctionComponent<FarmWithStakedValue> = ({ pid, lpSymbol, l
         isPendingUnstake={isPendingUnstake}
         isApprovalForAllNfts={isApprovalForAllNfts}
         isPendingApprove={isPendingApprove}
+        setTotalBonus={setTotalBonus}
       />
     </StakeNFT>
   )

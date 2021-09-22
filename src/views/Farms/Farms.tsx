@@ -208,6 +208,7 @@ const Farms: React.FC = () => {
 
       if (query) {
         const lowercaseQuery = query.toLowerCase()
+        console.log('lowercase query : ', lowercaseQuery)
         farmsToDisplayWithAPY = farmsToDisplayWithAPY.filter((farm: FarmWithStakedValue) => {
           return farm.lpSymbol.toLowerCase().includes(lowercaseQuery)
         })
@@ -278,9 +279,14 @@ const Farms: React.FC = () => {
   const renderContent = (type: FarmType): JSX.Element => {
     // console.log("-------", rowData[0].type)
     // rowData =
-    if (viewMode === ViewMode.TABLE && rowData.length) {
+    const rowDataPerType = rowData.filter((farm) => farm.type === type)
+    if (rowDataPerType.length === 0) {
+      return <> </>
+    }
+
+    if (viewMode === ViewMode.TABLE) {
       const columnSchema = DesktopColumnSchema
-      const data = rowData.filter((farm) => farm.type === type)
+
       // console.log("-----dataFarm", data)
       const columns = columnSchema.map((column) => ({
         id: column.id,
@@ -305,7 +311,7 @@ const Farms: React.FC = () => {
         sortable: column.sortable,
       }))
 
-      return <Table data={data} columns={columns} type={type} />
+      return <Table data={rowDataPerType} columns={columns} type={type} />
     }
 
     return (
