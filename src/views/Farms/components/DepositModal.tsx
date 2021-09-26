@@ -51,7 +51,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
         <Button
           variant="success"
           width="100%"
-          disabled={pendingTx || fullBalance === '0' || val === '0'}
+          disabled={pendingTx || fullBalance === '0' || val === '0' || parseFloat(val) > parseFloat(fullBalance)}
           onClick={async () => {
             setPendingTx(true)
             await onConfirm(val)
@@ -59,7 +59,11 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
             onDismiss()
           }}
         >
-          {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
+          {parseFloat(val) > parseFloat(fullBalance)
+            ? TranslateString(464, 'Insufficient balance')
+            : pendingTx
+            ? TranslateString(488, 'Pending Confirmation')
+            : TranslateString(464, 'Confirm')}
         </Button>
       </ModalActions>
       <LinkExternal href={addLiquidityUrl} style={{ alignSelf: 'center' }}>

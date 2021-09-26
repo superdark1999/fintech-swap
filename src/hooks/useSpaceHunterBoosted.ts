@@ -8,11 +8,10 @@ import { findNFT, foundNFT } from '../utils/array'
 import { useAppDispatch } from '../state/index'
 import { useSpaceHunterCollection } from './useCollection'
 
-const useNFTsBoosted = (pid: number) => {
+export const useNFTsBoosted = (pid: number) => {
   const { account } = useActiveWeb3React()
   const farmContract = useFarmNFTContract()
   const mySpaceHunterCollection = useSpaceHunterCollection()
-  const [totalBonus, setTotalBonus] = useState(0)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -44,14 +43,17 @@ const useNFTsBoosted = (pid: number) => {
 
     fetchNftsUseToBoost()
   }, [farmContract, account, pid, mySpaceHunterCollection, dispatch])
+}
 
+export const useTotalBonus = (pid: number) => {
+  const farmContract = useFarmNFTContract()
+  const { account } = useActiveWeb3React()
+
+  const [totalBonus, setTotalBonus] = useState(0)
   useEffect(() => {
     farmContract.totalBoostedPercent(pid, account).then((response) => {
-      console.log('total bonus : ', response.toString())
       setTotalBonus(response.toString())
     })
   }, [farmContract, pid, account])
-  return [totalBonus]
+  return [totalBonus, setTotalBonus]
 }
-
-export default useNFTsBoosted

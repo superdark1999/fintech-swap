@@ -19,7 +19,7 @@ import { useAppDispatch } from '../../../../../state/index'
 import DepositModal from '../../DepositModal'
 import WithdrawModal from '../../WithdrawModal'
 import { ActionContainer, ActionContent, ActionTitles, Earned, Subtle, Title } from './styles'
-import { useApproveForAllNFTCallback } from '../../../../../hooks/useApproveNFTCallback';
+import { useApproveForAllNFTCallback } from '../../../../../hooks/useApproveNFTCallback'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -90,6 +90,8 @@ const Staked: React.FunctionComponent<any> = ({
       await onAttemptToApprove()
     } catch (e) {
       console.error(e)
+    } finally {
+      setRequestedApproval(false)
     }
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [approval, setRequestedApproval])
